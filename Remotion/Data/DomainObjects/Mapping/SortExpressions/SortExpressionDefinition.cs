@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       _sortedProperties = sortedProperties.ToList().AsReadOnly();
 
       if (_sortedProperties.Count == 0)
-        throw new ArgumentException("A SortExpressionDefinition must contain at least one sorted property.", "sortedProperties");
+        throw new ArgumentException("A SortExpressionDefinition must contain at least one sorted property.", nameof(sortedProperties));
     }
 
     public ReadOnlyCollection<SortedPropertySpecification> SortedProperties

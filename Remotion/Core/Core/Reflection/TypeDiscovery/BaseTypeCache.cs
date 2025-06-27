@@ -102,7 +102,7 @@ namespace Remotion.Reflection.TypeDiscovery
               string.Format(
                   "Only non-generic types and open generic types may be used when creating a BaseTypeCache. Type '{0}' is a closed generic type.",
                   type.GetFullNameSafe()),
-              "types");
+              nameof(types));
         }
       }
 

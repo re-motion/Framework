@@ -112,7 +112,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       if (arguments.CellID == null)
-        throw new ArgumentException("arguments.CellID is null", "arguments");
+        throw new ArgumentException("arguments.CellID is null", nameof(arguments));
 
       RenderTitleCell(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), arguments);
     }
@@ -144,7 +144,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       if (arguments.CellID == null)
-        throw new ArgumentException("arguments.CellID is null", "arguments");
+        throw new ArgumentException("arguments.CellID is null", nameof(arguments));
 
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Id, arguments.CellID);
 
@@ -342,7 +342,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         case SortingDirection.None:
           return null;
         default:
-          throw new ArgumentOutOfRangeException("sortingDirection");
+          throw new ArgumentOutOfRangeException(nameof(sortingDirection));
       }
     }
 

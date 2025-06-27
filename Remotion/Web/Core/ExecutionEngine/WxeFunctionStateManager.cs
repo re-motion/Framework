@@ -149,7 +149,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull(nameof(functionState), functionState);
       if (functionState.IsAborted)
-        throw new ArgumentException("An aborted WxeFunctionState cannot be added to the collection.", "functionState");
+        throw new ArgumentException("An aborted WxeFunctionState cannot be added to the collection.", nameof(functionState));
 
       lock (_lockObject)
       {
@@ -299,7 +299,7 @@ namespace Remotion.Web.ExecutionEngine
       if (!_functionStates.ContainsKey(functionToken))
       {
         throw new ArgumentException(
-            string.Format("WxeFunctionState '{0}' is not registered with the WxeFunctionStateManager.", functionToken), "functionToken");
+            string.Format("WxeFunctionState '{0}' is not registered with the WxeFunctionStateManager.", functionToken), nameof(functionToken));
       }
     }
 

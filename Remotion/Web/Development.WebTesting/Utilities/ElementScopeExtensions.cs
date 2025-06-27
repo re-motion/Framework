@@ -134,7 +134,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
               targetElementBounds.X - (scrollContainerSize.Width - targetElementBounds.Width) + 1 + padding.Right,
               targetElementBounds.Y - (scrollContainerSize.Width - targetElementBounds.Width) + 1 + padding.Bottom);
         default:
-          throw new ArgumentOutOfRangeException("alignment", alignment, null);
+          throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null);
       }
     }
   }

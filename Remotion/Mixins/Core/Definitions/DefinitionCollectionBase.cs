@@ -65,7 +65,7 @@ namespace Remotion.Mixins.Definitions
       ArgumentUtility.CheckNotNull(nameof(newItem), newItem);
       if (_guardian != null && !_guardian(newItem))
         throw new ArgumentException(string.Format("The item does not match the criteria to be added to the collection: {0}.", _guardian.Method),
-            "newItem");
+            nameof(newItem));
 
       TKey key = _keyMaker(newItem);
 

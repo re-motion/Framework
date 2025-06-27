@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
                 "RelationEndPointDefinition for property '{0}' of RelationDefinition '{1}' must be virtual.",
                 relationEndPointDefinition.PropertyName,
                 relationEndPointDefinition.RelationDefinition.ID),
-            "relationEndPointDefinition");
+            nameof(relationEndPointDefinition));
       }
 
       if (relationEndPointDefinition.IsAnonymous)
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
             string.Format(
                 "RelationEndPointDefinition for RelationDefinition '{0}' must not be anonymous.",
                 relationEndPointDefinition.RelationDefinition.ID),
-            "relationEndPointDefinition");
+            nameof(relationEndPointDefinition));
       }
 
       var oppositeEndPointDefinition = (RelationEndPointDefinition)relationEndPointDefinition.GetOppositeEndPointDefinition();

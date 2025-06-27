@@ -79,7 +79,7 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull(nameof(httpContext), httpContext);
       ArgumentUtility.CheckNotNull(nameof(functionType), functionType);
       if (!typeof(WxeFunction).IsAssignableFrom(functionType))
-        throw new ArgumentException(string.Format("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
+        throw new ArgumentException(string.Format("The functionType '{0}' must be derived from WxeFunction.", functionType), nameof(functionType));
       ArgumentUtility.CheckNotNull(nameof(urlParameters), urlParameters);
       ArgumentUtility.CheckNotNull(nameof(wxeUrlSettings), wxeUrlSettings);
 
@@ -338,10 +338,10 @@ namespace Remotion.Web.ExecutionEngine
       ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
 
       if (!path.StartsWith("/"))
-        throw new ArgumentException("The path must be absolute", "path");
+        throw new ArgumentException("The path must be absolute", nameof(path));
 
       if (path.IndexOf("?", StringComparison.InvariantCultureIgnoreCase) != -1)
-        throw new ArgumentException("The path must be provided without a query string. Use the query string parameter instead.", "path");
+        throw new ArgumentException("The path must be provided without a query string. Use the query string parameter instead.", nameof(path));
 
       if (queryString == null)
         queryString = new NameValueCollection();
@@ -377,7 +377,7 @@ namespace Remotion.Web.ExecutionEngine
       if (useParentPermanentUrl)
       {
         if (urlParameters[WxeHandler.Parameters.ReturnUrl] != null)
-          throw new ArgumentException("The 'urlParameters' collection must not contain a 'ReturnUrl' parameter when creating a parent permanent URL.", "urlParameters");
+          throw new ArgumentException("The 'urlParameters' collection must not contain a 'ReturnUrl' parameter when creating a parent permanent URL.", nameof(urlParameters));
 
         var maximumUrlLength = _wxeUrlSettings.MaximumUrlLength;
 
@@ -449,7 +449,7 @@ namespace Remotion.Web.ExecutionEngine
     private string? FormatParentPermanentUrl (StringCollection parentPermanentUrls, int count)
     {
       if (count > parentPermanentUrls.Count)
-        throw new ArgumentOutOfRangeException("count");
+        throw new ArgumentOutOfRangeException(nameof(count));
 
       string? parentPermanentUrl = null;
       for (int i = count - 1; i >= 0; i--)

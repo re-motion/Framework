@@ -49,7 +49,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
       ArgumentUtility.CheckNotNull(nameof(method), method);
 
       if (method.DeclaringType != _targetType)
-        throw new ArgumentException("The declaring type of the method must be the target type.", "method");
+        throw new ArgumentException("The declaring type of the method must be the target type.", nameof(method));
 
       _methodsToOverride.Add(method);
     }

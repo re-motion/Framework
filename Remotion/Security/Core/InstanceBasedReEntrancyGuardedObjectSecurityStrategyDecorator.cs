@@ -48,7 +48,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.DebugCheckNotNull(nameof(securityProvider), securityProvider);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
-      ArgumentUtility.DebugCheckNotNullOrEmpty("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(requiredAccessTypes), requiredAccessTypes);
 
       if (_isEvaluatingAccess)
       {

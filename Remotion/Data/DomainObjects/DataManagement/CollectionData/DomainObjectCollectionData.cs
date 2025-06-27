@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       if (index < 0 || index > Count)
-        throw new ArgumentOutOfRangeException("index");
+        throw new ArgumentOutOfRangeException(nameof(index));
 
       // the first line can throw an ArgumentException, but the second cannot => corruption impossible
       _objectsByID.Add(domainObject.ID, domainObject);

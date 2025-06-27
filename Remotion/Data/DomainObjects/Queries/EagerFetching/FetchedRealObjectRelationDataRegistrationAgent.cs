@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       {
         throw new ArgumentException(
             "Only non-virtual object-valued relation end-points can be handled by this registration agent.",
-            "relationEndPointDefinition");
+            nameof(relationEndPointDefinition));
       }
 
       // Real end-point data is automatically registered when the DataContainer is registered, so we don't have anything to do here, apart from

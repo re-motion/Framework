@@ -223,7 +223,7 @@ namespace Remotion.SecurityManager.Persistence
 
       throw new ArgumentException(
           string.Format("DataContainer type can only be User or Substitution but was '{0}'.", dataContainer.DomainObjectType),
-          "dataContainer");
+          nameof(dataContainer));
     }
 
     private TResult? GetValue<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)

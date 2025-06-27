@@ -73,7 +73,7 @@ namespace Remotion.Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull(nameof(key), key);
       if (GetItemCount(key) == 0)
-        throw new ArgumentException("There is no item with the given key.", "key");
+        throw new ArgumentException("There is no item with the given key.", nameof(key));
       else
         return _items[key][0];
     }

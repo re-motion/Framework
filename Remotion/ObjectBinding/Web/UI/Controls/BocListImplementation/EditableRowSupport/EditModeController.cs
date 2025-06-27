@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     public IEditableRow? GetEditableRow (int index)
     {
       if (_editModeHost.Value == null || index >= _editModeHost.Value.Count)
-        throw new ArgumentOutOfRangeException("index", "The index must not point to an object past the elements in the Value collection");
+        throw new ArgumentOutOfRangeException(nameof(index), "The index must not point to an object past the elements in the Value collection");
 
       if (_editMode == EditMode.None)
         return null;
@@ -117,9 +117,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
 
       if (index < 0)
-        throw new ArgumentOutOfRangeException("index");
+        throw new ArgumentOutOfRangeException(nameof(index));
       if (index >= _editModeHost.Value.Count)
-        throw new ArgumentOutOfRangeException("index");
+        throw new ArgumentOutOfRangeException(nameof(index));
 
       RestoreAndEndEditMode(columns);
 

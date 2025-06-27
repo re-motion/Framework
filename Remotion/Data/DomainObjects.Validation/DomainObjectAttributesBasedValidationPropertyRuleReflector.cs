@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Validation
                 "The property '{0}' was declared on type '{1}' but only interface declarations are supported when using mixin properties.",
                 interfacePropertyInformation.Name,
                 interfacePropertyInformation.DeclaringType.GetFullNameSafe()),
-            "interfaceProperty");
+            nameof(interfaceProperty));
       }
 
       if (!implementationPropertyInformation.IsOriginalDeclaration())
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Validation
                 "The property '{0}' was used from the overridden declaration on type '{1}' but only original declarations are supported.",
                 implementationPropertyInformation.Name,
                 implementationPropertyInformation.DeclaringType!.GetFullNameSafe()),
-            "implementationProperty");
+            nameof(implementationProperty));
       }
 
       // TODO RM-5906: Replace with IPropertyInformation and propagate to call and callee-site

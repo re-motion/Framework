@@ -440,7 +440,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void SetBusinessObjectList (IList businessObjects)
     {
       ArgumentUtility.CheckNotNull(nameof(businessObjects), businessObjects);
-      ArgumentUtility.CheckItemsNotNullAndType("businessObjects", businessObjects, typeof(IBusinessObjectWithIdentity));
+      ArgumentUtility.CheckItemsNotNullAndType(nameof(businessObjects), businessObjects, typeof(IBusinessObjectWithIdentity));
       RefreshBusinessObjectList(businessObjects);
     }
 

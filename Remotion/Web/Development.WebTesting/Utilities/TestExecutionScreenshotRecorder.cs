@@ -119,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(browserSessions), browserSessions);
       ArgumentUtility.CheckNotNull(nameof(locator), locator);
       if (browserSessions.Length == 0)
-        throw new ArgumentException("At least one browser session must be specified.", "browserSessions");
+        throw new ArgumentException("At least one browser session must be specified.", nameof(browserSessions));
 
       var sessionID = 0;
       foreach (var browserSession in browserSessions)

@@ -167,7 +167,7 @@ namespace Remotion.Collections.DataStore
       {
         string message =
             string.Format("The store already contains an element with key '{0}'. (Old value: '{1}', new value: '{2}')", key, this[key], value);
-        throw new ArgumentException(message, "key");
+        throw new ArgumentException(message, nameof(key));
       }
     }
 

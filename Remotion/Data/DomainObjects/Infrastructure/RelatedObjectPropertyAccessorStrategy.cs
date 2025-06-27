@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
             objectEndPoint.ObjectID);
         throw new ArgumentException(
             message,
-            "newRelatedObject");
+            nameof(newRelatedObject));
       }
     }
   }

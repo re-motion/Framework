@@ -86,7 +86,7 @@ namespace Remotion.Validation.Utilities
                 node = new Node<T>(dependency, _getDependencies, true);
                 break;
               default:
-                throw new ArgumentOutOfRangeException("missingDependencies");
+                throw new ArgumentOutOfRangeException(nameof(missingDependencies));
             }
             if (node != null)
             {

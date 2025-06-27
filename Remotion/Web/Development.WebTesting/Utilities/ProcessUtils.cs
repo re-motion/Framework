@@ -150,7 +150,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
       var timeoutInMilliseconds = (int)timeout.TotalMilliseconds;
       if (timeoutInMilliseconds < 0)
-        throw new ArgumentOutOfRangeException("timeout", "Timeout can not be smaller that zero.");
+        throw new ArgumentOutOfRangeException(nameof(timeout), "Timeout can not be smaller that zero.");
 
       IReadOnlyList<Process> remainingProcesses = processes.ToList();
 

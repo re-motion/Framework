@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       ArgumentUtility.CheckNotNull(nameof(relatedObjects), relatedObjects);
 
       if (relationEndPointDefinition.Cardinality != CardinalityType.Many || relationEndPointDefinition.IsAnonymous)
-        throw new ArgumentException("Only collection-valued relations can be handled by this registration agent.", "relationEndPointDefinition");
+        throw new ArgumentException("Only collection-valued relations can be handled by this registration agent.", nameof(relationEndPointDefinition));
 
       var groupedRelatedObjects = CorrelateRelatedObjects(relatedObjects, relationEndPointDefinition);
 

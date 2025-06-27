@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.BindableObject
     public ConstantEnumerationValueFilter (Enum[] disabledValues)
     {
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(disabledValues), disabledValues);
-      ArgumentUtility.CheckItemsType("disabledValues", disabledValues, disabledValues[0].GetType());
+      ArgumentUtility.CheckItemsType(nameof(disabledValues), disabledValues, disabledValues[0].GetType());
 
       _disabledEnumValues = disabledValues;
     }

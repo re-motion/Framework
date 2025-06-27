@@ -71,7 +71,7 @@ namespace Remotion.Reflection
         if (ascribeeType.IsAssignableFrom(type))
           return Type.EmptyTypes;
         else
-          throw ArgumentUtility.CreateArgumentTypeException("type", type, ascribeeType);
+          throw ArgumentUtility.CreateArgumentTypeException(nameof(type), type, ascribeeType);
       }
       else if (ascribeeType.IsInterface)
         return GetAscribedGenericInterfaceArgumentsInternal(type, ascribeeType);
@@ -125,7 +125,7 @@ namespace Remotion.Reflection
       }
 
       if (conreteSpecialization == null)
-        throw ArgumentUtility.CreateArgumentTypeException("type", type, ascribeeType);
+        throw ArgumentUtility.CreateArgumentTypeException(nameof(type), type, ascribeeType);
 
       Assertion.IsTrue(conreteSpecialization.GetGenericTypeDefinition() == ascribeeType.GetGenericTypeDefinition());
       return Array.AsReadOnly(conreteSpecialization.GetGenericArguments());
@@ -146,7 +146,7 @@ namespace Remotion.Reflection
       if (currentType != null)
         return Array.AsReadOnly(currentType.GetGenericArguments());
       else
-        throw ArgumentUtility.CreateArgumentTypeException("type", type, ascribeeType);
+        throw ArgumentUtility.CreateArgumentTypeException(nameof(type), type, ascribeeType);
     }
 
     private static bool CanDirectlyAscribeToGenericTypeInternal (Type type, Type ascribeeType, Type ascribeeGenericTypeDefinition)

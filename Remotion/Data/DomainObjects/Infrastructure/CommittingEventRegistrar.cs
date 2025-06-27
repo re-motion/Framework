@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
               + "registered. Use RegisterForCommit to add an unchanged object to the commit set.",
               domainObject.ID,
               state);
-          throw new ArgumentException(message, "domainObjects");
+          throw new ArgumentException(message, nameof(domainObjects));
         }
       }
 

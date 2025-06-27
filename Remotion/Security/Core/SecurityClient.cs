@@ -272,7 +272,7 @@ namespace Remotion.Security
     public void CheckMethodAccess (ISecurableObject securableObject, string methodName, ISecurityPrincipal principal)
     {
       ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.DebugCheckNotNullOrEmpty("methodName", methodName);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(methodName), methodName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasMethodAccess(securableObject, methodName, principal))
@@ -352,7 +352,7 @@ namespace Remotion.Security
     public bool HasPropertyReadAccess (ISecurableObject securableObject, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
       ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.DebugCheckNotNull("methodInfo", methodInfo );
+      ArgumentUtility.DebugCheckNotNull(nameof(methodInfo), methodInfo );
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), methodInfo, MemberAffiliation.Instance);
@@ -387,7 +387,7 @@ namespace Remotion.Security
     public void CheckPropertyReadAccess (ISecurableObject securableObject, string propertyName, ISecurityPrincipal principal)
     {
       ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(propertyName), propertyName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasPropertyReadAccess(securableObject, propertyName, principal))
@@ -507,7 +507,7 @@ namespace Remotion.Security
     public void CheckPropertyWriteAccess (ISecurableObject securableObject, string propertyName, ISecurityPrincipal principal)
     {
       ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(propertyName), propertyName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasPropertyWriteAccess(securableObject, propertyName, principal))
@@ -656,7 +656,7 @@ namespace Remotion.Security
     public void CheckStaticMethodAccess (Type securableClass, string methodName, ISecurityPrincipal principal)
     {
       ArgumentUtility.DebugCheckNotNull(nameof(securableClass), securableClass);
-      ArgumentUtility.DebugCheckNotNullOrEmpty("methodName", methodName);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(methodName), methodName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       if (!HasStaticMethodAccess(securableClass, methodName, principal))
@@ -776,7 +776,7 @@ namespace Remotion.Security
         ISecurityPrincipal principal)
     {
       if (requiredAccessTypeEnums.Count == 0)
-        throw new ArgumentException(string.Format("The member '{0}' does not define required permissions.", memberInformation.Name), "requiredAccessTypeEnums");
+        throw new ArgumentException(string.Format("The member '{0}' does not define required permissions.", memberInformation.Name), nameof(requiredAccessTypeEnums));
 
       return HasAccess(securableObject, principal, ConvertRequiredAccessTypeEnums(requiredAccessTypeEnums));
     }
@@ -788,7 +788,7 @@ namespace Remotion.Security
         ISecurityPrincipal principal)
     {
       if (requiredAccessTypeEnums.Count == 0)
-        throw new ArgumentException(string.Format("The member '{0}' does not define required permissions.", memberInformation.Name), "requiredAccessTypeEnums");
+        throw new ArgumentException(string.Format("The member '{0}' does not define required permissions.", memberInformation.Name), nameof(requiredAccessTypeEnums));
 
       return HasStatelessAccess(securableClass, principal, ConvertRequiredAccessTypeEnums(requiredAccessTypeEnums));
     }

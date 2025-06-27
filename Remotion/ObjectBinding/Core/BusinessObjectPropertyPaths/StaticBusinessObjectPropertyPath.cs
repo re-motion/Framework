@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
                 string.Format(
                     "Property #{0} ('{1}') is not of type {2}. Every property except the last property must be a reference property.",
                     index, property.Identifier, typeof(IBusinessObjectReferenceProperty).Name),
-                "properties");
+                nameof(properties));
           }
 
           identifierBuilder.Append(currentClass.BusinessObjectProvider.GetPropertyPathSeparator());

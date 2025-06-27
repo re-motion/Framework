@@ -32,7 +32,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
       if (!Parameters.PermaUrlOptions.UsePermaUrl)
       {
         throw new ArgumentException(
-            string.Format("The '{0}' type only supports WxePermaUrlOptions with the UsePermaUrl-flag set to true.", GetType().Name), "parameters");
+            string.Format("The '{0}' type only supports WxePermaUrlOptions with the UsePermaUrl-flag set to true.", GetType().Name), nameof(parameters));
       }
     }
 

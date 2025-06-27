@@ -203,7 +203,7 @@ namespace Remotion.Web.ExecutionEngine
         {
           throw new ArgumentException(
               "The ReturnUrl cannot be a javascript-URL. Use the WxeFunction.SetExecutionCompletedScript(script) method instead.",
-              "value");
+              nameof(value));
         }
 
         _returnUrl = value;

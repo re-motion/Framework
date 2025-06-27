@@ -286,13 +286,13 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
       if (!endPointID.Definition.IsVirtual)
       {
         var message = string.Format("The given end point ID '{0}' does not denote a virtual end-point.", endPointID);
-        throw new ArgumentException(message, "endPointID");
+        throw new ArgumentException(message, nameof(endPointID));
       }
 
       if (endPointID.Definition.IsAnonymous)
       {
         var message = string.Format("The given end point ID '{0}' denotes an anonymous end-point, which cannot be unloaded.", endPointID);
-        throw new ArgumentException(message, "endPointID");
+        throw new ArgumentException(message, nameof(endPointID));
       }
     }
 

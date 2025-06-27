@@ -157,7 +157,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       if (FindPermission(accessType) != null)
       {
         throw new ArgumentException(
-            string.Format("The access type '{0}' has already been added to this access control entry.", accessType.Name), "accessType");
+            string.Format("The access type '{0}' has already been added to this access control entry.", accessType.Name), nameof(accessType));
       }
 
       var permission = Permission.NewObject();
@@ -174,7 +174,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       if (permission == null)
       {
         throw new ArgumentException(
-            string.Format("The access type '{0}' is not associated with the access control entry.", accessType.Name), "accessType");
+            string.Format("The access type '{0}' is not associated with the access control entry.", accessType.Name), nameof(accessType));
       }
 
       permission.Delete();
@@ -217,7 +217,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       if (permission == null)
       {
         throw new ArgumentException(
-            string.Format("The access type '{0}' is not assigned to this access control entry.", accessType.Name), "accessType");
+            string.Format("The access type '{0}' is not assigned to this access control entry.", accessType.Name), nameof(accessType));
       }
 
       return permission;

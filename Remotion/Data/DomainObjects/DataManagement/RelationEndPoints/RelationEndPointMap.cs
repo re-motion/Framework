@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       if (!_relationEndPoints.ContainsKey(endPointID))
       {
         var message = string.Format("End point '{0}' is not part of this map.", endPointID);
-        throw new ArgumentException(message, "endPointID");
+        throw new ArgumentException(message, nameof(endPointID));
       }
 
       _transactionEventSink.RaiseRelationEndPointMapUnregisteringEvent(endPointID);

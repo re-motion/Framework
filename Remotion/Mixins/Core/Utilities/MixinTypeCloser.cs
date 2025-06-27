@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Utilities
       ArgumentUtility.CheckNotNull(nameof(targetClass), targetClass);
 
       if (targetClass.ContainsGenericParameters)
-        throw new ArgumentException("The target class must not contain generic parameters.", "targetClass");
+        throw new ArgumentException("The target class must not contain generic parameters.", nameof(targetClass));
 
       _targetClass = targetClass;
     }

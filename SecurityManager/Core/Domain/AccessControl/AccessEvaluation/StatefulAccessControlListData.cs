@@ -36,7 +36,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       var stateArray = Array.AsReadOnly(states.ToArray());
 
       if (stateArray.Select(s => s.PropertyHandle).Distinct().Count() != stateArray.Count)
-        throw new ArgumentException("Multiple state values found for a single state property.", "states");
+        throw new ArgumentException("Multiple state values found for a single state property.", nameof(states));
 
       _handle = handle;
       _states = stateArray;

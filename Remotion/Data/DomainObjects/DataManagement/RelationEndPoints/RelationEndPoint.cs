@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull(nameof(id), id);
 
       if (id.Definition.IsAnonymous)
-        throw new ArgumentException("End point ID must not refer to an anonymous end point.", "id");
+        throw new ArgumentException("End point ID must not refer to an anonymous end point.", nameof(id));
 
       _clientTransaction = clientTransaction;
       _id = id;

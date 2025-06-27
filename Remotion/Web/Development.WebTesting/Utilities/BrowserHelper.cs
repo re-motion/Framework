@@ -247,9 +247,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       ArgumentUtility.CheckNotNull(nameof(window), window);
       if (size.Width <= 0)
-        throw new ArgumentOutOfRangeException("size", "The window width can not be smaller or equal to zero.");
+        throw new ArgumentOutOfRangeException(nameof(size), "The window width can not be smaller or equal to zero.");
       if (size.Height <= 0)
-        throw new ArgumentOutOfRangeException("size", "The window height can not be smaller or equal to zero.");
+        throw new ArgumentOutOfRangeException(nameof(size), "The window height can not be smaller or equal to zero.");
 
       var driver = window.GetWebDriver();
       driver.Manage().Window.Size = size;

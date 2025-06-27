@@ -329,7 +329,7 @@ namespace Remotion.Data.DomainObjects
 
       var other = obj as ObjectID;
       if (other == null)
-        throw new ArgumentException("The argument must be of type ObjectID.", "obj");
+        throw new ArgumentException("The argument must be of type ObjectID.", nameof(obj));
 
       var leftValue = Value;
       var rightValue = other.Value;

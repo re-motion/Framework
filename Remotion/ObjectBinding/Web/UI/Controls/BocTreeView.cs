@@ -737,7 +737,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         IBusinessObjectReferenceProperty property = ArgumentUtility.CheckType<IBusinessObjectReferenceProperty>(nameof(value), value);
         if (value?.IsList == false)
-          throw new ArgumentException("Only properties supporting IList can be assigned to the BocTreeView.", "value");
+          throw new ArgumentException("Only properties supporting IList can be assigned to the BocTreeView.", nameof(value));
         base.Property = property;
       }
     }
@@ -825,7 +825,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
               string.Format(
                   "Parameter type '{0}' is not supported. Parameters must implement interface IBusinessObjectWithIdentity, IReadOnlyList<IBusinessObjectWithIdentity>, or IList.",
                   value.GetType()),
-              "value");
+              nameof(value));
         }
       }
     }

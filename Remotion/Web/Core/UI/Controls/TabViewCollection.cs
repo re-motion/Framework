@@ -60,7 +60,7 @@ public class TabViewCollection: ViewCollection
   public override void RemoveAt (int index)
   {
     if (index < 0 || index > this.Count)
-      throw new ArgumentOutOfRangeException("index");
+      throw new ArgumentOutOfRangeException(nameof(index));
     TabView view = (TabView)this[index];
     Owner.OnTabViewRemove(view);
     base.RemoveAt(index);

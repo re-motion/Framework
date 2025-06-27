@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests
     private static TReturn Retry<TReturn> (Func<TReturn> func, int retries, TimeSpan interval)
     {
       if (retries < 0)
-        throw new ArgumentOutOfRangeException("retries", "Retries must be greater than or equal to zero.");
+        throw new ArgumentOutOfRangeException(nameof(retries), "Retries must be greater than or equal to zero.");
 
       for (var i = 0; i < retries; i++)
       {

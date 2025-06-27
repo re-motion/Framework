@@ -104,10 +104,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     public DomainObject GetObject (int index)
     {
       if (index < 0)
-        throw new ArgumentOutOfRangeException("index");
+        throw new ArgumentOutOfRangeException(nameof(index));
 
       if (index >= GetCachedDomainObjects().Count)
-        throw new ArgumentOutOfRangeException("index");
+        throw new ArgumentOutOfRangeException(nameof(index));
 
       var cachedDomainObjects = GetCachedDomainObjectsSorted();
       int itemIndex = 0;
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         itemIndex++;
       }
 
-      throw new ArgumentOutOfRangeException("index");
+      throw new ArgumentOutOfRangeException(nameof(index));
     }
 
     public DomainObject? GetObject (ObjectID objectID)

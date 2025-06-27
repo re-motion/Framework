@@ -70,7 +70,7 @@ namespace Remotion.Mixins.Definitions
             SetMethod.Base = _base == null ? null : _base.SetMethod;
         }
         else
-          throw new ArgumentException("Base must be PropertyDefinition or null.", "value");
+          throw new ArgumentException("Base must be PropertyDefinition or null.", nameof(value));
       }
     }
 

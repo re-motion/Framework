@@ -32,10 +32,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull(nameof(freshlyLoadedDataContainer), freshlyLoadedDataContainer);
 
       if (freshlyLoadedDataContainer.IsRegistered)
-        throw new ArgumentException("The DataContainer must not have been registered with a ClientTransaction.", "freshlyLoadedDataContainer");
+        throw new ArgumentException("The DataContainer must not have been registered with a ClientTransaction.", nameof(freshlyLoadedDataContainer));
 
       if (freshlyLoadedDataContainer.HasDomainObject)
-        throw new ArgumentException("The DataContainer must not have been registered with a DomainObject.", "freshlyLoadedDataContainer");
+        throw new ArgumentException("The DataContainer must not have been registered with a DomainObject.", nameof(freshlyLoadedDataContainer));
 
       _freshlyLoadedDataContainer = freshlyLoadedDataContainer;
     }

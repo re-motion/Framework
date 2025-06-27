@@ -39,7 +39,7 @@ namespace Remotion.Validation.Validators
       ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       if (max <= 0)
-        throw new ArgumentOutOfRangeException("max", "Value must be greater than zero.");
+        throw new ArgumentOutOfRangeException(nameof(max), "Value must be greater than zero.");
 
       Max = max;
       ErrorMessage = $"The value must have at most {max} characters.";

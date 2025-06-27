@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull(nameof(virtualEndPointProvider), virtualEndPointProvider);
 
       if (endPointID.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException("Associated end-point must be a CollectionEndPoint.", "endPointID");
+        throw new ArgumentException("Associated end-point must be a CollectionEndPoint.", nameof(endPointID));
 
       _endPointID = endPointID;
       _virtualEndPointProvider = virtualEndPointProvider;

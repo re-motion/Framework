@@ -99,7 +99,7 @@ namespace Remotion.SecurityManager.Domain
       {
         throw new ArgumentException(
             "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.",
-            "substitutionHandle");
+            nameof(substitutionHandle));
       }
 
       _tenantHandle = tenantHandle;

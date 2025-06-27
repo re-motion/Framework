@@ -102,7 +102,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
       ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(function), function);
       if (! Regex.IsMatch(function, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
-        throw new ArgumentException("Invalid function name: '" + function + "'.", "function");
+        throw new ArgumentException("Invalid function name: '" + function + "'.", nameof(function));
 
       if (_isPreRenderComplete)
       {

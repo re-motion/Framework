@@ -36,7 +36,7 @@ namespace Remotion.Validation.Implementation
       {
         throw new ArgumentException(
             string.Format("The validated type '{0}' is not supported by the passed validator.", typeof(T).Name),
-            "validator");
+            nameof(validator));
       }
 
       _validator = validator;

@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       if (!endPointID.Definition.IsVirtual)
-        throw new ArgumentException("The RelationEndPointID must identify a virtual end-point.", "endPointID");
+        throw new ArgumentException("The RelationEndPointID must identify a virtual end-point.", nameof(endPointID));
 
       if (endPointID.Definition.Cardinality == CardinalityType.One)
       {

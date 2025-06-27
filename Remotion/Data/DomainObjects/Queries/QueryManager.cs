@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentUtility.CheckNotNull(nameof(query), query);
 
       if (query.QueryType != QueryType.ScalarReadOnly && query.QueryType != QueryType.ScalarReadWrite)
-        throw new ArgumentException("A collection or custom query cannot be used with GetScalar.", "query");
+        throw new ArgumentException("A collection or custom query cannot be used with GetScalar.", nameof(query));
 
       return _persistenceStrategy.ExecuteScalarQuery(query);
     }
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentUtility.CheckNotNull(nameof(query), query);
 
       if (query.QueryType != QueryType.CollectionReadOnly && query.QueryType != QueryType.CollectionReadWrite)
-        throw new ArgumentException("A scalar or custom query cannot be used with GetCollection.", "query");
+        throw new ArgumentException("A scalar or custom query cannot be used with GetCollection.", nameof(query));
 
       var resultArray = _objectLoader
           .GetOrLoadCollectionQueryResult(query)
@@ -195,10 +195,10 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentUtility.CheckNotNull(nameof(rowReader), rowReader);
 
       if (query.QueryType != QueryType.CustomReadOnly && query.QueryType != QueryType.CustomReadWrite)
-        throw new ArgumentException("A collection or scalar query cannot be used with GetCustom.", "query");
+        throw new ArgumentException("A collection or scalar query cannot be used with GetCustom.", nameof(query));
 
       if (query.EagerFetchQueries.Count > 0)
-        throw new ArgumentException("A custom query cannot have eager fetch queries defined.", "query");
+        throw new ArgumentException("A custom query cannot have eager fetch queries defined.", nameof(query));
 
       var queryResult = _persistenceStrategy.ExecuteCustomQuery(query).Select(rowReader);
       return _transactionEventSink.RaiseFilterCustomQueryResultEvent(query, queryResult);

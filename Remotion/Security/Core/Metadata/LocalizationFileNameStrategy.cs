@@ -33,7 +33,7 @@ namespace Remotion.Security.Metadata
 
       string? basePath = Path.GetDirectoryName(metadataFilename);
       if (basePath == null)
-        throw new ArgumentException("The metadata filename must denote a path that is not a root directory.", "metadataFilename");
+        throw new ArgumentException("The metadata filename must denote a path that is not a root directory.", nameof(metadataFilename));
 
       string baseFilePath = Path.Combine(basePath, baseFilename);
 
@@ -51,7 +51,7 @@ namespace Remotion.Security.Metadata
 
       string? basePath = Path.GetDirectoryName(metadataFilename);
       if (basePath == null)
-        throw new ArgumentException("The metadata filename must denote a path that is not a root directory.", "metadataFilename");
+        throw new ArgumentException("The metadata filename must denote a path that is not a root directory.", nameof(metadataFilename));
 
       string searchPattern = baseFileName + ".Localization.*xml";
 

@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       ArgumentUtility.CheckNotNull(nameof(accessConditions), accessConditions);
       ArgumentUtility.CheckNotNull(nameof(allowedAccessTypes), allowedAccessTypes);
       if (accessControlList.Class == null)
-        throw new ArgumentException("AccessControlList must have a Class set.", "accessControlList");
+        throw new ArgumentException("AccessControlList must have a Class set.", nameof(accessControlList));
 
       User = user;
       Role = role;

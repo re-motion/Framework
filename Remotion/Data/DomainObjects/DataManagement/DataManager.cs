@@ -264,7 +264,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       var collectionEndPoint = GetRelationEndPointWithoutLoading(endPointID) as ICollectionEndPoint<ICollectionEndPointData>;
 
       if (collectionEndPoint == null)
-        throw new ArgumentException("The given ID does not identify an ICollectionEndPoint managed by this DataManager.", "endPointID");
+        throw new ArgumentException("The given ID does not identify an ICollectionEndPoint managed by this DataManager.", nameof(endPointID));
 
       if (collectionEndPoint.IsDataComplete)
         throw new InvalidOperationException("The given end-point cannot be loaded, its data is already complete.");
@@ -290,7 +290,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       var virtualObjectEndPoint = GetRelationEndPointWithoutLoading(endPointID) as IVirtualObjectEndPoint;
 
       if (virtualObjectEndPoint == null)
-        throw new ArgumentException("The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.", "endPointID");
+        throw new ArgumentException("The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.", nameof(endPointID));
 
       if (virtualObjectEndPoint.IsDataComplete)
         throw new InvalidOperationException("The given end-point cannot be loaded, its data is already complete.");

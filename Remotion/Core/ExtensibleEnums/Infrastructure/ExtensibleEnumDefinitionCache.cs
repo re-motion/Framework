@@ -78,7 +78,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
       catch (ArgumentException ex) // constraint violation
       {
         var message = string.Format("Type '{0}' is not an extensible enum type derived from ExtensibleEnum<T>.", extensibleEnumType);
-        throw new ArgumentException(message, "extensibleEnumType", ex);
+        throw new ArgumentException(message, nameof(extensibleEnumType), ex);
       }
       return (IExtensibleEnumDefinition)Activator.CreateInstance(definitionType, new[] { ValueDiscoveryService })!;
     }

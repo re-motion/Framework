@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       ArgumentUtility.CheckNotNull(nameof(column), column);
       if (columnIndex < 0)
-        throw new ArgumentOutOfRangeException("columnIndex");
+        throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
       IBusinessObjectBoundEditableWebControl? control = column.CreateEditModeControl();
 

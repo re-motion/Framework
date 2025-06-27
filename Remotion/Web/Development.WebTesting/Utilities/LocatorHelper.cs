@@ -89,7 +89,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         case CoordinateSystem.Desktop:
           return ResolveDesktop(resolver, target);
         default:
-          throw new ArgumentOutOfRangeException("coordinateSystem", coordinateSystem, null);
+          throw new ArgumentOutOfRangeException(nameof(coordinateSystem), coordinateSystem, null);
       }
     }
 

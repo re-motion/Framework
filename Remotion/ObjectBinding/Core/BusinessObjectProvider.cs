@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding
     public static IBusinessObjectProvider GetProvider (Type businessObjectProviderAttributeType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(
-          "businessObjectProviderAttributeType", businessObjectProviderAttributeType, typeof(BusinessObjectProviderAttribute));
+          nameof(businessObjectProviderAttributeType), businessObjectProviderAttributeType, typeof(BusinessObjectProviderAttribute));
 
       return s_businessObjectProviderStore.GetOrAdd(businessObjectProviderAttributeType, s_createBusinessObjectProviderFromAttribute);
     }
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding
     public static void SetProvider (Type businessObjectProviderAttributeType, IBusinessObjectProvider provider)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(
-          "businessObjectProviderAttributeType", businessObjectProviderAttributeType, typeof(BusinessObjectProviderAttribute));
+          nameof(businessObjectProviderAttributeType), businessObjectProviderAttributeType, typeof(BusinessObjectProviderAttribute));
 
       if (provider != null)
       {
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding
         if (!TypeExtensions.CanAscribeTo(provider.GetType(), attribute.BusinessObjectProviderType))
         {
           throw new ArgumentException(
-              "The provider is not compatible with the provider-type required by the businessObjectProviderAttributeType's instantiation.", "provider");
+              "The provider is not compatible with the provider-type required by the businessObjectProviderAttributeType's instantiation.", nameof(provider));
         }
 
         if (provider is BusinessObjectProvider)

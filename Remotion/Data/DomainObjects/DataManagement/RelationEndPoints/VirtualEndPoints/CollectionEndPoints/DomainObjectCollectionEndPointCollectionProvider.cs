@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
       if (endPointID.Definition.IsAnonymous)
-        throw new ArgumentException("End point ID must not refer to an anonymous end point.", "endPointID");
+        throw new ArgumentException("End point ID must not refer to an anonymous end point.", nameof(endPointID));
 
       var collection = _collections.GetOrCreateValue(endPointID, _getCollectionWithoutCacheFunc);
       Assertion.IsTrue(collection.AssociatedEndPointID == endPointID);
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull(nameof(collection), collection);
 
       if (collection.AssociatedEndPointID != endPointID)
-        throw new ArgumentException("The collection must be associated with the given endPointID.", "collection");
+        throw new ArgumentException("The collection must be associated with the given endPointID.", nameof(collection));
 
       _collections[endPointID] = collection;
     }

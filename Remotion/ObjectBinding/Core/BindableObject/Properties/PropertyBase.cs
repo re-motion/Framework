@@ -384,7 +384,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
                 "The BusinessObjectProvider of property '{0}' does not match the BusinessObjectProvider of class '{1}'.",
                 Identifier,
                 reflectedClass.Identifier),
-            "reflectedClass");
+            nameof(reflectedClass));
       }
 
       if (_reflectedClass != null)

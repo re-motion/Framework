@@ -285,7 +285,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<string[]>("value", value); }
+      set { Value = ArgumentUtility.CheckType<string[]>(nameof(value), value); }
     }
 
     /// <summary>Gets a flag indicating whether the <see cref="BocMultilineTextValue"/> contains a value. </summary>

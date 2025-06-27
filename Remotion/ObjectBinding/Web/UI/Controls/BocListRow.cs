@@ -37,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public BocListRow (int index, IBusinessObject businessObject)
     {
       if (index < 0)
-        throw new ArgumentOutOfRangeException("index", index, "Negative indices are not allowed.");
+        throw new ArgumentOutOfRangeException(nameof(index), index, "Negative indices are not allowed.");
       ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
 
       _index = index;

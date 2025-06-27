@@ -243,9 +243,9 @@ public class UrlMappingCollection: CollectionBase
     UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry>(nameof(value), value!);
     base.OnValidate(entry);
     if (Find(entry.Resource) != null)
-      throw new ArgumentException(string.Format("The mapping already contains an entry for the following resource: '{0}'.", entry.Resource), "value");
+      throw new ArgumentException(string.Format("The mapping already contains an entry for the following resource: '{0}'.", entry.Resource), nameof(value));
     if (FindByID(entry.ID) != null)
-      throw new ArgumentException(string.Format("The mapping already contains an entry for the following ID: '{0}'.", entry.ID), "value");
+      throw new ArgumentException(string.Format("The mapping already contains an entry for the following ID: '{0}'.", entry.ID), nameof(value));
   }
 
   protected override void OnInsert (int index, object? value)

@@ -530,7 +530,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException("value", "The CompletionSetCount must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException(nameof(value), "The CompletionSetCount must be greater than or equal to 0.");
         _completionSetCount = value;
       }
     }
@@ -544,7 +544,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException("value", "The DropDownDisplayDelay must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException(nameof(value), "The DropDownDisplayDelay must be greater than or equal to 0.");
         _dropDownDisplayDelay = value;
       }
     }
@@ -558,7 +558,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException("value", "The DropDownRefreshDelay must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException(nameof(value), "The DropDownRefreshDelay must be greater than or equal to 0.");
         _dropDownRefreshDelay = value;
       }
     }
@@ -572,7 +572,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException("value", "The SelectionUpdateDelay must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException(nameof(value), "The SelectionUpdateDelay must be greater than or equal to 0.");
         _selectionUpdateDelay = value;
       }
     }

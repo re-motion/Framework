@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls
       WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode>(nameof(value), value!);
 
       if (string.IsNullOrEmpty(node.ItemID))
-        throw new ArgumentException("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", "value");
+        throw new ArgumentException("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", nameof(value));
 
       base.ValidateNewValue(value);
     }

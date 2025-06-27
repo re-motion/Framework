@@ -45,7 +45,7 @@ namespace Remotion.Web.UI.Controls
         if (!typeof(WebTab).IsAssignableFrom(type))
         {
           throw new ArgumentException(
-              string.Format("Type '{0}' at index {1} is not compatible with type 'WebTab'.", type.GetFullNameSafe(), i), "supportedTypes");
+              string.Format("Type '{0}' at index {1} is not compatible with type 'WebTab'.", type.GetFullNameSafe(), i), nameof(supportedTypes));
         }
       }
     }
@@ -67,7 +67,7 @@ namespace Remotion.Web.UI.Controls
     {
       WebTab tab = ArgumentUtility.CheckNotNullAndType<WebTab>(nameof(value), value!);
       if (string.IsNullOrEmpty(tab.ItemID))
-        throw new ArgumentException("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", "value");
+        throw new ArgumentException("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", nameof(value));
       base.ValidateNewValue(value);
     }
 
@@ -136,7 +136,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull(nameof(tab), tab);
       if (tab.TabStrip != null && tab.TabStrip != _tabStrip)
-        throw new ArgumentException("The tab is not part of this collection's Tabstrip", "tab");
+        throw new ArgumentException("The tab is not part of this collection's Tabstrip", nameof(tab));
 
       DeselectTab(tab, IndexOf(tab));
     }

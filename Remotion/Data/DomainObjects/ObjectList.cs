@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects
         var message = string.Format(
             "The given data strategy must have a required item type of '{0}' in order to be used with this collection type.",
             typeof(T));
-        throw new ArgumentException(message, "dataStrategy");
+        throw new ArgumentException(message, nameof(dataStrategy));
       }
       return dataStrategy;
     }

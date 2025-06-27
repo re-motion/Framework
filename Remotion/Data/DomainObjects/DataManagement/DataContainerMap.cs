@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (dataContainer == null)
       {
         var message = string.Format("Data container '{0}' is not part of this map.", id);
-        throw new ArgumentException(message, "id");
+        throw new ArgumentException(message, nameof(id));
       }
 
       _transactionEventSink.RaiseDataContainerMapUnregisteringEvent(dataContainer);

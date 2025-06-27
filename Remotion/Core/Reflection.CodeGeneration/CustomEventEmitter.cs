@@ -65,7 +65,7 @@ namespace Remotion.Reflection.CodeGeneration
       set
       {
         if (value == null)
-          throw new ArgumentNullException("value", "Event accessors cannot be set to null.");
+          throw new ArgumentNullException(nameof(value), "Event accessors cannot be set to null.");
 
         if (_addMethod != null)
           throw new InvalidOperationException("Add methods can only be assigned once.");
@@ -87,7 +87,7 @@ namespace Remotion.Reflection.CodeGeneration
       set
       {
         if (value == null)
-          throw new ArgumentNullException("value", "Event accessors cannot be set to null.");
+          throw new ArgumentNullException(nameof(value), "Event accessors cannot be set to null.");
 
         if (_removeMethod != null)
           throw new InvalidOperationException("Remove methods can only be assigned once.");

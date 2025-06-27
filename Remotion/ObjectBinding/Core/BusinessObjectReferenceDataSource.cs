@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding
       set
       {
         if (value == this)
-          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", "value");
+          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", nameof(value));
         if (_dataSource != null)
           _dataSource.Unregister(this);
         _dataSource = value;

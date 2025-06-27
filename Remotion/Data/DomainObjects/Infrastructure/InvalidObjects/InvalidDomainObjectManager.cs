@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
         }
         catch (ArgumentException ex)
         {
-          throw new ArgumentException("The sequence contains multiple different objects with the same ID.", "invalidObjects", ex);
+          throw new ArgumentException("The sequence contains multiple different objects with the same ID.", nameof(invalidObjects), ex);
         }
       }
     }
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
       ArgumentUtility.CheckNotNull(nameof(id), id);
 
       if (!_invalidObjects.TryGetValue(id, out var invalidDomainObject))
-        throw new ArgumentException(String.Format("The object '{0}' has not been marked invalid.", id), "id");
+        throw new ArgumentException(String.Format("The object '{0}' has not been marked invalid.", id), nameof(id));
       else
         return invalidDomainObject;
     }

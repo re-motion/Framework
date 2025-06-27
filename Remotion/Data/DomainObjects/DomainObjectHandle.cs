@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects
       if (objectID.ClassDefinition.ClassType != typeof(T))
       {
         var message = string.Format("The class type of ObjectID '{0}' doesn't match the handle type '{1}'.", objectID, typeof(T));
-        throw new ArgumentException(message, "objectID");
+        throw new ArgumentException(message, nameof(objectID));
       }
 
       _objectID = objectID;

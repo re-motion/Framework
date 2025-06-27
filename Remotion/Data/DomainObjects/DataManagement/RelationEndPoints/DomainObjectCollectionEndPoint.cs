@@ -82,10 +82,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull(nameof(dataManagerFactory), dataManagerFactory);
 
       if (id.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException("End point ID must refer to an end point with cardinality 'Many'.", "id");
+        throw new ArgumentException("End point ID must refer to an end point with cardinality 'Many'.", nameof(id));
 
       if (id.Definition.IsAnonymous)
-        throw new ArgumentException("End point ID must not refer to an anonymous end point.", "id");
+        throw new ArgumentException("End point ID must not refer to an anonymous end point.", nameof(id));
 
       Assertion.IsTrue(ID.Definition.IsVirtual);
 
@@ -362,7 +362,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         var message = string.Format(
             "Cannot set this end point's value from '{0}'; the end points do not have the same end point definition.",
             source.ID);
-        throw new ArgumentException(message, "source");
+        throw new ArgumentException(message, nameof(source));
       }
 
       _loadState.SetDataFromSubTransaction(this, sourceCollectionEndPoint._loadState);

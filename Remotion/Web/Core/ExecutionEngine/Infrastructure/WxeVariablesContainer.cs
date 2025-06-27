@@ -43,7 +43,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       ArgumentUtility.CheckNotNull(nameof(type), type);
       if (!typeof(WxeFunction).IsAssignableFrom(type))
-        throw new ArgumentException("Type " + type.GetFullNameSafe() + " is not derived from WxeFunction.", "type");
+        throw new ArgumentException("Type " + type.GetFullNameSafe() + " is not derived from WxeFunction.", nameof(type));
 
       return s_parameterDeclarations.GetOrAdd(type, s_getParameterDeclarationsUncheckedFunc);
     }

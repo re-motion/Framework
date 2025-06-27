@@ -584,7 +584,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       catch (InvalidCastException e)
       {
-        throw new ArgumentException("Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.", "value", e);
+        throw new ArgumentException("Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.", nameof(value), e);
       }
 
       if (ActualValueType == BocDateTimeValueType.DateTime
@@ -598,7 +598,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         {
           throw new ArgumentException(
               "Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.",
-              "value",
+              nameof(value),
               e);
         }
       }
@@ -610,7 +610,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<DateTime?>("value", value); }
+      set { Value = ArgumentUtility.CheckType<DateTime?>(nameof(value), value); }
     }
 
     /// <summary>Gets a flag indicating whether the <see cref="BocDateTimeValue"/> contains a value. </summary>

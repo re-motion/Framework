@@ -164,7 +164,7 @@ public class WebTab: IWebTab, IControlStateManager
         if (tabs != null)
         {
           if (tabs.Find(value) != null)
-            throw new ArgumentException(string.Format("The collection already contains a tab with ItemID '{0}'.", value), "value");
+            throw new ArgumentException(string.Format("The collection already contains a tab with ItemID '{0}'.", value), nameof(value));
         }
       }
       _itemID = value;
@@ -189,7 +189,7 @@ public class WebTab: IWebTab, IControlStateManager
     get { return _text; }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty("value", value.GetValue());
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value.GetValue());
       _text = value;
     }
   }

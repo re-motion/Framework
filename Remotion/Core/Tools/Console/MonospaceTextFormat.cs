@@ -80,7 +80,7 @@ public sealed class MonospaceTextFormat
   public static void SplitTextOnSeparator (string text, out string beforeSplit, out string? afterSplit, int splitAt, char[] separators)
   {
     if (text == null) throw new ArgumentNullException(nameof(text));
-    if (splitAt < 0) throw new ArgumentOutOfRangeException("splitAt", splitAt, "Argument must not be less than zero.");
+    if (splitAt < 0) throw new ArgumentOutOfRangeException(nameof(splitAt), splitAt, "Argument must not be less than zero.");
 
     if (text.Length <= splitAt)
     {

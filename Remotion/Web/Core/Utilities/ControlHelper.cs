@@ -124,10 +124,10 @@ namespace Remotion.Web.Utilities
     {
       TextBox? smallerField = smallerValidator.NamingContainer.FindControl(smallerValidator.ControlToValidate) as TextBox;
       if (smallerField == null)
-        throw new ArgumentException("ControlToValidate must be TextBox", "smallerValidator");
+        throw new ArgumentException("ControlToValidate must be TextBox", nameof(smallerValidator));
       TextBox? largerField = largerValidator.NamingContainer.FindControl(largerValidator.ControlToValidate) as TextBox;
       if (largerField == null)
-        throw new ArgumentException("ControlToValidate must be TextBox", "largerValidator");
+        throw new ArgumentException("ControlToValidate must be TextBox", nameof(largerValidator));
 
       if (smallerField.Text.Trim() == string.Empty || largerField.Text.Trim() == string.Empty)
         return true;

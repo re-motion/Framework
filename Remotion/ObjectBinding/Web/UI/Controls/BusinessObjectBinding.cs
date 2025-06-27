@@ -164,7 +164,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (_control.ID != null && _control.ID == value && _control is IBusinessObjectReferenceDataSource)
-          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", "value");
+          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", nameof(value));
         if (_dataSourceControl != value)
         {
           _dataSourceControl = value;
@@ -230,7 +230,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             throw new ArgumentException(
                 string.Format("{0} '{1}' does not support the  business object property '{2}'.",
                     _control.GetType().Name, _control.ID, value.Identifier),
-                "value");
+                nameof(value));
           }
         }
 

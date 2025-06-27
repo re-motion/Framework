@@ -44,7 +44,7 @@ public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
     ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
 
     var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
-        "storageProviderDefinition",
+        nameof(storageProviderDefinition),
         storageProviderDefinition);
     return new UnitTestStorageProviderStub();
   }
@@ -55,7 +55,7 @@ public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
     ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
 
     var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
-        "storageProviderDefinition",
+        nameof(storageProviderDefinition),
         storageProviderDefinition);
     return new UnitTestStorageProviderStub();
   }

@@ -150,7 +150,7 @@ namespace Remotion.Utilities
       if (expression is NewExpression)
         return GetConstructorInfoFromNewExpression(expression);
 
-      throw new ArgumentException("Must be a MemberExpression, MethodCallExpression or NewExpression.", "expression");
+      throw new ArgumentException("Must be a MemberExpression, MethodCallExpression or NewExpression.", nameof(expression));
     }
 
     private static T GetTypedMemberInfoFromMemberExpression<T> (Expression expression, string memberType)
@@ -158,13 +158,13 @@ namespace Remotion.Utilities
     {
       var memberExpression = expression as MemberExpression;
       if (memberExpression == null)
-        throw new ArgumentException("Must be a MemberExpression.", "expression");
+        throw new ArgumentException("Must be a MemberExpression.", nameof(expression));
 
       var member = memberExpression.Member as T;
       if (member == null)
       {
         var message = string.Format("Must hold a {0} access expression.", memberType);
-        throw new ArgumentException(message, "expression");
+        throw new ArgumentException(message, nameof(expression));
       }
 
       return member;
@@ -185,7 +185,7 @@ namespace Remotion.Utilities
     {
       var newExpression = expression as NewExpression;
       if (newExpression == null)
-        throw new ArgumentException("Must be a NewExpression.", "expression");
+        throw new ArgumentException("Must be a NewExpression.", nameof(expression));
 
       // TODO RM-7773: newExpression.Constructor possibly being null must be handled.
       return newExpression.Constructor!;
@@ -195,7 +195,7 @@ namespace Remotion.Utilities
     {
       var methodCallExpression = expression as MethodCallExpression;
       if (methodCallExpression == null)
-        throw new ArgumentException("Must be a MethodCallExpression.", "expression");
+        throw new ArgumentException("Must be a MethodCallExpression.", nameof(expression));
 
       // For virtual methods the MethodCallExpression containts the root definition.
       return methodCallExpression.Method;
@@ -205,7 +205,7 @@ namespace Remotion.Utilities
     {
       var methodInfo = GetMethodInfoFromMethodCallExpression(expression);
       if (!methodInfo.IsGenericMethod)
-        throw new ArgumentException("Must hold a generic method access expression.", "expression");
+        throw new ArgumentException("Must hold a generic method access expression.", nameof(expression));
 
       return methodInfo.GetGenericMethodDefinition();
     }

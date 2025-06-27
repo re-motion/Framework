@@ -44,7 +44,7 @@ namespace Remotion.Reflection
       {
         throw new ArgumentException(
             String.Format("The property does not define any accessors.\r\n  Type: {0}, property: {1}", declaringType, propertyInfo.Name),
-            "propertyInfo");
+            nameof(propertyInfo));
       }
 
       var originalDeclaringType = GetOriginalDeclaringType(propertyInfo);
@@ -96,7 +96,7 @@ namespace Remotion.Reflection
       {
         throw new ArgumentException(
             String.Format("The property does not define any accessors.\r\n  Type: {0}, property: {1}", propertyInfo.DeclaringType, propertyInfo.Name),
-            "propertyInfo");
+            nameof(propertyInfo));
       }
 
       return accessors[0].GetOriginalDeclaringType();

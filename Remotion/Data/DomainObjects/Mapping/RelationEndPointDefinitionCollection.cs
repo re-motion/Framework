@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull(nameof(value), value);
 
       if (value.IsAnonymous)
-        throw new ArgumentException("Anonymous end points cannot be added to this collection.", "value");
+        throw new ArgumentException("Anonymous end points cannot be added to this collection.", nameof(value));
 
       int position = BaseAdd(value.PropertyName, value);
 

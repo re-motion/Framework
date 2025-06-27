@@ -65,7 +65,7 @@ namespace Remotion.Security.Metadata
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(ISecurableObject));
       if (type.IsValueType)
-        throw new ArgumentException("Value types are not supported.", "type");
+        throw new ArgumentException("Value types are not supported.", nameof(type));
       ArgumentUtility.CheckNotNull(nameof(cache), cache);
 
       SecurableClassInfo? info = cache.GetSecurableClassInfo(type);

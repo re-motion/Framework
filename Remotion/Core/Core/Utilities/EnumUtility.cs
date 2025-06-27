@@ -88,7 +88,7 @@ namespace Remotion.Utilities
       if (!enumType.IsEnum)
       {
         throw new ArgumentException(
-            string.Format("Argument was of type '{0}' but only enum-types are supported with this overload.", enumType.GetFullNameSafe()), "enumValue");
+            string.Format("Argument was of type '{0}' but only enum-types are supported with this overload.", enumType.GetFullNameSafe()), nameof(enumValue));
       }
 
       var enumMetadata = GetEnumMetadata(enumType);
@@ -116,7 +116,7 @@ namespace Remotion.Utilities
       if (!enumType.IsEnum)
       {
         throw new ArgumentException(
-            string.Format("Argument was a type representing '{0}' but only enum-types are supported.", enumType.GetFullNameSafe()), "enumType");
+            string.Format("Argument was a type representing '{0}' but only enum-types are supported.", enumType.GetFullNameSafe()), nameof(enumType));
       }
 
       var enumMetadata = GetEnumMetadata(enumType);
@@ -131,7 +131,7 @@ namespace Remotion.Utilities
                   "Object must be the same type as the enum. The type passed in was '{0}'; the enum type was '{1}'.",
                   enumValueType,
                   enumType),
-              "value");
+              nameof(value));
         }
       }
       else
@@ -143,7 +143,7 @@ namespace Remotion.Utilities
                   "Enum underlying type and the object must be same type. The type passed in was '{0}'; the enum underlying type was '{1}'.",
                   enumValueType,
                   enumMetadata.UnderlyingType),
-              "value");
+              nameof(value));
         }
       }
 
@@ -163,7 +163,7 @@ namespace Remotion.Utilities
       if (!enumType.IsEnum)
       {
         throw new ArgumentException(
-            string.Format("Argument was a type representing '{0}' but only enum-types are supported.", enumType.GetFullNameSafe()), "enumType");
+            string.Format("Argument was a type representing '{0}' but only enum-types are supported.", enumType.GetFullNameSafe()), nameof(enumType));
       }
 
       return GetEnumMetadata(enumType).IsFlagsEnum;

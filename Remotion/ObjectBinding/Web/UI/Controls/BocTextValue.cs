@@ -631,7 +631,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return NumberStyles.Number | NumberStyles.AllowExponent;
 
         default:
-          throw new ArgumentOutOfRangeException("valueType", valueType, "Only numeric value types are supported.");
+          throw new ArgumentOutOfRangeException(nameof(valueType), valueType, "Only numeric value types are supported.");
       }
     }
 

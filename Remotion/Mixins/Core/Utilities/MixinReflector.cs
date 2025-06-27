@@ -75,7 +75,7 @@ namespace Remotion.Mixins.Utilities
       if (castTarget == null)
       {
         string message = string.Format("The given object of type {0} is not a mixin target.", mixinTargetInstance.GetType().GetFullNameSafe());
-        throw new ArgumentException(message, "mixinTargetInstance");
+        throw new ArgumentException(message, nameof(mixinTargetInstance));
       }
 
       Assertion.IsNotNull(castTarget.FirstNextCallProxy);

@@ -138,7 +138,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
       ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
       ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
@@ -239,7 +239,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 

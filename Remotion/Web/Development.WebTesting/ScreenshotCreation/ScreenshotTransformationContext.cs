@@ -103,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         ResolvedScreenshotElement? resolvedElement = null)
     {
       if (target.HasValue && target.Value == null)
-        throw new ArgumentNullException("target", "Value of optional parameter cannot be null.");
+        throw new ArgumentNullException(nameof(target), "Value of optional parameter cannot be null.");
 
       return new ScreenshotTransformationContext<T>(
           _manipulation,

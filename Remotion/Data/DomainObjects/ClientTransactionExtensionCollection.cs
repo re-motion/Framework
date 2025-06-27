@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> loadedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNullOrEmpty("loadedDomainObjects", loadedDomainObjects);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(loadedDomainObjects), loadedDomainObjects);
 
       for (int i = 0; i < Count; i++)
         this[i].ObjectsLoaded(clientTransaction, loadedDomainObjects);

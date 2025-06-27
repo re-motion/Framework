@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       {
         throw new ArgumentException(
             "Only virtual object-valued relation end-points can be handled by this registration agent.",
-            "relationEndPointDefinition");
+            nameof(relationEndPointDefinition));
       }
 
       var groupedRelatedObjects = CorrelateRelatedObjects(relatedObjects, relationEndPointDefinition);

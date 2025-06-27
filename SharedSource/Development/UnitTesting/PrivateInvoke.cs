@@ -124,7 +124,7 @@ namespace Remotion.Development.UnitTesting
     {
       ArgumentUtility.CheckNotNull(nameof(target), target);
       ArgumentUtility.CheckNotNull(nameof(definingType), definingType);
-      ArgumentUtility.CheckType("target", target, definingType);
+      ArgumentUtility.CheckType(nameof(target), target, definingType);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
 
       return InvokeMethodInternal(target, definingType, BindingFlags.Instance | BindingFlags.NonPublic, methodName, arguments);
@@ -251,7 +251,7 @@ namespace Remotion.Development.UnitTesting
       if (property == null)
       {
         throw new ArgumentException("No property '" + propertyName + "' found on type '" + type.FullName + "' with binding flags '" + bindingFlags + "'.",
-                                     "propertyName");
+                                     nameof(propertyName));
       }
 
       try
@@ -306,7 +306,7 @@ namespace Remotion.Development.UnitTesting
       if (property == null)
       {
         throw new ArgumentException("No property '" + propertyName + "' found on type '" + type.FullName + "' with binding flags '" + bindingFlags + "'.",
-            "propertyName");
+            nameof(propertyName));
       }
       try
       {
@@ -361,7 +361,7 @@ namespace Remotion.Development.UnitTesting
       if (field == null)
       {
         throw new ArgumentException("No field '" + fieldName + "' found on type '" + type.FullName + "' with binding flags '" + bindingFlags + "'.",
-                                     "fieldName");
+                                     nameof(fieldName));
       }
 
       try

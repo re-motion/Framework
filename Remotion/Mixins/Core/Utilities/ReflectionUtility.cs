@@ -98,7 +98,7 @@ namespace Remotion.Mixins.Utilities
           "The given member {0}.{1} is neither property, method, nor event.",
           member.DeclaringType!.GetFullNameSafe(),
           member.Name);
-      throw new ArgumentException(message, "member");
+      throw new ArgumentException(message, nameof(member));
     }
 
     public static IEnumerable<MethodInfo> RecursiveGetAllMethods (Type type, BindingFlags bindingFlags)

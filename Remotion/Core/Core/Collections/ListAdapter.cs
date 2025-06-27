@@ -120,13 +120,13 @@ namespace Remotion.Collections
       ArgumentUtility.CheckNotNullOrEmpty(nameof(array), array);
 
       if (arrayIndex < 0)
-        throw new ArgumentOutOfRangeException("arrayIndex", "Index must not be negative.");
+        throw new ArgumentOutOfRangeException(nameof(arrayIndex), "Index must not be negative.");
       if (arrayIndex >= array.Length)
-        throw new ArgumentException("Index must be less than the length of the array.", "arrayIndex");
+        throw new ArgumentException("Index must be less than the length of the array.", nameof(arrayIndex));
       if (arrayIndex + Count > array.Length)
       {
         throw new ArgumentException(
-            "There must be enough space to copy all items into the destination array starting at the given index.", "arrayIndex");
+            "There must be enough space to copy all items into the destination array starting at the given index.", nameof(arrayIndex));
       }
 
       for (int i = 0; i < Count; ++i)

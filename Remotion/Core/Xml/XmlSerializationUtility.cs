@@ -120,7 +120,7 @@ namespace Remotion.Xml
             string.Format(
                 "Cannot determine the xml namespace of type '{0}' because no neither an XmlTypeAttribute nor an XmlRootAttribute has been provided.",
                 type.GetFullNameSafe()),
-            "type");
+            nameof(type));
       }
 
       bool hasXmlTypeNamespace = hasXmlType ? (! String.IsNullOrEmpty(xmlType!.Namespace)) : false;
@@ -131,7 +131,7 @@ namespace Remotion.Xml
             string.Format(
                 "Cannot determine the xml namespace of type '{0}' because neither an XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.",
                 type.GetFullNameSafe()),
-            "type");
+            nameof(type));
       }
 
       if (hasXmlRootNamespace)

@@ -380,7 +380,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value == string.Empty)
-          throw new ArgumentException("Value must not be an empty string.", "value");
+          throw new ArgumentException("Value must not be an empty string.", nameof(value));
 
         if (_internalValue == value)
           return;

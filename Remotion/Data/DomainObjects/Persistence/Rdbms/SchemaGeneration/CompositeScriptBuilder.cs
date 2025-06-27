@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
                     "The scriptBuilder sequence contains a CompositeScriptBuilder that references a different RdbmsProviderDefinition ('{0}') than the current CompositeScriptBuilder ('{1}').",
                     compositeScriptBuilder.RdbmsProviderDefinition.Name,
                     _rdbmsProviderDefinition.Name),
-                "scriptBuilders");
+                nameof(scriptBuilders));
           }
           scriptBuilderList.AddRange(compositeScriptBuilder.ScriptBuilders);
         }

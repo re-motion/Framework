@@ -88,7 +88,7 @@ namespace Remotion.ServiceLocation
       _serviceType = serviceType;
       var checkedImplementationInfos =
           implementationInfos.ApplySideEffect(
-              info => CheckImplementationType(serviceType, info.ImplementationType, message => new ArgumentException(message, "implementationInfos")));
+              info => CheckImplementationType(serviceType, info.ImplementationType, message => new ArgumentException(message, nameof(implementationInfos))));
       _implementationInfos = Array.AsReadOnly(checkedImplementationInfos.ToArray());
     }
 

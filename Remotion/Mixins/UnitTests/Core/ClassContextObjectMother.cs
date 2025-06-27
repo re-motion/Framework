@@ -60,7 +60,7 @@ namespace Remotion.Mixins.UnitTests.Core
         else
         {
           string message = string.Format("The mixin type {0} was tried to be added twice.", mixinType.FullName);
-          throw new ArgumentException(message, "mixinTypes");
+          throw new ArgumentException(message, nameof(mixinTypes));
         }
       }
       return mixins.Values;

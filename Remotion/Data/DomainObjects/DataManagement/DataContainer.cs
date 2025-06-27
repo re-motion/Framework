@@ -686,7 +686,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       if (domainObject.ID != null && domainObject.ID != _id)
-        throw new ArgumentException("The given DomainObject has another ID than this DataContainer.", "domainObject");
+        throw new ArgumentException("The given DomainObject has another ID than this DataContainer.", nameof(domainObject));
       if (_domainObject != null && _domainObject != domainObject)
         throw new InvalidOperationException("This DataContainer has already been associated with a DomainObject.");
 
@@ -758,7 +758,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         return value;
 
       var message = string.Format("Property '{0}' does not exist.", propertyDefinition.PropertyName);
-      throw new ArgumentException(message, "propertyDefinition");
+      throw new ArgumentException(message, nameof(propertyDefinition));
     }
 
     private void CheckNotDiscarded ()
@@ -804,7 +804,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         var message = string.Format(
             "Cannot set this data container's property values from '{0}'; the data containers do not have the same class definition.",
             source.ID);
-        throw new ArgumentException(message, "source");
+        throw new ArgumentException(message, nameof(source));
       }
     }
   }

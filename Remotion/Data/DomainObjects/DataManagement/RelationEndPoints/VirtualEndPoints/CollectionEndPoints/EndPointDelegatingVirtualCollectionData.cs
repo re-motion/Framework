@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
 
       if (endPointID.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException("Associated end-point must be a CollectionEndPoint.", "endPointID");
+        throw new ArgumentException("Associated end-point must be a CollectionEndPoint.", nameof(endPointID));
 
       _endPointID = endPointID;
       _requiredItemType = requiredItemType;
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       CheckItemType(domainObject, "domainObject");
       if (ContainsObjectID(domainObject.ID))
-        throw new ArgumentException(string.Format("The collection already contains an object with ID '{0}'.", domainObject.ID), "domainObject");
+        throw new ArgumentException(string.Format("The collection already contains an object with ID '{0}'.", domainObject.ID), nameof(domainObject));
       CheckClientTransaction(domainObject, "Cannot add DomainObject '{0}' into collection of property '{1}' of DomainObject '{2}'.");
       var associatedEndPoint = GetAssociatedEndPoint();
       var associatedDomainObjectReference = associatedEndPoint.GetDomainObjectReference();
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         var message = string.Format(
             "The object to be removed has the same ID ('{0}') as an object in this collection, but is a different object reference.",
             domainObject.ID);
-        throw new ArgumentException(message, "domainObject");
+        throw new ArgumentException(message, nameof(domainObject));
       }
       CheckClientTransaction(domainObject, "Cannot remove DomainObject '{0}' from collection of property '{1}' of DomainObject '{2}'.");
       var associatedEndPoint = GetAssociatedEndPoint();

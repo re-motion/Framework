@@ -82,10 +82,10 @@ namespace Remotion.Validation.Validators
       ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       if (maxIntegerPlaces < 1)
-        throw new ArgumentOutOfRangeException("maxIntegerPlaces", maxIntegerPlaces, "Value must not be zero or negative.");
+        throw new ArgumentOutOfRangeException(nameof(maxIntegerPlaces), maxIntegerPlaces, "Value must not be zero or negative.");
 
       if (maxDecimalPlaces < 0)
-        throw new ArgumentOutOfRangeException("maxDecimalPlaces", maxDecimalPlaces, "Value must not be negative.");
+        throw new ArgumentOutOfRangeException(nameof(maxDecimalPlaces), maxDecimalPlaces, "Value must not be negative.");
 
       if ((maxIntegerPlaces + maxDecimalPlaces) > c_systemDecimalMaxPrecision)
       {

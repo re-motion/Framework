@@ -41,10 +41,10 @@ namespace Remotion.Validation.Validators
       ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       if (min <= 0)
-        throw new ArgumentOutOfRangeException("min", "Value must be greater than zero.");
+        throw new ArgumentOutOfRangeException(nameof(min), "Value must be greater than zero.");
 
       if (max <= min)
-        throw new ArgumentOutOfRangeException("max", "Max must be greater than min.");
+        throw new ArgumentOutOfRangeException(nameof(max), "Max must be greater than min.");
 
       Max = max;
       Min = min;

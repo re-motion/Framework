@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
       if (property == null)
         return null;
       if (!property.IsList)
-        throw new ArgumentException(string.Format("BusinessObjectProperty '{0}' is not a list property.", property.Identifier), "property");
+        throw new ArgumentException(string.Format("BusinessObjectProperty '{0}' is not a list property.", property.Identifier), nameof(property));
       return property.ListInfo.CreateList;
     }
 

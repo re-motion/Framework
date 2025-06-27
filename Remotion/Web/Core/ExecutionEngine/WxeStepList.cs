@@ -53,9 +53,9 @@ namespace Remotion.Web.ExecutionEngine
       if (this.IsExecutionStarted)
         throw new InvalidOperationException("Cannot encapsulate executing list.");
       if (innerList.Count > 0)
-        throw new ArgumentException("List must be empty.", "innerList");
+        throw new ArgumentException("List must be empty.", nameof(innerList));
       if (innerList.IsExecutionStarted)
-        throw new ArgumentException("Cannot encapsulate into executing list.", "innerList");
+        throw new ArgumentException("Cannot encapsulate into executing list.", nameof(innerList));
 
       innerList._steps = this._steps;
       foreach (WxeStep step in innerList._steps)
@@ -121,7 +121,7 @@ namespace Remotion.Web.ExecutionEngine
     public void Insert (int index, WxeStep step)
     {
       if (_executingStep >= index)
-        throw new ArgumentException("Cannot insert step only after the last executed step.", "index");
+        throw new ArgumentException("Cannot insert step only after the last executed step.", nameof(index));
       ArgumentUtility.CheckNotNull(nameof(step), step);
 
       _steps.Insert(index, step);

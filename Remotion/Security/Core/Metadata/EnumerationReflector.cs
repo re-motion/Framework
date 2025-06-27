@@ -44,7 +44,7 @@ namespace Remotion.Security.Metadata
     {
       ArgumentUtility.CheckNotNull(nameof(type), type);
       if (!type.IsEnum)
-        throw new ArgumentException(string.Format("The type '{0}' is not an enumerated type.", type.GetFullNameSafe()), "type");
+        throw new ArgumentException(string.Format("The type '{0}' is not an enumerated type.", type.GetFullNameSafe()), nameof(type));
       ArgumentUtility.CheckNotNull(nameof(cache), cache);
 
       IList values = Enum.GetValues(type);

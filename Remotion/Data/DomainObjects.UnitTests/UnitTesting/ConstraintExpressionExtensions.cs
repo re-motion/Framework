@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.UnitTesting
 
       var memberExpression = propertyExpression.Body as MemberExpression;
       if (memberExpression == null)
-        throw new ArgumentException("Expression must be a simple property access.", "propertyExpression");
+        throw new ArgumentException("Expression must be a simple property access.", nameof(propertyExpression));
 
       return constraintExpression.Property(memberExpression.Member.Name);
     }

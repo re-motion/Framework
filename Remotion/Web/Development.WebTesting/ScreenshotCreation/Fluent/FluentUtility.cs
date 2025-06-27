@@ -64,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     {
       ArgumentUtility.CheckNotNull(nameof(fluentTarget), fluentTarget);
       if (target.HasValue && target.Value == null)
-        throw new ArgumentNullException("target", "Value of optional parameter cannot be null.");
+        throw new ArgumentNullException(nameof(target), "Value of optional parameter cannot be null.");
 
       return new FluentScreenshotElement<T>(
           Assertion.IsNotNull(target.GetValueOrDefault(fluentTarget.Target)),

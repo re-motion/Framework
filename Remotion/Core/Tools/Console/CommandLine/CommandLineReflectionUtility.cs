@@ -34,7 +34,7 @@ namespace Remotion.Tools.Console.CommandLine
       else if (fieldOrProperty is PropertyInfo)
         ((PropertyInfo)fieldOrProperty).SetValue(obj, value, new object[0]);
       else
-        throw new ArgumentException(String.Format("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType().GetFullNameSafe()), "fieldOrProperty");
+        throw new ArgumentException(String.Format("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType().GetFullNameSafe()), nameof(fieldOrProperty));
     }
 
     public static Type GetFieldOrPropertyType (MemberInfo fieldOrProperty)
@@ -44,7 +44,7 @@ namespace Remotion.Tools.Console.CommandLine
       else if (fieldOrProperty is PropertyInfo)
         return ((PropertyInfo)fieldOrProperty).PropertyType;
       else
-        throw new ArgumentException("Argument must be FieldInfo or PropertyInfo.", "fieldOrProperty");
+        throw new ArgumentException("Argument must be FieldInfo or PropertyInfo.", nameof(fieldOrProperty));
     }
   }
 }

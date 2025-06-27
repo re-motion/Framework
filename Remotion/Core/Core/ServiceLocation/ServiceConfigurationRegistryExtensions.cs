@@ -130,7 +130,7 @@ namespace Remotion.ServiceLocation
       }
       catch (ArgumentException ex)
       {
-        throw new ArgumentException("Implementation type must implement service type.", "concreteImplementationType", ex);
+        throw new ArgumentException("Implementation type must implement service type.", nameof(concreteImplementationType), ex);
       }
 
       serviceConfigurationRegistry.Register(serviceConfigurationEntry);

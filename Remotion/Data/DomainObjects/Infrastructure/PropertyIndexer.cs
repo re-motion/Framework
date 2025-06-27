@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get
       {
         // Overloaded member checks the arguments
-        ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
+        ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(propertyName), propertyName);
 
         return this[propertyName, ClientTransaction];
       }
@@ -89,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       {
         // Overloaded member checks the arguments
         ArgumentUtility.DebugCheckNotNull(nameof(domainObjectType), domainObjectType);
-        ArgumentUtility.DebugCheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+        ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
         return this[domainObjectType, shortPropertyName, ClientTransaction];
       }
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get
       {
         // PropertyAccessorDataCache checks the argument
-        ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
+        ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(propertyName), propertyName);
         // GetPropertyAccessor checks the argument
         ArgumentUtility.DebugCheckNotNull(nameof(transaction), transaction);
 
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         // PropertyAccessorDataCache checks the argument
         ArgumentUtility.DebugCheckNotNull(nameof(domainObjectType), domainObjectType);
         // PropertyAccessorDataCache checks the argument
-        ArgumentUtility.DebugCheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+        ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
         // GetPropertyAccessor checks the argument
         ArgumentUtility.DebugCheckNotNull(nameof(transaction), transaction);
 
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
             "The domain object type '{0}' does not have or inherit a mapping property with the short name '{1}'.",
             typeToStartSearch.GetFullNameSafe(),
             shortPropertyName);
-        throw new ArgumentException(message, "shortPropertyName");
+        throw new ArgumentException(message, nameof(shortPropertyName));
       }
 
       return GetPropertyAccessor(ClientTransaction, propertyAccessorData);

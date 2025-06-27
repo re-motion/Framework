@@ -31,7 +31,7 @@ namespace Remotion.Mixins.Definitions
     public DependencyDefinitionBase (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
       ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
-      ArgumentUtility.CheckType("aggregator", aggregator, GetType());
+      ArgumentUtility.CheckType(nameof(aggregator), aggregator, GetType());
 
       _requirement = requirement;
       _aggregator = aggregator;

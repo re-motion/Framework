@@ -80,7 +80,7 @@ namespace Remotion.Security
                 "Enumerated type '{0}' cannot be wrapped. Only enumerated types without the {1} can be wrapped.",
                 type.GetFullNameSafe(),
                 typeof(FlagsAttribute).GetFullNameSafe()),
-            "enumValue");
+            nameof(enumValue));
       }
 
       return Get(BuildEnumName(enumValue.ToString(), TypeUtility.GetPartialAssemblyQualifiedName(enumValue.GetType())));

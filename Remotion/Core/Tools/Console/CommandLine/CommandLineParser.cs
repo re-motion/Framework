@@ -53,7 +53,7 @@ public class CommandLineParser
     }
     set
     {
-      if (char.IsWhiteSpace(value))  throw new ArgumentOutOfRangeException("value", value, "Whitespace is not supported as separator.");
+      if (char.IsWhiteSpace(value))  throw new ArgumentOutOfRangeException(nameof(value), value, "Whitespace is not supported as separator.");
       _separator = value;
     }
   }

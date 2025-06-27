@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
                   "Item {0} is of type '{1}', but the unioned entities must either be a TableDefinitions or UnionViewDefinitions.",
                   i,
                   unionedEntity.GetType()),
-              "unionedEntities");
+              nameof(unionedEntities));
         }
       }
 

@@ -45,7 +45,7 @@ namespace Remotion.Mixins.Definitions
         if (value == null || value is MethodDefinition)
           _base = (MethodDefinition?)value;
         else
-          throw new ArgumentException("Base must be MethodDefinition or null.", "value");
+          throw new ArgumentException("Base must be MethodDefinition or null.", nameof(value));
       }
     }
 

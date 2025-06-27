@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       ArgumentUtility.CheckNotNull(nameof(dataManagerFactory), dataManagerFactory);
 
       if (!ID.Definition.IsVirtual)
-        throw new ArgumentException("End point ID must refer to a virtual end point.", "id");
+        throw new ArgumentException("End point ID must refer to a virtual end point.", nameof(id));
 
       _lazyLoader = lazyLoader;
       _endPointProvider = endPointProvider;

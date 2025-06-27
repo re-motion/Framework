@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       {
         string message = string.Format("Object '{0}' cannot be retrieved, it hasn't been loaded yet. Load it first, then retrieve it for editing.",
             loadedObjectID);
-        throw new ArgumentException(message, "loadedObjectID");
+        throw new ArgumentException(message, nameof(loadedObjectID));
       }
       return _transportTransaction.GetObject(loadedObjectID, false);
     }

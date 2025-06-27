@@ -409,7 +409,7 @@ namespace Remotion.Web.UI.Controls
         get
         {
           if (index < 0 || index >= InnerList.Count)
-            throw new ArgumentOutOfRangeException("index");
+            throw new ArgumentOutOfRangeException(nameof(index));
           return (FormGridRow)InnerList[index]!;
         }
       }
@@ -615,7 +615,7 @@ namespace Remotion.Web.UI.Controls
         {
           string? tableID = _formGrid.Table.ID;
           throw new ArgumentOutOfRangeException(
-              "rowIndex",
+              nameof(rowIndex),
               rowIndex,
               string.Format(
                   "Error while formatting HtmlTable '{0}': The rowIndex exceeds the number of rows in the row-group being formatted. Rows in the row-group: {1}",
@@ -629,7 +629,7 @@ namespace Remotion.Web.UI.Controls
           string? tableID = _formGrid.Table.ID;
           int htmlRowIndex = _formGrid.Table.Controls.IndexOf(_htmlTableRows[rowIndex]);
           throw new ArgumentOutOfRangeException(
-              "cellIndex",
+              nameof(cellIndex),
               cellIndex,
               string.Format("Error while formatting HtmlTable '{0}', row {1}: The row has no cell at index {2}.", tableID, htmlRowIndex, cellIndex));
         }
@@ -925,7 +925,7 @@ namespace Remotion.Web.UI.Controls
         get
         {
           if (index < 0 || index >= InnerList.Count)
-            throw new ArgumentOutOfRangeException("index");
+            throw new ArgumentOutOfRangeException(nameof(index));
           return (HtmlTableRow)InnerList[index]!;
         }
       }
@@ -3140,7 +3140,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull(nameof(table), table);
       if (Page != null && table.Page == null)
-        throw new ArgumentException("The HtmlTable passed as FormGrid is not part of this page.", "table");
+        throw new ArgumentException("The HtmlTable passed as FormGrid is not part of this page.", nameof(table));
 
       return _formGrids.ContainsKey(table.UniqueID);
     }
@@ -3157,7 +3157,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull(nameof(table), table);
 
       if (IsFormGridRegistered(table))
-        throw new ArgumentException("The HtmlTable passed as FormGrid is already registered with this FormGridManager.", "table");
+        throw new ArgumentException("The HtmlTable passed as FormGrid is already registered with this FormGridManager.", nameof(table));
 
       if (IsParentControl(table))
       {
@@ -3183,7 +3183,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull(nameof(table), table);
 
       if (!IsFormGridRegistered(table))
-        throw new ArgumentException("The HtmlTable passed as FormGrid is not registered with this FormGridManager.", "table");
+        throw new ArgumentException("The HtmlTable passed as FormGrid is not registered with this FormGridManager.", nameof(table));
 
       _formGrids.Remove(table.UniqueID);
       table.Load -= Table_Load;
@@ -3203,7 +3203,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotNull(nameof(table), table);
 
       if (!IsFormGridRegistered(table))
-        throw new ArgumentException("The HtmlTable passed as FormGrid is not registered with this FormGridManager.", "table");
+        throw new ArgumentException("The HtmlTable passed as FormGrid is not registered with this FormGridManager.", nameof(table));
 
       return _formGrids[table.UniqueID];
     }

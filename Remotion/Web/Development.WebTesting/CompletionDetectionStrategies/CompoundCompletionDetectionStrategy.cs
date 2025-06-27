@@ -59,7 +59,7 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
-      var states = ArgumentUtility.CheckNotNullAndType<List<object?>>("state", state!);
+      var states = ArgumentUtility.CheckNotNullAndType<List<object?>>(nameof(state), state!);
       ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       var stragiesWithState = _strategies.Zip(states, (s, ss) => new { Strategy = s, State = ss });

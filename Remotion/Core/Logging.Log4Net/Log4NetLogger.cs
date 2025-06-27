@@ -38,7 +38,7 @@ public class Log4NetLogger : Microsoft.Extensions.Logging.ILogger
         LogLevel.Error => Level.Error,
         LogLevel.Critical => Level.Critical,
         LogLevel.None => Level.Off,
-        _ => throw new ArgumentException(string.Format("LogLevel does not support value {0}.", logLevel), "logLevel")
+        _ => throw new ArgumentException(string.Format("LogLevel does not support value {0}.", logLevel), nameof(logLevel))
     };
   }
 
@@ -81,7 +81,7 @@ public class Log4NetLogger : Microsoft.Extensions.Logging.ILogger
         LogLoggingError(eventID.Value, exceptionObject, message);
 
         throw new ArgumentOutOfRangeException(
-            "eventID", string.Format("An event id of value {0} is not supported. Valid event ids must be within a range of 0 and 65535.", eventID));
+            nameof(eventID), string.Format("An event id of value {0} is not supported. Valid event ids must be within a range of 0 and 65535.", eventID));
       }
 
       loggingEvent.Properties["EventID"] = eventID;

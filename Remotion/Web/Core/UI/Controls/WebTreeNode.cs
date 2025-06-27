@@ -211,7 +211,7 @@ namespace Remotion.Web.UI.Controls
         if (nodes != null)
         {
           if (nodes.Find(value) != null)
-            throw new ArgumentException("The collection already contains a node with ItemID '" + value + "'.", "value");
+            throw new ArgumentException("The collection already contains a node with ItemID '" + value + "'.", nameof(value));
         }
       }
     }

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
         : base(ArgumentUtility.CheckNotNull(nameof(query), query))
     {
       if (query.QueryType != QueryType.CollectionReadOnly)
-        throw new ArgumentException("Only readonly collection queries can be used to load data containers.", "query");
+        throw new ArgumentException("Only readonly collection queries can be used to load data containers.", nameof(query));
     }
 
     public override IEnumerable<TItem> Execute (IQueryManager queryManager)

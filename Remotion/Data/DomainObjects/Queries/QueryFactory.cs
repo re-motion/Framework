@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.Queries
             + "standard query methods on it.",
             queryable.GetType().Name,
             queryable.Provider.GetType().Name);
-        throw new ArgumentException(message, "queryable");
+        throw new ArgumentException(message, nameof(queryable));
       }
 
       var expression = queryable.Expression;

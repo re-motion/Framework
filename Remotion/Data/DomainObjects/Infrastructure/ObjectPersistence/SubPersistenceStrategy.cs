@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
 
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.One)
-        throw new ArgumentException("ResolveObjectRelationData can only be called for virtual object end points.", "relationEndPointID");
+        throw new ArgumentException("ResolveObjectRelationData can only be called for virtual object end points.", nameof(relationEndPointID));
 
       // parentRelatedObject may be null
       var parentRelatedObject = _parentTransactionContext.ResolveRelatedObject(relationEndPointID);
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
 
       if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException("ResolveCollectionRelationData can only be called for CollectionEndPoints.", "relationEndPointID");
+        throw new ArgumentException("ResolveCollectionRelationData can only be called for CollectionEndPoints.", nameof(relationEndPointID));
 
       var parentObjects = _parentTransactionContext.ResolveRelatedObjects(relationEndPointID);
       return parentObjects

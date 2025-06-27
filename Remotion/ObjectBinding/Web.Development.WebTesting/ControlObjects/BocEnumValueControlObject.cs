@@ -201,7 +201,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           return new BocEnumValueRadioButtonBasedControlObjectVariant(this);
       }
 
-      throw new ArgumentException("style argument must be one of Remotion.ObjectBinding.Web.UI.Controls.ListControlType.", "style");
+      throw new ArgumentException("style argument must be one of Remotion.ObjectBinding.Web.UI.Controls.ListControlType.", nameof(style));
     }
 
     /// <summary>

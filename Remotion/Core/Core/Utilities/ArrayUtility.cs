@@ -147,7 +147,7 @@ namespace Remotion.Utilities
     {
       ArgumentUtility.CheckNotNull(nameof(array), array);
       if (num > array.Length)
-        throw new ArgumentOutOfRangeException("num", "Number of items to skip greater than array size.");
+        throw new ArgumentOutOfRangeException(nameof(num), "Number of items to skip greater than array size.");
       T[] result = new T[array.Length - num];
       for (int i = num; i < array.Length; ++i)
         result[i - num] = array[i];

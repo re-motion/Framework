@@ -100,10 +100,10 @@ public class QueryDefinition
     ArgumentUtility.CheckValidEnumValue(nameof(queryType), queryType);
 
     if ((queryType is QueryType.ScalarReadOnly or QueryType.ScalarReadWrite) && collectionType != null)
-      throw new ArgumentException(string.Format("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");
+      throw new ArgumentException(string.Format("The scalar query '{0}' must not specify a collectionType.", queryID), nameof(collectionType));
 
     if ((queryType is QueryType.CustomReadOnly or QueryType.CustomReadWrite) && collectionType != null)
-      throw new ArgumentException(string.Format("The custom query '{0}' must not specify a collectionType.", queryID), "collectionType");
+      throw new ArgumentException(string.Format("The custom query '{0}' must not specify a collectionType.", queryID), nameof(collectionType));
 
     if ((queryType is QueryType.CollectionReadOnly or QueryType.CollectionReadWrite) && collectionType == null)
       collectionType = typeof(DomainObjectCollection);
@@ -113,7 +113,7 @@ public class QueryDefinition
         && !collectionType.IsSubclassOf(typeof(DomainObjectCollection)))
     {
       throw new ArgumentException(string.Format(
-          "The collectionType of query '{0}' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), "collectionType");
+          "The collectionType of query '{0}' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), nameof(collectionType));
     }
 
     _id = queryID;

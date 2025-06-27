@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       _referencedColumns = referencedColumns.ToList().AsReadOnly();
 
       if (_referencingColumns.Count != _referencedColumns.Count)
-        throw new ArgumentException("The referencing and referenced column sets must have the same number of items.", "referencingColumns");
+        throw new ArgumentException("The referencing and referenced column sets must have the same number of items.", nameof(referencingColumns));
     }
 
     public string ConstraintName

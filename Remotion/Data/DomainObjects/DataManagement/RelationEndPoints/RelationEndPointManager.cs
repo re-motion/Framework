@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         if (!endPointID.Definition.IsVirtual)
         {
           var message = string.Format("The given end point ID '{0}' does not denote a virtual end-point.", endPointID);
-          throw new ArgumentException(message, "endPointIDs");
+          throw new ArgumentException(message, nameof(endPointIDs));
         }
 
         var virtualEndPoint = (IVirtualEndPoint?)GetRelationEndPointWithoutLoading(endPointID);
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       CheckNotAnonymous(endPointID, "GetOrCreateVirtualEndPoint", "endPointID");
 
       if (!endPointID.Definition.IsVirtual)
-        throw new ArgumentException("GetOrCreateVirtualEndPoint cannot be called for non-virtual end points.", "endPointID");
+        throw new ArgumentException("GetOrCreateVirtualEndPoint cannot be called for non-virtual end points.", nameof(endPointID));
 
       return (IVirtualEndPoint?)GetRelationEndPointWithoutLoading(endPointID) ?? RegisterVirtualEndPoint(endPointID);
     }

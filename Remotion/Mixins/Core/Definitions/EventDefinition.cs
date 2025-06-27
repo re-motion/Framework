@@ -59,7 +59,7 @@ namespace Remotion.Mixins.Definitions
           RemoveMethod.Base = _base == null ? null : _base.RemoveMethod;
         }
         else
-          throw new ArgumentException("Base must be EventDefinition or null.", "value");
+          throw new ArgumentException("Base must be EventDefinition or null.", nameof(value));
       }
     }
 

@@ -56,7 +56,7 @@ namespace Remotion.Mixins.CrossReferencer
           _overriddenMixinMembers.Add(memberInfo);
           break;
         default:
-          throw new ArgumentOutOfRangeException("type");
+          throw new ArgumentOutOfRangeException(nameof(type));
       }
     }
 

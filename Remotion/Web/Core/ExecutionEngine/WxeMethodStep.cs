@@ -43,7 +43,7 @@ public class WxeMethodStep: WxeStep
           "The delegate's target must be a non-null WxeStepList, but it was '{0}'. When used within a WxeFunction, the delegate should be a method "
           + "of the surrounding WxeFunction, and it must not be a closure.",
           method.Target != null ? method.Target.GetType().ToString() : "null");
-      throw new ArgumentException(message, "method");
+      throw new ArgumentException(message, nameof(method));
     }
     else
       return target;
@@ -52,7 +52,7 @@ public class WxeMethodStep: WxeStep
   private static MethodInfo GetMethodFromDelegate (Delegate method)
   {
     if (method.GetInvocationList().Length != 1)
-      throw new ArgumentException("The delegate must contain a single method.", "method");
+      throw new ArgumentException("The delegate must contain a single method.", nameof(method));
     else
       return method.Method;
   }

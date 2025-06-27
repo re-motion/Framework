@@ -215,7 +215,7 @@ namespace Remotion.Data.DomainObjects.Linq
         QueryType.ScalarReadOnly => QueryFactory.CreateScalarQuery(id, storageProviderDefinition, statement, queryParameters, metadata),
         QueryType.CollectionReadOnly => QueryFactory.CreateCollectionQuery(id, storageProviderDefinition, statement, queryParameters, GetCollectionType(selectedEntityType), metadata),
         QueryType.CustomReadOnly => QueryFactory.CreateCustomQuery(id, storageProviderDefinition, statement, queryParameters, metadata),
-        _ => throw new ArgumentException("The requested query type '{0}' cannot be used with LiNQ. Only read-only query types are supported.", "queryType")
+        _ => throw new ArgumentException("The requested query type '{0}' cannot be used with LiNQ. Only read-only query types are supported.", nameof(queryType))
       };
     }
 

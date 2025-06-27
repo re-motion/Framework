@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     {
       ArgumentUtility.CheckNotNull(nameof(valueRow), valueRow);
       if (sortedIndex < 0)
-        throw new ArgumentOutOfRangeException("sortedIndex", sortedIndex, "Value cannot be negative");
+        throw new ArgumentOutOfRangeException(nameof(sortedIndex), sortedIndex, "Value cannot be negative");
 
       _valueRow = valueRow;
       _sortedIndex = sortedIndex;

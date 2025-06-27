@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       ArgumentUtility.CheckNotNull(nameof(leafTransaction), leafTransaction);
 
       if (leafTransaction.ParentTransaction != _leafTransaction)
-        throw new ArgumentException("The new LeafTransaction must have the previous LeafTransaction as its parent.", "leafTransaction");
+        throw new ArgumentException("The new LeafTransaction must have the previous LeafTransaction as its parent.", nameof(leafTransaction));
 
       _leafTransaction = leafTransaction;
       Assertion.IsTrue(_leafTransaction.RootTransaction == _rootTransaction);
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
 
       if (clientTransaction.RootTransaction != _rootTransaction)
-        throw new ArgumentException("The activated transaction must be from this ClientTransactionHierarchy.", "clientTransaction");
+        throw new ArgumentException("The activated transaction must be from this ClientTransactionHierarchy.", nameof(clientTransaction));
 
       var previousActivatedTransaction = _activeTransaction;
       _activeTransaction = clientTransaction;

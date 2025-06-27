@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
       catch (MappingException ex)
       {
-        throw new ArgumentException(ex.Message, "propertyIdentifier", ex);
+        throw new ArgumentException(ex.Message, nameof(propertyIdentifier), ex);
       }
 
       return new RelationEndPointID(objectID, endPointDefinition);

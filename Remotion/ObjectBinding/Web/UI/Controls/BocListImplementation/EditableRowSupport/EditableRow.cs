@@ -203,7 +203,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       Assertion.IsNotNull(_editControls, "_editControls must not be null.");
 
-      if (columnIndex < 0 || columnIndex >= _editControls.Controls.Count) throw new ArgumentOutOfRangeException("columnIndex");
+      if (columnIndex < 0 || columnIndex >= _editControls.Controls.Count) throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
       return _editControls.Controls[columnIndex].Controls;
     }
@@ -250,7 +250,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       Assertion.IsNotNull(_validatorControls, "_validatorControls must not be null.");
 
-      if (columnIndex < 0 || columnIndex >= _validatorControls.Controls.Count) throw new ArgumentOutOfRangeException("columnIndex");
+      if (columnIndex < 0 || columnIndex >= _validatorControls.Controls.Count) throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
       if (HasEditControl(columnIndex))
         return _validatorControls.Controls[columnIndex].Controls;

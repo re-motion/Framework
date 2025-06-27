@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         throw new ArgumentException(
             "In order for the parent transaction access to work correctly, the parent transaction needs to be read-only. "
             + "Using ClientTransaction.CreateSubTransaction() to create a subtransaction automatically sets the parent transaction read-only.",
-            "parentTransaction");
+            nameof(parentTransaction));
       }
 
       _parentTransaction = parentTransaction;
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.One)
-        throw new ArgumentException("EndPoint ID must denote a virtual relation end-point with cardinality one.", "relationEndPointID");
+        throw new ArgumentException("EndPoint ID must denote a virtual relation end-point with cardinality one.", nameof(relationEndPointID));
 
       var endPoint = (IVirtualObjectEndPoint)_parentTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       return endPoint.GetData();
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     {
       ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException("EndPoint ID must denote a virtual relation end-point with cardinality many.", "relationEndPointID");
+        throw new ArgumentException("EndPoint ID must denote a virtual relation end-point with cardinality many.", nameof(relationEndPointID));
 
       var endPoint = (ICollectionEndPoint<ICollectionEndPointData>)_parentTransaction.DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
       return endPoint.GetData();

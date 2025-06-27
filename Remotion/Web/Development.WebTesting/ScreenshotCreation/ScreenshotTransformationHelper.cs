@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         case CoordinateSystem.Desktop:
           return resolver.ResolveDesktopCoordinates(target, locator);
         default:
-          throw new ArgumentOutOfRangeException("coordinateSystem", coordinateSystem, null);
+          throw new ArgumentOutOfRangeException(nameof(coordinateSystem), coordinateSystem, null);
       }
     }
   }

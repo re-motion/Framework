@@ -309,7 +309,7 @@ namespace Remotion.Data.DomainObjects
       ArgumentUtility.CheckNotNull(nameof(rootTransaction), rootTransaction);
 
       if (rootTransaction.RootTransaction != rootTransaction)
-        throw new ArgumentException("The rootTransaction parameter must be passed a root transaction.", "rootTransaction");
+        throw new ArgumentException("The rootTransaction parameter must be passed a root transaction.", nameof(rootTransaction));
 
       if (_id != null)
         throw new InvalidOperationException("The object cannot be initialized, it already has an ID.");

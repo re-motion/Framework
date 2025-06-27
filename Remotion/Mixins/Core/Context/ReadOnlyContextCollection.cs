@@ -55,7 +55,7 @@ namespace Remotion.Mixins.Context
                 existingValue,
                 value,
                 key);
-            throw new ArgumentException(message, "values");
+            throw new ArgumentException(message, nameof(values));
           }
         }
         else

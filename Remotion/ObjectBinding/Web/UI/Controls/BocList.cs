@@ -837,7 +837,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (columnIndex >= columns.Count)
       {
         throw new ArgumentOutOfRangeException(
-            "eventArgument",
+            nameof(eventArgument),
             eventArgument,
             "Column index was out of the range of valid values. Index must be less than the number of displayed columns.'");
       }
@@ -1066,7 +1066,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected void SetPageIndex (int pageIndex)
     {
       if (pageIndex < 0)
-        throw new ArgumentOutOfRangeException("pageIndex", "The page index must not be less then zero.");
+        throw new ArgumentOutOfRangeException(nameof(pageIndex), "The page index must not be less then zero.");
 
       if (!IsPagingEnabled)
         throw new InvalidOperationException(string.Format("The page index cannot be set on BoocList '{0}' unless paging is enabled.", ID));
@@ -2250,7 +2250,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
               string.Format(
                   "Parameter type '{0}' is not supported. Parameters must implement interface IReadOnlyList<IBusinessObject> or IList.",
                   value.GetType()),
-              "value");
+              nameof(value));
         }
       }
     }
@@ -2389,7 +2389,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           }
 
           if (_selectedViewIndex == null)
-            throw new ArgumentOutOfRangeException("value");
+            throw new ArgumentOutOfRangeException(nameof(value));
         }
 
         if (hasChanged)
@@ -2426,7 +2426,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (value != null
             && (value.Value < 0 || value.Value >= _availableViews.Count))
-          throw new ArgumentOutOfRangeException("value");
+          throw new ArgumentOutOfRangeException(nameof(value));
 
         if ((_editModeController.IsRowEditModeActive || _editModeController.IsListEditModeActive)
             && _isSelectedViewIndexSet
@@ -2528,7 +2528,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       foreach (var rowIndex in selectedRows)
       {
         if (rowIndex < 0)
-          throw new ArgumentException("Negative row-indices are not supported for selection.", "selectedRows");
+          throw new ArgumentException("Negative row-indices are not supported for selection.", nameof(selectedRows));
 
         if (rowIndex >= Value.Count)
         {
@@ -2624,7 +2624,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Value == null)
         return;
       if (index > Value.Count)
-        throw new ArgumentOutOfRangeException("index");
+        throw new ArgumentOutOfRangeException(nameof(index));
 
       RemoveRow(Value[index]);
     }

@@ -160,12 +160,12 @@ public class CommonCollection : ICollection
   public virtual void CopyTo (Array array, int index)
   {
     ArgumentUtility.CheckNotNull(nameof(array), array);
-    if (index < 0) throw new ArgumentOutOfRangeException("index", index, "Index must be greater than or equal to zero.");
-    if (array.Rank != 1) throw new ArgumentException("CopyTo can only operate on one-dimensional arrays.", "array");
+    if (index < 0) throw new ArgumentOutOfRangeException(nameof(index), index, "Index must be greater than or equal to zero.");
+    if (array.Rank != 1) throw new ArgumentException("CopyTo can only operate on one-dimensional arrays.", nameof(array));
     if (Count > 0 && index >= array.Length)
-      throw new ArgumentException("Index cannot be equal to or greater than the length of the array.", "index");
+      throw new ArgumentException("Index cannot be equal to or greater than the length of the array.", nameof(index));
     if ((array.Length - index) < Count)
-      throw new ArgumentException("The number of items in the source collection is greater than the available space from index to the end of the destination array.", "index");
+      throw new ArgumentException("The number of items in the source collection is greater than the available space from index to the end of the destination array.", nameof(index));
 
     for (int i = 0; i < Count; i++)
       array.SetValue(this.BaseGetObject(i), index + i);

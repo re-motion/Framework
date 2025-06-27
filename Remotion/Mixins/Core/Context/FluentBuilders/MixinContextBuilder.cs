@@ -131,7 +131,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
       if (_dependencies.Contains(requiredMixin))
       {
         string message = string.Format("The mixin {0} already has a dependency on type {1}.", MixinType.GetFullNameSafe(), requiredMixin.GetFullNameSafe());
-        throw new ArgumentException(message, "requiredMixin");
+        throw new ArgumentException(message, nameof(requiredMixin));
       }
       _dependencies.Add(requiredMixin);
       return this;

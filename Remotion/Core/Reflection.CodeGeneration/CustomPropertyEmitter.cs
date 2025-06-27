@@ -87,7 +87,7 @@ namespace Remotion.Reflection.CodeGeneration
           _propertyBuilder.SetGetMethod(_getMethod.MethodBuilder);
         }
         else
-          throw new ArgumentNullException("value", "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
+          throw new ArgumentNullException(nameof(value), "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
       }
     }
 
@@ -102,7 +102,7 @@ namespace Remotion.Reflection.CodeGeneration
           _propertyBuilder.SetSetMethod(_setMethod.MethodBuilder);
         }
         else
-          throw new ArgumentNullException("value", "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
+          throw new ArgumentNullException(nameof(value), "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
       }
     }
 

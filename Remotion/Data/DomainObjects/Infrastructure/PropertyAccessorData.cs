@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
             classDefinition.ClassType.GetFullNameSafe(),
             propertyIdentifier);
 
-        throw new ArgumentException(message, "propertyIdentifier");
+        throw new ArgumentException(message, nameof(propertyIdentifier));
       }
       else
         return new Tuple<PropertyDefinition?, IRelationEndPointDefinition?>(propertyDefinition, relationEndPointDefinition);

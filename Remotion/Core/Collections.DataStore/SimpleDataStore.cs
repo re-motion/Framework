@@ -128,7 +128,7 @@ namespace Remotion.Collections.DataStore
       // value can be null
 
       if (TryGetValueInternal(key, out _))
-        throw new ArgumentException(string.Format("The store already contains an element with key '{0}'.", key), "key");
+        throw new ArgumentException(string.Format("The store already contains an element with key '{0}'.", key), nameof(key));
 
       _innerDictionary.Add(key, new Data(value));
     }

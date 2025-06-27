@@ -37,9 +37,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       ArgumentUtility.CheckNotNull(nameof(role), role);
       ArgumentUtility.CheckNotNull(nameof(ace), ace);
       if (role.User == null)
-        throw new ArgumentException("Role must have a User set.", "role");
+        throw new ArgumentException("Role must have a User set.", nameof(role));
       if (ace.AccessControlList == null)
-        throw new ArgumentException("AccessControlEntry must have an AccessControlList set.", "ace");
+        throw new ArgumentException("AccessControlEntry must have an AccessControlList set.", nameof(ace));
 
       Role = role;
       Ace = ace;

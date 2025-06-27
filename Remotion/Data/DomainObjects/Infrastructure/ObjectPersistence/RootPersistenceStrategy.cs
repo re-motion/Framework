@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull(nameof(query), query);ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
 
       if (query.QueryType != QueryType.CollectionReadWrite && query.QueryType != QueryType.CollectionReadOnly)
-        throw new ArgumentException("Only collection queries can be used to load data containers.", "query");
+        throw new ArgumentException("Only collection queries can be used to load data containers.", nameof(query));
 
       var dataContainers = ExecuteDataContainerQuery(query);
       return dataContainers.Select(dc => GetLoadedObjectDataForDataContainer(dc, alreadyLoadedObjectDataProvider));
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull(nameof(query), query);
 
       if (query.QueryType != QueryType.CustomReadOnly && query.QueryType != QueryType.CustomReadWrite)
-        throw new ArgumentException("Only custom queries can be used to load custom results", "query");
+        throw new ArgumentException("Only custom queries can be used to load custom results", nameof(query));
 
       var storageAccess = ResolveStorageAccessForQuery(query);
       using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull(nameof(query), query);
 
       if (query.QueryType != QueryType.ScalarReadOnly && query.QueryType != QueryType.ScalarReadWrite)
-        throw new ArgumentException("Only scalar queries can be used to load scalar results.", "query");
+        throw new ArgumentException("Only scalar queries can be used to load scalar results.", nameof(query));
 
       var storageAccess = ResolveStorageAccessForQuery(query);
       using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
 
       if (query.QueryType != QueryType.CollectionReadOnly)
-        throw new ArgumentException("Only readonly collection queries can be used for fetching.", "query");
+        throw new ArgumentException("Only readonly collection queries can be used for fetching.", nameof(query));
 
       var dataContainers = ExecuteDataContainerQuery(query);
       return dataContainers.Select(dc => new LoadedObjectDataWithDataSourceData(GetLoadedObjectDataForDataContainer(dc, alreadyLoadedObjectDataProvider), dc));

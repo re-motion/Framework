@@ -302,7 +302,7 @@ namespace Remotion.Data.DomainObjects
       var typeParameter = s_objectListTypeCache.GetOrAdd(type, s_objectListTypeCacheValueFactory).ItemType;
 
       if (typeParameter is null)
-        throw ArgumentUtility.CreateArgumentTypeException("type", type, typeof(ObjectList<>));
+        throw ArgumentUtility.CreateArgumentTypeException(nameof(type), type, typeof(ObjectList<>));
 
       if (typeParameter.IsGenericParameter)
         return null;
@@ -328,7 +328,7 @@ namespace Remotion.Data.DomainObjects
       var typeParameter = s_iObjectListTypeCache.GetOrAdd(type, s_iObjectListTypeCacheValueFactory).ItemType;
 
       if (typeParameter is null)
-        throw ArgumentUtility.CreateArgumentTypeException("type", type, typeof(IObjectList<>));
+        throw ArgumentUtility.CreateArgumentTypeException(nameof(type), type, typeof(IObjectList<>));
 
       if (typeParameter.IsGenericParameter)
         return null;

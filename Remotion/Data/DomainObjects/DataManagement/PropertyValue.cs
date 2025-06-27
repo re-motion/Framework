@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         var message = string.Format(
             "Cannot set this property's value from '{0}'; the properties do not have the same property definition.",
             source._definition);
-        throw new ArgumentException(message, "source");
+        throw new ArgumentException(message, nameof(source));
       }
 
       _value = source._value;

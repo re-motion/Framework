@@ -169,7 +169,7 @@ namespace Remotion.Data.DomainObjects.Persistence
       ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
 
       if (!relationEndPointID.Definition.IsVirtual)
-        throw new ArgumentException("LoadRelatedDataContainer can only be used with virtual end points.", "relationEndPointID");
+        throw new ArgumentException("LoadRelatedDataContainer can only be used with virtual end points.", nameof(relationEndPointID));
 
       return GetOppositeDataContainerForVirtualEndPoint(storageProviderManager, relationEndPointID);
     }

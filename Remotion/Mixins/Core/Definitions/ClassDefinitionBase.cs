@@ -40,7 +40,7 @@ namespace Remotion.Mixins.Definitions
     {
       ArgumentUtility.CheckNotNull(nameof(type), type);
       if (type.ContainsGenericParameters)
-        throw new ArgumentException(string.Format("The type {0} contains generic parameters, which is not allowed.", type), "type");
+        throw new ArgumentException(string.Format("The type {0} contains generic parameters, which is not allowed.", type), nameof(type));
       _type = type;
       _implementedInterfaces = new HashSet<Type>(_type.GetInterfaces());
     }

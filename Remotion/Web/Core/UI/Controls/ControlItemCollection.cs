@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls
         if (!typeof(IControlItem).IsAssignableFrom(type))
         {
           throw new ArgumentException(
-              string.Format("Type '{0}' at index {1} does not implement interface 'IControlItem'.", type.GetFullNameSafe(), i), "supportedTypes");
+              string.Format("Type '{0}' at index {1} does not implement interface 'IControlItem'.", type.GetFullNameSafe(), i), nameof(supportedTypes));
         }
       }
 
@@ -106,9 +106,9 @@ namespace Remotion.Web.UI.Controls
       IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem>(nameof(value), value!);
 
       if (! IsSupportedType(controlItem))
-        throw ArgumentUtility.CreateArgumentTypeException("value", controlItem.GetType(), null);
+        throw ArgumentUtility.CreateArgumentTypeException(nameof(value), controlItem.GetType(), null);
       if (Find(controlItem.ItemID) != null)
-        throw new ArgumentException(string.Format("The collection already contains an item with ItemID '{0}'.", controlItem.ItemID), "value");
+        throw new ArgumentException(string.Format("The collection already contains an item with ItemID '{0}'.", controlItem.ItemID), nameof(value));
     }
 
     protected override void OnInsert (int index, object? value)
@@ -172,7 +172,7 @@ namespace Remotion.Web.UI.Controls
     protected void AddRange (IList values)
     {
       ArgumentUtility.CheckNotNull(nameof(values), values);
-      ArgumentUtility.CheckItemsNotNullAndType("values", values, typeof(IControlItem));
+      ArgumentUtility.CheckItemsNotNullAndType(nameof(values), values, typeof(IControlItem));
 
       BeginEdit();
       for (int i = 0; i < values.Count; i++)

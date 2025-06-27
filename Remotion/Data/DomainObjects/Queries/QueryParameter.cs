@@ -59,7 +59,7 @@ public class QueryParameter
     ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
     ArgumentUtility.CheckValidEnumValue(nameof(parameterType), parameterType);
     if (parameterType == QueryParameterType.Text && !(value is string))
-      throw new ArgumentException("The parameter value must of type 'System.String' when the parameter type is 'QueryParameterType.Text'.", "value");
+      throw new ArgumentException("The parameter value must of type 'System.String' when the parameter type is 'QueryParameterType.Text'.", nameof(value));
 
     _name = name;
     _value = value;

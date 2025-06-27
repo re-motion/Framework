@@ -42,7 +42,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.DebugCheckNotNull(nameof(securableObject), securableObject);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
-      ArgumentUtility.DebugCheckNotNullOrEmpty("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(requiredAccessTypes), requiredAccessTypes);
 
       return true;
     }
@@ -51,7 +51,7 @@ namespace Remotion.Security
     {
       ArgumentUtility.DebugCheckNotNull(nameof(securableClass), securableClass);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
-      ArgumentUtility.DebugCheckNotNullOrEmpty("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(requiredAccessTypes), requiredAccessTypes);
 
       return true;
     }

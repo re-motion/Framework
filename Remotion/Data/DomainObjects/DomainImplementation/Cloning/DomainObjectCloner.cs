@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
       ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (context.Cloner != this)
-        throw new ArgumentException("The given CloneContext must have been created for this DomainObjectCloner.", "context");
+        throw new ArgumentException("The given CloneContext must have been created for this DomainObjectCloner.", nameof(context));
 
       T clone = context.GetCloneFor(source);
       while (context.CloneHulls.Count > 0)

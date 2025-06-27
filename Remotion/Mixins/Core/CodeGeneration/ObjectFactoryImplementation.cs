@@ -47,14 +47,14 @@ namespace Remotion.Mixins.CodeGeneration
       if (targetOrConcreteType.IsInterface)
       {
         var message = string.Format("Cannot instantiate type '{0}', it's an interface.", targetOrConcreteType);
-        throw new ArgumentException(message, "targetOrConcreteType");
+        throw new ArgumentException(message, nameof(targetOrConcreteType));
       }
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext(targetOrConcreteType);
       if (classContext == null && preparedMixins.Length > 0)
       {
           throw new ArgumentException(string.Format("There is no mixin configuration for type {0}, so no mixin instances must be specified.",
-              targetOrConcreteType.GetFullNameSafe()), "preparedMixins");
+              targetOrConcreteType.GetFullNameSafe()), nameof(preparedMixins));
       }
 
       using (new MixedObjectInstantiationScope(preparedMixins))

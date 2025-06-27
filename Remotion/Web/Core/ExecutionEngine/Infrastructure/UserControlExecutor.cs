@@ -51,7 +51,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       ArgumentUtility.CheckNotNull(nameof(subFunction), subFunction);
       ArgumentUtility.CheckNotNull(nameof(sender), sender);
       if (userControl.WxePage == null)
-        throw new ArgumentException("Execution of user controls that are no longer part of the control hierarchy is not supported.", "userControl");
+        throw new ArgumentException("Execution of user controls that are no longer part of the control hierarchy is not supported.", nameof(userControl));
 
       _backedUpUserControlState = userControl.SaveAllState();
       _backedUpUserControl = userControl.AppRelativeVirtualPath;
@@ -82,7 +82,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
                 string.Format(
                     "The 'sender' does not match the value in {0}. Please pass the control that orignated the postback.",
                     ControlHelper.PostEventSourceID),
-                "sender");
+                nameof(sender));
           }
 
           _backedUpPostBackData.Add(ControlHelper.PostEventSourceID, _postBackCollection[ControlHelper.PostEventSourceID]);

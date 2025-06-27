@@ -949,7 +949,7 @@ public class ClientTransaction
     ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.One)
-      throw new ArgumentException("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object (cardinality one).", nameof(relationEndPointID));
 
     var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
@@ -975,7 +975,7 @@ public class ClientTransaction
     ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.One)
-      throw new ArgumentException("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object (cardinality one).", nameof(relationEndPointID));
 
     var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
@@ -1001,7 +1001,7 @@ public class ClientTransaction
     ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-      throw new ArgumentException("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object collection (cardinality many).", nameof(relationEndPointID));
 
     var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
@@ -1040,7 +1040,7 @@ public class ClientTransaction
     ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-      throw new ArgumentException("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object collection (cardinality many).", nameof(relationEndPointID));
 
     var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 

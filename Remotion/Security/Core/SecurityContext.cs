@@ -130,7 +130,7 @@ namespace Remotion.Security
               roleType,
               typeof(AbstractRoleAttribute).GetFullNameSafe());
 
-          throw new ArgumentException(message, "abstractRoles");
+          throw new ArgumentException(message, nameof(abstractRoles));
         }
 
         abstractRoleList.Add(EnumWrapper.Get(abstractRole));
@@ -153,7 +153,7 @@ namespace Remotion.Security
               stateType,
               typeof(SecurityStateAttribute).GetFullNameSafe());
 
-          throw new ArgumentException(message, "states");
+          throw new ArgumentException(message, nameof(states));
         }
 
         securityStates.Add(valuePair.Key, EnumWrapper.Get(valuePair.Value));

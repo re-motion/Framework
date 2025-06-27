@@ -55,7 +55,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
             "Cannot create base call method for a method defined on a different type than the base type: {0}.{1}.",
             overriddenMethod.DeclaringType.GetFullNameSafe(),
             overriddenMethod.Name);
-        throw new ArgumentException(message, "overriddenMethod");
+        throw new ArgumentException(message, nameof(overriddenMethod));
       }
 
       if (!_baseCallMethods.ContainsKey(overriddenMethod))
@@ -70,7 +70,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       if (baseMethod.IsAbstract)
       {
         var message = string.Format("The given method {0}.{1} is abstract.", baseMethod.DeclaringType!.GetFullNameSafe(), baseMethod.Name);
-        throw new ArgumentException(message, "baseMethod");
+        throw new ArgumentException(message, nameof(baseMethod));
       }
 
       var attributes = MethodAttributes.Public | MethodAttributes.HideBySig;

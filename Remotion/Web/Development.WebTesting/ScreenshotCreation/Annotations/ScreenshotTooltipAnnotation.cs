@@ -147,7 +147,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         case TooltipPositioning.BottomRight:
           return new Point(centerX + _padding.Left - _padding.Right, element.Bottom + _padding.Bottom);
         default:
-          throw new ArgumentOutOfRangeException("alignment", alignment, null);
+          throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null);
       }
     }
   }

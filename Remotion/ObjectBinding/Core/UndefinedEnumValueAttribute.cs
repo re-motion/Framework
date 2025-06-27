@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding
     public UndefinedEnumValueAttribute (object value)
     {
       ArgumentUtility.CheckNotNullAndType<Enum>(nameof(value), value);
-      ArgumentUtility.CheckValidEnumValue("value", (Enum)value);
+      ArgumentUtility.CheckValidEnumValue(nameof(value), (Enum)value);
 
       _value = value;
     }

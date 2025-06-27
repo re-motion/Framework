@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects
             + "from the required item type.",
             typeof(T),
             requiredItemType);
-        throw new ArgumentException(message, "wrappedCollection");
+        throw new ArgumentException(message, nameof(wrappedCollection));
       }
 
       _wrappedCollection = wrappedCollection;

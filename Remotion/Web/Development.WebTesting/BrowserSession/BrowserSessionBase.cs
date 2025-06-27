@@ -51,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       ArgumentUtility.CheckNotNull(nameof(browserConfiguration), browserConfiguration);
 
       if (driverProcessId < 0)
-        throw new ArgumentOutOfRangeException("driverProcessId", "Process id can not be smaller that zero.");
+        throw new ArgumentOutOfRangeException(nameof(driverProcessId), "Process id can not be smaller that zero.");
 
       _value = value;
       _browserConfiguration = browserConfiguration;

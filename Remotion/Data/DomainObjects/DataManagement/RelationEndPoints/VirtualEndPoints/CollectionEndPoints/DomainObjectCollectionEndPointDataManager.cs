@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       if (!ContainsOriginalOppositeEndPoint(oppositeEndPoint))
         throw new InvalidOperationException("The opposite end-point has not been registered.");
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       if (ContainsCurrentOppositeEndPoint(oppositeEndPoint))
         throw new InvalidOperationException("The opposite end-point has already been registered.");
@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       if (!ContainsCurrentOppositeEndPoint(oppositeEndPoint))
         throw new InvalidOperationException("The opposite end-point has not been registered.");

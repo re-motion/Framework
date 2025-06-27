@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting
       ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       if (ContainsKeysAndChars(value))
-        throw new ArgumentException("Value may not contain both text and keys at the same time.", "value");
+        throw new ArgumentException("Value may not contain both text and keys at the same time.", nameof(value));
 
       scope.SetValueUsingSendKeys(value, logger);
 

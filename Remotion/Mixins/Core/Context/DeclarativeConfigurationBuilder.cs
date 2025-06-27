@@ -189,7 +189,7 @@ namespace Remotion.Mixins.Context
       ArgumentUtility.CheckNotNull(nameof(type), type);
 
       if (type.IsGenericType && !type.IsGenericTypeDefinition)
-        throw new ArgumentException("Type must be non-generic or a generic type definition.", "type");
+        throw new ArgumentException("Type must be non-generic or a generic type definition.", nameof(type));
 
       _allTypes.Add(type);
 

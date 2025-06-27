@@ -101,10 +101,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
 
       if (!relationEndPointID.Definition.IsVirtual)
-        throw new ArgumentException("GetOrLoadRelatedObject can only be used with virtual end points.", "relationEndPointID");
+        throw new ArgumentException("GetOrLoadRelatedObject can only be used with virtual end points.", nameof(relationEndPointID));
 
       if (relationEndPointID.Definition.Cardinality != CardinalityType.One)
-        throw new ArgumentException("GetOrLoadRelatedObject can only be used with one-valued end points.", "relationEndPointID");
+        throw new ArgumentException("GetOrLoadRelatedObject can only be used with one-valued end points.", nameof(relationEndPointID));
 
       var loadedObjectData = _persistenceStrategy.ResolveObjectRelationData(relationEndPointID, _loadedObjectDataProvider);
       _loadedObjectDataRegistrationAgent.RegisterIfRequired(new[] { loadedObjectData }, true);
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
 
       if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException("GetOrLoadRelatedObjects can only be used with many-valued end points.", "relationEndPointID");
+        throw new ArgumentException("GetOrLoadRelatedObjects can only be used with many-valued end points.", nameof(relationEndPointID));
 
       var loadedObjectData = _persistenceStrategy.ResolveCollectionRelationData(relationEndPointID, _loadedObjectDataProvider).ConvertToCollection();
       _loadedObjectDataRegistrationAgent.RegisterIfRequired(loadedObjectData, true);

@@ -83,7 +83,7 @@ namespace Remotion.ServiceLocation
     private ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType, Func<object>? factory)
     {
       if (registrationType == RegistrationType.Decorator && lifetime != LifetimeKind.InstancePerDependency)
-        throw new ArgumentException("For implementations of type 'Decorator', the lifetime can only be specified as 'InstancePerDependency'.", "lifetime");
+        throw new ArgumentException("For implementations of type 'Decorator', the lifetime can only be specified as 'InstancePerDependency'.", nameof(lifetime));
 
       _implementationType = implementationType;
       _lifetime = lifetime;

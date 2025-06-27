@@ -137,7 +137,7 @@ namespace Remotion.Reflection
         throw new InvalidOperationException("This method is not an interface method.");
 
       if (implementationType.IsInterface)
-        throw new ArgumentException("The implementationType parameter must not be an interface.", "implementationType");
+        throw new ArgumentException("The implementationType parameter must not be an interface.", nameof(implementationType));
 
       if (!_methodInfo.DeclaringType.IsAssignableFrom(implementationType))
         return null;
