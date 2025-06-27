@@ -2374,7 +2374,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         bool hasChanged = _selectedView != value;
         _selectedView = value;
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(AvailableViews), _availableViews);
+        ArgumentUtility.CheckNotNullOrEmpty("AvailableViews", _availableViews);
         _selectedViewIndex = null;
 
         if (_selectedView != null)

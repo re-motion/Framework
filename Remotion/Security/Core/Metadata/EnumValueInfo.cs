@@ -59,7 +59,7 @@ namespace Remotion.Security.Metadata
       }
       set
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(TypeName), value);
+        ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
         _typeName = value;
       }
     }
