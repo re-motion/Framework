@@ -181,8 +181,6 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       get
       {
-        ArgumentUtility.CheckNotNull("userControlExecutor", this);
-
         if (!_isReturningPostBack)
           return _function.ExecutingStep;
         else
