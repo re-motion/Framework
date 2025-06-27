@@ -166,7 +166,7 @@ namespace Remotion.ObjectBinding
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. Must not be <see langword="null" />.</summary>
     public IBusinessObjectService? GetService (Type serviceType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(serviceType), serviceType, typeof(IBusinessObjectService));
 
       IDataStore<Type, IBusinessObjectService?> serviceStore = ServiceStore;
       Assertion.IsNotNull(serviceStore, "The ServiceStore evaluated and returned null. It should return a null object instead.");
@@ -191,7 +191,7 @@ namespace Remotion.ObjectBinding
     /// <param name="service"> The <see cref="IBusinessObjectService"/> to register. Must not be <see langword="null" />.</param>
     public void AddService (Type serviceType, IBusinessObjectService service)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(serviceType), serviceType, typeof(IBusinessObjectService));
       ArgumentUtility.CheckNotNull(nameof(service), service);
 
       IDataStore<Type, IBusinessObjectService?> serviceStore = ServiceStore;

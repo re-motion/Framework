@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator instanceCreator)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(DomainObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(DomainObject));
       ArgumentUtility.CheckNotNull(nameof(mappingObjectFactory), mappingObjectFactory);
       ArgumentUtility.CheckNotNull(nameof(nameResolver), nameResolver);
       ArgumentUtility.CheckNotNull(nameof(classIDProvider), classIDProvider);

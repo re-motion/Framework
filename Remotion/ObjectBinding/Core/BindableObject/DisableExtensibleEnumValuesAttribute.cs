@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <param name="filterType">The type of the filter to use, must implement <see cref="IEnumerationValueFilter"/>.</param>
     public DisableExtensibleEnumValuesAttribute (Type filterType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("filterType", filterType, typeof(IEnumerationValueFilter));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(filterType), filterType, typeof(IEnumerationValueFilter));
       _filter = (IEnumerationValueFilter)Activator.CreateInstance(filterType)!;
     }
 

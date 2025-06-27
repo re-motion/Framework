@@ -52,7 +52,7 @@ namespace Remotion.Validation.RuleCollectors
     public AddingObjectValidationRuleCollector (
        [NotNull]Type collectorType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("collectorType", collectorType, typeof(IValidationRuleCollector));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(collectorType), collectorType, typeof(IValidationRuleCollector));
 
       CollectorType = collectorType;
       ValidatedType = TypeAdapter.Create(typeof(TValidatedType));

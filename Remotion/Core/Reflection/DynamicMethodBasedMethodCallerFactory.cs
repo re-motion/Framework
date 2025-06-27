@@ -42,7 +42,7 @@ namespace Remotion.Reflection
     public static Delegate CreateMethodCallerDelegate (MethodInfo methodInfo, Type delegateType)
     {
       ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       var delegateMethod = delegateType.GetMethod("Invoke");
       Assertion.IsNotNull(delegateMethod);

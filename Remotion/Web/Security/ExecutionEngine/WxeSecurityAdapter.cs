@@ -110,7 +110,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     public bool HasStatelessAccess (Type functionType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof(WxeFunction));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(functionType), functionType, typeof(WxeFunction));
 
       if (SecurityFreeSection.IsActive)
         return true;

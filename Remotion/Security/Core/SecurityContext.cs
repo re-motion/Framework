@@ -41,7 +41,7 @@ namespace Remotion.Security
     /// <returns>A new instance of the <see cref="SecurityContext"/> type.</returns>
     public static SecurityContext CreateStateless (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(ISecurableObject));
 
       return new SecurityContext(type, null, null, null, true, new Dictionary<string, EnumWrapper>(), new EnumWrapper[0]);
     }
@@ -72,7 +72,7 @@ namespace Remotion.Security
     public static SecurityContext Create (
         Type type, string? owner, string? ownerGroup, string? ownerTenant, IDictionary<string, Enum> states, ICollection<Enum> abstractRoles)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(ISecurableObject));
       ArgumentUtility.CheckNotNull(nameof(states), states);
       ArgumentUtility.CheckNotNull(nameof(abstractRoles), abstractRoles);
 
@@ -108,7 +108,7 @@ namespace Remotion.Security
         IDictionary<string, EnumWrapper> states,
         ICollection<EnumWrapper> abstractRoles)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(ISecurableObject));
       ArgumentUtility.CheckNotNull(nameof(states), states);
       ArgumentUtility.CheckNotNull(nameof(abstractRoles), abstractRoles);
 

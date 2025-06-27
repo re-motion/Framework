@@ -45,7 +45,7 @@ namespace Remotion.Validation.RuleCollectors
         [CanBeNull] Func<IPropertyValidator, bool>? validatorPredicate,
         [NotNull] IRemovingPropertyValidationRuleCollector removingPropertyValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("validatorType", validatorType, typeof(IPropertyValidator));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(validatorType), validatorType, typeof(IPropertyValidator));
       ArgumentUtility.CheckTypeIsAssignableFrom("collectorTypeToRemoveFrom", collectorTypeToRemoveFrom, typeof(IValidationRuleCollector));
       ArgumentUtility.CheckNotNull(nameof(removingPropertyValidationRuleCollector), removingPropertyValidationRuleCollector);
 

@@ -36,7 +36,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     public OverridesAnalyzer (Type attributeType, IEnumerable<TMember> baseMembers)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("attributeType", attributeType, typeof(IOverrideAttribute));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(attributeType), attributeType, typeof(IOverrideAttribute));
       ArgumentUtility.CheckNotNull(nameof(baseMembers), baseMembers);
 
       _attributeType = attributeType;

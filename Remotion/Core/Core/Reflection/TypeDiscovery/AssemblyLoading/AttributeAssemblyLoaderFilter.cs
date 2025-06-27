@@ -35,7 +35,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <param name="attributeType">The attribute type to filter assemblies with.</param>
     public AttributeAssemblyLoaderFilter (Type attributeType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("attributeType", attributeType, typeof(Attribute));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(attributeType), attributeType, typeof(Attribute));
       _attributeType = attributeType;
     }
 

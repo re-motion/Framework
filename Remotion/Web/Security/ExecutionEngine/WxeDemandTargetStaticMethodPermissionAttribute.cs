@@ -48,7 +48,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       : base(MethodType.Static)
     {
       Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodNameEnum", methodNameEnum);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(securableClass), securableClass, typeof(ISecurableObject));
 
       CheckDeclaringTypeOfMethodNameEnum(enumValue, securableClass);
 
@@ -59,7 +59,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       : base(MethodType.Static)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(securableClass), securableClass, typeof(ISecurableObject));
 
       Initialize(methodName, securableClass);
     }

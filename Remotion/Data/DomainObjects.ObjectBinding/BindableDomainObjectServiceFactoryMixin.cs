@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     public virtual IBusinessObjectService? CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType)
     {
       ArgumentUtility.CheckNotNull(nameof(provider), provider);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(serviceType), serviceType, typeof(IBusinessObjectService));
 
       if (provider.ProviderAttribute is BindableDomainObjectProviderAttribute)
       {

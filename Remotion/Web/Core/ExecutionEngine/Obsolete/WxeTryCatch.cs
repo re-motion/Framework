@@ -66,7 +66,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
 
     public WxeTryCatch (Type tryStepListType, Type? finallyStepListType, params Type[]? catchBlockTypes)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("tryStepListType", tryStepListType, typeof(WxeStepList));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(tryStepListType), tryStepListType, typeof(WxeStepList));
       ArgumentUtility.CheckTypeIsAssignableFrom("finallyStepListType", finallyStepListType, typeof(WxeStepList));
 
       _trySteps = (WxeStepList)Activator.CreateInstance(tryStepListType)!;

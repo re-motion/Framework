@@ -407,7 +407,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true" /> if the given type is the inheritance root.</returns>
     public static bool IsInheritanceRoot (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(DomainObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(DomainObject));
 
       if (IsTypeIgnoredForMappingConfiguration(type))
         return false;
@@ -420,7 +420,7 @@ namespace Remotion.Data.DomainObjects
 
     public static bool IsTypeIgnoredForMappingConfiguration (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(DomainObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(DomainObject));
 
       return AttributeUtility.IsDefined<IgnoreForMappingConfigurationAttribute>(type, false);
     }

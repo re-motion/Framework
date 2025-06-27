@@ -63,7 +63,7 @@ namespace Remotion.Security.Metadata
 
     public SecurableClassInfo GetMetadata (Type type, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(ISecurableObject));
       if (type.IsValueType)
         throw new ArgumentException("Value types are not supported.", "type");
       ArgumentUtility.CheckNotNull(nameof(cache), cache);
@@ -93,7 +93,7 @@ namespace Remotion.Security.Metadata
 
     protected virtual List<StatePropertyInfo> GetProperties (Type type, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(ISecurableObject));
       ArgumentUtility.CheckNotNull(nameof(cache), cache);
 
       MemberInfo[] propertyInfos = type.FindMembers(

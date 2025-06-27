@@ -243,7 +243,7 @@ namespace Remotion.Web.ExecutionEngine
     protected WxeFunctionState CreateNewFunctionState (HttpContext context, Type type)
     {
       ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(WxeFunction));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(WxeFunction));
 
       WxeFunctionStateManager functionStates = WxeFunctionStateManager.Current;
       functionStates.CleanUpExpired();

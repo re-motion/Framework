@@ -36,7 +36,7 @@ namespace Remotion.Reflection
 
     public Tuple<Type[], Type> GetSignature (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       var invokeMethod = delegateType.GetMethod("Invoke");
       Assertion.IsNotNull(invokeMethod, "Delegate has no Invoke() method.");
@@ -50,7 +50,7 @@ namespace Remotion.Reflection
     public Delegate CreateConstructorCall (ConstructorInfo constructor, Type delegateType)
     {
       ArgumentUtility.CheckNotNull(nameof(constructor), constructor);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       var parameters = constructor.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name)).ToArray();
       var constructorCall = Expression.New(constructor, parameters.Cast<Expression>());
@@ -60,7 +60,7 @@ namespace Remotion.Reflection
     public Delegate CreateDefaultConstructorCall (Type constructedType, Type delegateType)
     {
       ArgumentUtility.CheckNotNull(nameof(constructedType), constructedType);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       var constructorCall = Expression.New(constructedType);
       return CreateConvertedDelegate(delegateType, constructorCall);

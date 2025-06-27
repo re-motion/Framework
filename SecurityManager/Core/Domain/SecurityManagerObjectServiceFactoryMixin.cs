@@ -53,7 +53,7 @@ namespace Remotion.SecurityManager.Domain
     [OverrideTarget]
     public virtual IBusinessObjectService? CreateService (IBusinessObjectProviderWithIdentity provider, Type serviceType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(serviceType), serviceType, typeof(IBusinessObjectService));
 
       if (serviceType == typeof(SubstitutionPropertiesSearchService))
         return new SubstitutionPropertiesSearchService();

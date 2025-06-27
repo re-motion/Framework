@@ -54,7 +54,7 @@ namespace Remotion.Reflection
 
     public virtual Delegate GetDelegate (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       CheckNotAbstract();
 
@@ -91,14 +91,14 @@ namespace Remotion.Reflection
 
     protected virtual object GetCacheKey (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       return new Tuple<Type, Type>(_definingType, delegateType);
     }
 
     protected virtual Delegate CreateDelegate (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       var delegateSignature = GetSignature(delegateType);
       var parameterTypes = delegateSignature.Item1;

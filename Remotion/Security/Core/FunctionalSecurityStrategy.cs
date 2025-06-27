@@ -34,7 +34,7 @@ namespace Remotion.Security
 
     public bool HasAccess (Type type, ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(ISecurableObject));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(ISecurableObject));
       ArgumentUtility.CheckNotNull(nameof(securityProvider), securityProvider);
       ArgumentUtility.CheckNotNull(nameof(principal), principal);
       ArgumentUtility.CheckNotNull(nameof(requiredAccessTypes), requiredAccessTypes);

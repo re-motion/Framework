@@ -223,7 +223,7 @@ namespace Remotion.Configuration
     protected ExtendedProviderBase InstantiateProvider (ProviderSettings providerSettings, Type providerType, params Type[] providerInterfaces)
     {
       ArgumentUtility.CheckNotNull(nameof(providerSettings), providerSettings);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("providerType", providerType, typeof(ExtendedProviderBase));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(providerType), providerType, typeof(ExtendedProviderBase));
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(providerInterfaces), providerInterfaces);
 
       try

@@ -175,7 +175,7 @@ namespace Remotion.Reflection
 
     public Delegate GetFastInvoker (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       return DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(_methodInfo, delegateType);
     }
