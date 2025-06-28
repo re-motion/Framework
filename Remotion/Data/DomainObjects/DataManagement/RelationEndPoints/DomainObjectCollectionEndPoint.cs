@@ -73,7 +73,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink,
         IDomainObjectCollectionEndPointDataManagerFactory dataManagerFactory)
-        : base(ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction), ArgumentUtility.CheckNotNull(nameof(id), id))
+        : base(
+            clientTransaction ?? throw new ArgumentNullException(nameof(clientTransaction)),
+            id ?? throw new ArgumentNullException(nameof(id)))
     {
       ArgumentNullException.ThrowIfNull(collectionManager);
       ArgumentNullException.ThrowIfNull(lazyLoader);

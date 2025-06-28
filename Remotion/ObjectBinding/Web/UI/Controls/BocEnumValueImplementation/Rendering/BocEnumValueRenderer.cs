@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     public void Render (BocEnumValueRenderingContext renderingContext)
     {
       ArgumentNullException.ThrowIfNull(renderingContext);
-      ArgumentUtility.CheckNotNull("renderingContext.Control.Page", renderingContext.Control.Page!);
+      ArgumentNullException.ThrowIfNull(renderingContext.Control.Page!);
 
       AddAttributesToRender(renderingContext);
       var tag = renderingContext.Control.ListControlStyle.ControlType == ListControlType.RadioButtonList

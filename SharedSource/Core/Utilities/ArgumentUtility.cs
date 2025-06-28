@@ -68,7 +68,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] [NoEnumeration] T actualValue)
         where T : notnull
     {
-      CheckNotNull(argumentName, actualValue);
+      ArgumentNullException.ThrowIfNull(actualValue, paramName: argumentName);
     }
 
     [AssertionMethod]
@@ -103,7 +103,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] T collection)
         where T: ICollection
     {
-      CheckNotNull(argumentName, collection);
+      ArgumentNullException.ThrowIfNull(collection, paramName: argumentName);
       CheckNotEmpty(argumentName, collection);
 
       return collection;
@@ -114,7 +114,7 @@ namespace Remotion.Utilities
         [InvokerParameterName] string argumentName,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] ICollection<T> collection)
     {
-      CheckNotNull(argumentName, collection);
+      ArgumentNullException.ThrowIfNull(collection, paramName: argumentName);
       CheckNotEmpty(argumentName, collection);
     }
 
@@ -123,7 +123,7 @@ namespace Remotion.Utilities
         [InvokerParameterName] string argumentName,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] IReadOnlyCollection<T> collection)
     {
-      CheckNotNull(argumentName, collection);
+      ArgumentNullException.ThrowIfNull(collection, paramName: argumentName);
       CheckNotEmpty(argumentName, collection);
     }
 
@@ -184,7 +184,7 @@ namespace Remotion.Utilities
 
     private static void CheckNotNullOrItemsNullImplementation (string argumentName, IEnumerable enumerable)
     {
-      CheckNotNull(argumentName, enumerable);
+      ArgumentNullException.ThrowIfNull(enumerable, paramName: argumentName);
 
       int i = 0;
       foreach (object item in enumerable)
@@ -404,7 +404,7 @@ namespace Remotion.Utilities
         Type? actualType,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] Type expectedType)
     {
-      CheckNotNull(nameof(expectedType), expectedType);
+      ArgumentNullException.ThrowIfNull(expectedType);
       if (actualType != null)
       {
         if (!expectedType.GetTypeInfo().IsAssignableFrom(actualType.GetTypeInfo()))

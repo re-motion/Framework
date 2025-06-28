@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
     public ObjectID (Type classType, object value)
-      : this(MappingConfiguration.Current.GetTypeDefinition(ArgumentUtility.CheckNotNull(nameof(classType), classType)), value)
+      : this(MappingConfiguration.Current.GetTypeDefinition(classType ?? throw new ArgumentNullException(nameof(classType))), value)
     {
     }
 

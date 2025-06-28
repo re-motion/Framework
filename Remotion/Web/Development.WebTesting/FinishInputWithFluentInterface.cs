@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Threading;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 
@@ -33,12 +34,12 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Finish entering the text by switching focus using the Tab key. Triggers the ASP.NET postback.
     /// </summary>
-    public static readonly FinishInputWithAction WithTab = scope => ArgumentUtility.CheckNotNull(nameof(scope), scope).SendKeys(Keys.Tab);
+    public static readonly FinishInputWithAction WithTab = scope => (scope ?? throw new ArgumentNullException(nameof(scope))).SendKeys(Keys.Tab);
 
     /// <summary>
     /// Finish entering the text by pressing the Enter key. Triggers the ASP.NET postback in many situations.
     /// </summary>
     // Todo RM-6337: Why does PressEnter not trigger an auto postback in IE? Is this a bug? See BocListCO.GoToSpecificPage().
-    public static readonly FinishInputWithAction WithEnter = scope => ArgumentUtility.CheckNotNull(nameof(scope), scope).SendKeys(Keys.Enter);
+    public static readonly FinishInputWithAction WithEnter = scope => (scope ?? throw new ArgumentNullException(nameof(scope))).SendKeys(Keys.Enter);
   }
 }

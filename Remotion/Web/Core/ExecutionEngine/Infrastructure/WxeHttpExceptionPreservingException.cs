@@ -35,7 +35,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     }
 
     public WxeHttpExceptionPreservingException (HttpException exception)
-        : base(string.Format("{0} was thrown.", exception), ArgumentUtility.CheckNotNull(nameof(exception), exception))
+        : base(string.Format("{0} was thrown.", exception), exception ?? throw new ArgumentNullException(nameof(exception)))
     {
     }
 

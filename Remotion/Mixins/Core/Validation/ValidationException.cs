@@ -86,7 +86,7 @@ namespace Remotion.Mixins.Validation
     /// <param name="validationLogData">The validation log data.</param>
     /// <exception cref="ArgumentNullException">The log is empty.</exception>
     public ValidationException (ValidationLogData validationLogData)
-        : base(BuildExceptionString(ArgumentUtility.CheckNotNull(nameof(validationLogData), validationLogData)))
+        : base(BuildExceptionString(validationLogData ?? throw new ArgumentNullException(nameof(validationLogData))))
     {
       NumberOfFailures = validationLogData.GetNumberOfFailures();
       NumberOfRulesExecuted = validationLogData.GetNumberOfRulesExecuted();

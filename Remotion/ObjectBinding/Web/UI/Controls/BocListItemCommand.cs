@@ -300,7 +300,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocCommandEnabledColumnDefinition column,
         int listIndex,
         IBusinessObject businessObject)
-        : base(command, ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject))
+        : base(command, businessObject ?? throw new ArgumentNullException(nameof(businessObject)))
     {
       ArgumentNullException.ThrowIfNull(column);
 

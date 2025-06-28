@@ -26,7 +26,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   public class PropertyStateTuple : Tuple<StatePropertyDefinition, StateDefinition>
   {
     public PropertyStateTuple (StatePropertyDefinition property, StateDefinition state)
-        : base(ArgumentUtility.CheckNotNull(nameof(property), property), state)
+        : base(property ?? throw new ArgumentNullException(nameof(property)), state)
     {
     }
 

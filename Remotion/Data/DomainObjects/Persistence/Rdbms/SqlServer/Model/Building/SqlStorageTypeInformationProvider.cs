@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
 
     public SqlStorageTypeInformationProvider (IDateTimeDefaultStorageTypeProvider dateTimeDefaultStorageTypeProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(dateTimeDefaultStorageTypeProvider),dateTimeDefaultStorageTypeProvider);
+      ArgumentNullException.ThrowIfNull(dateTimeDefaultStorageTypeProvider);
       _dateTimeDefaultStorageTypeProvider = dateTimeDefaultStorageTypeProvider;
     }
 

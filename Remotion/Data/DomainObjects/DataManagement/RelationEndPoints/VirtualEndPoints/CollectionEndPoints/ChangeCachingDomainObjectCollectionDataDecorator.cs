@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private bool _cachedHasChangedFlag;
 
     public ChangeCachingDomainObjectCollectionDataDecorator (IDomainObjectCollectionData wrappedData)
-      : base(new ObservableDomainObjectCollectionDataDecorator(ArgumentUtility.CheckNotNull(nameof(wrappedData), wrappedData)))
+      : base(new ObservableDomainObjectCollectionDataDecorator(wrappedData ?? throw new ArgumentNullException(nameof(wrappedData))))
     {
       _observedWrappedData = (ObservableDomainObjectCollectionDataDecorator)WrappedData;
       _unobservedWrappedData = wrappedData;

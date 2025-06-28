@@ -69,8 +69,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IClientTransactionEventSink transactionEventSink,
         IVirtualObjectEndPointDataManagerFactory dataManagerFactory)
         : base(
-            ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction),
-            ArgumentUtility.CheckNotNull(nameof(id), id))
+            clientTransaction ?? throw new ArgumentNullException(nameof(clientTransaction)),
+            id ?? throw new ArgumentNullException(nameof(id)))
     {
       ArgumentNullException.ThrowIfNull(lazyLoader);
       ArgumentNullException.ThrowIfNull(endPointProvider);

@@ -64,9 +64,9 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> parameter is <see langword="null"/>.</exception>
     public ClassContext (Type type, IEnumerable<MixinContext> mixins, IEnumerable<Type> composedInterfaces)
         : this(
-            ArgumentUtility.CheckNotNull(nameof(type), type),
-            new MixinContextCollection(ArgumentUtility.CheckNotNull(nameof(mixins), mixins)),
-            new HashSet<Type>(ArgumentUtility.CheckNotNull(nameof(composedInterfaces), composedInterfaces)).AsReadOnly())
+            type ?? throw new ArgumentNullException(nameof(type)),
+            new MixinContextCollection(mixins ?? throw new ArgumentNullException(nameof(mixins))),
+            new HashSet<Type>(composedInterfaces ?? throw new ArgumentNullException(nameof(composedInterfaces))).AsReadOnly())
     {
     }
 

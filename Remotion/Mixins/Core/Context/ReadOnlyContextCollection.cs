@@ -43,7 +43,7 @@ namespace Remotion.Mixins.Context
     {
       foreach (TValue value in values)
       {
-        ArgumentUtility.CheckNotNull("values[" + _internalCollection.Count + "]", value);
+        ArgumentNullException.ThrowIfNull(value, paramName: "values[" + _internalCollection.Count + "]");
 
         TKey key = _keyGenerator(value);
         if (_internalCollection.TryGetValue(key, out var existingValue))

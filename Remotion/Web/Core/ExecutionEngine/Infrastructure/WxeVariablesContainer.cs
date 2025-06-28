@@ -215,7 +215,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private static readonly Func<Type, WxeParameterDeclaration[]> s_getParameterDeclarationsUncheckedFunc = GetParameterDeclarationsUnchecked;
 
     public WxeVariablesContainer (WxeFunction function, object?[] actualParameters)
-        : this(ArgumentUtility.CheckNotNull(nameof(function), function), actualParameters, GetParameterDeclarations(function.GetType()))
+        : this(function ?? throw new ArgumentNullException(nameof(function)), actualParameters, GetParameterDeclarations(function.GetType()))
     {
     }
 

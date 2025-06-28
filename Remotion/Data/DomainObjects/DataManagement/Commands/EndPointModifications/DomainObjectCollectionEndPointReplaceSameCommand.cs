@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IClientTransactionEventSink transactionEventSink)
         : base(
             modifiedEndPoint,
-            ArgumentUtility.CheckNotNull(nameof(selfReplacedObject), selfReplacedObject),
-            ArgumentUtility.CheckNotNull(nameof(selfReplacedObject), selfReplacedObject),
+            selfReplacedObject ?? throw new ArgumentNullException(nameof(selfReplacedObject)),
+            selfReplacedObject ?? throw new ArgumentNullException(nameof(selfReplacedObject)),
             transactionEventSink)
     {
     }

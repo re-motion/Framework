@@ -42,8 +42,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
       : base(
-          ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction),
-          ArgumentUtility.CheckNotNull(nameof(id), id))
+          clientTransaction ?? throw new ArgumentNullException(nameof(clientTransaction)),
+          id ?? throw new ArgumentNullException(nameof(id)))
     {
       ArgumentNullException.ThrowIfNull(foreignKeyDataContainer);
       ArgumentNullException.ThrowIfNull(endPointProvider);

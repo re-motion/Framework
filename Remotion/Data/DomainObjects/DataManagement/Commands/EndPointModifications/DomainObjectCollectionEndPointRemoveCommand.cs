@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IClientTransactionEventSink transactionEventSink)
         : base(
             modifiedEndPoint,
-            ArgumentUtility.CheckNotNull(nameof(removedObject), removedObject),
+            removedObject ?? throw new ArgumentNullException(nameof(removedObject)),
             null,
             transactionEventSink)
     {

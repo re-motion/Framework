@@ -76,7 +76,7 @@ namespace Remotion.ServiceLocation
     /// The <see cref="RegistrationType"/> of the <paramref name="implementationType"/>. Defaults to <see cref="T:RegistrationType.Single"/>.
     /// </param>
     public ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType = RegistrationType.Single)
-        : this(ArgumentUtility.CheckNotNull(nameof(implementationType), implementationType), lifetime, registrationType, null)
+        : this(implementationType ?? throw new ArgumentNullException(nameof(implementationType)), lifetime, registrationType, null)
     {
     }
 

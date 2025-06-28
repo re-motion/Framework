@@ -42,7 +42,11 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
     public IStateModificationStrategy StateModificationStrategy
     {
       get { return _stateModificationStrategy!; } // TODO RM-8118: inline assertion
-      set { _stateModificationStrategy = ArgumentUtility.CheckNotNull(nameof(value), value!); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _stateModificationStrategy = value;
+      }
     }
 
     public Control? WrappedControl

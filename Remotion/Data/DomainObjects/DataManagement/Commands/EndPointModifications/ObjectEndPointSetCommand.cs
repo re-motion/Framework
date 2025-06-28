@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         Action<DomainObject?> oppositeObjectSetter,
         IClientTransactionEventSink transactionEventSink
         )
-        : base(ArgumentUtility.CheckNotNull(nameof(modifiedEndPoint), modifiedEndPoint),
+        : base(modifiedEndPoint ?? throw new ArgumentNullException(nameof(modifiedEndPoint)),
                 modifiedEndPoint.GetOppositeObject(),
                 newRelatedObject,
                 transactionEventSink)

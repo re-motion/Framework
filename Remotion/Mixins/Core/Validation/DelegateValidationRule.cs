@@ -118,7 +118,7 @@ namespace Remotion.Mixins.Validation
     }
 
     public DelegateValidationRule (Rule rule)
-        : this(ArgumentUtility.CheckNotNull(nameof(rule), rule), GetRuleName(rule), GetMessage(rule))
+        : this(rule ?? throw new ArgumentNullException(nameof(rule)), GetRuleName(rule), GetMessage(rule))
     {
     }
 

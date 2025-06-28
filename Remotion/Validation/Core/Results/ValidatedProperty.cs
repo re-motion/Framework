@@ -33,7 +33,7 @@ namespace Remotion.Validation.Results
 
     public ValidatedProperty (object @object, IPropertyInformation property, object? validatedPropertyValue = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(@object), @object);
+      ArgumentNullException.ThrowIfNull(@object);
       ArgumentNullException.ThrowIfNull(property);
 
       Object = @object;

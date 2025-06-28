@@ -57,7 +57,7 @@ namespace Remotion.Reflection.CodeGeneration
     public CustomClassEmitter (ModuleScope scope, string name, Type baseType, Type[] interfaces, TypeAttributes flags, bool forceUnsigned)
         : this(
             new ClassEmitterSupportingOpenGenericBaseType(
-                ArgumentUtility.CheckNotNull(nameof(scope), scope),
+                scope ?? throw new ArgumentNullException(nameof(scope)),
                 ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name),
                 CheckBaseType(baseType),
                 CheckInterfaces(interfaces),

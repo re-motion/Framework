@@ -37,8 +37,8 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     public int Compare (T? x, T? y)
     {
-      ArgumentUtility.CheckNotNull(nameof(x), (T)x!);
-      ArgumentUtility.CheckNotNull(nameof(y), (T)y!);
+      ArgumentNullException.ThrowIfNull(x);
+      ArgumentNullException.ThrowIfNull(y);
 
       if (x!.PositionalKey != y!.PositionalKey)
         return x.PositionalKey.CompareTo(y.PositionalKey);

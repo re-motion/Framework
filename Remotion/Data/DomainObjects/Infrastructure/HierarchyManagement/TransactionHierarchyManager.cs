@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         : this(
             thisTransaction,
             thisEventSink,
-            new ClientTransactionHierarchy(ArgumentUtility.CheckNotNull(nameof(thisTransaction), thisTransaction)),
+            new ClientTransactionHierarchy(thisTransaction ?? throw new ArgumentNullException(nameof(thisTransaction))),
             null,
             null,
             null)
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
             thisEventSink,
             parentHierarchyManager.TransactionHierarchy,
             parentTransaction,
-            ArgumentUtility.CheckNotNull(nameof(parentHierarchyManager), parentHierarchyManager),
+            parentHierarchyManager ?? throw new ArgumentNullException(nameof(parentHierarchyManager)),
             parentEventSink)
     {
       ArgumentNullException.ThrowIfNull(parentTransaction);

@@ -61,7 +61,7 @@ namespace Remotion.Mixins.Definitions
 
     public TValue this[TKey key]
     {
-      get { return ContainsKey(ArgumentUtility.CheckNotNull(nameof(key), key)) ? _items[key] : default(TValue)!; }
+      get { return ContainsKey(key ?? throw new ArgumentNullException(nameof(key))) ? _items[key] : default(TValue)!; }
     }
   }
 }

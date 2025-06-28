@@ -95,15 +95,15 @@ public class WxeMethodStep: WxeStep
 
   public WxeMethodStep (Action method)
       : this(
-          GetTargetFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)),
-          GetMethodFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)))
+          GetTargetFromDelegate(method ?? throw new ArgumentNullException(nameof(method))),
+          GetMethodFromDelegate(method ?? throw new ArgumentNullException(nameof(method))))
   {
   }
 
   public WxeMethodStep (Action<WxeContext> method)
       : this(
-          GetTargetFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)),
-          GetMethodFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)))
+          GetTargetFromDelegate(method ?? throw new ArgumentNullException(nameof(method))),
+          GetMethodFromDelegate(method ?? throw new ArgumentNullException(nameof(method))))
   {
   }
 

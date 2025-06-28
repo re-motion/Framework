@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         : base(
             modifiedEndPoint,
             null,
-            ArgumentUtility.CheckNotNull(nameof(addedObject), addedObject),
+            addedObject ?? throw new ArgumentNullException(nameof(addedObject)),
             transactionEventSink)
     {
       ArgumentNullException.ThrowIfNull(collectionData);

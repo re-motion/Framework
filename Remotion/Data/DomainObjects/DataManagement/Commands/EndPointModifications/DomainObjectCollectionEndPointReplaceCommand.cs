@@ -40,8 +40,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IClientTransactionEventSink transactionEventSink)
       : base(
             modifiedEndPoint,
-            ArgumentUtility.CheckNotNull(nameof(replacedObject), replacedObject),
-            ArgumentUtility.CheckNotNull(nameof(replacementObject), replacementObject),
+            replacedObject ?? throw new ArgumentNullException(nameof(replacedObject)),
+            replacementObject ?? throw new ArgumentNullException(nameof(replacementObject)),
             transactionEventSink)
     {
       _index = index;

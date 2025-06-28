@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private readonly ObservableDomainObjectCollectionDataDecorator _copiedData;
 
     public CopyOnWriteDomainObjectDomainObjectCollectionData (ObservableDomainObjectCollectionDataDecorator copiedData)
-      : base(ArgumentUtility.CheckNotNull(nameof(copiedData), copiedData))
+      : base(copiedData ?? throw new ArgumentNullException(nameof(copiedData)))
     {
       _copiedData = copiedData;
       _copiedData.CollectionChanging += delegate { CopyOnWrite(); };

@@ -49,10 +49,10 @@ public class AspNetCoreHostingStrategy : IHostingStrategy
   /// <param name="properties">The configuration properties.</param>
   /// <param name="loggerFactory">The <see cref="ILoggerFactory"/> used when creating an <see cref="ILogger"/>.</param>
   [UsedImplicitly]
-  public AspNetCoreHostingStrategy ( ITestSiteLayoutConfiguration testSiteLayoutConfiguration, IReadOnlyDictionary<string, string> properties, ILoggerFactory loggerFactory)
+  public AspNetCoreHostingStrategy (ITestSiteLayoutConfiguration testSiteLayoutConfiguration, IReadOnlyDictionary<string, string> properties, ILoggerFactory loggerFactory)
       : this(
-          ArgumentUtility.CheckNotNull(nameof(testSiteLayoutConfiguration), testSiteLayoutConfiguration),
-          int.Parse(ArgumentUtility.CheckNotNull(nameof(properties), properties)["port"]!),
+          testSiteLayoutConfiguration ?? throw new ArgumentNullException(nameof(testSiteLayoutConfiguration)),
+          int.Parse((properties ?? throw new ArgumentNullException(nameof(properties)))["port"]!),
           properties["hostname"],
           properties["useHttps"].Equals("true", StringComparison.OrdinalIgnoreCase))
   {

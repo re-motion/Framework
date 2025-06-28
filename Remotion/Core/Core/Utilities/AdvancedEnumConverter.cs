@@ -29,7 +29,7 @@ namespace Remotion.Utilities
     private readonly bool _isNullable;
 
     public AdvancedEnumConverter (Type enumType)
-        : base(Nullable.GetUnderlyingType(ArgumentUtility.CheckNotNull(nameof(enumType), enumType)) ?? enumType)
+        : base(Nullable.GetUnderlyingType(enumType ?? throw new ArgumentNullException(nameof(enumType))) ?? enumType)
     {
       _enumType = enumType;
       _underlyingType = Enum.GetUnderlyingType(UnderlyingEnumType);

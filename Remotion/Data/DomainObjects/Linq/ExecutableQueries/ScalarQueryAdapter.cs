@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
     private readonly Func<object?, T> _resultConversion;
 
     public ScalarQueryAdapter (IQuery query, Func<object?, T> resultConversion)
-      : base(ArgumentUtility.CheckNotNull(nameof(query), query))
+      : base(query ?? throw new ArgumentNullException(nameof(query)))
     {
       ArgumentNullException.ThrowIfNull(resultConversion);
 

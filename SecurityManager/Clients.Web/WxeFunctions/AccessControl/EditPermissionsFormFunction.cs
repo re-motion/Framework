@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl
   public class EditPermissionsFormFunction : FormFunction<SecurableClassDefinition>
   {
     public EditPermissionsFormFunction (ITransactionMode transactionMode, [NotNull] IDomainObjectHandle<SecurableClassDefinition> currentObjectHandle)
-        : base(transactionMode, ArgumentUtility.CheckNotNull(nameof(currentObjectHandle), currentObjectHandle))
+        : base(transactionMode, currentObjectHandle ?? throw new ArgumentNullException(nameof(currentObjectHandle)))
     {
     }
 

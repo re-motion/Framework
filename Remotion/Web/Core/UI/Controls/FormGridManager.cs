@@ -2358,7 +2358,7 @@ namespace Remotion.Web.UI.Controls
       if (!HasMarkersColumn)
         return;
 
-      ArgumentUtility.CheckNotNull("dataRow.MarkersCell", dataRow.MarkersCell!);
+      ArgumentNullException.ThrowIfNull(dataRow.MarkersCell!);
 
       //  HelpProvider takes left-hand side in column
 
@@ -2807,7 +2807,7 @@ namespace Remotion.Web.UI.Controls
     {
       ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull("dataRow.ValidationMessagesCell", dataRow.ValidationMessagesCell!);
+      ArgumentNullException.ThrowIfNull(dataRow.ValidationMessagesCell!);
 
       if (dataRow.ValidationErrors != null)
       {
