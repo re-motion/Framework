@@ -117,7 +117,7 @@ namespace Remotion.Web.UI.Controls
       if (postCollection[ControlHelper.PostEventSourceID] == UniqueID)
       {
         _tabToBeSelected = postCollection[ControlHelper.PostEventArgumentID];
-        ArgumentUtility.CheckNotNullOrEmpty("postCollection[\"__EVENTARGUMENT\"]", _tabToBeSelected!);
+        ArgumentException.ThrowIfNullOrEmpty(_tabToBeSelected, paramName: "postCollection[\"__EVENTARGUMENT\"]");
         if (_tabToBeSelected != _selectedItemID)
           return true;
       }

@@ -94,7 +94,7 @@ namespace Remotion.Utilities
         [InvokerParameterName] string argumentName,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] string actualValue)
     {
-      CheckNotNullOrEmpty(argumentName, actualValue);
+      ArgumentException.ThrowIfNullOrEmpty(actualValue, paramName: argumentName);
     }
 
     [AssertionMethod]

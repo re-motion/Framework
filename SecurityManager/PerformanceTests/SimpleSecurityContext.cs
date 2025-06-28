@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.PerformanceTests
         Dictionary<string, EnumWrapper> states,
         EnumWrapper[] abstractRoles)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(@class), @class);
+      ArgumentException.ThrowIfNullOrEmpty(@class);
       ArgumentNullException.ThrowIfNull(states);
       ArgumentNullException.ThrowIfNull(abstractRoles);
 

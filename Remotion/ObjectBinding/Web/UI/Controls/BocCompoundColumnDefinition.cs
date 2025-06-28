@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return serviceLocator.GetInstance<IBocCompoundColumnRenderer>();
     }
 
-    /// <summary>Gets or sets the text displayed in the column title. Must not be empty.</summary>
+    /// <summary>Gets or sets the text displayed in the column title. Must not be an empty <see cref="WebString"/>.</summary>
     /// <value>A <see cref="WebString"/> representing the title of this column.</value>
     [Description("The assigned value of the column title, must not be empty.")]
     [DefaultValue(typeof(WebString), "")]
@@ -121,7 +121,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return base.ColumnTitle; }
       set
       {
-        ArgumentUtility.CheckNotNullOrEmpty("ColumnTitle.Value", value.GetValue());
+        if (value.IsEmpty)
+          throw new ArgumentException("The value cannot be empty.", nameof(value));
+
         base.ColumnTitle = value;
       }
     }

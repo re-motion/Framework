@@ -78,11 +78,12 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     /// <overload> Overloaded. </overload>
     /// <param name="validatedControl"> The control with an invalid state. </param>
-    /// <param name="validationMessage"> The message to be displayed to the user. Must not be <see langword="null"/> or empty. </param>
+    /// <param name="validationMessage"> The message to be displayed to the user. Must not be an empty <see cref="PlainTextString"/>. </param>
     /// <param name="labels">The labels containing the control's headings.</param>
     public ValidationError (Control validatedControl, PlainTextString validationMessage, ControlCollection? labels)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationMessage), validationMessage.GetValue());
+      if (validationMessage.IsEmpty)
+        throw new ArgumentException("The value cannot be empty.", nameof(validationMessage));
 
       _validatedControl = validatedControl;
       _validationMessage = validationMessage;

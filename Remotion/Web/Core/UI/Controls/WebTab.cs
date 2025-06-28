@@ -178,7 +178,7 @@ public class WebTab: IWebTab, IControlStateManager
   }
 
   /// <summary> Gets or sets the text displayed in this tab. </summary>
-  /// <remarks> Must not be <see langword="null"/> or emtpy. The value will not be HTML encoded. </remarks>
+  /// <remarks> Must not be an empty <see cref="WebString"/>. The value will not be HTML encoded. </remarks>
   [PersistenceMode(PersistenceMode.Attribute)]
   [Category("Appearance")]
   [Description("The text displayed in this tab. Use '-' for a separator tab.")]
@@ -189,7 +189,8 @@ public class WebTab: IWebTab, IControlStateManager
     get { return _text; }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value.GetValue());
+      if (value.IsEmpty)
+        throw new ArgumentException("The value cannot be empty.", nameof(value));
       _text = value;
     }
   }
