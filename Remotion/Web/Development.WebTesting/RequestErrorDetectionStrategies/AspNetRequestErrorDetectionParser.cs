@@ -20,7 +20,6 @@ using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies

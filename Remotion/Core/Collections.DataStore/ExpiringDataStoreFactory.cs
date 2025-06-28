@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Collections.DataStore
 {

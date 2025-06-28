@@ -21,7 +21,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 

@@ -19,7 +19,6 @@ using System.Globalization;
 using JetBrains.Annotations;
 using OpenQA.Selenium.BiDi.Modules.Log;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession
 {

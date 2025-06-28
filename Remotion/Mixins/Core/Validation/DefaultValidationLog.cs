@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Mixins.Definitions;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Validation
 {

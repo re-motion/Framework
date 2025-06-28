@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 {

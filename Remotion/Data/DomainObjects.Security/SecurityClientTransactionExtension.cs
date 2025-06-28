@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Reflection;
 using Remotion.Security;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Security
 {

@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourceTests
 {

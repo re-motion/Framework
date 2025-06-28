@@ -20,7 +20,6 @@ using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Utilities;
 
 namespace Remotion.Validation.Implementation

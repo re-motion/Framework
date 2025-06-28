@@ -21,7 +21,6 @@ using System.Web.UI;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;

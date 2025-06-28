@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Linq.SqlBackend.SqlGeneration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq
 {

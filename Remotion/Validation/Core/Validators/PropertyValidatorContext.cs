@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Validators
 {

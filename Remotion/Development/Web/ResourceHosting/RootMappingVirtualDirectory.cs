@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Web.ResourceHosting
 {

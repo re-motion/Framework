@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Providers

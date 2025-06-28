@@ -21,7 +21,6 @@ using System.Globalization;
 using System.Reflection;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {

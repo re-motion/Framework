@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {

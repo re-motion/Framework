@@ -18,7 +18,6 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine

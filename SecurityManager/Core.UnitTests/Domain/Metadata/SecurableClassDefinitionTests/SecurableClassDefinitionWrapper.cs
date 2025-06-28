@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefinitionTests
 {

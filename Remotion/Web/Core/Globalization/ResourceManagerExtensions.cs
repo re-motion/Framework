@@ -16,7 +16,6 @@
 //
 using System;
 using Remotion.Globalization;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Globalization
 {

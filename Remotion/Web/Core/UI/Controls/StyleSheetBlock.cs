@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {

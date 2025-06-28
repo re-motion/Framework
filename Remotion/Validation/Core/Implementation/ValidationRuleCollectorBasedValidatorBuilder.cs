@@ -20,7 +20,6 @@ using System.Linq;
 using System.Text;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;

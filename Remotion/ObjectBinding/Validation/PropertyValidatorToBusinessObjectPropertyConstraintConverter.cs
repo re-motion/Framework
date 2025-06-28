@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.ObjectBinding.Validation

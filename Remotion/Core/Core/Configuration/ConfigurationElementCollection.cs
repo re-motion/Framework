@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Configuration
 {

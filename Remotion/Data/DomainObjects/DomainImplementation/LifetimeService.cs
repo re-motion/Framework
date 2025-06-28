@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation
 {

@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
 {

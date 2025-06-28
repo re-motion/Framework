@@ -4,7 +4,6 @@ using System;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Remotion.Obsolete;
-using Remotion.Utilities;
 
 namespace Remotion.Logging;
 

@@ -26,7 +26,6 @@ using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Globalization;
 

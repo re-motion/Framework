@@ -22,7 +22,6 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI;

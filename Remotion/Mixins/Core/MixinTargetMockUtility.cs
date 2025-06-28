@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting
 {

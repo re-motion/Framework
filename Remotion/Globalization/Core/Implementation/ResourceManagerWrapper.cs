@@ -23,9 +23,7 @@ using System.Globalization;
 using System.Linq;
 using System.Resources;
 using Microsoft.Extensions.Logging;
-using Remotion.Collections;
 using Remotion.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {

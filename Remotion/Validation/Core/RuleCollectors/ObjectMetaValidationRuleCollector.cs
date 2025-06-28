@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 
 namespace Remotion.Validation.RuleCollectors

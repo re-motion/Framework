@@ -19,7 +19,6 @@ using System.IO;
 using System.Threading;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Firefox;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default;

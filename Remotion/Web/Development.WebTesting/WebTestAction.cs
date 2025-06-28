@@ -19,7 +19,6 @@ using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 
 namespace Remotion.Web.Development.WebTesting

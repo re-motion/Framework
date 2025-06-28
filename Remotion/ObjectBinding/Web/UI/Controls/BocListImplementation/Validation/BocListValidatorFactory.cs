@@ -20,7 +20,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {

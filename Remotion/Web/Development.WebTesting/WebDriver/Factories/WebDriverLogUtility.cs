@@ -17,7 +17,6 @@
 using System;
 using System.IO;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 {

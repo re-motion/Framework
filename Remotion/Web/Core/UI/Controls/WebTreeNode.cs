@@ -19,7 +19,6 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.Utilities;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI.Globalization;
 

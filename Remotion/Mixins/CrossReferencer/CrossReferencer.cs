@@ -27,7 +27,6 @@ using Remotion.Mixins.Validation;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
 {

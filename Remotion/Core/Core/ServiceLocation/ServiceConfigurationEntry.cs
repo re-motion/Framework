@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
 {

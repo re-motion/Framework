@@ -24,7 +24,6 @@ using Remotion.ServiceLocation;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {

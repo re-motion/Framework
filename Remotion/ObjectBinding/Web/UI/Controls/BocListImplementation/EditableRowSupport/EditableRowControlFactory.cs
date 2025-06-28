@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using Remotion.Mixins;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport

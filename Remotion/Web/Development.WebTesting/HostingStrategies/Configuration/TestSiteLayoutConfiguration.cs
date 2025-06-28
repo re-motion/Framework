@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration

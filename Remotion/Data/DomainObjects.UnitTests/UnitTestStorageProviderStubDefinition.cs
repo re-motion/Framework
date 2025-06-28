@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {

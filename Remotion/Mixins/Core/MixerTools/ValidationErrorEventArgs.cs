@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Mixins.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.MixerTools
 {

@@ -19,7 +19,6 @@ using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {

@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {

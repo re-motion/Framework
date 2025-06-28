@@ -20,7 +20,6 @@ using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {

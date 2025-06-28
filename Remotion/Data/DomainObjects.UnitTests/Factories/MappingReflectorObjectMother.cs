@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {

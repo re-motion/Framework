@@ -23,7 +23,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Globalization;

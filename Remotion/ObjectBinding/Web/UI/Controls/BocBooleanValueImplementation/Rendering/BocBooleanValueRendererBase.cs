@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Globalization;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls.Rendering;
 

@@ -23,7 +23,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;

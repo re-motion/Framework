@@ -20,7 +20,6 @@ using System.Diagnostics.CodeAnalysis;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe.Implementation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Mixins.Implementation

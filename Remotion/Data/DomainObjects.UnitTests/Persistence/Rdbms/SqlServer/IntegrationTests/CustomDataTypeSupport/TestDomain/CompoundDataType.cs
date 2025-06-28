@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain
 {

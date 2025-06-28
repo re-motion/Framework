@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Specialized;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect
 {

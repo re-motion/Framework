@@ -21,7 +21,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.Data.SqlClient;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {

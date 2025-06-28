@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Mixins.Implementation

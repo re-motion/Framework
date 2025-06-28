@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI.HtmlControls;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure

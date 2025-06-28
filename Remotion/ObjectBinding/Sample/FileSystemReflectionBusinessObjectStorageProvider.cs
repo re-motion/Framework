@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
 {

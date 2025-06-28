@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain
 {

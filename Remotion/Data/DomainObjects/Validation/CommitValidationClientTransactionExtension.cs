@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {

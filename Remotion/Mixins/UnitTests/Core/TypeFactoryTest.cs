@@ -17,7 +17,6 @@
 using System;
 using System.Runtime.CompilerServices;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.TypePipe.Implementation;
 

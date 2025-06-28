@@ -20,7 +20,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Web.UI;
 using Remotion.Globalization;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;

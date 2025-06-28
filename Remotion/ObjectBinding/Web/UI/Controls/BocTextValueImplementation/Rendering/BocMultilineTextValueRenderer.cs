@@ -20,7 +20,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;

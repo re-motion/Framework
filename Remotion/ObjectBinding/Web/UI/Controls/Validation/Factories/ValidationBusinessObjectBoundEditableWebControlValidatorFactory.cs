@@ -29,7 +29,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Val
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 {

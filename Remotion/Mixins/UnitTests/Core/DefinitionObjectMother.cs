@@ -24,7 +24,6 @@ using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.TypePipe.MutableReflection.Implementation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core
 {

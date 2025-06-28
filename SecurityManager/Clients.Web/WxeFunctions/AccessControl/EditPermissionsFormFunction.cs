@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.SecurityManager.Clients.Web.UI.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.AccessControl

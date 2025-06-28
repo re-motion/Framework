@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands
 {

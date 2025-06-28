@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {

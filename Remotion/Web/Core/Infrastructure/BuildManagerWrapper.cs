@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Web;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Infrastructure
 {

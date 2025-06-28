@@ -18,7 +18,6 @@ using System;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;

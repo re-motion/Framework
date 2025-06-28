@@ -17,7 +17,6 @@
 using System;
 using System.Linq.Expressions;
 using NUnit.Framework.Constraints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.UnitTesting
 {

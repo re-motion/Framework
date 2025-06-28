@@ -27,7 +27,6 @@ using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Mixins;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {

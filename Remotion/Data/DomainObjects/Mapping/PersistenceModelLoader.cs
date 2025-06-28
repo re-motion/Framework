@@ -19,7 +19,6 @@ using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {

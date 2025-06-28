@@ -20,7 +20,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Attributes.MetaValidation;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.MetaValidation;

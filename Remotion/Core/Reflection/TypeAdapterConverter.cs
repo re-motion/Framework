@@ -18,7 +18,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection
 {

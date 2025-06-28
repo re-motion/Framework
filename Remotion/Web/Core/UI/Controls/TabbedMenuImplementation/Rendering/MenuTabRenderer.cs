@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Specialized;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Hotkey;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;

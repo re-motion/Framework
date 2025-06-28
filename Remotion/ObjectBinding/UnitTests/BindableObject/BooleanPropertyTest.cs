@@ -24,7 +24,6 @@ using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {

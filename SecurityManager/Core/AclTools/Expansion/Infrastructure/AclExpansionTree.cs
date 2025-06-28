@@ -21,7 +21,6 @@ using Remotion.Collections;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 {

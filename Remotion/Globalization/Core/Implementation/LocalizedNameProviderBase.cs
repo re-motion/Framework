@@ -26,7 +26,6 @@ using System.Resources;
 using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using NotNullAttribute = JetBrains.Annotations.NotNullAttribute;
 
 namespace Remotion.Globalization.Implementation

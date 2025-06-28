@@ -21,7 +21,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {

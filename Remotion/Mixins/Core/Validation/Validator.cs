@@ -20,7 +20,6 @@ using System.Reflection;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation.Rules;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Validation
 {

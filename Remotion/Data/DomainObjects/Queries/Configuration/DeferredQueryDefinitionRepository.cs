@@ -19,7 +19,6 @@ using System.Linq;
 using System.Threading;
 using Remotion.Data.DomainObjects.Queries.Configuration.Loader;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
 {

@@ -20,7 +20,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Remotion.Collections;
 using Remotion.Mixins.CodeGeneration.Serialization;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {

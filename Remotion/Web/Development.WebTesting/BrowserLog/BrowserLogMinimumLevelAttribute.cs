@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 
 namespace Remotion.Web.Development.WebTesting.BrowserLog;

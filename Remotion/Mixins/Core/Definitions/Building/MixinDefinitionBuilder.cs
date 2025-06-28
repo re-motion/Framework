@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Utilities;
-using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.Mixins.Definitions.Building

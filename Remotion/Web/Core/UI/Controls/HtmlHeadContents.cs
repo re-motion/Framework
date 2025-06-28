@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.HtmlHeadContentsImplementation;
 using Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering;

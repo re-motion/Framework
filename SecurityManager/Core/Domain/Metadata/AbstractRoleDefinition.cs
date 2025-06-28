@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Security;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {

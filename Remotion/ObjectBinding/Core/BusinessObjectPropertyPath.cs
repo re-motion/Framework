@@ -18,7 +18,6 @@ using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {

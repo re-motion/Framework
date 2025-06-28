@@ -17,7 +17,6 @@
 using System;
 using System.Runtime.Serialization;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.Serialization
 {

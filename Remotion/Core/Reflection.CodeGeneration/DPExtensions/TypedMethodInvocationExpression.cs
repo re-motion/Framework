@@ -19,7 +19,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.DPExtensions
 {

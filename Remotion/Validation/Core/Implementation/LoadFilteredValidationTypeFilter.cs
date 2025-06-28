@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {

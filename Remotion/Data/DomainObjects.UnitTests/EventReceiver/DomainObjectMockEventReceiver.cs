@@ -16,7 +16,6 @@
 // 
 using System;
 using Moq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {

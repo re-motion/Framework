@@ -16,7 +16,6 @@
 // 
 using System;
 using System.IO;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting
 {

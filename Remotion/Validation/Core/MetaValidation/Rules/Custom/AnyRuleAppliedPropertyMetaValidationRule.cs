@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Attributes.MetaValidation;
 using Remotion.Validation.Validators;
 

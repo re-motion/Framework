@@ -21,7 +21,6 @@ using System.Linq;
 using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq;
 

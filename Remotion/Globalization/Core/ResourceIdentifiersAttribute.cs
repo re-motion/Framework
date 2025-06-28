@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {

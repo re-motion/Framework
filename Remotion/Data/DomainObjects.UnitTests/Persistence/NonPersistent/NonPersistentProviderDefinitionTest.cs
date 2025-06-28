@@ -1,9 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
-using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
-using Remotion.Development.UnitTesting.Configuration;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
 {

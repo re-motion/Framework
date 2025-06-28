@@ -6,7 +6,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Primitives;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ContentSecurityPolicy;
 

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Security
 {

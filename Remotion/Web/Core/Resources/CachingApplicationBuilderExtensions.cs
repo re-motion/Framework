@@ -18,7 +18,6 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Options;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Resources;
 

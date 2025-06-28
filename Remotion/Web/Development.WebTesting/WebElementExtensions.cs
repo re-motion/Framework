@@ -18,7 +18,6 @@ using OpenQA.Selenium;
 using System;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Support.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {

@@ -10,7 +10,6 @@ using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.IntegrationTests.ContentSecurityPolicy;
 

@@ -19,7 +19,6 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Xml
 {

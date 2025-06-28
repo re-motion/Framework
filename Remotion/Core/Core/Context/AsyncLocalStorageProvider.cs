@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Threading;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Context
 {

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering

@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {

@@ -19,7 +19,6 @@ using System.Linq.Expressions;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.EnablingClassIDsInAllForeignKeys
 {

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries
 {

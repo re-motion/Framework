@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 {

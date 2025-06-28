@@ -21,7 +21,6 @@ using System.Linq;
 using System.Threading;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Attributes;
 
 namespace Remotion.Validation.Implementation

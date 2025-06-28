@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation
 {

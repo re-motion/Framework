@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 

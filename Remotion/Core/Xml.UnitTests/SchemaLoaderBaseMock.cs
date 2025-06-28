@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Xml.Schema;
-using Remotion.Utilities;
 
 namespace Remotion.Xml.UnitTests
 {

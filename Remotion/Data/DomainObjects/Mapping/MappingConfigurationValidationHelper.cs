@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {

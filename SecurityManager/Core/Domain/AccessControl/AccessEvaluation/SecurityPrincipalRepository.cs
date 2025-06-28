@@ -18,7 +18,6 @@ using System;
 using Remotion.Collections.Caching;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {

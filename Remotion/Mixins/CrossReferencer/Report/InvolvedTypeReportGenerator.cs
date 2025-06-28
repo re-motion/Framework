@@ -19,7 +19,6 @@ using System.Reflection;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Utilities;
-using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.Mixins.CrossReferencer.Report

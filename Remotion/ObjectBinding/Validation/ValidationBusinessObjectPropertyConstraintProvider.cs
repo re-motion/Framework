@@ -4,7 +4,6 @@ using System.Linq;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation;
 using Remotion.Validation.Rules;
 

@@ -22,7 +22,6 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
 using Remotion.Web.Development.WebTesting.Utilities;
 

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Xml;
-using Remotion.Utilities;
 
 namespace Remotion.Security.UnitTests.XmlAsserter
 {

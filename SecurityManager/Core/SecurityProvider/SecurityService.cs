@@ -23,7 +23,6 @@ using Remotion.Security;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager
 {

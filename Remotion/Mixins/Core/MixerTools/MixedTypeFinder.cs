@@ -21,7 +21,6 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Mixins.Context;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.MixerTools
 {

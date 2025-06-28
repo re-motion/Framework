@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Text;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Data.SqlClient
 {

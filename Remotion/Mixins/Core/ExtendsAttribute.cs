@@ -19,7 +19,6 @@ using JetBrains.Annotations;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {

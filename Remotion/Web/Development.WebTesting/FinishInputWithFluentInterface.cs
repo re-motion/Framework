@@ -15,9 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Threading;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {

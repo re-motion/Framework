@@ -20,7 +20,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.Resources

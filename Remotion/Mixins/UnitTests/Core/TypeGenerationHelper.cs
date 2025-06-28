@@ -22,7 +22,6 @@ using Remotion.Mixins.Context;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core
 {

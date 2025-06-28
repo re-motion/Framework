@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 
 namespace Remotion.Web.ContentSecurityPolicy;

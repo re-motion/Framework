@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Context;
 using Remotion.Data.DomainObjects;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain
 {

@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ObjectBinding.BindableObject;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {

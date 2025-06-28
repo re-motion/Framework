@@ -19,7 +19,6 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms

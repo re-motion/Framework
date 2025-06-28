@@ -23,7 +23,6 @@ using System.Web.Caching;
 using System.Web.UI;
 using System.Web.UI.Adapters;
 using System.Web.UI.HtmlControls;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 
 namespace Remotion.Web.Infrastructure

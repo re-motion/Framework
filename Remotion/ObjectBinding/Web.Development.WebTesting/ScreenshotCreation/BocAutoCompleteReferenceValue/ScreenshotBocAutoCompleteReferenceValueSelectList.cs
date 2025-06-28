@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 

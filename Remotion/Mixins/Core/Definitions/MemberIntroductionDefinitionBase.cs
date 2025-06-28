@@ -17,7 +17,6 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {

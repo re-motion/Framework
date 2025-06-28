@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {

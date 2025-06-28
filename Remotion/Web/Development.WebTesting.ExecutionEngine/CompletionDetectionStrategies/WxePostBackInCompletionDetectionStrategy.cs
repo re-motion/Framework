@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies
 {

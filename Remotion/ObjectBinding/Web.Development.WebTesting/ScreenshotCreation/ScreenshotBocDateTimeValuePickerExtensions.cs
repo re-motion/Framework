@@ -19,7 +19,6 @@ using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 

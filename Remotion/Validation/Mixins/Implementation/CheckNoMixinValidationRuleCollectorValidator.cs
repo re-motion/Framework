@@ -17,7 +17,6 @@
 using System;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Mixins.Implementation

@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Validation.Results;
 
 namespace Remotion.Data.DomainObjects.Validation

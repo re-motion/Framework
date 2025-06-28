@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation;
 
 namespace Remotion.Data.DomainObjects.Validation

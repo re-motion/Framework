@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {

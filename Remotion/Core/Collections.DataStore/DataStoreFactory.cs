@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Collections.DataStore
 {

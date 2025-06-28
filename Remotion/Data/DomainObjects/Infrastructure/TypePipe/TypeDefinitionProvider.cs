@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {

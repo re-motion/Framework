@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.Implementation;
 

@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Development.UnitTesting;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Data.UnitTesting.DomainObjects
 {

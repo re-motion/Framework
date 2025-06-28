@@ -19,7 +19,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;

@@ -20,7 +20,6 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 

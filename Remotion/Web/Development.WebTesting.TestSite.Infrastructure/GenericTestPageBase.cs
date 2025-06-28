@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.ExecutionEngine;
 

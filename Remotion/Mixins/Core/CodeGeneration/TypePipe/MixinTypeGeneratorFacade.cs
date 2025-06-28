@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using Remotion.Mixins.Definitions;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe.TypeAssembly;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {

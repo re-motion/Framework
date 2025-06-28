@@ -22,7 +22,6 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {

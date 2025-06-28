@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 {

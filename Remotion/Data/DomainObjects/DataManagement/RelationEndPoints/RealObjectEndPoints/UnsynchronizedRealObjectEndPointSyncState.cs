@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjectEndPoints
 {

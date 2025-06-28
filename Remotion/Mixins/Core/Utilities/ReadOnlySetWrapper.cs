@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.Collections

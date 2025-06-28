@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {

@@ -19,15 +19,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.ExceptionServices;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Globalization
 {

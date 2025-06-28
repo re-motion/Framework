@@ -20,7 +20,6 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.SmartPageImplementation

@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Utilities
 {

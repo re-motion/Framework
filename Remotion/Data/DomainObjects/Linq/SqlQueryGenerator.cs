@@ -22,7 +22,6 @@ using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq
 {

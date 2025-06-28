@@ -20,7 +20,6 @@ using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {

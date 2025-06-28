@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Results;
 using Remotion.Validation.Validators;
 

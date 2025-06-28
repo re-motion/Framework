@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {

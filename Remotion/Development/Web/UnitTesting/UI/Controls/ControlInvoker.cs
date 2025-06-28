@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI;
 using Remotion.Development.UnitTesting;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Web.UnitTesting.UI.Controls
 {

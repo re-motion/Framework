@@ -17,7 +17,6 @@
 using System;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {

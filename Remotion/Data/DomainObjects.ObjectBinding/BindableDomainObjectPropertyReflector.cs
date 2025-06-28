@@ -22,7 +22,6 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using ParamList = Remotion.TypePipe.ParamList;
 using PropertyReflector = Remotion.ObjectBinding.BindableObject.PropertyReflector;
 

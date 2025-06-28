@@ -17,7 +17,6 @@
 using System;
 using Remotion.Collections;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {

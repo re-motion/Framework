@@ -20,7 +20,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.Security;
-using Remotion.Utilities;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI.Globalization;
 

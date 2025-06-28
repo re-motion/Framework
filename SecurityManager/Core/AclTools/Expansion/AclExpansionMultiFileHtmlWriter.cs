@@ -21,7 +21,6 @@ using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
 using Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Globalization.AclTools.Expansion;
-using Remotion.Utilities;
 
 
 namespace Remotion.SecurityManager.AclTools.Expansion

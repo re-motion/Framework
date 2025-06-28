@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Globalization;

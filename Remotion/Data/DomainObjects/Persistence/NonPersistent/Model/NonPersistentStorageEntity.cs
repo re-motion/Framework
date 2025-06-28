@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Model
 {

@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {

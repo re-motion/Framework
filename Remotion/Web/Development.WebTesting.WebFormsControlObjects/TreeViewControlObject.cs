@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
 

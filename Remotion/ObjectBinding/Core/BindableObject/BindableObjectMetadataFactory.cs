@@ -19,7 +19,6 @@ using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {

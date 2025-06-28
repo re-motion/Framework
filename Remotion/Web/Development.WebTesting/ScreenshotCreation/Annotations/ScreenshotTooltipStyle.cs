@@ -17,7 +17,6 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Resources;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;

@@ -21,7 +21,6 @@ using Coypu.Drivers;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium.Edge;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.BrowserSession.Edge;
 using Remotion.Web.Development.WebTesting.Configuration;

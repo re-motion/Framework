@@ -19,7 +19,6 @@ using System.Collections;
 using System.IO;
 using System.Web;
 using System.Web.Hosting;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Web.ResourceHosting
 {

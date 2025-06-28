@@ -19,7 +19,6 @@ using System.Configuration;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration.Legacy;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 

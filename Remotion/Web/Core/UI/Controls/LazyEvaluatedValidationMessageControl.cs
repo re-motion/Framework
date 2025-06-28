@@ -18,7 +18,6 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {

@@ -3,9 +3,7 @@
 using System;
 using System.Drawing;
 using Microsoft.Maui.Graphics.Skia;
-using Remotion.Utilities;
 using SkiaSharp;
-using SizeF = System.Drawing.SizeF;
 using MauiHorizontalAlignment = Microsoft.Maui.Graphics.HorizontalAlignment;
 using MauiVerticalAlignment = Microsoft.Maui.Graphics.VerticalAlignment;
 using MauiTextFlow = Microsoft.Maui.Graphics.TextFlow;

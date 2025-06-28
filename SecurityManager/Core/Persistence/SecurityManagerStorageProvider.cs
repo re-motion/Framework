@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.SecurityManager.Domain;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Persistence
 {

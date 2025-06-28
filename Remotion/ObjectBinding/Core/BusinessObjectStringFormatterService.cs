@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.Text;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {

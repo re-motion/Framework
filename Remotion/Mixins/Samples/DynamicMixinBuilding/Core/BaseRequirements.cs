@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Castle.DynamicProxy;
 using Remotion.Reflection.CodeGeneration;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 {

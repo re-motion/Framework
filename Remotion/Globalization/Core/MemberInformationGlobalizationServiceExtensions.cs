@@ -18,7 +18,6 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {

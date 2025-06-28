@@ -20,7 +20,6 @@ using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.TypePipe
 {

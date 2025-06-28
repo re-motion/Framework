@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {

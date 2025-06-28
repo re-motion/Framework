@@ -21,7 +21,6 @@ using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting;

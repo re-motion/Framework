@@ -20,7 +20,6 @@ using Coypu;
 using Coypu.Drivers;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Firefox;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.BrowserSession.Firefox;
 using Remotion.Web.Development.WebTesting.Configuration;

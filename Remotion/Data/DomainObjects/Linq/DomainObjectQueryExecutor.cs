@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Linq;
 using Remotion.Linq.EagerFetching;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq
 {

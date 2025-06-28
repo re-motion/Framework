@@ -19,7 +19,6 @@ using JetBrains.Annotations;
 using Remotion.ExtensibleEnums;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.ExtensibleEnums
 {

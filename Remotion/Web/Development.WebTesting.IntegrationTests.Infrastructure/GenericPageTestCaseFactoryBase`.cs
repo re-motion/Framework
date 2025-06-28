@@ -20,7 +20,6 @@ using System.Reflection;
 using System.Text.Json;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {

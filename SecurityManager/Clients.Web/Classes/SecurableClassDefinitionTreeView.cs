@@ -19,7 +19,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 

@@ -18,7 +18,6 @@ using System;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering

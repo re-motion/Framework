@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 {

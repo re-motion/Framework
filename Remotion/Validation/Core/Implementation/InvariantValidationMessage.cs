@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Globalization;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {

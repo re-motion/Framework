@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 {

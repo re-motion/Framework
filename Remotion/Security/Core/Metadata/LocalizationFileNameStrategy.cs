@@ -17,7 +17,6 @@
 using System;
 using System.Globalization;
 using System.IO;
-using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {

@@ -19,7 +19,6 @@ using System.Drawing;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;

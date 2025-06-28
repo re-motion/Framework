@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Text.RegularExpressions;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 {

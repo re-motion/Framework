@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.ExtensibleEnums;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject.Properties
 {

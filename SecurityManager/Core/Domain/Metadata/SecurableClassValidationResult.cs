@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Remotion.SecurityManager.Domain.AccessControl;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {

@@ -19,7 +19,6 @@ using System.Linq;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {

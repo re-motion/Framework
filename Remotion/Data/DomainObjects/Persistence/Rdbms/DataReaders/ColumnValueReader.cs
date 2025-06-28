@@ -17,7 +17,6 @@
 using System;
 using System.Data;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {

@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 {

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Threading;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ExtensibleEnums;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 {

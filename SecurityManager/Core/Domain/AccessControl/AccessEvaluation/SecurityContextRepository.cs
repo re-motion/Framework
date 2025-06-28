@@ -16,13 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {

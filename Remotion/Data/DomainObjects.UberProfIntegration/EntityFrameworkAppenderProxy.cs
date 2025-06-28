@@ -17,7 +17,6 @@
 using System;
 using System.Data;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
 {

@@ -20,7 +20,6 @@ using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using ClassReflector = Remotion.ObjectBinding.BindableObject.ClassReflector;
 using ParamList = Remotion.TypePipe.ParamList;
 using PropertyReflector = Remotion.ObjectBinding.BindableObject.PropertyReflector;

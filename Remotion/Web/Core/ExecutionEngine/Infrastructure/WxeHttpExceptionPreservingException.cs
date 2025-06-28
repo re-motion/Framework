@@ -17,7 +17,6 @@
 using System;
 using System.Web;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {

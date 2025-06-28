@@ -16,7 +16,6 @@
 // 
 using System;
 using Coypu;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
 {

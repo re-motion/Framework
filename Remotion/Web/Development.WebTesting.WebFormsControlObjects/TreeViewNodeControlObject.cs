@@ -19,7 +19,6 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;

@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Context;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests
 {

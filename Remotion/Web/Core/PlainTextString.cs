@@ -18,7 +18,6 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web
 {

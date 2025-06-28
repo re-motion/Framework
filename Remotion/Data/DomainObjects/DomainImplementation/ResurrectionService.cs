@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation
 {

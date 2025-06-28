@@ -20,7 +20,6 @@ using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Security;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;

@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {

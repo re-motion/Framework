@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation

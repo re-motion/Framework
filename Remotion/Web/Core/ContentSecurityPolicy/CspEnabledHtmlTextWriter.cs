@@ -20,7 +20,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Web;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;

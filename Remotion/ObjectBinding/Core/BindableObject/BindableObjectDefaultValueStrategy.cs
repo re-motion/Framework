@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ObjectBinding.BindableObject.Properties;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {

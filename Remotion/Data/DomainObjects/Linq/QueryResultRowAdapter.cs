@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Linq.SqlBackend.SqlGeneration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq
 {

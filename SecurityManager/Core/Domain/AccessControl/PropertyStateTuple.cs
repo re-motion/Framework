@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {

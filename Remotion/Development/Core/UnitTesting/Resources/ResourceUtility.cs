@@ -17,7 +17,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Resources
 {

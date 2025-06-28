@@ -18,7 +18,6 @@ using System;
 using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {

@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTests
 {

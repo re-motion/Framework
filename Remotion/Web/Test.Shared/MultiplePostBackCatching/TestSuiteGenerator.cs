@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.PostBackTargets;
 using Remotion.Web.Utilities;
 

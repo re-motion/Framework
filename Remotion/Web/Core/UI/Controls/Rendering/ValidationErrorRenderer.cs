@@ -20,7 +20,6 @@ using System.Linq;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 
 namespace Remotion.Web.UI.Controls.Rendering

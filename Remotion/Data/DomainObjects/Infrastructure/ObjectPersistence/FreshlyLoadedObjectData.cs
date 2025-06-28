@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {

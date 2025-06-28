@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {

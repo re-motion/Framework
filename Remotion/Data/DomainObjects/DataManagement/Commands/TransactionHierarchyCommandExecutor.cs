@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands
 {

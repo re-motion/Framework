@@ -16,7 +16,6 @@
 //
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation

@@ -18,7 +18,6 @@ using System;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 

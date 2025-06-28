@@ -3,7 +3,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 #nullable enable
 // ReSharper disable once CheckNamespace

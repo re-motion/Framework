@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {

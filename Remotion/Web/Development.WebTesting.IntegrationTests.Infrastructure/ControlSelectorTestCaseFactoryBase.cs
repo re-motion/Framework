@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 

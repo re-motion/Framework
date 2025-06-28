@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
-using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;

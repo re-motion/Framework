@@ -18,7 +18,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using Remotion.Data.DomainObjects.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries
 {

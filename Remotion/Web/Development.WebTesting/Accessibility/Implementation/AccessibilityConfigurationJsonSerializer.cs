@@ -17,7 +17,6 @@
 using System;
 using System.Text;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
 {

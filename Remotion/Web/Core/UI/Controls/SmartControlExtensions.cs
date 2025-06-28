@@ -16,7 +16,6 @@
 // //
 using System;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {

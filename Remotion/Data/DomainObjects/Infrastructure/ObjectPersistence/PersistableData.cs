@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {

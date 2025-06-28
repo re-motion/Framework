@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {

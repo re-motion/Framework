@@ -4,7 +4,6 @@ using System;
 using System.Linq.Expressions;
 using Moq;
 using NUnit.Framework;
-using Remotion.Utilities;
 
 #nullable enable
 // ReSharper disable once CheckNamespace

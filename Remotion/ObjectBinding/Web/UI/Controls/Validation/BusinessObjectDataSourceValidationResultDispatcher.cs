@@ -4,7 +4,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {

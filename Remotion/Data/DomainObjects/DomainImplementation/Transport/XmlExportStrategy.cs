@@ -18,7 +18,6 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 {

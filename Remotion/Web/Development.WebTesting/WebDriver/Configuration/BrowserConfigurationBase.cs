@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;

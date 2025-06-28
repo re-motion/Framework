@@ -19,7 +19,6 @@ using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Development.UnitTesting;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 {

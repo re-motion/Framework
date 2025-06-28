@@ -16,7 +16,6 @@
 // 
 using System;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
 {

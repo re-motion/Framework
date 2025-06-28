@@ -26,7 +26,6 @@ using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.Metadata;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {

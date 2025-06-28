@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 

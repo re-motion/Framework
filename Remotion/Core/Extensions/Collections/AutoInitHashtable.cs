@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
-using Remotion.Utilities;
 
 namespace Remotion.Collections
 {

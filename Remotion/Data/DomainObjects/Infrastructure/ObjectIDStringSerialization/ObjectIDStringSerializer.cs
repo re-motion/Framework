@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 {

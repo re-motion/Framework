@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 {

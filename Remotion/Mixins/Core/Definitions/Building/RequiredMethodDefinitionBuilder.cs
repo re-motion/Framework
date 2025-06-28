@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions.Building
 {

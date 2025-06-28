@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.ListMenuImplementation;
 using Remotion.Web.UI.Controls.ListMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;

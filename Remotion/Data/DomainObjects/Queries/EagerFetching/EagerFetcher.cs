@@ -20,7 +20,6 @@ using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 {

@@ -16,7 +16,6 @@
 //
 using System;
 using System.Globalization;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.RuleCollectors

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {

@@ -20,7 +20,6 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {

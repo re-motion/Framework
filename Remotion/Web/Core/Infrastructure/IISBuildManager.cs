@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Web.Compilation;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Infrastructure
 {

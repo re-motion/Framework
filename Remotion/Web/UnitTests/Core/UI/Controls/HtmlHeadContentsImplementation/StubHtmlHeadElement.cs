@@ -17,7 +17,6 @@
 
 using System;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation

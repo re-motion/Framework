@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Mixins.CodeGeneration.Serialization;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration
 {

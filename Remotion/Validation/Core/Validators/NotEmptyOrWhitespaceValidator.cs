@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 

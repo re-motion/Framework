@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Collections;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {

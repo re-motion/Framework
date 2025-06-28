@@ -21,7 +21,6 @@ using Coypu.Drivers;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium.Chrome;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.BrowserSession.Chrome;
 using Remotion.Web.Development.WebTesting.Configuration;

@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 

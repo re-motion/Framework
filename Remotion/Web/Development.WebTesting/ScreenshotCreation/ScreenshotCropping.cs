@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Drawing;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {

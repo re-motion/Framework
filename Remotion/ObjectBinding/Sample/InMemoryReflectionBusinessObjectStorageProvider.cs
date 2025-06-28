@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Remotion.Collections;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
 {

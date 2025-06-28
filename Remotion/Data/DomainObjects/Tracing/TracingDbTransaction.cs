@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Data;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {

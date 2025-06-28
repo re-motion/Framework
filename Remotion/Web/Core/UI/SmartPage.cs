@@ -22,7 +22,6 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Compilation;
 using Remotion.Web.ContentSecurityPolicy;
 using Remotion.Web.Infrastructure;

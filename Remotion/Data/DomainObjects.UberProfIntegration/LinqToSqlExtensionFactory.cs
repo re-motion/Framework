@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Tracing;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
 {

@@ -16,7 +16,6 @@
 //
 using System;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
 {

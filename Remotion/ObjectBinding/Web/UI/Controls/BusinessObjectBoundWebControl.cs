@@ -24,7 +24,6 @@ using System.Web.UI.WebControls;
 using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;

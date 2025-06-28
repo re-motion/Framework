@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {

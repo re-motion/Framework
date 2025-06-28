@@ -21,9 +21,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure

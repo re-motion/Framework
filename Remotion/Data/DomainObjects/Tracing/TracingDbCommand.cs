@@ -20,7 +20,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {

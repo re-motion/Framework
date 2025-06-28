@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {

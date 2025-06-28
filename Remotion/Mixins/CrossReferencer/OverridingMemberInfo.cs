@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
 {

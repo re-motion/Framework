@@ -21,7 +21,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Utilities;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {

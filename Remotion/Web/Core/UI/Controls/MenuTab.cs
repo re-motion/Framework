@@ -21,7 +21,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation;
 using Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;

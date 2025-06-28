@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Mixins.Definitions;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {

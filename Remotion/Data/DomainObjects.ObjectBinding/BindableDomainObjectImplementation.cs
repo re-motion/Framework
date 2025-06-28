@@ -17,7 +17,6 @@
 using System;
 using Remotion.Mixins;
 using Remotion.ObjectBinding;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding
 {

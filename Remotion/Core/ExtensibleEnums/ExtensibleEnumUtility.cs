@@ -18,7 +18,6 @@ using System;
 using Remotion.ExtensibleEnums.Infrastructure;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ExtensibleEnums
 {

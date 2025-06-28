@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Web;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Web.ResourceHosting
 {

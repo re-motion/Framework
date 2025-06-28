@@ -22,7 +22,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Security;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;

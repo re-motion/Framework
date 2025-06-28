@@ -19,7 +19,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
 {

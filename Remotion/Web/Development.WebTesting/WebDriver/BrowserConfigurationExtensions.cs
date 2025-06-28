@@ -17,7 +17,6 @@
 using System;
 using Coypu.Drivers;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;

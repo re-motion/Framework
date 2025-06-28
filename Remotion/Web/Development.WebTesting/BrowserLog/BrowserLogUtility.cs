@@ -16,7 +16,6 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,7 +23,6 @@ using System.Threading;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;

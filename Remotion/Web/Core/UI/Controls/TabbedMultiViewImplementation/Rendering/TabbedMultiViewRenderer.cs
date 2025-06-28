@@ -21,7 +21,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.Utilities;

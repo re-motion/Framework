@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {

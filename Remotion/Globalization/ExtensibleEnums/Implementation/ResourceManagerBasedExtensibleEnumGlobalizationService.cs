@@ -21,7 +21,6 @@ using System.Globalization;
 using Remotion.ExtensibleEnums;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.ExtensibleEnums.Implementation
 {

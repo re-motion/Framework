@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Coypu;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 

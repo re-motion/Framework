@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Linq.SqlBackend.SqlPreparation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 {

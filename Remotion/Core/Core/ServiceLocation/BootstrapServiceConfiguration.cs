@@ -22,7 +22,6 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Remotion.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
 {

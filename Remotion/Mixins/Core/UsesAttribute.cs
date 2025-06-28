@@ -17,7 +17,6 @@
 using System;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {

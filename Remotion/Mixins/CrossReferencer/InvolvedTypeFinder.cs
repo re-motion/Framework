@@ -18,12 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.Validation;
-using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.Mixins.CrossReferencer

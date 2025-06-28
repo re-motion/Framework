@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects

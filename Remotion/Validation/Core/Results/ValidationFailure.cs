@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
 {

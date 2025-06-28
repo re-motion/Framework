@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
 using Remotion.ObjectBinding;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {

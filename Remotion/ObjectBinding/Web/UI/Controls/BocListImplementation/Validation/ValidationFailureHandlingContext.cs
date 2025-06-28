@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {

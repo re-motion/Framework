@@ -20,7 +20,6 @@ using System.Configuration;
 using Remotion.Configuration.TypeDiscovery;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeResolution;
-using Remotion.Utilities;
 
 namespace Remotion.Configuration.TypeResolution
 {

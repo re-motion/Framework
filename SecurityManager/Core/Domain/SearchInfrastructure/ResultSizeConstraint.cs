@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 {

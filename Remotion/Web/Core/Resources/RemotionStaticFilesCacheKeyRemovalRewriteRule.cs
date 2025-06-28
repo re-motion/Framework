@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Rewrite;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Resources;
 

@@ -21,7 +21,6 @@ using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {

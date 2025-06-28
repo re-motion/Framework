@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Validators;

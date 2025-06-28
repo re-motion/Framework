@@ -18,7 +18,6 @@ using System;
 using System.Collections.Concurrent;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {

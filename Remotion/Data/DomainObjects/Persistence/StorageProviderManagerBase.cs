@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {

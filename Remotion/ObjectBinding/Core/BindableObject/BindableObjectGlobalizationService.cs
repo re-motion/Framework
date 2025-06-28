@@ -21,7 +21,6 @@ using Remotion.Globalization;
 using Remotion.Globalization.ExtensibleEnums;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {

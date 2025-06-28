@@ -20,7 +20,6 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Utilities
 {

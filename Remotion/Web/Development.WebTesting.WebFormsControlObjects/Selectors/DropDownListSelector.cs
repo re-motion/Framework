@@ -16,7 +16,6 @@
 // 
 using System;
 using Coypu;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 

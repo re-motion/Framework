@@ -19,7 +19,6 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Internal;
 using Remotion.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Configuration
 {

@@ -21,7 +21,6 @@ using System.Linq;
 using System.Reflection;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {

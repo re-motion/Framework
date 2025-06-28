@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 {

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine

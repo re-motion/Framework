@@ -21,7 +21,6 @@ using System.Configuration;
 using System.Linq;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Remotion.Utilities;
 
 namespace Remotion.Configuration.TypeDiscovery
 {

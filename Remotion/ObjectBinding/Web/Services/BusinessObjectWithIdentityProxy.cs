@@ -17,7 +17,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Services
 {

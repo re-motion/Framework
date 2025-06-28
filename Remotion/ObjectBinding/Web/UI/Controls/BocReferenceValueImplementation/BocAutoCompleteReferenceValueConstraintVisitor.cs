@@ -1,6 +1,5 @@
 ﻿using System;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 {

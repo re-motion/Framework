@@ -18,7 +18,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Resources
 {

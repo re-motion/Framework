@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects;
 using Remotion.FunctionalProgramming;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {

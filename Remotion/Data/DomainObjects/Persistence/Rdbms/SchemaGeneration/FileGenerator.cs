@@ -17,7 +17,6 @@
 using System;
 using System.IO;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {

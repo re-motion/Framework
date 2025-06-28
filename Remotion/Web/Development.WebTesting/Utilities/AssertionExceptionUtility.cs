@@ -18,7 +18,6 @@ using System;
 using System.Runtime.CompilerServices;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {

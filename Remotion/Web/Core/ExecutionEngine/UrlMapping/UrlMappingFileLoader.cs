@@ -20,7 +20,6 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Schemas;
 using Remotion.Xml;
 

@@ -18,7 +18,6 @@ using System;
 using Coypu;
 using Microsoft.Extensions.Logging;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects

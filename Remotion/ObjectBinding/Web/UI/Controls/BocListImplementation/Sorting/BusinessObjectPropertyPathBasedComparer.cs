@@ -21,7 +21,6 @@ using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 {

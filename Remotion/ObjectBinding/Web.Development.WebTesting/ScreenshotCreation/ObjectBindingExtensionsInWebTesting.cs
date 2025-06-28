@@ -18,7 +18,6 @@ using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 // ReSharper disable once CheckNamespace

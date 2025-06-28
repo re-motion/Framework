@@ -23,7 +23,6 @@ using Remotion.Globalization.Implementation;
 using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Mixins
 {

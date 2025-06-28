@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding
 {

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using log4net;
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using OpenQA.Selenium;

@@ -20,7 +20,6 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;

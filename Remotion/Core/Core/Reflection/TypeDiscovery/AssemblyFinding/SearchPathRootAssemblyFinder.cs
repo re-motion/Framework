@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 {

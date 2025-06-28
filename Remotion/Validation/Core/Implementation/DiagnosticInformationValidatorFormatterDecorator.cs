@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using System.Text;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation

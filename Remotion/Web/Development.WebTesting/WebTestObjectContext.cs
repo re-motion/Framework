@@ -18,7 +18,6 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 
 namespace Remotion.Web.Development.WebTesting

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;

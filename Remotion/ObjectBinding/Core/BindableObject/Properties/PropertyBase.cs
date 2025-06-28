@@ -21,7 +21,6 @@ using System.Threading;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject.Properties
 {
