@@ -29,6 +29,14 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
   /// </summary>
   public class ChromeBrowserSession : BrowserSessionBase<IChromeConfiguration>
   {
+    public static void ApplyDefaultWebTestFeatures (
+        WebTestFeatureCollection features,
+        IBrowserSession browserSession)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserSession);
+    }
+
     private readonly IReadOnlyCollection<IBrowserSessionCleanUpStrategy> _cleanUpStrategies;
     private readonly List<BrowserLogEntry> _browserLogEntries = new();
 
@@ -41,6 +49,8 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
         : base(value, configuration, driverProcessID, headless)
     {
       _cleanUpStrategies = cleanUpStrategies ?? Array.Empty<IBrowserSessionCleanUpStrategy>();
+
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
 
     /// <inheritdoc />

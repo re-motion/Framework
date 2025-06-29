@@ -34,6 +34,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
   /// </summary>
   public class FirefoxConfiguration : BrowserConfigurationBase, IFirefoxConfiguration
   {
+    public static void ApplyDefaultWebTestFeatures (
+        WebTestFeatureCollection features,
+        IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
+
+      // Placeholder for future firefox specific feature additions
+    }
+
     private const string c_partialFileDownloadExtension = ".part";
 
     private static readonly Lazy<FirefoxExecutable> s_firefoxExecutable = new Lazy<FirefoxExecutable>(
@@ -77,6 +87,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
           downloadStartedGracePeriod,
           webTestSettings.CleanUpUnmatchedDownloadedFiles,
           webTestSettings.LoggerFactory);
+
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
 
     /// <inheritdoc />

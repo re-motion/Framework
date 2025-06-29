@@ -29,6 +29,14 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Firefox
   /// </summary>
   public class FirefoxBrowserSession : BrowserSessionBase<IFirefoxConfiguration>
   {
+    public static void ApplyDefaultWebTestFeatures (
+        WebTestFeatureCollection features,
+        IBrowserSession browserSession)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserSession);
+    }
+
     private readonly ConcurrentQueue<BrowserLogEntry> _logEntries;
     private readonly Subscription _entryAddedSubscription;
 
@@ -36,6 +44,8 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Firefox
         : base(value, browserConfiguration, driverProcessId, headless)
     {
       _logEntries = new ConcurrentQueue<BrowserLogEntry>();
+
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
 
       var bidi = ((IWebDriver)Driver.Native).AsBiDiAsync().GetAwaiter().GetResult();
       _entryAddedSubscription = bidi.Log.OnEntryAddedAsync(entry => _logEntries.Enqueue(new BrowserLogEntry(entry))).GetAwaiter().GetResult();

@@ -38,6 +38,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
   /// </summary>
   public class EdgeConfiguration : BrowserConfigurationBase, IEdgeConfiguration
   {
+    public static void ApplyDefaultWebTestFeatures (
+        WebTestFeatureCollection features,
+        IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
+
+      // Placeholder for future edge specific feature additions
+    }
+
     private const string c_userDataFolderPrefix = "userdata";
 
     private static readonly Lazy<EdgeExecutable> s_edgeExecutable =
@@ -95,6 +105,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
           webTestSettings.LoggerFactory);
 
       DisableSecurityWarningsBehavior = webTestSettings.Edge.DisableSecurityWarningsBehavior;
+
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
 
     public virtual ExtendedEdgeOptions CreateEdgeOptions ()
