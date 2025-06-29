@@ -284,8 +284,7 @@ namespace Remotion.Utilities
     [Obsolete("Use ConcatWithSeperator (IList, string) instead. Parameter 'format' is no longer used. (Version 1.21.8)")]
     public static string ConcatWithSeparator (IList list, string separator, string? format, IFormatProvider? formatProvider)
     {
-      if (list == null)
-        throw new ArgumentNullException(nameof(list));
+      ArgumentNullException.ThrowIfNull(list);
 
       if (list.Count == 0)
         return string.Empty;
@@ -303,8 +302,7 @@ namespace Remotion.Utilities
 
     public static string ConcatWithSeparator (string[] strings, string separator)
     {
-      if (strings == null)
-        throw new ArgumentNullException(nameof(strings));
+      ArgumentNullException.ThrowIfNull(strings);
       if (strings.Length == 0)
         return string.Empty;
 

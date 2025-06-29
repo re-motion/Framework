@@ -46,8 +46,7 @@ public class Log4NetLogger : Microsoft.Extensions.Logging.ILogger
 
   public Log4NetLogger (log4net.Core.ILogger logger)
   {
-    if (logger == null)
-      throw new ArgumentNullException(nameof(logger));
+    ArgumentNullException.ThrowIfNull(logger);
 
     Logger = logger;
   }

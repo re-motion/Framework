@@ -30,8 +30,7 @@ namespace Remotion.Utilities
         [InvokerParameterName] string argumentName,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] Enum enumValue)
     {
-      if (enumValue == null)
-        throw new ArgumentNullException(argumentName);
+      ArgumentNullException.ThrowIfNull(enumValue, paramName: argumentName);
 
       if (! EnumUtility.IsValidEnumValue(enumValue))
         throw CreateEnumArgumentOutOfRangeException(argumentName, enumValue);
@@ -76,8 +75,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] object enumValue)
         where TEnum: struct
     {
-      if (enumValue == null)
-        throw new ArgumentNullException(argumentName);
+      ArgumentNullException.ThrowIfNull(enumValue, paramName: argumentName);
 
       if (! (enumValue is TEnum))
         throw CreateArgumentTypeException(argumentName, enumValue.GetType(), typeof(TEnum));

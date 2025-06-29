@@ -43,8 +43,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       _objectIDs = objectIDs.Select(
           (objectID, index) =>
           {
-            if (objectID == null)
-              throw new ArgumentNullException($"objectIDs[{index}]");
+            ArgumentNullException.ThrowIfNull(objectID, paramName: $"objectIDs[{index}]");
             return objectID;
           }).ToArray();
 

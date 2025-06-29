@@ -20,11 +20,8 @@ namespace Remotion.Development.Moq.UnitTesting
 
     public DecoratorTestHelper (TInterface decorator, Mock<TInterface> decoratedMock)
     {
-      if (decorator == null)
-        throw new ArgumentNullException(nameof(decorator));
-
-      if (decoratedMock == null)
-        throw new ArgumentNullException(nameof(decoratedMock));
+      ArgumentNullException.ThrowIfNull(decorator);
+      ArgumentNullException.ThrowIfNull(decoratedMock);
 
       _decorator = decorator;
       _decoratedMock = decoratedMock;

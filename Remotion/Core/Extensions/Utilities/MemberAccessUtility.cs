@@ -93,10 +93,8 @@ namespace Remotion.Utilities
 
     public static object? GetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty)
     {
-      if (obj == null)
-        throw new ArgumentNullException(nameof(obj));
-      if (fieldOrProperty == null)
-        throw new ArgumentNullException(nameof(fieldOrProperty));
+      ArgumentNullException.ThrowIfNull(obj);
+      ArgumentNullException.ThrowIfNull(fieldOrProperty);
 
       if (fieldOrProperty is FieldInfo)
         return ((FieldInfo)fieldOrProperty).GetValue(obj);
@@ -121,10 +119,8 @@ namespace Remotion.Utilities
 
     public static void SetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty, object? value)
     {
-      if (obj == null)
-        throw new ArgumentNullException(nameof(obj));
-      if (fieldOrProperty == null)
-        throw new ArgumentNullException(nameof(fieldOrProperty));
+      ArgumentNullException.ThrowIfNull(obj);
+      ArgumentNullException.ThrowIfNull(fieldOrProperty);
 
       if (fieldOrProperty is FieldInfo)
         ((FieldInfo)fieldOrProperty).SetValue(obj, value);

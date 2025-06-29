@@ -394,8 +394,7 @@ namespace Remotion.Web.UI.Controls
 
         for (int i = 0; i < formGridRows.Length; i++)
         {
-          if (formGridRows[i] == null)
-            throw new ArgumentNullException("formGridRows[" + i + "]");
+          ArgumentNullException.ThrowIfNull(formGridRows[i], paramName: "formGridRows[" + i + "]");
           formGridRows[i]._formGrid = _ownerFormGrid;
         }
 
@@ -911,11 +910,10 @@ namespace Remotion.Web.UI.Controls
 
         for (int index = 0; index < htmlTableRows.Length; index++)
         {
-          if (htmlTableRows[index] == null)
-            throw new ArgumentNullException("htmlTableRows[" + index + "]");
+          ArgumentNullException.ThrowIfNull(htmlTableRows[index], paramName: "htmlTableRows[" + index + "]");
         }
 
-         InnerList.AddRange(htmlTableRows);
+        InnerList.AddRange(htmlTableRows);
       }
 
       /// <summary> A read only indexer for the <see cref="HtmlTableRow"/> onbjects. </summary>
@@ -2038,8 +2036,6 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ComposeFormGridContents/*' />
     private void ComposeFormGridContents (FormGrid formGrid)
     {
-      if (formGrid == null) throw new ArgumentNullException(nameof(formGrid));
-
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
         FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];

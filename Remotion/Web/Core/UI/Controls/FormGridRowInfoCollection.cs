@@ -38,8 +38,7 @@ public sealed class FormGridRowInfoCollection : CollectionBase
 
     for (int index = 0; index < values.Length; index++)
     {
-      if (values[index] == null)
-        throw new ArgumentNullException("values[" + index + "]");
+      ArgumentNullException.ThrowIfNull(values[index], paramName: "values[" + index + "]");
     }
 
     InnerList.AddRange(values);

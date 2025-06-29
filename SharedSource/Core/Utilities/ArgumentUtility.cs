@@ -53,10 +53,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL), NoEnumeration, System.Diagnostics.CodeAnalysis.NotNull] T actualValue)
         where T : notnull
     {
-      // ReSharper disable CompareNonConstrainedGenericWithNull
-      if (actualValue == null)
-          // ReSharper restore CompareNonConstrainedGenericWithNull
-        throw new ArgumentNullException(argumentName);
+      ArgumentNullException.ThrowIfNull(actualValue, paramName: argumentName);
 
       return actualValue;
     }
@@ -279,8 +276,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] [NoEnumeration] object actualValue,
         Type expectedType)
     {
-      if (actualValue == null)
-        throw new ArgumentNullException(argumentName);
+      ArgumentNullException.ThrowIfNull(actualValue, paramName: argumentName);
 
       // ReSharper disable UseMethodIsInstanceOfType
       if (!expectedType.GetTypeInfo().IsAssignableFrom(actualValue.GetType().GetTypeInfo()))
@@ -311,8 +307,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] [NoEnumeration] [System.Diagnostics.CodeAnalysis.NotNull] object actualValue)
         where TExpected : notnull
     {
-      if (actualValue == null)
-        throw new ArgumentNullException(argumentName);
+      ArgumentNullException.ThrowIfNull(actualValue, paramName: argumentName);
 
       if (! (actualValue is TExpected))
         throw CreateArgumentTypeException(argumentName, actualValue.GetType(), typeof(TExpected));
@@ -391,8 +386,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] Type actualType,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] Type expectedType)
     {
-      if (actualType == null)
-        throw new ArgumentNullException(argumentName);
+      ArgumentNullException.ThrowIfNull(actualType, paramName: argumentName);
       return CheckTypeIsAssignableFrom(argumentName, actualType, expectedType);
     }
 
