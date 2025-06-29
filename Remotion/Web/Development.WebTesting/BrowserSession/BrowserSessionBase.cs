@@ -74,10 +74,10 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     }
 
     /// <inheritdoc />
-    public abstract IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ();
+    public IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs () => Features.Get<IBrowserLogProvider>().GetBrowserLogs();
 
     /// <inheritdoc />
-    public abstract void ResetBrowserLogs ();
+    public void ResetBrowserLogs () => Features.Get<IBrowserLogProvider>().ResetBrowserLogs();
 
     /// <summary>
     /// Returns the <see cref="IBrowserConfiguration"/> associated with the underlying <see cref="Coypu.BrowserSession"/>.
