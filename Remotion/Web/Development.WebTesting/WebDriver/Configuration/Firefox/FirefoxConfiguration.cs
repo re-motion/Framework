@@ -26,6 +26,7 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories.Remote;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
 {
@@ -107,6 +108,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     public override ScreenshotTooltipStyle TooltipStyle => ScreenshotTooltipStyle.Firefox;
 
     /// <inheritdoc />
+    /// <remarks>
+    /// Changes made here might also need to be made in <see cref="RemoteBrowserFactory"/>.<see cref="RemoteBrowserFactory.CreateFirefoxOptions"/>.
+    /// </remarks>
     public virtual FirefoxOptions CreateFirefoxOptions ()
     {
       const int useCustomDownloadDirectory = 2;

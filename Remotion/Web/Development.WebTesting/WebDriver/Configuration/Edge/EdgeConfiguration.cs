@@ -30,6 +30,7 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories.Remote;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 {
@@ -109,6 +110,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
       ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
 
+    /// <inheritdoc />
+    /// <remarks>
+    /// Changes made here might also need to be made in <see cref="RemoteBrowserFactory"/>.<see cref="RemoteBrowserFactory.CreateEdgeOptions"/>.
+    /// </remarks>
     public virtual ExtendedEdgeOptions CreateEdgeOptions ()
     {
       var userDirectory = CreateUnusedUserDirectoryPath();

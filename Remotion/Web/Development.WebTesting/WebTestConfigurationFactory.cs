@@ -27,6 +27,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Remote;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -85,6 +86,8 @@ namespace Remotion.Web.Development.WebTesting
       var configSettings = WebTestSettings.Current;
 
       var configuredBrowser = Browser.Parse(configSettings.BrowserName);
+      if (configSettings.RemoteDriver.Enabled)
+        return new RemoteBrowserConfiguration(configSettings, configuredBrowser);
 
       if (configuredBrowser == Browser.Chrome)
         return CreateChromeConfiguration(configSettings);

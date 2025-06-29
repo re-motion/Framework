@@ -103,6 +103,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     IWebTestHostingSettings IWebTestSettings.Hosting => Hosting;
 
     [Required]
+    public RemoteDriverSettingsDto RemoteDriver { get; init; } = new();
+
+    /// <inheritdoc />
+    IWebTestRemoteDriverSettings IWebTestSettings.RemoteDriver => RemoteDriver;
+
+    [Required]
     public required WebTestTestSiteLayoutDto TestSiteLayout { get; init; }
 
     /// <inheritdoc />
