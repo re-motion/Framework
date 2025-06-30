@@ -26,8 +26,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     public static OverrideInterfaceGenerator CreateNestedGenerator (MutableType outerType, string typeName)
     {
-      ArgumentUtility.CheckNotNull("outerType", outerType);
-      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
+      ArgumentUtility.CheckNotNull(nameof(outerType), outerType);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
 
       var interfaceType = outerType.AddNestedType(typeName, TypeAttributes.Interface | TypeAttributes.NestedPublic | TypeAttributes.Abstract, null);
       return new OverrideInterfaceGenerator(interfaceType);
@@ -39,7 +39,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private OverrideInterfaceGenerator (MutableType interfaceType)
     {
-      ArgumentUtility.CheckNotNull("interfaceType", interfaceType);
+      ArgumentUtility.CheckNotNull(nameof(interfaceType), interfaceType);
 
       _interfaceType = interfaceType;
     }
@@ -56,7 +56,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public MethodInfo AddOverriddenMethod (MethodInfo overriddenMethod)
     {
-      ArgumentUtility.CheckNotNull("overriddenMethod", overriddenMethod);
+      ArgumentUtility.CheckNotNull(nameof(overriddenMethod), overriddenMethod);
 
       var name = overriddenMethod.Name;
       var attributes = MethodAttributes.Public | MethodAttributes.Abstract | MethodAttributes.Virtual;

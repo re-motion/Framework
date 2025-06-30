@@ -43,8 +43,8 @@ namespace Remotion.Validation.Implementation
     [PublicAPI]
     protected InvolvedTypeProvider (Func<IEnumerable<Type>, IEnumerable<Type>> hierarchyLevelsubSort, IValidationTypeFilter validationTypeFilter)
     {
-      ArgumentUtility.CheckNotNull("hierarchyLevelsubSort", hierarchyLevelsubSort);
-      ArgumentUtility.CheckNotNull("validationTypeFilter", validationTypeFilter);
+      ArgumentUtility.CheckNotNull(nameof(hierarchyLevelsubSort), hierarchyLevelsubSort);
+      ArgumentUtility.CheckNotNull(nameof(validationTypeFilter), validationTypeFilter);
 
       _hierarchyLevelsubSort = hierarchyLevelsubSort;
       _validationTypeFilter = validationTypeFilter;
@@ -52,7 +52,7 @@ namespace Remotion.Validation.Implementation
 
     public IEnumerable<IEnumerable<Type>> GetTypes (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       var inheritanceHierarchy = GetInheritanceHierarchy(type).ToArray();
       foreach (var classType in inheritanceHierarchy)

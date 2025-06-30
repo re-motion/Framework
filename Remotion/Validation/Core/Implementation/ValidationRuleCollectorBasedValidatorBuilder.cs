@@ -51,13 +51,13 @@ namespace Remotion.Validation.Implementation
         IMemberInformationNameResolver memberInformationNameResolver,
         IValidationRuleCollectorValidator collectorValidator)
     {
-      ArgumentUtility.CheckNotNull("validationRuleCollectorProvider", validationRuleCollectorProvider);
-      ArgumentUtility.CheckNotNull("validationRuleCollectorMerger", validationRuleCollectorMerger);
-      ArgumentUtility.CheckNotNull("propertyMetaValidationRuleValidatorFactory", propertyMetaValidationRuleValidatorFactory);
-      ArgumentUtility.CheckNotNull("objectMetaValidationRuleValidatorFactory", objectMetaValidationRuleValidatorFactory);
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
-      ArgumentUtility.CheckNotNull("memberInformationNameResolver", memberInformationNameResolver);
-      ArgumentUtility.CheckNotNull("collectorValidator", collectorValidator);
+      ArgumentUtility.CheckNotNull(nameof(validationRuleCollectorProvider), validationRuleCollectorProvider);
+      ArgumentUtility.CheckNotNull(nameof(validationRuleCollectorMerger), validationRuleCollectorMerger);
+      ArgumentUtility.CheckNotNull(nameof(propertyMetaValidationRuleValidatorFactory), propertyMetaValidationRuleValidatorFactory);
+      ArgumentUtility.CheckNotNull(nameof(objectMetaValidationRuleValidatorFactory), objectMetaValidationRuleValidatorFactory);
+      ArgumentUtility.CheckNotNull(nameof(validationMessageFactory), validationMessageFactory);
+      ArgumentUtility.CheckNotNull(nameof(memberInformationNameResolver), memberInformationNameResolver);
+      ArgumentUtility.CheckNotNull(nameof(collectorValidator), collectorValidator);
 
       ValidationRuleCollectorProvider = validationRuleCollectorProvider;
       ValidationRuleCollectorMerger = validationRuleCollectorMerger;
@@ -71,7 +71,7 @@ namespace Remotion.Validation.Implementation
 
     public IValidator BuildValidator (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
 
       var allCollectors = ValidationRuleCollectorProvider.GetValidationRuleCollectors(new[] { validatedType }).Select(c => c.ToArray()).ToArray();
       ValidateCollectors(allCollectors.SelectMany(c => c));

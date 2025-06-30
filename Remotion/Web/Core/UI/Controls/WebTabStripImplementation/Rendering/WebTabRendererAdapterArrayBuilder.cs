@@ -30,9 +30,9 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public WebTabRendererAdapterArrayBuilder (IWebTab[] webTabs, WebTabStyle tabStyle, WebTabStyle selectedTabStyle)
     {
-      ArgumentUtility.CheckNotNull("webTabs", webTabs);
-      ArgumentUtility.CheckNotNull("tabStyle", tabStyle);
-      ArgumentUtility.CheckNotNull("selectedTabStyle", selectedTabStyle);
+      ArgumentUtility.CheckNotNull(nameof(webTabs), webTabs);
+      ArgumentUtility.CheckNotNull(nameof(tabStyle), tabStyle);
+      ArgumentUtility.CheckNotNull(nameof(selectedTabStyle), selectedTabStyle);
 
       _webTabs = webTabs;
       TabStyle = tabStyle;

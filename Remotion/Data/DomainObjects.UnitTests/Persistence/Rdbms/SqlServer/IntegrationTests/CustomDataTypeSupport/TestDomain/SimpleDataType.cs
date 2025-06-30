@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public SimpleDataType (string stringValue)
     {
-      ArgumentUtility.CheckNotNull("stringValue", stringValue);
+      ArgumentUtility.CheckNotNull(nameof(stringValue), stringValue);
       _stringValue = stringValue;
     }
 

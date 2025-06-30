@@ -42,7 +42,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
         }
         catch (FormatException exception)
         {
-          throw new ArgumentException(string.Format("The metadata ID '{0}' is invalid.", metadataID), "metadataID", exception);
+          throw new ArgumentException(string.Format("The metadata ID '{0}' is invalid.", metadataID), nameof(metadataID), exception);
         }
       }
 
@@ -58,7 +58,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public IQueryable<MetadataObject> CreateQuery (string metadataReference)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("metadataReference", metadataReference);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(metadataReference), metadataReference);
 
       MetadataID metadataID = MetadataID.Parse(metadataReference);
 

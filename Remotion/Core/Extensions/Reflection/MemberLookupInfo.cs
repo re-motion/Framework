@@ -43,7 +43,7 @@ namespace Remotion.Reflection
     public MemberLookupInfo (
         string memberName, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("memberName", memberName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(memberName), memberName);
 
       _memberName = memberName;
       _bindingFlags = bindingFlags;
@@ -84,7 +84,7 @@ namespace Remotion.Reflection
 
     public Tuple<Type[], Type> GetSignature (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       return DelegateFactory.GetSignature(delegateType);
     }

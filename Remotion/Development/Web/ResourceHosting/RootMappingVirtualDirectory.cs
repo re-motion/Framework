@@ -39,10 +39,10 @@ namespace Remotion.Development.Web.ResourceHosting
         Func<string, ResourceVirtualDirectory> virtualDirectoryFactory)
         : base(virtualPath, directoryInfo)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
-      ArgumentUtility.CheckNotNull("mappings", mappings);
-      ArgumentUtility.CheckNotNull("directoryInfo", directoryInfo);
-      ArgumentUtility.CheckNotNull("virtualDirectoryFactory", virtualDirectoryFactory);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
+      ArgumentUtility.CheckNotNull(nameof(mappings), mappings);
+      ArgumentUtility.CheckNotNull(nameof(directoryInfo), directoryInfo);
+      ArgumentUtility.CheckNotNull(nameof(virtualDirectoryFactory), virtualDirectoryFactory);
 
       _mappings = mappings;
       _virtualDirectoryFactory = virtualDirectoryFactory;

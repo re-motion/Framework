@@ -48,7 +48,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
+      ArgumentUtility.CheckNotNull(nameof(fallbackNavigationUrlProvider), fallbackNavigationUrlProvider);
       _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
 
       htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
@@ -71,7 +71,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
     public void Render (ListMenuRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       RegisterMenuItems(renderingContext);
 

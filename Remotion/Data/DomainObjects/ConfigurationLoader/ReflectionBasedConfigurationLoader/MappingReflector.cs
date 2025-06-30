@@ -44,14 +44,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator domainObjectCreator)
     {
-      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
-      ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
-      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
-      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull("propertyDefaultValueProvider", propertyDefaultValueProvider);
-      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
-      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull("domainObjectCreator", domainObjectCreator);
+      ArgumentUtility.CheckNotNull(nameof(typeDiscoveryService), typeDiscoveryService);
+      ArgumentUtility.CheckNotNull(nameof(classIDProvider), classIDProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyMetadataProvider), propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefaultValueProvider), propertyDefaultValueProvider);
+      ArgumentUtility.CheckNotNull(nameof(sortExpressionDefinitionProvider), sortExpressionDefinitionProvider);
+      ArgumentUtility.CheckNotNull(nameof(nameResolver), nameResolver);
+      ArgumentUtility.CheckNotNull(nameof(domainObjectCreator), domainObjectCreator);
 
       return new MappingReflector(
           typeDiscoveryService,
@@ -104,14 +104,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator domainObjectCreator)
     {
-      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
-      ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
-      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
-      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull("propertyDefaultValueProvider", propertyDefaultValueProvider);
-      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
-      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull("domainObjectCreator", domainObjectCreator);
+      ArgumentUtility.CheckNotNull(nameof(typeDiscoveryService), typeDiscoveryService);
+      ArgumentUtility.CheckNotNull(nameof(classIDProvider), classIDProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyMetadataProvider), propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefaultValueProvider), propertyDefaultValueProvider);
+      ArgumentUtility.CheckNotNull(nameof(sortExpressionDefinitionProvider), sortExpressionDefinitionProvider);
+      ArgumentUtility.CheckNotNull(nameof(nameResolver), nameResolver);
+      ArgumentUtility.CheckNotNull(nameof(domainObjectCreator), domainObjectCreator);
 
       _typeDiscoveryService = typeDiscoveryService;
       _classIDProvider = classIDProvider;
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(classDefinitions), classDefinitions);
       s_logger.LogInformation("Reflecting relation definitions of {0} class definitions...", classDefinitions.Count);
 
       using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time needed to reflect relation definitions: {elapsed}."))

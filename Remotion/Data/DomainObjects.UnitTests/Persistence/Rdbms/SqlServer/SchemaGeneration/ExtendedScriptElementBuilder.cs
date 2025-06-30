@@ -28,14 +28,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
     public ExtendedScriptElementBuilder (IScriptBuilder innerScriptBuilder)
     {
-      ArgumentUtility.CheckNotNull("innerScriptBuilder", innerScriptBuilder);
+      ArgumentUtility.CheckNotNull(nameof(innerScriptBuilder), innerScriptBuilder);
 
       _innerScriptBuilder = innerScriptBuilder;
     }
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
 
       _innerScriptBuilder.AddEntityDefinition(entityDefinition);
     }

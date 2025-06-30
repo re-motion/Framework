@@ -29,8 +29,8 @@ namespace Remotion.SecurityManager.Domain
 
     public PrincipalRole ([NotNull] IDomainObjectHandle<Position> position, [NotNull] IDomainObjectHandle<Group> group)
     {
-      ArgumentUtility.CheckNotNull("position", position);
-      ArgumentUtility.CheckNotNull("group", group);
+      ArgumentUtility.CheckNotNull(nameof(position), position);
+      ArgumentUtility.CheckNotNull(nameof(group), group);
 
       _position = position;
       _group = @group;

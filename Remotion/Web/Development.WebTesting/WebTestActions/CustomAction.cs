@@ -33,8 +33,8 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     public CustomAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] string name, [NotNull] Action<ElementScope> action, [NotNull] ILogger logger)
         : base(control, scope, logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNull("action", action);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentUtility.CheckNotNull(nameof(action), action);
 
       _name = name;
       _action = action;
@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
 
       _action(scope);
     }

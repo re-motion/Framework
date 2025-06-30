@@ -41,11 +41,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         : base(
             modifiedEndPoint,
             null,
-            ArgumentUtility.CheckNotNull("addedObject", addedObject),
+            ArgumentUtility.CheckNotNull(nameof(addedObject), addedObject),
             transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("collectionData", collectionData);
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull(nameof(collectionData), collectionData);
+      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
 
       _index = collectionData.Count;
       _modifiedCollectionData = collectionData;

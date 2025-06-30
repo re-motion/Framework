@@ -50,8 +50,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     public HostingConfiguration ([NotNull] IWebTestSettings webTestSettings, [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration)
     {
-      ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
-      ArgumentUtility.CheckNotNull("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
+      ArgumentUtility.CheckNotNull(nameof(webTestSettings), webTestSettings);
+      ArgumentUtility.CheckNotNull(nameof(testSiteLayoutConfiguration), testSiteLayoutConfiguration);
 
       _loggerFactory = webTestSettings.LoggerFactory;
       _hostingSettings = webTestSettings.Hosting;

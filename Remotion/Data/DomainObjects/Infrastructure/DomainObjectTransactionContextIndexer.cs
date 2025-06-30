@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public DomainObjectTransactionContextIndexer (DomainObjectTransactionContextImplementation transactionContextImplementation)
     {
-      ArgumentUtility.DebugCheckNotNull("transactionContextImplementation", transactionContextImplementation);
+      ArgumentUtility.DebugCheckNotNull(nameof(transactionContextImplementation), transactionContextImplementation);
 
       _transactionContextImplementation = transactionContextImplementation;
     }

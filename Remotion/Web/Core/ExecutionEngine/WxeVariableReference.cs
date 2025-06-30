@@ -25,9 +25,9 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeVariableReference (string variableName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("variableName", variableName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(variableName), variableName);
       if (! System.Text.RegularExpressions.Regex.IsMatch(variableName, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
-        throw new ArgumentException(string.Format("The variable name '{0}' is not valid.", variableName), "variableName");
+        throw new ArgumentException(string.Format("The variable name '{0}' is not valid.", variableName), nameof(variableName));
       _name = variableName;
     }
 

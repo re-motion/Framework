@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 
     public IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       var collection = new List<DataContainer>();
       if (query.ID == GetSecurableObjectsQueryID)
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 
     public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       return new QueryResultRow[0];
     }
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 
     public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       return new ObjectID(classDefinition.ID, Guid.NewGuid());
     }

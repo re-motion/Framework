@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
 
       scope.Click();
     }

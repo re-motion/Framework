@@ -35,8 +35,8 @@ namespace Remotion.Development.Web.ResourceHosting
     public ResourceVirtualDirectory (string virtualPath, DirectoryInfo physicalDirectory, string? displayName = null)
         : base(virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
-      ArgumentUtility.CheckNotNull("physicalDirectory", physicalDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
+      ArgumentUtility.CheckNotNull(nameof(physicalDirectory), physicalDirectory);
 
       _virtualPath = VirtualPathUtility.AppendTrailingSlash(virtualPath);
       _physicalDirectory = physicalDirectory;

@@ -40,10 +40,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     private readonly Exception _cleanupException;
 
     public ObjectCleanupException (string message, ObjectID objectID, Exception innerException, Exception cleanupException)
-        : base(message, ArgumentUtility.CheckNotNull("innerException", innerException))
+        : base(message, ArgumentUtility.CheckNotNull(nameof(innerException), innerException))
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
-      ArgumentUtility.CheckNotNull("cleanupException", cleanupException);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentUtility.CheckNotNull(nameof(cleanupException), cleanupException);
 
       _objectID = objectID;
       _cleanupException = cleanupException;

@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public DelegatingDataContainerEndPointsRegistrationAgent (IRelationEndPointFactory endPointFactory, IRelationEndPointRegistrationAgent registrationAgent)
     {
-      ArgumentUtility.CheckNotNull("endPointFactory", endPointFactory);
-      ArgumentUtility.CheckNotNull("registrationAgent", registrationAgent);
+      ArgumentUtility.CheckNotNull(nameof(endPointFactory), endPointFactory);
+      ArgumentUtility.CheckNotNull(nameof(registrationAgent), registrationAgent);
 
       _existingDataContainerRegistrationAgent = new ExistingDataContainerEndPointsRegistrationAgent(endPointFactory, registrationAgent);
       _nonExistingDataContainerRegistrationAgent = new NonExistingDataContainerEndPointsRegistrationAgent(endPointFactory, registrationAgent);
@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterEndPoints (DataContainer dataContainer, RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
-      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
+      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointMap), relationEndPointMap);
 
       var agent = ChooseAgent(dataContainer);
       agent.RegisterEndPoints(dataContainer, relationEndPointMap);
@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IDataManagementCommand CreateUnregisterEndPointsCommand (DataContainer dataContainer, RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
-      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
+      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointMap), relationEndPointMap);
 
       var agent = ChooseAgent(dataContainer);
       return agent.CreateUnregisterEndPointsCommand(dataContainer, relationEndPointMap);

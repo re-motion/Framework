@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public SubPersistenceStrategy (IParentTransactionContext parentTransactionContext)
     {
-      ArgumentUtility.CheckNotNull("parentTransactionContext", parentTransactionContext);
+      ArgumentUtility.CheckNotNull(nameof(parentTransactionContext), parentTransactionContext);
       _parentTransactionContext = parentTransactionContext;
     }
 
@@ -54,14 +54,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       return _parentTransactionContext.CreateNewObjectID(classDefinition);
     }
 
     public virtual ILoadedObjectData LoadObjectData (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       // In theory, this might return invalid objects (in practice we won't be called with invalid IDs). 
       // TransferParentObject called by GetLoadedObjectDataForParentObject below will indirectly throw on invalid IDs.
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
 
       var objectIDsAsCollection = objectIDs.ConvertToCollection();
 
@@ -87,11 +87,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         RelationEndPointID relationEndPointID,
         ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
-      ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
+      ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
 
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.One)
-        throw new ArgumentException("ResolveObjectRelationData can only be called for virtual object end points.", "relationEndPointID");
+        throw new ArgumentException("ResolveObjectRelationData can only be called for virtual object end points.", nameof(relationEndPointID));
 
       // parentRelatedObject may be null
       var parentRelatedObject = _parentTransactionContext.ResolveRelatedObject(relationEndPointID);
@@ -102,11 +102,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         RelationEndPointID relationEndPointID,
         ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
-      ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
+      ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
 
       if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException("ResolveCollectionRelationData can only be called for CollectionEndPoints.", "relationEndPointID");
+        throw new ArgumentException("ResolveCollectionRelationData can only be called for CollectionEndPoints.", nameof(relationEndPointID));
 
       var parentObjects = _parentTransactionContext.ResolveRelatedObjects(relationEndPointID);
       return parentObjects
@@ -119,8 +119,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual IEnumerable<ILoadedObjectData> ExecuteCollectionQuery (IQuery query, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull("query", query);
-      ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
 
       var queryResult = _parentTransactionContext.ExecuteCollectionQuery(query);
       Assertion.IsNotNull(queryResult, "Parent transaction never returns a null query result for collection query.");
@@ -132,21 +132,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       return _parentTransactionContext.ExecuteCustomQuery(query);
     }
 
     public virtual object? ExecuteScalarQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       return _parentTransactionContext.ExecuteScalarQuery(query);
     }
 
     public virtual void PersistData (IEnumerable<PersistableData> data)
     {
-      ArgumentUtility.CheckNotNull("data", data);
+      ArgumentUtility.CheckNotNull(nameof(data), data);
 
       var dataAsCollection = data.ConvertToCollection();
 

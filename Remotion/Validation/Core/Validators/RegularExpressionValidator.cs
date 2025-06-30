@@ -35,8 +35,8 @@ namespace Remotion.Validation.Validators
 
     public RegularExpressionValidator ([NotNull] Regex regex, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("regex", regex);
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull(nameof(regex), regex);
+      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       Regex = regex;
       ErrorMessage = $"The value must be in the correct format ({regex}).";
@@ -45,7 +45,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

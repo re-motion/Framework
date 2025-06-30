@@ -32,8 +32,8 @@ namespace Remotion.Mixins.Definitions.Building
 
     public MemberDefinitionBuilder (ClassDefinitionBase classDefinition, Predicate<MethodInfo> methodFilter)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("methodFilter", methodFilter);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(methodFilter), methodFilter);
 
       _classDefinition = classDefinition;
       _methodFilter = methodFilter;

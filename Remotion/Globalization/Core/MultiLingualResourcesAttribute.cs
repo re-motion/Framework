@@ -98,7 +98,7 @@ namespace Remotion.Globalization
     [MemberNotNull(nameof(_baseName))]
     protected void SetBaseName (string baseName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("baseName", baseName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(baseName), baseName);
       _baseName = baseName;
     }
 
@@ -109,7 +109,7 @@ namespace Remotion.Globalization
 
     protected void SetResourceAssembly (Assembly resourceAssembly)
     {
-      ArgumentUtility.CheckNotNull("resourceAssembly", resourceAssembly);
+      ArgumentUtility.CheckNotNull(nameof(resourceAssembly), resourceAssembly);
       _resourceAssembly = resourceAssembly;
     }
 

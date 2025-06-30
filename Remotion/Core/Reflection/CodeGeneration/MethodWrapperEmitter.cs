@@ -33,12 +33,12 @@ namespace Remotion.Reflection.CodeGeneration
 
     public MethodWrapperEmitter (ILGenerator ilGenerator, MethodInfo wrappedMethod, Type[] wrapperParameterTypes, Type wrapperReturnType)
     {
-      ArgumentUtility.CheckNotNull("ilGenerator", ilGenerator);
-      ArgumentUtility.CheckNotNull("wrappedMethod", wrappedMethod);
-      ArgumentUtility.CheckNotNullOrItemsNull("wrapperParameterTypes", wrapperParameterTypes);
-      ArgumentUtility.CheckNotNull("wrapperReturnType", wrapperReturnType);
+      ArgumentUtility.CheckNotNull(nameof(ilGenerator), ilGenerator);
+      ArgumentUtility.CheckNotNull(nameof(wrappedMethod), wrappedMethod);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(wrapperParameterTypes), wrapperParameterTypes);
+      ArgumentUtility.CheckNotNull(nameof(wrapperReturnType), wrapperReturnType);
       if (wrappedMethod.ContainsGenericParameters)
-        throw new ArgumentException("Open generic method definitions are not supported by the MethodWrapperGenerator.", "wrappedMethod");
+        throw new ArgumentException("Open generic method definitions are not supported by the MethodWrapperGenerator.", nameof(wrappedMethod));
       CheckParameterCount(wrappedMethod, wrapperParameterTypes);
       CheckInstanceParameterType(wrappedMethod, wrapperParameterTypes);
       CheckParameterTypes(wrappedMethod, wrapperParameterTypes);
@@ -67,7 +67,7 @@ namespace Remotion.Reflection.CodeGeneration
                 "The number of elements in the wrapperParameterTypes array ({0}) does not match the number of parameters required for invoking the wrappedMethod ({1}).",
                 wrapperParameterTypes.Length,
                 wrappedMethod.GetParameters().Length + 1),
-            "wrapperParameterTypes");
+            nameof(wrapperParameterTypes));
       }
     }
 
@@ -80,7 +80,7 @@ namespace Remotion.Reflection.CodeGeneration
                 "The wrapperParameterType #0 ('{0}') cannot be assigned to the declaring type ('{1}') of the wrappedMethod.",
                 wrapperParameterTypes[0].Name,
                 wrappedMethod.DeclaringType!.Name),
-            "wrapperParameterTypes");
+            nameof(wrapperParameterTypes));
       }
     }
 
@@ -98,7 +98,7 @@ namespace Remotion.Reflection.CodeGeneration
                   wrappedParameter.Position + 1,
                   wrappedParameter.ParameterType.Name,
                   wrappedParameter.Name),
-              "wrapperParameterTypes");
+              nameof(wrapperParameterTypes));
         }
 
         if (wrappedParameter.IsOut)
@@ -107,7 +107,7 @@ namespace Remotion.Reflection.CodeGeneration
               string.Format(
                   "Parameter '{0}' of the wrappedMethod is an out parameter, but out parameters are not supported by the MethodWrapperGenerator.",
                   wrappedParameter.Name),
-              "wrappedMethod");
+              nameof(wrappedMethod));
         }
 
         if (wrappedParameter.ParameterType.IsByRef)
@@ -116,7 +116,7 @@ namespace Remotion.Reflection.CodeGeneration
               string.Format(
                   "Parameter '{0}' of the wrappedMethod is a by-ref parameter, but by-ref parameters are not supported by the MethodWrapperGenerator.",
                   wrappedParameter.Name),
-              "wrappedMethod");
+              nameof(wrappedMethod));
         }
 
         if (wrappedParameter.IsOptional)
@@ -125,7 +125,7 @@ namespace Remotion.Reflection.CodeGeneration
               string.Format(
                   "Parameter '{0}' of the wrappedMethod is an optional parameter, but optional parameters are not supported by the MethodWrapperGenerator.",
                   wrappedParameter.Name),
-              "wrappedMethod");
+              nameof(wrappedMethod));
         }
       }
     }
@@ -139,7 +139,7 @@ namespace Remotion.Reflection.CodeGeneration
                 "The wrapperReturnType ('{0}') cannot be assigned from the return type ('{1}') of the wrappedMethod.",
                 wrapperReturnType.Name,
                 wrappedMethod.ReturnType.Name),
-            "wrapperReturnType");
+            nameof(wrapperReturnType));
       }
     }
 

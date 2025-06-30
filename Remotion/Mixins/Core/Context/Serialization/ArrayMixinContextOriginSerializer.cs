@@ -32,19 +32,19 @@ namespace Remotion.Mixins.Context.Serialization
 
     public void AddKind (string kind)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("kind", kind);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(kind), kind);
       SetValue(0, kind);
     }
 
     public void AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
       SetValue(1, assembly);
     }
 
     public void AddLocation (string location)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("location", location);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(location), location);
       SetValue(2, location);
     }
   }

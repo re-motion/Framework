@@ -41,7 +41,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public OverridingMemberInfo (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
       _memberInfo = memberInfo;
     }
 
@@ -56,7 +56,7 @@ namespace Remotion.Mixins.CrossReferencer
           _overriddenMixinMembers.Add(memberInfo);
           break;
         default:
-          throw new ArgumentOutOfRangeException("type");
+          throw new ArgumentOutOfRangeException(nameof(type));
       }
     }
 

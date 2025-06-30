@@ -178,7 +178,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void LoadControlState (object? savedState)
     {
-      Triplet values = ArgumentUtility.CheckNotNullAndType<Triplet>("savedState", savedState!);
+      Triplet values = ArgumentUtility.CheckNotNullAndType<Triplet>(nameof(savedState), savedState!);
 
       base.LoadControlState(savedState);
       bool hasChildControlStatesBackUp = (bool)values.Second!;

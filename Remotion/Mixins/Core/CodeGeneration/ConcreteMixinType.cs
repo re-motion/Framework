@@ -48,11 +48,11 @@ namespace Remotion.Mixins.CodeGeneration
         Dictionary<MethodInfo, MethodInfo> overrideInterfaceMethodsByMixinMethod,
         Dictionary<MethodInfo, MethodInfo> methodWrappers)
     {
-      ArgumentUtility.CheckNotNull("identifier", identifier);
-      ArgumentUtility.CheckNotNull("generatedType", generatedType);
-      ArgumentUtility.CheckNotNull("generatedOverrideInterface", generatedOverrideInterface);
-      ArgumentUtility.CheckNotNull("overrideInterfaceMethodsByMixinMethod", overrideInterfaceMethodsByMixinMethod);
-      ArgumentUtility.CheckNotNull("methodWrappers", methodWrappers);
+      ArgumentUtility.CheckNotNull(nameof(identifier), identifier);
+      ArgumentUtility.CheckNotNull(nameof(generatedType), generatedType);
+      ArgumentUtility.CheckNotNull(nameof(generatedOverrideInterface), generatedOverrideInterface);
+      ArgumentUtility.CheckNotNull(nameof(overrideInterfaceMethodsByMixinMethod), overrideInterfaceMethodsByMixinMethod);
+      ArgumentUtility.CheckNotNull(nameof(methodWrappers), methodWrappers);
 
       _identifier = identifier;
       _generatedType = generatedType;
@@ -88,7 +88,7 @@ namespace Remotion.Mixins.CodeGeneration
 
     public MethodInfo GetPubliclyCallableMixinMethod (MethodInfo methodToBeCalled)
     {
-      ArgumentUtility.CheckNotNull("methodToBeCalled", methodToBeCalled);
+      ArgumentUtility.CheckNotNull(nameof(methodToBeCalled), methodToBeCalled);
 
       if (methodToBeCalled.IsPublic)
         return methodToBeCalled;
@@ -108,7 +108,7 @@ namespace Remotion.Mixins.CodeGeneration
 
     public MethodInfo GetOverrideInterfaceMethod (MethodInfo mixinMethod)
     {
-      ArgumentUtility.CheckNotNull("mixinMethod", mixinMethod);
+      ArgumentUtility.CheckNotNull(nameof(mixinMethod), mixinMethod);
 
       MethodInfo? interfaceMethod;
       if (!_overrideInterfaceMethodsByMixinMethod.TryGetValue(mixinMethod, out interfaceMethod))

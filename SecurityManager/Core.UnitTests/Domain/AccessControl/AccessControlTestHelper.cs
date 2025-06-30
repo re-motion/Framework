@@ -426,7 +426,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurityToken CreateTokenWithOwningTenant (User principalUser, Tenant owningTenant)
     {
-      ArgumentUtility.CheckNotNull("principalUser", principalUser);
+      ArgumentUtility.CheckNotNull(nameof(principalUser), principalUser);
       return CreateToken(principalUser, owningTenant, null, null, null);
     }
 
@@ -438,19 +438,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurityToken CreateTokenWithOwningGroup (User principalUser, Group owningGroup)
     {
-      ArgumentUtility.CheckNotNull("principalUser", principalUser);
+      ArgumentUtility.CheckNotNull(nameof(principalUser), principalUser);
       return CreateToken(principalUser, null, owningGroup, null, null);
     }
 
     public SecurityToken CreateTokenWithOwningUser (User principalUser, User owningUser)
     {
-      ArgumentUtility.CheckNotNull("principalUser", principalUser);
+      ArgumentUtility.CheckNotNull(nameof(principalUser), principalUser);
       return CreateToken(principalUser, null, null, owningUser, null);
     }
 
     public SecurityToken CreateToken (User principalUser, Tenant owningTenant, Group owningGroup, User owningUser, IEnumerable<AbstractRoleDefinition> abstractRoleDefinitions)
     {
-      ArgumentUtility.CheckNotNull("principalUser", principalUser);
+      ArgumentUtility.CheckNotNull(nameof(principalUser), principalUser);
       var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>>();
 
       if (abstractRoleDefinitions != null)
@@ -521,7 +521,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecificGroup (Group group)
     {
-      ArgumentUtility.CheckNotNull("group", group);
+      ArgumentUtility.CheckNotNull(nameof(group), group);
 
       using (_transaction.EnterNonDiscardingScope())
       {
@@ -536,7 +536,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithBranchOfOwningGroup (GroupType groupType)
     {
-      ArgumentUtility.CheckNotNull("groupType", groupType);
+      ArgumentUtility.CheckNotNull(nameof(groupType), groupType);
       using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlEntry entry = AccessControlEntry.NewObject();
@@ -549,7 +549,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecificGroupType (GroupType groupType)
     {
-      ArgumentUtility.CheckNotNull("groupType", groupType);
+      ArgumentUtility.CheckNotNull(nameof(groupType), groupType);
       using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlEntry entry = AccessControlEntry.NewObject();
@@ -586,7 +586,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecificTenant (Tenant tenant)
     {
-      ArgumentUtility.CheckNotNull("tenant", tenant);
+      ArgumentUtility.CheckNotNull(nameof(tenant), tenant);
 
       using (_transaction.EnterNonDiscardingScope())
       {

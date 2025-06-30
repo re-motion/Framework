@@ -32,8 +32,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// </summary>
     public static void Add ([NotNull] this Dictionary<string, GenericTestPageParameter> dictionary, [NotNull] GenericTestPageParameter parameter)
     {
-      ArgumentUtility.CheckNotNull("dictionary", dictionary);
-      ArgumentUtility.CheckNotNull("parameter", parameter);
+      ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
+      ArgumentUtility.CheckNotNull(nameof(parameter), parameter);
 
       if (!dictionary.ContainsKey(parameter.Name))
       {
@@ -49,9 +49,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
         [NotNull] string name,
         [NotNull] params string[] arguments)
     {
-      ArgumentUtility.CheckNotNull("dictionary", dictionary);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNullOrItemsNull("arguments", arguments);
+      ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(arguments), arguments);
 
       var parameter = new GenericTestPageParameter(name, arguments);
       dictionary.Add(parameter);

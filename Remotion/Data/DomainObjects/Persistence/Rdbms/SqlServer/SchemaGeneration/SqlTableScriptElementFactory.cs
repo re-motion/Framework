@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public IScriptElement GetCreateElement (TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
 
       var columnDeclarationList = string.Join("," + Environment.NewLine, tableDefinition.GetAllColumns().Select(GetColumnDeclaration));
       var primaryKeyConstraintString = GetPrimaryKeyDeclaration(tableDefinition);
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public IScriptElement GetDropElement (TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
 
       return new ScriptStatement(
         string.Format("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{1}' AND TABLE_SCHEMA = '{0}'){2}"

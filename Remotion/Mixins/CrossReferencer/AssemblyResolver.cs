@@ -39,7 +39,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public Assembly? HandleAssemblyResolve (object? sender, ResolveEventArgs args)
     {
-      ArgumentUtility.CheckNotNull("args", args);
+      ArgumentUtility.CheckNotNull(nameof(args), args);
 
       if (_assembliesInPrivateBinPath.TryGetValue(args.Name, out var privateAssemblyName))
         return Assembly.Load(privateAssemblyName);

@@ -28,8 +28,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     public override void ObjectsNotFound (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
 
       foreach (var objectID in objectIDs)
       {

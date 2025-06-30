@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public QueryResultRow (IDataReader dataReader, IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
 
       _dataReader = dataReader;
       _storageTypeInformationProvider = storageTypeInformationProvider;
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public object? GetConvertedValue (int position, Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       var storageType =  GetStorageType(type);
       object? convertedValue = storageType.Read(_dataReader, position);

@@ -40,12 +40,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IClientTransactionEventSink transactionEventSink)
         : base(
             modifiedEndPoint,
-            ArgumentUtility.CheckNotNull("removedObject", removedObject),
+            ArgumentUtility.CheckNotNull(nameof(removedObject), removedObject),
             null,
             transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("collectionData", collectionData);
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull(nameof(collectionData), collectionData);
+      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
 
       _index = collectionData.IsDataComplete ? collectionData.IndexOf(removedObject.ID) : 0;
       _modifiedCollectionData = collectionData;

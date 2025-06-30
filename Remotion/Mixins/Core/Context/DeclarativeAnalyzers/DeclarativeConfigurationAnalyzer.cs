@@ -35,8 +35,8 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
         IEnumerable<IMixinDeclarationAnalyzer<Type>> typeAnalyzers,
         IEnumerable<IMixinDeclarationAnalyzer<Assembly>> assemblyAnalyzers)
     {
-      ArgumentUtility.CheckNotNull("typeAnalyzers", typeAnalyzers);
-      ArgumentUtility.CheckNotNull("assemblyAnalyzers", assemblyAnalyzers);
+      ArgumentUtility.CheckNotNull(nameof(typeAnalyzers), typeAnalyzers);
+      ArgumentUtility.CheckNotNull(nameof(assemblyAnalyzers), assemblyAnalyzers);
 
       _typeAnalyzers = typeAnalyzers.ConvertToCollection();
       _assemblyAnalyzers = assemblyAnalyzers.ConvertToCollection();
@@ -44,8 +44,8 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 
     public void Analyze (IEnumerable<Type> types, MixinConfigurationBuilder configurationBuilder)
     {
-      ArgumentUtility.CheckNotNull("types", types);
-      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
+      ArgumentUtility.CheckNotNull(nameof(types), types);
+      ArgumentUtility.CheckNotNull(nameof(configurationBuilder), configurationBuilder);
 
       var assemblies = new HashSet<Assembly>();
 

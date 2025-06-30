@@ -34,9 +34,9 @@ namespace Remotion.Utilities
         string stringResourceName,
         string filePath)
     {
-      ArgumentUtility.CheckNotNull("typeWhoseNamespaceTheStringResourceResidesIn", typeWhoseNamespaceTheStringResourceResidesIn);
-      ArgumentUtility.CheckNotNull("stringResourceName", stringResourceName);
-      ArgumentUtility.CheckNotNull("filePath", filePath);
+      ArgumentUtility.CheckNotNull(nameof(typeWhoseNamespaceTheStringResourceResidesIn), typeWhoseNamespaceTheStringResourceResidesIn);
+      ArgumentUtility.CheckNotNull(nameof(stringResourceName), stringResourceName);
+      ArgumentUtility.CheckNotNull(nameof(filePath), filePath);
       Assembly assembly = typeWhoseNamespaceTheStringResourceResidesIn.Assembly;
       using (
           Stream from = assembly.GetManifestResourceStream(typeWhoseNamespaceTheStringResourceResidesIn, stringResourceName)!,

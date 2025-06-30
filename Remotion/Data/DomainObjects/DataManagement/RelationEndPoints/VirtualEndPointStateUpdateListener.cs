@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public VirtualEndPointStateUpdateListener (IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
       _transactionEventSink = transactionEventSink;
     }
 
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void VirtualEndPointStateUpdated (RelationEndPointID endPointID, bool? newChangedState)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
       _transactionEventSink.RaiseVirtualRelationEndPointStateUpdatedEvent(endPointID, newChangedState);
     }
   }

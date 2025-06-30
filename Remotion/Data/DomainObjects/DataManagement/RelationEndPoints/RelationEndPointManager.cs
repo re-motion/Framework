@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     /// </remarks>
     private static IRelationEndPoint CreateNullEndPoint (ClientTransaction clientTransaction, IRelationEndPointDefinition endPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("endPointDefinition", endPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(endPointDefinition), endPointDefinition);
 
       if (endPointDefinition.Cardinality == CardinalityType.Many && endPointDefinition is DomainObjectCollectionRelationEndPointDefinition)
         return new NullDomainObjectCollectionEndPoint(clientTransaction, endPointDefinition);
@@ -71,11 +71,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointFactory endPointFactory,
         IRelationEndPointRegistrationAgent registrationAgent)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
-      ArgumentUtility.CheckNotNull("endPointFactory", endPointFactory);
-      ArgumentUtility.CheckNotNull("registrationAgent", registrationAgent);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(lazyLoader), lazyLoader);
+      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
+      ArgumentUtility.CheckNotNull(nameof(endPointFactory), endPointFactory);
+      ArgumentUtility.CheckNotNull(nameof(registrationAgent), registrationAgent);
 
       _clientTransaction = clientTransaction;
       _lazyLoader = lazyLoader;
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterEndPointsForDataContainer (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
 
       _dataContainerEndPointsRegistrationAgent.RegisterEndPoints(dataContainer, _map);
     }
@@ -127,14 +127,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     // If the DataContainer is New, the virtual end-points are unregistered as well.
     public IDataManagementCommand CreateUnregisterCommandForDataContainer (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
 
       return _dataContainerEndPointsRegistrationAgent.CreateUnregisterEndPointsCommand(dataContainer, _map);
     }
 
     public IDataManagementCommand CreateUnloadVirtualEndPointsCommand (IEnumerable<RelationEndPointID> endPointIDs)
     {
-      ArgumentUtility.CheckNotNull("endPointIDs", endPointIDs);
+      ArgumentUtility.CheckNotNull(nameof(endPointIDs), endPointIDs);
 
       var virtualEndPoints = new List<IVirtualEndPoint>();
       var exceptionCommands = new List<ExceptionCommand>();
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         if (!endPointID.Definition.IsVirtual)
         {
           var message = string.Format("The given end point ID '{0}' does not denote a virtual end-point.", endPointID);
-          throw new ArgumentException(message, "endPointIDs");
+          throw new ArgumentException(message, nameof(endPointIDs));
         }
 
         var virtualEndPoint = (IVirtualEndPoint?)GetRelationEndPointWithoutLoading(endPointID);
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       if (endPointID.ObjectID == null)
       {
@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
       CheckNotAnonymous(endPointID, "GetRelationEndPointWithLazyLoad", "endPointID");
 
       var existingEndPoint = GetRelationEndPointWithoutLoading(endPointID);
@@ -219,11 +219,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IVirtualEndPoint GetOrCreateVirtualEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
       CheckNotAnonymous(endPointID, "GetOrCreateVirtualEndPoint", "endPointID");
 
       if (!endPointID.Definition.IsVirtual)
-        throw new ArgumentException("GetOrCreateVirtualEndPoint cannot be called for non-virtual end points.", "endPointID");
+        throw new ArgumentException("GetOrCreateVirtualEndPoint cannot be called for non-virtual end points.", nameof(endPointID));
 
       return (IVirtualEndPoint?)GetRelationEndPointWithoutLoading(endPointID) ?? RegisterVirtualEndPoint(endPointID);
     }

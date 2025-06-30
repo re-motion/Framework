@@ -33,8 +33,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
         UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> interfaceIntroductionDefinitions,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull("interfaceIntroductionDefinitions", interfaceIntroductionDefinitions);
-      ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
+      ArgumentUtility.CheckNotNull(nameof(interfaceIntroductionDefinitions), interfaceIntroductionDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(interfaceIdentifierGenerator), interfaceIdentifierGenerator);
 
       _interfaceIntroductionDefinitions = interfaceIntroductionDefinitions;
       _interfaceIdentifierGenerator = interfaceIdentifierGenerator;

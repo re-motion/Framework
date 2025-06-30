@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public UnsupportedStoragePropertyDefinition (Type propertyType, string message, Exception innerException)
     {
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
-      ArgumentUtility.CheckNotNullOrEmpty("message", message);
+      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
 
       _propertyType = propertyType;
       _message = message;
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull("equivalentProperties", equivalentProperties);
+      ArgumentUtility.CheckNotNull(nameof(equivalentProperties), equivalentProperties);
       equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,

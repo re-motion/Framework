@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
     /// </summary>
     public void HandleValidationFailures (ValidationFailureHandlingContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       var validationFailures = context.ValidationFailureRepository.GetUnhandledValidationFailuresForBocList(true);
 

@@ -26,15 +26,15 @@ namespace Remotion.Validation.Implementation
 
     public DelegateBasedValidationMessage (Func<string> validationMessageProvider)
     {
-      ArgumentUtility.CheckNotNull("validationMessageProvider", validationMessageProvider);
+      ArgumentUtility.CheckNotNull(nameof(validationMessageProvider), validationMessageProvider);
 
       _validationMessageProvider = validationMessageProvider;
     }
 
     public override string Format (CultureInfo culture, IFormatProvider? formatProvider, params object?[] parameters)
     {
-      ArgumentUtility.CheckNotNull("culture", culture);
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull(nameof(culture), culture);
+      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
 
       using (new CultureScope(CultureInfo.InvariantCulture, culture))
       {

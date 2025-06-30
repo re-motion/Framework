@@ -80,15 +80,15 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
           [NotNull] BindableObjectGlobalizationService bindableObjectGlobalizationService,
           [NotNull]IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
       {
-        ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
-        ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-        ArgumentUtility.CheckNotNull("underlyingType", underlyingType);
-        ArgumentUtility.CheckNotNull("concreteType", concreteType);
-        ArgumentUtility.CheckNotNull("defaultValueStrategy", defaultValueStrategy);
-        ArgumentUtility.CheckNotNull("bindablePropertyReadAccessStrategy", bindablePropertyReadAccessStrategy);
-        ArgumentUtility.CheckNotNull("bindablePropertyWriteAccessStrategy", bindablePropertyWriteAccessStrategy);
-        ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
-        ArgumentUtility.CheckNotNull("businessObjectPropertyConstraintProvider", businessObjectPropertyConstraintProvider);
+        ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
+        ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
+        ArgumentUtility.CheckNotNull(nameof(underlyingType), underlyingType);
+        ArgumentUtility.CheckNotNull(nameof(concreteType), concreteType);
+        ArgumentUtility.CheckNotNull(nameof(defaultValueStrategy), defaultValueStrategy);
+        ArgumentUtility.CheckNotNull(nameof(bindablePropertyReadAccessStrategy), bindablePropertyReadAccessStrategy);
+        ArgumentUtility.CheckNotNull(nameof(bindablePropertyWriteAccessStrategy), bindablePropertyWriteAccessStrategy);
+        ArgumentUtility.CheckNotNull(nameof(bindableObjectGlobalizationService), bindableObjectGlobalizationService);
+        ArgumentUtility.CheckNotNull(nameof(businessObjectPropertyConstraintProvider), businessObjectPropertyConstraintProvider);
 
         BusinessObjectProvider = businessObjectProvider;
         PropertyInfo = propertyInfo;
@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     protected PropertyBase (Parameters parameters)
     {
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
 
       if (parameters.PropertyInfo.GetIndexParameters().Length > 0)
         throw new InvalidOperationException("Indexed properties are not supported.");
@@ -256,7 +256,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public object GetValue (IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull("obj", obj);
+      ArgumentUtility.CheckNotNull(nameof(obj), obj);
 
       if (_valueGetter == null)
         throw new InvalidOperationException("Property has no getter.");
@@ -275,7 +275,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public void SetValue (IBusinessObject obj, object? value)
     {
-      ArgumentUtility.CheckNotNull("obj", obj);
+      ArgumentUtility.CheckNotNull(nameof(obj), obj);
 
       if (_valueSetter == null)
         throw new InvalidOperationException("Property has no setter.");
@@ -294,7 +294,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public bool IsDefaultValue (IBusinessObject obj)
     {
-      ArgumentUtility.CheckNotNull("obj", obj);
+      ArgumentUtility.CheckNotNull(nameof(obj), obj);
 
       return _defaultValueStrategy.IsDefaultValue(obj, this);
     }
@@ -376,7 +376,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public void SetReflectedClass (BindableObjectClass reflectedClass)
     {
-      ArgumentUtility.CheckNotNull("reflectedClass", reflectedClass);
+      ArgumentUtility.CheckNotNull(nameof(reflectedClass), reflectedClass);
       if (BusinessObjectProvider != reflectedClass.BusinessObjectProvider)
       {
         throw new ArgumentException(
@@ -384,7 +384,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
                 "The BusinessObjectProvider of property '{0}' does not match the BusinessObjectProvider of class '{1}'.",
                 Identifier,
                 reflectedClass.Identifier),
-            "reflectedClass");
+            nameof(reflectedClass));
       }
 
       if (_reflectedClass != null)

@@ -34,11 +34,11 @@ namespace Remotion.Web.Resources
 
     public ThemedResourceUrl (IResourcePathBuilder resourcePathBuilder, Type definingType, ResourceType resourceType, ResourceTheme resourceTheme, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull("resourcePathBuilder", resourcePathBuilder);
-      ArgumentUtility.CheckNotNull("definingType", definingType);
-      ArgumentUtility.CheckNotNull("resourceType", resourceType);
-      ArgumentUtility.CheckNotNull("resourceTheme", resourceTheme);
-      ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
+      ArgumentUtility.CheckNotNull(nameof(resourcePathBuilder), resourcePathBuilder);
+      ArgumentUtility.CheckNotNull(nameof(definingType), definingType);
+      ArgumentUtility.CheckNotNull(nameof(resourceType), resourceType);
+      ArgumentUtility.CheckNotNull(nameof(resourceTheme), resourceTheme);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(relativeUrl), relativeUrl);
 
       _resourcePathBuilder = resourcePathBuilder;
       _definingType = definingType;

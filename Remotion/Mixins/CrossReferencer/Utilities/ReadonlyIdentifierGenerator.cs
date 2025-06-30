@@ -28,8 +28,8 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 
     public ReadonlyIdentifierGenerator (IIdentifierGenerator<T> identifierGenerator, string defaultValue)
     {
-      ArgumentUtility.CheckNotNull("identifierGenerator", identifierGenerator);
-      ArgumentUtility.CheckNotNull("defaultValue", defaultValue);
+      ArgumentUtility.CheckNotNull(nameof(identifierGenerator), identifierGenerator);
+      ArgumentUtility.CheckNotNull(nameof(defaultValue), defaultValue);
 
       _identifierGenerator = identifierGenerator;
       _defaultValue = defaultValue;

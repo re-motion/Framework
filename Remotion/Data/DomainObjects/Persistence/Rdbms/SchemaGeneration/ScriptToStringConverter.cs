@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
   {
     public ScriptPair Convert (IScriptBuilder scriptBuilder)
     {
-      ArgumentUtility.CheckNotNull("scriptBuilder", scriptBuilder);
+      ArgumentUtility.CheckNotNull(nameof(scriptBuilder), scriptBuilder);
 
       var createScriptStatements = new List<ScriptStatement>();
       var dropScriptStatements = new List<ScriptStatement>();

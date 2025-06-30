@@ -206,8 +206,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void RenderPermissions (HtmlTextWriter writer, Control container)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
-      ArgumentUtility.CheckNotNull("container", container);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(container), container);
 
       // Text is not needed before rendering phase. 
       // By moving the evaluation into the Render-method, UpdatePanel-postbacks will not cause a hit for unaffected rows.

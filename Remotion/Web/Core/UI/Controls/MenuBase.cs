@@ -65,7 +65,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="eventArgument"> &lt;index&gt; </param>
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
 
       //  First part: index
       int index;
@@ -126,7 +126,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Fires the <see cref="MenuBase.EventCommandClick"/> event. </summary>
     protected virtual void OnEventCommandClick (WebMenuItem item)
     {
-      ArgumentUtility.CheckNotNull("item", item);
+      ArgumentUtility.CheckNotNull(nameof(item), item);
 
       if (item.Command != null)
         item.Command.OnClick();

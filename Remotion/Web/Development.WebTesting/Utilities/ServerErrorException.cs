@@ -30,8 +30,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public ServerErrorException ([NotNull] string message, [NotNull] string stacktrace)
         : base(message)
     {
-      ArgumentUtility.CheckNotNull("message", message);
-      ArgumentUtility.CheckNotNull("stacktrace", stacktrace);
+      ArgumentUtility.CheckNotNull(nameof(message), message);
+      ArgumentUtility.CheckNotNull(nameof(stacktrace), stacktrace);
 
       _stacktrace = stacktrace;
     }

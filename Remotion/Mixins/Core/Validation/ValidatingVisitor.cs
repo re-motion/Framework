@@ -50,7 +50,7 @@ namespace Remotion.Mixins.Validation
 
     public ValidatingVisitor (IValidationLog validationLog)
     {
-      ArgumentUtility.CheckNotNull("validationLog", validationLog);
+      ArgumentUtility.CheckNotNull(nameof(validationLog), validationLog);
       _validationLog = validationLog;
     }
 
@@ -161,133 +161,133 @@ namespace Remotion.Mixins.Validation
 
     public void Visit (TargetClassDefinition targetClass)
     {
-      ArgumentUtility.CheckNotNull("targetClass", targetClass);
+      ArgumentUtility.CheckNotNull(nameof(targetClass), targetClass);
       CheckRules(_targetClassRules, targetClass);
     }
 
     public void Visit (MixinDefinition mixin)
     {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ArgumentUtility.CheckNotNull(nameof(mixin), mixin);
       CheckRules(_mixinRules, mixin);
     }
 
     public void Visit (InterfaceIntroductionDefinition interfaceIntroduction)
     {
-      ArgumentUtility.CheckNotNull("interfaceIntroduction", interfaceIntroduction);
+      ArgumentUtility.CheckNotNull(nameof(interfaceIntroduction), interfaceIntroduction);
       CheckRules(_interfaceIntroductionRules, interfaceIntroduction);
     }
 
     public void Visit (NonInterfaceIntroductionDefinition nonIntroductionDefinition)
     {
-      ArgumentUtility.CheckNotNull("nonIntroductionDefinition", nonIntroductionDefinition);
+      ArgumentUtility.CheckNotNull(nameof(nonIntroductionDefinition), nonIntroductionDefinition);
       CheckRules(_nonIntroductedInterfaceRules, nonIntroductionDefinition);
     }
 
     public void Visit (MethodIntroductionDefinition methodIntroduction)
     {
-      ArgumentUtility.CheckNotNull("methodIntroduction", methodIntroduction);
+      ArgumentUtility.CheckNotNull(nameof(methodIntroduction), methodIntroduction);
       CheckRules(_methodIntroductionRules, methodIntroduction);
     }
 
     public void Visit (PropertyIntroductionDefinition propertyIntroduction)
     {
-      ArgumentUtility.CheckNotNull("propertyIntroduction", propertyIntroduction);
+      ArgumentUtility.CheckNotNull(nameof(propertyIntroduction), propertyIntroduction);
       CheckRules(_propertyIntroductionRules, propertyIntroduction);
     }
 
     public void Visit (EventIntroductionDefinition eventIntroduction)
     {
-      ArgumentUtility.CheckNotNull("eventIntroduction", eventIntroduction);
+      ArgumentUtility.CheckNotNull(nameof(eventIntroduction), eventIntroduction);
       CheckRules(_eventIntroductionRules, eventIntroduction);
     }
 
     public void Visit (MethodDefinition method)
     {
-      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentUtility.CheckNotNull(nameof(method), method);
       CheckRules(_methodRules, method);
     }
 
     public void Visit (PropertyDefinition property)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
       CheckRules(_propertyRules, property);
     }
 
     public void Visit (EventDefinition eventDefinition)
     {
-      ArgumentUtility.CheckNotNull("eventDefinition", eventDefinition);
+      ArgumentUtility.CheckNotNull(nameof(eventDefinition), eventDefinition);
       CheckRules(_eventRules, eventDefinition);
     }
 
     public void Visit (RequiredTargetCallTypeDefinition requiredTargetCallType)
     {
-      ArgumentUtility.CheckNotNull("requiredTargetCallType", requiredTargetCallType);
+      ArgumentUtility.CheckNotNull(nameof(requiredTargetCallType), requiredTargetCallType);
       CheckRules(_requiredTargetCallTypeRules, requiredTargetCallType);
     }
 
     public void Visit (RequiredNextCallTypeDefinition requiredNextCallType)
     {
-      ArgumentUtility.CheckNotNull("requiredNextCallType", requiredNextCallType);
+      ArgumentUtility.CheckNotNull(nameof(requiredNextCallType), requiredNextCallType);
       CheckRules(_requiredNextCallTypeRules, requiredNextCallType);
     }
 
     public void Visit (RequiredMixinTypeDefinition requiredMixinType)
     {
-      ArgumentUtility.CheckNotNull("requiredMixinType", requiredMixinType);
+      ArgumentUtility.CheckNotNull(nameof(requiredMixinType), requiredMixinType);
       CheckRules(_requiredMixinTypeRules, requiredMixinType);
     }
 
     public void Visit (RequiredMethodDefinition requiredMethod)
     {
-      ArgumentUtility.CheckNotNull("requiredMethod", requiredMethod);
+      ArgumentUtility.CheckNotNull(nameof(requiredMethod), requiredMethod);
       CheckRules(_requiredMethodRules, requiredMethod);
     }
 
     public void Visit (TargetCallDependencyDefinition dependency)
     {
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentUtility.CheckNotNull(nameof(dependency), dependency);
       CheckRules(_targetCallDependencyRules, dependency);
     }
 
     public void Visit (NextCallDependencyDefinition dependency)
     {
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentUtility.CheckNotNull(nameof(dependency), dependency);
       CheckRules(_nextCallDependencyRules, dependency);
     }
 
     public void Visit (MixinDependencyDefinition dependency)
     {
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentUtility.CheckNotNull(nameof(dependency), dependency);
       CheckRules(_mixinDependencyRules, dependency);
     }
 
     public void Visit (ComposedInterfaceDependencyDefinition dependency)
     {
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentUtility.CheckNotNull(nameof(dependency), dependency);
       CheckRules(_composedInterfaceDependencyRules, dependency);
     }
 
     public void Visit (AttributeDefinition attribute)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
       CheckRules(_attributeRules, attribute);
     }
 
     public void Visit (AttributeIntroductionDefinition attributeIntroduction)
     {
-      ArgumentUtility.CheckNotNull("attributeIntroduction", attributeIntroduction);
+      ArgumentUtility.CheckNotNull(nameof(attributeIntroduction), attributeIntroduction);
       CheckRules(_attributeIntroductionRules, attributeIntroduction);
     }
 
     public void Visit (NonAttributeIntroductionDefinition nonAttributeIntroduction)
     {
-      ArgumentUtility.CheckNotNull("nonAttributeIntroduction", nonAttributeIntroduction);
+      ArgumentUtility.CheckNotNull(nameof(nonAttributeIntroduction), nonAttributeIntroduction);
       CheckRules(_nonAttributeIntroductionRules, nonAttributeIntroduction);
     }
 
     public void Visit (SuppressedAttributeIntroductionDefinition suppressedAttributeIntroduction)
     {
-      ArgumentUtility.CheckNotNull("suppressedAttributeIntroduction", suppressedAttributeIntroduction);
+      ArgumentUtility.CheckNotNull(nameof(suppressedAttributeIntroduction), suppressedAttributeIntroduction);
       CheckRules(_suppressedAttributeIntroductionRules, suppressedAttributeIntroduction);
     }
 

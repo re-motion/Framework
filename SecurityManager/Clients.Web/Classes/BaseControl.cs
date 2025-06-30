@@ -114,7 +114,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected IResourceManager GetResourceManager (Type resourceEnumType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("resourceEnumType", resourceEnumType, typeof(Enum));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(resourceEnumType), resourceEnumType, typeof(Enum));
 
       return ResourceManagerSet.Create(GlobalizationService.GetResourceManager(TypeAdapter.Create(resourceEnumType)), GetResourceManager());
     }
@@ -137,8 +137,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
     protected TControl GetControl<TControl> (string controlID, string propertyIdentifier)
         where TControl : Control, IBusinessObjectBoundWebControl, IFocusableControl
     {
-      ArgumentUtility.CheckNotNullOrEmpty("controlID", controlID);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(controlID), controlID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
 
       var control = FindControl(controlID);
 

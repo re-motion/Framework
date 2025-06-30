@@ -76,8 +76,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
         [NotNull] ChromeExecutable chromeExecutable)
         : base(webTestSettings)
     {
-      ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
-      ArgumentUtility.CheckNotNull("chromeExecutable", chromeExecutable);
+      ArgumentUtility.CheckNotNull(nameof(webTestSettings), webTestSettings);
+      ArgumentUtility.CheckNotNull(nameof(chromeExecutable), chromeExecutable);
 
       BrowserBinaryPath = chromeExecutable.BrowserBinaryPath;
       DriverBinaryPath = chromeExecutable.DriverBinaryPath;

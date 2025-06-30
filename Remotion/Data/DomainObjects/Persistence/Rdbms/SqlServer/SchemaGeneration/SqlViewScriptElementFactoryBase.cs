@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public IScriptElement GetCreateElement (T entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
 
       var statements = new ScriptElementCollection();
       statements.AddElement(CreateBatchDelimiterStatement());
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public virtual IScriptElement GetDropElement (T entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
 
       return new ScriptStatement(
         string.Format(
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected virtual bool UseSchemaBinding (T entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
       return true;
     }
   }

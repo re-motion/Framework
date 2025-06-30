@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected void HandleEditItemClick (BocList sender, BocListItemCommandClickEventArgs e)
     {
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
       Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
 
       if (!Page.IsReturningPostBack)
@@ -60,7 +60,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected void HandleNewButtonClick (BocList sender)
     {
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
       Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
 
       if (!Page.IsReturningPostBack)
@@ -80,7 +80,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected void ResetListOnTenantChange (BocList list)
     {
-      ArgumentUtility.CheckNotNull("list", list);
+      ArgumentUtility.CheckNotNull(nameof(list), list);
 
       if (HasTenantChanged)
       {

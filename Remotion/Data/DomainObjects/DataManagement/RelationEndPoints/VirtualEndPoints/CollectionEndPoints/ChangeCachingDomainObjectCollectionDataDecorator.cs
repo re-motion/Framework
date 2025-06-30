@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     private bool _cachedHasChangedFlag;
 
     public ChangeCachingDomainObjectCollectionDataDecorator (IDomainObjectCollectionData wrappedData)
-      : base(new ObservableDomainObjectCollectionDataDecorator(ArgumentUtility.CheckNotNull("wrappedData", wrappedData)))
+      : base(new ObservableDomainObjectCollectionDataDecorator(ArgumentUtility.CheckNotNull(nameof(wrappedData), wrappedData)))
     {
       _observedWrappedData = (ObservableDomainObjectCollectionDataDecorator)WrappedData;
       _unobservedWrappedData = wrappedData;
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <param name="domainObject">The <see cref="DomainObject"/> to be registered.</param>
     public void RegisterOriginalItem (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       // Original collection must not contain this item
       if (_originalData.ContainsObjectID(domainObject.ID))
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <param name="objectID">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to be unregistered.</param>
     public void UnregisterOriginalItem (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       // Original collection must contain this item
       if (!_originalData.ContainsObjectID(objectID))
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <param name="comparison"></param>
     public void SortOriginalAndCurrent (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull("comparison", comparison);
+      ArgumentUtility.CheckNotNull(nameof(comparison), comparison);
 
       // Sort the unobserved inner collection to avoid copy on write: if the contents hasn't been copied, we want to sort both 
       // collections at the same time!

@@ -33,7 +33,7 @@ namespace Remotion.Mixins.CrossReferencer
         MemberDefinitionBase? targetMemberDefinition,
         IReadOnlyCollection<MemberDefinitionBase>? mixinMemberDefinitions)
     {
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
 
       MemberInfo = new OverridingMemberInfo(memberInfo);
       AddSubMemberInfos(memberInfo);

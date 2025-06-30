@@ -36,8 +36,8 @@ namespace Remotion.Web.Globalization
     /// </returns>
     public static WebString GetWebString (this IResourceManager resourceManager, string id, WebStringType webStringType)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       var resourceString = resourceManager.GetString(id);
 
@@ -55,8 +55,8 @@ namespace Remotion.Web.Globalization
     /// </returns>
     public static WebString? GetWebStringOrDefault (this IResourceManager resourceManager, string id, WebStringType webStringType)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       var resourceString = resourceManager.GetStringOrDefault(id);
 
@@ -78,8 +78,8 @@ namespace Remotion.Web.Globalization
     /// </returns>
     public static WebString GetWebString (this IResourceManager resourceManager, Enum enumValue, WebStringType webStringType)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
 
       var resourceString = resourceManager.GetString(enumValue);
 
@@ -98,8 +98,8 @@ namespace Remotion.Web.Globalization
     /// </returns>
     public static WebString? GetWebStringOrDefault (this IResourceManager resourceManager, Enum enumValue, WebStringType webStringType)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
 
       var resourceString = resourceManager.GetStringOrDefault(enumValue);
 

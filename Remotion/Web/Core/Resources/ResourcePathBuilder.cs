@@ -44,8 +44,8 @@ namespace Remotion.Web.Resources
     protected ResourcePathBuilder (IStaticResourceCacheKeyProvider staticResourceCacheKeyProvider, IHttpContextProvider httpContextProvider, ResourceRoot resourceRoot)
         : base(staticResourceCacheKeyProvider)
     {
-      ArgumentUtility.CheckNotNull("httpContextProvider", httpContextProvider);
-      ArgumentUtility.CheckNotNull("resourceRoot", resourceRoot);
+      ArgumentUtility.CheckNotNull(nameof(httpContextProvider), httpContextProvider);
+      ArgumentUtility.CheckNotNull(nameof(resourceRoot), resourceRoot);
 
       HttpContextProvider = httpContextProvider;
       ResourceRoot = resourceRoot;
@@ -53,7 +53,7 @@ namespace Remotion.Web.Resources
 
     protected override string BuildPath (string[] completePath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("completePath", completePath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(completePath), completePath);
 
       return completePath.Aggregate(CombineVirtualPaths);
     }

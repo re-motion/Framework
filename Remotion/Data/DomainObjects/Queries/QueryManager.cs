@@ -48,9 +48,9 @@ namespace Remotion.Data.DomainObjects.Queries
         IObjectLoader objectLoader,
         IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("persistenceStrategy", persistenceStrategy);
-      ArgumentUtility.CheckNotNull("objectLoader", objectLoader);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull(nameof(persistenceStrategy), persistenceStrategy);
+      ArgumentUtility.CheckNotNull(nameof(objectLoader), objectLoader);
+      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
 
       _persistenceStrategy = persistenceStrategy;
       _objectLoader = objectLoader;
@@ -95,10 +95,10 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </exception>
     public object? GetScalar (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       if (query.QueryType != QueryType.ScalarReadOnly && query.QueryType != QueryType.ScalarReadWrite)
-        throw new ArgumentException("A collection or custom query cannot be used with GetScalar.", "query");
+        throw new ArgumentException("A collection or custom query cannot be used with GetScalar.", nameof(query));
 
       return _persistenceStrategy.ExecuteScalarQuery(query);
     }
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </exception>
     public QueryResult<DomainObject> GetCollection (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       return GetCollection<DomainObject>(query);
     }
@@ -161,10 +161,10 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </exception>
     public QueryResult<T> GetCollection<T> (IQuery query) where T: DomainObject
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
 
       if (query.QueryType != QueryType.CollectionReadOnly && query.QueryType != QueryType.CollectionReadWrite)
-        throw new ArgumentException("A scalar or custom query cannot be used with GetCollection.", "query");
+        throw new ArgumentException("A scalar or custom query cannot be used with GetCollection.", nameof(query));
 
       var resultArray = _objectLoader
           .GetOrLoadCollectionQueryResult(query)
@@ -191,14 +191,14 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </remarks>
     public IEnumerable<T> GetCustom<T> (IQuery query, Func<IQueryResultRow, T> rowReader)
     {
-      ArgumentUtility.CheckNotNull("query", query);
-      ArgumentUtility.CheckNotNull("rowReader", rowReader);
+      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentUtility.CheckNotNull(nameof(rowReader), rowReader);
 
       if (query.QueryType != QueryType.CustomReadOnly && query.QueryType != QueryType.CustomReadWrite)
-        throw new ArgumentException("A collection or scalar query cannot be used with GetCustom.", "query");
+        throw new ArgumentException("A collection or scalar query cannot be used with GetCustom.", nameof(query));
 
       if (query.EagerFetchQueries.Count > 0)
-        throw new ArgumentException("A custom query cannot have eager fetch queries defined.", "query");
+        throw new ArgumentException("A custom query cannot have eager fetch queries defined.", nameof(query));
 
       var queryResult = _persistenceStrategy.ExecuteCustomQuery(query).Select(rowReader);
       return _transactionEventSink.RaiseFilterCustomQueryResultEvent(query, queryResult);

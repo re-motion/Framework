@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected DbCommandBuilder (ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
 
       _sqlDialect = sqlDialect;
     }
@@ -46,9 +46,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IDbCommand command,
         ISelectedColumnsSpecification selectedColumns)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull(nameof(statement), statement);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
 
       statement.Append("SELECT ");
       selectedColumns.AppendProjection(statement, SqlDialect);
@@ -59,9 +59,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IDbCommand command,
         TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull(nameof(statement), statement);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
 
       statement.Append(" FROM ");
       AppendTableName(statement, command, tableDefinition);
@@ -72,9 +72,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IDbCommand command,
         TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull(nameof(statement), statement);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
 
       if (tableDefinition.TableName.SchemaName != null)
       {
@@ -89,9 +89,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IDbCommand command,
         IComparedColumnsSpecification comparedColumns)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("comparedColumns", comparedColumns);
+      ArgumentUtility.CheckNotNull(nameof(statement), statement);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentUtility.CheckNotNull(nameof(comparedColumns), comparedColumns);
 
       statement.Append(" WHERE ");
       comparedColumns.AddParameters(command, SqlDialect);
@@ -103,9 +103,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IDbCommand command,
         IOrderedColumnsSpecification orderedColumnsSpecification)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("orderedColumnsSpecification", orderedColumnsSpecification);
+      ArgumentUtility.CheckNotNull(nameof(statement), statement);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentUtility.CheckNotNull(nameof(orderedColumnsSpecification), orderedColumnsSpecification);
 
       if (!orderedColumnsSpecification.IsEmpty)
       {

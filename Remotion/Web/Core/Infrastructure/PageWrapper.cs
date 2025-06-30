@@ -56,7 +56,7 @@ namespace Remotion.Web.Infrastructure
     private PageWrapper (Page page)
         : base(page)
     {
-      ArgumentUtility.CheckNotNull("page", page);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
       _page = page;
     }
 

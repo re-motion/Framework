@@ -33,9 +33,9 @@ namespace Remotion.Web.UI.Controls
 
     protected RenderingContext (HttpContextBase httpContext, HtmlTextWriter writer, TControl control)
     {
-      ArgumentUtility.CheckNotNull("httpContext", httpContext);
-      ArgumentUtility.CheckNotNull("writer", writer);
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(httpContext), httpContext);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       _httpContext = httpContext;
       _writer = writer;

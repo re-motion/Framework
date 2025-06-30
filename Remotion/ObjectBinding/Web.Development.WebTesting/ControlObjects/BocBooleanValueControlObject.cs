@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var isTriState = IsTriState();
       if (!isTriState && !newState.HasValue)
-        throw new ArgumentException("Must not be null for non-tri-state BocBooleanValue controls.", "newState");
+        throw new ArgumentException("Must not be null for non-tri-state BocBooleanValue controls.", nameof(newState));
 
       var currentState = GetState();
       if (currentState == newState)

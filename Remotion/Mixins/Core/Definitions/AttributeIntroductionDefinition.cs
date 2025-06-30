@@ -28,8 +28,8 @@ namespace Remotion.Mixins.Definitions
 
     public AttributeIntroductionDefinition (IAttributeIntroductionTarget target, AttributeDefinition attribute)
     {
-      ArgumentUtility.CheckNotNull("target", target);
-      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull(nameof(target), target);
+      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
 
       _target = target;
       _attribute = attribute;
@@ -62,7 +62,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
 
       visitor.Visit(this);
     }

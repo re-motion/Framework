@@ -31,8 +31,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
         ErrorAggregator<ConfigurationException> configurationErrors,
         ErrorAggregator<ValidationException> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull(nameof(configurationErrors), configurationErrors);
+      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
 
       _configurationErrors = configurationErrors;
       _validationErrors = validationErrors;

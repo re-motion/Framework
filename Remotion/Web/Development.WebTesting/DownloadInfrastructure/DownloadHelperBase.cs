@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 
     public IDownloadedFile HandleDownloadWithExpectedFileName (string fileName, TimeSpan? downloadStartedTimeout = null, TimeSpan? downloadUpdatedTimeout = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("fileName", fileName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(fileName), fileName);
 
       var localDownloadStartedTimeout = downloadStartedTimeout ?? _downloadStartedTimeout;
       var localDownloadUpdatedTimeout = downloadUpdatedTimeout ?? _downloadUpdatedTimeout;
@@ -87,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     [NotNull]
     protected IDownloadedFile MoveDownloadedFile ([NotNull] DownloadedFile downloadedFile)
     {
-      ArgumentUtility.CheckNotNull("downloadedFile", downloadedFile);
+      ArgumentUtility.CheckNotNull(nameof(downloadedFile), downloadedFile);
 
       var tempDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
       Directory.CreateDirectory(tempDirectory);

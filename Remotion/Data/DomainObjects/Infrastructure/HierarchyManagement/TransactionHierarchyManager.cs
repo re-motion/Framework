@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
       public TransactionUnlocker (TransactionHierarchyManager hierarchyManager)
       {
-        ArgumentUtility.CheckNotNull("hierarchyManager", hierarchyManager);
+        ArgumentUtility.CheckNotNull(nameof(hierarchyManager), hierarchyManager);
 
         if (hierarchyManager._isWriteable)
         {
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         : this(
             thisTransaction,
             thisEventSink,
-            new ClientTransactionHierarchy(ArgumentUtility.CheckNotNull("thisTransaction", thisTransaction)),
+            new ClientTransactionHierarchy(ArgumentUtility.CheckNotNull(nameof(thisTransaction), thisTransaction)),
             null,
             null,
             null)
@@ -100,11 +100,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
             thisEventSink,
             parentHierarchyManager.TransactionHierarchy,
             parentTransaction,
-            ArgumentUtility.CheckNotNull("parentHierarchyManager", parentHierarchyManager),
+            ArgumentUtility.CheckNotNull(nameof(parentHierarchyManager), parentHierarchyManager),
             parentEventSink)
     {
-      ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction);
-      ArgumentUtility.CheckNotNull("parentEventSink", parentEventSink);
+      ArgumentUtility.CheckNotNull(nameof(parentTransaction), parentTransaction);
+      ArgumentUtility.CheckNotNull(nameof(parentEventSink), parentEventSink);
 
       _parentTransaction = parentTransaction;
       _parentHierarchyManager = parentHierarchyManager;
@@ -119,9 +119,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         ITransactionHierarchyManager? parentHierarchyManager,
         IClientTransactionEventSink? parentEventSink)
     {
-      ArgumentUtility.CheckNotNull("thisTransaction", thisTransaction);
-      ArgumentUtility.CheckNotNull("thisEventSink", thisEventSink);
-      ArgumentUtility.CheckNotNull("transactionHierarchy", transactionHierarchy);
+      ArgumentUtility.CheckNotNull(nameof(thisTransaction), thisTransaction);
+      ArgumentUtility.CheckNotNull(nameof(thisEventSink), thisEventSink);
+      ArgumentUtility.CheckNotNull(nameof(transactionHierarchy), transactionHierarchy);
 
 
       _thisTransaction = thisTransaction;
@@ -189,7 +189,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public void InstallListeners (IClientTransactionEventBroker eventBroker)
     {
-      ArgumentUtility.CheckNotNull("eventBroker", eventBroker);
+      ArgumentUtility.CheckNotNull(nameof(eventBroker), eventBroker);
       eventBroker.AddListener(_readOnlyClientTransactionListener);
       eventBroker.AddListener(_newObjectHierarchyInvalidationClientTransactionListener);
     }
@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public void OnBeforeObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs)
     {
-      ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
+      ArgumentUtility.CheckNotNull(nameof(loadedObjectIDs), loadedObjectIDs);
       if (_parentHierarchyManager != null)
         _parentHierarchyManager.OnBeforeSubTransactionObjectRegistration(loadedObjectIDs);
       _readOnlyClientTransactionListener.AddCurrentlyLoadingObjectIDs(loadedObjectIDs);
@@ -222,13 +222,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public void OnAfterObjectRegistration (IReadOnlyList<ObjectID> objectIDsToBeLoaded)
     {
-      ArgumentUtility.CheckNotNull("objectIDsToBeLoaded", objectIDsToBeLoaded);
+      ArgumentUtility.CheckNotNull(nameof(objectIDsToBeLoaded), objectIDsToBeLoaded);
       _readOnlyClientTransactionListener.RemoveCurrentlyLoadingObjectIDs(objectIDsToBeLoaded);
     }
 
     public void OnBeforeSubTransactionObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs)
     {
-      ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
+      ArgumentUtility.CheckNotNull(nameof(loadedObjectIDs), loadedObjectIDs);
 
       var conflictingIDs = loadedObjectIDs.Intersect(_readOnlyClientTransactionListener.CurrentlyLoadingObjectIDs).ConvertToCollection();
       if (conflictingIDs.Any())

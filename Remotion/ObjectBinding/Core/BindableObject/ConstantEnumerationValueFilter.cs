@@ -26,8 +26,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public ConstantEnumerationValueFilter (Enum[] disabledValues)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("disabledValues", disabledValues);
-      ArgumentUtility.CheckItemsType("disabledValues", disabledValues, disabledValues[0].GetType());
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(disabledValues), disabledValues);
+      ArgumentUtility.CheckItemsType(nameof(disabledValues), disabledValues, disabledValues[0].GetType());
 
       _disabledEnumValues = disabledValues;
     }
@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
-      ArgumentUtility.CheckNotNull("value", value);
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
 
       return !Array.Exists(_disabledEnumValues, disabledValue => disabledValue.Equals(value.Value));
     }

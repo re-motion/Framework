@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 
     public PrefixNamespace (string prefix, string uri)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("prefix", prefix);
-      ArgumentUtility.CheckNotNullOrEmpty("uri", uri);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(prefix), prefix);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(uri), uri);
 
       _prefix = prefix;
       _uri = uri;

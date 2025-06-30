@@ -43,8 +43,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 
     public EdgeBrowserFactory ([NotNull] IEdgeConfiguration edgeConfiguration, [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("edgeConfiguration", edgeConfiguration);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentUtility.CheckNotNull(nameof(edgeConfiguration), edgeConfiguration);
+      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
 
       _loggerFactory = loggerFactory;
       _logger = _loggerFactory.CreateLogger(typeof(EdgeBrowserFactory));
@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 
     public IBrowserSession CreateBrowser (DriverConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull("configuration", configuration);
+      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
 
       var sessionConfiguration = CreateSessionConfiguration(configuration);
       var commandTimeout = configuration.CommandTimeout;

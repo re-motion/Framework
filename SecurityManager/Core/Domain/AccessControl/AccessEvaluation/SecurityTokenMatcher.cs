@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurityTokenMatcher (AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull("ace", ace);
+      ArgumentUtility.CheckNotNull(nameof(ace), ace);
 
       _ace = ace;
       _clientTransaction = ace.RootTransaction;
@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public bool MatchesToken (SecurityToken token)
     {
-      ArgumentUtility.CheckNotNull("token", token);
+      ArgumentUtility.CheckNotNull(nameof(token), token);
 
       if (token.Principal.IsNull)
         return false;

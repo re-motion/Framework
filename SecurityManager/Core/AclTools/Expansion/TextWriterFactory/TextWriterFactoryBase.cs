@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
 
     public static string AppendExtension (string name, string? extension)
     {
-      ArgumentUtility.CheckNotNull("name", name);
+      ArgumentUtility.CheckNotNull(nameof(name), name);
       if (String.IsNullOrEmpty(extension))
       {
         return name;
@@ -51,8 +51,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
 
     public virtual string GetRelativePath (string fromName, string toName)
     {
-      ArgumentUtility.CheckNotNull("fromName", fromName);
-      ArgumentUtility.CheckNotNull("toName", toName);
+      ArgumentUtility.CheckNotNull(nameof(fromName), fromName);
+      ArgumentUtility.CheckNotNull(nameof(toName), toName);
 
       if (!TextWriterExists(toName))
         throw new ArgumentException(string.Format("No TextWriter with name \"{0}\" registered => no relative path exists.", toName));
@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
 
     public TextWriterData GetTextWriterData (string name)
     {
-      ArgumentUtility.CheckNotNull("name", name);
+      ArgumentUtility.CheckNotNull(nameof(name), name);
       return _nameToTextWriterData[name];
     }
 

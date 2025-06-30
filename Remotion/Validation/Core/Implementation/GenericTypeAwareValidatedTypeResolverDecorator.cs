@@ -33,7 +33,7 @@ namespace Remotion.Validation.Implementation
 
     public GenericTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver validatedTypeResolver)
     {
-      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
+      ArgumentUtility.CheckNotNull(nameof(validatedTypeResolver), validatedTypeResolver);
 
       _validatedTypeResolver = validatedTypeResolver;
     }
@@ -45,7 +45,7 @@ namespace Remotion.Validation.Implementation
 
     public Type? GetValidatedType (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull("collectorType", collectorType);
+      ArgumentUtility.CheckNotNull(nameof(collectorType), collectorType);
 
       var itemType = s_genericValidationRuleCollectorTypeCache.GetOrAdd(
               collectorType,

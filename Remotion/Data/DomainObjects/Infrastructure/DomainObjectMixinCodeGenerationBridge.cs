@@ -31,19 +31,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     public static void OnDomainObjectReferenceInitializing (DomainObject instance)
     {
-      ArgumentUtility.CheckNotNull("instance", instance);
+      ArgumentUtility.CheckNotNull(nameof(instance), instance);
       NotifyDomainObjectMixins(instance, mixin => mixin.OnDomainObjectReferenceInitializing());
     }
 
     public static void OnDomainObjectCreated (DomainObject instance)
     {
-      ArgumentUtility.CheckNotNull("instance", instance);
+      ArgumentUtility.CheckNotNull(nameof(instance), instance);
       NotifyDomainObjectMixins(instance, mixin => mixin.OnDomainObjectCreated());
     }
 
     public static void OnDomainObjectLoaded (DomainObject instance, LoadMode loadMode)
     {
-      ArgumentUtility.CheckNotNull("instance", instance);
+      ArgumentUtility.CheckNotNull(nameof(instance), instance);
       NotifyDomainObjectMixins(instance, mixin => mixin.OnDomainObjectLoaded(loadMode));
     }
 

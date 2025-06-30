@@ -52,9 +52,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     protected void PrepareTest ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] WebTestHelper helper, [NotNull] string control)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
-      ArgumentUtility.CheckNotNull("helper", helper);
-      ArgumentUtility.CheckNotNullOrEmpty("control", control);
+      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
+      ArgumentUtility.CheckNotNull(nameof(helper), helper);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(control), control);
 
       var url = string.Concat(
           helper.TestInfrastructureConfiguration.WebApplicationRoot,
@@ -111,8 +111,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private TestCaseData CreateTestCaseData ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
-      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
+      ArgumentUtility.CheckNotNull(nameof(method), method);
 
       return new TestCaseData(
           (GenericTestSetupAction)((helper, control) =>

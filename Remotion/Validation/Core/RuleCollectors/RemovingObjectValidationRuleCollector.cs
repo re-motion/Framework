@@ -40,8 +40,8 @@ namespace Remotion.Validation.RuleCollectors
 
     public RemovingObjectValidationRuleCollector (ITypeInformation validatedType, Type collectorType)
     {
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
-      ArgumentUtility.CheckNotNull("collectorType", collectorType); // TODO RM-5906: Add type check for IValidationRuleCollector
+      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
+      ArgumentUtility.CheckNotNull(nameof(collectorType), collectorType); // TODO RM-5906: Add type check for IValidationRuleCollector
 
       ValidatedType = validatedType;
       CollectorType = collectorType;
@@ -55,8 +55,8 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterValidator (Type validatorType, Type? collectorTypeToRemoveFrom, Func<IObjectValidator, bool>? validatorPredicate)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("validatorType", validatorType, typeof(IObjectValidator));
-      ArgumentUtility.CheckTypeIsAssignableFrom("collectorTypeToRemoveFrom", collectorTypeToRemoveFrom, typeof(IValidationRuleCollector));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(validatorType), validatorType, typeof(IObjectValidator));
+      ArgumentUtility.CheckTypeIsAssignableFrom(nameof(collectorTypeToRemoveFrom), collectorTypeToRemoveFrom, typeof(IValidationRuleCollector));
 
       _registeredValidators.Add(new RemovingObjectValidatorRegistration(validatorType, collectorTypeToRemoveFrom, validatorPredicate, this));
     }

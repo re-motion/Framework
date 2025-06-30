@@ -35,7 +35,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <param name="attributeType">The attribute type to filter assemblies with.</param>
     public AttributeAssemblyLoaderFilter (Type attributeType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("attributeType", attributeType, typeof(Attribute));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(attributeType), attributeType, typeof(Attribute));
       _attributeType = attributeType;
     }
 
@@ -53,7 +53,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// </summary>
     public bool ShouldConsiderAssembly (AssemblyName assemblyName)
     {
-      ArgumentUtility.CheckNotNull("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNull(nameof(assemblyName), assemblyName);
       return true;
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// </returns>
     public bool ShouldIncludeAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
       return assembly.IsDefined(_attributeType, false);
     }
   }

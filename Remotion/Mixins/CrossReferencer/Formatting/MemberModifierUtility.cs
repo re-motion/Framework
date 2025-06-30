@@ -26,7 +26,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
     public bool IsOverriddenMember (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
 
       var methodInfo = memberInfo as MethodInfo;
       if (methodInfo != null)
@@ -52,7 +52,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
     public string GetMemberModifiers (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
 
       switch (memberInfo.MemberType)
       {

@@ -24,25 +24,25 @@ namespace Remotion.Data.DomainObjects
   {
     void IDomainObjectCollectionEventRaiser.BeginAdd (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
       OnAdding(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 
     void IDomainObjectCollectionEventRaiser.EndAdd (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
       OnAdded(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 
     void IDomainObjectCollectionEventRaiser.BeginRemove (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
       OnRemoving(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 
     void IDomainObjectCollectionEventRaiser.EndRemove (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
       OnRemoved(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 

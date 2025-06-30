@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDbTransaction (IDbTransaction transaction, IPersistenceExtension persistenceExtension, Guid connectionID)
     {
-      ArgumentUtility.CheckNotNull("transaction", transaction);
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
       _transaction = transaction;
       _persistenceExtension = persistenceExtension;
       _connectionID = connectionID;

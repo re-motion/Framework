@@ -76,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     private WebTabStripTabDefinition ConvertToTabbedMultiViewTab ([NotNull] WebTabStripTabDefinition tabDefinition)
     {
-      ArgumentUtility.CheckNotNull("tabDefinition", tabDefinition);
+      ArgumentUtility.CheckNotNull(nameof(tabDefinition), tabDefinition);
 
       return new WebTabStripTabDefinition(
           tabDefinition.ItemID.Substring(0, tabDefinition.ItemID.Length - "_Tab".Length),
@@ -95,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SwitchTo (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
 
       return SwitchTo().WithItemID(itemID, actionOptions);
     }
@@ -103,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
 
       return GetTabStrip().SwitchTo(itemID + "_Tab", actionOptions);
     }
@@ -117,7 +117,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
 
       return GetTabStrip().SwitchTo().WithHtmlID(htmlID, actionOptions);
     }
@@ -125,7 +125,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("displayText", displayText);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayText), displayText);
 
       return GetTabStrip().SwitchTo().WithDisplayText(displayText, actionOptions);
     }
@@ -133,7 +133,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayTextContains (string containsDisplayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("containsDisplayText", containsDisplayText);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(containsDisplayText), containsDisplayText);
 
       return GetTabStrip().SwitchTo().WithDisplayTextContains(containsDisplayText, actionOptions);
     }
@@ -148,7 +148,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull(nameof(controlSelectionCommand), controlSelectionCommand);
 
       return Children.GetControl(controlSelectionCommand);
     }
@@ -157,7 +157,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull(nameof(controlSelectionCommand), controlSelectionCommand);
 
       return Children.GetControlOrNull(controlSelectionCommand);
     }
@@ -165,7 +165,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull(nameof(controlSelectionCommand), controlSelectionCommand);
 
       return Children.HasControl(controlSelectionCommand);
     }

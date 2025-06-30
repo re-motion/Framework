@@ -44,15 +44,15 @@ namespace Remotion.Collections.Caching
 
     public LockingCacheDecorator (ICache<TKey, TValue> innerCache)
     {
-      ArgumentUtility.CheckNotNull("innerCache", innerCache);
+      ArgumentUtility.CheckNotNull(nameof(innerCache), innerCache);
 
       _innerCache = innerCache;
     }
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
-      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
+      ArgumentUtility.DebugCheckNotNull(nameof(valueFactory), valueFactory);
 
       lock (_lock)
         return _innerCache.GetOrCreateValue(key, valueFactory);
@@ -60,7 +60,7 @@ namespace Remotion.Collections.Caching
 
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       lock (_lock)
         return _innerCache.TryGetValue(key, out value);

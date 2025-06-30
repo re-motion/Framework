@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public static void SetCurrent (XmlReflectionBusinessObjectStorageProvider provider)
     {
-      ArgumentUtility.CheckNotNull("provider", provider);
+      ArgumentUtility.CheckNotNull(nameof(provider), provider);
       s_current.Value = provider;
     }
 
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public XmlReflectionBusinessObjectStorageProvider (IReflectionBusinessObjectStorageProvider reflectionBusinessObjectStorageProvider)
     {
-      ArgumentUtility.CheckNotNull("reflectionBusinessObjectStorageProvider", reflectionBusinessObjectStorageProvider);
+      ArgumentUtility.CheckNotNull(nameof(reflectionBusinessObjectStorageProvider), reflectionBusinessObjectStorageProvider);
 
       _reflectionBusinessObjectStorageProvider = reflectionBusinessObjectStorageProvider;
     }
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public BindableXmlObject GetObject (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       if (id == Guid.Empty)
         return null;
@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public BindableXmlObject[] GetObjects (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       lock (_reflectionBusinessObjectStorageProvider)
       {
@@ -103,7 +103,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public void SaveObject (BindableXmlObject obj)
     {
-      ArgumentUtility.CheckNotNull("obj", obj);
+      ArgumentUtility.CheckNotNull(nameof(obj), obj);
 
 
       Type targetType = GetTargetType(obj);
@@ -208,8 +208,8 @@ namespace Remotion.ObjectBinding.Sample
 
     IBusinessObjectWithIdentity IGetObjectService.GetObject (BindableObjectClassWithIdentity classWithIdentity, string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNull("classWithIdentity", classWithIdentity);
-      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNull(nameof(classWithIdentity), classWithIdentity);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
 
       return (IBusinessObjectWithIdentity)GetObject(classWithIdentity.TargetType, new Guid(uniqueIdentifier));
     }

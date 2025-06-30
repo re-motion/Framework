@@ -31,8 +31,8 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 
     private BaseRequirements (Type requirementsType, IDictionary<MethodInfo, MethodInfo> methodToInterfaceMap)
     {
-      ArgumentUtility.CheckNotNull("requirementsType", requirementsType);
-      ArgumentUtility.CheckNotNull("methodToInterfaceMap", methodToInterfaceMap);
+      ArgumentUtility.CheckNotNull(nameof(requirementsType), requirementsType);
+      ArgumentUtility.CheckNotNull(nameof(methodToInterfaceMap), methodToInterfaceMap);
 
       _requirementsType = requirementsType;
       _methodToInterfaceMap = methodToInterfaceMap;
@@ -50,9 +50,9 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 
     public static BaseRequirements BuildBaseRequirements (IEnumerable<MethodInfo> methodsToOverride, string typeName, ModuleScope scope)
     {
-      ArgumentUtility.CheckNotNull("methodsToOverride", methodsToOverride);
-      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull(nameof(methodsToOverride), methodsToOverride);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
 
       CustomClassEmitter requirementsInterface = new CustomClassEmitter(new InterfaceEmitter(scope, typeName));
 

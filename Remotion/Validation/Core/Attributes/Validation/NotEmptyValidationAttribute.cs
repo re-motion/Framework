@@ -58,8 +58,8 @@ namespace Remotion.Validation.Attributes.Validation
 
     protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull("property", property);
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentUtility.CheckNotNull(nameof(validationMessageFactory), validationMessageFactory);
 
       Func<ValidationMessage, IPropertyValidator> validatorFactory;
       if (property.PropertyType == typeof(byte[]))

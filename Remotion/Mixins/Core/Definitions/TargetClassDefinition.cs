@@ -47,7 +47,7 @@ namespace Remotion.Mixins.Definitions
     public TargetClassDefinition (ClassContext configurationContext)
         : base(configurationContext.Type)
     {
-      ArgumentUtility.CheckNotNull("configurationContext", configurationContext);
+      ArgumentUtility.CheckNotNull(nameof(configurationContext), configurationContext);
 
       _receivedAttributes = new MultiDefinitionCollection<Type, AttributeIntroductionDefinition>(a => a.AttributeType);
 
@@ -117,7 +117,7 @@ namespace Remotion.Mixins.Definitions
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
 
       visitor.Visit(this);
 

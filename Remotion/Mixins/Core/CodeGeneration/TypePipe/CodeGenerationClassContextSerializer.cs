@@ -43,14 +43,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddClassType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       _constructorArguments[0] = Expression.Constant(type);
     }
 
     public void AddMixins (IEnumerable<MixinContext> mixinContexts)
     {
-      ArgumentUtility.CheckNotNull("mixinContexts", mixinContexts);
+      ArgumentUtility.CheckNotNull(nameof(mixinContexts), mixinContexts);
 
       _constructorArguments[1] = Expression.NewArrayInit(
           typeof(MixinContext),
@@ -65,7 +65,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddComposedInterfaces (IEnumerable<Type> composedInterfaces)
     {
-      ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces);
+      ArgumentUtility.CheckNotNull(nameof(composedInterfaces), composedInterfaces);
 
       _constructorArguments[2] = Expression.NewArrayInit(typeof(Type), composedInterfaces.Select(ci => (Expression)Expression.Constant(ci)));
     }

@@ -20,7 +20,7 @@ namespace Remotion.Collections
 
     public ReadOnlyCollectionWrapper (IReadOnlyCollection<T> collection)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentUtility.CheckNotNull(nameof(collection), collection);
 
       _collection = collection;
     }
@@ -52,7 +52,7 @@ namespace Remotion.Collections
 
     void ICollection<T>.CopyTo (T[] array, int arrayIndex)
     {
-      ArgumentUtility.CheckNotNull("arrayIndex", arrayIndex);
+      ArgumentUtility.CheckNotNull(nameof(arrayIndex), arrayIndex);
 
       _collection.ToArray().CopyTo(array, arrayIndex);
     }

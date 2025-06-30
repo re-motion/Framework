@@ -31,7 +31,7 @@ namespace Remotion.Validation.Results
 
     public ValidationResult (IReadOnlyCollection<ValidationFailure> failures)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("failures", failures);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(failures), failures);
 
       Errors = failures;
     }

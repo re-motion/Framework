@@ -45,7 +45,7 @@ namespace Remotion.Mixins.Definitions
         if (value == null || value is MethodDefinition)
           _base = (MethodDefinition?)value;
         else
-          throw new ArgumentException("Base must be MethodDefinition or null.", "value");
+          throw new ArgumentException("Base must be MethodDefinition or null.", nameof(value));
       }
     }
 
@@ -72,7 +72,7 @@ namespace Remotion.Mixins.Definitions
 
     internal override void AddOverride (MemberDefinitionBase member)
     {
-      ArgumentUtility.CheckNotNull("member", member);
+      ArgumentUtility.CheckNotNull(nameof(member), member);
 
       var method = member as MethodDefinition;
       if (method == null)
@@ -86,7 +86,7 @@ namespace Remotion.Mixins.Definitions
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
       visitor.Visit(this);
     }
   }

@@ -55,14 +55,14 @@ namespace Remotion.Security.Metadata
 
     public void AddLocalization (string cultureName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("cultureName", cultureName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(cultureName), cultureName);
 
       AddLocalization(new CultureInfo(cultureName.Trim()));
     }
 
     public void AddLocalization (CultureInfo cultureInfo)
     {
-      ArgumentUtility.CheckNotNull("cultureInfo", cultureInfo);
+      ArgumentUtility.CheckNotNull(nameof(cultureInfo), cultureInfo);
 
       _cultures.Add(cultureInfo);
     }

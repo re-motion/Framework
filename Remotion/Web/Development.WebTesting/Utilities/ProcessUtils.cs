@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <returns>The process id of the parent process, or <c>-1</c> if no parent process could be found.</returns>
     public static int GetParentProcessID ([NotNull] Process target)
     {
-      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull(nameof(target), target);
 
       // Query the process information
       var info = new ParentInfo();
@@ -118,7 +118,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </remarks>
     public static void GracefulProcessShutdown ([NotNull] Process process, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull("process", process);
+      ArgumentUtility.CheckNotNull(nameof(process), process);
 
       GracefulProcessShutdown(new[] { process }, timeout);
     }
@@ -150,7 +150,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
       var timeoutInMilliseconds = (int)timeout.TotalMilliseconds;
       if (timeoutInMilliseconds < 0)
-        throw new ArgumentOutOfRangeException("timeout", "Timeout can not be smaller that zero.");
+        throw new ArgumentOutOfRangeException(nameof(timeout), "Timeout can not be smaller that zero.");
 
       IReadOnlyList<Process> remainingProcesses = processes.ToList();
 
@@ -252,8 +252,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <param name="logger">The <see cref="ILogger"/> used when generating diagnostic outout. Use <see cref="NullLogger"/> if no logs are required.</param>
     public static void KillAllProcessesWithName ([NotNull] string processName, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("processName", processName);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(processName), processName);
+      ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       logger.LogDebug("Process killing has been called for '{0}'...", processName);
 

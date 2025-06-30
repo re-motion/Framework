@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public EditableRow (IEditModeHost editModeHost)
     {
-      ArgumentUtility.CheckNotNull("editModeHost", editModeHost);
+      ArgumentUtility.CheckNotNull(nameof(editModeHost), editModeHost);
 
       _editModeHost = editModeHost;
     }
@@ -73,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
       set
       {
-        ArgumentUtility.CheckNotNull("value", value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         _dataSourceFactory = value;
       }
     }
@@ -87,15 +87,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
       set
       {
-        ArgumentUtility.CheckNotNull("value", value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         _controlFactory = value;
       }
     }
 
     public virtual void CreateControls (IBusinessObject value, IReadOnlyList<BocColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNull("value", value);
-      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(columns), columns);
 
       if (_dataSourceFactory == null)
       {
@@ -192,7 +192,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     protected void SetEditControl (int index, IBusinessObjectBoundEditableWebControl control)
     {
-      Control webControl = ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      Control webControl = ArgumentUtility.CheckNotNullAndType<Control>(nameof(control), control);
 
       ControlCollection cellControls = GetEditControls(index);
       cellControls.Clear();
@@ -203,7 +203,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       Assertion.IsNotNull(_editControls, "_editControls must not be null.");
 
-      if (columnIndex < 0 || columnIndex >= _editControls.Controls.Count) throw new ArgumentOutOfRangeException("columnIndex");
+      if (columnIndex < 0 || columnIndex >= _editControls.Controls.Count) throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
       return _editControls.Controls[columnIndex].Controls;
     }
@@ -237,7 +237,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     protected void AddToValidators (int columnIndex, IEnumerable<BaseValidator> validators)
     {
-      ArgumentUtility.CheckNotNull("validators", validators);
+      ArgumentUtility.CheckNotNull(nameof(validators), validators);
 
       ControlCollection? cellValidators = GetValidators(columnIndex);
       Assertion.IsNotNull(cellValidators, "GetValidators(columnIndex) != null");
@@ -250,7 +250,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       Assertion.IsNotNull(_validatorControls, "_validatorControls must not be null.");
 
-      if (columnIndex < 0 || columnIndex >= _validatorControls.Controls.Count) throw new ArgumentOutOfRangeException("columnIndex");
+      if (columnIndex < 0 || columnIndex >= _validatorControls.Controls.Count) throw new ArgumentOutOfRangeException(nameof(columnIndex));
 
       if (HasEditControl(columnIndex))
         return _validatorControls.Controls[columnIndex].Controls;
@@ -419,10 +419,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         int columnIndex,
         IReadOnlyCollection<string> headerIDs)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
-      ArgumentUtility.CheckNotNull("column", column);
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
-      ArgumentUtility.CheckNotNull("headerIDs", headerIDs);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(column), column);
+      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+      ArgumentUtility.CheckNotNull(nameof(headerIDs), headerIDs);
 
       if (! HasEditControl(columnIndex))
         return;

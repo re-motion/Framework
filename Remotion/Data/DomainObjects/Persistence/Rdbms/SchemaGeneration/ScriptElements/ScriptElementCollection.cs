@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public void AppendToScript (List<ScriptStatement> script)
     {
-      ArgumentUtility.CheckNotNull("script", script);
+      ArgumentUtility.CheckNotNull(nameof(script), script);
 
       foreach (var element in _elements)
         element.AppendToScript(script);
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public void AddElement (IScriptElement element)
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentUtility.CheckNotNull(nameof(element), element);
 
       _elements.Add(element);
     }

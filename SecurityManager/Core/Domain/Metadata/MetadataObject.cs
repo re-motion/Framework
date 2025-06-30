@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static MetadataObject? Find (string metadataID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("metadataID", metadataID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(metadataID), metadataID);
 
       FindMetadataObjectQueryBuilder queryBuilder = new FindMetadataObjectQueryBuilder();
 
@@ -81,14 +81,14 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public LocalizedName? GetLocalizedName (Culture culture)
     {
-      ArgumentUtility.CheckNotNull("culture", culture);
+      ArgumentUtility.CheckNotNull(nameof(culture), culture);
 
       return GetLocalizedName(culture.CultureName);
     }
 
     public LocalizedName? GetLocalizedName (string cultureName)
     {
-      ArgumentUtility.CheckNotNull("cultureName", cultureName);
+      ArgumentUtility.CheckNotNull(nameof(cultureName), cultureName);
 
       foreach (LocalizedName localizedName in LocalizedNames)
       {

@@ -41,7 +41,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
     /// </summary>
     public void SetUp (IStorageObjectFactory factory)
     {
-      ArgumentUtility.CheckNotNull("factory", factory);
+      ArgumentUtility.CheckNotNull(nameof(factory), factory);
 
       StorageObjectFactory = factory;
     }
@@ -52,7 +52,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
     /// <param name="storageObjectFactoryType">Must match the type of the configured factory.</param>
     public IStorageObjectFactory Create (Type storageObjectFactoryType)
     {
-      ArgumentUtility.CheckNotNull("storageObjectFactoryType", storageObjectFactoryType);
+      ArgumentUtility.CheckNotNull(nameof(storageObjectFactoryType), storageObjectFactoryType);
 
       if (StorageObjectFactory == null)
         throw new InvalidOperationException($"{nameof(FakeStorageObjectFactoryFactory)}.{nameof(SetUp)}(...) must be called before performing the current operation.");

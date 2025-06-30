@@ -76,10 +76,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         Func<TextBox> timeTextBoxFactory)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
-      ArgumentUtility.CheckNotNull("dateTextBoxFactory", dateTextBoxFactory);
-      ArgumentUtility.CheckNotNull("timeTextBoxFactory", timeTextBoxFactory);
+      ArgumentUtility.CheckNotNull(nameof(labelReferenceRenderer), labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull(nameof(validationErrorRenderer), validationErrorRenderer);
+      ArgumentUtility.CheckNotNull(nameof(dateTextBoxFactory), dateTextBoxFactory);
+      ArgumentUtility.CheckNotNull(nameof(timeTextBoxFactory), timeTextBoxFactory);
 
       _labelReferenceRenderer = labelReferenceRenderer;
       _validationErrorRenderer = validationErrorRenderer;
@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     public void Render (BocDateTimeValueRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       AddAttributesToRender(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);

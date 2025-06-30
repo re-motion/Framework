@@ -33,7 +33,7 @@ namespace Remotion.Configuration
 
     public ConfigurationWrapperFromConfigurationObject (System.Configuration.Configuration configuration)
     {
-      ArgumentUtility.CheckNotNull("configuration", configuration);
+      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
 
       _configuration = configuration;
 
@@ -46,21 +46,21 @@ namespace Remotion.Configuration
 
     public override object GetSection (string sectionName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("sectionName", sectionName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(sectionName), sectionName);
 
       return _configuration.GetSection(sectionName);
     }
 
     public override ConnectionStringSettings GetConnectionString (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       return _configuration.ConnectionStrings.ConnectionStrings[name];
     }
 
     public override string? GetAppSetting (string name)
     {
-       ArgumentUtility.CheckNotNullOrEmpty("name", name);
+       ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       return _appSettings[name];
     }

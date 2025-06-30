@@ -97,7 +97,7 @@ namespace Remotion.Utilities
     public int GetHashCode (T memberInfo)
     {
       if (memberInfo == null)
-        throw new ArgumentNullException("memberInfo");
+        throw new ArgumentNullException(nameof(memberInfo));
 
       // DeclaringType can return null, even if ReSharper thinks otherwise.
       // ReSharper disable ConditionIsAlwaysTrueOrFalse

@@ -27,8 +27,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public AccessInformation (AccessTypeDefinition[] allowedAccessTypes, AccessTypeDefinition[] deniedAccessTypes)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("allowedAccessTypes", allowedAccessTypes);
-      ArgumentUtility.CheckNotNullOrItemsNull("deniedAccessTypes", deniedAccessTypes);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(allowedAccessTypes), allowedAccessTypes);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(deniedAccessTypes), deniedAccessTypes);
 
       _allowedAccessTypes = allowedAccessTypes;
       _deniedAccessTypes = deniedAccessTypes;

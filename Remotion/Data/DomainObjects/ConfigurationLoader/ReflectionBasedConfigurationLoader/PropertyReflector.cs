@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyDefaultValueProvider propertyDefaultValueProvider)
         : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull("propertyDefaultValueProvider", propertyDefaultValueProvider);
+      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefaultValueProvider), propertyDefaultValueProvider);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
       _propertyDefaultValueProvider = propertyDefaultValueProvider;

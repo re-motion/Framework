@@ -35,11 +35,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromDom(CompilerParameters options, CodeCompileUnit compilationUnit) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (compilationUnit == null) {
-                throw new ArgumentNullException("compilationUnit");
+                throw new ArgumentNullException(nameof(compilationUnit));
             }
 
             return CompileAssemblyFromDomBatch(options, new CodeCompileUnit[] { compilationUnit });
@@ -47,11 +47,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromDomBatch(CompilerParameters options, CodeCompileUnit[] compilationUnits) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (compilationUnits == null) {
-                throw new ArgumentNullException("compilationUnits");
+                throw new ArgumentNullException(nameof(compilationUnits));
             }
 
             try {
@@ -70,11 +70,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromFile(CompilerParameters options, string fileName) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (fileName == null) {
-                throw new ArgumentNullException("fileName");
+                throw new ArgumentNullException(nameof(fileName));
             }
 
             return CompileAssemblyFromFileBatch(options, new string[] { fileName });
@@ -82,11 +82,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromFileBatch(CompilerParameters options, string[] fileNames) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (fileNames == null) {
-                throw new ArgumentNullException("fileNames");
+                throw new ArgumentNullException(nameof(fileNames));
             }
 
             try {
@@ -105,11 +105,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromSource(CompilerParameters options, string source) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (source == null) {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             return CompileAssemblyFromSourceBatch(options, new string[] { source });
@@ -117,11 +117,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromSourceBatch(CompilerParameters options, string[] sources) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (sources == null) {
-                throw new ArgumentNullException("sources");
+                throw new ArgumentNullException(nameof(sources));
             }
 
             try {
@@ -184,11 +184,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         private CompilerResults FromSourceBatch(CompilerParameters options, string[] sources) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (sources == null) {
-                throw new ArgumentNullException("sources");
+                throw new ArgumentNullException(nameof(sources));
             }
 
             var filenames = new string[sources.Length];
@@ -217,11 +217,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         private CompilerResults FromFileBatch(CompilerParameters options, string[] fileNames) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (fileNames == null) {
-                throw new ArgumentNullException("fileNames");
+                throw new ArgumentNullException(nameof(fileNames));
             }
 
 

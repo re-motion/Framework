@@ -100,7 +100,7 @@ namespace Remotion.Web.ExecutionEngine
     public WxePageInfo (IWxePage page)
       : base(page)
     {
-      ArgumentUtility.CheckNotNull("page", page);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
       _page = page;
     }
 
@@ -123,7 +123,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public override void Initialize (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       base.Initialize(context);
 
       _wxeExecutor = new WxeExecutor(context, _page, this);
@@ -133,7 +133,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public NameValueCollection? EnsurePostBackModeDetermined (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (!_postbackCollectionInitialized)
       {
@@ -257,7 +257,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </exception>
     protected virtual void HandleLoadPostData (NameValueCollection postBackCollection)
     {
-      ArgumentUtility.CheckNotNull("postBackCollection", postBackCollection);
+      ArgumentUtility.CheckNotNull(nameof(postBackCollection), postBackCollection);
 
       WxeContext? wxeContext = WxeContext.Current;
 
@@ -539,7 +539,7 @@ namespace Remotion.Web.ExecutionEngine
     [JetBrains.Annotations.NotNull]
     public Exception WrapProcessRequestException ([JetBrains.Annotations.NotNull] HttpException exception)
     {
-      ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentUtility.CheckNotNull(nameof(exception), exception);
 
       if (exception.GetHttpCode() == HttpStatusCode_NotFound)
         return new WxeResourceNotFoundException("Resource not found.", exception);
@@ -612,7 +612,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public object? GetData (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
       return WindowState[key];
     }
 
@@ -621,7 +621,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </summary>
     public void SetData (string key, object? value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
       WindowState[key] = value;
     }
 

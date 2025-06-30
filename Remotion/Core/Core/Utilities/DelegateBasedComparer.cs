@@ -29,7 +29,7 @@ namespace Remotion.Utilities
 
     public DelegateBasedComparer (Comparison<T?> comparison)
     {
-      ArgumentUtility.CheckNotNull("comparison", comparison);
+      ArgumentUtility.CheckNotNull(nameof(comparison), comparison);
       _comparison = comparison;
     }
 

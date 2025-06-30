@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The result of <paramref name="func"/>.</returns>
     public static T ExecuteInScope<T> (this ClientTransaction clientTransaction, Func<T> func)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("func", func);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(func), func);
 
       using (EnterScopeOnDemand(clientTransaction))
       {
@@ -53,8 +53,8 @@ namespace Remotion.Data.DomainObjects
     /// <param name="action">The delegate to be executed.</param>
     public static void ExecuteInScope (this ClientTransaction clientTransaction, Action action)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("action", action);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(action), action);
 
       using (EnterScopeOnDemand(clientTransaction))
       {
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects
     /// </returns>
     public static bool HasChanged (this ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
 
       // Place tests in order of probability to reduce number of checks required until a match for a typical usage scenario
       return clientTransaction.HasObjectsWithState(state => state.IsChanged || state.IsNew || state.IsDeleted);

@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
     public ScreenshotBoxAnnotation ([NotNull] Pen pen, WebPadding padding, [CanBeNull] Brush? backgroundBrush)
     {
-      ArgumentUtility.CheckNotNull("pen", pen);
+      ArgumentUtility.CheckNotNull(nameof(pen), pen);
 
       _pen = pen;
       _padding = padding;
@@ -69,8 +69,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("canvas", canvas);
-      ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
+      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
+      ArgumentUtility.CheckNotNull(nameof(resolvedScreenshotElement), resolvedScreenshotElement);
 
       // Calculate the bound of the annotation with padding
       var annotationBounds = _padding.Apply(resolvedScreenshotElement.ElementBounds);

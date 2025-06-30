@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull(nameof(validationResult), validationResult);
 
       var control = GetControlToValidate();
 

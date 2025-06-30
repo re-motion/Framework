@@ -42,7 +42,7 @@ public class DomainObjectCollectionChangeEventArgs : EventArgs
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
   public DomainObjectCollectionChangeEventArgs (DomainObject domainObject)
   {
-    ArgumentUtility.CheckNotNull("domainObject", domainObject);
+    ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
     _domainObject = domainObject;
   }
 

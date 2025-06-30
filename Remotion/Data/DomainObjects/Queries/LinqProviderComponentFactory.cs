@@ -53,8 +53,8 @@ namespace Remotion.Data.DomainObjects.Queries
 
     public virtual IQueryable<T> CreateQueryable<T> (IQueryParser queryParser, IQueryExecutor executor)
     {
-      ArgumentUtility.CheckNotNull("queryParser", queryParser);
-      ArgumentUtility.CheckNotNull("executor", executor);
+      ArgumentUtility.CheckNotNull(nameof(queryParser), queryParser);
+      ArgumentUtility.CheckNotNull(nameof(executor), executor);
 
       return new DomainObjectQueryable<T>(queryParser, executor);
     }
@@ -68,9 +68,9 @@ namespace Remotion.Data.DomainObjects.Queries
 
     public virtual IQueryExecutor CreateQueryExecutor (StorageProviderDefinition providerDefinition, string id, IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNull("providerDefinition", providerDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("metadata", metadata);
+      ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
+      ArgumentUtility.CheckNotNull(nameof(metadata), metadata);
 
       var queryGenerator = providerDefinition.Factory.CreateDomainObjectQueryGenerator(
           providerDefinition,
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.Queries
 
     protected virtual ExpressionTreeParser CreateExpressionTreeParser (INodeTypeProvider customNodeTypeProvider)
     {
-      ArgumentUtility.CheckNotNull("customNodeTypeProvider", customNodeTypeProvider);
+      ArgumentUtility.CheckNotNull(nameof(customNodeTypeProvider), customNodeTypeProvider);
 
       var nodeTypeProvider = ExpressionTreeParser.CreateDefaultNodeTypeProvider();
       nodeTypeProvider.InnerProviders.Insert(0, customNodeTypeProvider);
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.Queries
 
     protected virtual IQueryParser CreateQueryParser (ExpressionTreeParser expressionTreeParser)
     {
-      ArgumentUtility.CheckNotNull("expressionTreeParser", expressionTreeParser);
+      ArgumentUtility.CheckNotNull(nameof(expressionTreeParser), expressionTreeParser);
       return new QueryParser(expressionTreeParser);
     }
   }

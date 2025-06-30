@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     protected override bool FindPropertiesFilter (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       if (!base.FindPropertiesFilter(propertyInfo))
         return false;
@@ -56,10 +56,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull("persistentMixinFinder", persistentMixinFinder);
-      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(nameResolver), nameResolver);
+      ArgumentUtility.CheckNotNull(nameof(persistentMixinFinder), persistentMixinFinder);
+      ArgumentUtility.CheckNotNull(nameof(propertyMetadataProvider), propertyMetadataProvider);
 
       return new RelationPropertyFinder(
           type,

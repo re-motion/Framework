@@ -26,13 +26,13 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects
   {
     public static void SetIsWriteable (TransactionHierarchyManager transactionHierarchyManager, bool value)
     {
-      ArgumentUtility.CheckNotNull("transactionHierarchyManager", transactionHierarchyManager);
+      ArgumentUtility.CheckNotNull(nameof(transactionHierarchyManager), transactionHierarchyManager);
       PrivateInvoke.SetNonPublicField(transactionHierarchyManager, "_isWriteable", value);
     }
 
     public static void SetSubtransaction (TransactionHierarchyManager hierarchyManager, ClientTransaction subTransaction)
     {
-      ArgumentUtility.CheckNotNull("hierarchyManager", hierarchyManager);
+      ArgumentUtility.CheckNotNull(nameof(hierarchyManager), hierarchyManager);
       PrivateInvoke.SetNonPublicField(hierarchyManager, "_subTransaction", subTransaction);
     }
   }

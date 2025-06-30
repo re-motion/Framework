@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     /// <returns><see langword="true" /> if the <see cref="ClassDefinition.StorageEntityDefinition"/> is a <see cref="NonPersistentStorageEntity"/>.</returns>
     internal static bool IsNonPersistent (this ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       return classDefinition.StorageEntityDefinition is NonPersistentStorageEntity;
     }

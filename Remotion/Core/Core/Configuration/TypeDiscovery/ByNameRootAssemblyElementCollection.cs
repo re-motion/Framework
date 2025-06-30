@@ -71,7 +71,7 @@ namespace Remotion.Configuration.TypeDiscovery
 
     public void Add (ByNameRootAssemblyElement element)
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentUtility.CheckNotNull(nameof(element), element);
       BaseAdd(element);
     }
 
@@ -87,7 +87,7 @@ namespace Remotion.Configuration.TypeDiscovery
 
     public NamedRootAssemblyFinder CreateRootAssemblyFinder (IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNull("assemblyLoader", assemblyLoader);
+      ArgumentUtility.CheckNotNull(nameof(assemblyLoader), assemblyLoader);
       return new NamedRootAssemblyFinder(this.Select(element => element.CreateSpecification()), assemblyLoader);
     }
   }

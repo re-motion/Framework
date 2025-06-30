@@ -54,8 +54,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
         int? maxDop = null)
         : base(padIndex, fillFactor, sortInTempDb, statisticsNoReCompute, dropExisting, allowRowLocks, allowPageLocks, maxDop)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("indexName", indexName);
-      ArgumentUtility.CheckNotNull("columns", columns);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(indexName), indexName);
+      ArgumentUtility.CheckNotNull(nameof(columns), columns);
 
       var columnsReadOnlyCollection = columns.ToList().AsReadOnly();
 
@@ -63,8 +63,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
       if (includedColumns != null)
         includedColumnsReadOnlyCollection = includedColumns.ToList().AsReadOnly();
 
-      ArgumentUtility.CheckNotEmpty("columns", columnsReadOnlyCollection);
-      ArgumentUtility.CheckNotEmpty("includedColumns", includedColumnsReadOnlyCollection);
+      ArgumentUtility.CheckNotEmpty(nameof(columns), columnsReadOnlyCollection);
+      ArgumentUtility.CheckNotEmpty(nameof(includedColumns), includedColumnsReadOnlyCollection);
 
       _indexName = indexName;
       _columns = columnsReadOnlyCollection;
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
 
     protected override void Accept (ISqlIndexDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
 
       visitor.VisitIndexDefinition(this);
     }

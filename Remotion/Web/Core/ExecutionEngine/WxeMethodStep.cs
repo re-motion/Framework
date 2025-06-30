@@ -43,7 +43,7 @@ public class WxeMethodStep: WxeStep
           "The delegate's target must be a non-null WxeStepList, but it was '{0}'. When used within a WxeFunction, the delegate should be a method "
           + "of the surrounding WxeFunction, and it must not be a closure.",
           method.Target != null ? method.Target.GetType().ToString() : "null");
-      throw new ArgumentException(message, "method");
+      throw new ArgumentException(message, nameof(method));
     }
     else
       return target;
@@ -52,7 +52,7 @@ public class WxeMethodStep: WxeStep
   private static MethodInfo GetMethodFromDelegate (Delegate method)
   {
     if (method.GetInvocationList().Length != 1)
-      throw new ArgumentException("The delegate must contain a single method.", "method");
+      throw new ArgumentException("The delegate must contain a single method.", nameof(method));
     else
       return method.Method;
   }
@@ -72,8 +72,8 @@ public class WxeMethodStep: WxeStep
   /// <include file='../Doc/include/ExecutionEngine/WxeMethodStep.xml' path='WxeMethodStep/Ctor/*' />
   public WxeMethodStep (WxeStepList target, MethodInfo method)
   {
-    ArgumentUtility.CheckNotNull("target", target);
-    ArgumentUtility.CheckNotNull("method", method);
+    ArgumentUtility.CheckNotNull(nameof(target), target);
+    ArgumentUtility.CheckNotNull(nameof(method), method);
 
     Type targetType = target.GetType();
     Type declaringType = method.DeclaringType!; // TODO RM-8118: not null assertion
@@ -95,15 +95,15 @@ public class WxeMethodStep: WxeStep
 
   public WxeMethodStep (Action method)
       : this(
-          GetTargetFromDelegate(ArgumentUtility.CheckNotNull("method", method)),
-          GetMethodFromDelegate(ArgumentUtility.CheckNotNull("method", method)))
+          GetTargetFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)),
+          GetMethodFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)))
   {
   }
 
   public WxeMethodStep (Action<WxeContext> method)
       : this(
-          GetTargetFromDelegate(ArgumentUtility.CheckNotNull("method", method)),
-          GetMethodFromDelegate(ArgumentUtility.CheckNotNull("method", method)))
+          GetTargetFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)),
+          GetMethodFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)))
   {
   }
 

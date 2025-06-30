@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls
       }
       set
       {
-        _renderMode = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<WebUpdatePanelRenderMode>("value", value);
+        _renderMode = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<WebUpdatePanelRenderMode>(nameof(value), value);
       }
     }
 

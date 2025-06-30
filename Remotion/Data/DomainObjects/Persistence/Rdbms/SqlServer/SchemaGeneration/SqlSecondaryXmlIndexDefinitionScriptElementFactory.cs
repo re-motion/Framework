@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public override IScriptElement GetCreateElement (SqlSecondaryXmlIndexDefinition indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
+      ArgumentUtility.CheckNotNull(nameof(indexDefinition), indexDefinition);
 
       return new ScriptStatement(
         string.Format(

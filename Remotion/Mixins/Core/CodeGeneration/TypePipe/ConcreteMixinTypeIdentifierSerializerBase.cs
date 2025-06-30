@@ -51,7 +51,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_mixinType))]
     public void AddMixinType (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
 
       _mixinType = mixinType;
     }
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_overriders))]
     public void AddOverriders (HashSet<MethodInfo> overriders)
     {
-      ArgumentUtility.CheckNotNull("overriders", overriders);
+      ArgumentUtility.CheckNotNull(nameof(overriders), overriders);
 
       _overriders = overriders.AsReadOnly();
     }
@@ -67,7 +67,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_overridden))]
     public void AddOverridden (HashSet<MethodInfo> overridden)
     {
-      ArgumentUtility.CheckNotNull("overridden", overridden);
+      ArgumentUtility.CheckNotNull(nameof(overridden), overridden);
 
       _overridden = overridden.AsReadOnly();
     }

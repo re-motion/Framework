@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// <inheritdoc />
     public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       var storageGroupTypeOrNull = classDefinition.StorageGroupType;
 
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// <inheritdoc />
     public StorageProviderDefinition GetStorageProviderDefinition (string storageProviderName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("storageProviderName", storageProviderName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageProviderName), storageProviderName);
 
       return _storageProviderDefinitions.FirstOrDefault(p => p.Name == storageProviderName)
              ?? throw new ConfigurationException($"The requested storage provider '{storageProviderName}' could not be found.");

@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static string Serialize<T> ([NotNull] T data)
         where T : class
     {
-      ArgumentUtility.CheckNotNull("data", data);
+      ArgumentUtility.CheckNotNull(nameof(data), data);
 
       var serializer = new DataContractJsonSerializer(typeof(T));
       using (var dataStream = new MemoryStream())

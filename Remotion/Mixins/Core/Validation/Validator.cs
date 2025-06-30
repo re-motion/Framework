@@ -28,8 +28,8 @@ namespace Remotion.Mixins.Validation
   {
     public static ValidationLogData Validate (IVisitableDefinition startingPoint, params IRuleSet[] customRuleSets)
     {
-      ArgumentUtility.CheckNotNull("startingPoint", startingPoint);
-      ArgumentUtility.CheckNotNull("customRuleSets", customRuleSets);
+      ArgumentUtility.CheckNotNull(nameof(startingPoint), startingPoint);
+      ArgumentUtility.CheckNotNull(nameof(customRuleSets), customRuleSets);
 
       var log = new DefaultValidationLog();
       Validate(startingPoint, log, customRuleSets);
@@ -38,8 +38,8 @@ namespace Remotion.Mixins.Validation
 
     public static ValidationLogData Validate (IEnumerable<IVisitableDefinition> startingPoints, params IRuleSet[] customRuleSets)
     {
-      ArgumentUtility.CheckNotNull("startingPoints", startingPoints);
-      ArgumentUtility.CheckNotNull("customRuleSets", customRuleSets);
+      ArgumentUtility.CheckNotNull(nameof(startingPoints), startingPoints);
+      ArgumentUtility.CheckNotNull(nameof(customRuleSets), customRuleSets);
 
       var log = new DefaultValidationLog();
       Validate(startingPoints, log, customRuleSets);
@@ -48,18 +48,18 @@ namespace Remotion.Mixins.Validation
 
         public static void Validate (IVisitableDefinition startingPoint, IValidationLog log, params IRuleSet[] customRuleSets)
     {
-      ArgumentUtility.CheckNotNull("startingPoint", startingPoint);
-      ArgumentUtility.CheckNotNull("log", log);
-      ArgumentUtility.CheckNotNull("customRuleSets", customRuleSets);
+      ArgumentUtility.CheckNotNull(nameof(startingPoint), startingPoint);
+      ArgumentUtility.CheckNotNull(nameof(log), log);
+      ArgumentUtility.CheckNotNull(nameof(customRuleSets), customRuleSets);
 
       Validate(new[] { startingPoint }, log, customRuleSets);
     }
 
     public static void Validate (IEnumerable<IVisitableDefinition> startingPoints, IValidationLog log, params IRuleSet[] customRuleSets)
     {
-      ArgumentUtility.CheckNotNull("startingPoints", startingPoints);
-      ArgumentUtility.CheckNotNull("log", log);
-      ArgumentUtility.CheckNotNull("customRuleSets", customRuleSets);
+      ArgumentUtility.CheckNotNull(nameof(startingPoints), startingPoints);
+      ArgumentUtility.CheckNotNull(nameof(log), log);
+      ArgumentUtility.CheckNotNull(nameof(customRuleSets), customRuleSets);
 
       var visitor = CreateValidatingVisitor(log, customRuleSets);
       foreach (IVisitableDefinition startingPoint in startingPoints)

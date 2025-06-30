@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     public RemotionTestsPipelineRegistry (IPipelineRegistry _, IEnumerable<IParticipant> defaultPipelineParticipants)
-        : base(CreateDefaultPipeline(ArgumentUtility.CheckNotNull("defaultPipelineParticipants", defaultPipelineParticipants)))
+        : base(CreateDefaultPipeline(ArgumentUtility.CheckNotNull(nameof(defaultPipelineParticipants), defaultPipelineParticipants)))
     {
       // Throw away the decorated pipeline registry instance since we want to override it entirely
     }

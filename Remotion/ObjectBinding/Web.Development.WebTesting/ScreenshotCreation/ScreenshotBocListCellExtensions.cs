@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentCell", fluentCell);
+      ArgumentUtility.CheckNotNull(nameof(fluentCell), fluentCell);
 
       var result = fluentCell.Target.Cell.Scope.FindCss(".validationErrorMarker > img", Options.NoWait);
       if (!result.Exists(Options.NoWait))

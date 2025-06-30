@@ -38,7 +38,7 @@ namespace Remotion.Mixins.Context
 
     public void AddRangeAllowingNulls (IEnumerable<ClassContext?> contexts)
     {
-      ArgumentUtility.CheckNotNull("contexts", contexts);
+      ArgumentUtility.CheckNotNull(nameof(contexts), contexts);
 
       foreach (var context in contexts)
         AddIfNotNull(context);

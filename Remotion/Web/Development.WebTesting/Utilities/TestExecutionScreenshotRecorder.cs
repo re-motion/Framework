@@ -50,9 +50,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory, [NotNull] ILoggerFactory loggerFactory, ICursorInformationProvider cursorInformationProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("outputDirectory", outputDirectory);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
-      ArgumentUtility.CheckNotNull("cursorInformationProvider", cursorInformationProvider);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(outputDirectory), outputDirectory);
+      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentUtility.CheckNotNull(nameof(cursorInformationProvider), cursorInformationProvider);
 
       _logger = loggerFactory.CreateLogger<TestExecutionScreenshotRecorder>();
       _cursorInformationProvider = cursorInformationProvider;
@@ -93,7 +93,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
     public void TakeDesktopScreenshot ([JetBrains.Annotations.NotNull] string testName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(testName), testName);
 
       throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
     }
@@ -115,11 +115,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         [JetBrains.Annotations.NotNull] IBrowserSession[] browserSessions,
         [JetBrains.Annotations.NotNull] IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
-      ArgumentUtility.CheckNotNullOrItemsNull("browserSessions", browserSessions);
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(testName), testName);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(browserSessions), browserSessions);
+      ArgumentUtility.CheckNotNull(nameof(locator), locator);
       if (browserSessions.Length == 0)
-        throw new ArgumentException("At least one browser session must be specified.", "browserSessions");
+        throw new ArgumentException("At least one browser session must be specified.", nameof(browserSessions));
 
       var sessionID = 0;
       foreach (var browserSession in browserSessions)

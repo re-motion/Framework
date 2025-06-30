@@ -28,8 +28,8 @@ namespace Remotion.Development.UnitTesting.Configuration
   {
     public static void DeserializeElement (ConfigurationElement configurationElement, string xmlFragment)
     {
-      ArgumentUtility.CheckNotNull("configurationElement", configurationElement);
-      ArgumentUtility.CheckNotNullOrEmpty("xmlFragment", xmlFragment);
+      ArgumentUtility.CheckNotNull(nameof(configurationElement), configurationElement);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(xmlFragment), xmlFragment);
 
       using (XmlTextReader reader = new XmlTextReader(xmlFragment, XmlNodeType.Document, null))
       {
@@ -47,8 +47,8 @@ namespace Remotion.Development.UnitTesting.Configuration
     /// <param name="xsdContent">The content of the XSD, or <see langword="null"/> for no validation.</param>
     public static void DeserializeSection (ConfigurationSection configurationSection, string xmlFragment, string? xsdContent = null)
     {
-      ArgumentUtility.CheckNotNull("configurationSection", configurationSection);
-      ArgumentUtility.CheckNotNullOrEmpty("xmlFragment", xmlFragment);
+      ArgumentUtility.CheckNotNull(nameof(configurationSection), configurationSection);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(xmlFragment), xmlFragment);
 
       using (XmlTextReader reader = new XmlTextReader(xmlFragment, XmlNodeType.Document, null))
       {

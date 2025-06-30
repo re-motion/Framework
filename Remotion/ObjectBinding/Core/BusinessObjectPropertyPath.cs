@@ -103,8 +103,8 @@ namespace Remotion.ObjectBinding
 
       public Formatter (IBusinessObject obj, IBusinessObjectPropertyPath path)
       {
-        ArgumentUtility.CheckNotNull("obj", obj);
-        ArgumentUtility.CheckNotNull("path", path);
+        ArgumentUtility.CheckNotNull(nameof(obj), obj);
+        ArgumentUtility.CheckNotNull(nameof(path), path);
 
         _object = obj;
         _path = path;

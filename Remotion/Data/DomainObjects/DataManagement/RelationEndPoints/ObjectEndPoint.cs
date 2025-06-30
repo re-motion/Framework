@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         : base(clientTransaction, id)
     {
       if (id.Definition.Cardinality != CardinalityType.One)
-        throw new ArgumentException("End point ID must refer to an end point with cardinality 'One'.", "id");
+        throw new ArgumentException("End point ID must refer to an end point with cardinality 'One'.", nameof(id));
 
       Assertion.IsFalse(id.Definition.IsAnonymous);
     }
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override sealed IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
+      ArgumentUtility.CheckNotNull(nameof(removedRelatedObject), removedRelatedObject);
 
       if (removedRelatedObject.ID != OppositeObjectID)
       {
@@ -77,14 +77,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override sealed void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      var sourceObjectEndPoint = ArgumentUtility.CheckNotNullAndType<ObjectEndPoint>("source", source);
+      var sourceObjectEndPoint = ArgumentUtility.CheckNotNullAndType<ObjectEndPoint>(nameof(source), source);
 
       if (Definition != sourceObjectEndPoint.Definition)
       {
         var message = string.Format(
             "Cannot set this end point's value from '{0}'; the end points do not have the same end point definition.",
             source.ID);
-        throw new ArgumentException(message, "source");
+        throw new ArgumentException(message, nameof(source));
       }
 
       SetOppositeObjectDataFromSubTransaction(sourceObjectEndPoint);

@@ -55,7 +55,7 @@ namespace Remotion.Globalization
     /// <param name="resourceManagers"> The resource managers, starting with the most specific. </param>
     public static ResourceManagerSet Create (params IResourceManager[] resourceManagers)
     {
-      ArgumentUtility.CheckNotNull("resourceManagers", resourceManagers);
+      ArgumentUtility.CheckNotNull(nameof(resourceManagers), resourceManagers);
 
       return new ResourceManagerSet(resourceManagers.AsEnumerable());
     }
@@ -69,7 +69,7 @@ namespace Remotion.Globalization
     /// <param name="resourceManagers"> The resource managers, starting with the most specific. </param>
     public ResourceManagerSet (IEnumerable<IResourceManager> resourceManagers)
     {
-      ArgumentUtility.CheckNotNull("resourceManagers", resourceManagers);
+      ArgumentUtility.CheckNotNull(nameof(resourceManagers), resourceManagers);
 
       _resourceManagers = CreateFlatList(resourceManagers).ToArray();
       _name = _resourceManagers.Any() ? string.Join(", ", _resourceManagers.Select(rm=> rm.Name)) : "Empty ResourceManagerSet";

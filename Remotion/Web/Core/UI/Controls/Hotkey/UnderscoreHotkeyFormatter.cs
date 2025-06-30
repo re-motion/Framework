@@ -33,14 +33,14 @@ namespace Remotion.Web.UI.Controls.Hotkey
 
     protected override void AppendHotkeyBeginTag (HtmlTextWriter writer, char hotkey)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       writer.RenderBeginTag(HtmlTextWriterTag.U);
     }
 
     protected override void AppendHotkeyEndTag (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       writer.RenderEndTag();
     }

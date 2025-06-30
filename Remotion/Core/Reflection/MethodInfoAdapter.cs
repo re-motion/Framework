@@ -42,7 +42,7 @@ namespace Remotion.Reflection
 
     public static MethodInfoAdapter Create (MethodInfo methodInfo)
     {
-      ArgumentUtility.CheckNotNull("methodInfo", methodInfo);
+      ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
       return s_dataStore.GetOrAdd(methodInfo, s_ctorFunc);
     }
 
@@ -123,21 +123,21 @@ namespace Remotion.Reflection
     public object? Invoke (object? instance, object?[]? parameters)
     {
       //TODO RM-7432: Remove null check, parameter should be nullable
-      ArgumentUtility.CheckNotNull("instance", instance!);
+      ArgumentUtility.CheckNotNull(nameof(instance), instance!);
 
       return _methodInfo.Invoke(instance, parameters);
     }
 
     public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull("implementationType", implementationType);
+      ArgumentUtility.CheckNotNull(nameof(implementationType), implementationType);
 
       // TODO RM-7801: _methodInfo.DeclaringType being null should be handled.
       if (!_methodInfo.DeclaringType!.IsInterface)
         throw new InvalidOperationException("This method is not an interface method.");
 
       if (implementationType.IsInterface)
-        throw new ArgumentException("The implementationType parameter must not be an interface.", "implementationType");
+        throw new ArgumentException("The implementationType parameter must not be an interface.", nameof(implementationType));
 
       if (!_methodInfo.DeclaringType.IsAssignableFrom(implementationType))
         return null;
@@ -175,7 +175,7 @@ namespace Remotion.Reflection
 
     public Delegate GetFastInvoker (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       return DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(_methodInfo, delegateType);
     }

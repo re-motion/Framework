@@ -55,8 +55,8 @@ namespace Remotion.Security
 
     private DemandPermissionAttribute (object[] accessTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("accessTypes", accessTypes);
-      ArgumentUtility.CheckItemsType("accessTypes", accessTypes, typeof(Enum));
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(accessTypes), accessTypes);
+      ArgumentUtility.CheckItemsType(nameof(accessTypes), accessTypes, typeof(Enum));
 
       Enum[] accessTypeEnums = new Enum[accessTypes.Length];
 
@@ -79,7 +79,7 @@ namespace Remotion.Security
         string message = string.Format(string.Format("Enumerated Type '{0}' cannot be used as an access type. Valid access types must have the "
                 + "Remotion.Security.AccessTypeAttribute applied.", permissionType.GetFullNameSafe()));
 
-        throw new ArgumentException(message, "accessType");
+        throw new ArgumentException(message, nameof(accessType));
       }
 
       return (Enum)accessType;

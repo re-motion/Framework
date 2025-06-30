@@ -30,20 +30,20 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public ResourceObjectWithVarRef (WxeVariableReference pathReference)
     {
-      ArgumentUtility.CheckNotNull("pathReference", pathReference);
+      ArgumentUtility.CheckNotNull(nameof(pathReference), pathReference);
       _pathReference = pathReference;
     }
 
     public ResourceObjectWithVarRef (IResourcePathBuilder resourcePathBuilder, Assembly assembly, WxeVariableReference pathReference)
         : base(resourcePathBuilder , assembly)
     {
-      ArgumentUtility.CheckNotNull("pathReference", pathReference);
+      ArgumentUtility.CheckNotNull(nameof(pathReference), pathReference);
       _pathReference = pathReference;
     }
 
     public override string GetResourcePath (NameObjectCollection variables)
     {
-      ArgumentUtility.CheckNotNull("variables", variables);
+      ArgumentUtility.CheckNotNull(nameof(variables), variables);
 
       object? pageObject =  variables[_pathReference.Name];
       if (pageObject == null)

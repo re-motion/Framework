@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject> ForScreenshot (
         [NotNull] this WebTreeViewNodeControlObject webTreeViewNode)
     {
-      ArgumentUtility.CheckNotNull("webTreeViewNode", webTreeViewNode);
+      ArgumentUtility.CheckNotNull(nameof(webTreeViewNode), webTreeViewNode);
 
       return SelfResolvableFluentScreenshot.Create(
           new ScreenshotWebTreeViewNodeControlObject(
@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetLabel (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotWebTreeViewNodeControlObject> fluentWebTreeViewNode)
     {
-      ArgumentUtility.CheckNotNull("fluentWebTreeViewNode", fluentWebTreeViewNode);
+      ArgumentUtility.CheckNotNull(nameof(fluentWebTreeViewNode), fluentWebTreeViewNode);
 
       var result = fluentWebTreeViewNode.Target.WebTreeViewNode.Scope.FindCss("span > span", Options.NoWait);
       result.EnsureExistence();
@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetChildren (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotWebTreeViewNodeControlObject> fluentWebTreeViewNode)
     {
-      ArgumentUtility.CheckNotNull("fluentWebTreeViewNode", fluentWebTreeViewNode);
+      ArgumentUtility.CheckNotNull(nameof(fluentWebTreeViewNode), fluentWebTreeViewNode);
 
       var result = fluentWebTreeViewNode.Target.WebTreeViewNode.Scope.FindCss("ul", Options.NoWait);
       result.EnsureExistence();

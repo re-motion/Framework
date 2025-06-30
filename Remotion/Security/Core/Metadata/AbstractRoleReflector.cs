@@ -41,7 +41,7 @@ namespace Remotion.Security.Metadata
 
     public AbstractRoleReflector (IEnumerationReflector enumerationReflector)
     {
-      ArgumentUtility.CheckNotNull("enumerationReflector", enumerationReflector);
+      ArgumentUtility.CheckNotNull(nameof(enumerationReflector), enumerationReflector);
       _enumerationReflector = enumerationReflector;
     }
 
@@ -54,8 +54,8 @@ namespace Remotion.Security.Metadata
 
     public List<EnumValueInfo> GetAbstractRoles (Assembly assembly, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
-      ArgumentUtility.CheckNotNull("cache", cache);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentUtility.CheckNotNull(nameof(cache), cache);
 
       List<EnumValueInfo> abstractRoles = new List<EnumValueInfo>();
       foreach (Type type in AssemblyTypeCache.GetTypes(assembly))

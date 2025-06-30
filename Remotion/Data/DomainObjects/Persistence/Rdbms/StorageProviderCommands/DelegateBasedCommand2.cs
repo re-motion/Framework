@@ -14,8 +14,8 @@ public class DelegateBasedCommand<TIn, TOut> : IRdbmsProviderCommand<TOut>
 
   public DelegateBasedCommand (IRdbmsProviderCommand<TIn> command, Func<TIn, TOut> operation)
   {
-    ArgumentUtility.CheckNotNull("command", command);
-    ArgumentUtility.CheckNotNull("operation", operation);
+    ArgumentUtility.CheckNotNull(nameof(command), command);
+    ArgumentUtility.CheckNotNull(nameof(operation), operation);
 
     _command = command;
     _operation = operation;
@@ -33,7 +33,7 @@ public class DelegateBasedCommand<TIn, TOut> : IRdbmsProviderCommand<TOut>
 
   public TOut Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
   {
-    ArgumentUtility.CheckNotNull("executionContext", executionContext);
+    ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
 
     var executionResult = _command.Execute(executionContext);
     return _operation(executionResult);

@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
     public LinqPerformanceTestHelper (Func<IQueryable<T>> queryGenerator)
     {
-      ArgumentUtility.CheckNotNull("queryGenerator", queryGenerator);
+      ArgumentUtility.CheckNotNull(nameof(queryGenerator), queryGenerator);
 
       _queryGenerator = queryGenerator;
     }

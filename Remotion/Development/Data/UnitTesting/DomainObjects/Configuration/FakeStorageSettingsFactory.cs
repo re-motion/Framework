@@ -39,7 +39,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
     /// </summary>
     public void SetUp (IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
 
       StorageSettings = storageSettings;
     }
@@ -49,7 +49,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
     /// </summary>
     public IStorageSettings Create (IStorageObjectFactoryFactory storageObjectFactoryFactory)
     {
-      ArgumentUtility.CheckNotNull("storageObjectFactoryFactory", storageObjectFactoryFactory);
+      ArgumentUtility.CheckNotNull(nameof(storageObjectFactoryFactory), storageObjectFactoryFactory);
 
       if (StorageSettings == null)
         throw new InvalidOperationException($"{nameof(FakeStorageSettingsFactory)}.{nameof(SetUp)}(...) must be called before performing the current operation.");

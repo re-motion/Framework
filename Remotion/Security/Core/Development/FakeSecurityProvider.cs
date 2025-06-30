@@ -21,7 +21,7 @@ namespace Remotion.Security.Development
 
     public void SetCustomSecurityProvider (ISecurityProvider provider)
     {
-      ArgumentUtility.CheckNotNull("provider", provider);
+      ArgumentUtility.CheckNotNull(nameof(provider), provider);
 
       _customSecurityProvider = provider;
     }

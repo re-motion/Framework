@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public SingleDataContainerAssociateWithIDCommand (ObjectID expectedObjectID, IRdbmsProviderCommandWithReadOnlySupport<DataContainer?> innerCommand)
     {
-      ArgumentUtility.CheckNotNull("expectedObjectID", expectedObjectID);
-      ArgumentUtility.CheckNotNull("innerCommand", innerCommand);
+      ArgumentUtility.CheckNotNull(nameof(expectedObjectID), expectedObjectID);
+      ArgumentUtility.CheckNotNull(nameof(innerCommand), innerCommand);
 
       _expectedObjectID = expectedObjectID;
       _innerCommand = innerCommand;
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public ObjectLookupResult<DataContainer> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
 
       var dataContainer = InnerCommand.Execute(executionContext);
       return ProcessDataContainer(dataContainer);
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public ObjectLookupResult<DataContainer> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
 
       var dataContainer = InnerCommand.Execute(executionContext);
       return ProcessDataContainer(dataContainer);

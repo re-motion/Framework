@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public OrganizationalStructureTestHelper (ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull("transaction", transaction);
+      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
       _transaction = transaction;
       _factory = new OrganizationalStructureFactory();
     }

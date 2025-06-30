@@ -88,7 +88,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <param name="parent"> Parent element of the FormGridManager objects. </param>
   private void PopulateFormGridManagerList (Control parent)
   {
-    ArgumentUtility.CheckNotNull("parent", parent);
+    ArgumentUtility.CheckNotNull(nameof(parent), parent);
 
     //  Add all FormGridManager instances
     for (int i = 0; i < parent.Controls.Count; i++)
@@ -119,7 +119,7 @@ public class ValidationStateViewer : WebControl, IControl
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
 
     string? key = ResourceManagerUtility.GetGlobalResourceKey(NoticeText.GetValue());
     if (!string.IsNullOrEmpty(key))

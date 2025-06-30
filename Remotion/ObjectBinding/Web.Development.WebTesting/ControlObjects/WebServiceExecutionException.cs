@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
                 statusText,
                 responseText))
     {
-      ArgumentUtility.CheckNotNull("responseText", responseText); // The response body may be empty.
-      ArgumentUtility.CheckNotNull("statusText", statusText); // The HTTP statusText is empty for HTTPS responses
+      ArgumentUtility.CheckNotNull(nameof(responseText), responseText); // The response body may be empty.
+      ArgumentUtility.CheckNotNull(nameof(statusText), statusText); // The HTTP statusText is empty for HTTPS responses
 
       _readyState = readyState;
       _responseText = responseText;

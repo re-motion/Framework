@@ -57,7 +57,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public static (XDocument ResultDocument, (Assembly, ReflectionTypeLoadException)[] FailedAssemblies) GetAssemblyInformation (Assembly[] assemblies, bool generateFullReport)
     {
-      ArgumentUtility.CheckNotNull("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull(nameof(assemblies), assemblies);
 
       BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
 

@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
 
     public IEnumerable<BaseValidator> CreateValidators (IBocTextValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       if (isReadOnly)
         yield break;
@@ -224,7 +224,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
           return NumericValidationDataType.Single;
 
         default:
-          throw new ArgumentOutOfRangeException("valueType", valueType, "Only numeric value types are supported.");
+          throw new ArgumentOutOfRangeException(nameof(valueType), valueType, "Only numeric value types are supported.");
       }
     }
 
@@ -246,7 +246,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
           return NumberStyles.Number | NumberStyles.AllowExponent;
 
         default:
-          throw new ArgumentOutOfRangeException("valueType", valueType, "Only numeric value types are supported.");
+          throw new ArgumentOutOfRangeException(nameof(valueType), valueType, "Only numeric value types are supported.");
       }
     }
 
@@ -276,7 +276,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
           return BocTextValue.ResourceIdentifier.InvalidDoubleErrorMessage;
 
         default:
-          throw new ArgumentOutOfRangeException("dataType", dataType, "Only numeric value types are supported.");
+          throw new ArgumentOutOfRangeException(nameof(dataType), dataType, "Only numeric value types are supported.");
       }
     }
   }

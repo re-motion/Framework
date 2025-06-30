@@ -29,14 +29,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     public object? GetID (Type requestedType)
     {
-      ArgumentUtility.DebugCheckNotNull("requestedType", requestedType);
+      ArgumentUtility.DebugCheckNotNull(nameof(requestedType), requestedType);
 
       return MixinConfiguration.ActiveConfiguration.GetContext(requestedType);
     }
 
     public Expression GetExpression (object id)
     {
-      var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext>("id", id);
+      var classContext = ArgumentUtility.CheckNotNullAndType<ClassContext>(nameof(id), id);
 
       var classContextExpression = GetClassContextExpression(classContext);
       return Expression.Convert(classContextExpression, typeof(object));

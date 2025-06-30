@@ -69,9 +69,9 @@ namespace Remotion.Mixins
 
     public AdditionalMixinDependencyAttribute (Type targetType, Type dependentMixin, Type dependency)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
-      ArgumentUtility.CheckNotNull("dependentMixin", dependentMixin);
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
+      ArgumentUtility.CheckNotNull(nameof(dependentMixin), dependentMixin);
+      ArgumentUtility.CheckNotNull(nameof(dependency), dependency);
 
       _targetType = targetType;
       _dependentMixin = dependentMixin;
@@ -100,8 +100,8 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Assembly attributeTarget)
     {
-      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
-      ArgumentUtility.CheckNotNull("attributeTarget", attributeTarget);
+      ArgumentUtility.CheckNotNull(nameof(configurationBuilder), configurationBuilder);
+      ArgumentUtility.CheckNotNull(nameof(attributeTarget), attributeTarget);
 
       configurationBuilder.ForClass(TargetType).AddMixinDependency(DependentMixin, Dependency);
     }

@@ -61,8 +61,8 @@ public sealed class ResourceDispatcher
   /// </param>  
   public static void Dispatch (Control control, IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull("control", control);
-    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull(nameof(control), control);
+    ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
 
     const string prefix = "auto:";
 
@@ -99,8 +99,8 @@ public sealed class ResourceDispatcher
   /// <include file='../../Doc/include/ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/*' />
   public static void Dispatch (Control control, IDictionary<string, IDictionary<string, WebString>> elements, string resourceSource)
   {
-    ArgumentUtility.CheckNotNull("control", control);
-    ArgumentUtility.CheckNotNull("elements", elements);
+    ArgumentUtility.CheckNotNull(nameof(control), control);
+    ArgumentUtility.CheckNotNull(nameof(elements), elements);
 
     //  Dispatch the resources to the controls
     foreach (var elementsEntry in elements)
@@ -138,8 +138,8 @@ public sealed class ResourceDispatcher
   /// <include file='../../Doc/include/ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/*' />
   public static void DispatchGeneric (object obj, IDictionary<string, WebString> values)
   {
-    ArgumentUtility.CheckNotNull("obj", obj);
-    ArgumentUtility.CheckNotNull("values", values);
+    ArgumentUtility.CheckNotNull(nameof(obj), obj);
+    ArgumentUtility.CheckNotNull(nameof(values), values);
 
     foreach (var entry in values)
     {
@@ -244,7 +244,7 @@ public sealed class ResourceDispatcher
   /// </returns>
   private static IDictionary<string, IDictionary<string, WebString>> GetResources (IResourceManager resourceManager, string? prefix)
   {
-    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
 
     if (prefix == null)
       prefix = String.Empty;

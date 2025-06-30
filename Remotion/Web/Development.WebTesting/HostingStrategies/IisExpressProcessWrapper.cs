@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// <param name="webApplicationPort">Port to be used when hosting the web application.</param>
     public IisExpressProcessWrapper ([NotNull] string webApplicationPath, int webApplicationPort)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("webApplicationPath", webApplicationPath);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(webApplicationPath), webApplicationPath);
 
       var startInfo = new ProcessStartInfo
                       {

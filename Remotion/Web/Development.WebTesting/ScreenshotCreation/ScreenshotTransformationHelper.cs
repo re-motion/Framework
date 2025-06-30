@@ -36,11 +36,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         IScreenshotTransformation<T> transformation,
         IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("canvas", canvas);
-      ArgumentUtility.CheckNotNull("resolver", resolver);
-      ArgumentUtility.CheckNotNull("target", target);
-      ArgumentUtility.CheckNotNull("transformation", transformation);
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
+      ArgumentUtility.CheckNotNull(nameof(resolver), resolver);
+      ArgumentUtility.CheckNotNull(nameof(target), target);
+      ArgumentUtility.CheckNotNull(nameof(transformation), transformation);
+      ArgumentUtility.CheckNotNull(nameof(locator), locator);
 
       var resolvedElement = Resolve(resolver, target, locator, coordinateSystem);
       var context = new ScreenshotTransformationContext<T>(manipulation, canvas, resolver, target, resolvedElement);
@@ -84,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         case CoordinateSystem.Desktop:
           return resolver.ResolveDesktopCoordinates(target, locator);
         default:
-          throw new ArgumentOutOfRangeException("coordinateSystem", coordinateSystem, null);
+          throw new ArgumentOutOfRangeException(nameof(coordinateSystem), coordinateSystem, null);
       }
     }
   }

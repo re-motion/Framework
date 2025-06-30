@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </summary>
     protected override void RenderCellContents (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       int originalRowIndex = arguments.ListIndex;
       IBusinessObject businessObject = arguments.BusinessObject;
@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     protected void RenderValueColumnCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, PlainTextString contents)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       renderingContext.Writer.AddAttribute("class", CssClasses.CommandText);
       if (RenderingFeatures.EnableDiagnosticMetadata)

@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 
     public TextContentControlSelectionCommandBuilder ([NotNull] string textContent)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
 
       _textContent = textContent;
     }
@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new TextContentControlSelectionCommand<TControlObject>(controlSelector, _textContent);
     }
@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new TextContentControlSelectionCommand<TControlObject>(controlSelector, _textContent);
     }
@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new TextContentControlSelectionCommand<TControlObject>(controlSelector, _textContent);
     }

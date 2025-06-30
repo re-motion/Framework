@@ -30,7 +30,7 @@ namespace Remotion.Reflection
 
     public InheritanceHierarchyFilter (Type[] types)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("types", types);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(types), types);
       _types = types;
     }
 

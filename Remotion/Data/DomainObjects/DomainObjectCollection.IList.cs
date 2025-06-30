@@ -47,12 +47,12 @@ namespace Remotion.Data.DomainObjects
     object? IList.this[int index]
     {
       get { return this[index]; }
-      set { this[index] = ArgumentUtility.CheckType<DomainObject>("value", value); }
+      set { this[index] = ArgumentUtility.CheckType<DomainObject>(nameof(value), value); }
     }
 
     int IList.Add (object? value)
     {
-      return Add(ArgumentUtility.CheckNotNullAndType<DomainObject>("value", value!));
+      return Add(ArgumentUtility.CheckNotNullAndType<DomainObject>(nameof(value), value!));
     }
 
     void IList.Remove (object? value)
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects
 
     void IList.Insert (int index, object? value)
     {
-      Insert(index, ArgumentUtility.CheckNotNullAndType<DomainObject>("value", value!));
+      Insert(index, ArgumentUtility.CheckNotNullAndType<DomainObject>(nameof(value), value!));
     }
 
     object ICollection.SyncRoot

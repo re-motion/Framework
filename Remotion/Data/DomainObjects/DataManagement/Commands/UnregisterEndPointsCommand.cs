@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
         IRelationEndPointRegistrationAgent registrationAgent,
         RelationEndPointMap map)
     {
-      ArgumentUtility.CheckNotNull("endPoints", endPoints);
-      ArgumentUtility.CheckNotNull("registrationAgent", registrationAgent);
-      ArgumentUtility.CheckNotNull("map", map);
+      ArgumentUtility.CheckNotNull(nameof(endPoints), endPoints);
+      ArgumentUtility.CheckNotNull(nameof(registrationAgent), registrationAgent);
+      ArgumentUtility.CheckNotNull(nameof(map), map);
 
       _endPoints = endPoints.ToArray();
       _registrationAgent = registrationAgent;

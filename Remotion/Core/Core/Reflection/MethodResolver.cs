@@ -40,9 +40,9 @@ namespace Remotion.Reflection
     /// </remarks>
     public static MethodInfo ResolveMethod (Type declaringType, string name, string signature)
     {
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNullOrEmpty("signature", signature);
+      ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(signature), signature);
 
       const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
       var candidates = (MethodInfo[])declaringType.GetMember(name, MemberTypes.Method, flags);

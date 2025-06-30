@@ -35,7 +35,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public void ProcessRequest (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       context.Response.ContentType = "text/html";
       context.Response.Charset = "utf-8";

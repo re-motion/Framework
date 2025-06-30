@@ -25,7 +25,7 @@ namespace Remotion.Mixins.Context
 
     public TypeEventArgs (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
       _type = type;
     }
 

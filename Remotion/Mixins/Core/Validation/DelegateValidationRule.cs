@@ -34,10 +34,10 @@ namespace Remotion.Mixins.Validation
 
       public Args (ValidatingVisitor validator, TDefinition definition, IValidationLog log, DelegateValidationRule<TDefinition> self)
       {
-        ArgumentUtility.CheckNotNull("validator", validator);
-        ArgumentUtility.CheckNotNull("definition", definition);
-        ArgumentUtility.CheckNotNull("log", log);
-        ArgumentUtility.CheckNotNull("self", self);
+        ArgumentUtility.CheckNotNull(nameof(validator), validator);
+        ArgumentUtility.CheckNotNull(nameof(definition), definition);
+        ArgumentUtility.CheckNotNull(nameof(log), log);
+        ArgumentUtility.CheckNotNull(nameof(self), self);
 
         _validator = validator;
         _self = self;
@@ -108,9 +108,9 @@ namespace Remotion.Mixins.Validation
 
     public DelegateValidationRule (Rule rule, string ruleName, string message)
     {
-      ArgumentUtility.CheckNotNull("rule", rule);
-      ArgumentUtility.CheckNotNull("ruleName", ruleName);
-      ArgumentUtility.CheckNotNull("message", message);
+      ArgumentUtility.CheckNotNull(nameof(rule), rule);
+      ArgumentUtility.CheckNotNull(nameof(ruleName), ruleName);
+      ArgumentUtility.CheckNotNull(nameof(message), message);
 
       _rule = rule;
       _ruleName = ruleName;
@@ -118,7 +118,7 @@ namespace Remotion.Mixins.Validation
     }
 
     public DelegateValidationRule (Rule rule)
-        : this(ArgumentUtility.CheckNotNull("rule", rule), GetRuleName(rule), GetMessage(rule))
+        : this(ArgumentUtility.CheckNotNull(nameof(rule), rule), GetRuleName(rule), GetMessage(rule))
     {
     }
 
@@ -139,9 +139,9 @@ namespace Remotion.Mixins.Validation
 
     public void Execute (ValidatingVisitor validator, TDefinition definition, IValidationLog log)
     {
-      ArgumentUtility.CheckNotNull("validator", validator);
-      ArgumentUtility.CheckNotNull("definition", definition);
-      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull(nameof(validator), validator);
+      ArgumentUtility.CheckNotNull(nameof(definition), definition);
+      ArgumentUtility.CheckNotNull(nameof(log), log);
       RuleDelegate(new Args(validator, definition, log, this));
     }
   }

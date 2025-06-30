@@ -28,7 +28,7 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
 
     public ImplementedInterfaceRequiredMethodDefinitionCollector (TargetClassDefinition targetClassDefinition)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
 
       _targetClassDefinition = targetClassDefinition;
       _allTargetClassMethods = new Dictionary<MethodInfo, MethodDefinition>();
@@ -39,7 +39,7 @@ namespace Remotion.Mixins.Definitions.Building.RequiredMethodDefinitionBuilding
 
     public IEnumerable<RequiredMethodDefinition> CreateRequiredMethodDefinitions (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
 
       Assertion.IsTrue(requirement.Type.IsInterface);
       Assertion.IsTrue(requirement.TargetClass == _targetClassDefinition);

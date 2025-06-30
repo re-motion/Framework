@@ -58,8 +58,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IRenderingFeatures renderingFeatures,
         IBocListValidationSummaryRenderer validationSummaryRenderer)
     {
-      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
-      ArgumentUtility.CheckNotNull("validationSummaryRenderer", validationSummaryRenderer);
+      ArgumentUtility.CheckNotNull(nameof(cssClasses), cssClasses);
+      ArgumentUtility.CheckNotNull(nameof(validationSummaryRenderer), validationSummaryRenderer);
 
       _cssClasses = cssClasses;
       _indexColumnRenderer = indexColumnRenderer;
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderTitlesRow (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderEmptyListDataRow (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       BocColumnRenderer[] columnRenderers = renderingContext.ColumnRenderers;
       int columnCount = 0;
@@ -131,8 +131,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderDataRow (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, in BocRowRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("rowRenderingContext", rowRenderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(rowRenderingContext), rowRenderingContext);
 
       var absoluteRowIndex = rowRenderingContext.SortedIndex;
       var originalRowIndex = rowRenderingContext.Row.Index;

@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentUtility.CheckNotNull(nameof(text), text);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public UnspecifiedPageObject FillWith ([NotNull] string[] lines, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("lines", lines);
+      ArgumentUtility.CheckNotNull(nameof(lines), lines);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -77,8 +77,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("text", text);
-      ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
+      ArgumentUtility.CheckNotNull(nameof(text), text);
+      ArgumentUtility.CheckNotNull(nameof(finishInputWith), finishInputWith);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -100,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         FinishInputWithAction finishInputWith,
         IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("lines", lines);
+      ArgumentUtility.CheckNotNull(nameof(lines), lines);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);

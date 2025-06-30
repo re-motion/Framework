@@ -42,9 +42,9 @@ namespace Remotion.Validation.Validators
         [NotNull] string errorMessage,
         [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("comparisonValue", comparisonValue);
-      ArgumentUtility.CheckNotNull("errorMessage", errorMessage);
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull(nameof(comparisonValue), comparisonValue);
+      ArgumentUtility.CheckNotNull(nameof(errorMessage), errorMessage);
+      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       Comparer = comparer;
       ComparisonValue = comparisonValue;
@@ -57,7 +57,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

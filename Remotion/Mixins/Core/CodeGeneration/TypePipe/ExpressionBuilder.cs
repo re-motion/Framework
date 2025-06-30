@@ -32,7 +32,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     public Expression CreateNewClassContext (ClassContext classContext)
     {
-      ArgumentUtility.CheckNotNull("classContext", classContext);
+      ArgumentUtility.CheckNotNull(nameof(classContext), classContext);
 
       var serializer = new ExpressionClassContextSerializer();
       classContext.Serialize(serializer);
@@ -42,8 +42,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Expression CreateInitialization (MutableType concreteTarget, MethodInfo initializationMethod)
     {
-      ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
-      ArgumentUtility.CheckNotNull("initializationMethod", initializationMethod);
+      ArgumentUtility.CheckNotNull(nameof(concreteTarget), concreteTarget);
+      ArgumentUtility.CheckNotNull(nameof(initializationMethod), initializationMethod);
 
       // this.__InitializationMethod();
       return Expression.Call(new ThisExpression(concreteTarget), initializationMethod, arguments: Array.Empty<Expression>());
@@ -52,10 +52,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public Expression CreateInitializingDelegation (
         MethodBodyContextBase ctx, MethodInfo initializationMethod, Expression instance, MethodInfo methodToCall)
     {
-      ArgumentUtility.CheckNotNull("ctx", ctx);
-      ArgumentUtility.CheckNotNull("initializationMethod", initializationMethod);
-      ArgumentUtility.CheckNotNull("instance", instance);
-      ArgumentUtility.CheckNotNull("methodToCall", methodToCall);
+      ArgumentUtility.CheckNotNull(nameof(ctx), ctx);
+      ArgumentUtility.CheckNotNull(nameof(initializationMethod), initializationMethod);
+      ArgumentUtility.CheckNotNull(nameof(instance), instance);
+      ArgumentUtility.CheckNotNull(nameof(methodToCall), methodToCall);
 
       // <CreateInitialization>
       // instance<GenericParameters>.MethodToCall(<parameters>);

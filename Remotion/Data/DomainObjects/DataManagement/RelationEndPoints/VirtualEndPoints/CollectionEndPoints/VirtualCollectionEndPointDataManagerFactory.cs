@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public VirtualCollectionEndPointDataManagerFactory (IDataContainerMapReadOnlyView dataContainerMap)
     {
-      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
+      ArgumentUtility.CheckNotNull(nameof(dataContainerMap), dataContainerMap);
 
       DataContainerMap = dataContainerMap;
     }
@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IVirtualCollectionEndPointDataManager CreateEndPointDataManager (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
 
       return new VirtualCollectionEndPointDataManager(endPointID, DataContainerMap);
     }

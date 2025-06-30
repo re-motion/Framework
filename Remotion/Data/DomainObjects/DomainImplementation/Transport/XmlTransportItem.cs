@@ -32,13 +32,13 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
   {
     public static XmlTransportItem[] Wrap (TransportItem[] items)
     {
-      ArgumentUtility.CheckNotNull("items", items);
+      ArgumentUtility.CheckNotNull(nameof(items), items);
       return Array.ConvertAll(items, item => new XmlTransportItem(item));
     }
 
     public static TransportItem[] Unwrap (XmlTransportItem[] xmlItems)
     {
-      ArgumentUtility.CheckNotNull("xmlItems", xmlItems);
+      ArgumentUtility.CheckNotNull(nameof(xmlItems), xmlItems);
       return Array.ConvertAll(xmlItems, item => item.TransportItem);
     }
 
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public void WriteXml (XmlWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       writer.WriteAttributeString("ID", _transportItem.ID.ToString());
       SerializeProperties(writer);
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public void ReadXml (XmlReader reader)
     {
-      ArgumentUtility.CheckNotNull("reader", reader);
+      ArgumentUtility.CheckNotNull(nameof(reader), reader);
 
       string? idString = reader.GetAttribute("ID");
       Assertion.IsNotNull(idString, "No value was found for required attribute 'ID' on the current node.");

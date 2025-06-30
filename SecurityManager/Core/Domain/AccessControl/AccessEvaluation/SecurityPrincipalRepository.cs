@@ -36,14 +36,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurityPrincipalRepository (IUserRevisionProvider revisionProvider)
     {
-      ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
+      ArgumentUtility.CheckNotNull(nameof(revisionProvider), revisionProvider);
 
       _revisionProvider = revisionProvider;
     }
 
     public User GetUser (string userName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("userName", userName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(userName), userName);
 
       // Optimized for memory allocations
       if (_userCacheValueFactory == null)

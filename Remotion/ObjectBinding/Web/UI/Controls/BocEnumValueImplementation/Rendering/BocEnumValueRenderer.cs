@@ -70,9 +70,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         IValidationErrorRenderer validationErrorRenderer)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("internalControlMemberCaller", internalControlMemberCaller);
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
+      ArgumentUtility.CheckNotNull(nameof(internalControlMemberCaller), internalControlMemberCaller);
+      ArgumentUtility.CheckNotNull(nameof(labelReferenceRenderer), labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull(nameof(validationErrorRenderer), validationErrorRenderer);
 
       _internalControlMemberCaller = internalControlMemberCaller;
       _labelReferenceRenderer = labelReferenceRenderer;
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     /// </remarks>
     public void Render (BocEnumValueRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
       ArgumentUtility.CheckNotNull("renderingContext.Control.Page", renderingContext.Control.Page!);
 
       AddAttributesToRender(renderingContext);

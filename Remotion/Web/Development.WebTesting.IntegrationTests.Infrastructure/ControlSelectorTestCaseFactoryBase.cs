@@ -64,8 +64,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private TestCaseData CreateTestCaseData ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
-      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
+      ArgumentUtility.CheckNotNull(nameof(method), method);
 
       var testCaseData = new TestCaseData(
           (GenericSelectorTestAction<TControlSelector, TControl>)((helper, factory, control) =>

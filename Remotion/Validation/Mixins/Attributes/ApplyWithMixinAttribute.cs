@@ -33,7 +33,7 @@ namespace Remotion.Validation.Mixins.Attributes
 
     public ApplyWithMixinAttribute (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
 
       _mixinType = mixinType;
     }

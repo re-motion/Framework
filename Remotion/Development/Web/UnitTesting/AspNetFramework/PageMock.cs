@@ -51,7 +51,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public void SetRequestValueCollection (NameValueCollection requestValueCollection)
     {
-      ArgumentUtility.CheckNotNull("requestValueCollection", requestValueCollection);
+      ArgumentUtility.CheckNotNull(nameof(requestValueCollection), requestValueCollection);
 
       PrivateInvoke.SetNonPublicField(this, "_requestValueCollection", requestValueCollection);
     }
@@ -74,7 +74,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public void SetPageStatePersister (PageStatePersister pageStatePersister)
     {
-      ArgumentUtility.CheckNotNull("pageStatePersister", pageStatePersister);
+      ArgumentUtility.CheckNotNull(nameof(pageStatePersister), pageStatePersister);
 
       _pageStatePersister = pageStatePersister;
     }

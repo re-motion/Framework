@@ -34,7 +34,7 @@ namespace Remotion.Web.Utilities
     /// </summary>
     public static string JoinLinesWithEncoding (IEnumerable<string> lines)
     {
-      ArgumentUtility.CheckNotNull("lines", lines);
+      ArgumentUtility.CheckNotNull(nameof(lines), lines);
 
       return string.Join("<br />", lines.Select(HttpUtility.HtmlEncode));
     }
@@ -44,7 +44,7 @@ namespace Remotion.Web.Utilities
     /// </summary>
     public static void WriteEncodedLines (this HtmlTextWriter htmlTextWriter, IEnumerable<string> lines)
     {
-      ArgumentUtility.CheckNotNull("lines", lines);
+      ArgumentUtility.CheckNotNull(nameof(lines), lines);
 
       var enumerator = lines.GetEnumerator();
       if (!enumerator.MoveNext())
@@ -69,8 +69,8 @@ namespace Remotion.Web.Utilities
           IReadOnlyDictionary<string, string?> dictionaryOfStringValues,
           IReadOnlyDictionary<string, IReadOnlyCollection<string>?>? dictionaryOfStringArrays = null)
     {
-      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
-      ArgumentUtility.CheckNotNull("dictionaryOfStringValues", dictionaryOfStringValues);
+      ArgumentUtility.CheckNotNull(nameof(stringBuilder), stringBuilder);
+      ArgumentUtility.CheckNotNull(nameof(dictionaryOfStringValues), dictionaryOfStringValues);
 
       stringBuilder.Append('{');
 

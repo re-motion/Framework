@@ -30,9 +30,9 @@ namespace Remotion.Xml
   {
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string defaultNamespace, XmlReaderSettings settings)
     {
-      ArgumentUtility.CheckNotNull("reader", reader);
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("settings", settings);
+      ArgumentUtility.CheckNotNull(nameof(reader), reader);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(settings), settings);
 
       XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler(true);
       settings.ValidationEventHandler += validationHandler.Handler;
@@ -77,7 +77,7 @@ namespace Remotion.Xml
 
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string defaultNamespace, XmlSchemaSet schemas)
     {
-      ArgumentUtility.CheckNotNull("reader", reader);
+      ArgumentUtility.CheckNotNull(nameof(reader), reader);
 
       XmlReaderSettings settings = new XmlReaderSettings();
       settings.Schemas = schemas;
@@ -93,8 +93,8 @@ namespace Remotion.Xml
 
     public static object DeserializeUsingSchema (XmlReader reader, Type type, string schemaUri, XmlReader schemaReader)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("schemaUri", schemaUri);
-      ArgumentUtility.CheckNotNull("schemaReader", schemaReader);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(schemaUri), schemaUri);
+      ArgumentUtility.CheckNotNull(nameof(schemaReader), schemaReader);
 
       XmlSchemaSet schemas = new XmlSchemaSet();
       schemas.Add(schemaUri, schemaReader);
@@ -108,7 +108,7 @@ namespace Remotion.Xml
     /// <exception cref="ArgumentException"> Thrown if no namespace is specified through at least one of the possible attributes. </exception>
     public static string GetNamespace (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       XmlTypeAttribute? xmlType = (XmlTypeAttribute?)Attribute.GetCustomAttribute(type, typeof(XmlTypeAttribute), true);
       XmlRootAttribute? xmlRoot = (XmlRootAttribute?)Attribute.GetCustomAttribute(type, typeof(XmlRootAttribute), true);
@@ -120,7 +120,7 @@ namespace Remotion.Xml
             string.Format(
                 "Cannot determine the xml namespace of type '{0}' because no neither an XmlTypeAttribute nor an XmlRootAttribute has been provided.",
                 type.GetFullNameSafe()),
-            "type");
+            nameof(type));
       }
 
       bool hasXmlTypeNamespace = hasXmlType ? (! String.IsNullOrEmpty(xmlType!.Namespace)) : false;
@@ -131,7 +131,7 @@ namespace Remotion.Xml
             string.Format(
                 "Cannot determine the xml namespace of type '{0}' because neither an XmlTypeAttribute nor an XmlRootAttribute is used to define a namespace for the type.",
                 type.GetFullNameSafe()),
-            "type");
+            nameof(type));
       }
 
       if (hasXmlRootNamespace)

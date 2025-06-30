@@ -33,9 +33,9 @@ namespace Remotion.Validation.Validators
         [NotNull] IValidationMessageFactory validationMessageFactory)
         where T : IPropertyValidator
     {
-      ArgumentUtility.CheckNotNull("validatedProperty", validatedProperty);
-      ArgumentUtility.CheckNotNull("validatorFactory", validatorFactory);
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentUtility.CheckNotNull(nameof(validatedProperty), validatedProperty);
+      ArgumentUtility.CheckNotNull(nameof(validatorFactory), validatorFactory);
+      ArgumentUtility.CheckNotNull(nameof(validationMessageFactory), validationMessageFactory);
 
       var deferredInitializationValidationMessage = new DeferredInitializationValidationMessage();
       var initializationParameters = new PropertyValidationRuleInitializationParameters(deferredInitializationValidationMessage);

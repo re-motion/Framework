@@ -58,7 +58,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -72,7 +72,7 @@ namespace Remotion.Web.UI.Controls
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
 
       var renderer = CreateRenderer();
       renderer.RegisterHtmlHeadContents(htmlHeadAppender);
@@ -85,7 +85,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual ListMenuRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       return new ListMenuRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: not null assertion
     }
@@ -122,7 +122,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns>A Javascript statement, terminiated with a <c>;</c> (semicolon).</returns>
     public string GetUpdateScriptReference (string getSelectionCount)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("getSelectionCount", getSelectionCount);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(getSelectionCount), getSelectionCount);
 
       return string.Format("ListMenu.Update ('#{0}', {1});", ClientID, getSelectionCount);
     }

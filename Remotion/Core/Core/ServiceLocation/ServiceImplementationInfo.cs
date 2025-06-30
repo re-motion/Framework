@@ -37,7 +37,7 @@ namespace Remotion.ServiceLocation
     public static ServiceImplementationInfo CreateSingle<T> (Func<T> factory, LifetimeKind lifetime = LifetimeKind.InstancePerDependency)
         where T : class
     {
-      ArgumentUtility.CheckNotNull("factory", factory);
+      ArgumentUtility.CheckNotNull(nameof(factory), factory);
       return new ServiceImplementationInfo(typeof(T), lifetime, RegistrationType.Single, factory);
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.ServiceLocation
     public static ServiceImplementationInfo CreateMultiple<T> (Func<T> factory, LifetimeKind lifetime = LifetimeKind.InstancePerDependency)
         where T : class
     {
-      ArgumentUtility.CheckNotNull("factory", factory);
+      ArgumentUtility.CheckNotNull(nameof(factory), factory);
       return new ServiceImplementationInfo(typeof(T), lifetime, RegistrationType.Multiple, factory);
     }
 
@@ -76,14 +76,14 @@ namespace Remotion.ServiceLocation
     /// The <see cref="RegistrationType"/> of the <paramref name="implementationType"/>. Defaults to <see cref="T:RegistrationType.Single"/>.
     /// </param>
     public ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType = RegistrationType.Single)
-        : this(ArgumentUtility.CheckNotNull("implementationType", implementationType), lifetime, registrationType, null)
+        : this(ArgumentUtility.CheckNotNull(nameof(implementationType), implementationType), lifetime, registrationType, null)
     {
     }
 
     private ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType, Func<object>? factory)
     {
       if (registrationType == RegistrationType.Decorator && lifetime != LifetimeKind.InstancePerDependency)
-        throw new ArgumentException("For implementations of type 'Decorator', the lifetime can only be specified as 'InstancePerDependency'.", "lifetime");
+        throw new ArgumentException("For implementations of type 'Decorator', the lifetime can only be specified as 'InstancePerDependency'.", nameof(lifetime));
 
       _implementationType = implementationType;
       _lifetime = lifetime;

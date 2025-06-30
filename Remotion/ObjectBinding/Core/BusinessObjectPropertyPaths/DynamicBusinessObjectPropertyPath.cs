@@ -30,7 +30,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
   {
     public static DynamicBusinessObjectPropertyPath Create (string propertyPathIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyPathIdentifier", propertyPathIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyPathIdentifier), propertyPathIdentifier);
 
       return new DynamicBusinessObjectPropertyPath(propertyPathIdentifier);
     }

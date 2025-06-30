@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     public void Apply (IEnumerable<Type> dependencyTypes)
     {
-      ArgumentUtility.CheckNotNull("dependencyTypes", dependencyTypes);
+      ArgumentUtility.CheckNotNull(nameof(dependencyTypes), dependencyTypes);
 
       foreach (Type type in dependencyTypes)
       {
@@ -44,7 +44,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     private DependencyDefinitionBase BuildDependency (Type type, DependencyDefinitionBase? aggregator)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       RequirementDefinitionBase requirement = GetRequirement(type);
       if (requirement == null)
@@ -60,7 +60,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     private void CheckForAggregate (DependencyDefinitionBase dependency)
     {
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentUtility.CheckNotNull(nameof(dependency), dependency);
 
       if (dependency.RequiredType.IsAggregatorInterface)
       {

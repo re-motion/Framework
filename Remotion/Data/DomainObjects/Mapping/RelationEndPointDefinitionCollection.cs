@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     public static RelationEndPointDefinitionCollection CreateForAllRelationEndPoints (ClassDefinition classDefinition, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       return
           new RelationEndPointDefinitionCollection(
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationEndPointDefinitionCollection (IEnumerable<IRelationEndPointDefinition> collection, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentUtility.CheckNotNull(nameof(collection), collection);
 
       foreach (var relationEndPoint in collection)
         Add(relationEndPoint);
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool Contains (IRelationEndPointDefinition relationEndPoint)
     {
-      ArgumentUtility.CheckNotNull("relationEndPoint", relationEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPoint), relationEndPoint);
       if (relationEndPoint.IsAnonymous)
         return false;
 
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool Contains (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
       return BaseContainsKey(propertyName);
     }
 
@@ -87,17 +87,17 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+        ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
         return (IRelationEndPointDefinition?)BaseGetObject(propertyName);
       }
     }
 
     public int Add (IRelationEndPointDefinition value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       if (value.IsAnonymous)
-        throw new ArgumentException("Anonymous end points cannot be added to this collection.", "value");
+        throw new ArgumentException("Anonymous end points cannot be added to this collection.", nameof(value));
 
       int position = BaseAdd(value.PropertyName, value);
 

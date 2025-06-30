@@ -41,18 +41,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public override void Insert (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       if (index < 0 || index > Count)
       {
         throw new ArgumentOutOfRangeException(
-            "index",
+            nameof(index),
             index,
             "Index is out of range. Must be non-negative and less than or equal to the size of the collection.");
       }
 
       if (ContainsObjectID(domainObject.ID))
-        throw new ArgumentException(string.Format("The collection already contains an object with ID '{0}'.", domainObject.ID), "domainObject");
+        throw new ArgumentException(string.Format("The collection already contains an object with ID '{0}'.", domainObject.ID), nameof(domainObject));
 
       CheckItemType(domainObject, "domainObject");
 
@@ -61,13 +61,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public override bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       var existingObject = GetObject(domainObject.ID);
       if (existingObject != null && existingObject != domainObject)
       {
         var message = "The object to be removed has the same ID as an object in this collection, but is a different object reference.";
-        throw new ArgumentException(message, "domainObject");
+        throw new ArgumentException(message, nameof(domainObject));
       }
 
       return base.Remove(domainObject);
@@ -75,12 +75,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public override void Replace (int index, DomainObject value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       if (index < 0 || index >= Count)
       {
         throw new ArgumentOutOfRangeException(
-            "index",
+            nameof(index),
             index,
             "Index is out of range. Must be non-negative and less than the size of the collection.");
       }

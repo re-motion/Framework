@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     public WebTabStripTabDefinition ([NotNull] string itemID, int index, [NotNull] string title, bool isDisabled, [NotNull] string accessKey)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
-      ArgumentUtility.CheckNotNullOrEmpty("title", title);
-      ArgumentUtility.CheckNotNull("accessKey", accessKey);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
+      ArgumentUtility.CheckNotNull(nameof(accessKey), accessKey);
 
       _itemID = itemID;
       _index = index;

@@ -30,20 +30,20 @@ namespace Remotion.Mixins.Definitions.Building
 
     public NextCallDependencyDefinitionBuilder (MixinDefinition mixin)
     {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ArgumentUtility.CheckNotNull(nameof(mixin), mixin);
       _mixin = mixin;
     }
 
     protected override RequirementDefinitionBase GetRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return _mixin.TargetClass.RequiredNextCallTypes[type];
     }
 
     protected override RequirementDefinitionBase CreateRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       Assertion.IsTrue(type != typeof(object), "This method will not be called for typeof (object).");
 
@@ -59,21 +59,21 @@ namespace Remotion.Mixins.Definitions.Building
 
     protected override void AddRequirement (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
 
       _mixin.TargetClass.RequiredNextCallTypes.Add((RequiredNextCallTypeDefinition)requirement);
     }
 
     protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
 
       return new NextCallDependencyDefinition((RequiredNextCallTypeDefinition)requirement, _mixin, (NextCallDependencyDefinition?)aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
     {
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentUtility.CheckNotNull(nameof(dependency), dependency);
       if (!_mixin.NextCallDependencies.ContainsKey(dependency.RequiredType.Type))
         _mixin.NextCallDependencies.Add((NextCallDependencyDefinition)dependency);
     }

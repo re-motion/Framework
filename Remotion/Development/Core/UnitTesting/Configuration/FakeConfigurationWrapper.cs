@@ -39,31 +39,31 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public void SetUpSection (string configKey, object section)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("configKey", configKey);
-      ArgumentUtility.CheckNotNull("section", section);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(configKey), configKey);
+      ArgumentUtility.CheckNotNull(nameof(section), section);
 
       _sections.Add(configKey, section);
     }
 
     public void SetUpConnectionString (string name, string connectionString, string providerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
 
       _connectionStringsSection.ConnectionStrings.Add(new ConnectionStringSettings(name, connectionString, providerName));
     }
 
     public void SetUpAppSetting (string name, string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       _appSettings.Add(name, value);
     }
 
     public override object? GetSection (string sectionName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("sectionName", sectionName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(sectionName), sectionName);
 
       if (_sections.TryGetValue(sectionName, out var value))
         return value;
@@ -72,14 +72,14 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public override ConnectionStringSettings GetConnectionString (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       return _connectionStringsSection.ConnectionStrings[name];
     }
 
     public override string? GetAppSetting (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       return _appSettings[name];
     }

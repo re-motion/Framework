@@ -35,8 +35,8 @@ namespace Remotion.Security.Metadata
 
       public CacheKey (Type type, string methodName, BindingFlags bindingFlags)
       {
-        ArgumentUtility.DebugCheckNotNull("type", type);
-        ArgumentUtility.DebugCheckNotNullOrEmpty("methodName", methodName);
+        ArgumentUtility.DebugCheckNotNull(nameof(type), type);
+        ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(methodName), methodName);
 
         _type = type;
         _methodName = methodName;
@@ -83,8 +83,8 @@ namespace Remotion.Security.Metadata
 
     public IMethodInformation GetMethodInformation (Type type, string methodName, MemberAffiliation memberAffiliation)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
 
       switch (memberAffiliation)
       {
@@ -99,8 +99,8 @@ namespace Remotion.Security.Metadata
 
     public IMethodInformation GetMethodInformation (Type type, MethodInfo methodInfo, MemberAffiliation memberAffiliation)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("methodInfo", methodInfo);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
 
       return GetMethodInformation(type, methodInfo.Name, memberAffiliation);
     }
@@ -114,7 +114,7 @@ namespace Remotion.Security.Metadata
     private static IMethodInformation GetMethod (Type type, string methodName, BindingFlags bindingFlags)
     {
       if (!TypeHasMember(type, methodName, bindingFlags))
-        throw new ArgumentException(string.Format("The method '{0}' could not be found.", methodName), "methodName");
+        throw new ArgumentException(string.Format("The method '{0}' could not be found.", methodName), nameof(methodName));
 
       var foundMembers = new List<MemberInfo>();
       for (Type? currentType = type; currentType != null; currentType = currentType.BaseType)
@@ -132,7 +132,7 @@ namespace Remotion.Security.Metadata
                 + "A method '{0}' exists in class '{1}' and its base class.",
                 methodName,
                 type.GetFullNameSafe()),
-            "methodName");
+            nameof(methodName));
       }
 
       return MethodInfoAdapter.Create(foundMethodInfo);

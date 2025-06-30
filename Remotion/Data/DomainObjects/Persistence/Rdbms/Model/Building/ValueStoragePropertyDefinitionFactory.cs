@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     public ValueStoragePropertyDefinitionFactory (
         IStorageTypeInformationProvider storageTypeInformationProvider, IStorageNameProvider storageNameProvider)
     {
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
+      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull(nameof(storageNameProvider), storageNameProvider);
 
       _storageTypeInformationProvider = storageTypeInformationProvider;
       _storageNameProvider = storageNameProvider;
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       IStorageTypeInformation storageType;
       try
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object? value, string columnName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnName", columnName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnName), columnName);
 
       var propertyType = value != null ? value.GetType() : typeof(object);
       IStorageTypeInformation storageType;
@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     protected virtual bool MustBeNullable (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       // CreateSequence can deal with null source objects
       var baseClasses = propertyDefinition.ClassDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);

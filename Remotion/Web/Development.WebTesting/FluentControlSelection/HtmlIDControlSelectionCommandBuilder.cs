@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 
     public HtmlIDControlSelectionCommandBuilder ([NotNull] string htmlID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
 
       _htmlID = htmlID;
     }
@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new HtmlIDControlSelectionCommand<TControlObject>(controlSelector, _htmlID);
     }
@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new HtmlIDControlSelectionCommand<TControlObject>(controlSelector, _htmlID);
     }
@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new HtmlIDControlSelectionCommand<TControlObject>(controlSelector, _htmlID);
     }

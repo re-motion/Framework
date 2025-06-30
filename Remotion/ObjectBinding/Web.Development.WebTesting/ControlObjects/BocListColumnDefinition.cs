@@ -45,9 +45,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         string[] domainPropertyPaths,
         bool hasDiagnosticMetadata)
     {
-      ArgumentUtility.CheckNotNull("itemID", itemID);
-      ArgumentUtility.CheckNotNull("title", title);
-      ArgumentUtility.CheckNotNull("domainPropertyPaths", domainPropertyPaths);
+      ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
+      ArgumentUtility.CheckNotNull(nameof(title), title);
+      ArgumentUtility.CheckNotNull(nameof(domainPropertyPaths), domainPropertyPaths);
 
       _itemID = itemID;
       _oneBasedIndex = oneBasedIndex;

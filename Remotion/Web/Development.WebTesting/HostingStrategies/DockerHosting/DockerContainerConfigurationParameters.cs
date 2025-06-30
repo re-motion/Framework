@@ -65,10 +65,10 @@ public class DockerContainerConfigurationParameters
       IReadOnlyCollection<string> mounts,
       string? dockerCustomArguments)
   {
-    ArgumentUtility.CheckNotNullOrEmpty("absoluteWebApplicationPath", absoluteWebApplicationPath);
-    ArgumentUtility.CheckNotNullOrEmpty("dockerImageName", dockerImageName);
-    ArgumentUtility.CheckNotEmpty("hostname", hostname);
-    ArgumentUtility.CheckNotNull("mounts", mounts);
+    ArgumentUtility.CheckNotNullOrEmpty(nameof(absoluteWebApplicationPath), absoluteWebApplicationPath);
+    ArgumentUtility.CheckNotNullOrEmpty(nameof(dockerImageName), dockerImageName);
+    ArgumentUtility.CheckNotEmpty(nameof(hostname), hostname);
+    ArgumentUtility.CheckNotNull(nameof(mounts), mounts);
 
     AbsoluteWebApplicationPath = absoluteWebApplicationPath;
     WebApplicationPort = webApplicationPort;

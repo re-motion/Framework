@@ -37,10 +37,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static Screenshot TakeBrowserScreenshot ([NotNull] IBrowserSession browserSession, [NotNull] IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("browserSession", browserSession);
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentUtility.CheckNotNull(nameof(browserSession), browserSession);
+      ArgumentUtility.CheckNotNull(nameof(locator), locator);
 
-      ArgumentUtility.CheckNotNull("browserSession", browserSession);
+      ArgumentUtility.CheckNotNull(nameof(browserSession), browserSession);
 
       var screenshot = ((ITakesScreenshot)browserSession.Driver.Native).GetScreenshot();
 
@@ -93,9 +93,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] ICursorInformation cursorInformation,
         CoordinateSystem coordinateSystem)
     {
-      ArgumentUtility.CheckNotNull("image", image);
-      ArgumentUtility.CheckNotNull("screenshotBounds", screenshotBounds);
-      ArgumentUtility.CheckNotNull("cursorInformation", cursorInformation);
+      ArgumentUtility.CheckNotNull(nameof(image), image);
+      ArgumentUtility.CheckNotNull(nameof(screenshotBounds), screenshotBounds);
+      ArgumentUtility.CheckNotNull(nameof(cursorInformation), cursorInformation);
 
       _image = image;
       _desktopOffset = desktopOffset;

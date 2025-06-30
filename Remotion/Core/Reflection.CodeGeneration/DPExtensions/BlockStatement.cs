@@ -32,7 +32,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public BlockStatement (params Statement[] statements)
     {
-      ArgumentUtility.CheckNotNull("statements", statements);
+      ArgumentUtility.CheckNotNull(nameof(statements), statements);
       _statements = statements;
     }
 

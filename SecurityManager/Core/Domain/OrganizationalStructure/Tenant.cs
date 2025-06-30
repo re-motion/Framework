@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static Tenant? FindByUnqiueIdentifier (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
 
       var result = from t in QueryFactory.CreateLinqQuery<Tenant>()
                    where t.UniqueIdentifier == uniqueIdentifier

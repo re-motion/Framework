@@ -38,8 +38,8 @@ namespace Remotion.Context
 
     public SafeContextSingleton (string currentKey, Func<T> creator)
     {
-      ArgumentUtility.CheckNotNull("currentKey", currentKey);
-      ArgumentUtility.CheckNotNull("creator", creator);
+      ArgumentUtility.CheckNotNull(nameof(currentKey), currentKey);
+      ArgumentUtility.CheckNotNull(nameof(creator), creator);
 
       _currentKey = currentKey;
       _creator = creator;

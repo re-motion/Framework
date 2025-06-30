@@ -198,7 +198,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull("wxePage", wxePage);
+      ArgumentUtility.CheckNotNull(nameof(wxePage), wxePage);
       if (!wxePage.IsReturningPostBack)
       {
         NameObjectCollection parameters = PrepareWxeFunctionParameters(listIndex, businessObject);
@@ -300,9 +300,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocCommandEnabledColumnDefinition column,
         int listIndex,
         IBusinessObject businessObject)
-        : base(command, ArgumentUtility.CheckNotNull("businessObject", businessObject))
+        : base(command, ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject))
     {
-      ArgumentUtility.CheckNotNull("column", column);
+      ArgumentUtility.CheckNotNull(nameof(column), column);
 
       _column = column;
       _listIndex = listIndex;

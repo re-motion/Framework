@@ -589,8 +589,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
     private void CheckAllRequiringEntities (RequirementDefinitionBase requirement, params MixinDefinition[] expectedRequiringMixins)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
-      ArgumentUtility.CheckNotNull("expectedRequiringMixins", expectedRequiringMixins);
+      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
+      ArgumentUtility.CheckNotNull(nameof(expectedRequiringMixins), expectedRequiringMixins);
 
       var requiringEntityDescription = requirement.GetRequiringEntityDescription();
       var requiringEntityDescriptionItems = requiringEntityDescription.Split(new[] { ", "}, StringSplitOptions.None);
@@ -603,8 +603,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
     private void CheckSomeRequiringMixin (RequirementDefinitionBase requirement, MixinDefinition expectedRequiringMixin)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
-      ArgumentUtility.CheckNotNull("expectedRequiringMixin", expectedRequiringMixin);
+      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
+      ArgumentUtility.CheckNotNull(nameof(expectedRequiringMixin), expectedRequiringMixin);
 
       var requirers = requirement.GetRequiringEntityDescription().Split(new[] { ", " }, StringSplitOptions.None);
 
@@ -613,8 +613,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
 
     private void CheckSomeRequiringComposedInterface (RequirementDefinitionBase requirement, Type expectedRequiringComposedInterface)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
-      ArgumentUtility.CheckNotNull("expectedRequiringComposedInterface", expectedRequiringComposedInterface);
+      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
+      ArgumentUtility.CheckNotNull(nameof(expectedRequiringComposedInterface), expectedRequiringComposedInterface);
 
       var requirers = requirement.GetRequiringEntityDescription().Split(new[] { ", " }, StringSplitOptions.None);
 

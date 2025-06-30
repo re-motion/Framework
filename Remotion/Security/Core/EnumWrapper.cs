@@ -42,8 +42,8 @@ namespace Remotion.Security
     /// <param name="typeName">The type name to be integrated into the name.</param>
     public static EnumWrapper Get (string valueName, string typeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("valueName", valueName);
-      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(valueName), valueName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
 
       return new EnumWrapper(BuildEnumName(valueName, typeName));
     }
@@ -54,7 +54,7 @@ namespace Remotion.Security
     /// <param name="name">The name to be set.</param>
     public static EnumWrapper Get (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
 
       return new EnumWrapper(name);
     }
@@ -65,7 +65,7 @@ namespace Remotion.Security
     /// <param name="enumValue">The enum value.</param>
     public static EnumWrapper Get (Enum enumValue)
     {
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
 
       return s_enumWrapperCache.GetOrAdd(enumValue, s_createEnumWrapperFromEnumValueFunc);
     }
@@ -80,7 +80,7 @@ namespace Remotion.Security
                 "Enumerated type '{0}' cannot be wrapped. Only enumerated types without the {1} can be wrapped.",
                 type.GetFullNameSafe(),
                 typeof(FlagsAttribute).GetFullNameSafe()),
-            "enumValue");
+            nameof(enumValue));
       }
 
       return Get(BuildEnumName(enumValue.ToString(), TypeUtility.GetPartialAssemblyQualifiedName(enumValue.GetType())));

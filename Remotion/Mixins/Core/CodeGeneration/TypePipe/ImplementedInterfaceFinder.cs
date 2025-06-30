@@ -38,10 +38,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         IEnumerable<RequiredTargetCallTypeDefinition> requiredTargetCallTypes,
         IEnumerable<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull("alreadyImplementedInterfaces", alreadyImplementedInterfaces);
-      ArgumentUtility.CheckNotNull("receivedInterfaces", receivedInterfaces);
-      ArgumentUtility.CheckNotNull("requiredTargetCallTypes", requiredTargetCallTypes);
-      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull(nameof(alreadyImplementedInterfaces), alreadyImplementedInterfaces);
+      ArgumentUtility.CheckNotNull(nameof(receivedInterfaces), receivedInterfaces);
+      ArgumentUtility.CheckNotNull(nameof(requiredTargetCallTypes), requiredTargetCallTypes);
+      ArgumentUtility.CheckNotNull(nameof(mixinInfos), mixinInfos);
 
       _alreadyImplementedInterfaces = alreadyImplementedInterfaces;
       _receivedInterfaces = receivedInterfaces;

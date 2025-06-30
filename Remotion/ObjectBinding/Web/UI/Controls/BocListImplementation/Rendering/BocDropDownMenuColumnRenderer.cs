@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     protected override void RenderCellContents (BocColumnRenderingContext<BocDropDownMenuColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       if (renderingContext.Control.RowMenus.Count <= arguments.RowIndex)
       {

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public CompoundDataType (string stringValue, int int32Value)
     {
-      ArgumentUtility.CheckNotNull("stringValue", stringValue);
+      ArgumentUtility.CheckNotNull(nameof(stringValue), stringValue);
 
       _stringValue = stringValue;
       _int32Value = int32Value;

@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static Point GetScrollPosition ([NotNull] this ElementScope element)
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentUtility.CheckNotNull(nameof(element), element);
 
       var driver = ((IWrapsDriver)element.Native).WrappedDriver;
       var jsExecutor = (IJavaScriptExecutor)driver;
@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </remarks>
     public static void ScrollTo ([NotNull] this ElementScope element, int x, int y)
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentUtility.CheckNotNull(nameof(element), element);
 
       var driver = ((IWrapsDriver)element.Native).WrappedDriver;
       var jsExecutor = (IJavaScriptExecutor)driver;
@@ -78,8 +78,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         ContentAlignment? alignment = null,
         WebPadding? padding = null)
     {
-      ArgumentUtility.CheckNotNull("element", element);
-      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull(nameof(element), element);
+      ArgumentUtility.CheckNotNull(nameof(target), target);
 
       var elementBounds = ElementScopeResolver.Instance.ResolveBrowserCoordinates(element).ElementBounds;
       var targetBounds = ElementScopeResolver.Instance.ResolveBrowserCoordinates(target).ElementBounds;
@@ -134,7 +134,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
               targetElementBounds.X - (scrollContainerSize.Width - targetElementBounds.Width) + 1 + padding.Right,
               targetElementBounds.Y - (scrollContainerSize.Width - targetElementBounds.Width) + 1 + padding.Bottom);
         default:
-          throw new ArgumentOutOfRangeException("alignment", alignment, null);
+          throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null);
       }
     }
   }

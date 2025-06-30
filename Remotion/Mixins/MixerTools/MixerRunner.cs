@@ -26,7 +26,7 @@ namespace Remotion.Mixins.MixerTools
     private readonly MixerParameters _parameters;
 
     public MixerRunner (MixerParameters parameters)
-        : base(ArgumentUtility.CheckNotNull("parameters", parameters).BaseDirectory, parameters.ConfigFile)
+        : base(ArgumentUtility.CheckNotNull(nameof(parameters), parameters).BaseDirectory, parameters.ConfigFile)
     {
       _parameters = parameters;
     }

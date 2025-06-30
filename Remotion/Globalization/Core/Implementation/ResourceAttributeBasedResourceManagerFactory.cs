@@ -47,7 +47,7 @@ namespace Remotion.Globalization.Implementation
 
     public IResourceManager CreateResourceManager (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       var resourceAttributes = AttributeUtility.GetCustomAttributes<IResourcesAttribute>(type, false);
       var assembly = type.Assembly;

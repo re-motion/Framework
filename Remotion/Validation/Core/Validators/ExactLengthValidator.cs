@@ -43,7 +43,7 @@ namespace Remotion.Validation.Validators
       ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       if (length <= 0)
-        throw new ArgumentOutOfRangeException("length", "Value must be be greater than zero.");
+        throw new ArgumentOutOfRangeException(nameof(length), "Value must be be greater than zero.");
 
       Length = length;
       ErrorMessage = $"The value must have exactly {length} characters.";
@@ -52,7 +52,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

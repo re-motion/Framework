@@ -44,10 +44,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
     {
-      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
-      ArgumentUtility.CheckNotNull("rowRenderer", rowRenderer);
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
+      ArgumentUtility.CheckNotNull(nameof(cssClasses), cssClasses);
+      ArgumentUtility.CheckNotNull(nameof(rowRenderer), rowRenderer);
+      ArgumentUtility.CheckNotNull(nameof(labelReferenceRenderer), labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull(nameof(validationErrorRenderer), validationErrorRenderer);
 
       _cssClasses = cssClasses;
       _rowRenderer = rowRenderer;
@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <seealso cref="RenderTableBody"/>
     public void Render (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       bool isReadOnly = renderingContext.Control.IsReadOnly;
       bool showForEmptyList = isReadOnly && renderingContext.Control.ShowEmptyListReadOnlyMode
@@ -160,7 +160,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <seealso cref="BocRowRenderer"/>
     protected virtual void RenderTableHead (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.TableHead);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RowGroup);
@@ -180,7 +180,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <seealso cref="BocRowRenderer"/>
     protected virtual void RenderTableBody (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.TableBody);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RowGroup);

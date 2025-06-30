@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPersistentMixinFinder persistentMixinFinder,
         bool includeBaseMixins)
     {
-      ArgumentUtility.CheckNotNull("propertyFinderFactory", propertyFinderFactory);
+      ArgumentUtility.CheckNotNull(nameof(propertyFinderFactory), propertyFinderFactory);
 
       _propertyFinderFactory = propertyFinderFactory;
       _persistentMixinFinder = persistentMixinFinder;

@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SelectOption (string value, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption(value)");
@@ -90,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string value, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull(nameof(value), value);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithItemID");
@@ -112,7 +112,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithDisplayText");
@@ -129,7 +129,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
     private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("selectAction", selectAction);
+      ArgumentUtility.CheckNotNull(nameof(selectAction), selectAction);
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
       ExecuteAction(new CustomAction(this, Scope, "Select", selectAction, Logger), actualActionOptions);

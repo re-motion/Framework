@@ -194,8 +194,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDataReader (IDataReader dataReader, IPersistenceExtension persistenceExtension, Guid connectionID, Guid queryID)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
 
       _dataReader = dataReader;
       _persistenceExtension = persistenceExtension;

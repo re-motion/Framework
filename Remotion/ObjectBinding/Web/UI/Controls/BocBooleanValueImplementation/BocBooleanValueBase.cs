@@ -147,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<bool?>("value", value); }
+      set { Value = ArgumentUtility.CheckType<bool?>(nameof(value), value); }
     }
 
     /// <summary>

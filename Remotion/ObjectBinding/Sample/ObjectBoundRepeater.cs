@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.Sample
 
       public ObjectBoundRepeaterInternal (ObjectBoundRepeater owner)
       {
-        ArgumentUtility.CheckNotNull("owner", owner);
+        ArgumentUtility.CheckNotNull(nameof(owner), owner);
         _owner = owner;
       }
 
@@ -323,7 +323,7 @@ namespace Remotion.ObjectBinding.Sample
 
     void ISmartControl.AssignLabels (IEnumerable<string> labelIDs)
     {
-      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
+      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
     }
 
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>

@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox
 
     public FirefoxBrowserFactory ([NotNull] IFirefoxConfiguration firefoxConfiguration)
     {
-      ArgumentUtility.CheckNotNull("firefoxConfiguration", firefoxConfiguration);
+      ArgumentUtility.CheckNotNull(nameof(firefoxConfiguration), firefoxConfiguration);
 
       _firefoxConfiguration = firefoxConfiguration;
     }
@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox
     /// <inheritdoc />
     public IBrowserSession CreateBrowser (DriverConfiguration driverConfiguration)
     {
-      ArgumentUtility.CheckNotNull("driverConfiguration", driverConfiguration);
+      ArgumentUtility.CheckNotNull(nameof(driverConfiguration), driverConfiguration);
 
       var sessionConfiguration = CreateSessionConfiguration(driverConfiguration);
       var commandTimeout = driverConfiguration.CommandTimeout;

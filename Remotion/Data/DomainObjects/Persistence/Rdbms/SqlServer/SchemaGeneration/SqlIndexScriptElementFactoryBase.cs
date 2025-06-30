@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public virtual IScriptElement GetDropElement (T indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
-      ArgumentUtility.CheckNotNull("ownerName", ownerName);
+      ArgumentUtility.CheckNotNull(nameof(indexDefinition), indexDefinition);
+      ArgumentUtility.CheckNotNull(nameof(ownerName), ownerName);
 
       return new ScriptStatement(
           string.Format(
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected virtual string GetCreateIndexOptions (IEnumerable<string> optionItems)
     {
-      ArgumentUtility.CheckNotNull("optionItems", optionItems);
+      ArgumentUtility.CheckNotNull(nameof(optionItems), optionItems);
 
       var filteredItems = optionItems.Except(new[] { string.Empty, null }).ToList();
       if (filteredItems.Any())
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected virtual IEnumerable<string> GetCreateIndexOptionItems (T indexDefinition)
     {
-      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
+      ArgumentUtility.CheckNotNull(nameof(indexDefinition), indexDefinition);
 
       yield return GetIndexOption("PAD_INDEX", indexDefinition.PadIndex);
       yield return GetIndexOption("FILLFACTOR", indexDefinition.FillFactor);
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetIndexOption (string optionName , bool? optionValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("optionName", optionName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(optionName), optionName);
 
       if (optionValue.HasValue)
         return string.Format("{0} = {1}", optionName, optionValue.Value ? "ON" : "OFF");
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetIndexOption (string optionName , int? optionValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("optionName", optionName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(optionName), optionName);
 
       if (optionValue.HasValue)
         return string.Format("{0} = {1}", optionName, optionValue.Value);

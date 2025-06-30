@@ -29,8 +29,8 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
   {
     public void Analyze (Type type, MixinConfigurationBuilder configurationBuilder)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(configurationBuilder), configurationBuilder);
 
       var composedInterfaceMarkers = (from ifc in type.GetInterfaces()
                                       where ifc.IsGenericType

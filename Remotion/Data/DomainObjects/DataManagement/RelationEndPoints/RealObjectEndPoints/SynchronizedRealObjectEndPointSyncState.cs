@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public SynchronizedRealObjectEndPointSyncState (IRelationEndPointProvider endPointProvider, IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
+      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
 
       _endPointProvider = endPointProvider;
       _transactionEventSink = transactionEventSink;
@@ -56,16 +56,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public void Synchronize (IRealObjectEndPoint endPoint, IVirtualEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
 
       // nothing to do here - the end-point is already syncrhonized
     }
 
     public IDataManagementCommand CreateDeleteCommand (IRealObjectEndPoint endPoint, Action oppositeObjectNullSetter)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeObjectNullSetter", oppositeObjectNullSetter);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeObjectNullSetter), oppositeObjectNullSetter);
 
       var oppositeEndPointDefinition = endPoint.Definition.GetOppositeEndPointDefinition();
 
@@ -85,8 +85,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, DomainObject? newRelatedObject, Action<DomainObject?> oppositeObjectSetter)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeObjectSetter", oppositeObjectSetter);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(oppositeObjectSetter), oppositeObjectSetter);
 
       var oppositeEndPointDefinition = endPoint.Definition.GetOppositeEndPointDefinition();
 

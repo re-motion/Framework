@@ -40,8 +40,8 @@ namespace Remotion.Validation.Merging
         IPropertyValidatorExtractorFactory propertyValidatorExtractorFactory,
         IObjectValidatorExtractorFactory objectValidatorExtractorFactory)
     {
-      ArgumentUtility.CheckNotNull("propertyValidatorExtractorFactory", propertyValidatorExtractorFactory);
-      ArgumentUtility.CheckNotNull("objectValidatorExtractorFactory", objectValidatorExtractorFactory);
+      ArgumentUtility.CheckNotNull(nameof(propertyValidatorExtractorFactory), propertyValidatorExtractorFactory);
+      ArgumentUtility.CheckNotNull(nameof(objectValidatorExtractorFactory), objectValidatorExtractorFactory);
 
       _propertyValidatorExtractorFactory = propertyValidatorExtractorFactory;
       _objectValidatorExtractorFactory = objectValidatorExtractorFactory;
@@ -58,10 +58,10 @@ namespace Remotion.Validation.Merging
         List<IAddingObjectValidationRuleCollector> collectedObjectValidationRules,
         ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull("collectorGroup", collectorGroup);
-      ArgumentUtility.CheckNotNull("collectedPropertyValidationRules", collectedPropertyValidationRules);
-      ArgumentUtility.CheckNotNull("collectedObjectValidationRules", collectedObjectValidationRules);
-      ArgumentUtility.CheckNotNull("logContext", logContext);
+      ArgumentUtility.CheckNotNull(nameof(collectorGroup), collectorGroup);
+      ArgumentUtility.CheckNotNull(nameof(collectedPropertyValidationRules), collectedPropertyValidationRules);
+      ArgumentUtility.CheckNotNull(nameof(collectedObjectValidationRules), collectedObjectValidationRules);
+      ArgumentUtility.CheckNotNull(nameof(logContext), logContext);
 
       var collectorInfos = collectorGroup.ToArray();
 

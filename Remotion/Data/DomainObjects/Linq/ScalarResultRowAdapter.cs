@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public ScalarResultRowAdapter (object? scalarValue, IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
 
       _scalarValue = scalarValue;
       _storageTypeInformationProvider = storageTypeInformationProvider;
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Linq
     [return: MaybeNull]
     public T GetValue<T> (ColumnID columnID)
     {
-      ArgumentUtility.CheckNotNull("columnID", columnID);
+      ArgumentUtility.CheckNotNull(nameof(columnID), columnID);
 
       if (columnID.Position != 0)
       {

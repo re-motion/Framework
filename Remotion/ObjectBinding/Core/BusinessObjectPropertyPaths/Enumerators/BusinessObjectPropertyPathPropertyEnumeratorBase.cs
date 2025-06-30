@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 
     protected BusinessObjectPropertyPathPropertyEnumeratorBase (string propertyPathIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyPathIdentifier", propertyPathIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyPathIdentifier), propertyPathIdentifier);
 
       _remainingPropertyPathIdentifier = propertyPathIdentifier;
     }
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 
     public bool MoveNext (IBusinessObjectClass currentClass)
     {
-      ArgumentUtility.CheckNotNull("currentClass", currentClass);
+      ArgumentUtility.CheckNotNull(nameof(currentClass), currentClass);
 
       _isEnumerationStarted = true;
       _currentProperty = null;

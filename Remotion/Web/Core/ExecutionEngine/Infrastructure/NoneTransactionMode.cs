@@ -28,7 +28,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public virtual TransactionStrategyBase CreateTransactionStrategy (WxeFunction function, WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
 
       var outerTransactionStrategy = function.ParentFunction != null? function.ParentFunction.TransactionStrategy : NullTransactionStrategy.Null;
       return new NoneTransactionStrategy(outerTransactionStrategy);

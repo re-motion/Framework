@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding
     public static IBusinessObjectProvider GetProvider (Type businessObjectProviderAttributeType)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(
-          "businessObjectProviderAttributeType", businessObjectProviderAttributeType, typeof(BusinessObjectProviderAttribute));
+          nameof(businessObjectProviderAttributeType), businessObjectProviderAttributeType, typeof(BusinessObjectProviderAttribute));
 
       return s_businessObjectProviderStore.GetOrAdd(businessObjectProviderAttributeType, s_createBusinessObjectProviderFromAttribute);
     }
@@ -74,7 +74,7 @@ namespace Remotion.ObjectBinding
     public static void SetProvider (Type businessObjectProviderAttributeType, IBusinessObjectProvider provider)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(
-          "businessObjectProviderAttributeType", businessObjectProviderAttributeType, typeof(BusinessObjectProviderAttribute));
+          nameof(businessObjectProviderAttributeType), businessObjectProviderAttributeType, typeof(BusinessObjectProviderAttribute));
 
       if (provider != null)
       {
@@ -82,7 +82,7 @@ namespace Remotion.ObjectBinding
         if (!TypeExtensions.CanAscribeTo(provider.GetType(), attribute.BusinessObjectProviderType))
         {
           throw new ArgumentException(
-              "The provider is not compatible with the provider-type required by the businessObjectProviderAttributeType's instantiation.", "provider");
+              "The provider is not compatible with the provider-type required by the businessObjectProviderAttributeType's instantiation.", nameof(provider));
         }
 
         if (provider is BusinessObjectProvider)
@@ -138,7 +138,7 @@ namespace Remotion.ObjectBinding
 
     protected BusinessObjectProvider (IBusinessObjectServiceFactory serviceFactory)
     {
-      ArgumentUtility.CheckNotNull("serviceFactory", serviceFactory);
+      ArgumentUtility.CheckNotNull(nameof(serviceFactory), serviceFactory);
 
       _serviceFactory = serviceFactory;
     }
@@ -166,7 +166,7 @@ namespace Remotion.ObjectBinding
     /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. Must not be <see langword="null" />.</summary>
     public IBusinessObjectService? GetService (Type serviceType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(serviceType), serviceType, typeof(IBusinessObjectService));
 
       IDataStore<Type, IBusinessObjectService?> serviceStore = ServiceStore;
       Assertion.IsNotNull(serviceStore, "The ServiceStore evaluated and returned null. It should return a null object instead.");
@@ -191,8 +191,8 @@ namespace Remotion.ObjectBinding
     /// <param name="service"> The <see cref="IBusinessObjectService"/> to register. Must not be <see langword="null" />.</param>
     public void AddService (Type serviceType, IBusinessObjectService service)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("serviceType", serviceType, typeof(IBusinessObjectService));
-      ArgumentUtility.CheckNotNull("service", service);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(serviceType), serviceType, typeof(IBusinessObjectService));
+      ArgumentUtility.CheckNotNull(nameof(service), service);
 
       IDataStore<Type, IBusinessObjectService?> serviceStore = ServiceStore;
       Assertion.IsNotNull(serviceStore, "The ServiceStore evaluated and returned null. It should return a non-null object instead.");
@@ -205,7 +205,7 @@ namespace Remotion.ObjectBinding
     /// <typeparam name="T">The <see cref="Type"/> of the <paramref name="service"/> to be registered.</typeparam>
     public void AddService<T> (T service) where T : IBusinessObjectService
     {
-      ArgumentUtility.CheckNotNull("service", service);
+      ArgumentUtility.CheckNotNull(nameof(service), service);
 
       AddService(typeof(T), service);
     }

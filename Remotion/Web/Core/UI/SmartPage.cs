@@ -757,7 +757,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </summary>
   public sealed override void ProcessRequest (HttpContext httpContext)
   {
-    ArgumentUtility.CheckNotNull("httpContext", httpContext);
+    ArgumentUtility.CheckNotNull(nameof(httpContext), httpContext);
     _httpContext = new HttpContextWrapper(httpContext);
     ProcessRequestImplementation(httpContext);
   }
@@ -765,7 +765,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <inheritdoc cref="Page.ProcessRequest"/>
   protected virtual void ProcessRequestImplementation (HttpContext httpContext)
   {
-    ArgumentUtility.CheckNotNull("httpContext", httpContext);
+    ArgumentUtility.CheckNotNull(nameof(httpContext), httpContext);
     base.ProcessRequest(httpContext);
   }
 

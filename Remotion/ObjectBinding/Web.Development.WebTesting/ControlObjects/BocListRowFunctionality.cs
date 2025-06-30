@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public TCellControlObject GetCellWithColumnItemID<TCellControlObject> ([NotNull] string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnItemID", columnItemID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnItemID), columnItemID);
 
       var oneBasedIndex = _accessor.GetColumnIndexForItemID(columnItemID);
       return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public TCellControlObject GetCellWithColumnTitle<TCellControlObject> ([NotNull] string columnTitle)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnTitle", columnTitle);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnTitle), columnTitle);
 
       var oneBasedIndex = _accessor.GetColumnIndexForTitle(columnTitle);
       return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);
@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public TCellControlObject GetCellWithColumnTitleContains<TCellControlObject> ([NotNull] string columnTitleContains)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnTitleContains", columnTitleContains);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnTitleContains), columnTitleContains);
 
       var oneBasedIndex = _accessor.GetColumnIndexForTitleContains(columnTitleContains);
       return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);
@@ -127,7 +127,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public TCellControlObject GetCellWithColumnDomainPropertyPaths<TCellControlObject> ([NotNull] string[] domainPropertyPaths)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(domainPropertyPaths), domainPropertyPaths);
 
       var oneBasedIndex = _accessor.GetColumnIndexForDomainPropertyPaths(domainPropertyPaths);
       return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);

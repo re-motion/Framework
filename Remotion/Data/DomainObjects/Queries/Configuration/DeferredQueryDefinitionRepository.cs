@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
 
     public DeferredQueryDefinitionRepository (IQueryDefinitionLoader queryDefinitionLoader)
     {
-      ArgumentUtility.CheckNotNull("queryDefinitionLoader", queryDefinitionLoader);
+      ArgumentUtility.CheckNotNull(nameof(queryDefinitionLoader), queryDefinitionLoader);
 
       _queryDefinitionLoader = queryDefinitionLoader;
       _lazyRepository = new Lazy<IQueryDefinitionRepository>(
@@ -47,14 +47,14 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <inheritdoc />
     public bool Contains (string queryID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(queryID), queryID);
       return _lazyRepository.Value.Contains(queryID);
     }
 
     /// <inheritdoc />
     public QueryDefinition GetMandatory (string queryID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(queryID), queryID);
       return _lazyRepository.Value.GetMandatory(queryID);
     }
 

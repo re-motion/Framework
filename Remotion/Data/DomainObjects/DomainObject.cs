@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     protected static T NewObject<T> (ParamList constructorParameters) where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
+      ArgumentUtility.CheckNotNull(nameof(constructorParameters), constructorParameters);
 
       return (T)LifetimeService.NewObject(ClientTransactionScope.CurrentTransaction, typeof(T), constructorParameters);
     }
@@ -305,11 +305,11 @@ namespace Remotion.Data.DomainObjects
     [MemberNotNull(nameof(_transactionContextImplementation))]
     public void Initialize (ObjectID id, ClientTransaction rootTransaction)
     {
-      ArgumentUtility.CheckNotNull("id", id);
-      ArgumentUtility.CheckNotNull("rootTransaction", rootTransaction);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentUtility.CheckNotNull(nameof(rootTransaction), rootTransaction);
 
       if (rootTransaction.RootTransaction != rootTransaction)
-        throw new ArgumentException("The rootTransaction parameter must be passed a root transaction.", "rootTransaction");
+        throw new ArgumentException("The rootTransaction parameter must be passed a root transaction.", nameof(rootTransaction));
 
       if (_id != null)
         throw new InvalidOperationException("The object cannot be initialized, it already has an ID.");

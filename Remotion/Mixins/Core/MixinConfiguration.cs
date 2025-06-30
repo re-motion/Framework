@@ -145,7 +145,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public ClassContext? GetContext (Type targetOrConcreteType)
     {
-      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
 
       if (MixinTypeUtility.IsGeneratedConcreteMixedType(targetOrConcreteType))
       {

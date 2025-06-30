@@ -93,8 +93,8 @@ namespace Remotion.Web.Utilities
 
     public void InitRecursive (Control control, Control namingContainer)
     {
-      ArgumentUtility.CheckNotNull("control", control);
-      ArgumentUtility.CheckNotNull("namingContainer", namingContainer);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentUtility.CheckNotNull(nameof(namingContainer), namingContainer);
 
       //  internal void System.Web.UI.Control.InitRecursive (Control)
       s_InitRecursive.Value(control, namingContainer);
@@ -105,7 +105,7 @@ namespace Remotion.Web.Utilities
     /// <param name="viewState"> The view state object used for restoring. </param>
     public void LoadViewStateRecursive (Control target, object viewState)
     {
-      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull(nameof(target), target);
 
       //  internal void System.Web.UI.Control.LoadViewStateRecursive (object)
       s_LoadViewStateRecursive.Value(target, viewState);
@@ -116,7 +116,7 @@ namespace Remotion.Web.Utilities
     /// <returns> The view state object for <paramref name="target"/>. </returns>
     public object SaveViewStateRecursive (Control target)
     {
-      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull(nameof(target), target);
 
       var inheritedViewState = target.CreateSequence(c => c.Parent)
                                      .Select(c => (ViewStateMode?)c.ViewStateMode)
@@ -130,7 +130,7 @@ namespace Remotion.Web.Utilities
     /// <param name="page">The <see cref="Page"/> for which SaveAllState will be invoked. Must not be <see langword="null" />.</param>
     public void SaveAllState (Page page)
     {
-      ArgumentUtility.CheckNotNull("page", page);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
 
       //  private void System.Web.UI.Page.SaveAllState()
       s_SaveAllState.Value(page);
@@ -141,7 +141,7 @@ namespace Remotion.Web.Utilities
     public IDictionary? SaveChildControlState<TNamingContainer> (TNamingContainer control)
         where TNamingContainer: Control, INamingContainer
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       //  private ControlSet System.Web.UI.Page._registeredControlsRequiringControlState
       var registeredControlsRequiringControlStateFieldInfo = typeof(Page).GetField("_registeredControlsRequiringControlState", c_bindingFlags)!; // TODO RM-8118: not null assertion
@@ -179,7 +179,7 @@ namespace Remotion.Web.Utilities
     public IDictionary? GetChildControlState<TNamingContainer> (TNamingContainer control)
         where TNamingContainer: Control, INamingContainer
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       //LosFormatter only supports Hashtable and HybridDictionary without using native serialization
       var childControlState = new HybridDictionary();
@@ -203,7 +203,7 @@ namespace Remotion.Web.Utilities
     public void SetChildControlState<TNamingContainer> (TNamingContainer control, IDictionary? newControlState)
         where TNamingContainer: Control, INamingContainer
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       if (newControlState == null)
         return;
@@ -219,7 +219,7 @@ namespace Remotion.Web.Utilities
     public void ClearChildControlState<TNamingContainer> (TNamingContainer control)
         where TNamingContainer: Control, INamingContainer
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       //  protected void System.Web.UI.Control.ClearChildControlState
       s_ClearChildControlState.Value(control);
@@ -228,7 +228,7 @@ namespace Remotion.Web.Utilities
     /// <summary>Encapsulates the get-access the the <see cref="Page"/>'s PageStatePersister property.</summary>
     public PageStatePersister GetPageStatePersister (Page page)
     {
-      ArgumentUtility.CheckNotNull("page", page);
+      ArgumentUtility.CheckNotNull(nameof(page), page);
 
       //  protected PageStatePersister System.Web.UI.Page.PageStatePersister
       return s_get_PageStatePersister.Value(page);
@@ -236,7 +236,7 @@ namespace Remotion.Web.Utilities
 
     public string SetCollectionReadOnly (ControlCollection collection, string? exceptionMessage)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentUtility.CheckNotNull(nameof(collection), collection);
 
       //  internal void System.Web.UI.ControlCollection.SetCollectionReadOnly
       return s_SetCollectionReadOnly.Value(collection, exceptionMessage);
@@ -245,9 +245,9 @@ namespace Remotion.Web.Utilities
     /// <summary>Calls the <b>RenderChildrenInternal</b> method of the <see cref="Control"/>.</summary>
     public void RenderChildrenInternal (Control control, HtmlTextWriter writer, ICollection controls)
     {
-      ArgumentUtility.CheckNotNull("control", control);
-      ArgumentUtility.CheckNotNull("writer", writer);
-      ArgumentUtility.CheckNotNull("controls", controls);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentUtility.CheckNotNull(nameof(controls), controls);
 
       //  internal void System.Web.UI.Control.RenderChildrenInternal
       s_RenderChildrenInternal.Value(control, writer, controls);
@@ -256,7 +256,7 @@ namespace Remotion.Web.Utilities
     /// <summary>Sets the <b>_rendered</b> flag of the <see cref="UpdatePanel"/>.</summary>
     public void SetUpdatePanelRendered (UpdatePanel updatePanel, bool value)
     {
-      ArgumentUtility.CheckNotNull("updatePanel", updatePanel);
+      ArgumentUtility.CheckNotNull(nameof(updatePanel), updatePanel);
 
       s_updatePanelRenderedFieldInfo.SetValue(updatePanel, value);
     }
@@ -264,7 +264,7 @@ namespace Remotion.Web.Utilities
     /// <summary>Encapsulates the get-access the the <see cref="RadioButtonList"/>'s ControlToRepeat property.</summary>
     public RadioButton GetControlToRepeat (RadioButtonList radioButtonList)
     {
-      ArgumentUtility.CheckNotNull("radioButtonList", radioButtonList);
+      ArgumentUtility.CheckNotNull(nameof(radioButtonList), radioButtonList);
 
       //  private RadioButton System.Web.UI.WebControls.RadioButtonList.ControlToRepeat
       return s_get_ControlToRepeat.Value(radioButtonList);

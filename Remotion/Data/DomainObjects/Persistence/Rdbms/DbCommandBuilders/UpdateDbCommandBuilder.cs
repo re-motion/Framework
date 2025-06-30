@@ -40,9 +40,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull("updatedColumnsSpecification", updatedColumnsSpecification);
-      ArgumentUtility.CheckNotNull("comparedColumnsSpecification", comparedColumnsSpecification);
+      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
+      ArgumentUtility.CheckNotNull(nameof(updatedColumnsSpecification), updatedColumnsSpecification);
+      ArgumentUtility.CheckNotNull(nameof(comparedColumnsSpecification), comparedColumnsSpecification);
 
       _tableDefinition = tableDefinition;
       _updatedColumnsSpecification = updatedColumnsSpecification;
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
     {
-      ArgumentUtility.CheckNotNull("dbCommandFactory", dbCommandFactory);
+      ArgumentUtility.CheckNotNull(nameof(dbCommandFactory), dbCommandFactory);
 
       var command = dbCommandFactory.CreateDbCommand();
       var statement = new StringBuilder();
@@ -83,9 +83,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected virtual void AppendUpdateClause (StringBuilder statement, IDbCommand command, IUpdatedColumnsSpecification updatedColumnsSpecification)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("updatedColumnsSpecification", updatedColumnsSpecification);
-      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull(nameof(statement), statement);
+      ArgumentUtility.CheckNotNull(nameof(updatedColumnsSpecification), updatedColumnsSpecification);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
 
       statement.Append(" SET ");
       updatedColumnsSpecification.AppendColumnValueAssignments(statement, command, SqlDialect);

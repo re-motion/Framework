@@ -50,7 +50,7 @@ namespace Remotion.Mixins
     /// <param name="mixinType">The mixin type the class depends on.</param>
     public UsesAttribute (Type mixinType)
     {
-      _mixinType = ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      _mixinType = ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
     }
 
     /// <summary>
@@ -69,8 +69,8 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Type attributeTarget)
     {
-      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
-      ArgumentUtility.CheckNotNull("attributeTarget", attributeTarget);
+      ArgumentUtility.CheckNotNull(nameof(configurationBuilder), configurationBuilder);
+      ArgumentUtility.CheckNotNull(nameof(attributeTarget), attributeTarget);
 
       var origin = MixinContextOrigin.CreateForCustomAttribute(this, attributeTarget);
       Apply(configurationBuilder, MixinKind.Used, attributeTarget, MixinType, origin);

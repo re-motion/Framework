@@ -180,9 +180,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// </summary>
     protected void PrepareTest ([NotNull] TestMethodAttribute attribute, [NotNull] WebTestHelper helper, [NotNull] string url)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
-      ArgumentUtility.CheckNotNull("helper", helper);
-      ArgumentUtility.CheckNotNull("url", url);
+      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
+      ArgumentUtility.CheckNotNull(nameof(helper), helper);
+      ArgumentUtility.CheckNotNull(nameof(url), url);
 
       helper.MainBrowserSession.Window.Visit(url);
       helper.AcceptPossibleModalDialog();
@@ -196,7 +196,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// </summary>
     protected virtual void RunTest ([NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentUtility.CheckNotNull(nameof(method), method);
 
       try
       {
@@ -213,8 +213,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private TestCaseData CreateTestCaseData ([NotNull] TestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
-      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
+      ArgumentUtility.CheckNotNull(nameof(method), method);
 
       return new TestCaseData(
           (TestSetupAction)((helper, url) =>

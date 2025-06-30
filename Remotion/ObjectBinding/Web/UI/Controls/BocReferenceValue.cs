@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
 
       base.RegisterHtmlHeadContents(htmlHeadAppender);
 
@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocReferenceValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       Assertion.IsNotNull(Context, "Context must not be null.");
 
@@ -232,8 +232,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
 
@@ -303,7 +303,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -424,7 +424,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void SetBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
     {
-      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNull(nameof(businessObjects), businessObjects);
       RefreshBusinessObjectList(businessObjects);
     }
 
@@ -439,8 +439,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void SetBusinessObjectList (IList businessObjects)
     {
-      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
-      ArgumentUtility.CheckItemsNotNullAndType("businessObjects", businessObjects, typeof(IBusinessObjectWithIdentity));
+      ArgumentUtility.CheckNotNull(nameof(businessObjects), businessObjects);
+      ArgumentUtility.CheckItemsNotNullAndType(nameof(businessObjects), businessObjects, typeof(IBusinessObjectWithIdentity));
       RefreshBusinessObjectList(businessObjects);
     }
 
@@ -506,7 +506,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
     protected virtual void RefreshBusinessObjectList (IList businessObjects)
     {
-      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNull(nameof(businessObjects), businessObjects);
 
       _isBusinessObjectListPopulated = true;
       _listItems.Clear();
@@ -655,7 +655,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       // PopulateDropDownList should be moved to the renderer, the BocReferenceValue should only provide a list of items, see also BocEnumValue.
 
-      ArgumentUtility.CheckNotNull("dropDownList", dropDownList);
+      ArgumentUtility.CheckNotNull(nameof(dropDownList), dropDownList);
 
       EnsureBusinessObjectListPopulated();
 

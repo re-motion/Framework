@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public EnumPropertySerializerDecorator (IEnumSerializer enumSerializer, IPropertySerializer propertySerializer)
     {
-      ArgumentUtility.CheckNotNull("enumSerializer", enumSerializer);
-      ArgumentUtility.CheckNotNull("propertySerializer", propertySerializer);
+      ArgumentUtility.CheckNotNull(nameof(enumSerializer), enumSerializer);
+      ArgumentUtility.CheckNotNull(nameof(propertySerializer), propertySerializer);
 
       _enumSerializer = enumSerializer;
       _propertySerializer = propertySerializer;
@@ -40,8 +40,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public XElement Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
-      ArgumentUtility.CheckNotNull("persistenceModelProvider", persistenceModelProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(persistenceModelProvider), persistenceModelProvider);
 
       _enumSerializer.CollectPropertyType(propertyDefinition);
       return _propertySerializer.Serialize(propertyDefinition, persistenceModelProvider);

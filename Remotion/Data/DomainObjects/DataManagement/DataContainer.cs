@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
     public static DataContainer CreateNew (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       return CreateNew(id, pd => pd.DefaultValue);
     }
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
     public static DataContainer CreateNew (ObjectID id, Func<PropertyDefinition, object?> valueLookup)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       var propertyDefinitions = GetPropertyDefinitions(id.ClassDefinition);
       var persistentPropertyValues = propertyDefinitions.Persistent.ToDictionary(pd => pd, pd => new PropertyValue(pd, valueLookup(pd)));
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <exception cref="Mapping.MappingException">ClassDefinition of <paramref name="id"/> does not exist in mapping.</exception>
     public static DataContainer CreateForExisting (ObjectID id, object? timestamp, Func<PropertyDefinition, object?> valueLookup)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
 
       var propertyDefinitions = GetPropertyDefinitions(id.ClassDefinition);
       var persistentPropertyValues = propertyDefinitions.Persistent.ToDictionary(pd => pd, pd => new PropertyValue(pd, valueLookup(pd)));
@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public object? GetValue (PropertyDefinition propertyDefinition, ValueAccess valueAccess = ValueAccess.Current)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
       CheckNotDiscarded();
 
       var propertyValue = GetPropertyValue(propertyDefinition);
@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void SetValue (PropertyDefinition propertyDefinition, object? value)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
       CheckNotDiscarded();
 
       if (_state == DataContainerStateType.Deleted)
@@ -240,7 +240,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public object? GetValueWithoutEvents (PropertyDefinition propertyDefinition, ValueAccess valueAccess = ValueAccess.Current)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
       CheckNotDiscarded();
 
       var propertyValue = GetPropertyValue(propertyDefinition);
@@ -257,7 +257,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void TouchValue (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
       CheckNotDiscarded();
 
       var propertyValue = GetPropertyValue(propertyDefinition);
@@ -266,7 +266,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public bool HasValueBeenTouched (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
       CheckNotDiscarded();
 
       var propertyValue = GetPropertyValue(propertyDefinition);
@@ -275,7 +275,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public bool HasValueChanged (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
       CheckNotDiscarded();
 
       var propertyValue = GetPropertyValue(propertyDefinition);
@@ -284,7 +284,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void CommitValue (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
       CheckNotDiscarded();
 
       var propertyValue = GetPropertyValue(propertyDefinition);
@@ -297,7 +297,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void RollbackValue (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
       CheckNotDiscarded();
 
       var propertyValue = GetPropertyValue(propertyDefinition);
@@ -310,7 +310,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void SetDataFromSubTransaction (DataContainer sourceDataContainer)
     {
-      ArgumentUtility.CheckNotNull("sourceDataContainer", sourceDataContainer);
+      ArgumentUtility.CheckNotNull(nameof(sourceDataContainer), sourceDataContainer);
 
       CheckNotDiscarded();
       sourceDataContainer.CheckNotDiscarded();
@@ -333,8 +333,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void SetPropertyValueFromSubTransaction (PropertyDefinition propertyDefinition, DataContainer sourceContainer)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
-      ArgumentUtility.CheckNotNull("sourceContainer", sourceContainer);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(sourceContainer), sourceContainer);
 
       CheckNotDiscarded();
       sourceContainer.CheckNotDiscarded();
@@ -683,10 +683,10 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void SetDomainObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       if (domainObject.ID != null && domainObject.ID != _id)
-        throw new ArgumentException("The given DomainObject has another ID than this DataContainer.", "domainObject");
+        throw new ArgumentException("The given DomainObject has another ID than this DataContainer.", nameof(domainObject));
       if (_domainObject != null && _domainObject != domainObject)
         throw new InvalidOperationException("This DataContainer has already been associated with a DomainObject.");
 
@@ -695,7 +695,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void SetEventListener (IDataContainerEventListener listener)
     {
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentUtility.CheckNotNull(nameof(listener), listener);
 
       if (_eventListener != null)
         throw new InvalidOperationException("Only one event listener can be registered for a DataContainer.");
@@ -737,7 +737,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     internal void SetClientTransaction (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
 
       if (_clientTransaction != null)
         throw new InvalidOperationException("This DataContainer has already been registered with a ClientTransaction.");
@@ -758,7 +758,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         return value;
 
       var message = string.Format("Property '{0}' does not exist.", propertyDefinition.PropertyName);
-      throw new ArgumentException(message, "propertyDefinition");
+      throw new ArgumentException(message, nameof(propertyDefinition));
     }
 
     private void CheckNotDiscarded ()
@@ -804,7 +804,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         var message = string.Format(
             "Cannot set this data container's property values from '{0}'; the data containers do not have the same class definition.",
             source.ID);
-        throw new ArgumentException(message, "source");
+        throw new ArgumentException(message, nameof(source));
       }
     }
   }

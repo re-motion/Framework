@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public CompoundPersistenceExtensionFactory (IEnumerable<IPersistenceExtensionFactory> persistenceExtensionFactories)
     {
-      ArgumentUtility.CheckNotNull("persistenceExtensionFactories", persistenceExtensionFactories);
+      ArgumentUtility.CheckNotNull(nameof(persistenceExtensionFactories), persistenceExtensionFactories);
 
       _persistenceExtensionFactories = persistenceExtensionFactories.ToList().AsReadOnly();
     }

@@ -32,8 +32,8 @@ namespace Remotion.Web.Development.WebTesting
 
     public DefaultStyleInformation ([NotNull] ControlObject controlObject, [NotNull] ElementScope styledScope)
     {
-      ArgumentUtility.CheckNotNull("controlObject", controlObject);
-      ArgumentUtility.CheckNotNull("styledScope", styledScope);
+      ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
+      ArgumentUtility.CheckNotNull(nameof(styledScope), styledScope);
 
       _controlObject = controlObject;
       _styledScope = styledScope;
@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public bool HasCssClass (string cssClass)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("cssClass", cssClass);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssClass), cssClass);
 
       return _styledScope["class"].Split(' ').Contains(cssClass);
     }

@@ -45,9 +45,9 @@ namespace Remotion.Validation.Rules
         [CanBeNull] Func<TValidatedType, bool>? condition,
         [NotNull] IReadOnlyCollection<IPropertyValidator> validators)
     {
-      ArgumentUtility.CheckNotNull("property", property);
-      ArgumentUtility.CheckNotNull("propertyFunc", propertyFunc);
-      ArgumentUtility.CheckNotNull("validators", validators);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentUtility.CheckNotNull(nameof(propertyFunc), propertyFunc);
+      ArgumentUtility.CheckNotNull(nameof(validators), validators);
 
       Property = property;
       PropertyFunc = propertyFunc;
@@ -57,7 +57,7 @@ namespace Remotion.Validation.Rules
 
     public IEnumerable<ValidationFailure> Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       var instanceToValidate = (TValidatedType?)context.InstanceToValidate;
       if (instanceToValidate == null)
@@ -74,7 +74,7 @@ namespace Remotion.Validation.Rules
 
     public bool IsActive (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (Condition == null)
         return true;

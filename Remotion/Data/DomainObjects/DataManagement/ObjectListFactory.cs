@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public static IObjectList<IDomainObject> Create (IVirtualCollectionData virtualCollectionData)
     {
-      ArgumentUtility.CheckNotNull("virtualCollectionData", virtualCollectionData);
+      ArgumentUtility.CheckNotNull(nameof(virtualCollectionData), virtualCollectionData);
 
       var ctor = GetConstructorInfoForVirtualObjectListFromCache(virtualCollectionData.RequiredItemType);
 

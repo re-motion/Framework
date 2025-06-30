@@ -41,9 +41,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public static WxeParameterDeclaration[] GetParameterDeclarations (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
       if (!typeof(WxeFunction).IsAssignableFrom(type))
-        throw new ArgumentException("Type " + type.GetFullNameSafe() + " is not derived from WxeFunction.", "type");
+        throw new ArgumentException("Type " + type.GetFullNameSafe() + " is not derived from WxeFunction.", nameof(type));
 
       return s_parameterDeclarations.GetOrAdd(type, s_getParameterDeclarationsUncheckedFunc);
     }
@@ -125,8 +125,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </example>
     public static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters, CultureInfo culture)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("parameterDeclarations", parameterDeclarations);
-      ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(parameterDeclarations), parameterDeclarations);
+      ArgumentUtility.CheckNotNull(nameof(actualParameters), actualParameters);
 
       StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList(actualParameters, ',');
 
@@ -189,8 +189,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </returns>
     public static NameValueCollection SerializeParametersForQueryString (WxeParameterDeclaration[] parameterDeclarations, object[] parameterValues)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("parameterDeclarations", parameterDeclarations);
-      ArgumentUtility.CheckNotNull("parameterValues", parameterValues);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(parameterDeclarations), parameterDeclarations);
+      ArgumentUtility.CheckNotNull(nameof(parameterValues), parameterValues);
 
       NameValueCollection serializedParameters = new NameValueCollection();
 
@@ -215,15 +215,15 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private static readonly Func<Type, WxeParameterDeclaration[]> s_getParameterDeclarationsUncheckedFunc = GetParameterDeclarationsUnchecked;
 
     public WxeVariablesContainer (WxeFunction function, object?[] actualParameters)
-        : this(ArgumentUtility.CheckNotNull("function", function), actualParameters, GetParameterDeclarations(function.GetType()))
+        : this(ArgumentUtility.CheckNotNull(nameof(function), function), actualParameters, GetParameterDeclarations(function.GetType()))
     {
     }
 
     public WxeVariablesContainer (WxeFunction function, object?[] actualParameters, WxeParameterDeclaration[] parameterDeclarations)
     {
-      ArgumentUtility.CheckNotNull("function", function);
-      ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
-      ArgumentUtility.CheckNotNullOrItemsNull("parameterDeclarations", parameterDeclarations);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
+      ArgumentUtility.CheckNotNull(nameof(actualParameters), actualParameters);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(parameterDeclarations), parameterDeclarations);
 
       _function = function;
       _variables = new NameObjectCollection();
@@ -252,7 +252,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </param>
     public void InitializeParameters (NameValueCollection parameters)
     {
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
       CheckParametersNotInitialized();
 
       for (int i = 0; i < _parameterDeclarations.Length; ++i)

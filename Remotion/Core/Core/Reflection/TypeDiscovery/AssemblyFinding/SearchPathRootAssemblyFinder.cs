@@ -43,7 +43,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     /// </returns>
     public static SearchPathRootAssemblyFinder CreateForCurrentAppDomain (bool considerDynamicDirectory, IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNull("assemblyLoader", assemblyLoader);
+      ArgumentUtility.CheckNotNull(nameof(assemblyLoader), assemblyLoader);
 
       string? relativeSearchPath = null;
       string? dynamicDirectory = null;
@@ -70,8 +70,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
         string? dynamicDirectory,
         IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("baseDirectory", baseDirectory);
-      ArgumentUtility.CheckNotNull("assemblyLoader", assemblyLoader);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(baseDirectory), baseDirectory);
+      ArgumentUtility.CheckNotNull(nameof(assemblyLoader), assemblyLoader);
 
       _baseDirectory = baseDirectory;
       _relativeSearchPath = relativeSearchPath;

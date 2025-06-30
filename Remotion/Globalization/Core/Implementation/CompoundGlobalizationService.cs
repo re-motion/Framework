@@ -39,7 +39,7 @@ namespace Remotion.Globalization.Implementation
     /// <param name="globalizationServices"> The <see cref="IGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundGlobalizationService (IEnumerable<IGlobalizationService> globalizationServices)
     {
-      ArgumentUtility.CheckNotNull("globalizationServices", globalizationServices);
+      ArgumentUtility.CheckNotNull(nameof(globalizationServices), globalizationServices);
 
       _globalizationServices = globalizationServices.Reverse().ToList().AsReadOnly();
     }
@@ -51,7 +51,7 @@ namespace Remotion.Globalization.Implementation
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
 
       return new ResourceManagerSet(_globalizationServices.Select(s => s.GetResourceManager(typeInformation)));
     }

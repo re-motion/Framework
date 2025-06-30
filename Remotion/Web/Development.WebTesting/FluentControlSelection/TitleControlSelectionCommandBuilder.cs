@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 
     public TitleControlSelectionCommandBuilder ([NotNull] string title)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("title", title);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
 
       _title = title;
     }
@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new TitleControlSelectionCommand<TControlObject>(controlSelector, _title);
     }
@@ -53,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new TitleControlSelectionCommand<TControlObject>(controlSelector, _title);
     }
@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new TitleControlSelectionCommand<TControlObject>(controlSelector, _title);
     }

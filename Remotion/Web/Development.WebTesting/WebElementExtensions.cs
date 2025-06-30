@@ -35,8 +35,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="timeout">A maximum timeout until the IFrame must be visible.</param>
     public static void WaitUntilFrameIsVisible ([NotNull] this IWebElement frame, [NotNull] string elementCssSelector, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull("frame", frame);
-      ArgumentUtility.CheckNotNull("elementCssSelector", elementCssSelector);
+      ArgumentUtility.CheckNotNull(nameof(frame), frame);
+      ArgumentUtility.CheckNotNull(nameof(elementCssSelector), elementCssSelector);
 
       var webDriver = ((IWrapsDriver)frame).WrappedDriver;
       var webDriverWait = new WebDriverWait(webDriver, timeout)
@@ -61,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="timeout">A maximum timeout until the IFrame must be visible.</param>
     public static void WaitUntilFrameIsVisible ([NotNull] this IWebElement frame, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull("frame", frame);
+      ArgumentUtility.CheckNotNull(nameof(frame), frame);
 
       // a body is always present in an IFrame
       WaitUntilFrameIsVisible(frame, "body", timeout);

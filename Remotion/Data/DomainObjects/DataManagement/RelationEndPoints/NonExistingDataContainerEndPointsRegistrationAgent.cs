@@ -34,15 +34,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected override IEnumerable<RelationEndPointID> GetOwnedEndPointIDs (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
 
       return dataContainer.AssociatedRelationEndPointIDs;
     }
 
     protected override string? GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
+      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointMap), relationEndPointMap);
 
       if (endPoint is IObjectEndPoint objectEndPoint)
       {

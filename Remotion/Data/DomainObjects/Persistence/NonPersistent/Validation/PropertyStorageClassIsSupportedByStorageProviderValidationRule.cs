@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
   {
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
           select Validate(propertyDefinition);
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
 
     private MappingValidationResult Validate (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       if (propertyDefinition.StorageClass == StorageClass.Persistent && propertyDefinition.ClassDefinition.HasStorageEntityDefinitionBeenSet)
       {

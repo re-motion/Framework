@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
 
       base.RegisterHtmlHeadContents(htmlHeadAppender);
 
@@ -253,7 +253,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -266,7 +266,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocDateTimeValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       Assertion.IsNotNull(Context, "Context must not be null.");
 
@@ -386,8 +386,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
 
@@ -584,7 +584,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       catch (InvalidCastException e)
       {
-        throw new ArgumentException("Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.", "value", e);
+        throw new ArgumentException("Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.", nameof(value), e);
       }
 
       if (ActualValueType == BocDateTimeValueType.DateTime
@@ -598,7 +598,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         {
           throw new ArgumentException(
               "Expected type '" + _actualValueType + "', but was '" + value!.GetType().GetFullNameSafe() + "'.",
-              "value",
+              nameof(value),
               e);
         }
       }
@@ -610,7 +610,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<DateTime?>("value", value); }
+      set { Value = ArgumentUtility.CheckType<DateTime?>(nameof(value), value); }
     }
 
     /// <summary>Gets a flag indicating whether the <see cref="BocDateTimeValue"/> contains a value. </summary>

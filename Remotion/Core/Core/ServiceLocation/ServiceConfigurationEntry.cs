@@ -37,8 +37,8 @@ namespace Remotion.ServiceLocation
     /// <returns>A <see cref="ServiceConfigurationEntry"/> containing the data from the <paramref name="attributes"/>.</returns>
     public static ServiceConfigurationEntry CreateFromAttributes (Type serviceType, IEnumerable<Tuple<Type, ImplementationForAttribute>> attributes)
     {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull("attributes", attributes);
+      ArgumentUtility.CheckNotNull(nameof(serviceType), serviceType);
+      ArgumentUtility.CheckNotNull(nameof(attributes), attributes);
 
       var attributesAndResolvedTypes =
           (from attribute in attributes
@@ -82,13 +82,13 @@ namespace Remotion.ServiceLocation
     /// <param name="implementationInfos">The service implementation information.</param>
     public ServiceConfigurationEntry (Type serviceType, IEnumerable<ServiceImplementationInfo> implementationInfos)
     {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull("implementationInfos", implementationInfos);
+      ArgumentUtility.CheckNotNull(nameof(serviceType), serviceType);
+      ArgumentUtility.CheckNotNull(nameof(implementationInfos), implementationInfos);
 
       _serviceType = serviceType;
       var checkedImplementationInfos =
           implementationInfos.ApplySideEffect(
-              info => CheckImplementationType(serviceType, info.ImplementationType, message => new ArgumentException(message, "implementationInfos")));
+              info => CheckImplementationType(serviceType, info.ImplementationType, message => new ArgumentException(message, nameof(implementationInfos))));
       _implementationInfos = Array.AsReadOnly(checkedImplementationInfos.ToArray());
     }
 

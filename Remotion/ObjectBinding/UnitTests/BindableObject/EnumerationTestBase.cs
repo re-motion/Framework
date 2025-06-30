@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
   {
     protected void CheckEnumerationValueInfos (EnumerationValueInfo[] expected, IEnumerationValueInfo[] actual)
     {
-      ArgumentUtility.CheckNotNull("expected", expected);
+      ArgumentUtility.CheckNotNull(nameof(expected), expected);
 
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.Length, Is.EqualTo(expected.Length));
@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     protected void CheckEnumerationValueInfo (EnumerationValueInfo expected, IEnumerationValueInfo actual)
     {
-      ArgumentUtility.CheckNotNull("expected", expected);
+      ArgumentUtility.CheckNotNull(nameof(expected), expected);
 
       Assert.That(actual, Is.InstanceOf(expected.GetType()), expected.DisplayName);
       Assert.That(actual.Value, Is.EqualTo(expected.Value), expected.DisplayName);

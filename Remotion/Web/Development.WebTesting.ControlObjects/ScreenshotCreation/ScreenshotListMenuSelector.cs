@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
     public ScreenshotListMenuSelector ([NotNull] ListMenuControlObject listMenu)
     {
-      ArgumentUtility.CheckNotNull("listMenu", listMenu);
+      ArgumentUtility.CheckNotNull(nameof(listMenu), listMenu);
 
       _listMenu = listMenu;
     }
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithHtmlID (string htmlID)
     {
-      ArgumentUtility.CheckNotNull("htmlID", htmlID);
+      ArgumentUtility.CheckNotNull(nameof(htmlID), htmlID);
 
       return _listMenu.Scope.FindId(htmlID).ForElementScopeScreenshot();
     }
@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull("itemID", itemID);
+      ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
 
       var item = _listMenu.Scope.FindTagWithAttribute("span.listMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
 
@@ -72,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
 
       var item = _listMenu.Scope.FindTagWithAttribute(
           "span.listMenuItem",
@@ -85,7 +85,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayTextContains (string displayText)
     {
-      ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentUtility.CheckNotNull(nameof(displayText), displayText);
 
       var item = _listMenu.Scope.FindTagWithAttributeUsingOperator(
           "span.listMenuItem",

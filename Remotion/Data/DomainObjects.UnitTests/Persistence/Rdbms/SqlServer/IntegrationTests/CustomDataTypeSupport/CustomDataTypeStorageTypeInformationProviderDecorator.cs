@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public CustomDataTypeStorageTypeInformationProviderDecorator (IStorageTypeInformationProvider innerStorageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull("innerStorageTypeInformationProvider", innerStorageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull(nameof(innerStorageTypeInformationProvider), innerStorageTypeInformationProvider);
 
       _innerStorageTypeInformationProvider = innerStorageTypeInformationProvider;
     }

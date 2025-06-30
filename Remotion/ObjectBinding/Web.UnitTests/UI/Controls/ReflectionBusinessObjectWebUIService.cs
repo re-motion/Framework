@@ -53,8 +53,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
         IBusinessObjectProperty businessObjectProperty,
         IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull("control", control);
-      ArgumentUtility.CheckNotNull("businessObjectClass", businessObjectClass);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentUtility.CheckNotNull(nameof(businessObjectClass), businessObjectClass);
 
       return new HelpInfo(
           "fakeFallbackUrl",

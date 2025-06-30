@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -127,7 +127,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocEnumValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       Assertion.IsNotNull(Context, "Context must not be null.");
 
@@ -162,7 +162,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void LoadUnboundValue<TEnum> (TEnum? value, bool interim)
         where TEnum: struct
     {
-      ArgumentUtility.CheckType<Enum>("value", value);
+      ArgumentUtility.CheckType<Enum>(nameof(value), value);
       LoadValueInternal(value, interim);
     }
 
@@ -173,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void LoadUnboundValue<TEnum> (TEnum value, bool interim)
         where TEnum: struct
     {
-      ArgumentUtility.CheckType<Enum>("value", value);
+      ArgumentUtility.CheckType<Enum>(nameof(value), value);
       LoadValueInternal(value, interim);
     }
 
@@ -292,7 +292,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public new IBusinessObjectEnumerationProperty? Property
     {
       get { return (IBusinessObjectEnumerationProperty?)base.Property; }
-      set { base.Property = ArgumentUtility.CheckType<IBusinessObjectEnumerationProperty>("value", value); }
+      set { base.Property = ArgumentUtility.CheckType<IBusinessObjectEnumerationProperty>(nameof(value), value); }
     }
 
     /// <summary> Gets or sets the current value. </summary>
@@ -380,7 +380,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value == string.Empty)
-          throw new ArgumentException("Value must not be an empty string.", "value");
+          throw new ArgumentException("Value must not be an empty string.", nameof(value));
 
         if (_internalValue == value)
           return;
@@ -644,8 +644,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
 

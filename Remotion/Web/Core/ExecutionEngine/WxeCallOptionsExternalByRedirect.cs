@@ -50,9 +50,9 @@ namespace Remotion.Web.ExecutionEngine
 
     public override void Dispatch (IWxeExecutor executor, WxeFunction function, Control sender)
     {
-      ArgumentUtility.CheckNotNull("executor", executor);
-      ArgumentUtility.CheckNotNull("function", function);
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull(nameof(executor), executor);
+      ArgumentUtility.CheckNotNull(nameof(function), function);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
 
       executor.ExecuteFunctionExternalByRedirect(function, sender, this);
 

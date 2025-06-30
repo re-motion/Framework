@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected override string GetSelectStatements (TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
 
       return string.Format(
           "  SELECT {0}{3}    FROM [{1}].[{2}]",

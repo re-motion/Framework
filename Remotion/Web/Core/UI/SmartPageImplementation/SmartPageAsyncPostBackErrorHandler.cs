@@ -35,14 +35,14 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     public SmartPageAsyncPostBackErrorHandler (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       _context = context;
     }
 
     public void HandleError (Exception error)
     {
-      ArgumentUtility.CheckNotNull("error", error);
+      ArgumentUtility.CheckNotNull(nameof(error), error);
 
       string errorHtml = GetErrorHtml(_context, error);
 

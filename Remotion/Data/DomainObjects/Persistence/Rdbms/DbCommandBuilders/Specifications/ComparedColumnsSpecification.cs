@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public ComparedColumnsSpecification (IEnumerable<ColumnValue> comparedColumnValues)
     {
-      ArgumentUtility.CheckNotNull("comparedColumnValues", comparedColumnValues);
+      ArgumentUtility.CheckNotNull(nameof(comparedColumnValues), comparedColumnValues);
       _comparedColumnValues = comparedColumnValues.ToArray();
 
       if (_comparedColumnValues.Length == 0)
-        throw new ArgumentException("The sequence of compared column values must contain at least one element.", "comparedColumnValues");
+        throw new ArgumentException("The sequence of compared column values must contain at least one element.", nameof(comparedColumnValues));
     }
 
     public ReadOnlyCollection<ColumnValue> ComparedColumnValues
@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AddParameters (IDbCommand command, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
 
       foreach (var comparedColumnValue in _comparedColumnValues)
       {
@@ -60,9 +60,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
     public void AppendComparisons (
         StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentUtility.CheckNotNull(nameof(statement), statement);
+      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
 
       bool first = true;
 

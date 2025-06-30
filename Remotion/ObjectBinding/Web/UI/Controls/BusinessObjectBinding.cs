@@ -164,7 +164,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (_control.ID != null && _control.ID == value && _control is IBusinessObjectReferenceDataSource)
-          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", "value");
+          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", nameof(value));
         if (_dataSourceControl != value)
         {
           _dataSourceControl = value;
@@ -230,7 +230,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             throw new ArgumentException(
                 string.Format("{0} '{1}' does not support the  business object property '{2}'.",
                     _control.GetType().Name, _control.ID, value.Identifier),
-                "value");
+                nameof(value));
           }
         }
 
@@ -281,7 +281,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public bool SupportsProperty (IBusinessObjectProperty property)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
 
       if (_control.SupportedPropertyInterfaces == null)
         return true;
@@ -306,10 +306,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public bool IsPropertyInterfaceSupported (IBusinessObjectProperty property, Type[] supportedPropertyInterfaces)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull(nameof(property), property);
       if (supportedPropertyInterfaces == null)
         return true;
-      ArgumentUtility.CheckNotNullOrItemsNull("supportedPropertyInterfaces", supportedPropertyInterfaces);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(supportedPropertyInterfaces), supportedPropertyInterfaces);
 
       bool isSupportedPropertyInterface = false;
       for (int i = 0; i < supportedPropertyInterfaces.Length; i++)

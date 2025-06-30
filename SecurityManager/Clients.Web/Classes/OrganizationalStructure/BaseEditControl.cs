@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     StringCollection IFormGridRowProvider.GetHiddenRows (HtmlTable table)
     {
-      ArgumentUtility.CheckNotNull("table", table);
+      ArgumentUtility.CheckNotNull(nameof(table), table);
 
       var providers = GetFormGridRowProvider();
 
@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     FormGridRowInfoCollection IFormGridRowProvider.GetAdditionalRows (HtmlTable table)
     {
-      ArgumentUtility.CheckNotNull("table", table);
+      ArgumentUtility.CheckNotNull(nameof(table), table);
 
       var providers = GetFormGridRowProvider();
       return new FormGridRowInfoCollection(providers.SelectMany(p => p.GetAdditionalRows((TSelf)this, table, GetFormGridManager())).ToArray());

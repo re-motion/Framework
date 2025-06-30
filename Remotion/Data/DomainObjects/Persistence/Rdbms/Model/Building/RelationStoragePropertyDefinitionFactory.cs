@@ -39,10 +39,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentUtility.CheckNotNull(nameof(storageNameProvider), storageNameProvider);
+      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
 
       _storageProviderDefinition = storageProviderDefinition;
       _forceClassIDColumnInForeignKeyProperties = forceClassIDColumnInForeignKeyProperties;
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (RelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
       var relationColumnName = _storageNameProvider.GetRelationColumnName(relationEndPointDefinition);
@@ -91,9 +91,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         string relationColumnName,
         string relationClassIDColumnName)
     {
-      ArgumentUtility.CheckNotNull("relatedClassDefinition", relatedClassDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("relationColumnName", relationColumnName);
-      ArgumentUtility.CheckNotNullOrEmpty("relationClassIDColumnName", relationClassIDColumnName);
+      ArgumentUtility.CheckNotNull(nameof(relatedClassDefinition), relatedClassDefinition);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(relationColumnName), relationColumnName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(relationClassIDColumnName), relationClassIDColumnName);
 
       var relatedStorageProviderDefinition = _storageSettings.GetStorageProviderDefinition(relatedClassDefinition);
 

@@ -89,7 +89,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     public SmartPageInfo (ISmartPage page)
     {
-      ArgumentUtility.CheckNotNullAndType<Page>("page", page);
+      ArgumentUtility.CheckNotNullAndType<Page>(nameof(page), page);
       _page = page;
       _page.Init += Page_Init;
       // PreRenderComplete-handler must be registered before ScriptManager registers its own PreRenderComplete-handler during OnInit.
@@ -99,10 +99,10 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
     public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
-      ArgumentUtility.CheckNotNullOrEmpty("function", function);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(function), function);
       if (! Regex.IsMatch(function, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
-        throw new ArgumentException("Invalid function name: '" + function + "'.", "function");
+        throw new ArgumentException("Invalid function name: '" + function + "'.", nameof(function));
 
       if (_isPreRenderComplete)
       {
@@ -126,7 +126,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.RegisterControlForDirtyStateTracking">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
     public void RegisterControlForDirtyStateTracking (IEditableControl control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       if (_isPreRenderComplete)
       {
@@ -141,7 +141,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void UnregisterControlForDirtyStateTracking (object? sender, EventArgs args)
     {
-      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl>("sender", sender!);
+      var control = ArgumentUtility.CheckNotNullAndType<IEditableControl>(nameof(sender), sender!);
 
       if (_isPreRenderComplete)
       {
@@ -157,7 +157,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.RegisterControlForDirtyStateTracking">ISmartPage.RegisterControlForDirtyStateTracking</see>. </summary>
     public void RegisterControlForDirtyStateTracking (string clientID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("clientID", clientID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(clientID), clientID);
 
       if (_isPreRenderComplete)
       {
@@ -195,8 +195,8 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     public void RegisterCommandForSynchronousPostBack ([NotNull]Control control, [NotNull]string eventArguments)
     {
-      ArgumentUtility.CheckNotNull("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty("eventArguments", eventArguments);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArguments), eventArguments);
 
       if (_isPreRenderComplete)
       {
@@ -219,7 +219,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     public void RegisterControlForSynchronousPostBack (Control control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       var scriptManager = ScriptManager.GetCurrent(_page.WrappedInstance);
       if (scriptManager != null)
@@ -239,7 +239,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </param>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      ArgumentUtility.CheckNotNull("localResourcesType", localResourcesType);
+      ArgumentUtility.CheckNotNull(nameof(localResourcesType), localResourcesType);
 
       //  Provider has already been identified.
       if (_cachedResourceManager != null)
@@ -591,7 +591,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </summary>
     public void SetFocus (IFocusableControl control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
       if (string.IsNullOrEmpty(control.FocusID))
         return;
       SetFocus(control.FocusID);
@@ -602,7 +602,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </summary>
     public void SetFocus ([NotNull] string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
       _smartFocusID = id;
     }
 
@@ -611,7 +611,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </summary>
     public void RegisterNavigationControl (INavigationControl control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       // Registration is typically done during the Control's init-phase to allow building of navigation urls during the entire life cycle.
       // Note: If the control is removed again, the previously built navigation urls will no longer be valid.
@@ -621,7 +621,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private void UnregisterNavigationControl (object? sender, EventArgs args)
     {
-      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl>("sender", sender!);
+      var control = ArgumentUtility.CheckNotNullAndType<INavigationControl>(nameof(sender), sender!);
       _navigationControls.Remove(control);
       control.Unload -= UnregisterNavigationControl;
     }

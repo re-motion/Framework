@@ -45,9 +45,9 @@ namespace Remotion.Validation.Merging
         IValidatorFormatter validatorFormatter,
         ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("validationRuleCollectorMerger", validationRuleCollectorMerger);
-      ArgumentUtility.CheckNotNull("validatorFormatter", validatorFormatter);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentUtility.CheckNotNull(nameof(validationRuleCollectorMerger), validationRuleCollectorMerger);
+      ArgumentUtility.CheckNotNull(nameof(validatorFormatter), validatorFormatter);
+      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
 
       _validationRuleCollectorMerger = validationRuleCollectorMerger;
       _validatorFormatter = validatorFormatter;
@@ -66,7 +66,7 @@ namespace Remotion.Validation.Merging
 
     public ValidationCollectorMergeResult Merge (IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> validationCollectorInfos)
     {
-      ArgumentUtility.CheckNotNull("validationCollectorInfos", validationCollectorInfos);
+      ArgumentUtility.CheckNotNull(nameof(validationCollectorInfos), validationCollectorInfos);
 
       var collectorInfos = validationCollectorInfos.ToArray();
 

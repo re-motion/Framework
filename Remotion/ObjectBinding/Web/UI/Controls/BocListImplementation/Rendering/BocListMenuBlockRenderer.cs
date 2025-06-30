@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     public BocListMenuBlockRenderer (BocListCssClassDefinition cssClasses)
     {
-      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull(nameof(cssClasses), cssClasses);
 
       _cssClasses = cssClasses;
     }
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <remarks> Contains the drop down list for selcting a column configuration and the options menu.  </remarks> 
     public void Render (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       RenderAvailableViewsList(renderingContext);
 

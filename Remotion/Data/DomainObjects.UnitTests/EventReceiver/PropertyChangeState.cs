@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     public PropertyChangeState (object sender, PropertyDefinition propertyDefinition, object oldValue, object newValue, string message = null)
       : base(sender, message)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       _propertyDefinition = propertyDefinition;
       _oldValue = oldValue;

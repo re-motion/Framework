@@ -35,8 +35,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 
     public static StaticBusinessObjectPropertyPath Parse (string propertyPathIdentifier, IBusinessObjectClass root)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyPathIdentifier", propertyPathIdentifier);
-      ArgumentUtility.CheckNotNull("root", root);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyPathIdentifier), propertyPathIdentifier);
+      ArgumentUtility.CheckNotNull(nameof(root), root);
 
       var properties = new List<IBusinessObjectProperty>();
       var currentClass = root;
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 
     public static StaticBusinessObjectPropertyPath Create (IBusinessObjectProperty[] properties)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("properties", properties);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(properties), properties);
 
       var identifierBuilder = new StringBuilder();
       var currentClass = properties[0].ReflectedClass;
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
                 string.Format(
                     "Property #{0} ('{1}') is not of type {2}. Every property except the last property must be a reference property.",
                     index, property.Identifier, typeof(IBusinessObjectReferenceProperty).Name),
-                "properties");
+                nameof(properties));
           }
 
           identifierBuilder.Append(currentClass.BusinessObjectProvider.GetPropertyPathSeparator());

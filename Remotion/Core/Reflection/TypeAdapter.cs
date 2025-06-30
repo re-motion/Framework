@@ -42,7 +42,7 @@ namespace Remotion.Reflection
 
     public static TypeAdapter Create (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return s_dataStore.GetOrAdd(type, s_ctorFunc);
     }
@@ -287,7 +287,7 @@ namespace Remotion.Reflection
 
     public bool IsSubclassOf (ITypeInformation c)
     {
-      ArgumentUtility.CheckNotNull("c", c);
+      ArgumentUtility.CheckNotNull(nameof(c), c);
 
       var otherTypeAsTypeAdapter = c as TypeAdapter;
       if (otherTypeAsTypeAdapter == null)
@@ -306,7 +306,7 @@ namespace Remotion.Reflection
 
     public bool CanAscribeTo (ITypeInformation c)
     {
-      ArgumentUtility.CheckNotNull("c", c);
+      ArgumentUtility.CheckNotNull(nameof(c), c);
 
       var otherTypeAsTypeAdapter = c as TypeAdapter;
       if (otherTypeAsTypeAdapter == null)
@@ -317,7 +317,7 @@ namespace Remotion.Reflection
 
     public ITypeInformation[] GetAscribedGenericArgumentsFor (ITypeInformation c)
     {
-      var otherTypeAsTypeAdapter = ArgumentUtility.CheckNotNullAndType<TypeAdapter>("c", c);
+      var otherTypeAsTypeAdapter = ArgumentUtility.CheckNotNullAndType<TypeAdapter>(nameof(c), c);
 
       return ConvertToTypeAdapters(_type.GetAscribedGenericArguments(otherTypeAsTypeAdapter.Type));
     }

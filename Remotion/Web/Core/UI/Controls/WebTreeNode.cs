@@ -200,7 +200,7 @@ namespace Remotion.Web.UI.Controls
 
     private void ValidateItemId (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
       if (! string.IsNullOrEmpty(value))
       {
         WebTreeNodeCollection? nodes = null;
@@ -211,7 +211,7 @@ namespace Remotion.Web.UI.Controls
         if (nodes != null)
         {
           if (nodes.Find(value) != null)
-            throw new ArgumentException("The collection already contains a node with ItemID '" + value + "'.", "value");
+            throw new ArgumentException("The collection already contains a node with ItemID '" + value + "'.", nameof(value));
         }
       }
     }
@@ -399,8 +399,8 @@ namespace Remotion.Web.UI.Controls
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
       string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
       if (! string.IsNullOrEmpty(key))

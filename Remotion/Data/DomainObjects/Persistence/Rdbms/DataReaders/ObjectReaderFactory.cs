@@ -42,10 +42,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IDataContainerValidator dataContainerValidator)
     {
-      ArgumentUtility.CheckNotNull("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
-      ArgumentUtility.CheckNotNull("infrastructureStoragePropertyDefinitionProvider", infrastructureStoragePropertyDefinitionProvider);
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull("dataContainerValidator", dataContainerValidator);
+      ArgumentUtility.CheckNotNull(nameof(rdbmsPersistenceModelProvider), rdbmsPersistenceModelProvider);
+      ArgumentUtility.CheckNotNull(nameof(infrastructureStoragePropertyDefinitionProvider), infrastructureStoragePropertyDefinitionProvider);
+      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull(nameof(dataContainerValidator), dataContainerValidator);
 
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
       _infrastructureStoragePropertyDefinitionProvider = infrastructureStoragePropertyDefinitionProvider;
@@ -70,8 +70,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IRdbmsStorageEntityDefinition entityDefinition,
         IEnumerable<ColumnDefinition> selectedColumns)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
-      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
+      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
 
       var ordinalProvider = CreateOrdinalProviderForKnownProjection(selectedColumns);
       return new DataContainerReader(
@@ -86,8 +86,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IRdbmsStorageEntityDefinition entityDefinition,
         IEnumerable<ColumnDefinition> selectedColumns)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
-      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
+      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
 
       var ordinalProvider = CreateOrdinalProviderForKnownProjection(selectedColumns);
       return new ObjectIDReader(entityDefinition.ObjectIDProperty, ordinalProvider);
@@ -97,8 +97,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IRdbmsStorageEntityDefinition entityDefinition,
         IEnumerable<ColumnDefinition> selectedColumns)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
-      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
+      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
 
       var ordinalProvider = CreateOrdinalProviderForKnownProjection(selectedColumns);
       return new TimestampReader(entityDefinition.ObjectIDProperty, entityDefinition.TimestampProperty, ordinalProvider);

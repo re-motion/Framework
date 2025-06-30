@@ -25,16 +25,16 @@ namespace Remotion.Utilities
   {
     public static IEnumerable<AttributeWithMetadata> IncludeAll (IEnumerable<AttributeWithMetadata> source, Type attributeType)
     {
-      ArgumentUtility.CheckNotNull("source", source);
-      ArgumentUtility.CheckNotNull("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull(nameof(source), source);
+      ArgumentUtility.CheckNotNull(nameof(attributeType), attributeType);
 
       return source.Where(a => a.IsInstanceOfType(attributeType));
     }
 
     public static IEnumerable<AttributeWithMetadata> ExcludeAll (IEnumerable<AttributeWithMetadata> source, Type attributeType)
     {
-      ArgumentUtility.CheckNotNull("source", source);
-      ArgumentUtility.CheckNotNull("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull(nameof(source), source);
+      ArgumentUtility.CheckNotNull(nameof(attributeType), attributeType);
 
       return source.Where(a => !a.IsInstanceOfType(attributeType));
     }
@@ -43,8 +43,8 @@ namespace Remotion.Utilities
           IEnumerable<AttributeWithMetadata> source,
           IReadOnlyCollection<AttributeWithMetadata> suppressAttributes)
     {
-      ArgumentUtility.CheckNotNull("source", source);
-      ArgumentUtility.CheckNotNull("suppressAttributes", suppressAttributes);
+      ArgumentUtility.CheckNotNull(nameof(source), source);
+      ArgumentUtility.CheckNotNull(nameof(suppressAttributes), suppressAttributes);
 
       bool IsSuppressed (AttributeWithMetadata attribute)
       {
@@ -72,8 +72,8 @@ namespace Remotion.Utilities
 
     public AttributeWithMetadata (Type declaringType, Attribute attribute)
     {
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
-      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
+      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
 
       _declaringType = declaringType;
       _attribute = attribute;
@@ -91,7 +91,7 @@ namespace Remotion.Utilities
 
     public bool IsInstanceOfType (Type attributeType)
     {
-      ArgumentUtility.CheckNotNull("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull(nameof(attributeType), attributeType);
 
       return attributeType.IsInstanceOfType(AttributeInstance);
     }

@@ -108,8 +108,8 @@ namespace Remotion.Web.Resources
     public ResourcePathBuilderBasedStaticResourceCacheKeyProvider (IHttpContextProvider httpContextProvider, ResourceRoot resourceRoot)
         : this(
             new MappedResourcesPathLocator(
-                ArgumentUtility.CheckNotNull("httpContextProvider", httpContextProvider),
-                ArgumentUtility.CheckNotNull("resourceRoot", resourceRoot)),
+                ArgumentUtility.CheckNotNull(nameof(httpContextProvider), httpContextProvider),
+                ArgumentUtility.CheckNotNull(nameof(resourceRoot), resourceRoot)),
             new ResourceFileDetailsAppender(),
             ResourceType.CacheableResourceTypes)
     {

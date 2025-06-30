@@ -45,9 +45,9 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         TargetClassDefinition targetClassDefinition,
         IList<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull(nameof(concreteTarget), concreteTarget);
+      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
+      ArgumentUtility.CheckNotNull(nameof(mixinInfos), mixinInfos);
 
       var nextCallProxyType = CreateNextCallProxyType(concreteTarget, targetClassDefinition);
 
@@ -69,8 +69,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private ITargetTypeForNextCall GetTargetTypeWrapper (MutableType concreteTarget, FieldInfo extensionsField)
     {
-      ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
-      ArgumentUtility.CheckNotNull("extensionsField", extensionsField);
+      ArgumentUtility.CheckNotNull(nameof(concreteTarget), concreteTarget);
+      ArgumentUtility.CheckNotNull(nameof(extensionsField), extensionsField);
 
       return new TargetTypeForNextCall(concreteTarget, extensionsField);
     }

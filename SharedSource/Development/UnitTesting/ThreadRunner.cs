@@ -12,7 +12,7 @@ namespace Remotion.Development.UnitTesting
   {
     public static void Run (ThreadStart threadStart)
     {
-      ArgumentUtility.CheckNotNull("threadStart", threadStart);
+      ArgumentUtility.CheckNotNull(nameof(threadStart), threadStart);
       new ThreadRunner(threadStart).Run();
     }
 
@@ -26,7 +26,7 @@ namespace Remotion.Development.UnitTesting
 
     public ThreadRunner (ThreadStart threadStart, TimeSpan timeoutTimeSpan)
     {
-      ArgumentUtility.CheckNotNull("threadStart", threadStart);
+      ArgumentUtility.CheckNotNull(nameof(threadStart), threadStart);
       _threadStart = threadStart;
       _timeoutTimeSpan = timeoutTimeSpan;
     }

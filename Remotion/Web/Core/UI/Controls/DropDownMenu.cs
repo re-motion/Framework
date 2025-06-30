@@ -73,7 +73,7 @@ namespace Remotion.Web.UI.Controls
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
 
       var renderer = CreateRenderer();
       renderer.RegisterHtmlHeadContents(htmlHeadAppender);
@@ -96,7 +96,7 @@ namespace Remotion.Web.UI.Controls
 
     public void RenderAsContextMenu (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       var renderer = CreateRenderer();
       renderer.RenderAsContextMenu(CreateRenderingContext(writer));
@@ -104,7 +104,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -117,15 +117,15 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual DropDownMenuRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
       return new DropDownMenuRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: Not null assertion
     }
 
     public string GetBindOpenEventScript (string elementReference, string menuIDReference, bool moveToMousePosition)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("elementReference", elementReference);
-      ArgumentUtility.CheckNotNullOrEmpty("menuIDReference", menuIDReference);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(elementReference), elementReference);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(menuIDReference), menuIDReference);
 
       return string.Format(
           "DropDownMenu.BindOpenEvent({0}, {1}, '{2}', {3}, {4});",
@@ -225,7 +225,7 @@ namespace Remotion.Web.UI.Controls
 
     public void SetLoadMenuItemStatus (string value)
     {
-      ArgumentUtility.CheckNotEmpty("value", value);
+      ArgumentUtility.CheckNotEmpty(nameof(value), value);
 
       _loadMenuItemStatus = value;
     }

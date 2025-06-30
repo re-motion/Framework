@@ -49,7 +49,7 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
     public static MixinConfiguration BuildConfigurationFromAssemblies (params Assembly[] assemblies)
     {
-      ArgumentUtility.CheckNotNull("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull(nameof(assemblies), assemblies);
 
       return BuildConfigurationFromAssemblies(null, (IEnumerable<Assembly>)assemblies);
     }
@@ -64,7 +64,7 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
     public static MixinConfiguration BuildConfigurationFromAssemblies (MixinConfiguration parentConfiguration, params Assembly[] assemblies)
     {
-      ArgumentUtility.CheckNotNull("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull(nameof(assemblies), assemblies);
 
       return BuildConfigurationFromAssemblies(parentConfiguration, (IEnumerable<Assembly>)assemblies);
     }
@@ -79,7 +79,7 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="assemblies"/> parameter is <see langword="null"/>.</exception>
     public static MixinConfiguration BuildConfigurationFromAssemblies (MixinConfiguration? parentConfiguration, IEnumerable<Assembly> assemblies)
     {
-      ArgumentUtility.CheckNotNull("assemblies", assemblies);
+      ArgumentUtility.CheckNotNull(nameof(assemblies), assemblies);
 
       var builder = new DeclarativeConfigurationBuilder(parentConfiguration);
       foreach (Assembly assembly in assemblies)
@@ -98,7 +98,7 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="types"/> parameter is <see langword="null"/>.</exception>
     public static MixinConfiguration BuildConfigurationFromTypes (MixinConfiguration? parentConfiguration, IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentUtility.CheckNotNull(nameof(types), types);
 
       var builder = new DeclarativeConfigurationBuilder(parentConfiguration);
       foreach (Type type in types)
@@ -164,7 +164,7 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="assembly"/> parameter is <see langword="null"/>.</exception>
     public DeclarativeConfigurationBuilder AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
       s_logger.LogDebug("Adding assembly {0} to DeclarativeConfigurationBuilder.", assembly);
 
       foreach (var t in AssemblyTypeCache.GetTypes(assembly))
@@ -186,10 +186,10 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentException">The given type is a closed generic type and not a generic type definition.</exception>
     public DeclarativeConfigurationBuilder AddType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       if (type.IsGenericType && !type.IsGenericTypeDefinition)
-        throw new ArgumentException("Type must be non-generic or a generic type definition.", "type");
+        throw new ArgumentException("Type must be non-generic or a generic type definition.", nameof(type));
 
       _allTypes.Add(type);
 

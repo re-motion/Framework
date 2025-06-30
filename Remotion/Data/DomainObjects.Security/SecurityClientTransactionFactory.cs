@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Security
   {
     protected override void OnTransactionCreated (ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull("transaction", transaction);
+      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
 
       transaction.Extensions.Add(new SecurityClientTransactionExtension());
     }

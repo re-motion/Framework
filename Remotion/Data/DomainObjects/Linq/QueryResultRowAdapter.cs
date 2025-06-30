@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public QueryResultRowAdapter (IQueryResultRow queryResultRow)
     {
-      ArgumentUtility.CheckNotNull("queryResultRow", queryResultRow);
+      ArgumentUtility.CheckNotNull(nameof(queryResultRow), queryResultRow);
 
       _queryResultRow = queryResultRow;
     }
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public T? GetValue<T> (ColumnID columnID)
     {
-      ArgumentUtility.CheckNotNull("columnID", columnID);
+      ArgumentUtility.CheckNotNull(nameof(columnID), columnID);
 
       return _queryResultRow.GetConvertedValue<T>(columnID.Position);
     }

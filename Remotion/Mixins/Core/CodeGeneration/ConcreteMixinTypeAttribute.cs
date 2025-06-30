@@ -28,7 +28,7 @@ namespace Remotion.Mixins.CodeGeneration
   {
     public static ConcreteMixinTypeAttribute Create (ConcreteMixinTypeIdentifier identifier)
     {
-      ArgumentUtility.CheckNotNull("identifier", identifier);
+      ArgumentUtility.CheckNotNull(nameof(identifier), identifier);
 
       var identifierSerializer = new AttributeConcreteMixinTypeIdentifierSerializer();
       identifier.Serialize(identifierSerializer);
@@ -40,7 +40,7 @@ namespace Remotion.Mixins.CodeGeneration
 
     public ConcreteMixinTypeAttribute (object[] concreteMixinTypeIdentifierData)
     {
-      ArgumentUtility.CheckNotNull("concreteMixinTypeIdentifierData", concreteMixinTypeIdentifierData);
+      ArgumentUtility.CheckNotNull(nameof(concreteMixinTypeIdentifierData), concreteMixinTypeIdentifierData);
 
       _concreteMixinTypeIdentifierData = concreteMixinTypeIdentifierData;
     }

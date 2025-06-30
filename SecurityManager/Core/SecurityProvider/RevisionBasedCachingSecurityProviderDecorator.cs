@@ -44,9 +44,9 @@ namespace Remotion.SecurityManager.SecurityProvider
         IDomainRevisionProvider revisionProvider,
         IUserRevisionProvider userRevisionProvider)
     {
-      ArgumentUtility.CheckNotNull("innerSecurityProvider", innerSecurityProvider);
-      ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
-      ArgumentUtility.CheckNotNull("userRevisionProvider", userRevisionProvider);
+      ArgumentUtility.CheckNotNull(nameof(innerSecurityProvider), innerSecurityProvider);
+      ArgumentUtility.CheckNotNull(nameof(revisionProvider), revisionProvider);
+      ArgumentUtility.CheckNotNull(nameof(userRevisionProvider), userRevisionProvider);
 
       _innerSecurityProvider = innerSecurityProvider;
       _securityContextCache = new SecurityContextCache(revisionProvider);
@@ -65,8 +65,8 @@ namespace Remotion.SecurityManager.SecurityProvider
 
     public AccessType[] GetAccess (ISecurityContext context, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("principal", principal);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentUtility.CheckNotNull(nameof(principal), principal);
 
       if (principal.IsNull)
         return _innerSecurityProvider.GetAccess(context, principal);

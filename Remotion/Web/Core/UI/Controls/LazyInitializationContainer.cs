@@ -40,7 +40,7 @@ namespace Remotion.Web.UI.Controls
 
     public ControlCollection GetControls (ControlCollection baseControls)
     {
-      ArgumentUtility.CheckNotNull("baseControls", baseControls);
+      ArgumentUtility.CheckNotNull(nameof(baseControls), baseControls);
         if (_isEnsured)
           return baseControls;
         else
@@ -49,7 +49,7 @@ namespace Remotion.Web.UI.Controls
 
     public void Ensure (ControlCollection baseControls)
     {
-      ArgumentUtility.CheckNotNull("baseControls", baseControls);
+      ArgumentUtility.CheckNotNull(nameof(baseControls), baseControls);
 
       if (_isEnsured)
         return;

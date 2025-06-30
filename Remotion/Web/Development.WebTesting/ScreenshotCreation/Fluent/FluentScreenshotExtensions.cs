@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] Rectangle? parentContainer = null)
         where T : ControlObject
     {
-      ArgumentUtility.CheckNotNull("controlObject", controlObject);
+      ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
 
       return FluentUtility.CreateFluentControlObject(controlObject);
     }
@@ -55,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] IFluentScreenshotElement? parent = null,
         [CanBeNull] Rectangle? parentContainer = null)
     {
-      ArgumentUtility.CheckNotNull("elementScope", elementScope);
+      ArgumentUtility.CheckNotNull(nameof(elementScope), elementScope);
 
       return FluentUtility.CreateFluentElementScope(elementScope);
     }
@@ -68,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] IFluentScreenshotElement? parent = null,
         [CanBeNull] Rectangle? parentContainer = null)
     {
-      ArgumentUtility.CheckNotNull("webElement", webElement);
+      ArgumentUtility.CheckNotNull(nameof(webElement), webElement);
 
       return FluentUtility.CreateFluentWebElement(webElement);
     }
@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     public static FluentScreenshotElement<T> ScrollIntoView<T> ([NotNull] this FluentScreenshotElement<T> element)
         where T : ElementScope
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentUtility.CheckNotNull(nameof(element), element);
 
       var elementScope = element.GetTarget();
       JavaScriptExecutor.GetJavaScriptExecutor(elementScope).ExecuteScript("arguments[0].scrollIntoView(true);", elementScope.Native);
@@ -97,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     public static IFluentScreenshotElement<T> AllowPartialVisibility<T> ([NotNull] this IFluentScreenshotElement<T> fluentElement)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
+      ArgumentUtility.CheckNotNull(nameof(fluentElement), fluentElement);
 
       return new AllowPartialVisibilityFluentScreenshotElementDecorator<T>(fluentElement);
     }
@@ -108,7 +108,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     public static T GetTarget<T> ([NotNull] this IFluentScreenshotElement<T> fluentElement)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
+      ArgumentUtility.CheckNotNull(nameof(fluentElement), fluentElement);
 
       return fluentElement.Target;
     }
@@ -119,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     public static T GetTarget<T> ([NotNull] this IFluentScreenshotElementWithCovariance<T> fluentElement)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
+      ArgumentUtility.CheckNotNull(nameof(fluentElement), fluentElement);
 
       return fluentElement.Target;
     }
@@ -130,7 +130,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     public static T GetTarget<T> ([NotNull] this FluentScreenshotElement<T> fluentElement)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
+      ArgumentUtility.CheckNotNull(nameof(fluentElement), fluentElement);
 
       return GetTarget((IFluentScreenshotElementWithCovariance<T>)fluentElement);
     }
@@ -146,8 +146,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] Brush? brush = null)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
-      ArgumentUtility.CheckNotNull("fluentTarget", fluentTarget);
+      ArgumentUtility.CheckNotNull(nameof(builder), builder);
+      ArgumentUtility.CheckNotNull(nameof(fluentTarget), fluentTarget);
 
       IScreenshotAnnotation annotation = new ScreenshotBoxAnnotation(
           pen ?? Pens.Red,
@@ -173,9 +173,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] bool? forceCircle = null)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
-      ArgumentUtility.CheckNotNull("fluentTarget", fluentTarget);
-      ArgumentUtility.CheckNotNull("content", content);
+      ArgumentUtility.CheckNotNull(nameof(builder), builder);
+      ArgumentUtility.CheckNotNull(nameof(fluentTarget), fluentTarget);
+      ArgumentUtility.CheckNotNull(nameof(content), content);
 
       IScreenshotAnnotation annotation = new ScreenshotBadgeAnnotation(
           content,
@@ -207,9 +207,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] float? maxHeight = null)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
-      ArgumentUtility.CheckNotNull("fluentTarget", fluentTarget);
-      ArgumentUtility.CheckNotNull("content", content);
+      ArgumentUtility.CheckNotNull(nameof(builder), builder);
+      ArgumentUtility.CheckNotNull(nameof(fluentTarget), fluentTarget);
+      ArgumentUtility.CheckNotNull(nameof(content), content);
 
       IScreenshotAnnotation annotation = new ScreenshotTextAnnotation(
           content,
@@ -236,8 +236,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         bool isRestrictedByImageBounds = true)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
-      ArgumentUtility.CheckNotNull("fluentTarget", fluentTarget);
+      ArgumentUtility.CheckNotNull(nameof(builder), builder);
+      ArgumentUtility.CheckNotNull(nameof(fluentTarget), fluentTarget);
 
       var screenshotCropping = new ScreenshotCropping(padding ?? WebPadding.None);
       screenshotCropping.IsRestrictedByParent = isRestrictedByParent;
@@ -250,8 +250,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// </summary>
     public static void Freedraw ([NotNull] this ScreenshotBuilder builder, [NotNull] Action<Canvas, ResolvedScreenshotElement> drawAction)
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
-      ArgumentUtility.CheckNotNull("drawAction", drawAction);
+      ArgumentUtility.CheckNotNull(nameof(builder), builder);
+      ArgumentUtility.CheckNotNull(nameof(drawAction), drawAction);
 
       builder.Annotate(new ScreenshotCustomAnnotation(drawAction));
     }
@@ -265,9 +265,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] Action<Canvas, ResolvedScreenshotElement> drawAction)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
-      ArgumentUtility.CheckNotNull("fluentTarget", fluentTarget);
-      ArgumentUtility.CheckNotNull("drawAction", drawAction);
+      ArgumentUtility.CheckNotNull(nameof(builder), builder);
+      ArgumentUtility.CheckNotNull(nameof(fluentTarget), fluentTarget);
+      ArgumentUtility.CheckNotNull(nameof(drawAction), drawAction);
 
       FluentUtility.AnnotateFluent(builder, fluentTarget, new ScreenshotCustomAnnotation(drawAction));
     }

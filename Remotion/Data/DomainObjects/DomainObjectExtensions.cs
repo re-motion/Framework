@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects
     [JetBrains.Annotations.NotNull]
     public static IDomainObjectHandle<T> GetHandle<T> ([JetBrains.Annotations.NotNull] this T domainObject) where T : IDomainObject
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       var objectID = domainObject.ID;
       Assertion.DebugIsNotNull(objectID, "domainObject.ID must not be null.");
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
     public static DomainObjectState GetState ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
 
       var defaultTransactionContext = GetDefaultTransactionContext(domainObject);
       return defaultTransactionContext.State;
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects
     [CanBeNull]
     public static object? GetTimestamp ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
 
       var defaultTransactionContext = GetDefaultTransactionContext(domainObject);
       return defaultTransactionContext.Timestamp;
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects
     [JetBrains.Annotations.NotNull]
     public static DomainObjectTransactionContext GetDefaultTransactionContext ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
 
       var rootTransaction = domainObject.RootTransaction;
       Assertion.DebugAssert(rootTransaction != null, "domainObject.RootTransaction must not be null.");
@@ -194,7 +194,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static void RegisterForCommit ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
 
       var defaultTransactionContext = domainObject.GetDefaultTransactionContext();
       defaultTransactionContext.RegisterForCommit();
@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects
     /// found in the data source.</exception>
     public static void EnsureDataAvailable ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
 
       var defaultTransactionContext = domainObject.GetDefaultTransactionContext();
       defaultTransactionContext.EnsureDataAvailable();
@@ -226,7 +226,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ObjectInvalidException">The object is invalid in the transaction.</exception>
     public static bool TryEnsureDataAvailable ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
 
       var defaultTransactionContext = domainObject.GetDefaultTransactionContext();
       return defaultTransactionContext.TryEnsureDataAvailable();

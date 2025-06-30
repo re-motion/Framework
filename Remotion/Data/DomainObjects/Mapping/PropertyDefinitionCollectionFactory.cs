@@ -32,15 +32,15 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyDefinitionCollectionFactory (IMappingObjectFactory mappingObjectFactory)
     {
-      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
+      ArgumentUtility.CheckNotNull(nameof(mappingObjectFactory), mappingObjectFactory);
 
       _mappingObjectFactory = mappingObjectFactory;
     }
 
     public PropertyDefinitionCollection CreatePropertyDefinitions (ClassDefinition classDefinition, IEnumerable<IPropertyInformation> propertyInfos)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("propertyInfos", propertyInfos);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfos), propertyInfos);
 
       var propertyDefinitionsForClass =
           from IPropertyInformation propertyInfo in propertyInfos

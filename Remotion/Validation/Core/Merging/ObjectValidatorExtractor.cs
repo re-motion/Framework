@@ -35,8 +35,8 @@ namespace Remotion.Validation.Merging
 
     public ObjectValidatorExtractor (IEnumerable<RemovingObjectValidatorRegistration> removingObjectValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull("removingObjectValidatorRegistrations", removingObjectValidatorRegistrations);
-      ArgumentUtility.CheckNotNull("logContext", logContext);
+      ArgumentUtility.CheckNotNull(nameof(removingObjectValidatorRegistrations), removingObjectValidatorRegistrations);
+      ArgumentUtility.CheckNotNull(nameof(logContext), logContext);
 
       _validatorTypesToRemove = removingObjectValidatorRegistrations.ToLookup(r => r.ValidatorType);
       _logContext = logContext;
@@ -44,7 +44,7 @@ namespace Remotion.Validation.Merging
 
     public IEnumerable<IObjectValidator> ExtractObjectValidatorsToRemove (IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
+      ArgumentUtility.CheckNotNull(nameof(addingObjectValidationRuleCollector), addingObjectValidationRuleCollector);
 
       foreach (var existingValidator in addingObjectValidationRuleCollector.Validators)
       {

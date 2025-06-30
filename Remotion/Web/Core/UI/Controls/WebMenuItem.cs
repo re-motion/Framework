@@ -208,7 +208,7 @@ namespace Remotion.Web.UI.Controls
       [MemberNotNull(nameof(_icon))]
       set
       {
-        ArgumentUtility.CheckNotNull("Icon", value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         _icon = value;
       }
     }
@@ -238,7 +238,7 @@ namespace Remotion.Web.UI.Controls
       [MemberNotNull(nameof(_disabledIcon))]
       set
       {
-        ArgumentUtility.CheckNotNull("DisabledIcon", value);
+        ArgumentUtility.CheckNotNull(nameof(value), value);
         _disabledIcon = value;
       }
     }
@@ -433,8 +433,8 @@ namespace Remotion.Web.UI.Controls
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
       string? key = ResourceManagerUtility.GetGlobalResourceKey(Category);
       if (!string.IsNullOrEmpty(key))
@@ -482,7 +482,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Initializes an instance. </summary>
     public WebMenuItemClickEventArgs (WebMenuItem item)
     {
-      ArgumentUtility.CheckNotNull("item", item);
+      ArgumentUtility.CheckNotNull(nameof(item), item);
       _item = item;
     }
 

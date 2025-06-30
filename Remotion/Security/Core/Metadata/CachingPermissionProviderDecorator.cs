@@ -38,8 +38,8 @@ namespace Remotion.Security.Metadata
 
       public CacheKey (Type type, IMethodInformation methodInformation)
       {
-        ArgumentUtility.DebugCheckNotNull("type", type);
-        ArgumentUtility.DebugCheckNotNull("methodInformation", methodInformation);
+        ArgumentUtility.DebugCheckNotNull(nameof(type), type);
+        ArgumentUtility.DebugCheckNotNull(nameof(methodInformation), methodInformation);
 
         Type = type;
         MethodInformation = methodInformation;
@@ -64,7 +64,7 @@ namespace Remotion.Security.Metadata
 
     public CachingPermissionProviderDecorator (IPermissionProvider innerPermissionProvider)
     {
-      ArgumentUtility.CheckNotNull("innerPermissionProvider", innerPermissionProvider);
+      ArgumentUtility.CheckNotNull(nameof(innerPermissionProvider), innerPermissionProvider);
 
       _innerPermissionProvider = innerPermissionProvider;
 
@@ -79,8 +79,8 @@ namespace Remotion.Security.Metadata
 
     public IReadOnlyList<Enum> GetRequiredMethodPermissions (Type type, IMethodInformation methodInformation)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("methodInformation", methodInformation);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
 
       // Optimization to prevent cache polution
       if (methodInformation.IsNull)

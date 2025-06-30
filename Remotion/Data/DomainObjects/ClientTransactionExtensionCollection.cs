@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects
 
     public ClientTransactionExtensionCollection (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
 
       _key = key;
     }
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty("key", key);
+        ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
 
         return (IClientTransactionExtension?)BaseGetObject(key);
       }
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>The order of the extensions in the collection is the order in which they are notified.</remarks>
     public void Add (IClientTransactionExtension clientTransactionExtension)
     {
-      ArgumentUtility.CheckNotNull("clientTransactionExtension", clientTransactionExtension);
+      ArgumentUtility.CheckNotNull(nameof(clientTransactionExtension), clientTransactionExtension);
 
       var key = clientTransactionExtension.Key;
       Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="key">The name of the extension. Must not be <see langword="null"/> or <see cref="System.String.Empty"/>.</param>
     public void Remove (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
 
       BaseRemove(key);
     }
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The index of the extension, or -1 if <paramref name="key"/> is not found.</returns>
     public int IndexOf (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
 
       return BaseIndexOfKey(key);
     }
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>The order of the extensions in the collection is the order in which they are notified.</remarks>
     public void Insert (int index, IClientTransactionExtension clientTransactionExtension)
     {
-      ArgumentUtility.CheckNotNull("clientTransactionExtension", clientTransactionExtension);
+      ArgumentUtility.CheckNotNull(nameof(clientTransactionExtension), clientTransactionExtension);
 
       var key = clientTransactionExtension.Key;
       Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void TransactionInitialize (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.DebugCheckNotNull(nameof(clientTransaction), clientTransaction);
 
       for (int i = 0; i < Count; i++)
         this[i].TransactionInitialize(clientTransaction);
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void TransactionDiscard (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.DebugCheckNotNull(nameof(clientTransaction), clientTransaction);
 
       for (int i = 0; i < Count; i++)
         this[i].TransactionDiscard(clientTransaction);
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void SubTransactionCreating (ClientTransaction parentClientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull("parentClientTransaction", parentClientTransaction);
+      ArgumentUtility.DebugCheckNotNull(nameof(parentClientTransaction), parentClientTransaction);
 
       for (int i = 0; i < Count; i++)
         this[i].SubTransactionCreating(parentClientTransaction);
@@ -167,8 +167,8 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void SubTransactionInitialize (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull("parentClientTransaction", parentClientTransaction);
-      ArgumentUtility.DebugCheckNotNull("subTransaction", subTransaction);
+      ArgumentUtility.DebugCheckNotNull(nameof(parentClientTransaction), parentClientTransaction);
+      ArgumentUtility.DebugCheckNotNull(nameof(subTransaction), subTransaction);
 
       for (int i = 0; i < Count; i++)
         this[i].SubTransactionInitialize(parentClientTransaction, subTransaction);
@@ -177,8 +177,8 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void SubTransactionCreated (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull("parentClientTransaction", parentClientTransaction);
-      ArgumentUtility.DebugCheckNotNull("subTransaction", subTransaction);
+      ArgumentUtility.DebugCheckNotNull(nameof(parentClientTransaction), parentClientTransaction);
+      ArgumentUtility.DebugCheckNotNull(nameof(subTransaction), subTransaction);
 
       for (int i = 0; i < Count; i++)
         this[i].SubTransactionCreated(parentClientTransaction, subTransaction);
@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
-      ArgumentUtility.DebugCheckNotNull("type", type);
+      ArgumentUtility.DebugCheckNotNull(nameof(type), type);
 
       for (int i = 0; i < Count; i++)
         this[i].NewObjectCreating(clientTransaction, type);
@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
-      ArgumentUtility.DebugCheckNotNull("objectIDs", objectIDs);
+      ArgumentUtility.DebugCheckNotNull(nameof(objectIDs), objectIDs);
 
       for (int i = 0; i < Count; i++)
         this[i].ObjectsLoading(clientTransaction, objectIDs);
@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> loadedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNullOrEmpty("loadedDomainObjects", loadedDomainObjects);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(loadedDomainObjects), loadedDomainObjects);
 
       for (int i = 0; i < Count; i++)
         this[i].ObjectsLoaded(clientTransaction, loadedDomainObjects);
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects
 
     public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNull("unloadedDomainObjects", unloadedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull(nameof(unloadedDomainObjects), unloadedDomainObjects);
 
       for (int i = 0; i < Count; i++)
         this[i].ObjectsUnloading(clientTransaction, unloadedDomainObjects);
@@ -221,7 +221,7 @@ namespace Remotion.Data.DomainObjects
 
     public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNull("unloadedDomainObjects", unloadedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull(nameof(unloadedDomainObjects), unloadedDomainObjects);
 
       for (int i = 0; i < Count; i++)
         this[i].ObjectsUnloaded(clientTransaction, unloadedDomainObjects);
@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
 
       for (int i = 0; i < Count; i++)
         this[i].ObjectDeleting(clientTransaction, domainObject);
@@ -239,7 +239,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
 
       for (int i = 0; i < Count; i++)
         this[i].ObjectDeleted(clientTransaction, domainObject);
@@ -248,8 +248,8 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       for (int i = 0; i < Count; i++)
         this[i].PropertyValueReading(clientTransaction, domainObject, propertyDefinition, valueAccess);
@@ -258,8 +258,8 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       for (int i = 0; i < Count; i++)
         this[i].PropertyValueRead(clientTransaction, domainObject, propertyDefinition, value, valueAccess);
@@ -268,8 +268,8 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       for (int i = 0; i < Count; i++)
         this[i].PropertyValueChanging(clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
@@ -278,8 +278,8 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(propertyDefinition), propertyDefinition);
 
       for (int i = 0; i < Count; i++)
         this[i].PropertyValueChanged(clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
@@ -288,8 +288,8 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       for (int i = 0; i < Count; i++)
         this[i].RelationReading(clientTransaction, domainObject, relationEndPointDefinition, valueAccess);
@@ -303,8 +303,8 @@ namespace Remotion.Data.DomainObjects
         DomainObject? relatedObject,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       for (int i = 0; i < Count; i++)
         this[i].RelationRead(clientTransaction, domainObject, relationEndPointDefinition, relatedObject, valueAccess);
@@ -318,9 +318,9 @@ namespace Remotion.Data.DomainObjects
         IReadOnlyCollectionData<DomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.DebugCheckNotNull("relatedObjects", relatedObjects);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
+      ArgumentUtility.DebugCheckNotNull(nameof(relatedObjects), relatedObjects);
 
       for (int i = 0; i < Count; i++)
         this[i].RelationRead(clientTransaction, domainObject, relationEndPointDefinition, relatedObjects, valueAccess);
@@ -334,8 +334,8 @@ namespace Remotion.Data.DomainObjects
         DomainObject? oldRelatedObject,
         DomainObject? newRelatedObject)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       for (int i = 0; i < Count; i++)
         this[i].RelationChanging(clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
@@ -349,8 +349,8 @@ namespace Remotion.Data.DomainObjects
         DomainObject? oldRelatedObject,
         DomainObject? newRelatedObject)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
 
       for (int i = 0; i < Count; i++)
         this[i].RelationChanged(clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
@@ -359,7 +359,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull("queryResult", queryResult);
+      ArgumentUtility.CheckNotNull(nameof(queryResult), queryResult);
 
       return this
           .Cast<IClientTransactionExtension>()
@@ -369,7 +369,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void Committing (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects, ICommittingEventRegistrar eventRegistrar)
     {
-      ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull(nameof(changedDomainObjects), changedDomainObjects);
 
       for (int i = 0; i < Count; i++)
         this[i].Committing(clientTransaction, changedDomainObjects, eventRegistrar);
@@ -378,7 +378,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
-      ArgumentUtility.DebugCheckNotNull("committedData", committedData);
+      ArgumentUtility.DebugCheckNotNull(nameof(committedData), committedData);
 
       for (int i = 0; i < Count; i++)
         this[i].CommitValidate(clientTransaction, committedData);
@@ -387,7 +387,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void Committed (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull(nameof(changedDomainObjects), changedDomainObjects);
 
       for (int i = 0; i < Count; i++)
         this[i].Committed(clientTransaction, changedDomainObjects);
@@ -396,7 +396,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void RollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull(nameof(changedDomainObjects), changedDomainObjects);
 
       for (int i = 0; i < Count; i++)
         this[i].RollingBack(clientTransaction, changedDomainObjects);
@@ -405,7 +405,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void RolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> changedDomainObjects)
     {
-      ArgumentUtility.DebugCheckNotNull("changedDomainObjects", changedDomainObjects);
+      ArgumentUtility.DebugCheckNotNull(nameof(changedDomainObjects), changedDomainObjects);
 
       for (int i = 0; i < Count; i++)
         this[i].RolledBack(clientTransaction, changedDomainObjects);

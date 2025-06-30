@@ -109,7 +109,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem(itemID)";
 
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
@@ -127,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithItemID";
 
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
@@ -161,7 +161,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithHtmlID";
 
-      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
@@ -179,7 +179,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithDisplayText";
 
-      ArgumentUtility.CheckNotNullOrEmpty("displayText", displayText);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayText), displayText);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
@@ -199,7 +199,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithDisplayTextContains";
 
-      ArgumentUtility.CheckNotNullOrEmpty("containsDisplayText", containsDisplayText);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(containsDisplayText), containsDisplayText);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);

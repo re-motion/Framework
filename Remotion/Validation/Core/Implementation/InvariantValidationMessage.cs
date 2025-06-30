@@ -26,15 +26,15 @@ namespace Remotion.Validation.Implementation
 
     public InvariantValidationMessage (string validationMessage)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationMessage), validationMessage);
 
       _validationMessage = validationMessage;
     }
 
     public override string Format (CultureInfo culture, IFormatProvider? formatProvider, params object?[] parameters)
     {
-      ArgumentUtility.CheckNotNull("culture", culture);
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull(nameof(culture), culture);
+      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
 
       return string.Format(formatProvider ?? CultureInfo.InvariantCulture, _validationMessage, parameters);
     }

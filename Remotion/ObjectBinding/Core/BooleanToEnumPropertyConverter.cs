@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding
       else if (value.Equals(false))
         return _enumInfoFalse;
       else
-        throw new ArgumentOutOfRangeException("value");
+        throw new ArgumentOutOfRangeException(nameof(value));
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding
       else if (identifier == _enumInfoFalse.Identifier)
         return _enumInfoFalse;
       else
-        throw new ArgumentOutOfRangeException("identifier");
+        throw new ArgumentOutOfRangeException(nameof(identifier));
     }
   }
 }

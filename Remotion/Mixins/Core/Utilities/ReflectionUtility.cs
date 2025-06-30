@@ -31,7 +31,7 @@ namespace Remotion.Mixins.Utilities
 
     public static bool IsMixinType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
       if (!typeof(IInitializableMixin).IsAssignableFrom(type))
         return false;
 
@@ -40,33 +40,33 @@ namespace Remotion.Mixins.Utilities
 
     public static bool IsEqualOrInstantiationOf (Type typeToCheck, Type expectedType)
     {
-      ArgumentUtility.CheckNotNull("typeToCheck", typeToCheck);
-      ArgumentUtility.CheckNotNull("expectedType", expectedType);
+      ArgumentUtility.CheckNotNull(nameof(typeToCheck), typeToCheck);
+      ArgumentUtility.CheckNotNull(nameof(expectedType), expectedType);
 
       return typeToCheck.Equals(expectedType) || (typeToCheck.IsGenericType && typeToCheck.GetGenericTypeDefinition().Equals(expectedType));
     }
 
     public static bool IsPublicOrProtected (MethodBase methodToCheck)
     {
-      ArgumentUtility.CheckNotNull("methodToCheck", methodToCheck);
+      ArgumentUtility.CheckNotNull(nameof(methodToCheck), methodToCheck);
       return methodToCheck.IsPublic || methodToCheck.IsFamily || methodToCheck.IsFamilyOrAssembly;
     }
 
     public static bool IsPublicOrProtectedOrExplicit (MethodBase methodToCheck)
     {
-      ArgumentUtility.CheckNotNull("methodToCheck", methodToCheck);
+      ArgumentUtility.CheckNotNull(nameof(methodToCheck), methodToCheck);
       return IsPublicOrProtected(methodToCheck) || (methodToCheck.IsPrivate && methodToCheck.IsVirtual);
     }
 
     public static bool IsNewSlotMember (MemberInfo member)
     {
-      ArgumentUtility.CheckNotNull("member", member);
+      ArgumentUtility.CheckNotNull(nameof(member), member);
       return CheckMethodAttributeOnMember(member, MethodAttributes.NewSlot);
     }
 
     public static bool IsVirtualMember (MemberInfo member)
     {
-      ArgumentUtility.CheckNotNull("member", member);
+      ArgumentUtility.CheckNotNull(nameof(member), member);
       return CheckMethodAttributeOnMember(member, MethodAttributes.Virtual);
     }
 
@@ -98,7 +98,7 @@ namespace Remotion.Mixins.Utilities
           "The given member {0}.{1} is neither property, method, nor event.",
           member.DeclaringType!.GetFullNameSafe(),
           member.Name);
-      throw new ArgumentException(message, "member");
+      throw new ArgumentException(message, nameof(member));
     }
 
     public static IEnumerable<MethodInfo> RecursiveGetAllMethods (Type type, BindingFlags bindingFlags)
@@ -139,21 +139,21 @@ namespace Remotion.Mixins.Utilities
 
     public static bool IsAssemblySigned (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
       // C# compiler 7.2 already provides caching for anonymous method.
       return s_isAssemblySignedCache.GetOrAdd(assembly, asm => IsAssemblySigned(asm.GetName()));
     }
 
     public static bool IsAssemblySigned (AssemblyName assemblyName)
     {
-      ArgumentUtility.CheckNotNull("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNull(nameof(assemblyName), assemblyName);
       byte[]? publicKeyOrToken = assemblyName.GetPublicKey() ?? assemblyName.GetPublicKeyToken();
       return publicKeyOrToken != null && publicKeyOrToken.Length > 0;
     }
 
     public static bool IsReachableFromSignedAssembly (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       if (!IsAssemblySigned(type.Assembly))
         return false;
@@ -166,13 +166,13 @@ namespace Remotion.Mixins.Utilities
 
     public static bool IsRangeReachableFromSignedAssembly (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentUtility.CheckNotNull(nameof(types), types);
       return types.All(IsReachableFromSignedAssembly);
     }
 
     public static MethodInfo?[] GetAssociatedMethods (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
 
       switch (memberInfo.MemberType)
       {

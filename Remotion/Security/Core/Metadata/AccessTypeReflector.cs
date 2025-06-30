@@ -42,7 +42,7 @@ namespace Remotion.Security.Metadata
 
     public AccessTypeReflector (IEnumerationReflector enumerationReflector)
     {
-      ArgumentUtility.CheckNotNull("enumerationReflector", enumerationReflector);
+      ArgumentUtility.CheckNotNull(nameof(enumerationReflector), enumerationReflector);
       _enumerationReflector = enumerationReflector;
     }
 
@@ -55,8 +55,8 @@ namespace Remotion.Security.Metadata
 
     public List<EnumValueInfo> GetAccessTypesFromAssembly (Assembly assembly, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
-      ArgumentUtility.CheckNotNull("cache", cache);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentUtility.CheckNotNull(nameof(cache), cache);
 
       List<EnumValueInfo> accessTypes = new List<EnumValueInfo>();
       foreach (var type in AssemblyTypeCache.GetTypes(assembly))
@@ -78,8 +78,8 @@ namespace Remotion.Security.Metadata
 
     public List<EnumValueInfo> GetAccessTypesFromType (Type type, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("cache", cache);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(cache), cache);
 
       Dictionary<Enum, EnumValueInfo> accessTypes = _enumerationReflector.GetValues(typeof(GeneralAccessTypes), cache);
       foreach (KeyValuePair<Enum, EnumValueInfo> entry in accessTypes)

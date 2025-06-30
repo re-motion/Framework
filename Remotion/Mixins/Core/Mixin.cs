@@ -41,7 +41,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static TMixin? Get<TMixin> (object mixinTarget) where TMixin : class
     {
-      ArgumentUtility.CheckNotNull("mixinTarget", mixinTarget);
+      ArgumentUtility.CheckNotNull(nameof(mixinTarget), mixinTarget);
       return (TMixin?)Get(typeof(TMixin), mixinTarget);
     }
 
@@ -60,8 +60,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static object? Get (Type mixinType, object mixinTarget)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull("mixinTarget", mixinTarget);
+      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentUtility.CheckNotNull(nameof(mixinTarget), mixinTarget);
 
       var castMixinTarget = mixinTarget as IMixinTarget;
       if (castMixinTarget != null)

@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public ClassSerializer (ITableSerializer tableSerializer)
     {
-      ArgumentUtility.CheckNotNull("tableSerializer", tableSerializer);
+      ArgumentUtility.CheckNotNull(nameof(tableSerializer), tableSerializer);
 
       _tableSerializer = tableSerializer;
     }
 
     public XElement Serialize (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       return new XElement(
           Constants.Namespace + "class",

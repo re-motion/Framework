@@ -49,7 +49,7 @@ public class SingleControlItemCollection
     set
     {
       if (value != null && ! IsSupportedType(value))
-        throw ArgumentUtility.CreateArgumentTypeException("value", value.GetType(), null);
+        throw ArgumentUtility.CreateArgumentTypeException(nameof(value), value.GetType(), null);
       _controlItem = value;
       if (_controlItem != null)
         _controlItem.OwnerControl = _ownerControl;

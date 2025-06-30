@@ -40,7 +40,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     public WxeReturnOptions (NameValueCollection callerUrlParameters)
-      : this(true, ArgumentUtility.CheckNotNull("callerUrlParameters", callerUrlParameters))
+      : this(true, ArgumentUtility.CheckNotNull(nameof(callerUrlParameters), callerUrlParameters))
     {
     }
 

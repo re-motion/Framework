@@ -46,7 +46,7 @@ namespace Remotion.Validation.Validators
 
     public NotEmptyCollectionValidator ([NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       ErrorMessage = "The value must not be empty.";
       ValidationMessage = validationMessage;
@@ -54,7 +54,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

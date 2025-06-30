@@ -50,9 +50,9 @@ namespace Remotion.Web.Development.WebTesting
 
     protected WebTestAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("control", control);
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       _logger = logger;
       _control = control;
@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="options">See <see cref="IWebTestActionOptions"/> for more information.</param>
     public void Execute ([NotNull] IWebTestActionOptions options)
     {
-      ArgumentUtility.CheckNotNull("options", options);
+      ArgumentUtility.CheckNotNull(nameof(options), options);
 
       _actionID = WebTestActionSequenceNumberGenerator.GetNextSequenceNumber();
       var completionDetectionStrategy = options.CompletionDetectionStrategy ?? new NullCompletionDetectionStrategy();
@@ -116,7 +116,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected void OutputDebugMessage ([NotNull] string message)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("message", message);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
 
       _logger.LogDebug("Action {0}: {1}", _actionID, message);
     }

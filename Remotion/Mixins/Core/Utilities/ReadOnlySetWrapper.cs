@@ -31,7 +31,7 @@ namespace Remotion.Collections
 
     public ReadOnlySetWrapper (ISet<T> collection)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentUtility.CheckNotNull(nameof(collection), collection);
 
       _collection = collection;
     }

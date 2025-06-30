@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public AnonymousRelationEndPointDefinition (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
       _classDefinition = classDefinition;
     }
 
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetRelationDefinition (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull(nameof(relationDefinition), relationDefinition);
 
       _relationDefinition = relationDefinition;
     }

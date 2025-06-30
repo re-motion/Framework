@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding
       set
       {
         if (value == this)
-          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", "value");
+          throw new ArgumentException("Assigning a reference data source as its own data source is not allowed.", nameof(value));
         if (_dataSource != null)
           _dataSource.Unregister(this);
         _dataSource = value;
@@ -154,7 +154,7 @@ namespace Remotion.ObjectBinding
     object? IBusinessObjectBoundControl.Value
     {
       get { return BusinessObject; }
-      set { BusinessObject = ArgumentUtility.CheckType<IBusinessObject>("value", value); }
+      set { BusinessObject = ArgumentUtility.CheckType<IBusinessObject>(nameof(value), value); }
     }
 
     bool IBusinessObjectBoundControl.HasValue

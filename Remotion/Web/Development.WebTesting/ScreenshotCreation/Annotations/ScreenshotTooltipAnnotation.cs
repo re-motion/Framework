@@ -37,8 +37,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         [NotNull] ScreenshotTooltipStyle style,
         WebPadding padding)
     {
-      ArgumentUtility.CheckNotNull("content", content);
-      ArgumentUtility.CheckNotNull("style", style);
+      ArgumentUtility.CheckNotNull(nameof(content), content);
+      ArgumentUtility.CheckNotNull(nameof(style), style);
 
       _content = content;
       _style = style;
@@ -79,8 +79,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("canvas", canvas);
-      ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
+      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
+      ArgumentUtility.CheckNotNull(nameof(resolvedScreenshotElement), resolvedScreenshotElement);
 
       // Calculate the maximum size of the tooltip
       var border = (int)Math.Round(_style.Border.Width);
@@ -147,7 +147,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         case TooltipPositioning.BottomRight:
           return new Point(centerX + _padding.Left - _padding.Right, element.Bottom + _padding.Bottom);
         default:
-          throw new ArgumentOutOfRangeException("alignment", alignment, null);
+          throw new ArgumentOutOfRangeException(nameof(alignment), alignment, null);
       }
     }
   }

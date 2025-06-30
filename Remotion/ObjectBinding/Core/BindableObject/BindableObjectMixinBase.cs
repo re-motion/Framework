@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </exception>
     public object? GetProperty (IBusinessObjectProperty property)
     {
-      var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase>("property", property);
+      var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase>(nameof(property), property);
 
       object nativeValue = propertyBase.GetValue((IBusinessObject)Target);
 
@@ -67,7 +67,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </exception>
     public void SetProperty (IBusinessObjectProperty property, object? value)
     {
-      var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase>("property", property);
+      var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase>(nameof(property), property);
 
       object? nativeValue = propertyBase.ConvertToNativePropertyType(value);
 

@@ -54,7 +54,7 @@ namespace Remotion.Mixins.Definitions
     public MixinDefinition (MixinKind mixinKind, Type type, TargetClassDefinition targetClass, bool acceptsAlphabeticOrdering)
         : base(type)
     {
-      ArgumentUtility.CheckNotNull("targetClass", targetClass);
+      ArgumentUtility.CheckNotNull(nameof(targetClass), targetClass);
 
       _mixinKind = mixinKind;
       _targetClass = targetClass;
@@ -134,7 +134,7 @@ namespace Remotion.Mixins.Definitions
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
 
       visitor.Visit(this);
 

@@ -29,7 +29,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
   {
     public string GetShortFormattedTypeName (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       var name = BuildUnnestedTypeName(type);
 
@@ -44,7 +44,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
     public string GetFullFormattedTypeName (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       var name = BuildUnnestedTypeName(type);
 
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
     public string GetConstructorName (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return Regex.Replace(type.Name, @"`\d+$", "");
     }
@@ -115,8 +115,8 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
     public void AddParameterMarkup (ParameterInfo[] parameterInfos, XElement signatureElement)
     {
-      ArgumentUtility.CheckNotNull("parameterInfos", parameterInfos);
-      ArgumentUtility.CheckNotNull("signatureElement", signatureElement);
+      ArgumentUtility.CheckNotNull(nameof(parameterInfos), parameterInfos);
+      ArgumentUtility.CheckNotNull(nameof(signatureElement), signatureElement);
 
       signatureElement.Add(CreateElement("Text", "("));
 
@@ -134,41 +134,41 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
     public XElement CreateConstructorMarkup (string name, ParameterInfo[] parameterInfos)
     {
-      ArgumentUtility.CheckNotNull("name", name);
-      ArgumentUtility.CheckNotNull("parameterInfos", parameterInfos);
+      ArgumentUtility.CheckNotNull(nameof(name), name);
+      ArgumentUtility.CheckNotNull(nameof(parameterInfos), parameterInfos);
 
       return CreateMemberMarkup(null, null, name, parameterInfos);
     }
 
     public XElement CreateMethodMarkup (string methodName, Type returnType, ParameterInfo[] parameterInfos, Type[]? genericParameters = null)
     {
-      ArgumentUtility.CheckNotNull("methodName", methodName);
-      ArgumentUtility.CheckNotNull("returnType", returnType);
-      ArgumentUtility.CheckNotNull("parameterInfos", parameterInfos);
+      ArgumentUtility.CheckNotNull(nameof(methodName), methodName);
+      ArgumentUtility.CheckNotNull(nameof(returnType), returnType);
+      ArgumentUtility.CheckNotNull(nameof(parameterInfos), parameterInfos);
 
       return CreateMemberMarkup(null, returnType, methodName, parameterInfos, genericParameters);
     }
 
     public XElement CreateEventMarkup (string eventName, Type handlerType)
     {
-      ArgumentUtility.CheckNotNull("eventName", eventName);
-      ArgumentUtility.CheckNotNull("handlerType", handlerType);
+      ArgumentUtility.CheckNotNull(nameof(eventName), eventName);
+      ArgumentUtility.CheckNotNull(nameof(handlerType), handlerType);
 
       return CreateMemberMarkup("event", handlerType, eventName, null);
     }
 
     public XElement CreateFieldMarkup (string fieldName, Type fieldType)
     {
-      ArgumentUtility.CheckNotNull("fieldName", fieldName);
-      ArgumentUtility.CheckNotNull("fieldType", fieldType);
+      ArgumentUtility.CheckNotNull(nameof(fieldName), fieldName);
+      ArgumentUtility.CheckNotNull(nameof(fieldType), fieldType);
 
       return CreateMemberMarkup(null, fieldType, fieldName, null);
     }
 
     public XElement CreatePropertyMarkup (string propertyName, Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull(nameof(propertyName), propertyName);
+      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
 
       return CreateMemberMarkup(null, propertyType, propertyName, null);
     }

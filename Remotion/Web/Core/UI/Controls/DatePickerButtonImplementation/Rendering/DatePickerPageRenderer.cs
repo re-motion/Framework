@@ -27,14 +27,14 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 
     public DatePickerPageRenderer (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
 
       htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterPageStylesheetLink();

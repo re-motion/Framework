@@ -37,14 +37,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public CompoundValidatorFactory (IEnumerable<IBocValidatorFactory<T>> innerFactories)
     {
-      ArgumentUtility.CheckNotNull("innerFactories", innerFactories);
+      ArgumentUtility.CheckNotNull(nameof(innerFactories), innerFactories);
 
       _innerFactories = innerFactories.ToList().AsReadOnly();
     }
 
     public IEnumerable<BaseValidator> CreateValidators (T control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
 
       return _innerFactories.SelectMany(i => i.CreateValidators(control, isReadOnly));
     }

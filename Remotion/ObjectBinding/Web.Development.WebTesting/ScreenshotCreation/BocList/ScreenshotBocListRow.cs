@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentUtility.CheckNotNull(nameof(locator), locator);
 
       return _fluentRow.ResolveDesktopCoordinates(locator);
     }

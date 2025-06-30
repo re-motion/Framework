@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public IReadOnlyCollection<Guid> GetObjectIDsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return _reflectionBusinessObjectData
           .SelectMany(e => e.Value.Keys)
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetReadObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       var oldMemoryStream = _reflectionBusinessObjectData[type].GetValueOrDefault(id);
       if (oldMemoryStream == null)
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetWriteObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       _reflectionBusinessObjectData[type].GetValueOrDefault(id)?.Dispose();
 

@@ -35,7 +35,7 @@ namespace Remotion.Security.Metadata
 
     public void ConvertAndSave (LocalizedName[] localizedNames, CultureInfo culture, string filename)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("filename", filename);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(filename), filename);
 
       XmlDocument document = Convert(localizedNames, culture.Name);
       document.Save(_fileNameStrategy.GetLocalizationFileName(filename, culture));
@@ -43,8 +43,8 @@ namespace Remotion.Security.Metadata
 
     public XmlDocument Convert (LocalizedName[] localizedNames, string culture)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("localizedNames", localizedNames);
-      ArgumentUtility.CheckNotNull("culture", culture);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(localizedNames), localizedNames);
+      ArgumentUtility.CheckNotNull(nameof(culture), culture);
 
       XmlDocument document = new XmlDocument();
 

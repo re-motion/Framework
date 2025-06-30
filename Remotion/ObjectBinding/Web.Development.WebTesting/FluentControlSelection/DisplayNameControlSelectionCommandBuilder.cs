@@ -40,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
 
     public DisplayNameControlSelectionCommandBuilder ([NotNull] string displayName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayName), displayName);
 
       _displayName = displayName;
     }
@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new DisplayNameControlSelectionCommand<TControlObject>(controlSelector, _displayName);
     }
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new DisplayNameControlSelectionCommand<TControlObject>(controlSelector, _displayName);
     }
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
 
       return new DisplayNameControlSelectionCommand<TControlObject>(controlSelector, _displayName);
     }

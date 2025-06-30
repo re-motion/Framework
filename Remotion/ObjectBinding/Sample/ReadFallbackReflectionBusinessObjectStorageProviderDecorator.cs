@@ -31,8 +31,8 @@ namespace Remotion.ObjectBinding.Sample
         IReflectionBusinessObjectStorageProvider innerBusinessObjectStorageProvider,
         IReflectionBusinessObjectStorageProvider readFallbackBusinessObjectStorageProvider)
     {
-      ArgumentUtility.CheckNotNull("innerBusinessObjectStorageProvider", innerBusinessObjectStorageProvider);
-      ArgumentUtility.CheckNotNull("readFallbackBusinessObjectStorageProvider", readFallbackBusinessObjectStorageProvider);
+      ArgumentUtility.CheckNotNull(nameof(innerBusinessObjectStorageProvider), innerBusinessObjectStorageProvider);
+      ArgumentUtility.CheckNotNull(nameof(readFallbackBusinessObjectStorageProvider), readFallbackBusinessObjectStorageProvider);
 
       _innerBusinessObjectStorageProvider = innerBusinessObjectStorageProvider;
       _readFallbackBusinessObjectStorageProvider = readFallbackBusinessObjectStorageProvider;
@@ -41,7 +41,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public IReadOnlyCollection<Guid> GetObjectIDsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return _readFallbackBusinessObjectStorageProvider.GetObjectIDsForType(type)
           .Concat(_innerBusinessObjectStorageProvider.GetObjectIDsForType(type))
@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetReadObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return _innerBusinessObjectStorageProvider.GetReadObjectStream(type, id)
              ?? _readFallbackBusinessObjectStorageProvider.GetReadObjectStream(type, id);
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetWriteObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       return _innerBusinessObjectStorageProvider.GetWriteObjectStream(type, id);
     }

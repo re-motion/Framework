@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting
     internal ControlObjectContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope, [NotNull] ILoggerFactory loggerFactory)
         : base(scope, loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("pageObject", pageObject);
+      ArgumentUtility.CheckNotNull(nameof(pageObject), pageObject);
 
       _pageObject = pageObject;
     }
@@ -87,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     public ControlObjectContext CloneForControl ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
 
       try
       {
@@ -133,7 +133,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public PageObjectContext CloneForNewWindow ([NotNull] string windowLocator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("windowLocator", windowLocator);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(windowLocator), windowLocator);
 
       // No error page detection. See remarks documentation on this method.
 
@@ -154,7 +154,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public PageObjectContext CloneForNewPopupWindow ([NotNull] string windowLocator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("windowLocator", windowLocator);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(windowLocator), windowLocator);
 
       // No error page detection. See remarks documentation on this method.
 

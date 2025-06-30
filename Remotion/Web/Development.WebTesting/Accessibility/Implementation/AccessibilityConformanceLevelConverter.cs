@@ -50,7 +50,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// </summary>
     public static AccessibilityConformanceLevel ConvertToEnum ([NotNull] string conformanceLevelAsString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("conformanceLevelAsString", conformanceLevelAsString);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(conformanceLevelAsString), conformanceLevelAsString);
 
       if (!s_stringToEnum.TryGetValue(conformanceLevelAsString, out var conformanceLevel))
         throw new InvalidOperationException($"The conformance level '{conformanceLevelAsString}' is not supported.");
@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// </summary>
     public static bool IsValid ([NotNull] string conformanceLevelAsString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("conformanceLevelAsString", conformanceLevelAsString);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(conformanceLevelAsString), conformanceLevelAsString);
 
       return s_stringToEnum.ContainsKey(conformanceLevelAsString);
     }

@@ -36,8 +36,8 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
 
     public TitleControlSelectionCommand ([NotNull] ITitleControlSelector<TControlObject> controlSelector, [NotNull] string title)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("title", title);
+      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
 
       _controlSelector = controlSelector;
       _title = title;
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       return _controlSelector.SelectPerTitle(context, _title);
     }
@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject? SelectOptional (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       return _controlSelector.SelectOptionalPerTitle(context, _title);
     }
@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public bool Exists (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       return _controlSelector.ExistsPerTitle(context, _title);
     }

@@ -50,7 +50,7 @@ public class WebTab: IWebTab, IControlStateManager
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, WebString text, IconInfo? icon)
   {
-    ArgumentUtility.CheckNotNull("itemID", itemID);
+    ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
 
     _itemID = itemID;
     _text = text;
@@ -155,7 +155,7 @@ public class WebTab: IWebTab, IControlStateManager
     get { return _itemID; }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
       if (! string.IsNullOrEmpty(value))
       {
         WebTabCollection? tabs = null;
@@ -164,7 +164,7 @@ public class WebTab: IWebTab, IControlStateManager
         if (tabs != null)
         {
           if (tabs.Find(value) != null)
-            throw new ArgumentException(string.Format("The collection already contains a tab with ItemID '{0}'.", value), "value");
+            throw new ArgumentException(string.Format("The collection already contains a tab with ItemID '{0}'.", value), nameof(value));
         }
       }
       _itemID = value;
@@ -189,7 +189,7 @@ public class WebTab: IWebTab, IControlStateManager
     get { return _text; }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty("value", value.GetValue());
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value.GetValue());
       _text = value;
     }
   }
@@ -358,8 +358,8 @@ public class WebTab: IWebTab, IControlStateManager
 
   public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
   {
-    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-    ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+    ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+    ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
 
     var key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
     if (! string.IsNullOrEmpty(key))
@@ -414,7 +414,7 @@ public class WebTabClickEventArgs: EventArgs
   /// <summary> Initializes an instance. </summary>
   public WebTabClickEventArgs (WebTab tab)
   {
-    ArgumentUtility.CheckNotNull("tab", tab);
+    ArgumentUtility.CheckNotNull(nameof(tab), tab);
     _tab = tab;
   }
 

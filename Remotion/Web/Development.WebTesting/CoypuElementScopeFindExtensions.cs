@@ -34,8 +34,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static ElementScope FindChild ([NotNull] this ElementScope scope, [NotNull] string idSuffix, [CanBeNull] Options? options = null)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty("idSuffix", idSuffix);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(idSuffix), idSuffix);
 
       var fullId = string.Format("{0}_{1}", scope.Id, idSuffix);
       return scope.FindId(fullId, options);
@@ -55,10 +55,10 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string attributeName,
         [NotNull] string attributeValue)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty("tagSelector", tagSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
-      ArgumentUtility.CheckNotNullOrEmpty("attributeValue", attributeValue);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(tagSelector), tagSelector);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeValue), attributeValue);
 
       var cssSelector = string.Format("{0}[{1}={2}]", tagSelector, attributeName, DomSelectorUtility.CreateMatchValueForCssSelector(attributeValue));
       return scope.FindCss(cssSelector);
@@ -78,10 +78,10 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string attributeName,
         [NotNull] string attributeValue)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty("tagSelector", tagSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
-      ArgumentUtility.CheckNotNullOrEmpty("attributeValue", attributeValue);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(tagSelector), tagSelector);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeValue), attributeValue);
 
       var cssSelector = string.Format("{0}[{1}={2}]", tagSelector, attributeName, DomSelectorUtility.CreateMatchValueForCssSelector(attributeValue));
       return scope.FindAllCss(cssSelector);
@@ -104,10 +104,10 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string attributeName,
         [NotNull] string attributeValue)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty("tagSelector", tagSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
-      ArgumentUtility.CheckNotNullOrEmpty("attributeValue", attributeValue);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(tagSelector), tagSelector);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeValue), attributeValue);
 
       var cssSelector = string.Format("{0}[{1}{2}{3}]", tagSelector, attributeName, op.ToCssString(), DomSelectorUtility.CreateMatchValueForCssSelector(attributeValue));
       return scope.FindCss(cssSelector);
@@ -125,9 +125,9 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string tagSelector,
         [NotNull] IDictionary<string, string> attributes)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("tagSelector", tagSelector);
-      ArgumentUtility.CheckNotNull("attributes", attributes);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentUtility.CheckNotNull(nameof(tagSelector), tagSelector);
+      ArgumentUtility.CheckNotNull(nameof(attributes), attributes);
 
       const string dmaCheckPattern = "[{0}={1}]";
       var dmaCheck = string.Concat(
@@ -143,7 +143,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The <see cref="ElementScope"/> of the found element.</returns>
     public static ElementScope FindLink ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull(nameof(scope), scope);
 
       return scope.FindCss("a");
     }

@@ -25,7 +25,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
   {
     public static string AsArgument (this IDomainObjectHandle<Tenant> handle)
     {
-      ArgumentUtility.CheckNotNull("handle", handle);
+      ArgumentUtility.CheckNotNull(nameof(handle), handle);
       return handle.ObjectID.ToString();
     }
   }

@@ -47,9 +47,9 @@ namespace Remotion.Mixins
         where TTarget : class
         where TNext: class
     {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
-      ArgumentUtility.CheckNotNull("targetMock", targetMock);
-      ArgumentUtility.CheckNotNull("nextMock", nextMock);
+      ArgumentUtility.CheckNotNull(nameof(mixin), mixin);
+      ArgumentUtility.CheckNotNull(nameof(targetMock), targetMock);
+      ArgumentUtility.CheckNotNull(nameof(nextMock), nextMock);
 
       ((IInitializableMixin)mixin).Initialize(targetMock, nextMock);
     }
@@ -72,8 +72,8 @@ namespace Remotion.Mixins
     public static void MockMixinTarget<TTarget> (Mixin<TTarget> mixin, TTarget targetMock)
         where TTarget : class
     {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
-      ArgumentUtility.CheckNotNull("targetMock", targetMock);
+      ArgumentUtility.CheckNotNull(nameof(mixin), mixin);
+      ArgumentUtility.CheckNotNull(nameof(targetMock), targetMock);
 
       ((IInitializableMixin)mixin).Initialize(targetMock, null);
     }
@@ -103,9 +103,9 @@ namespace Remotion.Mixins
         where TNext : class
         where TMixin : Mixin<TTarget, TNext>
     {
-      ArgumentUtility.CheckNotNull("targetMock", targetMock);
-      ArgumentUtility.CheckNotNull("nextMock", nextMock);
-      ArgumentUtility.CheckNotNull("args", args);
+      ArgumentUtility.CheckNotNull(nameof(targetMock), targetMock);
+      ArgumentUtility.CheckNotNull(nameof(nextMock), nextMock);
+      ArgumentUtility.CheckNotNull(nameof(args), args);
 
       var mixin = ObjectFactory.Create<TMixin>(true, ParamList.CreateDynamic(args));
       MockMixinTarget(mixin, targetMock, nextMock);
@@ -134,8 +134,8 @@ namespace Remotion.Mixins
       where TTarget : class
       where TMixin : Mixin<TTarget>
     {
-      ArgumentUtility.CheckNotNull("targetMock", targetMock);
-      ArgumentUtility.CheckNotNull("args", args);
+      ArgumentUtility.CheckNotNull(nameof(targetMock), targetMock);
+      ArgumentUtility.CheckNotNull(nameof(args), args);
 
       var mixin = ObjectFactory.Create<TMixin>(true, ParamList.CreateDynamic(args));
       MockMixinTarget(mixin, targetMock);

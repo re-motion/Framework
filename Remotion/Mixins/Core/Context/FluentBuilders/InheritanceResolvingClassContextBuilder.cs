@@ -55,9 +55,9 @@ namespace Remotion.Mixins.Context.FluentBuilders
         ClassContextCollection parentContexts,
         IMixinInheritancePolicy inheritancePolicy)
     {
-      ArgumentUtility.CheckNotNull("classContextBuilders", classContextBuilders);
-      ArgumentUtility.CheckNotNull("parentContexts", parentContexts);
-      ArgumentUtility.CheckNotNull("inheritancePolicy", inheritancePolicy);
+      ArgumentUtility.CheckNotNull(nameof(classContextBuilders), classContextBuilders);
+      ArgumentUtility.CheckNotNull(nameof(parentContexts), parentContexts);
+      ArgumentUtility.CheckNotNull(nameof(inheritancePolicy), inheritancePolicy);
 
       _buildersAndParentContexts = classContextBuilders.ToDictionary(
           classContextBuilder => classContextBuilder.TargetType,
@@ -81,7 +81,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
 
     public ClassContext Build (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       // First probe the cache...
       var cachedContext = GetFinishedContextFromCache(type);

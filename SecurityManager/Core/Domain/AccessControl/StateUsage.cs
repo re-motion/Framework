@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   {
     public static StateUsage NewObject (StateDefinition stateDefinition)
     {
-      ArgumentUtility.CheckNotNull("stateDefinition", stateDefinition);
+      ArgumentUtility.CheckNotNull(nameof(stateDefinition), stateDefinition);
 
       return NewObject<StateUsage>(ParamList.Create(stateDefinition));
     }

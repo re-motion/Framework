@@ -28,7 +28,7 @@ namespace Remotion.Validation.Implementation
   {
     public Type? GetValidatedType (Type collectorType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("collectorType", collectorType, typeof(IValidationRuleCollector));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(collectorType), collectorType, typeof(IValidationRuleCollector));
 
       return null;
     }

@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
         IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<ObjectID>> objectIDLoadCommand,
         IRdbmsProviderCommandFactory rdbmsProviderCommandFactory)
     {
-      ArgumentUtility.CheckNotNull("objectIDLoadCommand", objectIDLoadCommand);
-      ArgumentUtility.CheckNotNull("rdbmsProviderCommandFactory", rdbmsProviderCommandFactory);
+      ArgumentUtility.CheckNotNull(nameof(objectIDLoadCommand), objectIDLoadCommand);
+      ArgumentUtility.CheckNotNull(nameof(rdbmsProviderCommandFactory), rdbmsProviderCommandFactory);
 
       _objectIDLoadCommand = objectIDLoadCommand;
       _rdbmsProviderCommandFactory = rdbmsProviderCommandFactory;
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
 
       var objectIDs = _objectIDLoadCommand.Execute(executionContext);
       return _rdbmsProviderCommandFactory.CreateForSortedMultiIDLookup(objectIDs.ToArray()).Execute(executionContext);
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
 
       var objectIDs = _objectIDLoadCommand.Execute(executionContext);
       return _rdbmsProviderCommandFactory.CreateForSortedMultiIDLookup(objectIDs.ToArray()).Execute(executionContext);

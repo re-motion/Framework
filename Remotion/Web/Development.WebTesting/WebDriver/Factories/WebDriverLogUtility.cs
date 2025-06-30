@@ -27,9 +27,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 
     public static string CreateLogFile (string logsDirectory, string browserName, ILogger logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("logsDirectory", logsDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty("browserName", browserName);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(logsDirectory), logsDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(browserName), browserName);
+      ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       var finalLogsDirectory = Path.Combine(logsDirectory, SubDirectoryName);
 

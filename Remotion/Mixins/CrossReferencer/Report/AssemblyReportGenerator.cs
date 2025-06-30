@@ -36,9 +36,9 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Assembly> assemblyIdentifierGenerator,
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
-      ArgumentUtility.CheckNotNull("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
+      ArgumentUtility.CheckNotNull(nameof(involvedTypes), involvedTypes);
+      ArgumentUtility.CheckNotNull(nameof(assemblyIdentifierGenerator), assemblyIdentifierGenerator);
+      ArgumentUtility.CheckNotNull(nameof(involvedTypeIdentifierGenerator), involvedTypeIdentifierGenerator);
 
       _involvedTypes = involvedTypes;
       _assemblyIdentifierGenerator = assemblyIdentifierGenerator;

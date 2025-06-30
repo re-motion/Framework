@@ -42,13 +42,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         Type requiredItemType,
         IVirtualEndPointProvider virtualEndPointProvider)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull("requiredItemType", requiredItemType);
-      ArgumentUtility.CheckNotNull("virtualEndPointProvider", virtualEndPointProvider);
+      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentUtility.CheckNotNull(nameof(requiredItemType), requiredItemType);
+      ArgumentUtility.CheckNotNull(nameof(virtualEndPointProvider), virtualEndPointProvider);
 
 
       if (endPointID.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException("Associated end-point must be a CollectionEndPoint.", "endPointID");
+        throw new ArgumentException("Associated end-point must be a CollectionEndPoint.", nameof(endPointID));
 
       _endPointID = endPointID;
       _requiredItemType = requiredItemType;
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool ContainsObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       var data = GetAssociatedEndPoint().GetData();
       return data.ContainsObjectID(objectID);
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public DomainObject? GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       var data = GetAssociatedEndPoint().GetData();
       return data.GetObject(objectID);
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
 
       var data = GetAssociatedEndPoint().GetData();
       return data.IndexOf(objectID);
@@ -152,11 +152,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void Add (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       CheckItemType(domainObject, "domainObject");
       if (ContainsObjectID(domainObject.ID))
-        throw new ArgumentException(string.Format("The collection already contains an object with ID '{0}'.", domainObject.ID), "domainObject");
+        throw new ArgumentException(string.Format("The collection already contains an object with ID '{0}'.", domainObject.ID), nameof(domainObject));
       CheckClientTransaction(domainObject, "Cannot add DomainObject '{0}' into collection of property '{1}' of DomainObject '{2}'.");
       var associatedEndPoint = GetAssociatedEndPoint();
       var associatedDomainObjectReference = associatedEndPoint.GetDomainObjectReference();
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
 
       var existingObject = GetObject(domainObject.ID);
       if (existingObject != null && existingObject != domainObject)
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         var message = string.Format(
             "The object to be removed has the same ID ('{0}') as an object in this collection, but is a different object reference.",
             domainObject.ID);
-        throw new ArgumentException(message, "domainObject");
+        throw new ArgumentException(message, nameof(domainObject));
       }
       CheckClientTransaction(domainObject, "Cannot remove DomainObject '{0}' from collection of property '{1}' of DomainObject '{2}'.");
       var associatedEndPoint = GetAssociatedEndPoint();

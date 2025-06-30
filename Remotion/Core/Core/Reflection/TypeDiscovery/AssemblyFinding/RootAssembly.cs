@@ -29,7 +29,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     public RootAssembly (Assembly assembly, bool followReferences)
         : this()
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
 
       Assembly = assembly;
       FollowReferences = followReferences;

@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     public FetchedCollectionRelationDataRegistrationAgent (IVirtualEndPointProvider virtualEndPointProvider)
     {
-      ArgumentUtility.CheckNotNull("virtualEndPointProvider", virtualEndPointProvider);
+      ArgumentUtility.CheckNotNull(nameof(virtualEndPointProvider), virtualEndPointProvider);
       _virtualEndPointProvider = virtualEndPointProvider;
     }
 
@@ -51,12 +51,12 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         ICollection<ILoadedObjectData> originatingObjects,
         ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("originatingObjects", originatingObjects);
-      ArgumentUtility.CheckNotNull("relatedObjects", relatedObjects);
+      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull(nameof(originatingObjects), originatingObjects);
+      ArgumentUtility.CheckNotNull(nameof(relatedObjects), relatedObjects);
 
       if (relationEndPointDefinition.Cardinality != CardinalityType.Many || relationEndPointDefinition.IsAnonymous)
-        throw new ArgumentException("Only collection-valued relations can be handled by this registration agent.", "relationEndPointDefinition");
+        throw new ArgumentException("Only collection-valued relations can be handled by this registration agent.", nameof(relationEndPointDefinition));
 
       var groupedRelatedObjects = CorrelateRelatedObjects(relatedObjects, relationEndPointDefinition);
 

@@ -38,13 +38,13 @@ namespace Remotion.Validation.Validators
 
     public LengthValidator (int min, int max, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       if (min <= 0)
-        throw new ArgumentOutOfRangeException("min", "Value must be greater than zero.");
+        throw new ArgumentOutOfRangeException(nameof(min), "Value must be greater than zero.");
 
       if (max <= min)
-        throw new ArgumentOutOfRangeException("max", "Max must be greater than min.");
+        throw new ArgumentOutOfRangeException(nameof(max), "Max must be greater than min.");
 
       Max = max;
       Min = min;
@@ -54,7 +54,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

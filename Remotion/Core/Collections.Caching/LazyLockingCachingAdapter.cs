@@ -56,7 +56,7 @@ namespace Remotion.Collections.Caching
 
     public LazyLockingCachingAdapter (ICache<TKey, Lazy<Wrapper>> innerCache)
     {
-      ArgumentUtility.CheckNotNull("innerCache", innerCache);
+      ArgumentUtility.CheckNotNull(nameof(innerCache), innerCache);
 
       _innerCache = new LockingCacheDecorator<TKey, Lazy<Wrapper>>(innerCache);
     }
@@ -68,8 +68,8 @@ namespace Remotion.Collections.Caching
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
-      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
+      ArgumentUtility.DebugCheckNotNull(nameof(valueFactory), valueFactory);
 
       Wrapper wrapper;
       if (_innerCache.TryGetValue(key, out var value))
@@ -82,7 +82,7 @@ namespace Remotion.Collections.Caching
 
     private Wrapper GetOrCreateValueWithClosure (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.CheckNotNull(nameof(valueFactory), valueFactory);
       var result = _innerCache.GetOrCreateValue(
           key,
           k => new Lazy<Wrapper>(() => new Wrapper(valueFactory(k)), LazyThreadSafetyMode.ExecutionAndPublication));
@@ -91,7 +91,7 @@ namespace Remotion.Collections.Caching
 
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       if (_innerCache.TryGetValue(key, out var result))
       {

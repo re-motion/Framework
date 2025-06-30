@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public ScalarValueLoadCommand (IDbCommandBuilder dbCommandBuilder)
     {
-      ArgumentUtility.CheckNotNull("dbCommandBuilder", dbCommandBuilder);
+      ArgumentUtility.CheckNotNull(nameof(dbCommandBuilder), dbCommandBuilder);
 
       _dbCommandBuilder = dbCommandBuilder;
     }
@@ -43,13 +43,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public object? Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
       return Execute<IRdbmsProviderReadWriteCommandExecutionContext>(executionContext);
     }
 
     public object? Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
       return Execute<IRdbmsProviderReadOnlyCommandExecutionContext>(executionContext);
     }
 

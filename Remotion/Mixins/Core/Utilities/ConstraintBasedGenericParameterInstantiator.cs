@@ -28,10 +28,10 @@ namespace Remotion.Mixins.Utilities
   {
     public Type Instantiate (Type typeParameter)
     {
-      ArgumentUtility.CheckNotNull("typeParameter", typeParameter);
+      ArgumentUtility.CheckNotNull(nameof(typeParameter), typeParameter);
 
       if (!typeParameter.IsGenericParameter)
-        throw new ArgumentException("Type must be a generic parameter.", "typeParameter");
+        throw new ArgumentException("Type must be a generic parameter.", nameof(typeParameter));
 
       Type? candidate = InferFromGenericParameterConstraints(typeParameter);
 

@@ -45,13 +45,13 @@ namespace Remotion.Data.DomainObjects.Mapping
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator instanceCreator)
     {
-      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
-      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
-      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull("propertyDefaultValueProvider", propertyDefaultValueProvider);
-      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
-      ArgumentUtility.CheckNotNull("instanceCreator", instanceCreator);
+      ArgumentUtility.CheckNotNull(nameof(nameResolver), nameResolver);
+      ArgumentUtility.CheckNotNull(nameof(classIDProvider), classIDProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyMetadataProvider), propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyDefaultValueProvider), propertyDefaultValueProvider);
+      ArgumentUtility.CheckNotNull(nameof(sortExpressionDefinitionProvider), sortExpressionDefinitionProvider);
+      ArgumentUtility.CheckNotNull(nameof(instanceCreator), instanceCreator);
 
       _nameResolver = nameResolver;
       _classIDProvider = classIDProvider;
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public ClassDefinition CreateClassDefinition (Type type, ClassDefinition? baseClass)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
 
       var classReflector = new ClassReflector(
           type,
@@ -80,8 +80,8 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyDefinition CreatePropertyDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       var propertyReflector = new PropertyReflector(
           classDefinition,
@@ -96,9 +96,9 @@ namespace Remotion.Data.DomainObjects.Mapping
     public RelationDefinition CreateRelationDefinition (
         IDictionary<Type, ClassDefinition> classDefinitions, ClassDefinition classDefinition, IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(classDefinitions), classDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       var relationReflector = new RelationReflector(classDefinition, propertyInfo, _nameResolver, _propertyMetadataProvider);
       return relationReflector.GetMetadata(classDefinitions);
@@ -106,8 +106,8 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IRelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
 
       var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
           classDefinition,
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public ClassDefinition[] CreateClassDefinitionCollection (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentUtility.CheckNotNull(nameof(types), types);
 
       var classDefinitionCollectionFactory = new ClassDefinitionCollectionFactory(this);
       return classDefinitionCollectionFactory.CreateClassDefinitionCollection(types);
@@ -130,8 +130,8 @@ namespace Remotion.Data.DomainObjects.Mapping
     public PropertyDefinitionCollection CreatePropertyDefinitionCollection (
         ClassDefinition classDefinition, IEnumerable<IPropertyInformation> propertyInfos)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("propertyInfos", propertyInfos);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(propertyInfos), propertyInfos);
 
       var factory = new PropertyDefinitionCollectionFactory(this);
       return factory.CreatePropertyDefinitions(classDefinition, propertyInfos);
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationDefinition[] CreateRelationDefinitionCollection (IDictionary<Type, ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull(nameof(classDefinitions), classDefinitions);
 
       var factory = new RelationDefinitionCollectionFactory(this);
       return factory.CreateRelationDefinitionCollection(classDefinitions);
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       var factory = new RelationEndPointDefinitionCollectionFactory(this, _nameResolver, _propertyMetadataProvider);
       return factory.CreateRelationEndPointDefinitionCollection(classDefinition);

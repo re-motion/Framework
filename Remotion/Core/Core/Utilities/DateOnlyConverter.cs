@@ -12,7 +12,7 @@ public class DateOnlyConverter : TypeConverter
 
   public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
   {
-    ArgumentUtility.CheckNotNull("sourceType", sourceType);
+    ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
 
     return IsDateTimeType(sourceType) || base.CanConvertFrom(context, sourceType);
   }
@@ -35,7 +35,7 @@ public class DateOnlyConverter : TypeConverter
 
   public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
   {
-    ArgumentUtility.CheckNotNull("destinationType", destinationType);
+    ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
 
     if (!IsDateTimeType(destinationType))
       throw new NotSupportedException($"Cannot convert value to type '{destinationType}'. This converter only supports converting to '{typeof(DateTime)}'.");

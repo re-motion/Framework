@@ -83,10 +83,10 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       [JetBrains.Annotations.NotNull] IDownloadFileFinderStrategy downloadFileFinderStrategy,
       [JetBrains.Annotations.NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("downloadDirectory", downloadDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty("partialFileExtension", partialFileExtension);
-      ArgumentUtility.CheckNotNull("downloadFileFinderStrategy", downloadFileFinderStrategy);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(downloadDirectory), downloadDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(partialFileExtension), partialFileExtension);
+      ArgumentUtility.CheckNotNull(nameof(downloadFileFinderStrategy), downloadFileFinderStrategy);
+      ArgumentUtility.CheckNotNull(nameof(logger), logger);
 
       _downloadDirectory = downloadDirectory;
       _partialFileExtension = partialFileExtension;
@@ -100,7 +100,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
         TimeSpan downloadUpdatedTimeout,
         [JetBrains.Annotations.NotNull] IReadOnlyCollection<string> filesInDownloadDirectoryBeforeDownload)
     {
-      ArgumentUtility.CheckNotNull("filesInDownloadDirectoryBeforeDownload", filesInDownloadDirectoryBeforeDownload);
+      ArgumentUtility.CheckNotNull(nameof(filesInDownloadDirectoryBeforeDownload), filesInDownloadDirectoryBeforeDownload);
 
       if (downloadUpdatedTimeout < s_minimalDownloadTimeout)
         throw new ArgumentException(string.Format("DownloadTimeout must not be less than '{0}'.", s_minimalDownloadTimeout));

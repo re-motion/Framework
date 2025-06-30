@@ -50,10 +50,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         float? maxWidth,
         float? maxHeight)
     {
-      ArgumentUtility.CheckNotNull("content", content);
-      ArgumentUtility.CheckNotNull("font", font);
-      ArgumentUtility.CheckNotNull("foregroundBrush", foregroundBrush);
-      ArgumentUtility.CheckNotNull("stringFormat", stringFormat);
+      ArgumentUtility.CheckNotNull(nameof(content), content);
+      ArgumentUtility.CheckNotNull(nameof(font), font);
+      ArgumentUtility.CheckNotNull(nameof(foregroundBrush), foregroundBrush);
+      ArgumentUtility.CheckNotNull(nameof(stringFormat), stringFormat);
 
       _content = content;
       _font = font;
@@ -147,8 +147,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("canvas", canvas);
-      ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
+      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
+      ArgumentUtility.CheckNotNull(nameof(resolvedScreenshotElement), resolvedScreenshotElement);
 
       var size = _font.MeasureString(_content, new SizeF(_maxWidth, _maxHeight));
       var position = PositionAndApplyPadding(resolvedScreenshotElement.ElementBounds, size.Width, size.Height);

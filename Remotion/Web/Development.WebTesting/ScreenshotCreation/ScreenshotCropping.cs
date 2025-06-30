@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public Rectangle ApplyOnElement (Rectangle screenshotBounds, ResolvedScreenshotElement screenshotElement)
     {
-      ArgumentUtility.CheckNotNull("screenshotElement", screenshotElement);
+      ArgumentUtility.CheckNotNull(nameof(screenshotElement), screenshotElement);
 
       var area = _padding.Apply(screenshotElement.ElementBounds);
 

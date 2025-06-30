@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public ChangeState (object sender, string message)
     {
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull(nameof(sender), sender);
 
       _sender = sender;
       _message = message;
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public virtual void Check (ChangeState expectedState)
     {
-      ArgumentUtility.CheckNotNull("expectedState", expectedState);
+      ArgumentUtility.CheckNotNull(nameof(expectedState), expectedState);
 
       if (this.GetType() != expectedState.GetType())
       {

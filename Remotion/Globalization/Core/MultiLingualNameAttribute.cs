@@ -60,8 +60,8 @@ namespace Remotion.Globalization
     /// </param>
     public MultiLingualNameAttribute ([NotNull] string localizedName, [NotNull] string culture)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("localizedName", localizedName);
-      ArgumentUtility.CheckNotNull("culture", culture);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(localizedName), localizedName);
+      ArgumentUtility.CheckNotNull(nameof(culture), culture);
 
       _localizedName = localizedName;
       _culture = CultureInfo.GetCultureInfo(culture);

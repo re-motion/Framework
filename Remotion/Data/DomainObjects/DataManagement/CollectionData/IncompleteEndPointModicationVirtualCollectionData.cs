@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public IncompleteEndPointModificationVirtualCollectionData (RelationEndPointID associatedEndPointID)
     {
-      ArgumentUtility.CheckNotNull("associatedEndPointID", associatedEndPointID);
+      ArgumentUtility.CheckNotNull(nameof(associatedEndPointID), associatedEndPointID);
 
       _associatedEndPointID = associatedEndPointID;
     }
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public bool ContainsObjectID (ObjectID objectID) => false;
 
-    public DomainObject GetObject (int index) => throw new ArgumentOutOfRangeException("index");
+    public DomainObject GetObject (int index) => throw new ArgumentOutOfRangeException(nameof(index));
 
     public DomainObject? GetObject (ObjectID objectID) => null;
 

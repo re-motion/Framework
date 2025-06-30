@@ -33,14 +33,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PersistenceModelLoader (IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
 
       _storageSettings = storageSettings;
     }
 
     public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
 
       var persistenceModelLoader = GetProviderSpecificPersistenceModelLoader(classDefinition);
       persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);

@@ -35,7 +35,7 @@ namespace Remotion.Web.ExecutionEngine
   {
     public static bool HasAccess (Type functionType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof(WxeFunction));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(functionType), functionType, typeof(WxeFunction));
 
       var wxeSecurityAdapter = GetWxeSecurityAdapter();
       if (wxeSecurityAdapter == null)
@@ -57,8 +57,8 @@ namespace Remotion.Web.ExecutionEngine
 
     protected WxeFunction (ITransactionMode transactionMode, params object?[] actualParameters)
     {
-      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
-      ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
+      ArgumentUtility.CheckNotNull(nameof(transactionMode), transactionMode);
+      ArgumentUtility.CheckNotNull(nameof(actualParameters), actualParameters);
 
       _transactionMode = transactionMode;
       _variablesContainer = new WxeVariablesContainer(this, actualParameters);
@@ -66,9 +66,9 @@ namespace Remotion.Web.ExecutionEngine
 
     protected WxeFunction (ITransactionMode transactionMode, WxeParameterDeclaration[] parameterDeclarations, object?[] actualParameters)
     {
-      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
-      ArgumentUtility.CheckNotNull("parameterDeclarations", parameterDeclarations);
-      ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
+      ArgumentUtility.CheckNotNull(nameof(transactionMode), transactionMode);
+      ArgumentUtility.CheckNotNull(nameof(parameterDeclarations), parameterDeclarations);
+      ArgumentUtility.CheckNotNull(nameof(actualParameters), actualParameters);
 
       _transactionMode = transactionMode;
       _variablesContainer = new WxeVariablesContainer(this, actualParameters, parameterDeclarations);
@@ -76,7 +76,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public override void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
       Assertion.IsNotNull(_executionListener);
 
       if (!IsExecutionStarted)
@@ -149,7 +149,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected void SetTransactionMode (ITransactionMode transactionMode)
     {
-      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull(nameof(transactionMode), transactionMode);
 
       if (_transactionStrategy != null)
         throw new InvalidOperationException("The TransactionMode cannot be set after the TransactionStrategy has been initialized.");
@@ -164,7 +164,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected void SetExecutionListener (IWxeFunctionExecutionListener executionListener)
     {
-      ArgumentUtility.CheckNotNull("executionListener", executionListener);
+      ArgumentUtility.CheckNotNull(nameof(executionListener), executionListener);
 
       if (_transactionStrategy != null)
         throw new InvalidOperationException("The ExecutionListener cannot be set after the TransactionStrategy has been initialized.");
@@ -203,7 +203,7 @@ namespace Remotion.Web.ExecutionEngine
         {
           throw new ArgumentException(
               "The ReturnUrl cannot be a javascript-URL. Use the WxeFunction.SetExecutionCompletedScript(script) method instead.",
-              "value");
+              nameof(value));
         }
 
         _returnUrl = value;
@@ -222,7 +222,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks>The <paramref name="script"/> will supersede any <see cref="ReturnUrl"/> set on the same <see cref="WxeFunction"/>.</remarks>
     public void SetExecutionCompletedScript ([NotNull] string script)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("script", script);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(script), script);
 
       _returnUrl = null;
       _executionCompletedScript = script;
@@ -320,7 +320,7 @@ namespace Remotion.Web.ExecutionEngine
 
     internal void SetFunctionToken (string functionToken)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
       _functionToken = functionToken;
     }
 

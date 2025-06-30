@@ -53,10 +53,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         Type dotNetType,
         TypeConverter dotNetTypeConverter)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("storageTypeName", storageTypeName);
-      ArgumentUtility.CheckNotNull("storageType", storageType);
-      ArgumentUtility.CheckNotNull("dotNetType", dotNetType);
-      ArgumentUtility.CheckNotNull("dotNetTypeConverter", dotNetTypeConverter);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageTypeName), storageTypeName);
+      ArgumentUtility.CheckNotNull(nameof(storageType), storageType);
+      ArgumentUtility.CheckNotNull(nameof(dotNetType), dotNetType);
+      ArgumentUtility.CheckNotNull(nameof(dotNetTypeConverter), dotNetTypeConverter);
 
       _storageType = storageType;
       _storageTypeName = storageTypeName;
@@ -121,7 +121,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public object? Read (IDataReader dataReader, int ordinal)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
 
       // IDataReader.GetValue(ordinal) usually returns DBNull.Value for null values, but the implementation does return null for unsupported data types.
       // There is no explicit documentation on IDataReader.GetValue(ordinal) returning only DBNull.Value instead of an actual null value.
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)
     {
-      ArgumentUtility.CheckNotNull("equivalentStorageTypes", equivalentStorageTypes);
+      ArgumentUtility.CheckNotNull(nameof(equivalentStorageTypes), equivalentStorageTypes);
       var castStorageTypes =
           equivalentStorageTypes.Select(
               equivalentInfo =>

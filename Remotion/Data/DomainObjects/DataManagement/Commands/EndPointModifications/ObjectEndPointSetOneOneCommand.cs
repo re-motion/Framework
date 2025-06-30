@@ -37,21 +37,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       {
         var message = string.Format("EndPoint '{0}' is from a unidirectional relation - use a ObjectEndPointSetUnidirectionalCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException(message, "modifiedEndPoint");
+        throw new ArgumentException(message, nameof(modifiedEndPoint));
       }
 
       if (modifiedEndPoint.Definition.GetOppositeEndPointDefinition().Cardinality == CardinalityType.Many)
       {
         var message = string.Format("EndPoint '{0}' is from a 1:n relation - use a ObjectEndPointSetOneManyCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException(message, "modifiedEndPoint");
+        throw new ArgumentException(message, nameof(modifiedEndPoint));
       }
 
       if (newRelatedObject == modifiedEndPoint.GetOppositeObject())
       {
         var message = string.Format("New related object for EndPoint '{0}' is the same as its old value - use a ObjectEndPointSetSameCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException(message, "newRelatedObject");
+        throw new ArgumentException(message, nameof(newRelatedObject));
       }
     }
 

@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     /// </exception>
     public static TDomainObject NewObject (ParamList constructorParameters)
     {
-      ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
+      ArgumentUtility.CheckNotNull(nameof(constructorParameters), constructorParameters);
       return DomainObject.NewObject<TDomainObject>(constructorParameters);
     }
 

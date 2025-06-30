@@ -25,7 +25,7 @@ namespace Remotion.Mixins.Definitions
   {
     public NonAttributeIntroductionDefinition (AttributeDefinition attribute, bool explicitSuppression)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
       Attribute = attribute;
       IsExplicitlySuppressed = explicitSuppression;
     }
@@ -45,7 +45,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
       visitor.Visit(this);
     }
 

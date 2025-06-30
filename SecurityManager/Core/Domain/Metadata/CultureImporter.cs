@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public CultureImporter (ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull("transaction", transaction);
+      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
 
       _transaction = transaction;
       _localizedNames = new List<LocalizedName>();

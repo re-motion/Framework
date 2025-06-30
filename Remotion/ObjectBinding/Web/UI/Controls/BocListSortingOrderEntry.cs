@@ -37,9 +37,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocListSortingOrderEntry (IBocSortableColumnDefinition column, SortingDirection direction)
     {
-      ArgumentUtility.CheckNotNull("column", column);
+      ArgumentUtility.CheckNotNull(nameof(column), column);
       if (!column.IsSortable)
-        throw new ArgumentException("BocListSortingOrderEntry can only use columns with IBocSortableColumnDefinition.IsSortable set true.", "column");
+        throw new ArgumentException("BocListSortingOrderEntry can only use columns with IBocSortableColumnDefinition.IsSortable set true.", nameof(column));
 
       _isEmpty = false;
       _column = column;
@@ -81,7 +81,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     internal void SetColumnIndex (int columnIndex)
     {
       if (columnIndex < 0)
-        throw new ArgumentOutOfRangeException("columnIndex", columnIndex, "The column index must not be a negative number.");
+        throw new ArgumentOutOfRangeException(nameof(columnIndex), columnIndex, "The column index must not be a negative number.");
       if (_isEmpty)
         throw new InvalidOperationException("Setting the column index of the empty BocListSortingOrderEntry is not supported.");
       _columnIndex = columnIndex;

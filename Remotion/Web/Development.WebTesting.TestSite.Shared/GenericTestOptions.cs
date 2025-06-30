@@ -33,9 +33,9 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions ([NotNull] string id, [NotNull] string textContent, [NotNull] string title, bool enabled)
     {
-      ArgumentUtility.CheckNotNull("id", id);
-      ArgumentUtility.CheckNotNull("textContent", textContent);
-      ArgumentUtility.CheckNotNull("title", title);
+      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentUtility.CheckNotNull(nameof(textContent), textContent);
+      ArgumentUtility.CheckNotNull(nameof(title), title);
 
       _id = id;
       _textContent = textContent;

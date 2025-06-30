@@ -34,13 +34,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public TransactionHierarchyCommandExecutor (Func<ClientTransaction, IDataManagementCommand> commandFactory)
     {
-      ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
+      ArgumentUtility.CheckNotNull(nameof(commandFactory), commandFactory);
       _commandFactory = commandFactory;
     }
 
     public bool TryExecuteCommandForTransactionHierarchy (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
 
       var combinedCommand = CreateCombinedCommand(clientTransaction);
       if (!combinedCommand.CanExecute())
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public void ExecuteCommandForTransactionHierarchy (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
 
       var combinedCommand = CreateCombinedCommand(clientTransaction);
       combinedCommand.NotifyAndPerform();
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
       protected override IDataManagementCommand Decorate (IDataManagementCommand decoratedCommand)
       {
-        ArgumentUtility.CheckNotNull("decoratedCommand", decoratedCommand);
+        ArgumentUtility.CheckNotNull(nameof(decoratedCommand), decoratedCommand);
         return new UnlockingCommandDecorator(decoratedCommand, _transactionToBeUnlocked);
       }
     }

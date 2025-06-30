@@ -41,9 +41,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
         TransactionStrategyBase outerTransactionStrategy,
         IWxeFunctionExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("transactionFactory", transactionFactory);
-      ArgumentUtility.CheckNotNull("outerTransactionStrategy", outerTransactionStrategy);
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull(nameof(transactionFactory), transactionFactory);
+      ArgumentUtility.CheckNotNull(nameof(outerTransactionStrategy), outerTransactionStrategy);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
 
       _autoCommit = autoCommit;
       _transactionFactory = transactionFactory;
@@ -148,8 +148,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override sealed TransactionStrategyBase CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
-      ArgumentUtility.CheckNotNull("wxeContext", wxeContext);
+      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+      ArgumentUtility.CheckNotNull(nameof(wxeContext), wxeContext);
 
       if (!_child.IsNull)
       {
@@ -168,7 +168,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override void UnregisterChildTransactionStrategy (TransactionStrategyBase childTransactionStrategy)
     {
-      ArgumentUtility.CheckNotNull("childTransactionStrategy", childTransactionStrategy);
+      ArgumentUtility.CheckNotNull(nameof(childTransactionStrategy), childTransactionStrategy);
 
       if (_child != childTransactionStrategy)
       {
@@ -181,15 +181,15 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override sealed void EnsureCompatibility (IEnumerable objects)
     {
-      ArgumentUtility.CheckNotNull("objects", objects);
+      ArgumentUtility.CheckNotNull(nameof(objects), objects);
 
       _transaction.EnsureCompatibility(FlattenList(objects));
     }
 
     public override void OnExecutionPlay (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentUtility.CheckNotNull(nameof(listener), listener);
 
       if (_scope != null)
       {
@@ -204,8 +204,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override void OnExecutionStop (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentUtility.CheckNotNull(nameof(listener), listener);
 
       if (_scope == null)
         throw new InvalidOperationException("OnExecutionStop may not be invoked unless OnExecutionPlay was called first.");
@@ -232,8 +232,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override void OnExecutionPause (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentUtility.CheckNotNull(nameof(listener), listener);
 
       if (_scope == null)
         throw new InvalidOperationException("OnExecutionPause may not be invoked unless OnExecutionPlay was called first.");
@@ -256,8 +256,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override void OnExecutionFail (WxeContext context, IWxeFunctionExecutionListener listener, Exception exception)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentUtility.CheckNotNull(nameof(listener), listener);
 
       if (_scope == null)
         throw new InvalidOperationException("OnExecutionFail may not be invoked unless OnExecutionPlay was called first.");

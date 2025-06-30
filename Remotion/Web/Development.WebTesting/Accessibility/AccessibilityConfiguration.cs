@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         bool? absolutePaths = null)
     {
       if (iframeTimeout < TimeSpan.Zero)
-        throw new ArgumentOutOfRangeException("iframeTimeout", "The iframe timeout must be greater than or equal to zero.");
+        throw new ArgumentOutOfRangeException(nameof(iframeTimeout), "The iframe timeout must be greater than or equal to zero.");
 
       ConformanceLevel = conformanceLevel;
       IncludeIFrames = includeIframes ?? true;

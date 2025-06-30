@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     protected override void RenderCellContents (BocColumnRenderingContext<BocCommandColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
 
       int originalRowIndex = arguments.ListIndex;
       IBusinessObject businessObject = arguments.BusinessObject;

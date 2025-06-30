@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public ScreenshotTransformationContext<T> BeginApply (ScreenshotTransformationContext<T> context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       return _transformations.Aggregate(context, (current, transformation) => transformation.Value.BeginApply(current));
     }
@@ -89,7 +89,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public void EndApply (ScreenshotTransformationContext<T> context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull(nameof(context), context);
 
       foreach (var transformation in _transformations.Reverse())
         transformation.Value.EndApply(context);
@@ -110,7 +110,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public void Add ([NotNull] IScreenshotTransformation<T> item)
     {
-      ArgumentUtility.CheckNotNull("item", item);
+      ArgumentUtility.CheckNotNull(nameof(item), item);
 
       if (_isReadOnly)
         throw new InvalidOperationException("The collection can not be changed as it is read-only.");
@@ -135,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public bool Contains ([NotNull] IScreenshotTransformation<T> item)
     {
-      ArgumentUtility.CheckNotNull("item", item);
+      ArgumentUtility.CheckNotNull(nameof(item), item);
 
       return _transformationsSet.Contains(item);
     }
@@ -143,7 +143,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public void CopyTo (IScreenshotTransformation<T>[] array, int arrayIndex)
     {
-      ArgumentUtility.CheckNotNull("array", array);
+      ArgumentUtility.CheckNotNull(nameof(array), array);
 
       _transformations.Select(i => i.Value).ToArray().CopyTo(array, arrayIndex);
     }
@@ -159,7 +159,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public bool Remove ([NotNull] IScreenshotTransformation<T> item)
     {
-      ArgumentUtility.CheckNotNull("item", item);
+      ArgumentUtility.CheckNotNull(nameof(item), item);
 
       if (_isReadOnly)
         throw new InvalidOperationException("The collection can not be changed as it is read-only.");

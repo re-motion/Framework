@@ -31,8 +31,8 @@ namespace Remotion.Web.UI.Controls
     [Obsolete("Use ISmartControl.AssignLabels(IEnumerable<string>) instead. (Version 3.10.0)")]
     public static void AssignLabel (this ISmartControl control, string labelID)
     {
-      ArgumentUtility.CheckNotNull("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
+      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(labelID), labelID);
 
       control.AssignLabels(EnumerableUtility.Singleton(labelID));
     }

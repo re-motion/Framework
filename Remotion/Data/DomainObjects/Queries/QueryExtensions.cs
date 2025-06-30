@@ -25,8 +25,8 @@ namespace Remotion.Data.DomainObjects.Queries
   {
     public static Query CreateCopyFromTemplate (this IQuery template, Dictionary<object, object?> parameterValues)
     {
-      ArgumentUtility.CheckNotNull("template", template);
-      ArgumentUtility.CheckNotNull("parameterValues", parameterValues);
+      ArgumentUtility.CheckNotNull(nameof(template), template);
+      ArgumentUtility.CheckNotNull(nameof(parameterValues), parameterValues);
 
       var query = new Query(template.CopyQueryDefinition(), template.CopyQueryParameters(parameterValues));
       template.CopyFetchQueries(parameterValues, query);

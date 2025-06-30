@@ -31,7 +31,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void Initialize (ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
 
       if (_validationMessage != null)
         throw new InvalidOperationException("Validation message has already been initialized.");

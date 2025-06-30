@@ -37,8 +37,8 @@ namespace Remotion.Mixins.CodeGeneration
     /// <param name="expectedMixinTypes">The expected mixin types. For derived mixins, these contain the concrete mixed types.</param>
     public MixinArrayInitializer (Type targetType, Type[] expectedMixinTypes)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
-      ArgumentUtility.CheckNotNull("expectedMixinTypes", expectedMixinTypes);
+      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
+      ArgumentUtility.CheckNotNull(nameof(expectedMixinTypes), expectedMixinTypes);
 
       _targetType = targetType;
       _expectedMixinTypes = expectedMixinTypes;
@@ -46,7 +46,7 @@ namespace Remotion.Mixins.CodeGeneration
 
     public void CheckMixinArray (object[] mixins)
     {
-      ArgumentUtility.CheckNotNull("mixins", mixins);
+      ArgumentUtility.CheckNotNull(nameof(mixins), mixins);
 
       if (mixins.Length != _expectedMixinTypes.Length)
         throw CreateInvalidMixinArrayException(mixins);

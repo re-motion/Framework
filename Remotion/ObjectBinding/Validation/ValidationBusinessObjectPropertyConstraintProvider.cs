@@ -22,8 +22,8 @@ namespace Remotion.ObjectBinding.Validation
         IValidatorProvider validatorProvider,
         IPropertyValidatorToBusinessObjectPropertyConstraintConverter propertyValidatorConverter)
     {
-      ArgumentUtility.CheckNotNull("validatorProvider", validatorProvider);
-      ArgumentUtility.CheckNotNull("propertyValidatorConverter", propertyValidatorConverter);
+      ArgumentUtility.CheckNotNull(nameof(validatorProvider), validatorProvider);
+      ArgumentUtility.CheckNotNull(nameof(propertyValidatorConverter), propertyValidatorConverter);
 
       ValidatorProvider = validatorProvider;
       PropertyValidatorConverter = propertyValidatorConverter;
@@ -34,8 +34,8 @@ namespace Remotion.ObjectBinding.Validation
         IBusinessObjectProperty businessObjectProperty,
         IBusinessObject? obj)
     {
-      ArgumentUtility.CheckNotNull("@class", businessObjectClass);
-      ArgumentUtility.CheckNotNull("businessObjectProperty", businessObjectProperty);
+      ArgumentUtility.CheckNotNull(nameof(businessObjectClass), businessObjectClass);
+      ArgumentUtility.CheckNotNull(nameof(businessObjectProperty), businessObjectProperty);
 
       //TODO RM-5906: find a better way than hard-casting the IBusinessObjectClass to getting the type
       var businessObjectType = obj?.GetType() ?? (businessObjectClass as BindableObjectClass)?.ConcreteType;

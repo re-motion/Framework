@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
 
     public CloneContext (DomainObjectCloner cloner)
     {
-      ArgumentUtility.CheckNotNull("cloner", cloner);
+      ArgumentUtility.CheckNotNull(nameof(cloner), cloner);
       _cloner = cloner;
 
       // Optimized for memory allocations

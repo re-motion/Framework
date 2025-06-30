@@ -75,7 +75,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
 
     private Program (CommandLineArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("arguments", arguments);
+      ArgumentUtility.CheckNotNull(nameof(arguments), arguments);
       _arguments = arguments;
     }
 

@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public MixinIntroducedPropertyInformation (InterfaceImplementationPropertyInformation interfaceImplementationPropertyInfo)
     {
-      ArgumentUtility.CheckNotNull("interfaceImplementationPropertyInfo", interfaceImplementationPropertyInfo);
+      ArgumentUtility.CheckNotNull(nameof(interfaceImplementationPropertyInfo), interfaceImplementationPropertyInfo);
 
       _interfaceImplementationPropertyInfo = interfaceImplementationPropertyInfo;
     }
@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull("implementationType", implementationType);
+      ArgumentUtility.CheckNotNull(nameof(implementationType), implementationType);
 
       return _interfaceImplementationPropertyInfo.FindInterfaceImplementation(implementationType);
     }
@@ -117,14 +117,14 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public object? GetValue (object? instance, object?[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull("instance", instance!);
+      ArgumentUtility.CheckNotNull(nameof(instance), instance!);
 
       return _interfaceImplementationPropertyInfo.GetValue(instance, indexParameters);
     }
 
     public void SetValue (object? instance, object? value, object?[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull("instance", instance!);
+      ArgumentUtility.CheckNotNull(nameof(instance), instance!);
 
       _interfaceImplementationPropertyInfo.SetValue(instance, value, indexParameters);
     }

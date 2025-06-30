@@ -119,7 +119,7 @@ public abstract class WxeStep
   [EditorBrowsable(EditorBrowsableState.Never)]
   public void SetParentStep (WxeStep parentStep)
   {
-    ArgumentUtility.CheckNotNull("parentStep", parentStep);
+    ArgumentUtility.CheckNotNull(nameof(parentStep), parentStep);
     _parentStep = parentStep;
   }
 

@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 
     public MixinConfigurationAttributeAnalyzer (Func<TAnalyzedEntity, IEnumerable<IMixinConfigurationAttribute<TAnalyzedEntity>>> attributeProvider)
     {
-      ArgumentUtility.CheckNotNull("attributeProvider", attributeProvider);
+      ArgumentUtility.CheckNotNull(nameof(attributeProvider), attributeProvider);
 
       _attributeProvider = attributeProvider;
     }
@@ -41,9 +41,9 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
     public virtual void Analyze (TAnalyzedEntity entity, MixinConfigurationBuilder configurationBuilder)
     {
 #pragma warning disable 8714
-      ArgumentUtility.CheckNotNull("entity", entity);
+      ArgumentUtility.CheckNotNull(nameof(entity), entity);
 #pragma warning restore 8714
-      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
+      ArgumentUtility.CheckNotNull(nameof(configurationBuilder), configurationBuilder);
 
       var attributes = _attributeProvider(entity);
 

@@ -64,7 +64,7 @@ public class LengthValidator : BaseValidator
     set
     {
       if (value.HasValue && value.Value < 0)
-        throw new ArgumentOutOfRangeException("value", value, "The MinimumLength must not be less than zero.");
+        throw new ArgumentOutOfRangeException(nameof(value), value, "The MinimumLength must not be less than zero.");
       _minimumLength = value;
     }
   }
@@ -82,7 +82,7 @@ public class LengthValidator : BaseValidator
     set
     {
       if (value.HasValue && value.Value < 0)
-        throw new ArgumentOutOfRangeException("value", value, "The MaximumLength must not be less than zero.");
+        throw new ArgumentOutOfRangeException(nameof(value), value, "The MaximumLength must not be less than zero.");
       _maximumLength = value;
     }
   }

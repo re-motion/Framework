@@ -34,8 +34,8 @@ namespace Remotion.Mixins.Definitions
 
     public InterfaceIntroductionDefinition (Type type, MixinDefinition implementer)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("implementer", implementer);
+      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentUtility.CheckNotNull(nameof(implementer), implementer);
 
       InterfaceType = type;
       Implementer = implementer;
@@ -86,7 +86,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
       visitor.Visit(this);
       _introducedMethods.Accept(visitor);
       _introducedProperties.Accept(visitor);

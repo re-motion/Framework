@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentUtility.CheckNotNull(nameof(text), text);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -69,8 +69,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// </remarks>
     public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("text", text);
-      ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
+      ArgumentUtility.CheckNotNull(nameof(text), text);
+      ArgumentUtility.CheckNotNull(nameof(finishInputWith), finishInputWith);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);

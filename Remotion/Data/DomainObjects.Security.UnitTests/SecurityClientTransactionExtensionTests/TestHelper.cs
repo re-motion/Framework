@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
 
     public void AddExtension (IClientTransactionExtension extension)
     {
-      ArgumentUtility.CheckNotNullAndType<SecurityClientTransactionExtension>("extension", extension);
+      ArgumentUtility.CheckNotNullAndType<SecurityClientTransactionExtension>(nameof(extension), extension);
 
       _transaction.Extensions.Add(extension);
     }
