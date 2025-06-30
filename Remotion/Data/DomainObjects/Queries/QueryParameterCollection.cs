@@ -51,7 +51,7 @@ public class QueryParameterCollection : CommonCollection
   /// <exception cref="System.ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
   public QueryParameterCollection (QueryParameterCollection collection, bool makeCollectionReadOnly)
   {
-    ArgumentUtility.CheckNotNull(nameof(collection), collection);
+    ArgumentNullException.ThrowIfNull(collection);
 
     foreach (QueryParameter parameter in collection)
     {
@@ -72,7 +72,7 @@ public class QueryParameterCollection : CommonCollection
   /// <exception cref="System.ArgumentException"><paramref name="parameterName"/> is an empty string.</exception>
   public void Add (string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
 
     Add(new QueryParameter(parameterName, parameterValue));
   }
@@ -88,7 +88,7 @@ public class QueryParameterCollection : CommonCollection
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
   public void Add (string parameterName, object parameterValue, QueryParameterType parameterType)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
     ArgumentUtility.CheckValidEnumValue(nameof(parameterType), parameterType);
 
     Add(new QueryParameter(parameterName, parameterValue, parameterType));
@@ -105,7 +105,7 @@ public class QueryParameterCollection : CommonCollection
   /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
   public bool Contains (QueryParameter queryParameter)
   {
-    ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
+    ArgumentNullException.ThrowIfNull(queryParameter);
 
     return BaseContains(queryParameter.Name, queryParameter);
   }
@@ -148,7 +148,7 @@ public class QueryParameterCollection : CommonCollection
   /// <returns>The zero-based index where <paramref name="parameter"/> has been added.</returns>
   public int Add (QueryParameter parameter)
   {
-    ArgumentUtility.CheckNotNull(nameof(parameter), parameter);
+    ArgumentNullException.ThrowIfNull(parameter);
 
     return BaseAdd(parameter.Name, parameter);
   }

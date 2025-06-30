@@ -20,7 +20,6 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -45,8 +44,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         IDictionary<string, RelationDefinition> actualDefinitions,
         bool ignoreUnknown)
     {
-      ArgumentUtility.CheckNotNull(nameof(expectedDefinitions), expectedDefinitions);
-      ArgumentUtility.CheckNotNull(nameof(actualDefinitions), actualDefinitions);
+      ArgumentNullException.ThrowIfNull(expectedDefinitions);
+      ArgumentNullException.ThrowIfNull(actualDefinitions);
 
       if (!ignoreUnknown)
         Assert.That(actualDefinitions.Count, Is.EqualTo(expectedDefinitions.Count()), "Number of relation definitions does not match.");
@@ -61,8 +60,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public void Check (RelationDefinition expectedDefinition, RelationDefinition actualDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(expectedDefinition), expectedDefinition);
-      ArgumentUtility.CheckNotNull(nameof(actualDefinition), actualDefinition);
+      ArgumentNullException.ThrowIfNull(expectedDefinition);
+      ArgumentNullException.ThrowIfNull(actualDefinition);
 
       Assert.That(actualDefinition.ID, Is.EqualTo(expectedDefinition.ID), "IDs of relation definitions do not match.");
 

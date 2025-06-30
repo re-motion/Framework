@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Security;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Security
 {
@@ -32,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Security
         IDomainObjectSecurityContextFactory securityContextFactory,
         RequiredSecurityForStates requiredSecurityForStates)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerStrategy), innerStrategy);
-      ArgumentUtility.CheckNotNull(nameof(securityContextFactory), securityContextFactory);
+      ArgumentNullException.ThrowIfNull(innerStrategy);
+      ArgumentNullException.ThrowIfNull(securityContextFactory);
 
       _innerStrategy = innerStrategy;
       _securityContextFactory = securityContextFactory;

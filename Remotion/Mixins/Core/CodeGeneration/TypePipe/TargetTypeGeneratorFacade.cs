@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Mixins.Definitions;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -35,7 +34,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public TargetTypeGeneratorFacade (INextCallProxyGenerator nextCallProxyGenerator)
     {
-      ArgumentUtility.CheckNotNull(nameof(nextCallProxyGenerator), nextCallProxyGenerator);
+      ArgumentNullException.ThrowIfNull(nextCallProxyGenerator);
       _nextCallProxyGenerator = nextCallProxyGenerator;
     }
 
@@ -45,10 +44,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         IEnumerable<Type> interfacesToImplement,
         IList<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull(nameof(concreteTarget), concreteTarget);
-      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
-      ArgumentUtility.CheckNotNull(nameof(interfacesToImplement), interfacesToImplement);
-      ArgumentUtility.CheckNotNull(nameof(mixinInfos), mixinInfos);
+      ArgumentNullException.ThrowIfNull(concreteTarget);
+      ArgumentNullException.ThrowIfNull(targetClassDefinition);
+      ArgumentNullException.ThrowIfNull(interfacesToImplement);
+      ArgumentNullException.ThrowIfNull(mixinInfos);
 
       var targetTypeGenerator = new TargetTypeGenerator(concreteTarget, new ExpressionBuilder(), new AttributeGenerator(), _nextCallProxyGenerator);
       var mixinTypes = mixinInfos.Select(t => t.MixinType).ToList();

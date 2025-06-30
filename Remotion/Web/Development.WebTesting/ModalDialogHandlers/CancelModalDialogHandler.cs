@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ModalDialogHandlers
 {
@@ -27,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.ModalDialogHandlers
     /// <inheritdoc/>
     public void HandleModalDialog (PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       context.Window.CancelModalDialog();
     }

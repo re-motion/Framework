@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
@@ -32,7 +31,7 @@ namespace Remotion.Globalization
     /// </summary>
     public static IEnumerable<CultureInfo> GetCultureHierarchy (this CultureInfo cultureInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(cultureInfo), cultureInfo);
+      ArgumentNullException.ThrowIfNull(cultureInfo);
 
       // CultureInfo.Parent is defined as specific -> neutral -> invariant, with invariant being its own parent
       return cultureInfo

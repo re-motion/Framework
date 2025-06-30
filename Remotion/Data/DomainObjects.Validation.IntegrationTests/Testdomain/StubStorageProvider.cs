@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain;
 
@@ -46,14 +45,14 @@ public class StubStorageProvider : IStorageProvider
 
   public IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
   {
-    ArgumentUtility.CheckNotNull(nameof(query), query);
+    ArgumentNullException.ThrowIfNull(query);
 
     return Array.Empty<DataContainer>();
   }
 
   public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
   {
-    ArgumentUtility.CheckNotNull(nameof(query), query);
+    ArgumentNullException.ThrowIfNull(query);
 
     return new QueryResultRow[0];
   }
@@ -93,7 +92,7 @@ public class StubStorageProvider : IStorageProvider
 
   public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+    ArgumentNullException.ThrowIfNull(classDefinition);
 
     return new ObjectID(classDefinition.ID, Guid.NewGuid());
   }

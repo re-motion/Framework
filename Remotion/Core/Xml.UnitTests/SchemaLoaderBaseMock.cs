@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Xml.Schema;
-using Remotion.Utilities;
 
 namespace Remotion.Xml.UnitTests
 {
@@ -34,7 +33,7 @@ namespace Remotion.Xml.UnitTests
 
     public SchemaLoaderBaseMock (string schemaUri)
     {
-      ArgumentUtility.CheckNotNull(nameof(schemaUri), schemaUri);
+      ArgumentNullException.ThrowIfNull(schemaUri);
 
       _schemaUri = schemaUri;
     }

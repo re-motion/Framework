@@ -47,7 +47,7 @@ namespace Remotion.ObjectBinding.UnitTests
           () => new StubBusinessObjectProviderAttribute(typeof(object)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'businessObjectProviderType' is a 'System.Object', which cannot be assigned to type 'Remotion.ObjectBinding.IBusinessObjectProvider'.",
+                  "The value is a 'System.Object', which cannot be assigned to type 'Remotion.ObjectBinding.IBusinessObjectProvider'.",
                   "businessObjectProviderType"));
     }
   }

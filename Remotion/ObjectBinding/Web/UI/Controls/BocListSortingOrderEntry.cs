@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -37,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocListSortingOrderEntry (IBocSortableColumnDefinition column, SortingDirection direction)
     {
-      ArgumentUtility.CheckNotNull(nameof(column), column);
+      ArgumentNullException.ThrowIfNull(column);
       if (!column.IsSortable)
         throw new ArgumentException("BocListSortingOrderEntry can only use columns with IBocSortableColumnDefinition.IsSortable set true.", nameof(column));
 

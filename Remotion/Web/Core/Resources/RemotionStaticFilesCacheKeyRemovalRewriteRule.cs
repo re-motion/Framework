@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Rewrite;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Resources;
 
@@ -68,7 +67,7 @@ public class RemotionStaticFilesCacheKeyRemovalRewriteRule : IRule
   /// <inheritdoc />
   public void ApplyRule (RewriteContext context)
   {
-    ArgumentUtility.CheckNotNull(nameof(context), context);
+    ArgumentNullException.ThrowIfNull(context);
 
     var httpContext = context.HttpContext;
     if (TryMatchPath(httpContext, out var newRequestPath, out var cacheKey))

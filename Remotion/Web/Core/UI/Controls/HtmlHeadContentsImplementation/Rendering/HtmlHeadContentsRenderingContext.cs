@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
 {
@@ -36,7 +35,7 @@ namespace Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering
         IReadOnlyCollection<HtmlHeadElement> htmlHeadElements)
         : base(httpContext, writer, control)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadElements), htmlHeadElements);
+      ArgumentNullException.ThrowIfNull(htmlHeadElements);
 
       _htmlHeadElements = htmlHeadElements;
     }

@@ -18,7 +18,6 @@ using System;
 using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Logging
 {
@@ -39,7 +38,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void LogFormat (this ILogger logger, LogLevel logLevel, Enum messageEnum, Exception? exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
 
       if (logger.IsEnabled(logLevel))
       {
@@ -56,7 +55,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void LogFormat (this ILogger logger, LogLevel logLevel, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(logLevel, messageEnum, null, args);
     }
 
@@ -69,7 +68,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void TraceFormat (this ILogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Trace, messageEnum, exceptionObject, args);
     }
 
@@ -81,7 +80,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void TraceFormat (this ILogger logger, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Trace, messageEnum, (Exception?)null, args);
     }
 
@@ -94,7 +93,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void DebugFormat (this ILogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Debug, messageEnum, exceptionObject, args);
     }
 
@@ -106,7 +105,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void DebugFormat (this ILogger logger, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Debug, messageEnum, (Exception?)null, args);
     }
 
@@ -119,7 +118,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void InfoFormat (this ILogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Information, messageEnum, exceptionObject, args);
     }
 
@@ -131,7 +130,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void InfoFormat (this ILogger logger, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Information, messageEnum, (Exception?)null, args);
     }
 
@@ -144,7 +143,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void WarnFormat (this ILogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Warning, messageEnum, exceptionObject, args);
     }
 
@@ -156,7 +155,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void WarnFormat (this ILogger logger, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Warning, messageEnum, (Exception?)null, args);
     }
 
@@ -169,7 +168,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void ErrorFormat (this ILogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Error, messageEnum, exceptionObject, args);
     }
 
@@ -181,7 +180,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void ErrorFormat (this ILogger logger, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Error, messageEnum, (Exception?)null, args);
     }
 
@@ -194,7 +193,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void CriticalFormat (this ILogger logger, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Critical, messageEnum, exceptionObject, args);
     }
 
@@ -206,7 +205,7 @@ namespace Remotion.Logging
     /// </exception>
     public static void CriticalFormat (this ILogger logger, Enum messageEnum, params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
       logger.LogFormat(LogLevel.Critical, messageEnum, (Exception?)null, args);
     }
 

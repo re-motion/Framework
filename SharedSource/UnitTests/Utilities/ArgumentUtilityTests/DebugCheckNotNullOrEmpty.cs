@@ -33,7 +33,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", ""),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty string.", "arg"));
     }
 
     [Test]
@@ -43,7 +43,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", new string[0]),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty collection.", "arg"));
     }
 
     [Test]
@@ -53,7 +53,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", new ArrayList()),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty collection.", "arg"));
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", value),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty collection.", "arg"));
     }
 
     [Test]
@@ -77,7 +77,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", value),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty collection.", "arg"));
     }
 
     [Test]
@@ -89,7 +89,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
           () => ArgumentUtility.DebugCheckNotNullOrEmpty("arg", value),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'arg' cannot be empty.", "arg"));
+                  "The value cannot be an empty collection.", "arg"));
     }
 
     [Test]

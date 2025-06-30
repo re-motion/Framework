@@ -20,7 +20,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
@@ -41,8 +40,8 @@ namespace Remotion.Globalization.Implementation
         IGlobalizationService globalizationService,
         IMemberInformationNameResolver memberInformationNameResolver)
     {
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
-      ArgumentUtility.CheckNotNull(nameof(memberInformationNameResolver), memberInformationNameResolver);
+      ArgumentNullException.ThrowIfNull(globalizationService);
+      ArgumentNullException.ThrowIfNull(memberInformationNameResolver);
 
       _globalizationService = globalizationService;
       _memberInformationNameResolver = memberInformationNameResolver;
@@ -50,7 +49,7 @@ namespace Remotion.Globalization.Implementation
 
     public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       var resourceManager = _globalizationService.GetResourceManager(value.GetType());
       return resourceManager.TryGetString(_memberInformationNameResolver.GetEnumName(value), out result);
@@ -58,7 +57,7 @@ namespace Remotion.Globalization.Implementation
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (Enum value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
       var resourceManager = _globalizationService.GetResourceManager(value.GetType());
       return resourceManager.GetAvailableStrings(_memberInformationNameResolver.GetEnumName(value));
     }

@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -65,8 +64,8 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder mixinConfigurationBuilder, Type targetClassType)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinConfigurationBuilder), mixinConfigurationBuilder);
-      ArgumentUtility.CheckNotNull(nameof(targetClassType), targetClassType);
+      ArgumentNullException.ThrowIfNull(mixinConfigurationBuilder);
+      ArgumentNullException.ThrowIfNull(targetClassType);
 
       mixinConfigurationBuilder.ForClass(targetClassType).SuppressMixin(MixinToIgnore);
     }

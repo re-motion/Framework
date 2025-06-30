@@ -22,7 +22,6 @@ using Remotion.Mixins.Context;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Caching;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
@@ -40,7 +39,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static Type ForceTypeGeneration (Type targetType)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
+      ArgumentNullException.ThrowIfNull(targetType);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext(targetType)
                          ?? new ClassContext(targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
@@ -51,7 +50,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static object ForceTypeGenerationAndCreateInstance (Type targetType)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
+      ArgumentNullException.ThrowIfNull(targetType);
 
       return Activator.CreateInstance(ForceTypeGeneration(targetType));
     }

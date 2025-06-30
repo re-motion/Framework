@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public VirtualEndPointStateUpdateListener (IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
       _transactionEventSink = transactionEventSink;
     }
 
@@ -41,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void VirtualEndPointStateUpdated (RelationEndPointID endPointID, bool? newChangedState)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
       _transactionEventSink.RaiseVirtualRelationEndPointStateUpdatedEvent(endPointID, newChangedState);
     }
   }

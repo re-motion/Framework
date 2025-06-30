@@ -19,7 +19,6 @@ using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
@@ -41,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentCell), fluentCell);
+      ArgumentNullException.ThrowIfNull(fluentCell);
 
       var result = fluentCell.Target.Cell.Scope.FindCss(".validationErrorMarker > img", Options.NoWait);
       if (!result.Exists(Options.NoWait))

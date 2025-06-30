@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
@@ -29,8 +28,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     public RdbmsProviderDefinition (string name, IRdbmsStorageObjectFactory factory, string connectionString, string readOnlyConnectionString, IReadOnlyCollection<Type>? assignedStorageGroups = null)
         : base(name, factory, assignedStorageGroups)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(readOnlyConnectionString), readOnlyConnectionString);
+      ArgumentException.ThrowIfNullOrEmpty(connectionString);
+      ArgumentException.ThrowIfNullOrEmpty(readOnlyConnectionString);
 
       _connectionString = connectionString;
       _readOnlyConnectionString = readOnlyConnectionString;
@@ -53,7 +52,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     public override bool IsIdentityTypeSupported (Type identityType)
     {
-      ArgumentUtility.CheckNotNull(nameof(identityType), identityType);
+      ArgumentNullException.ThrowIfNull(identityType);
 
       return (identityType == typeof(Guid));
     }

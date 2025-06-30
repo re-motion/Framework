@@ -17,7 +17,6 @@
 using System;
 using System.IO;
 using System.Web.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.Hotkey
 {
@@ -35,7 +34,7 @@ namespace Remotion.Web.UI.Controls.Hotkey
     /// <remarks>Use <see cref="IHotkeyFormatter"/>.<see cref="IHotkeyFormatter.WriteTo"/> instead, when the <see cref="HtmlTextWriter"/> is available.</remarks>
     public static WebString GetFormattedText (this IHotkeyFormatter hotkeyFormatter, WebString value)
     {
-      ArgumentUtility.CheckNotNull(nameof(hotkeyFormatter), hotkeyFormatter);
+      ArgumentNullException.ThrowIfNull(hotkeyFormatter);
 
       using var stringWriter = new StringWriter();
       using var htmlTextWriter = new HtmlTextWriter(stringWriter);

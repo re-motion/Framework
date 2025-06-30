@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public OrderedColumn (ColumnDefinition columnDefinition, SortOrder sortOrder)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnDefinition), columnDefinition);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
 
       _columnDefinition = columnDefinition;
       _sortOrder = sortOrder;

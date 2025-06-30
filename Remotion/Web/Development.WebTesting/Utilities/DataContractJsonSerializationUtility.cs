@@ -19,7 +19,6 @@ using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -34,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public static string Serialize<T> ([NotNull] T data)
         where T : class
     {
-      ArgumentUtility.CheckNotNull(nameof(data), data);
+      ArgumentNullException.ThrowIfNull(data);
 
       var serializer = new DataContractJsonSerializer(typeof(T));
       using (var dataStream = new MemoryStream())

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 {
@@ -28,7 +27,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public TransportTransactionListener (DomainObjectTransporter transporter)
     {
-      ArgumentUtility.CheckNotNull(nameof(transporter), transporter);
+      ArgumentNullException.ThrowIfNull(transporter);
       _transporter = transporter;
     }
 

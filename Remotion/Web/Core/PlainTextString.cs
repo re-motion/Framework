@@ -18,7 +18,6 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web
 {
@@ -115,7 +114,7 @@ namespace Remotion.Web
     /// <param name="writer">The <see cref="HtmlTextWriter"/> where the value will be appended to. Must not be <see langword="null" />.</param>
     public void WriteTo ([NotNull] HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       ((WebString)this).WriteTo(writer);
     }
@@ -131,7 +130,7 @@ namespace Remotion.Web
     /// <param name="attribute">The attribute that is to be added.</param>
     public void AddAttributeTo ([NotNull] HtmlTextWriter writer, HtmlTextWriterAttribute attribute)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       writer.AddAttribute(attribute, GetValue(), fEncode: true);
     }
@@ -147,8 +146,8 @@ namespace Remotion.Web
     /// <param name="attribute">The name of the attribute that is to be added. Must not be <see langword="null" /> or empty.</param>
     public void AddAttributeTo ([NotNull] HtmlTextWriter writer, [NotNull] string attribute)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attribute), attribute);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentException.ThrowIfNullOrEmpty(attribute);
 
       writer.AddAttribute(attribute, GetValue(), fEndode: true);
     }

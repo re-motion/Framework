@@ -21,7 +21,6 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -39,8 +38,8 @@ namespace Remotion.Validation.Validators
         [NotNull] ValidationMessage validationMessage,
         [CanBeNull] IEqualityComparer? comparer = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(comparisonValue), comparisonValue);
-      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
+      ArgumentNullException.ThrowIfNull(comparisonValue);
+      ArgumentNullException.ThrowIfNull(validationMessage);
 
       ComparisonValue = comparisonValue;
       Comparer = comparer;
@@ -54,7 +53,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

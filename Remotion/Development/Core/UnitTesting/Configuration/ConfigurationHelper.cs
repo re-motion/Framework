@@ -17,7 +17,6 @@
 using System;
 using System.Configuration;
 using System.Xml;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Configuration
 {
@@ -28,8 +27,8 @@ namespace Remotion.Development.UnitTesting.Configuration
   {
     public static void DeserializeElement (ConfigurationElement configurationElement, string xmlFragment)
     {
-      ArgumentUtility.CheckNotNull(nameof(configurationElement), configurationElement);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(xmlFragment), xmlFragment);
+      ArgumentNullException.ThrowIfNull(configurationElement);
+      ArgumentException.ThrowIfNullOrEmpty(xmlFragment);
 
       using (XmlTextReader reader = new XmlTextReader(xmlFragment, XmlNodeType.Document, null))
       {
@@ -47,8 +46,8 @@ namespace Remotion.Development.UnitTesting.Configuration
     /// <param name="xsdContent">The content of the XSD, or <see langword="null"/> for no validation.</param>
     public static void DeserializeSection (ConfigurationSection configurationSection, string xmlFragment, string? xsdContent = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(configurationSection), configurationSection);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(xmlFragment), xmlFragment);
+      ArgumentNullException.ThrowIfNull(configurationSection);
+      ArgumentException.ThrowIfNullOrEmpty(xmlFragment);
 
       using (XmlTextReader reader = new XmlTextReader(xmlFragment, XmlNodeType.Document, null))
       {

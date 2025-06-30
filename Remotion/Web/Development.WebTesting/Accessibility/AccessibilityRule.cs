@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         AccessibilityTestImpact impact,
         [NotNull] IReadOnlyCollection<AccessibilityTestSuccessCriteria> successCriteria)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(description), description);
+      ArgumentException.ThrowIfNullOrEmpty(description);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(successCriteria), successCriteria);
 
       ID = id;

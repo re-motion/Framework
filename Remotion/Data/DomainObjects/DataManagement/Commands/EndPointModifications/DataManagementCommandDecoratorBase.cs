@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
@@ -29,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     protected DataManagementCommandDecoratorBase (IDataManagementCommand decoratedCommand)
     {
-      ArgumentUtility.CheckNotNull(nameof(decoratedCommand), decoratedCommand);
+      ArgumentNullException.ThrowIfNull(decoratedCommand);
       _decoratedCommand = decoratedCommand;
     }
 

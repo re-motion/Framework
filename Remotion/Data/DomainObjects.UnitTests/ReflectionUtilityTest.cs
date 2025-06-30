@@ -459,7 +459,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => ReflectionUtility.GetObjectListTypeParameter(typeof(IObjectList<>)),
           Throws.ArgumentException.With.Message.StartWith(
-              "Parameter 'type' has type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
+              "The value has type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
     }
 
     [Test]
@@ -468,7 +468,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => ReflectionUtility.GetObjectListTypeParameter(typeof(DomainObjectCollection)),
           Throws.ArgumentException.With.Message.StartWith(
-              "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObjectCollection' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
+              "The value has type 'Remotion.Data.DomainObjects.DomainObjectCollection' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
     }
 
     [Test]
@@ -477,7 +477,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => ReflectionUtility.GetObjectListTypeParameter(typeof(DomainObject)),
           Throws.ArgumentException.With.Message.StartWith(
-              "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObject' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
+              "The value has type 'Remotion.Data.DomainObjects.DomainObject' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
     }
 
     [Test]
@@ -486,7 +486,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => ReflectionUtility.GetObjectListTypeParameter(typeof(List<DomainObject>)),
           Throws.ArgumentException.With.Message.StartWith(
-              "Parameter 'type' has type 'System.Collections.Generic.List`1[Remotion.Data.DomainObjects.DomainObject]' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
+              "The value has type 'System.Collections.Generic.List`1[Remotion.Data.DomainObjects.DomainObject]' when type 'Remotion.Data.DomainObjects.ObjectList`1[T]' was expected."));
     }
 
     [Test]
@@ -501,7 +501,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => ReflectionUtility.GetIObjectListTypeParameter(typeof(IDerivedObjectList<Order>)),
           Throws.ArgumentException.With.Message.StartWith(
-              "Parameter 'type' has type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IDerivedObjectList`1[Remotion.Data.DomainObjects.UnitTests.TestDomain.Order]' "
+              "The value has type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IDerivedObjectList`1[Remotion.Data.DomainObjects.UnitTests.TestDomain.Order]' "
               + "when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }
 
@@ -525,7 +525,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => ReflectionUtility.GetIObjectListTypeParameter(typeof(ObjectList<>)),
           Throws.ArgumentException.With.Message.StartWith(
-              "Parameter 'type' has type 'Remotion.Data.DomainObjects.ObjectList`1[T]' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
+              "The value has type 'Remotion.Data.DomainObjects.ObjectList`1[T]' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }
 
     [Test]
@@ -534,7 +534,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => ReflectionUtility.GetIObjectListTypeParameter(typeof(DomainObjectCollection)),
           Throws.ArgumentException.With.Message.StartWith(
-              "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObjectCollection' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
+              "The value has type 'Remotion.Data.DomainObjects.DomainObjectCollection' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }
 
     [Test]
@@ -543,7 +543,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => ReflectionUtility.GetIObjectListTypeParameter(typeof(DomainObject)),
           Throws.ArgumentException.With.Message.StartWith(
-              "Parameter 'type' has type 'Remotion.Data.DomainObjects.DomainObject' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
+              "The value has type 'Remotion.Data.DomainObjects.DomainObject' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }
 
     [Test]
@@ -552,7 +552,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => ReflectionUtility.GetIObjectListTypeParameter(typeof(IList<DomainObject>)),
           Throws.ArgumentException.With.Message.StartWith(
-              "Parameter 'type' has type 'System.Collections.Generic.IList`1[Remotion.Data.DomainObjects.DomainObject]' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
+              "The value has type 'System.Collections.Generic.IList`1[Remotion.Data.DomainObjects.DomainObject]' when type 'Remotion.Data.DomainObjects.IObjectList`1[TDomainObject]' was expected."));
     }
 
     /// <remarks>

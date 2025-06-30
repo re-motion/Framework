@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
@@ -47,7 +46,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     /// <returns>array of ACEs</returns>
     public AccessControlEntry[] FindMatchingEntries (SecurityToken token)
     {
-      ArgumentUtility.CheckNotNull(nameof(token), token);
+      ArgumentNullException.ThrowIfNull(token);
 
       var entries = new List<AccessControlEntry>();
 
@@ -62,7 +61,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public AccessInformation GetAccessTypes (SecurityToken token, AccessTypeStatistics? accessTypeStatistics)
     {
-      ArgumentUtility.CheckNotNull(nameof(token), token);
+      ArgumentNullException.ThrowIfNull(token);
 
       var allowedAccessTypesResult = new HashSet<AccessTypeDefinition>();
       var deniedAccessTypesResult = new HashSet<AccessTypeDefinition>();
@@ -96,7 +95,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public AccessInformation GetAccessTypes (SecurityToken token)
     {
-      ArgumentUtility.CheckNotNull(nameof(token), token);
+      ArgumentNullException.ThrowIfNull(token);
       return GetAccessTypes(token, null);
     }
 

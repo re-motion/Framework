@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Configuration
 {
@@ -33,7 +32,7 @@ namespace Remotion.Configuration
 
     public static ConfigurationWrapper CreateFromConfigurationObject (System.Configuration.Configuration configuration)
     {
-      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
+      ArgumentNullException.ThrowIfNull(configuration);
       return new ConfigurationWrapperFromConfigurationObject(configuration);
     }
 
@@ -64,7 +63,7 @@ namespace Remotion.Configuration
 
     public object? GetSection (string sectionName, bool throwIfNotFound)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(sectionName), sectionName);
+      ArgumentException.ThrowIfNullOrEmpty(sectionName);
 
       object? section = GetSection(sectionName);
       if (throwIfNotFound && section == null)
@@ -75,7 +74,7 @@ namespace Remotion.Configuration
 
     public ConnectionStringSettings GetConnectionString (string name, bool throwIfNotFound)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       ConnectionStringSettings connectionStringSettings = GetConnectionString(name);
       if (throwIfNotFound && connectionStringSettings == null)
@@ -86,7 +85,7 @@ namespace Remotion.Configuration
 
     public string? GetAppSetting (string name, bool throwIfNotFound)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       string? appSetting = GetAppSetting(name);
       if (throwIfNotFound && appSetting == null)

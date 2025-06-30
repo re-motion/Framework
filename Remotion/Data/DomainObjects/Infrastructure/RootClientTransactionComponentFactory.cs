@@ -51,10 +51,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
             IPersistenceExtensionFactory persistenceExtensionFactory,
             IStorageAccessResolver storageAccessResolver)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
-      ArgumentUtility.CheckNotNull(nameof(persistenceService), persistenceService);
-      ArgumentUtility.CheckNotNull(nameof(persistenceExtensionFactory), persistenceExtensionFactory);
-      ArgumentUtility.CheckNotNull(nameof(storageAccessResolver), storageAccessResolver);
+      ArgumentNullException.ThrowIfNull(storageSettings);
+      ArgumentNullException.ThrowIfNull(persistenceService);
+      ArgumentNullException.ThrowIfNull(persistenceExtensionFactory);
+      ArgumentNullException.ThrowIfNull(storageAccessResolver);
 
       return ObjectFactory.Create<RootClientTransactionComponentFactory>(
           true,
@@ -71,10 +71,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         IPersistenceExtensionFactory persistenceExtensionFactory,
         IStorageAccessResolver storageAccessResolver)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
-      ArgumentUtility.CheckNotNull(nameof(persistenceService), persistenceService);
-      ArgumentUtility.CheckNotNull(nameof(persistenceExtensionFactory), persistenceExtensionFactory);
-      ArgumentUtility.CheckNotNull(nameof(storageAccessResolver), storageAccessResolver);
+      ArgumentNullException.ThrowIfNull(storageSettings);
+      ArgumentNullException.ThrowIfNull(persistenceService);
+      ArgumentNullException.ThrowIfNull(persistenceExtensionFactory);
+      ArgumentNullException.ThrowIfNull(storageAccessResolver);
 
       _storageSettings = storageSettings;
       _persistenceService = persistenceService;
@@ -86,33 +86,33 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction constructedTransaction,
         IClientTransactionEventSink eventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructedTransaction), constructedTransaction);
+      ArgumentNullException.ThrowIfNull(constructedTransaction);
       return new TransactionHierarchyManager(constructedTransaction, eventSink);
     }
 
     public override IDictionary<Enum, object> CreateApplicationData (ClientTransaction constructedTransaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructedTransaction), constructedTransaction);
+      ArgumentNullException.ThrowIfNull(constructedTransaction);
       return new Dictionary<Enum, object>();
     }
 
     public override IEnlistedDomainObjectManager CreateEnlistedObjectManager (ClientTransaction constructedTransaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructedTransaction), constructedTransaction);
+      ArgumentNullException.ThrowIfNull(constructedTransaction);
       return new DictionaryBasedEnlistedDomainObjectManager();
     }
 
     public override IInvalidDomainObjectManager CreateInvalidDomainObjectManager (
         ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructedTransaction), constructedTransaction);
-      ArgumentUtility.CheckNotNull(nameof(eventSink), eventSink);
+      ArgumentNullException.ThrowIfNull(constructedTransaction);
+      ArgumentNullException.ThrowIfNull(eventSink);
       return new InvalidDomainObjectManager(eventSink);
     }
 
     public override IPersistenceStrategy CreatePersistenceStrategy (ClientTransaction constructedTransaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructedTransaction), constructedTransaction);
+      ArgumentNullException.ThrowIfNull(constructedTransaction);
       return ObjectFactory.Create<RootPersistenceStrategy>(
           true,
           ParamList.Create(
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     protected override IEnumerable<IClientTransactionListener> CreateListeners (ClientTransaction constructedTransaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructedTransaction), constructedTransaction);
+      ArgumentNullException.ThrowIfNull(constructedTransaction);
       return base.CreateListeners(constructedTransaction)
           .Concat(new NotFoundObjectsClientTransactionListener());
     }
@@ -138,11 +138,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         IClientTransactionEventSink eventSink,
         IDataContainerMapReadOnlyView dataContainerMap)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructedTransaction), constructedTransaction);
-      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
-      ArgumentUtility.CheckNotNull(nameof(lazyLoader), lazyLoader);
-      ArgumentUtility.CheckNotNull(nameof(eventSink), eventSink);
-      ArgumentUtility.CheckNotNull(nameof(dataContainerMap), dataContainerMap);
+      ArgumentNullException.ThrowIfNull(constructedTransaction);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
+      ArgumentNullException.ThrowIfNull(lazyLoader);
+      ArgumentNullException.ThrowIfNull(eventSink);
+      ArgumentNullException.ThrowIfNull(dataContainerMap);
 
       var domainObjectCollectionEndPointChangeDetectionStrategy = new RootDomainObjectCollectionEndPointChangeDetectionStrategy();
       var domainObjectCollectionEndPointDataManagerFactory = new DomainObjectCollectionEndPointDataManagerFactory(domainObjectCollectionEndPointChangeDetectionStrategy);
@@ -176,12 +176,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory,
         IVirtualCollectionEndPointDataManagerFactory virtualCollectionEndPointDataManagerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructedTransaction), constructedTransaction);
-      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
-      ArgumentUtility.CheckNotNull(nameof(lazyLoader), lazyLoader);
-      ArgumentUtility.CheckNotNull(nameof(eventSink), eventSink);
-      ArgumentUtility.CheckNotNull(nameof(virtualObjectEndPointDataManagerFactory), virtualObjectEndPointDataManagerFactory);
-      ArgumentUtility.CheckNotNull(nameof(domainObjectCollectionEndPointDataManagerFactory), domainObjectCollectionEndPointDataManagerFactory);
+      ArgumentNullException.ThrowIfNull(constructedTransaction);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
+      ArgumentNullException.ThrowIfNull(lazyLoader);
+      ArgumentNullException.ThrowIfNull(eventSink);
+      ArgumentNullException.ThrowIfNull(virtualObjectEndPointDataManagerFactory);
+      ArgumentNullException.ThrowIfNull(domainObjectCollectionEndPointDataManagerFactory);
 
       var associatedDomainObjectCollectionDataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory(endPointProvider);
       var domainObjectCollectionEndPointCollectionProvider = new DomainObjectCollectionEndPointCollectionProvider(associatedDomainObjectCollectionDataStrategyFactory);
@@ -208,13 +208,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         IDataManager dataManager,
         ITransactionHierarchyManager hierarchyManager)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructedTransaction), constructedTransaction);
-      ArgumentUtility.CheckNotNull(nameof(eventSink), eventSink);
+      ArgumentNullException.ThrowIfNull(constructedTransaction);
+      ArgumentNullException.ThrowIfNull(eventSink);
       var fetchEnabledPersistenceStrategy =
           ArgumentUtility.CheckNotNullAndType<IFetchEnabledPersistenceStrategy>(nameof(persistenceStrategy), persistenceStrategy);
-      ArgumentUtility.CheckNotNull(nameof(invalidDomainObjectManager), invalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull(nameof(dataManager), dataManager);
-      ArgumentUtility.CheckNotNull(nameof(hierarchyManager), hierarchyManager);
+      ArgumentNullException.ThrowIfNull(invalidDomainObjectManager);
+      ArgumentNullException.ThrowIfNull(dataManager);
+      ArgumentNullException.ThrowIfNull(hierarchyManager);
 
       var loadedObjectDataProvider = new LoadedObjectDataProvider(dataManager, invalidDomainObjectManager);
       var registrationListener = new LoadedObjectDataRegistrationListener(eventSink, hierarchyManager);

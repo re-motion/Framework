@@ -46,7 +46,7 @@ public class SerializedObjectIDDataParameterDefinitionTest : StandardMappingTest
     Assert.That(
         () => new SerializedObjectIDDataParameterDefinition(storageTypeInformation),
         Throws.InstanceOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo(
-            $"Parameter 'storageTypeInformation.DotNetType' is a '{typeof(int)}', which cannot be assigned to type '{typeof(string)}'.",
+            $"The value is a '{typeof(int)}', which cannot be assigned to type '{typeof(string)}'.",
             "storageTypeInformation.DotNetType"));
   }
 
@@ -86,7 +86,7 @@ public class SerializedObjectIDDataParameterDefinitionTest : StandardMappingTest
     Assert.That(
         () => serializedObjectIDDataParameterDefinition.GetParameterValue(dummyValue),
         Throws.InstanceOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo(
-            $"Parameter 'value' has type '{typeof(string)}' when type '{typeof(ObjectID)}' was expected.",
+            $"The value has type '{typeof(string)}' when type '{typeof(ObjectID)}' was expected.",
             "value"));
   }
 

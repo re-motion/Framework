@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
 {
@@ -39,7 +38,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public Assembly? HandleAssemblyResolve (object? sender, ResolveEventArgs args)
     {
-      ArgumentUtility.CheckNotNull(nameof(args), args);
+      ArgumentNullException.ThrowIfNull(args);
 
       if (_assembliesInPrivateBinPath.TryGetValue(args.Name, out var privateAssemblyName))
         return Assembly.Load(privateAssemblyName);

@@ -48,7 +48,7 @@ namespace Remotion.Web.UI.Controls
     public static CommandInfo CreateForLink (string? title, string? accessKey, string href, string? target, string? onClick)
     {
       ArgumentUtility.CheckNotEmpty(nameof(title), title);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(href), href);
+      ArgumentException.ThrowIfNullOrEmpty(href);
       ArgumentUtility.CheckNotEmpty(nameof(target), target);
       ArgumentUtility.CheckNotEmpty(nameof(onClick), onClick);
 
@@ -64,7 +64,7 @@ namespace Remotion.Web.UI.Controls
     public static CommandInfo CreateForPostBack (string? title, string? accessKey, string onClick)
     {
       ArgumentUtility.CheckNotEmpty(nameof(title), title);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(onClick), onClick);
+      ArgumentException.ThrowIfNullOrEmpty(onClick);
 
       return new CommandInfo(title, accessKey, SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL(), null, onClick, null);
     }
@@ -118,8 +118,8 @@ namespace Remotion.Web.UI.Controls
 
     public void AddAttributesToRender ([NotNull] HtmlTextWriter writer, [NotNull] IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       if (!string.IsNullOrEmpty(_href))
         writer.AddAttribute(HtmlTextWriterAttribute.Href, _href);

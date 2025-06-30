@@ -23,7 +23,6 @@ using Remotion.Collections;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
 {
@@ -37,7 +36,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public InvolvedType (Type realType)
     {
-      ArgumentUtility.CheckNotNull(nameof(realType), realType);
+      ArgumentNullException.ThrowIfNull(realType);
 
       _realType = realType;
     }

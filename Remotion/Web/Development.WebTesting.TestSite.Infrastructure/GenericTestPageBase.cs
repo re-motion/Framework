@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.ExecutionEngine;
 
@@ -70,8 +69,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
     /// </summary>
     protected void Register ([NotNull] string key, [NotNull] IGenericTestPage<TOptions> testPage)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
-      ArgumentUtility.CheckNotNull(nameof(testPage), testPage);
+      ArgumentNullException.ThrowIfNull(key);
+      ArgumentNullException.ThrowIfNull(testPage);
 
       if (_pages.ContainsKey(key))
         throw new InvalidOperationException("A generic test page with that name is already registered.");

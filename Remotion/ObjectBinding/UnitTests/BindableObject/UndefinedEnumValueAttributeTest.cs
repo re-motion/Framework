@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           () => new UndefinedEnumValueAttribute(this),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'value' has type 'Remotion.ObjectBinding.UnitTests.BindableObject.UndefinedEnumValueAttributeTest' "
+                  "The value has type 'Remotion.ObjectBinding.UnitTests.BindableObject.UndefinedEnumValueAttributeTest' "
                   + "when type 'System.Enum' was expected.", "value"));
     }
 

@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.ListMenuImplementation;
 using Remotion.Web.UI.Controls.ListMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
@@ -58,7 +57,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -72,7 +71,7 @@ namespace Remotion.Web.UI.Controls
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       var renderer = CreateRenderer();
       renderer.RegisterHtmlHeadContents(htmlHeadAppender);
@@ -85,7 +84,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual ListMenuRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       return new ListMenuRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: not null assertion
     }
@@ -122,7 +121,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns>A Javascript statement, terminiated with a <c>;</c> (semicolon).</returns>
     public string GetUpdateScriptReference (string getSelectionCount)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(getSelectionCount), getSelectionCount);
+      ArgumentException.ThrowIfNullOrEmpty(getSelectionCount);
 
       return string.Format("ListMenu.Update ('#{0}', {1});", ClientID, getSelectionCount);
     }

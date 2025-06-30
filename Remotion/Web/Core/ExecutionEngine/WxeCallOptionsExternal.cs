@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine
@@ -49,7 +48,7 @@ namespace Remotion.Web.ExecutionEngine
     public WxeCallOptionsExternal (string target, string? features, bool returningPostback, WxePermaUrlOptions permaUrlOptions)
         : base(permaUrlOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(target), target);
+      ArgumentException.ThrowIfNullOrEmpty(target);
 
       _target = target;
       _features = features;
@@ -58,9 +57,9 @@ namespace Remotion.Web.ExecutionEngine
 
     public override void Dispatch (IWxeExecutor executor, WxeFunction function, Control sender)
     {
-      ArgumentUtility.CheckNotNull(nameof(executor), executor);
-      ArgumentUtility.CheckNotNull(nameof(function), function);
-      ArgumentUtility.CheckNotNull(nameof(sender), sender);
+      ArgumentNullException.ThrowIfNull(executor);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentNullException.ThrowIfNull(sender);
 
       executor.ExecuteFunctionExternal(function, sender, this);
 

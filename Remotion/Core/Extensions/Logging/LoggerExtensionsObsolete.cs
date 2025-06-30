@@ -4,7 +4,6 @@ using System;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Remotion.Obsolete;
-using Remotion.Utilities;
 
 namespace Remotion.Logging;
 
@@ -23,7 +22,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.Log(logLevel, new EventID(eventID), message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Log (this ILogger logger, LogLevel logLevel, int eventID, object? message)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.Log(logLevel, new EventId(eventID), message?.ToString());
   }
 
@@ -38,7 +37,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.Log(logLevel, new EventID(eventID), exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Log (this ILogger logger, LogLevel logLevel, int eventID, object? message, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.Log(logLevel, new EventId(eventID), exceptionObject, message?.ToString());
   }
 
@@ -53,7 +52,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.Log(logLevel, exceptionObject message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Log (this ILogger logger, LogLevel logLevel, object? message, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.Log(logLevel, exceptionObject, message?.ToString());
   }
 
@@ -67,7 +66,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.Log(logLevel, exceptionObject message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Log (this ILogger logger, LogLevel logLevel, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.Log(logLevel, exceptionObject, exceptionObject.Message);
   }
 
@@ -80,7 +79,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.Log(logLevel, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Log (this ILogger logger, LogLevel logLevel, object? message)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     Microsoft.Extensions.Logging.LoggerExtensions.Log(logger, logLevel, message?.ToString());
   }
 
@@ -97,7 +96,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.Log(logLevel, new EventID(eventID), string.Format(format, args)) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void LogFormat (this ILogger logger, LogLevel logLevel, int eventID, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     if (logger.IsEnabled(logLevel))
       logger.Log(logLevel, new EventId(eventID), string.Format(format, args));
   }
@@ -115,7 +114,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.Log(logLevel, new EventID(eventID), exceptionObject, string.Format(format, args)) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void LogFormat (this ILogger logger, LogLevel logLevel, int eventID, Exception exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     if (logger.IsEnabled(logLevel))
       logger.Log(logLevel, new EventId(eventID), exceptionObject, string.Format(format, args));
   }
@@ -132,7 +131,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogDebug(new EventID(eventID), exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Debug (this ILogger logger, int eventID, object? message, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogDebug(new EventId(eventID), exceptionObject, message?.ToString());
   }
 
@@ -145,7 +144,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogDebug(new EventID(eventID), message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Debug (this ILogger logger, int eventID, object? message)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogDebug(new EventId(eventID), message?.ToString());
   }
 
@@ -159,7 +158,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogDebug(exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Debug (this ILogger logger, object? message, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogDebug(exceptionObject, message?.ToString());
   }
 
@@ -172,7 +171,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogDebug(exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Debug (this ILogger logger, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogDebug(exceptionObject, exceptionObject.Message);
   }
 
@@ -184,7 +183,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogDebug(message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Debug (this ILogger logger, object? message)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogDebug(message?.ToString());
   }
 
@@ -202,7 +201,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogDebug(new EventID(eventID), exceptionObject, string.Format(format, args)) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void DebugFormat (this ILogger logger, int eventID, Exception exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     if (logger.IsEnabled(LogLevel.Debug))
       logger.LogDebug(new EventId(eventID), exceptionObject, string.Format(format, args));
   }
@@ -218,7 +217,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogDebug(new EventID(eventID), string.Format(format, args)) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void DebugFormat (this ILogger logger, int eventID, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     if (logger.IsEnabled(LogLevel.Debug))
       logger.LogDebug(new EventId(eventID), string.Format(format, args));
   }
@@ -233,7 +232,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogDebugFormat(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void DebugFormat (this ILogger logger, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogDebugFormat(format, args);
   }
 
@@ -249,7 +248,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogDebugFormat(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void DebugFormat (this ILogger logger, Exception exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogDebugFormat(exceptionObject, format, args);
   }
 
@@ -265,7 +264,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogInformation(new EventID(eventID), exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Info (this ILogger logger, int eventID, object? message, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogInformation(new EventId(eventID), exceptionObject, message?.ToString());
   }
 
@@ -278,7 +277,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogInformation(new EventID(eventID), message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Info (this ILogger logger, int eventID, object? message)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogInformation(new EventId(eventID), message?.ToString());
   }
 
@@ -292,7 +291,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogInformation(exceptionObject, message instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Info (this ILogger logger, object? message, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogInformation(exceptionObject, message?.ToString());
   }
 
@@ -305,7 +304,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogInformation(exceptionObject, message instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Info (this ILogger logger, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogInformation(exceptionObject, exceptionObject.Message);
   }
 
@@ -317,7 +316,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogInformation(message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Info (this ILogger logger, object? message)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogInformation(message?.ToString());
   }
 
@@ -335,7 +334,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogInformation(new EventID(eventID), exceptionObject, string.Format(format, args)) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void InfoFormat (this ILogger logger, int eventID, Exception exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     if (logger.IsEnabled(LogLevel.Information))
       logger.LogInformation(new EventId(eventID), exceptionObject, string.Format(format, args));
   }
@@ -351,7 +350,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogInformation(new EventID(eventID), string.Format(format, args)) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void InfoFormat (this ILogger logger, int eventID, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     if (logger.IsEnabled(LogLevel.Information))
       logger.LogInformation(new EventId(eventID), string.Format(format, args));
   }
@@ -366,7 +365,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogInformationFormat(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void InfoFormat (this ILogger logger, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogInformationFormat(format, args);
   }
 
@@ -382,7 +381,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogInformationFormat(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void InfoFormat (this ILogger logger, Exception exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogInformationFormat(exceptionObject, format, args);
   }
 
@@ -398,7 +397,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogWarning(new EventID(eventID), exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Warn (this ILogger logger, int eventID, object? message, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogWarning(new EventId(eventID), exceptionObject, message?.ToString());
   }
 
@@ -411,7 +410,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogWarning(new EventID(eventID), message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Warn (this ILogger logger, int eventID, object? message)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogWarning(new EventId(eventID), message?.ToString());
   }
 
@@ -425,7 +424,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogWarning(exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Warn (this ILogger logger, object? message, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogWarning(exceptionObject, message?.ToString());
   }
 
@@ -438,7 +437,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogWarning(exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Warn (this ILogger logger, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogWarning(exceptionObject, exceptionObject.Message);
   }
 
@@ -450,7 +449,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogWarning(message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Warn (this ILogger logger, object? message)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogWarning(message?.ToString());
   }
 
@@ -468,7 +467,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogWarning(new EventID(eventID), exceptionObject, string.Format(format, args)) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void WarnFormat (this ILogger logger, int eventID, Exception exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     if (logger.IsEnabled(LogLevel.Warning))
       logger.LogWarning(new EventId(eventID), exceptionObject, string.Format(format, args));
   }
@@ -484,7 +483,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogWarning(new EventID(eventID), string.Format(format, args)) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void WarnFormat (this ILogger logger, int eventID, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     if (logger.IsEnabled(LogLevel.Warning))
       logger.LogWarning(new EventId(eventID), string.Format(format, args));
   }
@@ -499,7 +498,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogWarningFormat(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void WarnFormat (this ILogger logger, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogWarningFormat(format, args);
   }
 
@@ -515,7 +514,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogWarningFormat(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void WarnFormat (this ILogger logger, Exception exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogWarningFormat(exceptionObject, format, args);
   }
 
@@ -531,7 +530,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogError(new EventID(eventID), exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Error (this ILogger logger, int eventID, object? message, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogError(new EventId(eventID), exceptionObject, message?.ToString());
   }
 
@@ -544,7 +543,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogError(new EventID(eventID), message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Error (this ILogger logger, int eventID, object? message)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogError(new EventId(eventID), message?.ToString());
   }
 
@@ -558,7 +557,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogError(exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Error (this ILogger logger, object? message, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogError(exceptionObject, message?.ToString());
   }
 
@@ -571,7 +570,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogError(exceptionObject, message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Error (this ILogger logger, Exception exceptionObject)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogError(exceptionObject, exceptionObject.Message);
   }
 
@@ -583,7 +582,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogError(message) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void Error (this ILogger logger, object? message)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogError(message?.ToString());
   }
 
@@ -601,7 +600,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogError(new EventID(eventID), exceptionObject, string.Format(format, args)) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void ErrorFormat (this ILogger logger, int eventID, Exception exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     if (logger.IsEnabled(LogLevel.Error))
       logger.LogError(new EventId(eventID), exceptionObject, string.Format(format, args));
   }
@@ -617,7 +616,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogError(new EventID(eventID), string.Format(format, args)) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void ErrorFormat (this ILogger logger, int eventID, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     if (logger.IsEnabled(LogLevel.Error))
       logger.LogError(new EventId(eventID), string.Format(format, args));
   }
@@ -632,7 +631,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogErrorFormat(format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void ErrorFormat (this ILogger logger, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogErrorFormat(format, args);
   }
 
@@ -648,7 +647,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.LogErrorFormat(exceptionObject, format, args) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static void ErrorFormat (this ILogger logger, Exception exceptionObject, string format, params object?[] args)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     logger.LogErrorFormat(exceptionObject, format, args);
   }
 
@@ -781,7 +780,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.IsEnabled(LogLevel.Debug) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static bool IsDebugEnabled (this ILogger logger)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     return logger.IsEnabled(LogLevel.Debug);
   }
 
@@ -792,7 +791,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.IsEnabled(LogLevel.Information) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static bool IsInfoEnabled (this ILogger logger)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     return logger.IsEnabled(LogLevel.Information);
   }
 
@@ -803,7 +802,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.IsEnabled(LogLevel.Warning) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static bool IsWarnEnabled (this ILogger logger)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     return logger.IsEnabled(LogLevel.Warning);
   }
 
@@ -814,7 +813,7 @@ public static class LoggerExtensionsObsolete
   [Obsolete("Use logger.IsEnabled(LogLevel.Error) instead. (Version 7.0.0)", DiagnosticId = ObsoleteDiagnosticIDs.LoggingUtility)]
   public static bool IsErrorEnabled (this ILogger logger)
   {
-    ArgumentUtility.CheckNotNull(nameof(logger), logger);
+    ArgumentNullException.ThrowIfNull(logger);
     return logger.IsEnabled(LogLevel.Error);
   }
 

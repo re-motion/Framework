@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace (assembly should have a more general name like ".Remotion", however, we have not found a good name yet)
 namespace Remotion.Web.Development.WebTesting.ControlSelection
@@ -39,8 +38,8 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
         [NotNull] IItemIDControlSelector<TControlObject> controlSelector,
         [NotNull] string itemID)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(controlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       _controlSelector = controlSelector;
       _itemID = itemID;
@@ -49,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.SelectPerItemID(context, _itemID);
     }
@@ -57,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject? SelectOptional (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.SelectOptionalPerItemID(context, _itemID);
     }
@@ -65,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public bool Exists (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.ExistsPerItemID(context, _itemID);
     }

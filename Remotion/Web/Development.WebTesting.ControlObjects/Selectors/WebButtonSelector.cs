@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Coypu;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 
@@ -39,8 +38,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public WebButtonControlObject SelectPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
 
@@ -50,8 +49,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public WebButtonControlObject? SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
 
@@ -64,8 +63,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(textContent), textContent);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
 
@@ -75,8 +74,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public WebButtonControlObject SelectPerItemID (ControlSelectionContext context, string itemID)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       var scope = FindScopePerItemID(context, itemID);
 
@@ -86,8 +85,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public WebButtonControlObject? SelectOptionalPerItemID (ControlSelectionContext context, string itemID)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       var scope = FindScopePerItemID(context, itemID);
 
@@ -100,8 +99,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerItemID (ControlSelectionContext context, string itemID)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       var scope = FindScopePerItemID(context, itemID);
 
@@ -113,8 +112,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelectionContext), controlSelectionContext);
-      ArgumentUtility.CheckNotNull(nameof(newControlObjectContext), newControlObjectContext);
+      ArgumentNullException.ThrowIfNull(controlSelectionContext);
+      ArgumentNullException.ThrowIfNull(newControlObjectContext);
 
       return new WebButtonControlObject(newControlObjectContext);
     }

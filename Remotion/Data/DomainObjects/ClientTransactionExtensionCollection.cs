@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects
 
     public ClientTransactionExtensionCollection (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
 
       _key = key;
     }
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+        ArgumentException.ThrowIfNullOrEmpty(key);
 
         return (IClientTransactionExtension?)BaseGetObject(key);
       }
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>The order of the extensions in the collection is the order in which they are notified.</remarks>
     public void Add (IClientTransactionExtension clientTransactionExtension)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransactionExtension), clientTransactionExtension);
+      ArgumentNullException.ThrowIfNull(clientTransactionExtension);
 
       var key = clientTransactionExtension.Key;
       Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="key">The name of the extension. Must not be <see langword="null"/> or <see cref="System.String.Empty"/>.</param>
     public void Remove (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
 
       BaseRemove(key);
     }
@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The index of the extension, or -1 if <paramref name="key"/> is not found.</returns>
     public int IndexOf (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
+      ArgumentException.ThrowIfNullOrEmpty(key);
 
       return BaseIndexOfKey(key);
     }
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects
     /// <remarks>The order of the extensions in the collection is the order in which they are notified.</remarks>
     public void Insert (int index, IClientTransactionExtension clientTransactionExtension)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransactionExtension), clientTransactionExtension);
+      ArgumentNullException.ThrowIfNull(clientTransactionExtension);
 
       var key = clientTransactionExtension.Key;
       Assertion.IsNotNull(key, "IClientTransactionExtension.Key must not return null");
@@ -359,7 +359,7 @@ namespace Remotion.Data.DomainObjects
     [EditorBrowsable(EditorBrowsableState.Never)]
     public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(queryResult), queryResult);
+      ArgumentNullException.ThrowIfNull(queryResult);
 
       return this
           .Cast<IClientTransactionExtension>()

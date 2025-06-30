@@ -45,7 +45,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       if (propertyPath.Identifier == "Position")
         return CreateControlForPosition(propertyPath);
@@ -55,14 +55,14 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected virtual BocReferenceValue CreateBocReferenceValue (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       return new BocReferenceValue();
     }
 
     private IBusinessObjectBoundEditableWebControl CreateControlForPosition (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       var control = CreateBocReferenceValue(propertyPath);
       control.PreRender += HandlePositionPreRender;

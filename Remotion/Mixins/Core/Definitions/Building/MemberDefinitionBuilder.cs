@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.Mixins.Definitions.Building
@@ -32,8 +31,8 @@ namespace Remotion.Mixins.Definitions.Building
 
     public MemberDefinitionBuilder (ClassDefinitionBase classDefinition, Predicate<MethodInfo> methodFilter)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNull(nameof(methodFilter), methodFilter);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(methodFilter);
 
       _classDefinition = classDefinition;
       _methodFilter = methodFilter;

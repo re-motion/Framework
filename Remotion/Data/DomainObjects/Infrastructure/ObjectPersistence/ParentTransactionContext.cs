@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -35,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public ParentTransactionContext (ClientTransaction parentTransaction, IInvalidDomainObjectManager parentInvalidDomainObjectManager)
     {
-      ArgumentUtility.CheckNotNull(nameof(parentTransaction), parentTransaction);
-      ArgumentUtility.CheckNotNull(nameof(parentInvalidDomainObjectManager), parentInvalidDomainObjectManager);
+      ArgumentNullException.ThrowIfNull(parentTransaction);
+      ArgumentNullException.ThrowIfNull(parentInvalidDomainObjectManager);
 
       if (parentTransaction.IsWriteable)
       {
@@ -62,37 +61,37 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
       return _parentTransaction.CreateNewObjectID(classDefinition);
     }
 
     public DomainObject GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _parentTransaction.GetObject(objectID, false);
     }
 
     public DomainObject[] GetObjects (IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(objectIDs);
       return _parentTransaction.GetObjects<DomainObject>(objectIDs);
     }
 
     public DomainObject? TryGetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _parentTransaction.TryGetObject(objectID);
     }
 
     public DomainObject?[] TryGetObjects (IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(objectIDs);
       return _parentTransaction.TryGetObjects<DomainObject>(objectIDs);
     }
 
     public DomainObject? ResolveRelatedObject (RelationEndPointID relationEndPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
+      ArgumentNullException.ThrowIfNull(relationEndPointID);
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.One)
         throw new ArgumentException("EndPoint ID must denote a virtual relation end-point with cardinality one.", nameof(relationEndPointID));
 
@@ -102,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public IEnumerable<DomainObject> ResolveRelatedObjects (RelationEndPointID relationEndPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
+      ArgumentNullException.ThrowIfNull(relationEndPointID);
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.Many)
         throw new ArgumentException("EndPoint ID must denote a virtual relation end-point with cardinality many.", nameof(relationEndPointID));
 
@@ -112,43 +111,43 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public QueryResult<DomainObject> ExecuteCollectionQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
       return _parentTransaction.QueryManager.GetCollection(query);
     }
 
     public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
       return _parentTransaction.QueryManager.GetCustom(query, qrr => qrr);
     }
 
     public object? ExecuteScalarQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
       return _parentTransaction.QueryManager.GetScalar(query);
     }
 
     public DataContainer? GetDataContainerWithoutLoading (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _parentTransaction.DataManager.GetDataContainerWithoutLoading(objectID);
     }
 
     public DataContainer? GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _parentTransaction.DataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound);
     }
 
     public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID relationEndPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
+      ArgumentNullException.ThrowIfNull(relationEndPointID);
       return _parentTransaction.DataManager.GetRelationEndPointWithoutLoading(relationEndPointID);
     }
 
     public bool IsInvalid (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _parentInvalidDomainObjectManager.IsInvalid(objectID);
     }
 

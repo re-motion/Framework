@@ -50,8 +50,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
             indexes,
             synonyms)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseEntity), baseEntity);
-      ArgumentUtility.CheckNotNull(nameof(classIDs), classIDs);
+      ArgumentNullException.ThrowIfNull(baseEntity);
+      ArgumentNullException.ThrowIfNull(classIDs);
 
       var classIDsList = classIDs.ToList().AsReadOnly();
       ArgumentUtility.CheckNotNullOrEmpty(nameof(classIDs), classIDsList);
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public override void Accept (IRdbmsStorageEntityDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.VisitFilterViewDefinition(this);
     }
   }

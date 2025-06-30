@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 {
@@ -48,9 +47,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     /// <param name="userDirectory">Path to the desired Microsoft Edge user data directory</param>
     public EdgeExecutable ([NotNull] string browserBinaryPath, [NotNull] string driverBinaryPath, [NotNull] string userDirectory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(browserBinaryPath), browserBinaryPath);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(driverBinaryPath), driverBinaryPath);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(userDirectory), userDirectory);
+      ArgumentException.ThrowIfNullOrEmpty(browserBinaryPath);
+      ArgumentException.ThrowIfNullOrEmpty(driverBinaryPath);
+      ArgumentException.ThrowIfNullOrEmpty(userDirectory);
 
       BrowserBinaryPath = browserBinaryPath;
       DriverBinaryPath = driverBinaryPath;

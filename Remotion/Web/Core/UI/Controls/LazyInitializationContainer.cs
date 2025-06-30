@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -40,7 +39,7 @@ namespace Remotion.Web.UI.Controls
 
     public ControlCollection GetControls (ControlCollection baseControls)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseControls), baseControls);
+      ArgumentNullException.ThrowIfNull(baseControls);
         if (_isEnsured)
           return baseControls;
         else
@@ -49,7 +48,7 @@ namespace Remotion.Web.UI.Controls
 
     public void Ensure (ControlCollection baseControls)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseControls), baseControls);
+      ArgumentNullException.ThrowIfNull(baseControls);
 
       if (_isEnsured)
         return;

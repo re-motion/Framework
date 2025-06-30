@@ -43,7 +43,7 @@ public class SqlTableValuedParameterValue : IReadOnlyCollection<SqlDataRecord>
 
   public SqlTableValuedParameterValue (string tableTypeName, IReadOnlyCollection<SqlMetaData> columnMetaData)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(tableTypeName), tableTypeName);
+    ArgumentException.ThrowIfNullOrEmpty(tableTypeName);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(columnMetaData), columnMetaData);
 
     TableTypeName = tableTypeName;
@@ -57,7 +57,7 @@ public class SqlTableValuedParameterValue : IReadOnlyCollection<SqlDataRecord>
   /// and each value must be of a type compatible with the respective <see cref="SqlMetaData"/> in <see cref="ColumnMetaData"/>.</param>
   public void AddRecord (params object[] columnValues)
   {
-    ArgumentUtility.CheckNotNull(nameof(columnValues), columnValues);
+    ArgumentNullException.ThrowIfNull(columnValues);
     if (columnValues.Length != _columnMetaData.Length)
     {
       throw new ArgumentException(

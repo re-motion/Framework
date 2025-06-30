@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine
@@ -50,9 +49,9 @@ namespace Remotion.Web.ExecutionEngine
 
     public override void Dispatch (IWxeExecutor executor, WxeFunction function, Control sender)
     {
-      ArgumentUtility.CheckNotNull(nameof(executor), executor);
-      ArgumentUtility.CheckNotNull(nameof(function), function);
-      ArgumentUtility.CheckNotNull(nameof(sender), sender);
+      ArgumentNullException.ThrowIfNull(executor);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentNullException.ThrowIfNull(sender);
 
       executor.ExecuteFunctionExternalByRedirect(function, sender, this);
 

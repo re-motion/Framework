@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Model
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Model
 
     public NonPersistentStorageEntity (StorageProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
       StorageProviderDefinition = storageProviderDefinition;
     }

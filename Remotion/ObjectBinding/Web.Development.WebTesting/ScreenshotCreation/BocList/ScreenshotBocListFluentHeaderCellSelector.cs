@@ -20,7 +20,6 @@ using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -46,8 +45,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentList), fluentList);
-      ArgumentUtility.CheckNotNull(nameof(fluentElement), fluentElement);
+      ArgumentNullException.ThrowIfNull(fluentList);
+      ArgumentNullException.ThrowIfNull(fluentElement);
 
       _fluentList = fluentList;
       _fluentElement = fluentElement;
@@ -56,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(itemID);
 
       var columns = _fluentList.Target.List.GetColumnDefinitions().Where(c => c.ItemID == itemID).Take(2).ToArray();
 
@@ -87,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithTitle (string title)
     {
-      ArgumentUtility.CheckNotNull(nameof(title), title);
+      ArgumentNullException.ThrowIfNull(title);
 
       var columns = _fluentList.Target.List.GetColumnDefinitions().Where(c => c.Title == title).Take(2).ToArray();
 
@@ -107,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithTitleContains (string content)
     {
-      ArgumentUtility.CheckNotNull(nameof(content), content);
+      ArgumentNullException.ThrowIfNull(content);
 
       var columns = _fluentList.Target.List.GetColumnDefinitions().Where(c => c.Title.Contains(content)).Take(2).ToArray();
 

@@ -19,15 +19,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.ExceptionServices;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Globalization
 {
@@ -61,8 +58,8 @@ public sealed class ResourceDispatcher
   /// </param>  
   public static void Dispatch (Control control, IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull(nameof(control), control);
-    ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+    ArgumentNullException.ThrowIfNull(control);
+    ArgumentNullException.ThrowIfNull(resourceManager);
 
     const string prefix = "auto:";
 
@@ -99,8 +96,8 @@ public sealed class ResourceDispatcher
   /// <include file='../../Doc/include/ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/*' />
   public static void Dispatch (Control control, IDictionary<string, IDictionary<string, WebString>> elements, string resourceSource)
   {
-    ArgumentUtility.CheckNotNull(nameof(control), control);
-    ArgumentUtility.CheckNotNull(nameof(elements), elements);
+    ArgumentNullException.ThrowIfNull(control);
+    ArgumentNullException.ThrowIfNull(elements);
 
     //  Dispatch the resources to the controls
     foreach (var elementsEntry in elements)
@@ -138,8 +135,8 @@ public sealed class ResourceDispatcher
   /// <include file='../../Doc/include/ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/*' />
   public static void DispatchGeneric (object obj, IDictionary<string, WebString> values)
   {
-    ArgumentUtility.CheckNotNull(nameof(obj), obj);
-    ArgumentUtility.CheckNotNull(nameof(values), values);
+    ArgumentNullException.ThrowIfNull(obj);
+    ArgumentNullException.ThrowIfNull(values);
 
     foreach (var entry in values)
     {
@@ -244,7 +241,7 @@ public sealed class ResourceDispatcher
   /// </returns>
   private static IDictionary<string, IDictionary<string, WebString>> GetResources (IResourceManager resourceManager, string? prefix)
   {
-    ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+    ArgumentNullException.ThrowIfNull(resourceManager);
 
     if (prefix == null)
       prefix = String.Empty;

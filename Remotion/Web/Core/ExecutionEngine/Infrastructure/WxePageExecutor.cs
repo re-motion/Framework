@@ -30,8 +30,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void ExecutePage (WxeContext context, string page, bool isPostBack)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(page), page);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(page);
 
       string url = page;
       string queryString = context.HttpContext.Request.Url.Query;

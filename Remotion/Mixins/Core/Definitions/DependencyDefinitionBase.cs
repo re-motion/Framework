@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Definitions
 
     public DependencyDefinitionBase (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
-      ArgumentUtility.CheckNotNull(nameof(requirement), requirement);
+      ArgumentNullException.ThrowIfNull(requirement);
       ArgumentUtility.CheckType(nameof(aggregator), aggregator, GetType());
 
       _requirement = requirement;
@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Definitions
 
     private bool HasSameDepender (DependencyDefinitionBase dependencyToCheck)
     {
-      ArgumentUtility.CheckNotNull(nameof(dependencyToCheck), dependencyToCheck);
+      ArgumentNullException.ThrowIfNull(dependencyToCheck);
       return dependencyToCheck.Depender == Depender;
     }
 

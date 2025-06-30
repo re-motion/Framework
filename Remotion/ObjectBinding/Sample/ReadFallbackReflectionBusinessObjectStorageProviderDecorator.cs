@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
 {
@@ -31,8 +30,8 @@ namespace Remotion.ObjectBinding.Sample
         IReflectionBusinessObjectStorageProvider innerBusinessObjectStorageProvider,
         IReflectionBusinessObjectStorageProvider readFallbackBusinessObjectStorageProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerBusinessObjectStorageProvider), innerBusinessObjectStorageProvider);
-      ArgumentUtility.CheckNotNull(nameof(readFallbackBusinessObjectStorageProvider), readFallbackBusinessObjectStorageProvider);
+      ArgumentNullException.ThrowIfNull(innerBusinessObjectStorageProvider);
+      ArgumentNullException.ThrowIfNull(readFallbackBusinessObjectStorageProvider);
 
       _innerBusinessObjectStorageProvider = innerBusinessObjectStorageProvider;
       _readFallbackBusinessObjectStorageProvider = readFallbackBusinessObjectStorageProvider;
@@ -41,7 +40,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public IReadOnlyCollection<Guid> GetObjectIDsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _readFallbackBusinessObjectStorageProvider.GetObjectIDsForType(type)
           .Concat(_innerBusinessObjectStorageProvider.GetObjectIDsForType(type))
@@ -52,7 +51,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetReadObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _innerBusinessObjectStorageProvider.GetReadObjectStream(type, id)
              ?? _readFallbackBusinessObjectStorageProvider.GetReadObjectStream(type, id);
@@ -61,7 +60,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetWriteObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _innerBusinessObjectStorageProvider.GetWriteObjectStream(type, id);
     }

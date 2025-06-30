@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration.Internal;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Configuration
 {
@@ -42,8 +41,8 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public void AddSection (string configKey, object section)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(configKey), configKey);
-      ArgumentUtility.CheckNotNull(nameof(section), section);
+      ArgumentException.ThrowIfNullOrEmpty(configKey);
+      ArgumentNullException.ThrowIfNull(section);
 
       _sections.Add(configKey, section);
     }

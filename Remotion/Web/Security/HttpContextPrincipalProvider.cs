@@ -34,7 +34,7 @@ namespace Remotion.Web.Security
 
     public HttpContextPrincipalProvider (IHttpContextProvider httpContextProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(httpContextProvider), httpContextProvider);
+      ArgumentNullException.ThrowIfNull(httpContextProvider);
 
       _httpContextProvider = httpContextProvider;
     }

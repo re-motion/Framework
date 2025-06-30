@@ -20,7 +20,6 @@ using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
@@ -50,8 +49,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// <param name="storageSettingsFactoryResolver">Resolves the <see cref="IStorageSettingsFactory"/> to be used when initializing this object.</param>
     public DeferredStorageSettings (IStorageObjectFactoryFactory storageObjectFactoryFactory, IStorageSettingsFactoryResolver storageSettingsFactoryResolver)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageObjectFactoryFactory), storageObjectFactoryFactory);
-      ArgumentUtility.CheckNotNull(nameof(storageSettingsFactoryResolver), storageSettingsFactoryResolver);
+      ArgumentNullException.ThrowIfNull(storageObjectFactoryFactory);
+      ArgumentNullException.ThrowIfNull(storageSettingsFactoryResolver);
 
       _storageSettings = new Lazy<IStorageSettings>(
           () => storageSettingsFactoryResolver.Resolve().Create(storageObjectFactoryFactory),
@@ -60,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     public StorageProviderDefinition GetStorageProviderDefinition (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return _storageSettings.Value.GetStorageProviderDefinition(classDefinition);
     }
@@ -72,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     public StorageProviderDefinition GetStorageProviderDefinition (string storageProviderName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageProviderName), storageProviderName);
+      ArgumentException.ThrowIfNullOrEmpty(storageProviderName);
 
       return _storageSettings.Value.GetStorageProviderDefinition(storageProviderName);
     }

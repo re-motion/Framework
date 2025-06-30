@@ -52,8 +52,7 @@ namespace Remotion.FunctionalProgramming
     /// <returns>A sequence containing all items in the tree in a depth-first order.</returns>
     public static IEnumerable<T> SelectRecursiveDepthFirst<T> (T start, Func<T, IEnumerable<T>> childrenSelector)
     {
-      if (childrenSelector == null)
-        throw new ArgumentNullException(nameof(childrenSelector));
+      ArgumentNullException.ThrowIfNull(childrenSelector);
 
       return Singleton(start).Concat(childrenSelector(start).SelectMany(child => SelectRecursiveDepthFirst(child, childrenSelector)));
     }

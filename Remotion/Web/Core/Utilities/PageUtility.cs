@@ -18,7 +18,6 @@ using System;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 
@@ -60,8 +59,8 @@ namespace Remotion.Web.Utilities
     /// </returns>
     public static string? GetPostBackCollectionItem (IPage page, string name)
     {
-      ArgumentUtility.CheckNotNull(nameof(page), page);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentNullException.ThrowIfNull(page);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       NameValueCollection? collection = GetPostBackCollection(page);
       if (collection == null)

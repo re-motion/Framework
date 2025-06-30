@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
@@ -32,14 +31,14 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     public DefaultUnknownFileNameFinderStrategy ([NotNull] string partialFileEnding)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(partialFileEnding), partialFileEnding);
+      ArgumentException.ThrowIfNullOrEmpty(partialFileEnding);
 
       _partialFileEnding = partialFileEnding;
     }
 
     public string FindDownloadedFile (IReadOnlyCollection<string> newFiles)
     {
-      ArgumentUtility.CheckNotNull(nameof(newFiles), newFiles);
+      ArgumentNullException.ThrowIfNull(newFiles);
 
       if (newFiles.Count == 0)
         throw new DownloadResultNotFoundException("Did not find any new files in the download directory.", newFiles);
@@ -63,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     public bool ContainsPreDownloadFiles (IReadOnlyCollection<string> newFiles)
     {
-      ArgumentUtility.CheckNotNull(nameof(newFiles), newFiles);
+      ArgumentNullException.ThrowIfNull(newFiles);
 
       return newFiles.Any(x => x.EndsWith(".tmp"));
     }

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Xml;
-using Remotion.Utilities;
 
 namespace Remotion.Security.UnitTests.XmlAsserter
 {
@@ -28,7 +27,7 @@ namespace Remotion.Security.UnitTests.XmlAsserter
 
     public XmlnsAttributeEventArgs (string namespaceUri, string prefix)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(namespaceUri), namespaceUri);
+      ArgumentException.ThrowIfNullOrEmpty(namespaceUri);
 
       _namespaceUri = namespaceUri;
       _prefix = prefix;

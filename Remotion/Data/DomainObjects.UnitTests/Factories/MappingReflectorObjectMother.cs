@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
@@ -28,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
   {
     public static MappingReflector CreateMappingReflector (ITypeDiscoveryService typeDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeDiscoveryService), typeDiscoveryService);
+      ArgumentNullException.ThrowIfNull(typeDiscoveryService);
 
       return MappingReflector.Create(
           typeDiscoveryService,

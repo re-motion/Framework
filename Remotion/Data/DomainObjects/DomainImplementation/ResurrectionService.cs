@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation
 {
@@ -72,8 +71,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       public MarkNotInvalidCommand (IDataManager dataManager, ObjectID objectID)
       {
-        ArgumentUtility.CheckNotNull(nameof(dataManager), dataManager);
-        ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+        ArgumentNullException.ThrowIfNull(dataManager);
+        ArgumentNullException.ThrowIfNull(objectID);
 
         _dataManager = dataManager;
         _objectID = objectID;
@@ -116,8 +115,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// least one <see cref="ClientTransaction"/> of the transaction hierarchy identified by <paramref name="clientTransaction"/>.</exception>
     public static void ResurrectInvalidObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       var executor = new TransactionHierarchyCommandExecutor(tx => CreateMarkNotInvalidCommand(tx, objectID));
       executor.ExecuteCommandForTransactionHierarchy(clientTransaction);
@@ -136,8 +135,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </returns>
     public static bool TryResurrectInvalidObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       var executor = new TransactionHierarchyCommandExecutor(tx => CreateMarkNotInvalidCommand(tx, objectID));
       return executor.TryExecuteCommandForTransactionHierarchy(clientTransaction);

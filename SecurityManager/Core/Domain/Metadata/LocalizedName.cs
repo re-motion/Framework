@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
@@ -33,9 +32,9 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected LocalizedName (string text, Culture culture, MetadataObject metadataObject)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(text), text);
-      ArgumentUtility.CheckNotNull(nameof(culture), culture);
-      ArgumentUtility.CheckNotNull(nameof(metadataObject), metadataObject);
+      ArgumentException.ThrowIfNullOrEmpty(text);
+      ArgumentNullException.ThrowIfNull(culture);
+      ArgumentNullException.ThrowIfNull(metadataObject);
 
       Text = text;
       Culture = culture;

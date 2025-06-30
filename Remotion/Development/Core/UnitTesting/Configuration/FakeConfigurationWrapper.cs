@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using Remotion.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Configuration
 {
@@ -39,31 +38,31 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public void SetUpSection (string configKey, object section)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(configKey), configKey);
-      ArgumentUtility.CheckNotNull(nameof(section), section);
+      ArgumentException.ThrowIfNullOrEmpty(configKey);
+      ArgumentNullException.ThrowIfNull(section);
 
       _sections.Add(configKey, section);
     }
 
     public void SetUpConnectionString (string name, string connectionString, string providerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
       _connectionStringsSection.ConnectionStrings.Add(new ConnectionStringSettings(name, connectionString, providerName));
     }
 
     public void SetUpAppSetting (string name, string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentNullException.ThrowIfNull(value);
 
       _appSettings.Add(name, value);
     }
 
     public override object? GetSection (string sectionName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(sectionName), sectionName);
+      ArgumentException.ThrowIfNullOrEmpty(sectionName);
 
       if (_sections.TryGetValue(sectionName, out var value))
         return value;
@@ -72,14 +71,14 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public override ConnectionStringSettings GetConnectionString (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return _connectionStringsSection.ConnectionStrings[name];
     }
 
     public override string? GetAppSetting (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return _appSettings[name];
     }

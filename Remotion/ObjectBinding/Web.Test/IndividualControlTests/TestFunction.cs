@@ -17,7 +17,6 @@
 using System;
 using System.Threading;
 using Remotion.ObjectBinding.Sample;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
@@ -43,7 +42,7 @@ public class TestFunction: WxeFunction
     }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       Variables["UserControl"] = value;
     }
   }

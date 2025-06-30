@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
@@ -29,8 +28,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public UnsupportedStoragePropertyDefinition (Type propertyType, string message, Exception innerException)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
+      ArgumentNullException.ThrowIfNull(propertyType);
+      ArgumentException.ThrowIfNullOrEmpty(message);
 
       _propertyType = propertyType;
       _message = message;
@@ -84,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull(nameof(equivalentProperties), equivalentProperties);
+      ArgumentNullException.ThrowIfNull(equivalentProperties);
       equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,

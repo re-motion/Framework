@@ -16,7 +16,6 @@
 //
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation
@@ -32,7 +31,7 @@ namespace Remotion.Validation.MetaValidation
 
     public DelegateObjectMetaValidationRule (Func<IEnumerable<TValidator>, MetaValidationRuleValidationResult> metaValidationRule)
     {
-      ArgumentUtility.CheckNotNull(nameof(metaValidationRule), metaValidationRule);
+      ArgumentNullException.ThrowIfNull(metaValidationRule);
 
       _metaValidationRule = metaValidationRule;
     }

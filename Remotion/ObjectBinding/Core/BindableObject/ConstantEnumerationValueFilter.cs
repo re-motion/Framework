@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(property);
 
       return !Array.Exists(_disabledEnumValues, disabledValue => disabledValue.Equals(value.Value));
     }

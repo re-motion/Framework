@@ -20,7 +20,6 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Configuration
 {
@@ -31,8 +30,8 @@ namespace Remotion.Development.UnitTesting.Configuration
   {
     public static void Validate (string xmlFragment, string xsdContent)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(xmlFragment), xmlFragment);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(xsdContent), xsdContent);
+      ArgumentException.ThrowIfNullOrEmpty(xmlFragment);
+      ArgumentException.ThrowIfNullOrEmpty(xsdContent);
 
       var validationErrors = GetValidationErrors(xmlFragment, xsdContent);
       if (validationErrors.Count > 0)
@@ -45,8 +44,8 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public static bool IsValid (string xmlFragment, string xsdPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(xmlFragment), xmlFragment);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(xsdPath), xsdPath);
+      ArgumentException.ThrowIfNullOrEmpty(xmlFragment);
+      ArgumentException.ThrowIfNullOrEmpty(xsdPath);
 
       return GetValidationErrors(xmlFragment, xsdPath).Count == 0;
     }

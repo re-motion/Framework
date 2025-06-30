@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
@@ -39,8 +38,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
                 statusText,
                 responseText))
     {
-      ArgumentUtility.CheckNotNull(nameof(responseText), responseText); // The response body may be empty.
-      ArgumentUtility.CheckNotNull(nameof(statusText), statusText); // The HTTP statusText is empty for HTTPS responses
+      ArgumentNullException.ThrowIfNull(responseText); // The response body may be empty.
+      ArgumentNullException.ThrowIfNull(statusText); // The HTTP statusText is empty for HTTPS responses
 
       _readyState = readyState;
       _responseText = responseText;

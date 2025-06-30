@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Collections.Caching
 {
@@ -55,7 +54,7 @@ namespace Remotion.Collections.Caching
     public static ICache<TKey, TValue> Create<TKey, TValue> ([NotNull] InvalidationToken invalidationToken)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(invalidationToken), invalidationToken);
+      ArgumentNullException.ThrowIfNull(invalidationToken);
 
       return new InvalidationTokenBasedCacheDecorator<TKey, TValue>(new Cache<TKey, TValue>(), invalidationToken);
     }
@@ -73,7 +72,7 @@ namespace Remotion.Collections.Caching
     public static ICache<TKey, TValue> Create<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(comparer), comparer);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       return new Cache<TKey, TValue>(comparer);
     }
@@ -94,8 +93,8 @@ namespace Remotion.Collections.Caching
         [NotNull] IEqualityComparer<TKey> comparer)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(invalidationToken), invalidationToken);
-      ArgumentUtility.CheckNotNull(nameof(comparer), comparer);
+      ArgumentNullException.ThrowIfNull(invalidationToken);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       return new InvalidationTokenBasedCacheDecorator<TKey, TValue>(new Cache<TKey, TValue>(comparer), invalidationToken);
     }
@@ -129,7 +128,7 @@ namespace Remotion.Collections.Caching
         [NotNull] LockingInvalidationToken invalidationToken)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(invalidationToken), invalidationToken);
+      ArgumentNullException.ThrowIfNull(invalidationToken);
 
       return new InvalidationTokenBasedCacheDecorator<TKey, TValue>(new ConcurrentCache<TKey, TValue>(), invalidationToken);
     }
@@ -147,7 +146,7 @@ namespace Remotion.Collections.Caching
     public static ICache<TKey, TValue> CreateWithSynchronization<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(comparer), comparer);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       return new ConcurrentCache<TKey, TValue>(comparer);
     }
@@ -168,8 +167,8 @@ namespace Remotion.Collections.Caching
         [NotNull] IEqualityComparer<TKey> comparer)
         where TKey: notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(invalidationToken), invalidationToken);
-      ArgumentUtility.CheckNotNull(nameof(comparer), comparer);
+      ArgumentNullException.ThrowIfNull(invalidationToken);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       return new InvalidationTokenBasedCacheDecorator<TKey, TValue>(new ConcurrentCache<TKey, TValue>(comparer), invalidationToken);
     }
@@ -215,7 +214,7 @@ namespace Remotion.Collections.Caching
         [NotNull] LockingInvalidationToken invalidationToken)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(invalidationToken), invalidationToken);
+      ArgumentNullException.ThrowIfNull(invalidationToken);
 
       return new LockingCacheDecorator<TKey, TValue>(
           new InvalidationTokenBasedCacheDecorator<TKey, TValue>(new Cache<TKey, TValue>(), invalidationToken));
@@ -265,7 +264,7 @@ namespace Remotion.Collections.Caching
         [CanBeNull] IEqualityComparer<TKey>? comparer)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(invalidationToken), invalidationToken);
+      ArgumentNullException.ThrowIfNull(invalidationToken);
 
       return new LockingCacheDecorator<TKey, TValue>(
           new InvalidationTokenBasedCacheDecorator<TKey, TValue>(
@@ -317,7 +316,7 @@ namespace Remotion.Collections.Caching
         where TKey : notnull
         where TValue : class?
     {
-      ArgumentUtility.CheckNotNull(nameof(invalidationToken), invalidationToken);
+      ArgumentNullException.ThrowIfNull(invalidationToken);
 
       return new LazyLockingCachingAdapter<TKey, TValue>(
           new InvalidationTokenBasedCacheDecorator<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>>(
@@ -372,7 +371,7 @@ namespace Remotion.Collections.Caching
         where TKey : notnull
         where TValue : class?
     {
-      ArgumentUtility.CheckNotNull(nameof(invalidationToken), invalidationToken);
+      ArgumentNullException.ThrowIfNull(invalidationToken);
 
       return new LazyLockingCachingAdapter<TKey, TValue>(
           new InvalidationTokenBasedCacheDecorator<TKey, Lazy<LazyLockingCachingAdapter<TKey, TValue>.Wrapper>>(

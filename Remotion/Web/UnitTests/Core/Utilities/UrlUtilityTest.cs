@@ -523,7 +523,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       Assert.That(
           () => UrlUtility.AddParameter(url, "", value, _currentEncoding),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Parameter 'name' cannot be empty.", "name"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("The value cannot be an empty string.", "name"));
     }
 
     [Test]
@@ -986,7 +986,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       Assert.That(
           () => UrlUtility.DeleteParameter(url, "", _currentEncoding),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Parameter 'name' cannot be empty.", "name"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("The value cannot be an empty string.", "name"));
     }
 
     [Test]
@@ -1100,7 +1100,7 @@ namespace Remotion.Web.UnitTests.Core.Utilities
 
       Assert.That(
           () => UrlUtility.GetParameter(url, "", _currentEncoding),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Parameter 'name' cannot be empty.", "name"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("The value cannot be an empty string.", "name"));
     }
   }
 

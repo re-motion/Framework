@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects;
 using Remotion.FunctionalProgramming;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
@@ -66,7 +65,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public StateDefinition GetState (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return DefinedStatesInternal.Single(
           s => s.Name == name,
@@ -75,7 +74,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public bool ContainsState (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return DefinedStatesInternal.Any(s => s.Name == name);
     }
@@ -107,7 +106,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void AddState (StateDefinition state)
     {
-      ArgumentUtility.CheckNotNull(nameof(state), state);
+      ArgumentNullException.ThrowIfNull(state);
       if (ContainsState(state.Name))
         throw CreateArgumentException("state", "A state with the name '{0}' was already added to the property '{1}'.", state.Name, Name);
       if (ContainsState(state.Value))
@@ -129,7 +128,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void RemoveState (StateDefinition state)
     {
-      ArgumentUtility.CheckNotNull(nameof(state), state);
+      ArgumentNullException.ThrowIfNull(state);
 
       if (!DefinedStatesInternal.Contains(state.ID))
           throw CreateArgumentException("state", "The state '{0}' does not exist on the property '{1}'.", state.Name, Name);

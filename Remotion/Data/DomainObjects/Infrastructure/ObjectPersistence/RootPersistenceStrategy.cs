@@ -25,7 +25,6 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -47,10 +46,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         IPersistenceExtensionFactory persistenceExtensionFactory,
         IStorageAccessResolver storageAccessResolver)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
-      ArgumentUtility.CheckNotNull(nameof(persistenceService), persistenceService);
-      ArgumentUtility.CheckNotNull(nameof(persistenceExtensionFactory), persistenceExtensionFactory);
-      ArgumentUtility.CheckNotNull(nameof(storageAccessResolver), storageAccessResolver);
+      ArgumentNullException.ThrowIfNull(storageSettings);
+      ArgumentNullException.ThrowIfNull(persistenceService);
+      ArgumentNullException.ThrowIfNull(persistenceExtensionFactory);
+      ArgumentNullException.ThrowIfNull(storageAccessResolver);
 
       _transactionID = transactionID;
       _storageSettings = storageSettings;
@@ -66,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
@@ -76,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual ILoadedObjectData LoadObjectData (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentNullException.ThrowIfNull(id);
 
       var storageAccess = _storageAccessResolver.ResolveStorageAccessForLoadingDomainObjectsByObjectID();
       using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
@@ -88,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       var storageAccess = _storageAccessResolver.ResolveStorageAccessForLoadingDomainObjectsByObjectID();
       using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
@@ -102,8 +101,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         RelationEndPointID relationEndPointID,
         ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
-      ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
+      ArgumentNullException.ThrowIfNull(relationEndPointID);
+      ArgumentNullException.ThrowIfNull(alreadyLoadedObjectDataProvider);
 
       var storageAccess = _storageAccessResolver.ResolveStorageAccessForLoadingDomainObjectRelation();
       using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
@@ -116,8 +115,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     public virtual IEnumerable<ILoadedObjectData> ResolveCollectionRelationData (
         RelationEndPointID relationEndPointID, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointID), relationEndPointID);
-      ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
+      ArgumentNullException.ThrowIfNull(relationEndPointID);
+      ArgumentNullException.ThrowIfNull(alreadyLoadedObjectDataProvider);
 
       var storageAccess = _storageAccessResolver.ResolveStorageAccessForLoadingDomainObjectRelation();
       using (var storageProviderManager = CreateStorageProviderManager(storageAccess))
@@ -129,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual IEnumerable<ILoadedObjectData> ExecuteCollectionQuery (IQuery query, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
+      ArgumentNullException.ThrowIfNull(query);ArgumentNullException.ThrowIfNull(alreadyLoadedObjectDataProvider);
 
       if (query.QueryType != QueryType.CollectionReadWrite && query.QueryType != QueryType.CollectionReadOnly)
         throw new ArgumentException("Only collection queries can be used to load data containers.", nameof(query));
@@ -140,7 +139,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       if (query.QueryType != QueryType.CustomReadOnly && query.QueryType != QueryType.CustomReadWrite)
         throw new ArgumentException("Only custom queries can be used to load custom results", nameof(query));
@@ -172,7 +171,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual object? ExecuteScalarQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       if (query.QueryType != QueryType.ScalarReadOnly && query.QueryType != QueryType.ScalarReadWrite)
         throw new ArgumentException("Only scalar queries can be used to load scalar results.", nameof(query));
@@ -187,7 +186,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual void PersistData (IEnumerable<PersistableData> data)
     {
-      ArgumentUtility.CheckNotNull(nameof(data), data);
+      ArgumentNullException.ThrowIfNull(data);
 
       // Filter out those items whose state is only Changed due to relation changes - we don't persist those
       var dataContainers = data.Select(item => item.DataContainer).Where(dc => !dc.State.IsUnchanged);
@@ -207,8 +206,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual IEnumerable<LoadedObjectDataWithDataSourceData> ExecuteFetchQuery (IQuery query, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
-      ArgumentUtility.CheckNotNull(nameof(alreadyLoadedObjectDataProvider), alreadyLoadedObjectDataProvider);
+      ArgumentNullException.ThrowIfNull(query);
+      ArgumentNullException.ThrowIfNull(alreadyLoadedObjectDataProvider);
 
       if (query.QueryType != QueryType.CollectionReadOnly)
         throw new ArgumentException("Only readonly collection queries can be used for fetching.", nameof(query));

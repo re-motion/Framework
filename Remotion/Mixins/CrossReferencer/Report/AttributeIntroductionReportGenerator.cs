@@ -19,7 +19,6 @@ using System.Linq;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -33,8 +32,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
         MultiDefinitionCollection<Type, AttributeIntroductionDefinition> attributeIntroductionDefinitions,
         IIdentifierGenerator<Type> attributeIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull(nameof(attributeIntroductionDefinitions), attributeIntroductionDefinitions);
-      ArgumentUtility.CheckNotNull(nameof(attributeIdentifierGenerator), attributeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(attributeIntroductionDefinitions);
+      ArgumentNullException.ThrowIfNull(attributeIdentifierGenerator);
 
       _attributeIntroductionDefinitions = attributeIntroductionDefinitions;
       _attributeIdentifierGenerator = attributeIdentifierGenerator;

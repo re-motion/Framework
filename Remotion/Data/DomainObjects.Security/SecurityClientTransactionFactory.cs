@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Security
 {
@@ -28,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Security
   {
     protected override void OnTransactionCreated (ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      ArgumentNullException.ThrowIfNull(transaction);
 
       transaction.Extensions.Add(new SecurityClientTransactionExtension());
     }

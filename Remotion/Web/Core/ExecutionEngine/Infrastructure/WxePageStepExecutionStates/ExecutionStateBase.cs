@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 {
@@ -34,8 +33,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     protected ExecutionStateBase (IExecutionStateContext executionStateContext, TParameters parameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionStateContext), executionStateContext);
-      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentNullException.ThrowIfNull(executionStateContext);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       _executionStateContext = executionStateContext;
       _parameters = parameters;

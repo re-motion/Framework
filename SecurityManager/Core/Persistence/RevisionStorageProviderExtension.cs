@@ -49,10 +49,10 @@ namespace Remotion.SecurityManager.Persistence
         IUserNamesRevisionProvider userNamesRevisionProvider,
         IRdbmsProviderCommandFactory rdbmsProviderCommandFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(revisionProvider), revisionProvider);
-      ArgumentUtility.CheckNotNull(nameof(userRevisionProvider), userRevisionProvider);
-      ArgumentUtility.CheckNotNull(nameof(userNamesRevisionProvider), userNamesRevisionProvider);
-      ArgumentUtility.CheckNotNull(nameof(rdbmsProviderCommandFactory), rdbmsProviderCommandFactory);
+      ArgumentNullException.ThrowIfNull(revisionProvider);
+      ArgumentNullException.ThrowIfNull(userRevisionProvider);
+      ArgumentNullException.ThrowIfNull(userNamesRevisionProvider);
+      ArgumentNullException.ThrowIfNull(rdbmsProviderCommandFactory);
 
       _revisionProvider = revisionProvider;
       _userRevisionProvider = userRevisionProvider;
@@ -68,8 +68,8 @@ namespace Remotion.SecurityManager.Persistence
 
     public virtual void Saved (IRdbmsProviderReadWriteCommandExecutionContext executionContext, IEnumerable<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
-      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
+      ArgumentNullException.ThrowIfNull(executionContext);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       var securityManagerDataContainers =
           dataContainers.Where(dataContainer => typeof(BaseSecurityManagerObject).IsAssignableFrom(dataContainer.DomainObjectType));

@@ -43,7 +43,7 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
           () => TypeExtensions.GetAscribedGenericArguments(typeof(BaseType), typeof(DerivedType)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
+                  "The value has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
                   + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.DerivedType' was expected.",
                   "type"));
     }

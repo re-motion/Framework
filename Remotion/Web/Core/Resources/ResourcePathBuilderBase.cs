@@ -18,7 +18,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Resources
 {
@@ -33,7 +32,7 @@ namespace Remotion.Web.Resources
 
     protected ResourcePathBuilderBase (IStaticResourceCacheKeyProvider staticResourceCacheKeyProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(staticResourceCacheKeyProvider), staticResourceCacheKeyProvider);
+      ArgumentNullException.ThrowIfNull(staticResourceCacheKeyProvider);
 
       _staticResourceCacheKeyProvider = staticResourceCacheKeyProvider;
     }
@@ -44,8 +43,8 @@ namespace Remotion.Web.Resources
 
     public string BuildAbsolutePath (Assembly assembly, params string[] assemblyRelativePathParts)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
-      ArgumentUtility.CheckNotNull(nameof(assemblyRelativePathParts), assemblyRelativePathParts);
+      ArgumentNullException.ThrowIfNull(assembly);
+      ArgumentNullException.ThrowIfNull(assemblyRelativePathParts);
 
       string root = GetResourceRoot();
       // C# compiler 7.2 already provides caching for anonymous method.

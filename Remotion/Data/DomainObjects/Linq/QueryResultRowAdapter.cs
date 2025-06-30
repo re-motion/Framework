@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Linq.SqlBackend.SqlGeneration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public QueryResultRowAdapter (IQueryResultRow queryResultRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryResultRow), queryResultRow);
+      ArgumentNullException.ThrowIfNull(queryResultRow);
 
       _queryResultRow = queryResultRow;
     }
@@ -42,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public T? GetValue<T> (ColumnID columnID)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnID), columnID);
+      // ColumnID is value type
 
       return _queryResultRow.GetConvertedValue<T>(columnID.Position);
     }

@@ -19,7 +19,6 @@ using Remotion.Collections.Caching;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.SecurityProvider.Implementation
 {
@@ -47,7 +46,7 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
     public AccessTypeCache (IRevisionProvider<UserRevisionKey, GuidRevisionValue> revisionProvider, string userName)
         : base(revisionProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(userName), userName);
+      ArgumentException.ThrowIfNullOrEmpty(userName);
 
       _revisionKey = new UserRevisionKey(userName);
     }

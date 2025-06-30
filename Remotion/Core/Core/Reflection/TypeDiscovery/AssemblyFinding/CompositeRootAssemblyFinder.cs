@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -30,7 +29,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public CompositeRootAssemblyFinder (IEnumerable<IRootAssemblyFinder> finders)
     {
-      ArgumentUtility.CheckNotNull(nameof(finders), finders);
+      ArgumentNullException.ThrowIfNull(finders);
       _innerFinders = finders.ToList().AsReadOnly();
     }
 

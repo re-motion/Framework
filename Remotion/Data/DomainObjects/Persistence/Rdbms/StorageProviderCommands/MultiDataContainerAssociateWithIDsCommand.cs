@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
@@ -37,14 +36,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
         IEnumerable<ObjectID> objectIDs,
         IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer?>> command)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
-      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentNullException.ThrowIfNull(objectIDs);
+      ArgumentNullException.ThrowIfNull(command);
 
       _objectIDs = objectIDs.Select(
           (objectID, index) =>
           {
-            if (objectID == null)
-              throw new ArgumentNullException($"objectIDs[{index}]");
+            ArgumentNullException.ThrowIfNull(objectID, paramName: $"objectIDs[{index}]");
             return objectID;
           }).ToArray();
 
@@ -63,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
 
       var dataContainers = _command.Execute(executionContext);
       return ProcessDataContainers(dataContainers);
@@ -71,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public IEnumerable<ObjectLookupResult<DataContainer>> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
 
       var dataContainers = _command.Execute(executionContext);
       return ProcessDataContainers(dataContainers);

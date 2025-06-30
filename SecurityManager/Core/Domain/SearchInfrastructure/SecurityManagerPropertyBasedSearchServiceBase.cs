@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 {
@@ -39,15 +38,15 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     protected void RegisterQueryFactory (string propertyName, QueryFactory queryFactory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
-      ArgumentUtility.CheckNotNull(nameof(queryFactory), queryFactory);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
+      ArgumentNullException.ThrowIfNull(queryFactory);
 
       _queryFactories.Add(propertyName, queryFactory);
     }
 
     public override sealed bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
 
       return _queryFactories.ContainsKey(property.Identifier);
     }

@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
   {
     protected void CheckDataContainerExists (DomainObject domainObject, bool dataContainerShouldExist)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       var dataContainer = DataManagementService.GetDataManager(ClientTransaction.Current).DataContainers[domainObject.ID];
       if (dataContainerShouldExist)
@@ -41,8 +40,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void CheckEndPointExists (DomainObject owningObject, string shortPropertyName, bool endPointShouldExist)
     {
-      ArgumentUtility.CheckNotNull(nameof(owningObject), owningObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
+      ArgumentNullException.ThrowIfNull(owningObject);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
 
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(owningObject.ID, shortPropertyName);
       CheckEndPointExists(endPointID, endPointShouldExist);
@@ -50,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void CheckEndPointExists (RelationEndPointID endPointID, bool shouldEndPointExist)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       var endPoint = DataManagementService.GetDataManager(ClientTransaction.Current).GetRelationEndPointWithoutLoading(endPointID);
       if (shouldEndPointExist)
@@ -61,8 +60,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void CheckVirtualEndPointExistsAndComplete (DomainObject owningObject, string shortPropertyName, bool shouldEndPointExist, bool shouldDataBeComplete)
     {
-      ArgumentUtility.CheckNotNull(nameof(owningObject), owningObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
+      ArgumentNullException.ThrowIfNull(owningObject);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
 
       var endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(owningObject.ID, shortPropertyName);
 
@@ -71,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void CheckVirtualEndPointExistsAndComplete (RelationEndPointID endPointID, bool shouldEndPointExist, bool shouldDataBeComplete)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
       CheckEndPointExists(endPointID, shouldEndPointExist);
 
       if (shouldEndPointExist)
@@ -93,8 +92,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void AssertObjectWasLoaded (Mock<IClientTransactionListener> listenerMock, DomainObject loadedObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(listenerMock), listenerMock);
-      ArgumentUtility.CheckNotNull(nameof(loadedObject), loadedObject);
+      ArgumentNullException.ThrowIfNull(listenerMock);
+      ArgumentNullException.ThrowIfNull(loadedObject);
 
       listenerMock.Verify(
           mock => mock.ObjectsLoaded(ClientTransaction.Current, new[] { loadedObject }),
@@ -103,8 +102,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
     protected void AssertObjectWasLoadedAmongOthers (Mock<IClientTransactionListener> listenerMock, DomainObject loadedObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(listenerMock), listenerMock);
-      ArgumentUtility.CheckNotNull(nameof(loadedObject), loadedObject);
+      ArgumentNullException.ThrowIfNull(listenerMock);
+      ArgumentNullException.ThrowIfNull(loadedObject);
 
       listenerMock.Verify(
           mock => mock.ObjectsLoaded(ClientTransaction.Current, It.Is<ReadOnlyCollection<DomainObject>>(_ => _.Contains(loadedObject))),

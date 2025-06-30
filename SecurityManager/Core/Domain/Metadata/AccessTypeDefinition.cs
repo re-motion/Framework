@@ -20,7 +20,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Remotion.Data.DomainObjects;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
@@ -48,7 +47,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected AccessTypeDefinition (Guid metadataItemID, string name, int value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       MetadataItemID = metadataItemID;
       Name = name;

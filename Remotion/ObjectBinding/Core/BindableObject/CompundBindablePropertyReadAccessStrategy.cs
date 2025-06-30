@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public CompundBindablePropertyReadAccessStrategy (IEnumerable<IBindablePropertyReadAccessStrategy> bindablePropertyReadAccessStrategies)
     {
-      ArgumentUtility.CheckNotNull(nameof(bindablePropertyReadAccessStrategies), bindablePropertyReadAccessStrategies);
+      ArgumentNullException.ThrowIfNull(bindablePropertyReadAccessStrategies);
 
       _bindablePropertyReadAccessStrategies = bindablePropertyReadAccessStrategies.ToArray();
     }

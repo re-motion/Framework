@@ -20,7 +20,6 @@ using System.Globalization;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using Remotion.Collections;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
 

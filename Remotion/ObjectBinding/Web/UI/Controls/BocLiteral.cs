@@ -21,7 +21,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -324,7 +323,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     void ISmartControl.AssignLabels (IEnumerable<string> labelIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
+      ArgumentNullException.ThrowIfNull(labelIDs);
 
       //BocLiteral does not have a root element that could be labeled.
     }

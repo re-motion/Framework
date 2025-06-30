@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
 {
@@ -30,7 +29,7 @@ namespace Remotion.Mixins.Context
 
     public ReadOnlyContextCollection (Func<TValue, TKey> keyGenerator, IEnumerable<TValue> values)
     {
-      ArgumentUtility.CheckNotNull(nameof(keyGenerator), keyGenerator);
+      ArgumentNullException.ThrowIfNull(keyGenerator);
       _internalCollection = new Dictionary<TKey, TValue>();
       _keyGenerator = keyGenerator;
 
@@ -43,7 +42,7 @@ namespace Remotion.Mixins.Context
     {
       foreach (TValue value in values)
       {
-        ArgumentUtility.CheckNotNull("values[" + _internalCollection.Count + "]", value);
+        ArgumentNullException.ThrowIfNull(value, paramName: "values[" + _internalCollection.Count + "]");
 
         TKey key = _keyGenerator(value);
         if (_internalCollection.TryGetValue(key, out var existingValue))
@@ -70,13 +69,13 @@ namespace Remotion.Mixins.Context
 
     public virtual bool ContainsKey (TKey key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
       return _internalCollection.ContainsKey(key);
     }
 
     public virtual bool Contains (TValue value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
       TKey key = _keyGenerator(value);
       if (!_internalCollection.TryGetValue(key, out var foundValue))
         return false;

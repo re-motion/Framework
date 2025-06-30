@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
 using System.Drawing;
-using Remotion.Utilities;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
@@ -16,7 +15,7 @@ public class Font : IDisposable
 
   public Font (string fontFamilyName, float size = 12f)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(fontFamilyName), fontFamilyName);
+    ArgumentException.ThrowIfNullOrEmpty(fontFamilyName);
 
     var fontFamily = SKTypeface.FromFamilyName(fontFamilyName);
     if (fontFamily == null || !fontFamily.FamilyName.Equals(fontFamilyName, StringComparison.OrdinalIgnoreCase))
@@ -32,7 +31,7 @@ public class Font : IDisposable
 
   public Font (SKFont skiaFont)
   {
-    ArgumentUtility.CheckNotNull(nameof(skiaFont), skiaFont);
+    ArgumentNullException.ThrowIfNull(skiaFont);
 
     SkiaFont = skiaFont;
   }

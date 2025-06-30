@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public BocListEditableCellControlObject GetCell (string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnItemID), columnItemID);
+      ArgumentException.ThrowIfNullOrEmpty(columnItemID);
 
       return GetCell().WithColumnItemID(columnItemID);
     }
@@ -88,7 +88,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     BocListEditableCellControlObject IFluentControlObjectWithCells<BocListEditableCellControlObject>.WithColumnItemID (string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnItemID), columnItemID);
+      ArgumentException.ThrowIfNullOrEmpty(columnItemID);
 
       return _impl.GetCellWithColumnItemID<BocListEditableCellControlObject>(columnItemID);
     }
@@ -102,7 +102,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     BocListEditableCellControlObject IFluentControlObjectWithCells<BocListEditableCellControlObject>.WithColumnTitle (string columnTitle)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnTitle), columnTitle);
+      ArgumentException.ThrowIfNullOrEmpty(columnTitle);
 
       return _impl.GetCellWithColumnTitle<BocListEditableCellControlObject>(columnTitle);
     }
@@ -110,7 +110,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     BocListEditableCellControlObject IFluentControlObjectWithCells<BocListEditableCellControlObject>.WithColumnTitleContains (string columnTitleContains)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnTitleContains), columnTitleContains);
+      ArgumentException.ThrowIfNullOrEmpty(columnTitleContains);
 
       return _impl.GetCellWithColumnTitleContains<BocListEditableCellControlObject>(columnTitleContains);
     }

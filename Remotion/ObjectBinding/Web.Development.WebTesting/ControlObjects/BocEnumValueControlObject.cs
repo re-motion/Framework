@@ -20,7 +20,6 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -86,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption(itemID)");
@@ -97,7 +96,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithItemID");
@@ -125,7 +124,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayText), displayText);
+      ArgumentException.ThrowIfNullOrEmpty(displayText);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithDisplayText");
@@ -187,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>The corresponding <see cref="IBocEnumValueControlObjectVariant"/> implementation.</returns>
     private IBocEnumValueControlObjectVariant CreateVariant ([NotNull] string style)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(style), style);
+      ArgumentException.ThrowIfNullOrEmpty(style);
 
       switch (style)
       {
@@ -231,7 +230,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public BocEnumValueSelectBasedControlObjectVariant ([NotNull] BocEnumValueControlObject controlObject)
       {
-        ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
+        ArgumentNullException.ThrowIfNull(controlObject);
 
         _controlObject = controlObject;
       }
@@ -261,7 +260,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
+        ArgumentNullException.ThrowIfNull(itemID);
 
         Action<ElementScope> selectAction = s => s.SelectOptionByValue(itemID, _controlObject.Logger);
         return SelectOption(selectAction, actionOptions);
@@ -275,7 +274,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public UnspecifiedPageObject SelectOptionByText (string text, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull(nameof(text), text);
+        ArgumentNullException.ThrowIfNull(text);
 
         Action<ElementScope> selectAction = s => s.SelectOption(text);
         return SelectOption(selectAction, actionOptions);
@@ -283,7 +282,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull(nameof(selectAction), selectAction);
+        ArgumentNullException.ThrowIfNull(selectAction);
 
         var actualActionOptions = _controlObject.MergeWithDefaultActionOptions(_controlObject.Scope, actionOptions);
 
@@ -313,7 +312,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public BocEnumValueRadioButtonBasedControlObjectVariant ([NotNull] BocEnumValueControlObject controlObject)
       {
-        ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
+        ArgumentNullException.ThrowIfNull(controlObject);
 
         _controlObject = controlObject;
       }
@@ -352,7 +351,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
+        ArgumentNullException.ThrowIfNull(itemID);
 
         var scope = _controlObject.Scope.FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID).FindCss("input");
         return CheckScope(scope, actionOptions);
@@ -367,7 +366,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public UnspecifiedPageObject SelectOptionByText (string text, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull(nameof(text), text);
+        ArgumentNullException.ThrowIfNull(text);
 
         var scope = _controlObject.Scope.FindTagWithAttribute("span", DiagnosticMetadataAttributes.Content, text).FindCss("input");
         return CheckScope(scope, actionOptions);
@@ -375,7 +374,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       private UnspecifiedPageObject CheckScope ([NotNull] ElementScope scope, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull(nameof(scope), scope);
+        ArgumentNullException.ThrowIfNull(scope);
 
         var actualActionOptions = _controlObject.MergeWithDefaultActionOptions(_controlObject.Scope, actionOptions);
 

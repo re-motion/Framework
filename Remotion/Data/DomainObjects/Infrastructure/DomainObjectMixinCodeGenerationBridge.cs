@@ -15,10 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Reflection;
 using Remotion.Mixins;
-using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -31,19 +28,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     public static void OnDomainObjectReferenceInitializing (DomainObject instance)
     {
-      ArgumentUtility.CheckNotNull(nameof(instance), instance);
+      ArgumentNullException.ThrowIfNull(instance);
       NotifyDomainObjectMixins(instance, mixin => mixin.OnDomainObjectReferenceInitializing());
     }
 
     public static void OnDomainObjectCreated (DomainObject instance)
     {
-      ArgumentUtility.CheckNotNull(nameof(instance), instance);
+      ArgumentNullException.ThrowIfNull(instance);
       NotifyDomainObjectMixins(instance, mixin => mixin.OnDomainObjectCreated());
     }
 
     public static void OnDomainObjectLoaded (DomainObject instance, LoadMode loadMode)
     {
-      ArgumentUtility.CheckNotNull(nameof(instance), instance);
+      ArgumentNullException.ThrowIfNull(instance);
       NotifyDomainObjectMixins(instance, mixin => mixin.OnDomainObjectLoaded(loadMode));
     }
 

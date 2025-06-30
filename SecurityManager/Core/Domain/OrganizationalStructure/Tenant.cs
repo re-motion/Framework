@@ -25,7 +25,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
@@ -55,7 +54,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static Tenant? FindByUnqiueIdentifier (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
 
       var result = from t in QueryFactory.CreateLinqQuery<Tenant>()
                    where t.UniqueIdentifier == uniqueIdentifier

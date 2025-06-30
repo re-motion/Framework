@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins.Definitions;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Validation
 {
@@ -34,7 +33,7 @@ namespace Remotion.Mixins.Validation
 
     public ValidationResult (IVisitableDefinition validatedDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatedDefinition), validatedDefinition);
+      ArgumentNullException.ThrowIfNull(validatedDefinition);
 
       _validatedDefinition = validatedDefinition;
 

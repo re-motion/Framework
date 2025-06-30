@@ -19,7 +19,6 @@ using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
@@ -40,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentDropDown), fluentDropDown);
+      ArgumentNullException.ThrowIfNull(fluentDropDown);
 
       fluentDropDown.Target.Element.Click(Options.NoWait);
     }

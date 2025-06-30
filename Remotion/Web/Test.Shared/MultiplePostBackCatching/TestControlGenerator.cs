@@ -20,7 +20,6 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.PostBackTargets;
 
@@ -36,8 +35,8 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public TestControlGenerator (Page page, PostBackEventHandler postBackEventHandler)
     {
-      ArgumentUtility.CheckNotNull(nameof(page), page);
-      ArgumentUtility.CheckNotNull(nameof(postBackEventHandler), postBackEventHandler);
+      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(postBackEventHandler);
 
       _page = page;
       _postBackEventHandler = postBackEventHandler;

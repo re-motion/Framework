@@ -18,7 +18,6 @@ using System;
 using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
@@ -34,8 +33,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 
     public DownloadedFile ([NotNull] string fullFilePath, [NotNull] string fileName, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(fullFilePath), fullFilePath);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(fileName), fileName);
+      ArgumentException.ThrowIfNullOrEmpty(fullFilePath);
+      ArgumentException.ThrowIfNullOrEmpty(fileName);
 
       _fullFilePath = fullFilePath;
       _fileName = fileName;
@@ -77,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// </summary>
     public IDownloadedFile Move ([NotNull] string newFilePath)
     {
-      ArgumentUtility.CheckNotNull(nameof(newFilePath), newFilePath);
+      ArgumentNullException.ThrowIfNull(newFilePath);
 
       // In racy cases the file we are trying to move is still used, resulting in an IOException.
       // So we retry the move a couple of times, allowing the browser to finish the download.
@@ -98,7 +97,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// </summary>
     public DownloadedFile Rename ([NotNull] string newName)
     {
-      ArgumentUtility.CheckNotNull(nameof(newName), newName);
+      ArgumentNullException.ThrowIfNull(newName);
 
       return new DownloadedFile(_fullFilePath, newName, _logger);
     }

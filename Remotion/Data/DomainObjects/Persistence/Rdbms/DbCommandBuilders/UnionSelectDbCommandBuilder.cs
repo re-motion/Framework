@@ -19,7 +19,6 @@ using System.Data;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 {
@@ -42,10 +41,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(unionViewDefinition), unionViewDefinition);
-      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
-      ArgumentUtility.CheckNotNull(nameof(comparedColumns), comparedColumns);
-      ArgumentUtility.CheckNotNull(nameof(orderedColumns), orderedColumns);
+      ArgumentNullException.ThrowIfNull(unionViewDefinition);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
+      ArgumentNullException.ThrowIfNull(comparedColumns);
+      ArgumentNullException.ThrowIfNull(orderedColumns);
 
       _unionViewDefinition = unionViewDefinition;
       _selectedColumns = selectedColumns;
@@ -75,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(dbCommandFactory), dbCommandFactory);
+      ArgumentNullException.ThrowIfNull(dbCommandFactory);
 
       var command = dbCommandFactory.CreateDbCommand();
 

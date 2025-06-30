@@ -53,7 +53,7 @@ namespace Remotion.Collections.DataStore
 
     public LazyLockingDataStoreAdapter (IDataStore<TKey, Lazy<Wrapper>> innerDataStore)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerDataStore), innerDataStore);
+      ArgumentNullException.ThrowIfNull(innerDataStore);
       _innerDataStore = new LockingDataStoreDecorator<TKey, Lazy<Wrapper>>(innerDataStore);
     }
 
@@ -138,7 +138,7 @@ namespace Remotion.Collections.DataStore
 
     private Wrapper GetOrCreateValueWithClosure (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(valueFactory), valueFactory);
+      ArgumentNullException.ThrowIfNull(valueFactory);
       var result = _innerDataStore.GetOrCreateValue(
           key,
           k => new Lazy<Wrapper>(() => new Wrapper(valueFactory(k)), LazyThreadSafetyMode.ExecutionAndPublication));

@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       base.RegisterHtmlHeadContents(htmlHeadAppender);
 
@@ -56,7 +56,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       if (IsAutoCompleteReferenceValueRequired(propertyPath))
         return CreateBocAutoCompleteReferenceValue(propertyPath);
@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected virtual IBusinessObjectBoundEditableWebControl CreateBocAutoCompleteReferenceValue (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       var control = new BocAutoCompleteReferenceValue();
       SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(control);
@@ -85,7 +85,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected virtual bool IsAutoCompleteReferenceValueRequired (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       var lastProperty = propertyPath.Properties.Last();
       bool isScalarReferenceProperty = !lastProperty.IsList && lastProperty is IBusinessObjectReferenceProperty;

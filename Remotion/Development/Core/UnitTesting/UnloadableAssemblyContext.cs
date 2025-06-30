@@ -18,8 +18,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Threading;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting
 {
@@ -43,7 +41,7 @@ namespace Remotion.Development.UnitTesting
 
     public void RunWithAssemblyLoadContext (Action<AssemblyLoadContext> action)
     {
-      ArgumentUtility.CheckNotNull(nameof(action), action);
+      ArgumentNullException.ThrowIfNull(action);
 
       var context = Context;
       action(context);
@@ -51,28 +49,28 @@ namespace Remotion.Development.UnitTesting
 
     public Assembly LoadFromAssemblyPath (string assemblyPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyPath), assemblyPath);
+      ArgumentException.ThrowIfNullOrEmpty(assemblyPath);
 
       return Context.LoadFromAssemblyPath(assemblyPath);
     }
 
     public Assembly LoadFromNativeImagePath (string nativeImagePath, string? assemblyPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(nativeImagePath), nativeImagePath);
+      ArgumentException.ThrowIfNullOrEmpty(nativeImagePath);
 
       return Context.LoadFromNativeImagePath(nativeImagePath, assemblyPath);
     }
 
     public Assembly LoadFromStream (Stream assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       return Context.LoadFromStream(assembly);
     }
 
     public Assembly LoadFromStream (Stream assembly, Stream? assemblySymbols)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       return Context.LoadFromStream(assembly, assemblySymbols);
     }

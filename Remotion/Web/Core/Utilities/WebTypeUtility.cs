@@ -35,7 +35,7 @@ namespace Remotion.Web.Utilities
     [CanBeNull]
     public static Type? GetType (string abbreviatedTypeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(abbreviatedTypeName), abbreviatedTypeName);
+      ArgumentException.ThrowIfNullOrEmpty(abbreviatedTypeName);
       return GetType(abbreviatedTypeName, false, false);
     }
 
@@ -46,7 +46,7 @@ namespace Remotion.Web.Utilities
     [CanBeNull]
     public static Type? GetType (string abbreviatedTypeName, bool throwOnError)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(abbreviatedTypeName), abbreviatedTypeName);
+      ArgumentException.ThrowIfNullOrEmpty(abbreviatedTypeName);
       return GetType(abbreviatedTypeName, throwOnError, false);
     }
 
@@ -57,14 +57,14 @@ namespace Remotion.Web.Utilities
     [CanBeNull]
     public static Type? GetType (string abbreviatedTypeName, bool throwOnError, bool ignoreCase)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(abbreviatedTypeName), abbreviatedTypeName);
+      ArgumentException.ThrowIfNullOrEmpty(abbreviatedTypeName);
       string typeName = TypeUtility.ParseAbbreviatedTypeName(abbreviatedTypeName);
       return BuildManager.GetType(typeName, throwOnError, ignoreCase);
     }
 
     public static string GetQualifiedName (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       if (IsCompiledType(type))
         return type.GetFullNameChecked();
       return TypeUtility.GetPartialAssemblyQualifiedName(type);
@@ -72,7 +72,7 @@ namespace Remotion.Web.Utilities
 
     public static bool IsCompiledType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       IList? codeAssemblies = BuildManager.CodeAssemblies;
       if (codeAssemblies == null)
         return false;

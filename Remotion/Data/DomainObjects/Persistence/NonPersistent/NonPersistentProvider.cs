@@ -6,7 +6,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 {
@@ -17,7 +16,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public NonPersistentProvider (StorageProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
       _storageProviderDefinition = storageProviderDefinition;
     }
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentNullException.ThrowIfNull(id);
       CheckStorageProvider(id, "id");
 
       return new ObjectLookupResult<DataContainer>(id, null);
@@ -43,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull(nameof(ids), ids);
+      ArgumentNullException.ThrowIfNull(ids);
 
       var checkedIDs = ids.Select(id => CheckStorageProvider(id, "ids"));
       return checkedIDs.Select(id => new ObjectLookupResult<DataContainer>(id, null)).ToArray();
@@ -55,8 +54,8 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
         ObjectID relatedID)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull(nameof(relatedID), relatedID);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(relatedID);
       CheckClassDefinition(relationEndPointDefinition.ClassDefinition, "classDefinition");
 
       return new DataContainerCollection();
@@ -65,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       // NOP
     }
@@ -73,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       foreach (var dataContainer in dataContainers)
         dataContainer.SetTimestamp(Guid.NewGuid().ToByteArray());
@@ -97,7 +96,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
       CheckClassDefinition(classDefinition, "classDefinition");
 
       return new ObjectID(classDefinition, Guid.NewGuid());
@@ -106,7 +105,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       return Enumerable.Empty<DataContainer>();
     }
@@ -114,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       return Enumerable.Empty<IQueryResultRow>();
     }
@@ -122,7 +121,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
     public object? ExecuteScalarQuery (IQuery query)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       return null;
     }

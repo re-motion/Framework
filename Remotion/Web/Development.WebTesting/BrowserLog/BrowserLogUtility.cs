@@ -16,7 +16,6 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,7 +23,6 @@ using System.Threading;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
@@ -41,7 +39,7 @@ public static class BrowserLogUtility
   /// </summary>
   public static bool IsBrowserLogCheckActive (ITestContext testContext)
   {
-    ArgumentUtility.CheckNotNull(nameof(testContext), testContext);
+    ArgumentNullException.ThrowIfNull(testContext);
 
     return testContext.GetValueOrDefault(PerformBrowserLogCheckAttribute.PropertyKey, false);
   }
@@ -51,7 +49,7 @@ public static class BrowserLogUtility
   /// </summary>
   public static LogLevel GetMinimumLogLevel (ITestContext testContext)
   {
-    ArgumentUtility.CheckNotNull(nameof(testContext), testContext);
+    ArgumentNullException.ThrowIfNull(testContext);
 
     return testContext.GetValueOrDefault(BrowserLogMinimumLevelAttribute.PropertyKey, LogLevel.Off);
   }
@@ -61,7 +59,7 @@ public static class BrowserLogUtility
   /// </summary>
   public static IReadOnlyCollection<Regex> GetBrowserLogIgnoredEntryRegexes (ITestContext testContext)
   {
-    ArgumentUtility.CheckNotNull(nameof(testContext), testContext);
+    ArgumentNullException.ThrowIfNull(testContext);
 
     return testContext.GetCollection<Regex>(IgnoreBrowserLogMessageAttribute.PropertyKey);
   }
@@ -76,9 +74,9 @@ public static class BrowserLogUtility
       LogLevel minLogLevel,
       [NotNull] IReadOnlyCollection<Regex> messageFilter)
   {
-    ArgumentUtility.CheckNotNull(nameof(session), session);
-    ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
-    ArgumentUtility.CheckNotNull(nameof(messageFilter), messageFilter);
+    ArgumentNullException.ThrowIfNull(session);
+    ArgumentNullException.ThrowIfNull(configuration);
+    ArgumentNullException.ThrowIfNull(messageFilter);
 
     IReadOnlyCollection<BrowserLogEntry> browserLogs;
     if (configuration.UseBidiLog() && session.Window.Location.Scheme != "chrome")
@@ -136,9 +134,9 @@ public static class BrowserLogUtility
   /// </remarks>
   public static bool IsBrowserLogOkay ([NotNull] IBrowserSession session, [NotNull] IBrowserConfiguration configuration, [NotNull] ITestContext context)
   {
-    ArgumentUtility.CheckNotNull(nameof(session), session);
-    ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
-    ArgumentUtility.CheckNotNull(nameof(context), context);
+    ArgumentNullException.ThrowIfNull(session);
+    ArgumentNullException.ThrowIfNull(configuration);
+    ArgumentNullException.ThrowIfNull(context);
 
     var isActive = IsBrowserLogCheckActive(context);
     if (!isActive)

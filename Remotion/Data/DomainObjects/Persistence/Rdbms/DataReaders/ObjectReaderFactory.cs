@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
@@ -42,10 +41,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IDataContainerValidator dataContainerValidator)
     {
-      ArgumentUtility.CheckNotNull(nameof(rdbmsPersistenceModelProvider), rdbmsPersistenceModelProvider);
-      ArgumentUtility.CheckNotNull(nameof(infrastructureStoragePropertyDefinitionProvider), infrastructureStoragePropertyDefinitionProvider);
-      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull(nameof(dataContainerValidator), dataContainerValidator);
+      ArgumentNullException.ThrowIfNull(rdbmsPersistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(infrastructureStoragePropertyDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
+      ArgumentNullException.ThrowIfNull(dataContainerValidator);
 
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
       _infrastructureStoragePropertyDefinitionProvider = infrastructureStoragePropertyDefinitionProvider;
@@ -70,8 +69,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IRdbmsStorageEntityDefinition entityDefinition,
         IEnumerable<ColumnDefinition> selectedColumns)
     {
-      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
-      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
 
       var ordinalProvider = CreateOrdinalProviderForKnownProjection(selectedColumns);
       return new DataContainerReader(
@@ -86,8 +85,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IRdbmsStorageEntityDefinition entityDefinition,
         IEnumerable<ColumnDefinition> selectedColumns)
     {
-      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
-      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
 
       var ordinalProvider = CreateOrdinalProviderForKnownProjection(selectedColumns);
       return new ObjectIDReader(entityDefinition.ObjectIDProperty, ordinalProvider);
@@ -97,8 +96,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IRdbmsStorageEntityDefinition entityDefinition,
         IEnumerable<ColumnDefinition> selectedColumns)
     {
-      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
-      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
 
       var ordinalProvider = CreateOrdinalProviderForKnownProjection(selectedColumns);
       return new TimestampReader(entityDefinition.ObjectIDProperty, entityDefinition.TimestampProperty, ordinalProvider);

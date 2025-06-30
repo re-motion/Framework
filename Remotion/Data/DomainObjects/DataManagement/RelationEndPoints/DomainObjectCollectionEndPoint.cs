@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       public EndPointLoader (ILazyLoader lazyLoader)
       {
-        ArgumentUtility.CheckNotNull(nameof(lazyLoader), lazyLoader);
+        ArgumentNullException.ThrowIfNull(lazyLoader);
         _lazyLoader = lazyLoader;
       }
 
@@ -73,13 +73,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink,
         IDomainObjectCollectionEndPointDataManagerFactory dataManagerFactory)
-        : base(ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction), ArgumentUtility.CheckNotNull(nameof(id), id))
+        : base(
+            clientTransaction ?? throw new ArgumentNullException(nameof(clientTransaction)),
+            id ?? throw new ArgumentNullException(nameof(id)))
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionManager), collectionManager);
-      ArgumentUtility.CheckNotNull(nameof(lazyLoader), lazyLoader);
-      ArgumentUtility.CheckNotNull(nameof(endPointProvider), endPointProvider);
-      ArgumentUtility.CheckNotNull(nameof(transactionEventSink), transactionEventSink);
-      ArgumentUtility.CheckNotNull(nameof(dataManagerFactory), dataManagerFactory);
+      ArgumentNullException.ThrowIfNull(collectionManager);
+      ArgumentNullException.ThrowIfNull(lazyLoader);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
+      ArgumentNullException.ThrowIfNull(dataManagerFactory);
 
       if (id.Definition.Cardinality != CardinalityType.Many)
         throw new ArgumentException("End point ID must refer to an end point with cardinality 'Many'.", nameof(id));
@@ -196,7 +198,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void MarkDataComplete (DomainObject[] items)
     {
-      ArgumentUtility.CheckNotNull(nameof(items), items);
+      ArgumentNullException.ThrowIfNull(items);
       _loadState.MarkDataComplete(this, items, SetCompleteLoadState);
     }
 
@@ -250,7 +252,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void SortCurrentData (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull(nameof(comparison), comparison);
+      ArgumentNullException.ThrowIfNull(comparison);
 
       _loadState.SortCurrentData(this, comparison);
       Touch();
@@ -258,28 +260,28 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       _loadState.RegisterOriginalOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       _loadState.UnregisterOriginalOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       _loadState.RegisterCurrentOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       _loadState.UnregisterCurrentOppositeEndPoint(this, oppositeEndPoint);
     }
@@ -296,14 +298,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(oppositeEndPoint), oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       _loadState.SynchronizeOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public IDataManagementCommand CreateSetCollectionCommand (DomainObjectCollection newCollection)
     {
-      ArgumentUtility.CheckNotNull(nameof(newCollection), newCollection);
+      ArgumentNullException.ThrowIfNull(newCollection);
 
       var command = _loadState.CreateSetCollectionCommand(this, newCollection, _collectionManager);
       return command;
@@ -311,7 +313,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(removedRelatedObject), removedRelatedObject);
+      ArgumentNullException.ThrowIfNull(removedRelatedObject);
 
       var command = _loadState.CreateRemoveCommand(this, removedRelatedObject);
       return command;
@@ -325,21 +327,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public virtual IDataManagementCommand CreateInsertCommand (DomainObject insertedRelatedObject, int index)
     {
-      ArgumentUtility.CheckNotNull(nameof(insertedRelatedObject), insertedRelatedObject);
+      ArgumentNullException.ThrowIfNull(insertedRelatedObject);
       var command = _loadState.CreateInsertCommand(this, insertedRelatedObject, index);
       return command;
     }
 
     public virtual IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(addedRelatedObject), addedRelatedObject);
+      ArgumentNullException.ThrowIfNull(addedRelatedObject);
       var command = _loadState.CreateAddCommand(this, addedRelatedObject);
       return command;
     }
 
     public virtual IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(replacementObject), replacementObject);
+      ArgumentNullException.ThrowIfNull(replacementObject);
       var command = _loadState.CreateReplaceCommand(this, index, replacementObject);
       return command;
     }

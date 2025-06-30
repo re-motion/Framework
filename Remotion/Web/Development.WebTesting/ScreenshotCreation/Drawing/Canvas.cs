@@ -3,9 +3,7 @@
 using System;
 using System.Drawing;
 using Microsoft.Maui.Graphics.Skia;
-using Remotion.Utilities;
 using SkiaSharp;
-using SizeF = System.Drawing.SizeF;
 using MauiHorizontalAlignment = Microsoft.Maui.Graphics.HorizontalAlignment;
 using MauiVerticalAlignment = Microsoft.Maui.Graphics.VerticalAlignment;
 using MauiTextFlow = Microsoft.Maui.Graphics.TextFlow;
@@ -19,7 +17,7 @@ public class Canvas : IDisposable
 {
   public static Canvas FromImage (Image layerImage)
   {
-    ArgumentUtility.CheckNotNull(nameof(layerImage), layerImage);
+    ArgumentNullException.ThrowIfNull(layerImage);
 
     return new Canvas(
         new SkiaCanvas
@@ -32,7 +30,7 @@ public class Canvas : IDisposable
 
   public Canvas (SkiaCanvas skiaCanvas)
   {
-    ArgumentUtility.CheckNotNull(nameof(skiaCanvas), skiaCanvas);
+    ArgumentNullException.ThrowIfNull(skiaCanvas);
 
     SkiaCanvas = skiaCanvas;
   }
@@ -50,16 +48,14 @@ public class Canvas : IDisposable
 
   public void DrawEllipse (Pen borderPen, Rectangle ellipseBounds)
   {
-    ArgumentUtility.CheckNotNull(nameof(borderPen), borderPen);
-    ArgumentUtility.CheckNotNull(nameof(ellipseBounds), ellipseBounds);
+    ArgumentNullException.ThrowIfNull(borderPen);
 
     SkiaCanvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), borderPen.SkiaPaint);
   }
 
   public void FillEllipse (Brush backgroundBrush, Rectangle ellipseBounds)
   {
-    ArgumentUtility.CheckNotNull(nameof(backgroundBrush), backgroundBrush);
-    ArgumentUtility.CheckNotNull(nameof(ellipseBounds), ellipseBounds);
+    ArgumentNullException.ThrowIfNull(backgroundBrush);
 
     SkiaCanvas.Canvas.DrawOval(ellipseBounds.ToSkRect(), backgroundBrush.SkiaPaint);
   }
@@ -79,10 +75,10 @@ public class Canvas : IDisposable
       Rectangle rectangle,
       StringFormat stringFormat)
   {
-    ArgumentUtility.CheckNotNull(nameof(text), text);
-    ArgumentUtility.CheckNotNull(nameof(font), font);
-    ArgumentUtility.CheckNotNull(nameof(brush), brush);
-    ArgumentUtility.CheckNotNull(nameof(stringFormat), stringFormat);
+    ArgumentNullException.ThrowIfNull(text);
+    ArgumentNullException.ThrowIfNull(font);
+    ArgumentNullException.ThrowIfNull(brush);
+    ArgumentNullException.ThrowIfNull(stringFormat);
 
     DrawString(
         text,
@@ -113,9 +109,9 @@ public class Canvas : IDisposable
       VerticalAlignment verticalAlignment,
       bool wrapLines)
   {
-    ArgumentUtility.CheckNotNull(nameof(text), text);
-    ArgumentUtility.CheckNotNull(nameof(font), font);
-    ArgumentUtility.CheckNotNull(nameof(brush), brush);
+    ArgumentNullException.ThrowIfNull(text);
+    ArgumentNullException.ThrowIfNull(font);
+    ArgumentNullException.ThrowIfNull(brush);
 
     SkiaCanvas.Font = new Microsoft.Maui.Graphics.Font(font.SkiaFont.Typeface.FamilyName);
     SkiaCanvas.FontSize = (int)Math.Round(font.Size);
@@ -133,28 +129,28 @@ public class Canvas : IDisposable
 
   public void DrawRectangle (Pen pen, Rectangle borderBounds)
   {
-    ArgumentUtility.CheckNotNull(nameof(pen), pen);
+    ArgumentNullException.ThrowIfNull(pen);
 
     SkiaCanvas.Canvas.DrawRect(borderBounds.ToSkRect(), pen.SkiaPaint);
   }
 
   public void FillRectangle (Brush backgroundBrush, Rectangle annotationBounds)
   {
-    ArgumentUtility.CheckNotNull(nameof(backgroundBrush), backgroundBrush);
+    ArgumentNullException.ThrowIfNull(backgroundBrush);
 
     SkiaCanvas.Canvas.DrawRect(annotationBounds.ToSkRect(), backgroundBrush.SkiaPaint);
   }
 
   public void DrawImage (Image layerImage, Point point)
   {
-    ArgumentUtility.CheckNotNull(nameof(layerImage), layerImage);
+    ArgumentNullException.ThrowIfNull(layerImage);
 
     SkiaCanvas.Canvas.DrawBitmap(layerImage.SkiaBitmap, new SKPoint(point.X, point.Y));
   }
 
   public void DrawImage (Image layerImage, Rectangle newImageBounds, Rectangle normalizedCroppingRectangle)
   {
-    ArgumentUtility.CheckNotNull(nameof(layerImage), layerImage);
+    ArgumentNullException.ThrowIfNull(layerImage);
 
     SkiaCanvas.Canvas.DrawBitmap(layerImage.SkiaBitmap, normalizedCroppingRectangle.ToSkRect(), newImageBounds.ToSkRect());
   }

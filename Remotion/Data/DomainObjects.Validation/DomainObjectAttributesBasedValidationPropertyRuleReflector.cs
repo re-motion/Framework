@@ -56,10 +56,10 @@ namespace Remotion.Data.DomainObjects.Validation
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(interfaceProperty), interfaceProperty);
-      ArgumentUtility.CheckNotNull(nameof(implementationProperty), implementationProperty);
-      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull(nameof(validationMessageFactory), validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(interfaceProperty);
+      ArgumentNullException.ThrowIfNull(implementationProperty);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
 
       var interfacePropertyInformation = PropertyInfoAdapter.Create(interfaceProperty);
       var implementationPropertyInformation = PropertyInfoAdapter.Create(implementationProperty);
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public Func<object, object> GetValidatedPropertyFunc (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       // TODO RM-5906: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and AddingComponentPropertyRule
 
@@ -144,8 +144,8 @@ namespace Remotion.Data.DomainObjects.Validation
     [ReflectionAPI]
     private static bool UsePersistentProperty (DomainObject domainObject, PropertyInfo property)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(domainObject);
+      ArgumentNullException.ThrowIfNull(property);
 
       if (!ReflectionUtility.IsRelationType(property.PropertyType))
         return true;

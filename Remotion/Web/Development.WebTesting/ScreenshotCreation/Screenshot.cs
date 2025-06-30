@@ -20,7 +20,6 @@ using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
@@ -37,10 +36,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static Screenshot TakeBrowserScreenshot ([NotNull] IBrowserSession browserSession, [NotNull] IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull(nameof(browserSession), browserSession);
-      ArgumentUtility.CheckNotNull(nameof(locator), locator);
+      ArgumentNullException.ThrowIfNull(browserSession);
+      ArgumentNullException.ThrowIfNull(locator);
 
-      ArgumentUtility.CheckNotNull(nameof(browserSession), browserSession);
+      ArgumentNullException.ThrowIfNull(browserSession);
 
       var screenshot = ((ITakesScreenshot)browserSession.Driver.Native).GetScreenshot();
 
@@ -93,9 +92,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] ICursorInformation cursorInformation,
         CoordinateSystem coordinateSystem)
     {
-      ArgumentUtility.CheckNotNull(nameof(image), image);
-      ArgumentUtility.CheckNotNull(nameof(screenshotBounds), screenshotBounds);
-      ArgumentUtility.CheckNotNull(nameof(cursorInformation), cursorInformation);
+      ArgumentNullException.ThrowIfNull(image);
+      ArgumentNullException.ThrowIfNull(screenshotBounds);
+      ArgumentNullException.ThrowIfNull(cursorInformation);
 
       _image = image;
       _desktopOffset = desktopOffset;

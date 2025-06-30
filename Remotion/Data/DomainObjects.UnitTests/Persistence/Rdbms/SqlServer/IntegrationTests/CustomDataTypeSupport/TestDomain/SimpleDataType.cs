@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain
 {
@@ -26,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public SimpleDataType (string stringValue)
     {
-      ArgumentUtility.CheckNotNull(nameof(stringValue), stringValue);
+      ArgumentNullException.ThrowIfNull(stringValue);
       _stringValue = stringValue;
     }
 

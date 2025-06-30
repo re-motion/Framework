@@ -45,15 +45,15 @@ namespace Remotion.Utilities
 
     public TypeConversionProvider (ITypeConverterFactory typeConverterFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeConverterFactory), typeConverterFactory);
+      ArgumentNullException.ThrowIfNull(typeConverterFactory);
 
       _typeConverterFactory = typeConverterFactory;
     }
 
     public virtual TypeConverterResult GetTypeConverter (Type sourceType, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
-      ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
+      ArgumentNullException.ThrowIfNull(sourceType);
+      ArgumentNullException.ThrowIfNull(destinationType);
 
       TypeConverterResult additionalTypeConverterResult = GetAdditionalTypeConverter(sourceType, destinationType);
       if (!additionalTypeConverterResult.Equals(TypeConverterResult.Empty))
@@ -72,7 +72,7 @@ namespace Remotion.Utilities
 
     public virtual TypeConverter? GetTypeConverter (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       TypeConverter? converter = GetAdditionalTypeConverter(type);
       if (converter != null)
@@ -98,8 +98,8 @@ namespace Remotion.Utilities
     /// <param name="converter"> The <see cref="TypeConverter"/> to register. Must not be <see langword="null"/>. </param>
     public void AddTypeConverter (Type type, TypeConverter converter)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
-      ArgumentUtility.CheckNotNull(nameof(converter), converter);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(converter);
       _additionalTypeConverters[type] = converter;
     }
 
@@ -113,14 +113,14 @@ namespace Remotion.Utilities
     /// <remarks> If no <see cref="TypeConverter"/> has been registered, the method has no effect. </remarks>
     public void RemoveTypeConverter (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       _additionalTypeConverters.Remove(type);
     }
 
     public virtual bool CanConvert (Type sourceType, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
-      ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
+      ArgumentNullException.ThrowIfNull(sourceType);
+      ArgumentNullException.ThrowIfNull(destinationType);
 
       if (sourceType == typeof(DBNull))
         return NullableTypeUtility.IsNullableType(destinationType);
@@ -139,8 +139,8 @@ namespace Remotion.Utilities
 
     public virtual object? Convert (ITypeDescriptorContext? context, CultureInfo? culture, Type sourceType, Type destinationType, object? value)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
-      ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
+      ArgumentNullException.ThrowIfNull(sourceType);
+      ArgumentNullException.ThrowIfNull(destinationType);
 
       bool isNullableDestinationType = NullableTypeUtility.IsNullableType(destinationType);
       if (value == DBNull.Value && isNullableDestinationType)
@@ -184,8 +184,8 @@ namespace Remotion.Utilities
 
     protected TypeConverterResult GetAdditionalTypeConverter (Type sourceType, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
-      ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
+      ArgumentNullException.ThrowIfNull(sourceType);
+      ArgumentNullException.ThrowIfNull(destinationType);
 
       TypeConverter? sourceTypeConverter = GetAdditionalTypeConverter(sourceType);
       if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo(destinationType))
@@ -200,7 +200,7 @@ namespace Remotion.Utilities
 
     protected TypeConverter? GetAdditionalTypeConverter (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       TypeConverter typeConverter;
       if (_additionalTypeConverters.TryGetValue(type, out typeConverter!))
@@ -211,8 +211,8 @@ namespace Remotion.Utilities
 
     protected TypeConverterResult GetTypeConverterFromFactory (Type sourceType, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
-      ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
+      ArgumentNullException.ThrowIfNull(sourceType);
+      ArgumentNullException.ThrowIfNull(destinationType);
 
       TypeConverter? sourceTypeConverter = GetTypeConverterFromFactory(sourceType);
       if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo(destinationType))
@@ -227,7 +227,7 @@ namespace Remotion.Utilities
 
     protected TypeConverter? GetTypeConverterFromFactory (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       TypeConverter? converter = GetTypeConverterFromCache(type);
       if (converter == null && !HasTypeInCache(type))
@@ -240,8 +240,8 @@ namespace Remotion.Utilities
 
     protected TypeConverterResult GetStringConverter (Type sourceType, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
-      ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
+      ArgumentNullException.ThrowIfNull(sourceType);
+      ArgumentNullException.ThrowIfNull(destinationType);
 
       if (sourceType == typeof(string) && _stringConverter.CanConvertTo(destinationType))
         return new TypeConverterResult(TypeConverterType.SourceTypeConverter, _stringConverter);
@@ -254,14 +254,14 @@ namespace Remotion.Utilities
 
     protected void AddTypeConverterToCache (Type type, TypeConverter? converter)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       _typeConverters.AddOrUpdate(type, converter, (key, existingConverter) => converter);
     }
 
     protected TypeConverter? GetTypeConverterFromCache (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (_typeConverters.TryGetValue(type, out var typeConverter))
         return typeConverter;
@@ -271,7 +271,7 @@ namespace Remotion.Utilities
 
     protected bool HasTypeInCache (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       return _typeConverters.ContainsKey(type);
     }
 

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
 {
@@ -45,8 +44,8 @@ namespace Remotion.ServiceLocation
     public static void RegisterSingle<TService> (this IServiceConfigurationRegistry serviceConfigurationRegistry, Func<TService> instanceFactory)
         where TService : class
     {
-      ArgumentUtility.CheckNotNull(nameof(serviceConfigurationRegistry), serviceConfigurationRegistry);
-      ArgumentUtility.CheckNotNull(nameof(instanceFactory), instanceFactory);
+      ArgumentNullException.ThrowIfNull(serviceConfigurationRegistry);
+      ArgumentNullException.ThrowIfNull(instanceFactory);
 
       var serviceConfigurationEntry = new ServiceConfigurationEntry(
           typeof(TService),
@@ -69,8 +68,8 @@ namespace Remotion.ServiceLocation
     public static void RegisterMultiple<TService> (this IServiceConfigurationRegistry serviceConfigurationRegistry, params Func<TService>[] instanceFactories)
         where TService : class
     {
-      ArgumentUtility.CheckNotNull(nameof(serviceConfigurationRegistry), serviceConfigurationRegistry);
-      ArgumentUtility.CheckNotNull(nameof(instanceFactories), instanceFactories);
+      ArgumentNullException.ThrowIfNull(serviceConfigurationRegistry);
+      ArgumentNullException.ThrowIfNull(instanceFactories);
 
       serviceConfigurationRegistry.RegisterMultiple((IEnumerable<Func<TService>>)instanceFactories);
     }
@@ -90,8 +89,8 @@ namespace Remotion.ServiceLocation
     public static void RegisterMultiple<TService> (this IServiceConfigurationRegistry serviceConfigurationRegistry, IEnumerable<Func<TService>> instanceFactories)
         where TService : class
     {
-      ArgumentUtility.CheckNotNull(nameof(serviceConfigurationRegistry), serviceConfigurationRegistry);
-      ArgumentUtility.CheckNotNull(nameof(instanceFactories), instanceFactories);
+      ArgumentNullException.ThrowIfNull(serviceConfigurationRegistry);
+      ArgumentNullException.ThrowIfNull(instanceFactories);
 
       var serviceConfigurationEntry = new ServiceConfigurationEntry(
           typeof(TService),
@@ -118,9 +117,9 @@ namespace Remotion.ServiceLocation
         LifetimeKind lifetime,
         RegistrationType registrationType = RegistrationType.Single)
     {
-      ArgumentUtility.CheckNotNull(nameof(serviceConfigurationRegistry), serviceConfigurationRegistry);
-      ArgumentUtility.CheckNotNull(nameof(serviceType), serviceType);
-      ArgumentUtility.CheckNotNull(nameof(concreteImplementationType), concreteImplementationType);
+      ArgumentNullException.ThrowIfNull(serviceConfigurationRegistry);
+      ArgumentNullException.ThrowIfNull(serviceType);
+      ArgumentNullException.ThrowIfNull(concreteImplementationType);
 
       var serviceImplemetation = new ServiceImplementationInfo(concreteImplementationType, lifetime, registrationType);
       ServiceConfigurationEntry serviceConfigurationEntry;

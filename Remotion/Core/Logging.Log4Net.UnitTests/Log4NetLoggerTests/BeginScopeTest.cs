@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.IO;
 using NUnit.Framework;
 
 namespace Remotion.Logging.Log4Net.UnitTests.Log4NetLoggerTests;

@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -30,8 +29,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     public ServerErrorException ([NotNull] string message, [NotNull] string stacktrace)
         : base(message)
     {
-      ArgumentUtility.CheckNotNull(nameof(message), message);
-      ArgumentUtility.CheckNotNull(nameof(stacktrace), stacktrace);
+      ArgumentNullException.ThrowIfNull(message);
+      ArgumentNullException.ThrowIfNull(stacktrace);
 
       _stacktrace = stacktrace;
     }

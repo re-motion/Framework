@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -49,9 +48,9 @@ public class InvalidTypeException : DomainObjectException
   public InvalidTypeException (string message, string propertyName, Type expectedType, Type actualType, Exception? innerException = null)
       : base(message, innerException)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
-    ArgumentUtility.CheckNotNull(nameof(expectedType), expectedType);
-    ArgumentUtility.CheckNotNull(nameof(actualType), actualType);
+    ArgumentException.ThrowIfNullOrEmpty(propertyName);
+    ArgumentNullException.ThrowIfNull(expectedType);
+    ArgumentNullException.ThrowIfNull(actualType);
 
     _propertyName = propertyName;
     _expectedType = expectedType;

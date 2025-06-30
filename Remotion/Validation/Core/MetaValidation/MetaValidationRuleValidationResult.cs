@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.MetaValidation
 {
@@ -32,8 +31,8 @@ namespace Remotion.Validation.MetaValidation
     [JetBrains.Annotations.StringFormatMethod("messageFormat")]
     public static MetaValidationRuleValidationResult CreateInvalidResult (string messageFormat, params object?[] args)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(messageFormat), messageFormat);
-      ArgumentUtility.CheckNotNull(nameof(args), args);
+      ArgumentException.ThrowIfNullOrEmpty(messageFormat);
+      ArgumentNullException.ThrowIfNull(args);
 
       return new MetaValidationRuleValidationResult(false, string.Format(messageFormat, args));
     }

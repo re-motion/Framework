@@ -3,7 +3,6 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure;
 
@@ -12,7 +11,7 @@ public class ObjectIDConverter : TypeConverter
 {
   public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
   {
-    ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
+    ArgumentNullException.ThrowIfNull(sourceType);
 
     return sourceType == typeof(string) || base.CanConvertFrom(context, sourceType);
   }
@@ -40,7 +39,7 @@ public class ObjectIDConverter : TypeConverter
 
   public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
   {
-    ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
+    ArgumentNullException.ThrowIfNull(destinationType);
 
     if (value == null)
       return null;

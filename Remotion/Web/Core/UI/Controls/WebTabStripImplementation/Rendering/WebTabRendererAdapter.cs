@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 {
@@ -34,8 +33,8 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public WebTabRendererAdapter (IWebTabRenderer webTabRenderer, IWebTab webTab, bool isLast, bool isEnabled, WebTabStyle webTabStyle)
     {
-      ArgumentUtility.CheckNotNull(nameof(webTabRenderer), webTabRenderer);
-      ArgumentUtility.CheckNotNull(nameof(webTab), webTab);
+      ArgumentNullException.ThrowIfNull(webTabRenderer);
+      ArgumentNullException.ThrowIfNull(webTab);
       // TODO RM-8118: Missing arg check for webTabStyle
 
       _webTabRenderer = webTabRenderer;
@@ -67,7 +66,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public void Render (WebTabStripRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       _webTabRenderer.Render(renderingContext, _webTab, _isEnabled, _isLast, _webTabStyle);
     }

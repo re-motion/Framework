@@ -225,9 +225,6 @@ namespace Remotion.UnitTests.Utilities.EnumUtilityTests
 
     private bool IsValidEnumValueByString (object enumValue)
     {
-      if (enumValue == null)
-        throw new ArgumentNullException(nameof(enumValue));
-
       string stringRepresentation = enumValue.ToString();
       if (string.IsNullOrEmpty(stringRepresentation))
         return false;

@@ -80,8 +80,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected BocTreeView ([NotNull] IRenderingFeatures renderingFeatures, [NotNull] IWebServiceFactory webServiceFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
-      ArgumentUtility.CheckNotNull(nameof(webServiceFactory), webServiceFactory);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
+      ArgumentNullException.ThrowIfNull(webServiceFactory);
 
       _treeView = new WebTreeView(this);
       _renderingFeatures = renderingFeatures;
@@ -190,9 +190,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void RenderTreeNodeMenu (HtmlTextWriter writer, WebTreeNode node, DropDownMenu menu)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(node), node);
-      ArgumentUtility.CheckNotNull(nameof(menu), menu);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(node);
+      ArgumentNullException.ThrowIfNull(menu);
 
       if (!string.IsNullOrEmpty(ControlServicePath))
       {
@@ -275,7 +275,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocTreeViewRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       Assertion.IsNotNull(Context, "Context must not be null.");
 
@@ -480,8 +480,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [CanBeNull]
     protected virtual Badge? GetBadge (IBusinessObjectProperty businessObjectProperty, IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObjectProperty), businessObjectProperty);
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+      ArgumentNullException.ThrowIfNull(businessObjectProperty);
+      ArgumentNullException.ThrowIfNull(businessObject);
 
       return null;
     }
@@ -489,19 +489,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [CanBeNull]
     protected virtual Badge? GetBadge (IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+      ArgumentNullException.ThrowIfNull(businessObject);
       return null;
     }
 
     protected virtual WebString GetText (IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+      ArgumentNullException.ThrowIfNull(businessObject);
       return WebString.CreateFromText(businessObject.GetAccessibleDisplayName());
     }
 
     protected virtual PlainTextString GetToolTip (IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+      ArgumentNullException.ThrowIfNull(businessObject);
       return PlainTextString.CreateFromText(GetToolTip(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider));
     }
 
@@ -511,9 +511,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IBusinessObjectWithIdentity parentBusinessObject,
         IBusinessObjectReferenceProperty parentProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(parentNode), parentNode);
-      ArgumentUtility.CheckNotNull(nameof(parentBusinessObject), parentBusinessObject);
-      ArgumentUtility.CheckNotNull(nameof(parentProperty), parentProperty);
+      ArgumentNullException.ThrowIfNull(parentNode);
+      ArgumentNullException.ThrowIfNull(parentBusinessObject);
+      ArgumentNullException.ThrowIfNull(parentProperty);
 
       IList? children = (IList?)parentBusinessObject.GetProperty(parentProperty);
       if (children == null)
@@ -527,8 +527,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BusinessObjectTreeNode parentNode,
         IBusinessObjectWithIdentity parentBusinessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(parentNode), parentNode);
-      ArgumentUtility.CheckNotNull(nameof(parentBusinessObject), parentBusinessObject);
+      ArgumentNullException.ThrowIfNull(parentNode);
+      ArgumentNullException.ThrowIfNull(parentBusinessObject);
       if (Property == null)
       {
         ArrayList referenceListPropertyInfos = new ArrayList();
@@ -694,7 +694,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override bool SupportsProperty (IBusinessObjectProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
       if (!base.SupportsProperty(property))
         return false;
       return ((IBusinessObjectReferenceProperty)property).ReferenceClass is IBusinessObjectClassWithIdentity;
@@ -1060,7 +1060,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BusinessObjectPropertyTreeNodeInfo (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
       _text = WebString.CreateFromText(property.DisplayName);
       _toolTip = PlainTextString.Empty;
       _icon = null;
@@ -1140,12 +1140,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BocTreeNodeEventArgs : WebTreeNodeEventArgs
   {
     public BocTreeNodeEventArgs (BusinessObjectTreeNode node)
-        : base(ArgumentUtility.CheckNotNull(nameof(node), node))
+        : base(node ?? throw new ArgumentNullException(nameof(node)))
     {
     }
 
     public BocTreeNodeEventArgs (BusinessObjectPropertyTreeNode node)
-        : base(ArgumentUtility.CheckNotNull(nameof(node), node))
+        : base(node ?? throw new ArgumentNullException(nameof(node)))
     {
     }
 

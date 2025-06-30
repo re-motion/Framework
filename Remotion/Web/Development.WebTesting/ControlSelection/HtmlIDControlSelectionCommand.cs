@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ControlSelection
 {
@@ -36,8 +35,8 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
 
     public HtmlIDControlSelectionCommand ([NotNull] IHtmlIDControlSelector<TControlObject> controlSelector, [NotNull] string htmlID)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelector), controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(htmlID), htmlID);
+      ArgumentNullException.ThrowIfNull(controlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(htmlID);
 
       _controlSelector = controlSelector;
       _htmlID = htmlID;
@@ -46,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.SelectPerHtmlID(context, _htmlID);
     }
@@ -54,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject? SelectOptional (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.SelectOptionalPerHtmlID(context, _htmlID);
     }
@@ -62,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public bool Exists (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _controlSelector.ExistsPerHtmlID(context, _htmlID);
     }

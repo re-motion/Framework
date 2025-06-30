@@ -20,7 +20,6 @@ using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
@@ -34,8 +33,8 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
     {
       public static Result CreateErrorResult ([NotNull] string message, [NotNull] string stacktrace)
       {
-        ArgumentUtility.CheckNotNull(nameof(message), message);
-        ArgumentUtility.CheckNotNull(nameof(stacktrace), stacktrace);
+        ArgumentNullException.ThrowIfNull(message);
+        ArgumentNullException.ThrowIfNull(stacktrace);
 
         return new Result(true, message, stacktrace);
       }
@@ -112,7 +111,7 @@ return JSON.stringify(result);
 
     public Result Parse ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       // We do the error page detection using JavaScript as it provides better performance than selenium/coypu
       // The JS solution (~2ms) is more than 25x faster than the selenium equivalent, which adds up if the detection is used often

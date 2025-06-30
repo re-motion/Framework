@@ -99,8 +99,8 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
     public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(key), key);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(function), function);
+      ArgumentException.ThrowIfNullOrEmpty(key);
+      ArgumentException.ThrowIfNullOrEmpty(function);
       if (! Regex.IsMatch(function, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
         throw new ArgumentException("Invalid function name: '" + function + "'.", nameof(function));
 
@@ -126,7 +126,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.RegisterControlForDirtyStateTracking">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
     public void RegisterControlForDirtyStateTracking (IEditableControl control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       if (_isPreRenderComplete)
       {
@@ -157,7 +157,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary> Implements <see cref="ISmartPage.RegisterControlForDirtyStateTracking">ISmartPage.RegisterControlForDirtyStateTracking</see>. </summary>
     public void RegisterControlForDirtyStateTracking (string clientID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(clientID), clientID);
+      ArgumentException.ThrowIfNullOrEmpty(clientID);
 
       if (_isPreRenderComplete)
       {
@@ -195,8 +195,8 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     public void RegisterCommandForSynchronousPostBack ([NotNull]Control control, [NotNull]string eventArguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArguments), eventArguments);
+      ArgumentNullException.ThrowIfNull(control);
+      ArgumentException.ThrowIfNullOrEmpty(eventArguments);
 
       if (_isPreRenderComplete)
       {
@@ -219,7 +219,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     public void RegisterControlForSynchronousPostBack (Control control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       var scriptManager = ScriptManager.GetCurrent(_page.WrappedInstance);
       if (scriptManager != null)
@@ -239,7 +239,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </param>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      ArgumentUtility.CheckNotNull(nameof(localResourcesType), localResourcesType);
+      ArgumentNullException.ThrowIfNull(localResourcesType);
 
       //  Provider has already been identified.
       if (_cachedResourceManager != null)
@@ -591,7 +591,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </summary>
     public void SetFocus (IFocusableControl control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
       if (string.IsNullOrEmpty(control.FocusID))
         return;
       SetFocus(control.FocusID);
@@ -602,7 +602,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </summary>
     public void SetFocus ([NotNull] string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       _smartFocusID = id;
     }
 
@@ -611,7 +611,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// </summary>
     public void RegisterNavigationControl (INavigationControl control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       // Registration is typically done during the Control's init-phase to allow building of navigation urls during the entire life cycle.
       // Note: If the control is removed again, the previously built navigation urls will no longer be valid.

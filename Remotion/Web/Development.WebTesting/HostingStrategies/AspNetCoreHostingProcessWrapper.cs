@@ -4,7 +4,6 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.HostingStrategies;
@@ -33,9 +32,9 @@ public class AspNetCoreHostingProcessWrapper
       string workingDirectory,
       string url)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(processPath), processPath);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(workingDirectory), workingDirectory);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(url), url);
+    ArgumentException.ThrowIfNullOrEmpty(processPath);
+    ArgumentException.ThrowIfNullOrEmpty(workingDirectory);
+    ArgumentException.ThrowIfNullOrEmpty(url);
 
     _processPath = processPath;
     _processArguments = processArguments;

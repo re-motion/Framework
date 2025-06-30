@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Utilities;
+
 #nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.FunctionalProgramming
@@ -28,8 +28,8 @@ namespace Remotion.FunctionalProgramming
     public static TSource First<TSource, TException> (this IEnumerable<TSource> source, Func<TException> createEmptySequenceException)
         where TException: Exception
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
-      ArgumentUtility.CheckNotNull(nameof(createEmptySequenceException), createEmptySequenceException);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(createEmptySequenceException);
 
       using (IEnumerator<TSource> enumerator = source.GetEnumerator())
       {
@@ -56,9 +56,9 @@ namespace Remotion.FunctionalProgramming
         this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TException> createNoMatchingElementException)
         where TException: Exception
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
-      ArgumentUtility.CheckNotNull(nameof(predicate), predicate);
-      ArgumentUtility.CheckNotNull(nameof(createNoMatchingElementException), createNoMatchingElementException);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(predicate);
+      ArgumentNullException.ThrowIfNull(createNoMatchingElementException);
 
       foreach (TSource current in source)
       {
@@ -84,8 +84,8 @@ namespace Remotion.FunctionalProgramming
     public static TSource Single<TSource, TException> (this IEnumerable<TSource> source, Func<TException> createEmptySequenceException)
         where TException: Exception
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
-      ArgumentUtility.CheckNotNull(nameof(createEmptySequenceException), createEmptySequenceException);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(createEmptySequenceException);
 
       TSource result = default(TSource)!;
       bool isElementFound = false;
@@ -121,9 +121,9 @@ namespace Remotion.FunctionalProgramming
         this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TException> createNoMatchingElementException)
         where TException: Exception
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
-      ArgumentUtility.CheckNotNull(nameof(predicate), predicate);
-      ArgumentUtility.CheckNotNull(nameof(createNoMatchingElementException), createNoMatchingElementException);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(predicate);
+      ArgumentNullException.ThrowIfNull(createNoMatchingElementException);
 
       TSource result = default(TSource)!;
       bool isElementFound = false;
@@ -159,8 +159,8 @@ namespace Remotion.FunctionalProgramming
     public static IEnumerable<TSource> CreateSequence<TSource> (this TSource? source, Func<TSource, TSource?> nextElementSelector, Func<TSource, bool> predicate)
         where TSource : class
     {
-      ArgumentUtility.CheckNotNull(nameof(nextElementSelector), nextElementSelector);
-      ArgumentUtility.CheckNotNull(nameof(predicate), predicate);
+      ArgumentNullException.ThrowIfNull(nextElementSelector);
+      ArgumentNullException.ThrowIfNull(predicate);
 
       for (TSource? current = source; current != null && predicate(current); current = nextElementSelector(current))
         yield return current;
@@ -180,7 +180,7 @@ namespace Remotion.FunctionalProgramming
     public static IEnumerable<TSource> CreateSequence<TSource> (this TSource? source, Func<TSource, TSource?> nextElementSelector)
         where TSource : class
     {
-      ArgumentUtility.CheckNotNull(nameof(nextElementSelector), nextElementSelector);
+      ArgumentNullException.ThrowIfNull(nextElementSelector);
 
       return CreateSequence(source, nextElementSelector, e => true);
     }
@@ -242,9 +242,9 @@ namespace Remotion.FunctionalProgramming
         where TSource : class
         where TException : Exception
     {
-      ArgumentUtility.CheckNotNull(nameof(nextElementSelector), nextElementSelector);
-      ArgumentUtility.CheckNotNull(nameof(predicate), predicate);
-      ArgumentUtility.CheckNotNull(nameof(createCycleFoundException), createCycleFoundException);
+      ArgumentNullException.ThrowIfNull(nextElementSelector);
+      ArgumentNullException.ThrowIfNull(predicate);
+      ArgumentNullException.ThrowIfNull(createCycleFoundException);
 
       var chainMembers = new HashSet<TSource>(equalityComparer);
       Func<TSource, TSource?> nextElementSelectorWithCycleCheck = element =>
@@ -272,8 +272,8 @@ namespace Remotion.FunctionalProgramming
     /// <exception cref="ArgumentNullException">One of the sequences is <see langword="null" />.</exception>
     public static bool SetEquals<T> (this IEnumerable<T> sequence1, IEnumerable<T> sequence2)
     {
-      ArgumentUtility.CheckNotNull(nameof(sequence1), sequence1);
-      ArgumentUtility.CheckNotNull(nameof(sequence2), sequence2);
+      ArgumentNullException.ThrowIfNull(sequence1);
+      ArgumentNullException.ThrowIfNull(sequence2);
 
       return new HashSet<T>(sequence1).SetEquals(sequence2);
     }
@@ -319,7 +319,7 @@ namespace Remotion.FunctionalProgramming
     /// as <paramref name="source"/>.</returns>
     public static ICollection<T> ConvertToCollection<T> (this IEnumerable<T> source)
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
+      ArgumentNullException.ThrowIfNull(source);
 
       var collection = source as ICollection<T>;
       if (collection != null)
@@ -340,7 +340,7 @@ namespace Remotion.FunctionalProgramming
     /// </returns>
     public static IEnumerable<T> Concat<T> (this IEnumerable<T> source, T item)
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
+      ArgumentNullException.ThrowIfNull(source);
 
       return source.Concat(new[] { item });
     }
@@ -358,8 +358,8 @@ namespace Remotion.FunctionalProgramming
     public static TSource SingleOrDefault<TSource, TException> (this IEnumerable<TSource> source, Func<TException> createMultipleElementsException)
         where TException : Exception
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
-      ArgumentUtility.CheckNotNull(nameof(createMultipleElementsException), createMultipleElementsException);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(createMultipleElementsException);
 
       using (var enumerator = source.GetEnumerator())
       {
@@ -389,9 +389,9 @@ namespace Remotion.FunctionalProgramming
         this IEnumerable<TSource> source, Func<TSource, bool> predicate, Func<TException> createMultipleMatchingElementsException)
         where TException : Exception
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
-      ArgumentUtility.CheckNotNull(nameof(predicate), predicate);
-      ArgumentUtility.CheckNotNull(nameof(createMultipleMatchingElementsException), createMultipleMatchingElementsException);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(predicate);
+      ArgumentNullException.ThrowIfNull(createMultipleMatchingElementsException);
 
       return SingleOrDefault(source.Where(predicate), createMultipleMatchingElementsException);
     }
@@ -410,8 +410,8 @@ namespace Remotion.FunctionalProgramming
     /// </remarks>
     public static IEnumerable<T> ApplySideEffect<T> (this IEnumerable<T> source, Action<T> sideEffect)
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
-      ArgumentUtility.CheckNotNull(nameof(sideEffect), sideEffect);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(sideEffect);
 
       foreach (var item in source)
       {

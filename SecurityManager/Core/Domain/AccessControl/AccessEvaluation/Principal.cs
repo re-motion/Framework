@@ -21,7 +21,6 @@ using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -49,8 +48,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         [CanBeNull] IDomainObjectHandle<User>? user,
         [NotNull] IEnumerable<PrincipalRole> roles)
     {
-      ArgumentUtility.CheckNotNull(nameof(tenant), tenant);
-      ArgumentUtility.CheckNotNull(nameof(roles), roles);
+      ArgumentNullException.ThrowIfNull(tenant);
+      ArgumentNullException.ThrowIfNull(roles);
 
       _isNull = false;
       _tenant = tenant;

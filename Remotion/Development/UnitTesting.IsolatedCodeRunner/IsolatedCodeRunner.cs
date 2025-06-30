@@ -20,7 +20,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
 {
@@ -61,7 +60,7 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
 
     public IsolatedCodeRunner (Action<string[]> testAction, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull(nameof(testAction), testAction);
+      ArgumentNullException.ThrowIfNull(testAction);
 
       var testActionMethod = testAction.Method;
       if (!testActionMethod.IsStatic)
@@ -88,7 +87,7 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
 
     public void Run (params string[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(args), args);
+      ArgumentNullException.ThrowIfNull(args);
 
       var isolatedCodeRunnerExtension = OperatingSystem.IsWindows() ? "exe" : "dll";
       var isolatedCodeRunnerPath = Path.ChangeExtension(typeof(IsolatedCodeRunner).Assembly.Location, isolatedCodeRunnerExtension);

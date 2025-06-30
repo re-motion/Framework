@@ -40,8 +40,8 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     /// <inheritdoc/>
     public object PrepareWaitForCompletion (PageObjectContext context, ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var states = new List<object?>();
 
@@ -58,9 +58,9 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     /// <inheritdoc/>
     public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       var states = ArgumentUtility.CheckNotNullAndType<List<object?>>(nameof(state), state!);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var stragiesWithState = _strategies.Zip(states, (s, ss) => new { Strategy = s, State = ss });
       foreach (var strategyWithState in stragiesWithState)

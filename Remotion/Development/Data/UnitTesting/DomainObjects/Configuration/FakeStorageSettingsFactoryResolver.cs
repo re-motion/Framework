@@ -16,7 +16,6 @@
 //
 using System;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
 {
@@ -32,7 +31,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
 
     public FakeStorageSettingsFactoryResolver (IStorageSettingsFactory storageSettingsFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageSettingsFactory), storageSettingsFactory);
+      ArgumentNullException.ThrowIfNull(storageSettingsFactory);
 
       StorageSettingsFactory = storageSettingsFactory;
     }

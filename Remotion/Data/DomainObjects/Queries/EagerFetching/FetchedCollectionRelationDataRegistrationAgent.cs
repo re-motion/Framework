@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     public FetchedCollectionRelationDataRegistrationAgent (IVirtualEndPointProvider virtualEndPointProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(virtualEndPointProvider), virtualEndPointProvider);
+      ArgumentNullException.ThrowIfNull(virtualEndPointProvider);
       _virtualEndPointProvider = virtualEndPointProvider;
     }
 
@@ -51,9 +51,9 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         ICollection<ILoadedObjectData> originatingObjects,
         ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull(nameof(originatingObjects), originatingObjects);
-      ArgumentUtility.CheckNotNull(nameof(relatedObjects), relatedObjects);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(originatingObjects);
+      ArgumentNullException.ThrowIfNull(relatedObjects);
 
       if (relationEndPointDefinition.Cardinality != CardinalityType.Many || relationEndPointDefinition.IsAnonymous)
         throw new ArgumentException("Only collection-valued relations can be handled by this registration agent.", nameof(relationEndPointDefinition));

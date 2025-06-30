@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     public Type GetReferencedType (Type handleType)
     {
-      ArgumentUtility.CheckNotNull(nameof(handleType), handleType);
+      ArgumentNullException.ThrowIfNull(handleType);
       if (!handleType.IsGenericType || handleType.GetGenericTypeDefinition() != typeof(IDomainObjectHandle<>))
         throw new ArgumentException("The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", nameof(handleType));
 

@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes
 {
@@ -25,7 +24,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
   {
     public static string AsArgument (this IDomainObjectHandle<Tenant> handle)
     {
-      ArgumentUtility.CheckNotNull(nameof(handle), handle);
+      ArgumentNullException.ThrowIfNull(handle);
       return handle.ObjectID.ToString();
     }
   }

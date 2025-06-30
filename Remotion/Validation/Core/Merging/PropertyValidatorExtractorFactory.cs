@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
 
@@ -36,8 +35,8 @@ namespace Remotion.Validation.Merging
     public IPropertyValidatorExtractor Create (
         IEnumerable<RemovingPropertyValidatorRegistration> removingPropertyValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(removingPropertyValidatorRegistrations), removingPropertyValidatorRegistrations);
-      ArgumentUtility.CheckNotNull(nameof(logContext), logContext);
+      ArgumentNullException.ThrowIfNull(removingPropertyValidatorRegistrations);
+      ArgumentNullException.ThrowIfNull(logContext);
 
       return new PropertyValidatorExtractor(removingPropertyValidatorRegistrations, logContext);
     }

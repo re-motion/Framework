@@ -22,7 +22,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.Utilities;
 using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Globalization;
@@ -141,7 +140,7 @@ public class FormGridLabel: Label, ISmartControl
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+    ArgumentNullException.ThrowIfNull(resourceManager);
 
     string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
     if (!string.IsNullOrEmpty(key))

@@ -43,10 +43,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider,
         IObjectReaderFactory objectReaderFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(rdbmsProviderCommandFactory), rdbmsProviderCommandFactory);
-      ArgumentUtility.CheckNotNull(nameof(dbCommandBuilderFactory), dbCommandBuilderFactory);
-      ArgumentUtility.CheckNotNull(nameof(rdbmsPersistenceModelProvider), rdbmsPersistenceModelProvider);
-      ArgumentUtility.CheckNotNull(nameof(objectReaderFactory), objectReaderFactory);
+      ArgumentNullException.ThrowIfNull(rdbmsProviderCommandFactory);
+      ArgumentNullException.ThrowIfNull(dbCommandBuilderFactory);
+      ArgumentNullException.ThrowIfNull(rdbmsPersistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(objectReaderFactory);
 
       _rdbmsProviderCommandFactory = rdbmsProviderCommandFactory;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
@@ -77,8 +77,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
     public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>> CreateForRelationLookup (
         RelationEndPointDefinition foreignKeyEndPoint, ObjectID foreignKeyValue, SortExpressionDefinition? sortExpressionDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(foreignKeyEndPoint), foreignKeyEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(foreignKeyValue), foreignKeyValue);
+      ArgumentNullException.ThrowIfNull(foreignKeyEndPoint);
+      ArgumentNullException.ThrowIfNull(foreignKeyValue);
 
       return InlineRdbmsStorageEntityDefinitionVisitor.Visit<IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer>>>(
           _rdbmsPersistenceModelProvider.GetEntityDefinition(foreignKeyEndPoint.ClassDefinition),

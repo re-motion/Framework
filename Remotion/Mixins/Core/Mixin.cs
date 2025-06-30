@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -41,7 +40,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static TMixin? Get<TMixin> (object mixinTarget) where TMixin : class
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinTarget), mixinTarget);
+      ArgumentNullException.ThrowIfNull(mixinTarget);
       return (TMixin?)Get(typeof(TMixin), mixinTarget);
     }
 
@@ -60,8 +59,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static object? Get (Type mixinType, object mixinTarget)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
-      ArgumentUtility.CheckNotNull(nameof(mixinTarget), mixinTarget);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(mixinTarget);
 
       var castMixinTarget = mixinTarget as IMixinTarget;
       if (castMixinTarget != null)

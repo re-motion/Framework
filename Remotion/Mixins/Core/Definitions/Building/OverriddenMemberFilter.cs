@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Remotion.TypePipe.MutableReflection.Implementation;
-using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.Mixins.Definitions.Building
@@ -34,7 +33,7 @@ namespace Remotion.Mixins.Definitions.Building
   {
     public T[] RemoveOverriddenMembers<T> (IEnumerable<T> members) where T : MemberInfo
     {
-      ArgumentUtility.CheckNotNull(nameof(members), members);
+      ArgumentNullException.ThrowIfNull(members);
 
       // maps the associated methods' base definitions to the most derived member in the list; we adjust this dictionary as we walk the members
       var baseDefinitionsToMostDerivedMembers = new Dictionary<MethodInfo, T>();

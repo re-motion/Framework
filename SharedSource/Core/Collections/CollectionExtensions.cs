@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.Collections
@@ -14,7 +13,7 @@ namespace Remotion.Collections
   {
     public static ReadOnlyCollectionWrapper<T> AsReadOnly<T> (this IReadOnlyCollection<T> collection)
     {
-      ArgumentUtility.CheckNotNull(nameof(collection), collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       return new ReadOnlyCollectionWrapper<T>(collection);
     }

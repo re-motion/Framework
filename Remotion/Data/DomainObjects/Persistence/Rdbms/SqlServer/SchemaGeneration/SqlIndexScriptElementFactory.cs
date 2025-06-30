@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
         ISqlIndexDefinitionScriptElementFactory<SqlPrimaryXmlIndexDefinition> primaryIndexDefinitionElementFactory,
         ISqlIndexDefinitionScriptElementFactory<SqlSecondaryXmlIndexDefinition> secondaryIndexDefinitionElementFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(indexDefinitionElmementFactory), indexDefinitionElmementFactory);
-      ArgumentUtility.CheckNotNull(nameof(primaryIndexDefinitionElementFactory), primaryIndexDefinitionElementFactory);
-      ArgumentUtility.CheckNotNull(nameof(secondaryIndexDefinitionElementFactory), secondaryIndexDefinitionElementFactory);
+      ArgumentNullException.ThrowIfNull(indexDefinitionElmementFactory);
+      ArgumentNullException.ThrowIfNull(primaryIndexDefinitionElementFactory);
+      ArgumentNullException.ThrowIfNull(secondaryIndexDefinitionElementFactory);
 
       _indexDefinitionElementFactory = indexDefinitionElmementFactory;
       _primaryIndexDefinitionElementFactory = primaryIndexDefinitionElementFactory;
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public IScriptElement GetCreateElement (IIndexDefinition indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull(nameof(indexDefinition), indexDefinition);
+      ArgumentNullException.ThrowIfNull(indexDefinition);
 
       var visitor = new IndexDefinitionVisitor(this, ownerName);
       indexDefinition.Accept(visitor);
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public IScriptElement GetDropElement (IIndexDefinition indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull(nameof(indexDefinition), indexDefinition);
+      ArgumentNullException.ThrowIfNull(indexDefinition);
 
       var visitor = new IndexDefinitionVisitor(this, ownerName);
       indexDefinition.Accept(visitor);

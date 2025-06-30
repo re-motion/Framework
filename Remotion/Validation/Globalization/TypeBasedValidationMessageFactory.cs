@@ -18,7 +18,6 @@ using System;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 
@@ -33,15 +32,15 @@ namespace Remotion.Validation.Globalization
 
     public TypeBasedValidationMessageFactory (IMemberInformationGlobalizationService memberInformationGlobalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(memberInformationGlobalizationService), memberInformationGlobalizationService);
+      ArgumentNullException.ThrowIfNull(memberInformationGlobalizationService);
 
       _memberInformationGlobalizationService = memberInformationGlobalizationService;
     }
 
     public ValidationMessage? CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(validator), validator);
-      ArgumentUtility.CheckNotNull(nameof(validatedProperty), validatedProperty);
+      ArgumentNullException.ThrowIfNull(validator);
+      ArgumentNullException.ThrowIfNull(validatedProperty);
 
       var typeInformation = TypeAdapter.Create(validator.GetType());
       var typeInformationForResourceResolution = typeInformation;
@@ -55,8 +54,8 @@ namespace Remotion.Validation.Globalization
 
     public ValidationMessage? CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNull(nameof(validator), validator);
-      ArgumentUtility.CheckNotNull(nameof(validatedType), validatedType);
+      ArgumentNullException.ThrowIfNull(validator);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       var typeInformation = TypeAdapter.Create(validator.GetType());
       var typeInformationForResourceResolution = typeInformation;

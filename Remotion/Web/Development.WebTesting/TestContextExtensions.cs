@@ -16,7 +16,6 @@
 //
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting;
 
@@ -24,8 +23,8 @@ public static class TestContextExtensions
 {
   public static IReadOnlyCollection<T> GetCollection<T> (this ITestContext testContext, string propertyKey)
   {
-    ArgumentUtility.CheckNotNull(nameof(testContext), testContext);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyKey), propertyKey);
+    ArgumentNullException.ThrowIfNull(testContext);
+    ArgumentException.ThrowIfNullOrEmpty(propertyKey);
 
     if (!testContext.Properties.TryGetValue(propertyKey, out var value))
       return Array.Empty<T>();
@@ -42,9 +41,9 @@ public static class TestContextExtensions
   public static T GetValueOrDefault<T> (this ITestContext testContext, string propertyKey, T defaultValue)
       where T : notnull
   {
-    ArgumentUtility.CheckNotNull(nameof(testContext), testContext);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyKey), propertyKey);
-    ArgumentUtility.CheckNotNull(nameof(defaultValue), defaultValue);
+    ArgumentNullException.ThrowIfNull(testContext);
+    ArgumentException.ThrowIfNullOrEmpty(propertyKey);
+    ArgumentNullException.ThrowIfNull(defaultValue);
 
     if (!testContext.Properties.TryGetValue(propertyKey, out var value))
       return defaultValue;

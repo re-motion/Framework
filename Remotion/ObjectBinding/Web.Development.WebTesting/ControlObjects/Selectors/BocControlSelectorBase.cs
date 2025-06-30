@@ -45,8 +45,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     /// <inheritdoc/>
     public TControlObject SelectPerDisplayName (ControlSelectionContext context, string displayName)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayName), displayName);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       var scope = FindScopePerDisplayName(context, displayName);
 
@@ -56,8 +56,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     /// <inheritdoc/>
     public TControlObject? SelectOptionalPerDisplayName (ControlSelectionContext context, string displayName)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayName), displayName);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       var scope = FindScopePerDisplayName(context, displayName);
 
@@ -70,8 +70,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     /// <inheritdoc/>
     public bool ExistsPerDisplayName (ControlSelectionContext context, string displayName)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayName), displayName);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       var scope = FindScopePerDisplayName(context, displayName);
 
@@ -81,8 +81,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     /// <inheritdoc/>
     public TControlObject SelectPerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(domainProperty);
       ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       var scope = FindScopePerDomainProperty(context, domainProperty, domainClass);
@@ -93,8 +93,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     /// <inheritdoc/>
     public TControlObject? SelectOptionalPerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(domainProperty);
       ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       var scope = FindScopePerDomainProperty(context, domainProperty, domainClass);
@@ -108,8 +108,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
     /// <inheritdoc/>
     public bool ExistsPerDomainProperty (ControlSelectionContext context, string domainProperty, string? domainClass)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(domainProperty), domainProperty);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(domainProperty);
       ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       var scope = FindScopePerDomainProperty(context, domainProperty, domainClass);

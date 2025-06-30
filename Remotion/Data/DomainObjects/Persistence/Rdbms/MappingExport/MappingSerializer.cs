@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
@@ -35,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
         Func<RdbmsProviderDefinition, IEnumSerializer> enumSerializerFactory,
         Func<RdbmsProviderDefinition, IEnumSerializer, IStorageProviderSerializer> storageProviderSerializerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(enumSerializerFactory), enumSerializerFactory);
-      ArgumentUtility.CheckNotNull(nameof(storageProviderSerializerFactory), storageProviderSerializerFactory);
+      ArgumentNullException.ThrowIfNull(enumSerializerFactory);
+      ArgumentNullException.ThrowIfNull(storageProviderSerializerFactory);
 
       _enumSerializerFactory = enumSerializerFactory;
       _storageProviderSerializerFactory = storageProviderSerializerFactory;
@@ -44,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public XDocument Serialize (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinitions), classDefinitions);
+      ArgumentNullException.ThrowIfNull(classDefinitions);
 
       var classDefinitionsByStorageProvider = classDefinitions
           .Where(cd => cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition)

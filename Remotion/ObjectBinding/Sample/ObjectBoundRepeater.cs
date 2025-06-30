@@ -23,7 +23,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -47,7 +46,7 @@ namespace Remotion.ObjectBinding.Sample
 
       public ObjectBoundRepeaterInternal (ObjectBoundRepeater owner)
       {
-        ArgumentUtility.CheckNotNull(nameof(owner), owner);
+        ArgumentNullException.ThrowIfNull(owner);
         _owner = owner;
       }
 
@@ -323,7 +322,7 @@ namespace Remotion.ObjectBinding.Sample
 
     void ISmartControl.AssignLabels (IEnumerable<string> labelIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
+      ArgumentNullException.ThrowIfNull(labelIDs);
     }
 
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>

@@ -22,7 +22,6 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -48,12 +47,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(webDriver), webDriver);
-      ArgumentUtility.CheckNotNull(nameof(axeResultParser), axeResultParser);
-      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
-      ArgumentUtility.CheckNotNull(nameof(sourceProvider), sourceProvider);
-      ArgumentUtility.CheckNotNull(nameof(mapper), mapper);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(webDriver);
+      ArgumentNullException.ThrowIfNull(axeResultParser);
+      ArgumentNullException.ThrowIfNull(configuration);
+      ArgumentNullException.ThrowIfNull(sourceProvider);
+      ArgumentNullException.ThrowIfNull(mapper);
+      ArgumentNullException.ThrowIfNull(logger);
 
       return new AccessibilityAnalyzer(webDriver, (IJavaScriptExecutor)webDriver, axeResultParser, configuration, sourceProvider, mapper, logger);
     }
@@ -74,12 +73,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(remoteWebDriver), remoteWebDriver);
-      ArgumentUtility.CheckNotNull(nameof(axeResultParser), axeResultParser);
-      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
-      ArgumentUtility.CheckNotNull(nameof(sourceProvider), sourceProvider);
-      ArgumentUtility.CheckNotNull(nameof(mapper), mapper);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(remoteWebDriver);
+      ArgumentNullException.ThrowIfNull(axeResultParser);
+      ArgumentNullException.ThrowIfNull(configuration);
+      ArgumentNullException.ThrowIfNull(sourceProvider);
+      ArgumentNullException.ThrowIfNull(mapper);
+      ArgumentNullException.ThrowIfNull(logger);
 
       return new AccessibilityAnalyzer(remoteWebDriver, remoteWebDriver, axeResultParser, configuration, sourceProvider, mapper, logger);
     }
@@ -113,12 +112,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(webDriver), webDriver);
-      ArgumentUtility.CheckNotNull(nameof(axeResultParser), axeResultParser);
-      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
-      ArgumentUtility.CheckNotNull(nameof(axeSourceProvider), axeSourceProvider);
-      ArgumentUtility.CheckNotNull(nameof(mapper), mapper);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(webDriver);
+      ArgumentNullException.ThrowIfNull(axeResultParser);
+      ArgumentNullException.ThrowIfNull(configuration);
+      ArgumentNullException.ThrowIfNull(axeSourceProvider);
+      ArgumentNullException.ThrowIfNull(mapper);
+      ArgumentNullException.ThrowIfNull(logger);
 
       WebDriver = webDriver;
       JsExecutor = jsExecutor;
@@ -137,7 +136,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <param name="element"><see cref="ControlObject"/> to ignore.</param>
     public void IgnoreControlObject ([NotNull] ControlObject element)
     {
-      ArgumentUtility.CheckNotNull(nameof(element), element);
+      ArgumentNullException.ThrowIfNull(element);
 
       IgnoreCssSelector($"#{element.GetHtmlID()}");
     }
@@ -149,7 +148,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <param name="cssSelector">CSS selector of the <see cref="ControlObject"/>.</param>
     public void IgnoreCssSelector ([NotNull] string cssSelector)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssSelector), cssSelector);
+      ArgumentException.ThrowIfNullOrEmpty(cssSelector);
 
       ExcludedElements.Add(cssSelector);
     }
@@ -174,7 +173,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([NotNull] ControlObject controlObject, [CanBeNull] TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
+      ArgumentNullException.ThrowIfNull(controlObject);
 
       return Analyze($"#{controlObject.GetHtmlID()}", timeout);
     }
@@ -190,7 +189,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([NotNull] string cssSelector, [CanBeNull] TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssSelector), cssSelector);
+      ArgumentException.ThrowIfNullOrEmpty(cssSelector);
 
       return GetAccessibilityResult(cssSelector, timeout ?? s_defaultMaximumTimeToWaitForFrame);
     }

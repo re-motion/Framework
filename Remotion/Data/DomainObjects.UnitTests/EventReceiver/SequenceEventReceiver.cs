@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -58,8 +57,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public SequenceEventReceiver (DomainObject[] domainObjects, DomainObjectCollection[] collections, int cancelEventNumber)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObjects), domainObjects);
-      ArgumentUtility.CheckNotNull(nameof(collections), collections);
+      ArgumentNullException.ThrowIfNull(domainObjects);
+      ArgumentNullException.ThrowIfNull(collections);
 
       _domainObjects = domainObjects;
       _collections = collections;

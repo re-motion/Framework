@@ -31,14 +31,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public Type GetPropertyType (PropertyDefinition? propertyDefinition, IRelationEndPointDefinition? relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition!);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(propertyDefinition!);
       return propertyDefinition.PropertyType;
     }
 
     public bool HasChanged (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
       Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       return GetDataContainer(propertyAccessor, transaction).HasValueChanged(propertyAccessor.PropertyData.PropertyDefinition);
@@ -46,8 +47,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public bool HasBeenTouched (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
       Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       return GetDataContainer(propertyAccessor, transaction).HasValueBeenTouched(propertyAccessor.PropertyData.PropertyDefinition);
@@ -55,8 +56,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
       Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       return GetValueWithoutTypeCheck(propertyAccessor, transaction) == null;
@@ -64,8 +65,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public object? GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
       Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       return GetDataContainer(propertyAccessor, transaction).GetValue(propertyAccessor.PropertyData.PropertyDefinition);
@@ -73,8 +74,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object? value)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
       Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       GetDataContainer(propertyAccessor, transaction).SetValue(propertyAccessor.PropertyData.PropertyDefinition, value);
@@ -82,8 +83,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public object? GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyAccessor), propertyAccessor);
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
       Assertion.IsNotNull(propertyAccessor.PropertyData.PropertyDefinition, "A relation property accessor cannot be used with a value property definition.");
 
       return GetDataContainer(propertyAccessor, transaction).GetValue(propertyAccessor.PropertyData.PropertyDefinition, ValueAccess.Original);

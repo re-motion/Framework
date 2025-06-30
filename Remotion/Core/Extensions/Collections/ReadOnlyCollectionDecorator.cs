@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Remotion.Utilities;
 
 namespace Remotion.Collections
 {
@@ -36,7 +35,7 @@ namespace Remotion.Collections
 
     public ReadOnlyCollectionDecorator (ICollection<T> collection)
     {
-      ArgumentUtility.CheckNotNull(nameof(collection), collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       _collection = collection;
     }

@@ -29,7 +29,7 @@ namespace Remotion.Utilities
     private readonly bool _isNullable;
 
     public AdvancedEnumConverter (Type enumType)
-        : base(Nullable.GetUnderlyingType(ArgumentUtility.CheckNotNull(nameof(enumType), enumType)) ?? enumType)
+        : base(Nullable.GetUnderlyingType(enumType ?? throw new ArgumentNullException(nameof(enumType))) ?? enumType)
     {
       _enumType = enumType;
       _underlyingType = Enum.GetUnderlyingType(UnderlyingEnumType);
@@ -78,7 +78,7 @@ namespace Remotion.Utilities
     /// <returns> <see langword="true"/> if the conversion is supported. </returns>
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull(nameof(sourceType), sourceType);
+      ArgumentNullException.ThrowIfNull(sourceType);
 
       if (sourceType == _underlyingType)
         return true;
@@ -151,7 +151,7 @@ namespace Remotion.Utilities
     /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull(nameof(destinationType), destinationType);
+      ArgumentNullException.ThrowIfNull(destinationType);
 
       // ReSharper bug: value can be null
       // ReSharper disable ConditionIsAlwaysTrueOrFalse

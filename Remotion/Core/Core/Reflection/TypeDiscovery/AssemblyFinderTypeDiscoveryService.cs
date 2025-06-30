@@ -16,9 +16,7 @@
 // 
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
@@ -55,7 +53,7 @@ namespace Remotion.Reflection.TypeDiscovery
     /// <param name="assemblyFinder">The assembly finder used by this service instance to retrieve types.</param>
     public AssemblyFinderTypeDiscoveryService (IAssemblyFinder assemblyFinder)
     {
-      ArgumentUtility.CheckNotNull(nameof(assemblyFinder), assemblyFinder);
+      ArgumentNullException.ThrowIfNull(assemblyFinder);
       _assemblyFinder = assemblyFinder;
       _baseTypeCache = new Lazy<BaseTypeCache>(CreateBaseTypeCache);
     }

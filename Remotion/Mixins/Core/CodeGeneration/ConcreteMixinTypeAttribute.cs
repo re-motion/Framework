@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Mixins.CodeGeneration.Serialization;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration
 {
@@ -28,7 +27,7 @@ namespace Remotion.Mixins.CodeGeneration
   {
     public static ConcreteMixinTypeAttribute Create (ConcreteMixinTypeIdentifier identifier)
     {
-      ArgumentUtility.CheckNotNull(nameof(identifier), identifier);
+      ArgumentNullException.ThrowIfNull(identifier);
 
       var identifierSerializer = new AttributeConcreteMixinTypeIdentifierSerializer();
       identifier.Serialize(identifierSerializer);
@@ -40,7 +39,7 @@ namespace Remotion.Mixins.CodeGeneration
 
     public ConcreteMixinTypeAttribute (object[] concreteMixinTypeIdentifierData)
     {
-      ArgumentUtility.CheckNotNull(nameof(concreteMixinTypeIdentifierData), concreteMixinTypeIdentifierData);
+      ArgumentNullException.ThrowIfNull(concreteMixinTypeIdentifierData);
 
       _concreteMixinTypeIdentifierData = concreteMixinTypeIdentifierData;
     }

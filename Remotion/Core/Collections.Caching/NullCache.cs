@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Collections.Caching
 {
@@ -44,7 +43,7 @@ namespace Remotion.Collections.Caching
 
     public TValue GetOrCreateValue (TKey key, Func<TKey,TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(valueFactory), valueFactory);
+      ArgumentNullException.ThrowIfNull(valueFactory);
       return valueFactory(key);
     }
 

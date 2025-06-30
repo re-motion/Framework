@@ -32,7 +32,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
         IExecutionStateContext executionStateContext, PreProcessingSubFunctionStateParameters parameters, WxeReturnOptions returnOptions)
         : base(executionStateContext, parameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(returnOptions), returnOptions);
+      ArgumentNullException.ThrowIfNull(returnOptions);
       _returnOptions = returnOptions;
     }
 

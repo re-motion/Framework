@@ -19,120 +19,105 @@ namespace Remotion.Utilities
   {
     public static MemberInfo GetMember<TMemberType> (Expression<Func<TMemberType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetMemberInfoFromExpression(expression.Body);
     }
 
     public static MemberInfo GetMember<TSourceObject, TMemberType> (Expression<Func<TSourceObject, TMemberType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetMemberInfoFromExpression(expression.Body);
     }
 
     public static FieldInfo GetField<TFieldType> (Expression<Func<TFieldType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetFieldInfoFromMemberExpression(expression.Body);
     }
 
     public static FieldInfo GetField<TSourceObject, TFieldType> (Expression<Func<TSourceObject, TFieldType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetFieldInfoFromMemberExpression(expression.Body);
     }
 
     public static ConstructorInfo GetConstructor<TType> (Expression<Func<TType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetConstructorInfoFromNewExpression(expression.Body);
     }
 
     public static MethodInfo GetMethod (Expression<Action> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetMethodInfoFromMethodCallExpression(expression.Body);
     }
 
     public static MethodInfo GetMethod<TReturnType> (Expression<Func<TReturnType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetMethodInfoFromMethodCallExpression(expression.Body);
     }
 
     public static MethodInfo GetMethod<TSourceObject> (Expression<Action<TSourceObject>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetMethodInfoFromMethodCallExpression(expression.Body);
     }
 
     public static MethodInfo GetMethod<TSourceObject, TReturnType> (Expression<Func<TSourceObject, TReturnType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetMethodInfoFromMethodCallExpression(expression.Body);
     }
 
     public static MethodInfo GetGenericMethodDefinition (Expression<Action> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetGenericMethodDefinition(expression.Body);
     }
 
     public static MethodInfo GetGenericMethodDefinition<TReturnType> (Expression<Func<TReturnType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetGenericMethodDefinition(expression.Body);
     }
 
     public static MethodInfo GetGenericMethodDefinition<TSourceObject> (Expression<Action<TSourceObject>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetGenericMethodDefinition(expression.Body);
     }
 
     public static MethodInfo GetGenericMethodDefinition<TSourceObject, TReturnType> (Expression<Func<TSourceObject, TReturnType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetGenericMethodDefinition(expression.Body);
     }
 
     public static PropertyInfo GetProperty<TPropertyType> (Expression<Func<TPropertyType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetPropertyInfoFromMemberExpression(expression.Body);
     }
 
     public static PropertyInfo GetProperty<TSourceObject, TPropertyType> (Expression<Func<TSourceObject, TPropertyType>> expression)
     {
-      if (expression == null)
-        throw new ArgumentNullException(nameof(expression));
+      ArgumentNullException.ThrowIfNull(expression);
 
       return GetPropertyInfoFromMemberExpression(expression.Body);
     }

@@ -18,7 +18,6 @@ using System;
 using System.Drawing;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations;
 
@@ -35,8 +34,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static ScreenshotLayer Create ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull(nameof(screenshot), screenshot);
-      ArgumentUtility.CheckNotNull(nameof(locator), locator);
+      ArgumentNullException.ThrowIfNull(screenshot);
+      ArgumentNullException.ThrowIfNull(locator);
 
       return new ScreenshotLayer(screenshot, locator);
     }
@@ -47,8 +46,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static ScreenshotLayer CreateTransparent ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull(nameof(screenshot), screenshot);
-      ArgumentUtility.CheckNotNull(nameof(locator), locator);
+      ArgumentNullException.ThrowIfNull(screenshot);
+      ArgumentNullException.ThrowIfNull(locator);
 
       var bitmapOfScreenshotSize = new Image(screenshot.Image.Width, screenshot.Image.Height);
       return new ScreenshotLayer(screenshot, locator, bitmapOfScreenshotSize);
@@ -89,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     public void Annotate ([NotNull] IScreenshotAnnotation annotation)
     {
-      ArgumentUtility.CheckNotNull(nameof(annotation), annotation);
+      ArgumentNullException.ThrowIfNull(annotation);
 
       var resolvedElement = new ResolvedScreenshotElement(_coordinateSystem, _imageBounds, ElementVisibility.FullyVisible, _imageBounds, _imageBounds);
       annotation.Draw(_layerCanvas, resolvedElement);
@@ -106,9 +105,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         ElementVisibility? minimumElementVisibility = null)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(target), target);
-      ArgumentUtility.CheckNotNull(nameof(resolver), resolver);
-      ArgumentUtility.CheckNotNull(nameof(annotation), annotation);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(resolver);
+      ArgumentNullException.ThrowIfNull(annotation);
 
       using (var helper = CreateTransformationHelper(ScreenshotManipulation.Annotate, resolver, target, transformation))
       {
@@ -131,9 +130,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         ElementVisibility? minimumElementVisibility = null)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(target), target);
-      ArgumentUtility.CheckNotNull(nameof(resolver), resolver);
-      ArgumentUtility.CheckNotNull(nameof(cropping), cropping);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(resolver);
+      ArgumentNullException.ThrowIfNull(cropping);
 
 
       using (var helper = CreateTransformationHelper(ScreenshotManipulation.Annotate, resolver, target, transformation))

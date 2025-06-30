@@ -302,7 +302,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
           () => new ObjectID(MappingConfiguration.Current.GetClassDefinition("Order"), Guid.Empty),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'value' cannot be empty.", "value"));
+                  "The value cannot be an empty GUID.", "value"));
     }
 
     [Test]
@@ -312,7 +312,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
           () => new ObjectID(MappingConfiguration.Current.GetClassDefinition("Order"), string.Empty),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'value' cannot be empty.", "value"));
+                  "The value cannot be an empty string.", "value"));
     }
 
     [Test]

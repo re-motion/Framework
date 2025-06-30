@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
@@ -31,7 +30,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override IWxeFunctionExecutionListener CreateExecutionListener (IWxeFunctionExecutionListener innerListener)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerListener), innerListener);
+      ArgumentNullException.ThrowIfNull(innerListener);
 
       return new RootTransactionExecutionListener(this, innerListener);
     }

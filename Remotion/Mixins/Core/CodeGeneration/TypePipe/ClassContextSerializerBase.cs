@@ -21,7 +21,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -52,7 +51,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_type))]
     public void AddClassType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       _type = type;
     }
@@ -60,7 +59,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_mixinContexts))]
     public void AddMixins (IEnumerable<MixinContext> mixinContexts)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinContexts), mixinContexts);
+      ArgumentNullException.ThrowIfNull(mixinContexts);
 
       _mixinContexts = mixinContexts.ToList().AsReadOnly();
     }
@@ -68,7 +67,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_composedInterfaces))]
     public void AddComposedInterfaces (IEnumerable<Type> composedInterfaces)
     {
-      ArgumentUtility.CheckNotNull(nameof(composedInterfaces), composedInterfaces);
+      ArgumentNullException.ThrowIfNull(composedInterfaces);
 
       _composedInterfaces = composedInterfaces.ToList().AsReadOnly();
     }

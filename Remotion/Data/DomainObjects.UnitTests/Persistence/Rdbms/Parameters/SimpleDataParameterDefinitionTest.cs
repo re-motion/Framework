@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using JetBrains.Annotations;
@@ -119,7 +118,7 @@ public class SimpleDataParameterDefinitionTest
     Assert.That(
         () => simpleDataParameterDefinition.GetParameterValue("dummyValue"),
         Throws.InstanceOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo(
-            $"Parameter 'value' has type '{typeof(string)}' when type '{typeof(int)}' was expected.",
+            $"The value has type '{typeof(string)}' when type '{typeof(int)}' was expected.",
             "value"));
   }
 

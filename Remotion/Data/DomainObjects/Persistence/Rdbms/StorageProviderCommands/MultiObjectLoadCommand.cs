@@ -20,7 +20,6 @@ using System.Data;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public MultiObjectLoadCommand (IEnumerable<Tuple<IDbCommandBuilder, IObjectReader<T>>> dbCommandBuildersAndReaders)
     {
-      ArgumentUtility.CheckNotNull(nameof(dbCommandBuildersAndReaders), dbCommandBuildersAndReaders);
+      ArgumentNullException.ThrowIfNull(dbCommandBuildersAndReaders);
 
       _dbCommandBuildersAndReaders = dbCommandBuildersAndReaders.ToArray();
     }
@@ -46,13 +45,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public IEnumerable<T> Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
       return Execute<IRdbmsProviderReadWriteCommandExecutionContext>(executionContext);
     }
 
     public IEnumerable<T> Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(executionContext), executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
       return Execute<IRdbmsProviderReadOnlyCommandExecutionContext>(executionContext);
     }
 
@@ -66,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
         Tuple<IDbCommandBuilder, IObjectReader<T>> commandBuilderTuple, TExecutionContext executionContext)
         where TExecutionContext : IDbCommandFactory, IDataReaderCommandExecutionContext
     {
-      ArgumentUtility.CheckNotNull(nameof(commandBuilderTuple), commandBuilderTuple);
+      ArgumentNullException.ThrowIfNull(commandBuilderTuple);
 
       using (var command = commandBuilderTuple.Item1.Create(executionContext))
       {

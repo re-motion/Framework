@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
@@ -40,14 +39,14 @@ namespace Remotion.Data.DomainObjects.Persistence
     }
 
     public ObjectsNotFoundException (IEnumerable<ObjectID> ids, Exception? inner)
-        : this(BuildMessage(ArgumentUtility.CheckNotNull(nameof(ids), ids)), ids, inner)
+        : this(BuildMessage(ids ?? throw new ArgumentNullException(nameof(ids))), ids, inner)
     {
     }
 
     public ObjectsNotFoundException (string message, IEnumerable<ObjectID> ids, Exception? inner)
       : base(message, inner)
     {
-      ArgumentUtility.CheckNotNull(nameof(ids), ids);
+      ArgumentNullException.ThrowIfNull(ids);
 
       _ids = ids.ToArray();
     }

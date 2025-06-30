@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -32,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public LoadedObjectDataProvider (ILoadedDataContainerProvider loadedDataContainerProvider, IInvalidDomainObjectManager invalidDomainObjectManager)
     {
-      ArgumentUtility.CheckNotNull(nameof(loadedDataContainerProvider), loadedDataContainerProvider);
-      ArgumentUtility.CheckNotNull(nameof(invalidDomainObjectManager), invalidDomainObjectManager);
+      ArgumentNullException.ThrowIfNull(loadedDataContainerProvider);
+      ArgumentNullException.ThrowIfNull(invalidDomainObjectManager);
 
       _loadedDataContainerProvider = loadedDataContainerProvider;
       _invalidDomainObjectManager = invalidDomainObjectManager;
@@ -51,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public ILoadedObjectData? GetLoadedObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       if (_invalidDomainObjectManager.IsInvalid(objectID))
         return new InvalidLoadedObjectData(_invalidDomainObjectManager.GetInvalidObjectReference(objectID));

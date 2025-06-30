@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding
 {
@@ -80,7 +79,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     /// </exception>
     public static TDomainObject NewObject (ParamList constructorParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructorParameters), constructorParameters);
+      ArgumentNullException.ThrowIfNull(constructorParameters);
       return DomainObject.NewObject<TDomainObject>(constructorParameters);
     }
 

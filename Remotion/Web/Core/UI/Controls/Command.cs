@@ -424,15 +424,15 @@ namespace Remotion.Web.UI.Controls
         [JetBrains.Annotations.NotNull] Style style,
         [JetBrains.Annotations.NotNull] NameValueCollection attributes)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
       if (_type == CommandType.Event || _type == CommandType.WxeFunction)
-        ArgumentUtility.CheckNotNull(nameof(postBackEvent), postBackEvent!);
+        ArgumentNullException.ThrowIfNull(postBackEvent!);
       if (_type == CommandType.Href)
-        ArgumentUtility.CheckNotNull(nameof(parameters), parameters!);
-      ArgumentUtility.CheckNotNull(nameof(additionalUrlParameters), additionalUrlParameters);
-      ArgumentUtility.CheckNotNull(nameof(style), style);
-      ArgumentUtility.CheckNotNull(nameof(attributes), attributes);
+        ArgumentNullException.ThrowIfNull(parameters!);
+      ArgumentNullException.ThrowIfNull(additionalUrlParameters);
+      ArgumentNullException.ThrowIfNull(style);
+      ArgumentNullException.ThrowIfNull(attributes);
 
       var commandInfo = GetCommandInfo(postBackEvent, parameters, onClick, securableObject, additionalUrlParameters, includeNavigationUrlParameters);
       commandInfo.AddAttributesToRender(writer, renderingFeatures);
@@ -481,8 +481,8 @@ namespace Remotion.Web.UI.Controls
         [CanBeNull] string? onClick,
         [CanBeNull] ISecurableObject? securableObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       RenderBegin(
           writer,
@@ -529,10 +529,10 @@ namespace Remotion.Web.UI.Controls
         bool includeNavigationUrlParameters)
     {
       if (_type == CommandType.Event || _type == CommandType.WxeFunction)
-        ArgumentUtility.CheckNotNull(nameof(postBackEvent), postBackEvent!);
+        ArgumentNullException.ThrowIfNull(postBackEvent!);
       if (_type == CommandType.Href)
-        ArgumentUtility.CheckNotNull(nameof(parameters), parameters!);
-      ArgumentUtility.CheckNotNull(nameof(additionalUrlParameters), additionalUrlParameters);
+        ArgumentNullException.ThrowIfNull(parameters!);
+      ArgumentNullException.ThrowIfNull(additionalUrlParameters);
 
       if (!HasAccess(securableObject))
         return GetCommandInfoForNoneCommand();
@@ -577,8 +577,8 @@ namespace Remotion.Web.UI.Controls
         [JetBrains.Annotations.NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
-      ArgumentUtility.CheckNotNull(nameof(additionalUrlParameters), additionalUrlParameters);
+      ArgumentNullException.ThrowIfNull(parameters);
+      ArgumentNullException.ThrowIfNull(additionalUrlParameters);
       if (Type != CommandType.Href)
         throw new InvalidOperationException("Call to GetCommandInfoForHrefCommand not allowed unless Type is set to CommandType.Href.");
 
@@ -622,7 +622,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception> 
     protected virtual CommandInfo GetCommandInfoForEventCommand ([JetBrains.Annotations.NotNull] string postBackEvent, [CanBeNull] string? onClick)
     {
-      ArgumentUtility.CheckNotNull(nameof(postBackEvent), postBackEvent);
+      ArgumentNullException.ThrowIfNull(postBackEvent);
       if (Type != CommandType.Event)
         throw new InvalidOperationException("Call to GetCommandInfoForEventCommand not allowed unless Type is set to CommandType.Event.");
 
@@ -659,8 +659,8 @@ namespace Remotion.Web.UI.Controls
         [JetBrains.Annotations.NotNull] NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(postBackEvent), postBackEvent);
-      ArgumentUtility.CheckNotNull(nameof(additionalUrlParameters), additionalUrlParameters);
+      ArgumentNullException.ThrowIfNull(postBackEvent);
+      ArgumentNullException.ThrowIfNull(additionalUrlParameters);
 
       if (Type != CommandType.WxeFunction)
       {
@@ -697,7 +697,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
     public virtual void RenderEnd (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
       writer.RenderEndTag();
     }
 
@@ -774,7 +774,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception> 
     public virtual void ExecuteWxeFunction (IWxePage wxePage, NameObjectCollection? additionalWxeParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(wxePage), wxePage);
+      ArgumentNullException.ThrowIfNull(wxePage);
 
       if (Type != CommandType.WxeFunction)
         throw new InvalidOperationException("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
@@ -888,7 +888,11 @@ namespace Remotion.Web.UI.Controls
     public virtual NoneCommandInfo NoneCommand
     {
       get { return _noneCommand; }
-      set { _noneCommand = ArgumentUtility.CheckNotNull(nameof(value), value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _noneCommand = value;
+      }
     }
 
     /// <summary>
@@ -907,7 +911,11 @@ namespace Remotion.Web.UI.Controls
     public virtual EventCommandInfo EventCommand
     {
       get { return _eventCommand; }
-      set { _eventCommand = ArgumentUtility.CheckNotNull(nameof(value), value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _eventCommand = value;
+      }
     }
 
     /// <summary>
@@ -926,7 +934,11 @@ namespace Remotion.Web.UI.Controls
     public virtual HrefCommandInfo HrefCommand
     {
       get { return _hrefCommand; }
-      set { _hrefCommand = ArgumentUtility.CheckNotNull(nameof(value), value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _hrefCommand = value;
+      }
     }
 
     /// <summary>
@@ -945,7 +957,11 @@ namespace Remotion.Web.UI.Controls
     public virtual WxeFunctionCommandInfo WxeFunctionCommand
     {
       get { return _wxeFunctionCommand; }
-      set { _wxeFunctionCommand = ArgumentUtility.CheckNotNull(nameof(value), value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _wxeFunctionCommand = value;
+      }
     }
 
     /// <summary> Gets or sets the control to which this object belongs. </summary>
@@ -981,8 +997,8 @@ namespace Remotion.Web.UI.Controls
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       var key = ResourceManagerUtility.GetGlobalResourceKey(ToolTip);
       if (!string.IsNullOrEmpty(key))
@@ -994,9 +1010,9 @@ namespace Remotion.Web.UI.Controls
         [JetBrains.Annotations.NotNull] string argument,
         [JetBrains.Annotations.NotNull] string commandID)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(argument), argument);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(commandID), commandID);
+      ArgumentNullException.ThrowIfNull(control);
+      ArgumentException.ThrowIfNullOrEmpty(argument);
+      ArgumentException.ThrowIfNullOrEmpty(commandID);
 
       bool isSynchronousEventCommand = Type == CommandType.Event && EventCommand.RequiresSynchronousPostBack;
       bool isSynchronousWxeFunctionCommand = Type == CommandType.WxeFunction && string.IsNullOrEmpty(WxeFunctionCommand.Target);
@@ -1119,7 +1135,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Initializes a new instance. </summary>
     public CommandClickEventArgs (Command command)
     {
-      ArgumentUtility.CheckNotNull(nameof(command), command);
+      ArgumentNullException.ThrowIfNull(command);
       _command = command;
     }
 

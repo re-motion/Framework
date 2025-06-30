@@ -17,7 +17,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -30,7 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public CompositeEnumerationValueFilter (IEnumerationValueFilter[] filters)
     {
-      ArgumentUtility.CheckNotNull(nameof(filters), filters);
+      ArgumentNullException.ThrowIfNull(filters);
       _filters = filters;
     }
 
@@ -41,8 +40,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(property);
 
       return !_filters.Any(f => !f.IsEnabled(value, businessObject, property));
     }

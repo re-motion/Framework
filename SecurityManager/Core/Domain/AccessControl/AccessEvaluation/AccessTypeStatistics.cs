@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -41,7 +40,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public void AddAccessTypesContributingAce (AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull(nameof(ace), ace);
+      ArgumentNullException.ThrowIfNull(ace);
       if (!IsInAccessTypesContributingAces(ace))
       {
         AccessTypesSupplyingAces.Add(ace);
@@ -54,14 +53,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     /// </summary>
     public virtual bool IsInAccessTypesContributingAces (AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull(nameof(ace), ace);
+      ArgumentNullException.ThrowIfNull(ace);
       return AccessTypesSupplyingAces.Contains(ace);
     }
 
 
     public void AddMatchingAce (AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull(nameof(ace), ace);
+      ArgumentNullException.ThrowIfNull(ace);
       if (!IsInMatchingAces(ace))
       {
         _matchingAces.Add(ace);
@@ -78,7 +77,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     /// </remarks>
     public bool IsInMatchingAces (AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull(nameof(ace), ace);
+      ArgumentNullException.ThrowIfNull(ace);
       return _matchingAces.Contains(ace);
     }
   }

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
@@ -29,7 +28,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public DomainObjectCollectionEndPointDataManagerFactory (
         IDomainObjectCollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
     {
-      ArgumentUtility.CheckNotNull(nameof(changeDetectionStrategy), changeDetectionStrategy);
+      ArgumentNullException.ThrowIfNull(changeDetectionStrategy);
 
       _changeDetectionStrategy = changeDetectionStrategy;
     }
@@ -41,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IDomainObjectCollectionEndPointDataManager CreateEndPointDataManager (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPointID), endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       return new DomainObjectCollectionEndPointDataManager(endPointID, _changeDetectionStrategy);
     }

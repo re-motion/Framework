@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
 using System.Drawing;
-using Remotion.Utilities;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
@@ -26,7 +25,7 @@ public class Pen
 
   public Pen (SKPaint skiaPaint)
   {
-    ArgumentUtility.CheckNotNull(nameof(skiaPaint), skiaPaint);
+    ArgumentNullException.ThrowIfNull(skiaPaint);
 
     SkiaPaint = skiaPaint;
   }

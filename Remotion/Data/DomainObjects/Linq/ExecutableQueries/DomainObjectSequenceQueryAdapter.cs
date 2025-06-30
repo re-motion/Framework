@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 {
@@ -33,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
   public class DomainObjectSequenceQueryAdapter<TItem> : QueryAdapterBase<IEnumerable<TItem>>
   {
     public DomainObjectSequenceQueryAdapter (IQuery query)
-        : base(ArgumentUtility.CheckNotNull(nameof(query), query))
+        : base(query ?? throw new ArgumentNullException(nameof(query)))
     {
       if (query.QueryType != QueryType.CollectionReadOnly)
         throw new ArgumentException("Only readonly collection queries can be used to load data containers.", nameof(query));
@@ -41,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 
     public override IEnumerable<TItem> Execute (IQueryManager queryManager)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryManager), queryManager);
+      ArgumentNullException.ThrowIfNull(queryManager);
 
       return queryManager.GetCollection(this).AsEnumerable().Cast<TItem>();
     }

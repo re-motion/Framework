@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.Serialization
 {
@@ -35,19 +34,19 @@ namespace Remotion.Mixins.Context.Serialization
 
     public void AddClassType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       SetValue(0, type);
     }
 
     public void AddMixins (IEnumerable<MixinContext> mixinContexts)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinContexts), mixinContexts);
+      ArgumentNullException.ThrowIfNull(mixinContexts);
       SetValue(1, mixinContexts.Select(mc => (object)SerializeMixinContext(mc)).ToArray());
     }
 
     public void AddComposedInterfaces (IEnumerable<Type> composedInterfaces)
     {
-      ArgumentUtility.CheckNotNull(nameof(composedInterfaces), composedInterfaces);
+      ArgumentNullException.ThrowIfNull(composedInterfaces);
       SetValue(2, composedInterfaces.ToArray());
     }
 

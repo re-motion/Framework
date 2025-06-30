@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -28,8 +27,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
   {
     public IEnumerable<string> GetFiles (string searchPath, string searchPattern, SearchOption searchOption)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchPath), searchPath);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchPattern), searchPattern);
+      ArgumentException.ThrowIfNullOrEmpty(searchPath);
+      ArgumentException.ThrowIfNullOrEmpty(searchPattern);
 
       return Directory.GetFiles(searchPath, searchPattern, searchOption);
     }

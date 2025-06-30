@@ -19,7 +19,6 @@ using JetBrains.Annotations;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -55,7 +54,8 @@ namespace Remotion.Mixins
     /// <param name="targetType">The target type extended by this mixin.</param>
     public ExtendsAttribute (Type targetType)
     {
-      _targetType = ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
+      ArgumentNullException.ThrowIfNull(targetType);
+      _targetType = targetType;
     }
 
     /// <summary>
@@ -80,7 +80,8 @@ namespace Remotion.Mixins
       get { return _mixinTypeArguments; }
       set
       {
-        _mixinTypeArguments = ArgumentUtility.CheckNotNull(nameof(value), value);
+        ArgumentNullException.ThrowIfNull(value);
+        _mixinTypeArguments = value;
       }
     }
 
@@ -91,8 +92,8 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Type attributeTarget)
     {
-      ArgumentUtility.CheckNotNull(nameof(configurationBuilder), configurationBuilder);
-      ArgumentUtility.CheckNotNull(nameof(attributeTarget), attributeTarget);
+      ArgumentNullException.ThrowIfNull(configurationBuilder);
+      ArgumentNullException.ThrowIfNull(attributeTarget);
 
       Type mixinType = CloseOverMixinTypeArguments(attributeTarget);
       var origin = MixinContextOrigin.CreateForCustomAttribute(this, attributeTarget);

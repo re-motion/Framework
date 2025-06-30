@@ -17,7 +17,6 @@
 using System;
 using System.Data;
 using System.Diagnostics;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
@@ -194,8 +193,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDataReader (IDataReader dataReader, IPersistenceExtension persistenceExtension, Guid connectionID, Guid queryID)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
-      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
+      ArgumentNullException.ThrowIfNull(dataReader);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
 
       _dataReader = dataReader;
       _persistenceExtension = persistenceExtension;

@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -32,8 +31,8 @@ namespace Remotion.Web.Development.WebTesting
 
     public DefaultStyleInformation ([NotNull] ControlObject controlObject, [NotNull] ElementScope styledScope)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
-      ArgumentUtility.CheckNotNull(nameof(styledScope), styledScope);
+      ArgumentNullException.ThrowIfNull(controlObject);
+      ArgumentNullException.ThrowIfNull(styledScope);
 
       _controlObject = controlObject;
       _styledScope = styledScope;
@@ -42,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public bool HasCssClass (string cssClass)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssClass), cssClass);
+      ArgumentException.ThrowIfNullOrEmpty(cssClass);
 
       return _styledScope["class"].Split(' ').Contains(cssClass);
     }

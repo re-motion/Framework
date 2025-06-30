@@ -29,7 +29,7 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
 
     public static FilteringTypeDiscoveryService CreateFromNamespaceWhitelist (ITypeDiscoveryService decoratedTypeDiscoveryService, params string[] whitelistedNamespaces)
     {
-      ArgumentUtility.CheckNotNull(nameof(decoratedTypeDiscoveryService), decoratedTypeDiscoveryService);
+      ArgumentNullException.ThrowIfNull(decoratedTypeDiscoveryService);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(whitelistedNamespaces), whitelistedNamespaces);
 
       return new FilteringTypeDiscoveryService(
@@ -39,7 +39,7 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
 
     public static FilteringTypeDiscoveryService CreateFromNamespaceBlacklist (ITypeDiscoveryService decoratedTypeDiscoveryService, params string[] blacklistedNamespaces)
     {
-      ArgumentUtility.CheckNotNull(nameof(decoratedTypeDiscoveryService), decoratedTypeDiscoveryService);
+      ArgumentNullException.ThrowIfNull(decoratedTypeDiscoveryService);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(blacklistedNamespaces), blacklistedNamespaces);
 
       return new FilteringTypeDiscoveryService(
@@ -49,8 +49,8 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
 
     public FilteringTypeDiscoveryService (ITypeDiscoveryService decoratedTypeDiscoveryService, Func<Type, bool> filter)
     {
-      ArgumentUtility.CheckNotNull(nameof(decoratedTypeDiscoveryService), decoratedTypeDiscoveryService);
-      ArgumentUtility.CheckNotNull(nameof(filter), filter);
+      ArgumentNullException.ThrowIfNull(decoratedTypeDiscoveryService);
+      ArgumentNullException.ThrowIfNull(filter);
 
       _decoratedTypeDiscoveryService = decoratedTypeDiscoveryService;
       _filter = filter;

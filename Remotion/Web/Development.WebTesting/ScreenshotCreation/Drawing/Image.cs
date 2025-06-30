@@ -3,9 +3,6 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Remotion.Utilities;
 using SkiaSharp;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
@@ -18,7 +15,7 @@ public class Image : IDisposable
 {
   public static Image FromFile (string filePath)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(filePath), filePath);
+    ArgumentException.ThrowIfNullOrEmpty(filePath);
 
     var skBitmap = SKBitmap.Decode(filePath);
     return new Image(skBitmap);
@@ -26,7 +23,7 @@ public class Image : IDisposable
 
   public static Image FromStream (Stream stream)
   {
-    ArgumentUtility.CheckNotNull(nameof(stream), stream);
+    ArgumentNullException.ThrowIfNull(stream);
 
     var skBitmap = SKBitmap.Decode(stream);
     return new Image(skBitmap);
@@ -47,7 +44,7 @@ public class Image : IDisposable
 
   public Image (SKBitmap skiaBitmap)
   {
-    ArgumentUtility.CheckNotNull(nameof(skiaBitmap), skiaBitmap);
+    ArgumentNullException.ThrowIfNull(skiaBitmap);
 
     SkiaBitmap = skiaBitmap;
   }
@@ -72,7 +69,7 @@ public class Image : IDisposable
 
   public void Save (string filePath)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(filePath), filePath);
+    ArgumentException.ThrowIfNullOrEmpty(filePath);
 
     var imageData = SKImage.FromBitmap(SkiaBitmap).Encode(SKEncodedImageFormat.Png, 100);
     using var fileStream = File.Create(filePath);

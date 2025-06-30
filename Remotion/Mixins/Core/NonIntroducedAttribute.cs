@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -31,7 +30,8 @@ namespace Remotion.Mixins
 
     public NonIntroducedAttribute (Type nonIntroducedType)
     {
-      _nonIntroducedType = ArgumentUtility.CheckNotNull(nameof(nonIntroducedType), nonIntroducedType);
+      ArgumentNullException.ThrowIfNull(nonIntroducedType);
+      _nonIntroducedType = nonIntroducedType;
     }
 
     public Type NonIntroducedType

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -35,14 +34,14 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public CompoundPersistableDataValidator (IEnumerable<IPersistableDataValidator> validators)
     {
-      ArgumentUtility.CheckNotNull(nameof(validators), validators);
+      ArgumentNullException.ThrowIfNull(validators);
       _validators = validators.ToList().AsReadOnly();
     }
 
     public void Validate (ClientTransaction clientTransaction, PersistableData persistableData)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(persistableData), persistableData);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(persistableData);
 
       foreach (var validator in _validators)
         validator.Validate(clientTransaction, persistableData);

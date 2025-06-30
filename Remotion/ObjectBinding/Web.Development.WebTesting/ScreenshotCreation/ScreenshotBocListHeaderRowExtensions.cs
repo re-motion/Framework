@@ -19,7 +19,6 @@ using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
@@ -40,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentHeaderRow), fluentHeaderRow);
+      ArgumentNullException.ThrowIfNull(fluentHeaderRow);
 
       return fluentHeaderRow.Target.GetCellSelector();
     }
@@ -55,8 +54,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentHeaderRow), fluentHeaderRow);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(fluentHeaderRow);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return fluentHeaderRow.Target.GetCellSelector().WithItemID(itemID);
     }
@@ -71,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentHeaderRow), fluentHeaderRow);
+      ArgumentNullException.ThrowIfNull(fluentHeaderRow);
 
       return fluentHeaderRow.Target.GetCellSelector().WithIndex(oneBasedIndex);
     }
@@ -86,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentRow), fluentRow);
+      ArgumentNullException.ThrowIfNull(fluentRow);
 
       var result = fluentRow.Target.Element.FindCss("th.bocListTitleCellValidationFailureIndicator img", Options.NoWait);
       if (!result.Exists(Options.NoWait))

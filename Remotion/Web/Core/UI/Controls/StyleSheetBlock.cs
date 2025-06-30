@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -36,7 +35,7 @@ namespace Remotion.Web.UI.Controls
 
     public StyleSheetBlock (IEnumerable<StyleSheetElement> styleSheetElements)
     {
-      ArgumentUtility.CheckNotNull(nameof(styleSheetElements), styleSheetElements);
+      ArgumentNullException.ThrowIfNull(styleSheetElements);
       _styleSheetElements = styleSheetElements.ToArray();
     }
 
@@ -47,7 +46,7 @@ namespace Remotion.Web.UI.Controls
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       writer.WriteBeginTag(s_tagName);
       writer.WriteAttribute(s_typeAttribute, "text/css");

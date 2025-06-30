@@ -82,8 +82,8 @@ namespace Remotion.Data.DomainObjects.Mapping
     /// </summary>
     public static MappingConfiguration Create (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader)
     {
-      ArgumentUtility.CheckNotNull(nameof(mappingLoader), mappingLoader);
-      ArgumentUtility.CheckNotNull(nameof(persistenceModelLoader), persistenceModelLoader);
+      ArgumentNullException.ThrowIfNull(mappingLoader);
+      ArgumentNullException.ThrowIfNull(persistenceModelLoader);
 
       var mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader);
       mappingConfiguration.EnsureInitialized();
@@ -111,8 +111,8 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public MappingConfiguration (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader)
     {
-      ArgumentUtility.CheckNotNull(nameof(mappingLoader), mappingLoader);
-      ArgumentUtility.CheckNotNull(nameof(persistenceModelLoader), persistenceModelLoader);
+      ArgumentNullException.ThrowIfNull(mappingLoader);
+      ArgumentNullException.ThrowIfNull(persistenceModelLoader);
 
       _resolveTypes = mappingLoader.ResolveTypes;
       _nameResolver = mappingLoader.NameResolver;
@@ -180,22 +180,22 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool ContainsTypeDefinition (Type classType)
     {
-      ArgumentUtility.CheckNotNull(nameof(classType), classType);
+      ArgumentNullException.ThrowIfNull(classType);
 
       return _mapping.Value.TypeDefinitions.ContainsKey(classType);
     }
 
     public ClassDefinition GetTypeDefinition (Type classType)
     {
-      ArgumentUtility.CheckNotNull(nameof(classType), classType);
+      ArgumentNullException.ThrowIfNull(classType);
 
       return GetTypeDefinition(classType, type => CreateMappingException("Mapping does not contain class '{0}'.", type));
     }
 
    public ClassDefinition GetTypeDefinition (Type classType, Func<Type, Exception> missingTypeDefinitionExceptionFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(classType), classType);
-      ArgumentUtility.CheckNotNull(nameof(missingTypeDefinitionExceptionFactory), missingTypeDefinitionExceptionFactory);
+      ArgumentNullException.ThrowIfNull(classType);
+      ArgumentNullException.ThrowIfNull(missingTypeDefinitionExceptionFactory);
 
       var classDefinition = _mapping.Value.TypeDefinitions.GetValueOrDefault(classType);
       if (classDefinition == null)
@@ -206,22 +206,22 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool ContainsClassDefinition (string classID)
     {
-      ArgumentUtility.CheckNotNull(nameof(classID), classID);
+      ArgumentNullException.ThrowIfNull(classID);
 
       return _mapping.Value.ClassDefinitions.ContainsKey(classID);
     }
 
     public ClassDefinition GetClassDefinition (string classID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(classID), classID);
+      ArgumentException.ThrowIfNullOrEmpty(classID);
 
       return GetClassDefinition(classID, id => CreateMappingException("Mapping does not contain class '{0}'.", id));
     }
 
     public ClassDefinition GetClassDefinition (string classID, Func<string, Exception> missingClassDefinitionExceptionFactory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(classID), classID);
-      ArgumentUtility.CheckNotNull(nameof(missingClassDefinitionExceptionFactory), missingClassDefinitionExceptionFactory);
+      ArgumentException.ThrowIfNullOrEmpty(classID);
+      ArgumentNullException.ThrowIfNull(missingClassDefinitionExceptionFactory);
 
       var classDefinition = _mapping.Value.ClassDefinitions.GetValueOrDefault(classID);
       if (classDefinition == null)

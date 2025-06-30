@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
     public DockerCommandLineClient (TimeSpan pullTimeout, ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _logger = loggerFactory.CreateLogger<DockerCommandLineClient>();
       _pullTimeout = pullTimeout;
@@ -47,7 +47,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public void Pull (string imageName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(imageName), imageName);
+      ArgumentException.ThrowIfNullOrEmpty(imageName);
 
       RunDockerCommand($"pull {imageName}", timeout: _pullTimeout);
     }
@@ -66,10 +66,10 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         string? workingDirectory,
         string? args)
     {
-      ArgumentUtility.CheckNotNull(nameof(ports), ports);
-      ArgumentUtility.CheckNotNull(nameof(mounts), mounts);
-      ArgumentUtility.CheckNotNull(nameof(environmentVariables), environmentVariables);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(imageName), imageName);
+      ArgumentNullException.ThrowIfNull(ports);
+      ArgumentNullException.ThrowIfNull(mounts);
+      ArgumentNullException.ThrowIfNull(environmentVariables);
+      ArgumentException.ThrowIfNullOrEmpty(imageName);
       ArgumentUtility.CheckNotEmpty(nameof(hostname), hostname);
       ArgumentUtility.CheckNotEmpty(nameof(entryPoint), entryPoint);
       ArgumentUtility.CheckNotEmpty(nameof(workingDirectory), workingDirectory);
@@ -132,7 +132,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public bool ContainerExists (string containerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(containerName), containerName);
+      ArgumentException.ThrowIfNullOrEmpty(containerName);
 
       using (var p = Process.Start(_dockerExeFullPath, $"inspect {containerName}"))
       {
@@ -145,7 +145,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public void Remove (string containerName, bool force = false)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(containerName), containerName);
+      ArgumentException.ThrowIfNullOrEmpty(containerName);
 
       var commandBuilder = new StringBuilder()
           .Append("rm").Append(' ');
@@ -163,7 +163,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public void Stop (string containerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(containerName), containerName);
+      ArgumentException.ThrowIfNullOrEmpty(containerName);
 
       var commandBuilder = new StringBuilder()
           .Append("stop").Append(' ')

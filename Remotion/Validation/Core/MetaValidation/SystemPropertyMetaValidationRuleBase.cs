@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation
@@ -32,7 +31,7 @@ namespace Remotion.Validation.MetaValidation
 
     protected SystemPropertyMetaValidationRuleBase (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       _propertyInfo = propertyInfo;
     }

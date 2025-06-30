@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
@@ -26,7 +25,7 @@ public class ResourceIdentifiersAttribute: Attribute
 {
   public static string GetResourceIdentifier (Enum enumValue)
   {
-    ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
+    ArgumentNullException.ThrowIfNull(enumValue);
     Type type = enumValue.GetType();
     if (type.DeclaringType != null && IsEnumTypeNameSuppressed(type)) // if the enum is a nested type, suppress enum name
       type = type.DeclaringType;

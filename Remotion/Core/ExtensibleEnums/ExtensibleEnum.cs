@@ -88,7 +88,7 @@ namespace Remotion.ExtensibleEnums
     /// and hash code calculations.</param>
     protected ExtensibleEnum (string? declarationSpace, string valueName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(valueName), valueName);
+      ArgumentException.ThrowIfNullOrEmpty(valueName);
 
       DeclarationSpace = declarationSpace;
       ValueName = valueName;
@@ -116,7 +116,7 @@ namespace Remotion.ExtensibleEnums
     /// and hash code calculations.</param>
     protected ExtensibleEnum (Type declaringType, string valueName)
         : this(
-            ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType).GetFullNameChecked(),
+            (declaringType ?? throw new ArgumentNullException(nameof(declaringType))).GetFullNameChecked(),
             ArgumentUtility.CheckNotNullOrEmpty(nameof(valueName), valueName))
     {
     }
@@ -129,7 +129,7 @@ namespace Remotion.ExtensibleEnums
     /// equality comparisons and hash code calculations.</param>
     protected ExtensibleEnum (MethodBase currentMethod)
         : this(
-            ArgumentUtility.CheckNotNull(nameof(currentMethod), currentMethod).DeclaringType!,
+            (currentMethod ?? throw new ArgumentNullException(nameof(currentMethod))).DeclaringType!,
             currentMethod.Name)
     {
     }

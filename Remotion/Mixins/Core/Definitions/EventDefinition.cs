@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -32,8 +31,8 @@ namespace Remotion.Mixins.Definitions
     public EventDefinition (EventInfo memberInfo, ClassDefinitionBase declaringClass, MethodDefinition addMethod, MethodDefinition removeMethod)
         : base(memberInfo, declaringClass)
     {
-      ArgumentUtility.CheckNotNull(nameof(addMethod), addMethod);
-      ArgumentUtility.CheckNotNull(nameof(removeMethod), removeMethod);
+      ArgumentNullException.ThrowIfNull(addMethod);
+      ArgumentNullException.ThrowIfNull(removeMethod);
 
       _addMethod = addMethod;
       _removeMethod = removeMethod;
@@ -81,7 +80,7 @@ namespace Remotion.Mixins.Definitions
 
     internal override void AddOverride (MemberDefinitionBase member)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
+      ArgumentNullException.ThrowIfNull(member);
 
       var overrider = member as EventDefinition;
       if (overrider == null)
@@ -98,7 +97,7 @@ namespace Remotion.Mixins.Definitions
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
 
       AddMethod.Accept(visitor);

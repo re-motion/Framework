@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using System.Data;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 
@@ -31,7 +31,7 @@ public class SqlFulltextDataParameterDefinitionDecorator : IDataParameterDefinit
 
   public SqlFulltextDataParameterDefinitionDecorator (IDataParameterDefinition innerDataParameterDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(innerDataParameterDefinition), innerDataParameterDefinition);
+    ArgumentNullException.ThrowIfNull(innerDataParameterDefinition);
 
     InnerDataParameterDefinition = innerDataParameterDefinition;
   }
@@ -43,9 +43,9 @@ public class SqlFulltextDataParameterDefinitionDecorator : IDataParameterDefinit
 
   public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNull(nameof(command), command);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
-    ArgumentUtility.CheckNotNull(nameof(parameterValue), parameterValue);
+    ArgumentNullException.ThrowIfNull(command);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
+    ArgumentNullException.ThrowIfNull(parameterValue);
 
     var parameter = InnerDataParameterDefinition.CreateDataParameter(command, parameterName, parameterValue);
 

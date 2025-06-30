@@ -43,8 +43,8 @@ namespace Remotion.ObjectBinding
     /// </exception>
     public static object? GetProperty (this IBusinessObject businessObject, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
+      ArgumentNullException.ThrowIfNull(businessObject);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       var propertyDefinition = GetPropertyDefinition(businessObject, propertyIdentifier);
 
@@ -71,8 +71,8 @@ namespace Remotion.ObjectBinding
     /// </exception>
     public static void SetProperty (this IBusinessObject businessObject, string propertyIdentifier, object? value)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
+      ArgumentNullException.ThrowIfNull(businessObject);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       var propertyDefinition = GetPropertyDefinition(businessObject, propertyIdentifier);
 
@@ -100,8 +100,8 @@ namespace Remotion.ObjectBinding
     /// </exception>
     public static string GetPropertyString (this IBusinessObject businessObject, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyIdentifier), propertyIdentifier);
+      ArgumentNullException.ThrowIfNull(businessObject);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       var propertyDefinition = GetPropertyDefinition(businessObject, propertyIdentifier);
 
@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding
     /// </remarks>
     public static string GetAccessibleDisplayName (this IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
+      ArgumentNullException.ThrowIfNull(businessObject);
 
       var businessObjectClass = businessObject.BusinessObjectClass;
       Assertion.IsNotNull(businessObjectClass, "The business object's BusinessObjectClass-property evaluated and returned null.");

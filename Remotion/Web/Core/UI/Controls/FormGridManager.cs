@@ -116,8 +116,8 @@ namespace Remotion.Web.UI.Controls
           int defaultLabelsColumn,
           int defaultControlsColumn)
       {
-        ArgumentUtility.CheckNotNull(nameof(table), table);
-        ArgumentUtility.CheckNotNull(nameof(rows), rows);
+        ArgumentNullException.ThrowIfNull(table);
+        ArgumentNullException.ThrowIfNull(rows);
 
         _table = table;
         _defaultLabelsColumn = defaultLabelsColumn;
@@ -257,7 +257,7 @@ namespace Remotion.Web.UI.Controls
           string relatedRowID,
           FormGridRowInfo.RowPosition positionInFormGrid)
       {
-        ArgumentUtility.CheckNotNull(nameof(newFormGridRow), newFormGridRow);
+        ArgumentNullException.ThrowIfNull(newFormGridRow);
 
         FormGridRow? relatedRow = GetRowForID(relatedRowID);
 
@@ -387,15 +387,14 @@ namespace Remotion.Web.UI.Controls
       /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRowCollection/Constructor/*' />
       public FormGridRowCollection (FormGrid ownerFormGrid, FormGridRow[] formGridRows)
       {
-        ArgumentUtility.CheckNotNull(nameof(formGridRows), formGridRows);
-        ArgumentUtility.CheckNotNull(nameof(ownerFormGrid), ownerFormGrid);
+        ArgumentNullException.ThrowIfNull(formGridRows);
+        ArgumentNullException.ThrowIfNull(ownerFormGrid);
 
         _ownerFormGrid = ownerFormGrid;
 
         for (int i = 0; i < formGridRows.Length; i++)
         {
-          if (formGridRows[i] == null)
-            throw new ArgumentNullException("formGridRows[" + i + "]");
+          ArgumentNullException.ThrowIfNull(formGridRows[i], paramName: "formGridRows[" + i + "]");
           formGridRows[i]._formGrid = _ownerFormGrid;
         }
 
@@ -418,7 +417,7 @@ namespace Remotion.Web.UI.Controls
       /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormGridRowCollection/OnInsert/*' />
       protected override void OnInsert (int index, object? value)
       {
-        ArgumentUtility.CheckNotNull(nameof(value), value!);
+        ArgumentNullException.ThrowIfNull(value!);
         FormGridRow formGridRow = ArgumentUtility.CheckType<FormGridRow>(nameof(value), value);
 
         if (formGridRow.HtmlTableRows[0].Parent != _ownerFormGrid.Table)
@@ -779,7 +778,7 @@ namespace Remotion.Web.UI.Controls
         }
         set
         {
-          ArgumentUtility.CheckNotNull(nameof(value), value);
+          ArgumentNullException.ThrowIfNull(value);
           _validationErrors = value;
         }
       }
@@ -907,15 +906,14 @@ namespace Remotion.Web.UI.Controls
       /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ReadOnlyHtmlTableRowCollection/Constructor/*' />
       public ReadOnlyHtmlTableRowCollection (HtmlTableRow[] htmlTableRows)
       {
-        ArgumentUtility.CheckNotNull(nameof(htmlTableRows), htmlTableRows);
+        ArgumentNullException.ThrowIfNull(htmlTableRows);
 
         for (int index = 0; index < htmlTableRows.Length; index++)
         {
-          if (htmlTableRows[index] == null)
-            throw new ArgumentNullException("htmlTableRows[" + index + "]");
+          ArgumentNullException.ThrowIfNull(htmlTableRows[index], paramName: "htmlTableRows[" + index + "]");
         }
 
-         InnerList.AddRange(htmlTableRows);
+        InnerList.AddRange(htmlTableRows);
       }
 
       /// <summary> A read only indexer for the <see cref="HtmlTableRow"/> onbjects. </summary>
@@ -1102,7 +1100,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
     void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
-      ArgumentUtility.CheckNotNull(nameof(values), values);
+      ArgumentNullException.ThrowIfNull(values);
       Dispatch(values);
     }
 
@@ -1420,7 +1418,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/LoadFormGridViewState/*' />
     private void LoadFormGridViewState (FormGrid formGrid, object? savedState)
     {
-      ArgumentUtility.CheckNotNull(nameof(formGrid), formGrid);
+      ArgumentNullException.ThrowIfNull(formGrid);
 
       if (savedState == null)
         return;
@@ -1435,7 +1433,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/SaveFormGridViewState/*' />
     private object SaveFormGridViewState (FormGrid formGrid)
     {
-      ArgumentUtility.CheckNotNull(nameof(formGrid), formGrid);
+      ArgumentNullException.ThrowIfNull(formGrid);
 
       bool enableViewStateBackup = formGrid.Table.EnableViewState;
       formGrid.Table.EnableViewState = true;
@@ -1454,7 +1452,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Analyzes the table layout and creates the appropriate <see cref="FormGridRow"/> isntances. </summary>
     private FormGridRow[] CreateFormGridRows (HtmlTable table, int labelsColumn, int controlsColumn)
     {
-      ArgumentUtility.CheckNotNull(nameof(table), table);
+      ArgumentNullException.ThrowIfNull(table);
 
       ArrayList formGridRows = new ArrayList(table.Rows.Count);
 
@@ -1602,7 +1600,7 @@ namespace Remotion.Web.UI.Controls
 
     protected void PrepareValidationForDataRow (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -1640,7 +1638,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ValidateDataRow/*' />
     protected bool ValidateDataRow (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -1678,7 +1676,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="dataRow"> The <see cref="FormGridRow"/> for which the validation errors will analyzed and registered. </param>
     private void RegisterValidationErrors (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -1837,7 +1835,7 @@ namespace Remotion.Web.UI.Controls
 
     private void AddAriaAnnotations (FormGrid formGrid)
     {
-      ArgumentUtility.CheckNotNull(nameof(formGrid), formGrid);
+      ArgumentNullException.ThrowIfNull(formGrid);
 
       if (formGrid.Table.Attributes[HtmlTextWriterAttribute2.Role] == null)
         formGrid.Table.Attributes[HtmlTextWriterAttribute2.Role] = HtmlRoleAttributeValue.None;
@@ -1845,7 +1843,7 @@ namespace Remotion.Web.UI.Controls
 
     private void AddDiagnosticMetadataAttributes (FormGrid formGrid)
     {
-      ArgumentUtility.CheckNotNull(nameof(formGrid), formGrid);
+      ArgumentNullException.ThrowIfNull(formGrid);
 
       if (formGrid.Table.Attributes[DiagnosticMetadataAttributes.ControlType] == null)
         formGrid.Table.Attributes[DiagnosticMetadataAttributes.ControlType] = "FormGrid";
@@ -2038,8 +2036,6 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ComposeFormGridContents/*' />
     private void ComposeFormGridContents (FormGrid formGrid)
     {
-      if (formGrid == null) throw new ArgumentNullException(nameof(formGrid));
-
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
         FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];
@@ -2066,7 +2062,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ConfigureFormGrid/*' />
     private void ConfigureFormGrid (FormGrid formGrid)
     {
-      ArgumentUtility.CheckNotNull(nameof(formGrid), formGrid);
+      ArgumentNullException.ThrowIfNull(formGrid);
       for (int i = 0; i < formGrid.Rows.Count; i++)
       {
         FormGridRow formGridRow = (FormGridRow)formGrid.Rows[i];
@@ -2107,7 +2103,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ConfigureTitleRow/*' />
     private void ConfigureTitleRow (FormGridRow titleRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(titleRow), titleRow);
+      ArgumentNullException.ThrowIfNull(titleRow);
       CheckFormGridRowType("titleRow", titleRow, FormGridRowType.TitleRow);
 
       //  Title cell: first row, first cell
@@ -2121,7 +2117,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Configures a sub title row. </summary>
     private void ConfigureSubTitleRow (FormGridRow subTitleRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(subTitleRow), subTitleRow);
+      ArgumentNullException.ThrowIfNull(subTitleRow);
       CheckFormGridRowType("subTitleRow", subTitleRow, FormGridRowType.SubTitleRow);
 
       //  Sub title cell: first row, first cell
@@ -2135,7 +2131,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Configures the unknown rows. </summary>
     private void ConfigureUnknownRow (FormGridRow row)
     {
-      ArgumentUtility.CheckNotNull(nameof(row), row);
+      ArgumentNullException.ThrowIfNull(row);
       CheckFormGridRowType("row", row, FormGridRowType.UnknownRow);
 
       //  Adapt ColSpan for added markers column
@@ -2147,7 +2143,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/ConfigureDataRow/*' />
     private void ConfigureDataRow (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       if (dataRow.LabelsRowIndex != dataRow.ControlsRowIndex)
@@ -2160,7 +2156,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual void FormatFormGrid (FormGrid formGrid)
     {
-      ArgumentUtility.CheckNotNull(nameof(formGrid), formGrid);
+      ArgumentNullException.ThrowIfNull(formGrid);
 
       //  Assign CSS-class to the table if none exists
       if (formGrid.Table.Attributes["class"] == null)
@@ -2171,7 +2167,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormatTitleRow/*' />
     protected virtual void FormatTitleRow (FormGridRow titleRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(titleRow), titleRow);
+      ArgumentNullException.ThrowIfNull(titleRow);
       CheckFormGridRowType("titleRow", titleRow, FormGridRowType.TitleRow);
 
       Assertion.IsNotNull(titleRow.LabelsCell, "titleRow.LabelsCell must not be null.");
@@ -2195,7 +2191,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Formats a sub title row. </summary>
     protected virtual void FormatSubTitleRow (FormGridRow subTitleRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(subTitleRow), subTitleRow);
+      ArgumentNullException.ThrowIfNull(subTitleRow);
       CheckFormGridRowType("subTitleRow", subTitleRow, FormGridRowType.SubTitleRow);
 
       Assertion.IsNotNull(subTitleRow.LabelsCell, "subTitleRow.LabelsCell must not be null.");
@@ -2219,7 +2215,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Formats the unknown rows. </summary>
     protected virtual void FormatUnknownRow (FormGridRow row)
     {
-      ArgumentUtility.CheckNotNull(nameof(row), row);
+      ArgumentNullException.ThrowIfNull(row);
       CheckFormGridRowType("row", row, FormGridRowType.UnknownRow);
 
       HtmlTableCell cell;
@@ -2247,7 +2243,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/FormatDataRow/*' />
     protected virtual void FormatDataRow (FormGridRow dataRow, bool isTopDataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       AssignCssClassesToCells(dataRow, isTopDataRow);
@@ -2307,7 +2303,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="formGridRow">The <see cref="FormGridRow"/>, must not be <see langword="null"/>.</param>
     protected virtual void AddShowEmptyCellsHack (FormGridRow formGridRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(formGridRow), formGridRow);
+      ArgumentNullException.ThrowIfNull(formGridRow);
 
       AddShowEmptyCellHack(formGridRow.LabelsCell);
       AddShowEmptyCellHack(formGridRow.ControlsCell);
@@ -2321,7 +2317,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateMarkersCell/*' />
     protected void CreateMarkersCell (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       if (!HasMarkersColumn)
@@ -2352,13 +2348,13 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/LoadMarkersIntoCell/*' />
     protected virtual void LoadMarkersIntoCell (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       if (!HasMarkersColumn)
         return;
 
-      ArgumentUtility.CheckNotNull("dataRow.MarkersCell", dataRow.MarkersCell!);
+      ArgumentNullException.ThrowIfNull(dataRow.MarkersCell!);
 
       //  HelpProvider takes left-hand side in column
 
@@ -2416,7 +2412,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="dataRow"> The <see cref="FormGridRow"/> containing the validators to be overridden. </param>
     protected virtual void ApplyValidatorSettings (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -2455,7 +2451,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateLabels/*' />
     protected virtual void CreateLabels (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -2551,7 +2547,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateValidators/*' />
     protected virtual void CreateValidators (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -2604,7 +2600,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateRequiredMarker/*' />
     protected virtual void CreateRequiredMarker (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.LabelsCell, "dataRow.LabelsCell must not be null.");
@@ -2656,7 +2652,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateHelpProvider/*' />
     protected void CreateHelpProvider (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -2691,7 +2687,7 @@ namespace Remotion.Web.UI.Controls
 
     protected void UpdateGeneratedRowsVisibility (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -2728,7 +2724,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/HandleReadOnlyControls/*' />
     protected virtual void HandleReadOnlyControls (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -2770,7 +2766,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/SetOrCreateValidationMessagesCell/*' />
     protected void SetOrCreateValidationMessagesCell (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       //  Validation message cell
@@ -2805,9 +2801,9 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/LoadValidationMessagesIntoCell/*' />
     protected virtual void LoadValidationMessagesIntoCell (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
-      ArgumentUtility.CheckNotNull("dataRow.ValidationMessagesCell", dataRow.ValidationMessagesCell!);
+      ArgumentNullException.ThrowIfNull(dataRow.ValidationMessagesCell!);
 
       if (dataRow.ValidationErrors != null)
       {
@@ -2831,7 +2827,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/AssignCssClassesToCells/*' />
     protected virtual void AssignCssClassesToCells (FormGridRow dataRow, bool isTopDataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -2910,7 +2906,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
     protected virtual void AssignCssClassesToInputControls (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -2947,7 +2943,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/AssignCssClassesToInputControls/*' />
     protected virtual void AssignCssClassesToValidators (FormGridRow dataRow)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataRow), dataRow);
+      ArgumentNullException.ThrowIfNull(dataRow);
       CheckFormGridRowType("dataRow", dataRow, FormGridRowType.DataRow);
 
       Assertion.IsNotNull(dataRow.ControlsCell, "dataRow.ControlsCell must not be null.");
@@ -3019,7 +3015,7 @@ namespace Remotion.Web.UI.Controls
     /// <include file='../../Doc/include/UI/Controls/FormGridManager.xml' path='FormGridManager/CreateHelpProvider1/*' />
     protected virtual Control CreateHelpProvider (HelpInfo helpInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(helpInfo), helpInfo);
+      ArgumentNullException.ThrowIfNull(helpInfo);
 
       Image helpIcon = new Image();
       helpIcon.ImageUrl = GetImageUrl(FormGridImage.Help);
@@ -3138,7 +3134,7 @@ namespace Remotion.Web.UI.Controls
     /// <exception cref="ArgumentException"> Thrown of the <paramref name="table"/> does not have a <see cref="Page"/>.</exception>
     public bool IsFormGridRegistered (HtmlTable table)
     {
-      ArgumentUtility.CheckNotNull(nameof(table), table);
+      ArgumentNullException.ThrowIfNull(table);
       if (Page != null && table.Page == null)
         throw new ArgumentException("The HtmlTable passed as FormGrid is not part of this page.", nameof(table));
 
@@ -3154,7 +3150,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception>
     public void RegisterFormGrid (HtmlTable table)
     {
-      ArgumentUtility.CheckNotNull(nameof(table), table);
+      ArgumentNullException.ThrowIfNull(table);
 
       if (IsFormGridRegistered(table))
         throw new ArgumentException("The HtmlTable passed as FormGrid is already registered with this FormGridManager.", nameof(table));
@@ -3180,7 +3176,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception>
     public void UnregisterFormGrid (HtmlTable table)
     {
-      ArgumentUtility.CheckNotNull(nameof(table), table);
+      ArgumentNullException.ThrowIfNull(table);
 
       if (!IsFormGridRegistered(table))
         throw new ArgumentException("The HtmlTable passed as FormGrid is not registered with this FormGridManager.", nameof(table));
@@ -3200,7 +3196,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception>
     protected FormGrid GetFormGrid (HtmlTable table)
     {
-      ArgumentUtility.CheckNotNull(nameof(table), table);
+      ArgumentNullException.ThrowIfNull(table);
 
       if (!IsFormGridRegistered(table))
         throw new ArgumentException("The HtmlTable passed as FormGrid is not registered with this FormGridManager.", nameof(table));

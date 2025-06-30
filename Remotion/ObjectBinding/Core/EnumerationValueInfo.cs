@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
@@ -30,9 +29,9 @@ namespace Remotion.ObjectBinding
     /// <summary> Initializes a new instance of the <b>EnumerationValueInfo</b> type. </summary>
     public EnumerationValueInfo (object value, string identifier, string displayName, bool isEnabled)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(identifier), identifier);
-      ArgumentUtility.CheckNotNull(nameof(displayName), displayName);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentException.ThrowIfNullOrEmpty(identifier);
+      ArgumentNullException.ThrowIfNull(displayName);
 
       _value = value;
       _identifier = identifier;

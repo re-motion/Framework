@@ -22,7 +22,6 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI;
@@ -67,11 +66,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         ILabelReferenceRenderer labelReferenceRenderer)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull(nameof(cssClasses), cssClasses);
-      ArgumentUtility.CheckNotNull(nameof(tableBlockRenderer), tableBlockRenderer);
-      ArgumentUtility.CheckNotNull(nameof(navigationBlockRenderer), navigationBlockRenderer);
-      ArgumentUtility.CheckNotNull(nameof(menuBlockRenderer), menuBlockRenderer);
-      ArgumentUtility.CheckNotNull(nameof(labelReferenceRenderer), labelReferenceRenderer);
+      ArgumentNullException.ThrowIfNull(cssClasses);
+      ArgumentNullException.ThrowIfNull(tableBlockRenderer);
+      ArgumentNullException.ThrowIfNull(navigationBlockRenderer);
+      ArgumentNullException.ThrowIfNull(menuBlockRenderer);
+      ArgumentNullException.ThrowIfNull(labelReferenceRenderer);
 
       _cssClasses = cssClasses;
       _tableBlockRenderer = tableBlockRenderer;
@@ -118,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public void RegisterHtmlHeadContents (
         HtmlHeadAppender htmlHeadAppender, EditableRowControlFactory editableRowControlFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       htmlHeadAppender.RegisterObjectBindingWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
@@ -145,7 +144,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <seealso cref="BocListNavigationBlockRenderer"/>
     public void Render (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       RegisterInitializeGlobalsScript(renderingContext);
 
@@ -168,7 +167,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     protected override void AddAdditionalAttributes (RenderingContext<IBocList> renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       base.AddAdditionalAttributes(renderingContext);
 
@@ -196,7 +195,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     protected virtual void RenderContents (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetControlTypeLabelID(renderingContext));
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);

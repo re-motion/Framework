@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using Remotion.Security.Schemas;
-using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
@@ -35,8 +34,8 @@ namespace Remotion.Security.Metadata
 
     public void ConvertAndSave (MetadataCache cache, string filename)
     {
-      ArgumentUtility.CheckNotNull(nameof(cache), cache);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(filename), filename);
+      ArgumentNullException.ThrowIfNull(cache);
+      ArgumentException.ThrowIfNullOrEmpty(filename);
 
       XmlDocument xmlDocument = Convert(cache);
       xmlDocument.Save(filename);
@@ -44,7 +43,7 @@ namespace Remotion.Security.Metadata
 
     public XmlDocument Convert (MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull(nameof(cache), cache);
+      ArgumentNullException.ThrowIfNull(cache);
 
       XmlDocument document = new XmlDocument();
       XmlDeclaration declaration = document.CreateXmlDeclaration("1.0", string.Empty, string.Empty);

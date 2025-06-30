@@ -91,7 +91,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public TCellControlObject GetCellWithColumnItemID<TCellControlObject> ([NotNull] string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnItemID), columnItemID);
+      ArgumentException.ThrowIfNullOrEmpty(columnItemID);
 
       var oneBasedIndex = _accessor.GetColumnIndexForItemID(columnItemID);
       return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public TCellControlObject GetCellWithColumnTitle<TCellControlObject> ([NotNull] string columnTitle)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnTitle), columnTitle);
+      ArgumentException.ThrowIfNullOrEmpty(columnTitle);
 
       var oneBasedIndex = _accessor.GetColumnIndexForTitle(columnTitle);
       return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);
@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public TCellControlObject GetCellWithColumnTitleContains<TCellControlObject> ([NotNull] string columnTitleContains)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnTitleContains), columnTitleContains);
+      ArgumentException.ThrowIfNullOrEmpty(columnTitleContains);
 
       var oneBasedIndex = _accessor.GetColumnIndexForTitleContains(columnTitleContains);
       return GetCellWithColumnIndex<TCellControlObject>(oneBasedIndex);

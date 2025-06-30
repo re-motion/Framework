@@ -19,7 +19,6 @@ using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Development.UnitTesting;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 {
@@ -51,7 +50,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public void SetRequestValueCollection (NameValueCollection requestValueCollection)
     {
-      ArgumentUtility.CheckNotNull(nameof(requestValueCollection), requestValueCollection);
+      ArgumentNullException.ThrowIfNull(requestValueCollection);
 
       PrivateInvoke.SetNonPublicField(this, "_requestValueCollection", requestValueCollection);
     }
@@ -74,7 +73,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public void SetPageStatePersister (PageStatePersister pageStatePersister)
     {
-      ArgumentUtility.CheckNotNull(nameof(pageStatePersister), pageStatePersister);
+      ArgumentNullException.ThrowIfNull(pageStatePersister);
 
       _pageStatePersister = pageStatePersister;
     }

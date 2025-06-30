@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -43,7 +42,8 @@ namespace Remotion.Mixins
       get { return _additionalDependencies; }
       set
       {
-        _additionalDependencies = ArgumentUtility.CheckNotNull(nameof(value), value);
+        ArgumentNullException.ThrowIfNull(value);
+        _additionalDependencies = value;
       }
     }
 
@@ -59,7 +59,8 @@ namespace Remotion.Mixins
       get { return _suppressedMixins; }
       set
       {
-        _suppressedMixins = ArgumentUtility.CheckNotNull(nameof(value), value);
+        ArgumentNullException.ThrowIfNull(value);
+        _suppressedMixins = value;
       }
     }
 
@@ -97,9 +98,9 @@ namespace Remotion.Mixins
         Type mixinType,
         MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(origin);
 
       try
       {

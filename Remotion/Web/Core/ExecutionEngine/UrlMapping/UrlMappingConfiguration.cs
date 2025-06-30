@@ -153,7 +153,7 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       FunctionType = WebTypeUtility.GetType(value, true)!;
     }
   }
@@ -172,7 +172,7 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
       if (! typeof(WxeFunction).IsAssignableFrom(value))
         throw new ArgumentException(string.Format("The FunctionType '{0}' must be derived from WxeFunction.", value), "FunctionType");
       _functionType = value;
@@ -193,9 +193,9 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
       value = value!.Trim();
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       if (value.StartsWith("/") || value.IndexOf(":") != -1)
         throw new ArgumentException(string.Format("No absolute paths are allowed. Resource: '{0}'", value), "Resource");
       if (! value.StartsWith("~/"))

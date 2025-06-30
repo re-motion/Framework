@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
@@ -36,9 +35,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
     public TimestampReader (
         IRdbmsStoragePropertyDefinition idProperty, IRdbmsStoragePropertyDefinition timestampProperty, IColumnOrdinalProvider columnOrdinalProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(idProperty), idProperty);
-      ArgumentUtility.CheckNotNull(nameof(timestampProperty), timestampProperty);
-      ArgumentUtility.CheckNotNull(nameof(columnOrdinalProvider), columnOrdinalProvider);
+      ArgumentNullException.ThrowIfNull(idProperty);
+      ArgumentNullException.ThrowIfNull(timestampProperty);
+      ArgumentNullException.ThrowIfNull(columnOrdinalProvider);
 
       _idProperty = idProperty;
       _timestampProperty = timestampProperty;
@@ -62,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public Tuple<ObjectID, object>? Read (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       if (dataReader.Read())
         return GetTimestampTuple(new ColumnValueReader(dataReader, _columnOrdinalProvider));
@@ -72,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public IEnumerable<Tuple<ObjectID, object>?> ReadSequence (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       var columnValueProvider = new ColumnValueReader(dataReader, _columnOrdinalProvider);
       while (dataReader.Read())

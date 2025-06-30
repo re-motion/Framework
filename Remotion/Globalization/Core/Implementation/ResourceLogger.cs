@@ -41,7 +41,7 @@ namespace Remotion.Globalization.Implementation
     [StringFormatMethod("idFormat")]
     public static void LogResourceEntryNotFound (string idFormat, params object[] args)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(idFormat), idFormat);
+      ArgumentException.ThrowIfNullOrEmpty(idFormat);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(args), args);
 
       s_logger.Log(c_logLevel, "No resource entry exists for the following element: " + idFormat, args);

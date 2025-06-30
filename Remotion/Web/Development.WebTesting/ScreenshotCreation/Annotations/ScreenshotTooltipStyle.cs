@@ -17,7 +17,6 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Resources;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
@@ -83,9 +82,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         Size minimumSize,
         Size maximumSize)
     {
-      ArgumentUtility.CheckNotNull(nameof(font), font);
-      ArgumentUtility.CheckNotNull(nameof(foregroundBrush), foregroundBrush);
-      ArgumentUtility.CheckNotNull(nameof(border), border);
+      ArgumentNullException.ThrowIfNull(font);
+      ArgumentNullException.ThrowIfNull(foregroundBrush);
+      ArgumentNullException.ThrowIfNull(border);
 
       _font = font;
       _foregroundBrush = foregroundBrush;

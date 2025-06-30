@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
@@ -46,7 +45,7 @@ namespace Remotion.Security.Metadata
 
     public SecurableClassInfo? GetSecurableClassInfo (Type key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       if (_classes.ContainsKey(key))
         return _classes[key];
@@ -56,22 +55,22 @@ namespace Remotion.Security.Metadata
 
     public void AddSecurableClassInfo (Type key, SecurableClassInfo value)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(key);
+      ArgumentNullException.ThrowIfNull(value);
 
       _classes.Add(key, value);
     }
 
     public bool ContainsSecurableClassInfo (Type key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       return _classes.ContainsKey(key);
     }
 
     public StatePropertyInfo? GetStatePropertyInfo (PropertyInfo key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       key = NormalizeProperty(key);
       if (_stateProperties.ContainsKey(key))
@@ -82,22 +81,22 @@ namespace Remotion.Security.Metadata
 
     public void AddStatePropertyInfo (PropertyInfo key, StatePropertyInfo value)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(key);
+      ArgumentNullException.ThrowIfNull(value);
 
       _stateProperties.Add(NormalizeProperty(key), value);
     }
 
     public bool ContainsStatePropertyInfo (PropertyInfo key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       return _stateProperties.ContainsKey(NormalizeProperty(key));
     }
 
     private PropertyInfo NormalizeProperty (PropertyInfo property)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
 
       if (property.DeclaringType == property.ReflectedType)
         return property;
@@ -108,7 +107,7 @@ namespace Remotion.Security.Metadata
 
     public EnumValueInfo? GetEnumValueInfo (Enum key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       if (_enumValues.ContainsKey(key))
         return _enumValues[key];
@@ -118,22 +117,22 @@ namespace Remotion.Security.Metadata
 
     public void AddEnumValueInfo (Enum key, EnumValueInfo value)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(key);
+      ArgumentNullException.ThrowIfNull(value);
 
       _enumValues.Add(key, value);
     }
 
     public bool ContainsEnumValueInfo (Enum key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       return _enumValues.ContainsKey(key);
     }
 
     public EnumValueInfo? GetAccessType (Enum key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       if (_accessTypes.ContainsKey(key))
         return _accessTypes[key];
@@ -143,22 +142,22 @@ namespace Remotion.Security.Metadata
 
     public void AddAccessType (Enum key, EnumValueInfo value)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(key);
+      ArgumentNullException.ThrowIfNull(value);
 
       _accessTypes.Add(key, value);
     }
 
     public bool ContainsAccessType (Enum key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       return _accessTypes.ContainsKey(key);
     }
 
     public EnumValueInfo? GetAbstractRole (Enum key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       if (_abstractRoles.ContainsKey(key))
         return _abstractRoles[key];
@@ -168,15 +167,15 @@ namespace Remotion.Security.Metadata
 
     public void AddAbstractRole (Enum key, EnumValueInfo value)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(key);
+      ArgumentNullException.ThrowIfNull(value);
 
       _abstractRoles.Add(key, value);
     }
 
     public bool ContainsAbstractRole (Enum key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       return _abstractRoles.ContainsKey(key);
     }

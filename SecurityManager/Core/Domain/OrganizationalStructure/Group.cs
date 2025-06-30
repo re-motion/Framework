@@ -27,7 +27,6 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
@@ -55,7 +54,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static IQueryable<Group> FindByTenant (IDomainObjectHandle<Tenant> tenantHandle)
     {
-      ArgumentUtility.CheckNotNull(nameof(tenantHandle), tenantHandle);
+      ArgumentNullException.ThrowIfNull(tenantHandle);
 
       return from g in QueryFactory.CreateLinqQuery<Group>()
                    where g.Tenant!.ID == tenantHandle.ObjectID
@@ -65,7 +64,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static Group? FindByUnqiueIdentifier (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
 
       var result = from g in QueryFactory.CreateLinqQuery<Group>()
                    where g.UniqueIdentifier == uniqueIdentifier

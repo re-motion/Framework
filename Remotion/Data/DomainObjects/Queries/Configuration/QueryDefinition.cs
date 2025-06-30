@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Utilities;
@@ -94,9 +93,9 @@ public class QueryDefinition
       Type? collectionType = null,
       IReadOnlyDictionary<string, object>? metaData = null)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(queryID), queryID);
-    ArgumentUtility.CheckNotNull(nameof(storageProviderDefinition), storageProviderDefinition);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
+    ArgumentException.ThrowIfNullOrEmpty(queryID);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+    ArgumentException.ThrowIfNullOrEmpty(statement);
     ArgumentUtility.CheckValidEnumValue(nameof(queryType), queryType);
 
     if ((queryType is QueryType.ScalarReadOnly or QueryType.ScalarReadWrite) && collectionType != null)

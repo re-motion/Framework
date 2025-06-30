@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel;
 using Remotion.ObjectBinding.BindableObject;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
@@ -42,7 +41,7 @@ namespace Remotion.ObjectBinding
     [EditorBrowsable(EditorBrowsableState.Never)]
     protected BindableObjectWithIdentityBase (IBindableObjectWithIdentityBaseImplementation implementation)
     {
-      ArgumentUtility.CheckNotNull(nameof(implementation), implementation);
+      ArgumentNullException.ThrowIfNull(implementation);
       _implementation = implementation;
     }
 

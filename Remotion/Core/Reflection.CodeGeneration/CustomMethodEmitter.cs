@@ -21,7 +21,6 @@ using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Remotion.Reflection.CodeGeneration.DPExtensions;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration
 {
@@ -35,11 +34,11 @@ namespace Remotion.Reflection.CodeGeneration
 
     public CustomMethodEmitter (CustomClassEmitter declaringType, string name, MethodAttributes attributes, Type returnType, Type[] parameterTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(attributes), attributes);
-      ArgumentUtility.CheckNotNull(nameof(returnType), returnType);
-      ArgumentUtility.CheckNotNull(nameof(parameterTypes), parameterTypes);
+      ArgumentNullException.ThrowIfNull(declaringType);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentNullException.ThrowIfNull(attributes);
+      ArgumentNullException.ThrowIfNull(returnType);
+      ArgumentNullException.ThrowIfNull(parameterTypes);
 
       MethodEmitter innerEmitter = declaringType.InnerEmitter.CreateMethod(name, attributes, returnType, parameterTypes);
 
@@ -51,10 +50,10 @@ namespace Remotion.Reflection.CodeGeneration
 
     public CustomMethodEmitter (CustomClassEmitter declaringType, string name, MethodAttributes attributes, MethodInfo methodToUseAsATemplate)
     {
-      ArgumentUtility.CheckNotNull(nameof(declaringType), declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(attributes), attributes);
-      ArgumentUtility.CheckNotNull(nameof(methodToUseAsATemplate), methodToUseAsATemplate);
+      ArgumentNullException.ThrowIfNull(declaringType);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentNullException.ThrowIfNull(attributes);
+      ArgumentNullException.ThrowIfNull(methodToUseAsATemplate);
 
       MethodEmitter innerEmitter = declaringType.InnerEmitter.CreateMethod(name, attributes, methodToUseAsATemplate);
 
@@ -109,7 +108,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public IMethodEmitter ImplementByReturning (Expression result)
     {
-      ArgumentUtility.CheckNotNull(nameof(result), result);
+      ArgumentNullException.ThrowIfNull(result);
       return AddStatement(new ReturnStatement(result));
     }
 
@@ -134,7 +133,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public IMethodEmitter ImplementByBaseCall (MethodInfo baseMethod)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseMethod), baseMethod);
+      ArgumentNullException.ThrowIfNull(baseMethod);
 
       if (baseMethod.IsAbstract)
         throw new ArgumentException(string.Format("The given method {0}.{1} is abstract.", baseMethod.DeclaringType!.GetFullNameSafe(), baseMethod.Name),
@@ -159,43 +158,43 @@ namespace Remotion.Reflection.CodeGeneration
 
     public IMethodEmitter ImplementByThrowing (Type exceptionType, string message)
     {
-      ArgumentUtility.CheckNotNull(nameof(exceptionType), exceptionType);
-      ArgumentUtility.CheckNotNull(nameof(message), message);
+      ArgumentNullException.ThrowIfNull(exceptionType);
+      ArgumentNullException.ThrowIfNull(message);
       AddStatement(new ThrowStatement(exceptionType, message));
       return this;
     }
 
     public IMethodEmitter AddStatement (Statement statement)
     {
-      ArgumentUtility.CheckNotNull(nameof(statement), statement);
+      ArgumentNullException.ThrowIfNull(statement);
       _innerEmitter.CodeBuilder.AddStatement(statement);
       return this;
     }
 
     public LocalReference DeclareLocal (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       return _innerEmitter.CodeBuilder.DeclareLocal(type);
     }
 
     public void AddCustomAttribute (CustomAttributeBuilder customAttribute)
     {
-      ArgumentUtility.CheckNotNull(nameof(customAttribute), customAttribute);
+      ArgumentNullException.ThrowIfNull(customAttribute);
       _innerEmitter.MethodBuilder.SetCustomAttribute(customAttribute);
     }
 
     void IMethodEmitter.AcceptStatement (Statement statement, ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull(nameof(statement), statement);
-      ArgumentUtility.CheckNotNull(nameof(gen), gen);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(gen);
 
       statement.Emit(_innerEmitter, gen);
     }
 
     void IMethodEmitter.AcceptExpression (Expression expression, ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull(nameof(expression), expression);
-      ArgumentUtility.CheckNotNull(nameof(gen), gen);
+      ArgumentNullException.ThrowIfNull(expression);
+      ArgumentNullException.ThrowIfNull(gen);
 
       expression.Emit(_innerEmitter, gen);
     }

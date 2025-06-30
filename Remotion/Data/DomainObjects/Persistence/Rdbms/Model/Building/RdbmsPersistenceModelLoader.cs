@@ -43,10 +43,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IStorageNameProvider storageNameProvider,
         IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(entityDefinitionFactory), entityDefinitionFactory);
-      ArgumentUtility.CheckNotNull(nameof(dataStoragePropertyDefinitionFactory), dataStoragePropertyDefinitionFactory);
-      ArgumentUtility.CheckNotNull(nameof(storageNameProvider), storageNameProvider);
-      ArgumentUtility.CheckNotNull(nameof(rdbmsPersistenceModelProvider), rdbmsPersistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(entityDefinitionFactory);
+      ArgumentNullException.ThrowIfNull(dataStoragePropertyDefinitionFactory);
+      ArgumentNullException.ThrowIfNull(storageNameProvider);
+      ArgumentNullException.ThrowIfNull(rdbmsPersistenceModelProvider);
 
       _entityDefinitionFactory = entityDefinitionFactory;
       _dataStoragePropertyDefinitionFactory = dataStoragePropertyDefinitionFactory;
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       ClassDefinition[] derivedClasses = classDefinition.GetAllDerivedClasses();
       var allClassDefinitions = new[] { classDefinition }.Concat(derivedClasses);

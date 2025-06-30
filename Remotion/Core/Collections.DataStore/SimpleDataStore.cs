@@ -98,7 +98,7 @@ namespace Remotion.Collections.DataStore
 
     public SimpleDataStore ([JetBrains.Annotations.NotNull] IEqualityComparer<TKey> comparer)
     {
-      ArgumentUtility.CheckNotNull(nameof(comparer), comparer);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       _innerDictionary = new Dictionary<TKey, Data>(comparer);
     }
@@ -116,7 +116,7 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       return TryGetValueInternal(key, out _);
     }
@@ -124,7 +124,7 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
       // value can be null
 
       if (TryGetValueInternal(key, out _))
@@ -136,7 +136,7 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public bool Remove (TKey key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       if (TryGetValueInternal(key, out _))
         return _innerDictionary.Remove(key);
@@ -155,7 +155,7 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        ArgumentUtility.CheckNotNull(nameof(key), key);
+        ArgumentNullException.ThrowIfNull(key);
 
         if (TryGetValueInternal(key, out var value))
           return value;
@@ -165,7 +165,7 @@ namespace Remotion.Collections.DataStore
       }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(key), key);
+        ArgumentNullException.ThrowIfNull(key);
 
         if (TryGetValueInternal(key, out _))
           _innerDictionary.Remove(key);
@@ -199,7 +199,7 @@ namespace Remotion.Collections.DataStore
 
       if (!TryGetValueInternal(key, out var value))
       {
-        ArgumentUtility.CheckNotNull(nameof(valueFactory), valueFactory);
+        ArgumentNullException.ThrowIfNull(valueFactory);
 
         _innerDictionary.Add(key, new Data());
         try

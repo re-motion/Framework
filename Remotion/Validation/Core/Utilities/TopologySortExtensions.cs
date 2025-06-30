@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Utilities
 {
@@ -40,8 +39,8 @@ namespace Remotion.Validation.Utilities
 
       public Node (T content, Func<T, IEnumerable<T>> getDependencies, bool included)
       {
-        ArgumentUtility.CheckNotNull(nameof(content), content);
-        ArgumentUtility.CheckNotNull(nameof(getDependencies), getDependencies);
+        ArgumentNullException.ThrowIfNull(content);
+        ArgumentNullException.ThrowIfNull(getDependencies);
         Content = content;
         _getDependencies = getDependencies;
         Included = included;
@@ -221,8 +220,8 @@ namespace Remotion.Validation.Utilities
         )
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(source), source);
-      ArgumentUtility.CheckNotNull(nameof(getDependencies), getDependencies);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(getDependencies);
 
       var unsorted = source.Select(content => new Node<T>(content, getDependencies, true)).ToList();
       Dictionary<object, Node<T>> nodes;

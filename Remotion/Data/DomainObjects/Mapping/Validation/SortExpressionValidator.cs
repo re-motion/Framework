@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation
 {
@@ -33,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public SortExpressionValidator (params IRelationDefinitionValidatorRule[] validationRules)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationRules), validationRules);
+      ArgumentNullException.ThrowIfNull(validationRules);
 
       _validationRules = Array.AsReadOnly(validationRules);
     }
@@ -45,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation
 
     public IEnumerable<MappingValidationResult> Validate (IEnumerable<RelationDefinition> relationDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationDefinitions), relationDefinitions);
+      ArgumentNullException.ThrowIfNull(relationDefinitions);
 
       return from rule in _validationRules
              from relationDefinition in relationDefinitions

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Collections.DataStore
 {
@@ -54,7 +53,7 @@ namespace Remotion.Collections.DataStore
     public static IDataStore<TKey, TValue> Create<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(comparer), comparer);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       return new SimpleDataStore<TKey, TValue>(comparer);
     }
@@ -87,7 +86,7 @@ namespace Remotion.Collections.DataStore
     public static IDataStore<TKey, TValue> CreateWithSynchronization<TKey, TValue> ([NotNull] IEqualityComparer<TKey> comparer)
         where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(comparer), comparer);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       return new ConcurrentDataStore<TKey, TValue>(comparer);
     }

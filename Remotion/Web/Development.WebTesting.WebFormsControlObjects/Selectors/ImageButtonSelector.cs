@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -36,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageButtonControlObject SelectFirst (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindTagWithAttribute(c_inputTag, "type", "image");
       return CreateControlObject(context, scope);
@@ -45,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageButtonControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindTagWithAttribute(c_inputTag, "type", "image");
 
@@ -58,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageButtonControlObject SelectSingle (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindTagWithAttribute(c_inputTag, "type", "image");
       scope.EnsureSingle();
@@ -68,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageButtonControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindTagWithAttribute(c_inputTag, "type", "image");
 
@@ -81,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageButtonControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "image");
       var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
@@ -92,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageButtonControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "image");
       var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
@@ -107,7 +106,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "image");
       var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_inputTag, hasAttributeCheck, oneBasedIndex);
@@ -121,8 +120,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelectionContext), controlSelectionContext);
-      ArgumentUtility.CheckNotNull(nameof(newControlObjectContext), newControlObjectContext);
+      ArgumentNullException.ThrowIfNull(controlSelectionContext);
+      ArgumentNullException.ThrowIfNull(newControlObjectContext);
 
       return new ImageButtonControlObject(newControlObjectContext);
     }

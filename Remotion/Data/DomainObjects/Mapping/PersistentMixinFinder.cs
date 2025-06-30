@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     public static ClassContext GetMixinConfigurationForDomainObjectType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       // For performance, use the ClassContextCollection rather than ActiveConfiguration.GetClassContext
       // (The former checks whether type is a generated type, which we know isn't the case here.)
@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public static bool IsPersistenceRelevant (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       return typeof(IDomainObjectMixin).IsAssignableFrom(mixinType);
     }
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PersistentMixinFinder (Type type, bool includeInherited)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       // API does not guarantee that type is DomainObject-derived. This is probably required when generating the mapping configuration prior to validation.
 
       Type = type;
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public Type? FindOriginalMixinTarget (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       Assertion.IsTrue(_allParentClassContexts != null || !IncludeInherited, "If IncludeInherited is set, _allParentClassContexts is never null.");
 

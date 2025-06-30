@@ -17,7 +17,6 @@
 using System;
 using System.Collections.ObjectModel;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 {
@@ -30,7 +29,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
   {
     public static DynamicBusinessObjectPropertyPath Create (string propertyPathIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyPathIdentifier), propertyPathIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(propertyPathIdentifier);
 
       return new DynamicBusinessObjectPropertyPath(propertyPathIdentifier);
     }

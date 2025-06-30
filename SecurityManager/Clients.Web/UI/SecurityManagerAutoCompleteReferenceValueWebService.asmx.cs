@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
   {
     public static void BindServiceToControl (BocAutoCompleteReferenceValue control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
       control.ControlServicePath = resourceUrlFactory.CreateResourceUrl(
@@ -89,9 +89,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI
         string? businessObject,
         string? args)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(businessObjectClass), businessObjectClass!);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(businessObjectProperty), businessObjectProperty!);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(businessObject), businessObject!);
+      ArgumentException.ThrowIfNullOrEmpty(businessObjectClass);
+      ArgumentException.ThrowIfNullOrEmpty(businessObjectProperty);
+      ArgumentException.ThrowIfNullOrEmpty(businessObject);
 
       var businessObjectClassWithIdentity = GetBusinessObjectClassWithIdentity(businessObjectClass);
       var referenceProperty = GetReferenceProperty(businessObjectProperty, businessObjectClassWithIdentity);

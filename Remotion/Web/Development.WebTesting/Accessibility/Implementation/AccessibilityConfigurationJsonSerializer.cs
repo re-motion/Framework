@@ -17,7 +17,6 @@
 using System;
 using System.Text;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
 {
@@ -26,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     [NotNull]
     public static string Serialize ([NotNull] IAccessibilityConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
+      ArgumentNullException.ThrowIfNull(configuration);
 
       var sb = new StringBuilder();
       sb.Append('{');

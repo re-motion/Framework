@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static ObjectID Parse (string objectIDString)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDString), objectIDString);
+      ArgumentNullException.ThrowIfNull(objectIDString);
       return ObjectIDStringSerializer.Instance.Parse(objectIDString);
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static bool TryParse (string objectIDString, [MaybeNullWhen(false)] out ObjectID result)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDString), objectIDString);
+      ArgumentNullException.ThrowIfNull(objectIDString);
       return ObjectIDStringSerializer.Instance.TryParse(objectIDString, out result);
     }
 
@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
     public ObjectID (Type classType, object value)
-      : this(MappingConfiguration.Current.GetTypeDefinition(ArgumentUtility.CheckNotNull(nameof(classType), classType)), value)
+      : this(MappingConfiguration.Current.GetTypeDefinition(classType ?? throw new ArgumentNullException(nameof(classType))), value)
     {
     }
 
@@ -193,8 +193,8 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
     public ObjectID (ClassDefinition classDefinition, object value)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (classDefinition.IsAbstract)
       {

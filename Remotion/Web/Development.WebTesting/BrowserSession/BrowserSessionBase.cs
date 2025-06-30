@@ -21,7 +21,6 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
@@ -47,8 +46,8 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
         int driverProcessId,
         bool headless)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNull(nameof(browserConfiguration), browserConfiguration);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
       if (driverProcessId < 0)
         throw new ArgumentOutOfRangeException(nameof(driverProcessId), "Process id can not be smaller that zero.");
@@ -95,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
 
     public BrowserWindow FindWindow (string locator, Options? options = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(locator), locator);
+      ArgumentException.ThrowIfNullOrEmpty(locator);
 
       return _value.FindWindow(locator, options);
     }

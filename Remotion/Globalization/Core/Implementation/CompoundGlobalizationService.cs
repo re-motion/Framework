@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
@@ -39,7 +38,7 @@ namespace Remotion.Globalization.Implementation
     /// <param name="globalizationServices"> The <see cref="IGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundGlobalizationService (IEnumerable<IGlobalizationService> globalizationServices)
     {
-      ArgumentUtility.CheckNotNull(nameof(globalizationServices), globalizationServices);
+      ArgumentNullException.ThrowIfNull(globalizationServices);
 
       _globalizationServices = globalizationServices.Reverse().ToList().AsReadOnly();
     }
@@ -51,7 +50,7 @@ namespace Remotion.Globalization.Implementation
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
+      ArgumentNullException.ThrowIfNull(typeInformation);
 
       return new ResourceManagerSet(_globalizationServices.Select(s => s.GetResourceManager(typeInformation)));
     }

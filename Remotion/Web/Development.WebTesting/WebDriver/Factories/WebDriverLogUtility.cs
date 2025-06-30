@@ -17,7 +17,6 @@
 using System;
 using System.IO;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 {
@@ -27,9 +26,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
 
     public static string CreateLogFile (string logsDirectory, string browserName, ILogger logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(logsDirectory), logsDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(browserName), browserName);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentException.ThrowIfNullOrEmpty(logsDirectory);
+      ArgumentException.ThrowIfNullOrEmpty(browserName);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var finalLogsDirectory = Path.Combine(logsDirectory, SubDirectoryName);
 

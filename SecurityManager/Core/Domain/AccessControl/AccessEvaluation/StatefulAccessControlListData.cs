@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -30,8 +29,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public StatefulAccessControlListData ([NotNull] IDomainObjectHandle<StatefulAccessControlList> handle, [NotNull] IEnumerable<State> states)
     {
-      ArgumentUtility.CheckNotNull(nameof(handle), handle);
-      ArgumentUtility.CheckNotNull(nameof(states), states);
+      ArgumentNullException.ThrowIfNull(handle);
+      ArgumentNullException.ThrowIfNull(states);
 
       var stateArray = Array.AsReadOnly(states.ToArray());
 

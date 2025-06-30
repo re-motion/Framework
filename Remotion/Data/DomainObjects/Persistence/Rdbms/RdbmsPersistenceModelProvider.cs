@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
@@ -28,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   {
     public IRdbmsStorageEntityDefinition GetEntityDefinition (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       if (!classDefinition.HasStorageEntityDefinitionBeenSet)
       {
@@ -57,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     public IRdbmsStoragePropertyDefinition GetStoragePropertyDefinition (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       if (!propertyDefinition.HasStoragePropertyDefinitionBeenSet)
       {

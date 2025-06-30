@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.UrlMapping
 {
@@ -31,7 +30,7 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
   {
     public CompoundUrlMappingFileFinder (IEnumerable<IUrlMappingFileFinder> urlMappingFileFinders)
     {
-      ArgumentUtility.CheckNotNull(nameof(urlMappingFileFinders), urlMappingFileFinders);
+      ArgumentNullException.ThrowIfNull(urlMappingFileFinders);
 
       UrlMappingFileFinders = urlMappingFileFinders.ToList().AsReadOnly();
     }

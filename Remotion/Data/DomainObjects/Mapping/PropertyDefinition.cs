@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.Mapping
         StorageClass storageClass,
         object? defaultValue)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
-      ArgumentUtility.CheckNotNull(nameof(propertyInfo), propertyInfo);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       _classDefinition = classDefinition;
       _propertyInfo = propertyInfo;
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetStorageProperty (IStoragePropertyDefinition storagePropertyDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(storagePropertyDefinition), storagePropertyDefinition);
+      ArgumentNullException.ThrowIfNull(storagePropertyDefinition);
 
       _storagePropertyDefinition = storagePropertyDefinition;
     }

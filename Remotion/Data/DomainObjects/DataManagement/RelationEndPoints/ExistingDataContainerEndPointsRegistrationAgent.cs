@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -42,8 +41,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected override string? GetUnregisterProblem (IRelationEndPoint endPoint, RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull(nameof(endPoint), endPoint);
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointMap), relationEndPointMap);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(relationEndPointMap);
 
       // An end-point must be unchanged to be unregisterable.
       if (endPoint.HasChanged)

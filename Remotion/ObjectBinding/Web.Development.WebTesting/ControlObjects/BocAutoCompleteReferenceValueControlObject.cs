@@ -73,8 +73,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           [NotNull] ILogger logger)
           : base(control, scope, logger)
       {
-        ArgumentUtility.CheckNotNull(nameof(autoCompleteResultItem), autoCompleteResultItem);
-        ArgumentUtility.CheckNotNull(nameof(finishInputWith), finishInputWith);
+        ArgumentNullException.ThrowIfNull(autoCompleteResultItem);
+        ArgumentNullException.ThrowIfNull(finishInputWith);
 
         _autoCompleteResultItem = autoCompleteResultItem;
         _finishInputWith = finishInputWith;
@@ -116,7 +116,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(text), text);
+      ArgumentNullException.ThrowIfNull(text);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -130,8 +130,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(text), text);
-      ArgumentUtility.CheckNotNull(nameof(finishInputWith), finishInputWith);
+      ArgumentNullException.ThrowIfNull(text);
+      ArgumentNullException.ThrowIfNull(finishInputWith);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -162,7 +162,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>The completion set as list of <see cref="SearchServiceResultItem"/> or an empty list if the completion set has been empty.</returns>
     public IReadOnlyList<SearchServiceResultItem> GetSearchServiceResults ([NotNull] string searchText, int completionSetOffset, int completionSetCount, string? context = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchText), searchText);
+      ArgumentException.ThrowIfNullOrEmpty(searchText);
 
       var inputScopeID = GetInputScopeID();
 
@@ -188,7 +188,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>The exact search result as <see cref="SearchServiceResultItem"/> or null if no result has been found.</returns>
     public SearchServiceResultItem? GetExactSearchServiceResult ([NotNull] string searchText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchText), searchText);
+      ArgumentException.ThrowIfNullOrEmpty(searchText);
 
       var inputScopeId = GetInputScopeID();
 
@@ -215,7 +215,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
     public UnspecifiedPageObject SelectFirstMatch ([NotNull] string filter, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(filter), filter);
+      ArgumentNullException.ThrowIfNull(filter);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -240,8 +240,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         [NotNull] FinishInputWithAction finishInputWith,
         [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(filter), filter);
-      ArgumentUtility.CheckNotNull(nameof(finishInputWith), finishInputWith);
+      ArgumentNullException.ThrowIfNull(filter);
+      ArgumentNullException.ThrowIfNull(finishInputWith);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -278,7 +278,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private SearchServiceResultItem GetFirstAutoCompleteResult ([NotNull] string filter)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(filter), filter);
+      ArgumentException.ThrowIfNullOrEmpty(filter);
 
       var results = GetSearchServiceResults(filter, 0, 2);
 
@@ -297,8 +297,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         [NotNull] string autoCompleteTextValueInputFieldId,
         [NotNull] string searchText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(autoCompleteTextValueInputFieldId), autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchText), searchText);
+      ArgumentException.ThrowIfNullOrEmpty(autoCompleteTextValueInputFieldId);
+      ArgumentException.ThrowIfNullOrEmpty(searchText);
 
       return CreateAutoCompleteSearchServiceRequestScript(autoCompleteTextValueInputFieldId, searchText, "serviceMethodSearchExact", null, null, null);
     }
@@ -318,8 +318,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         int completionSetCount,
         string? context)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(autoCompleteTextValueInputFieldId), autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchText), searchText);
+      ArgumentException.ThrowIfNullOrEmpty(autoCompleteTextValueInputFieldId);
+      ArgumentException.ThrowIfNullOrEmpty(searchText);
 
       return CreateAutoCompleteSearchServiceRequestScript(
           autoCompleteTextValueInputFieldId,
@@ -338,9 +338,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         int? completionSetCount,
         string? context)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(autoCompleteTextValueInputFieldId), autoCompleteTextValueInputFieldId);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchText), searchText);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(searchMethod), searchMethod);
+      ArgumentException.ThrowIfNullOrEmpty(autoCompleteTextValueInputFieldId);
+      ArgumentException.ThrowIfNullOrEmpty(searchText);
+      ArgumentException.ThrowIfNullOrEmpty(searchMethod);
 
       var setCompletionSetOffsetScriptPart = completionSetOffset.HasValue
           ? string.Format("data['completionSetOffset'] = {0};", completionSetOffset.Value)
@@ -405,7 +405,7 @@ return CallWebService();";
         [NotNull] IReadOnlyDictionary<string, object> response,
         [NotNull] Func<IReadOnlyCollection<object>, T> successParser)
     {
-      ArgumentUtility.CheckNotNull(nameof(response), response);
+      ArgumentNullException.ThrowIfNull(response);
 
       var state = (string)response[AutoCompleteSearchService.State];
       var data = response[AutoCompleteSearchService.Data];

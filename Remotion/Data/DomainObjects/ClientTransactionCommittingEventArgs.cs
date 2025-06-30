@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects
     public ClientTransactionCommittingEventArgs (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
         : base(domainObjects)
     {
-      ArgumentUtility.CheckNotNull(nameof(eventRegistrar), eventRegistrar);
+      ArgumentNullException.ThrowIfNull(eventRegistrar);
       _eventRegistrar = eventRegistrar;
     }
 

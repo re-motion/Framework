@@ -46,8 +46,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     /// <param name="assemblyLoader">The <see cref="IAssemblyLoader"/> to use for loading the assemblies found.</param>
     public AssemblyFinder (IRootAssemblyFinder rootAssemblyFinder, IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNull(nameof(rootAssemblyFinder), rootAssemblyFinder);
-      ArgumentUtility.CheckNotNull(nameof(assemblyLoader), assemblyLoader);
+      ArgumentNullException.ThrowIfNull(rootAssemblyFinder);
+      ArgumentNullException.ThrowIfNull(assemblyLoader);
 
       _rootAssemblyFinder = rootAssemblyFinder;
       _assemblyLoader = assemblyLoader;

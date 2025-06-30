@@ -21,7 +21,6 @@ using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Logging;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 {
@@ -36,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 
     public BusinessObjectPropertyPathBasedComparer (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       _propertyPath = propertyPath;
     }
@@ -48,8 +47,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 
     public int Compare (BocListRow? rowA, BocListRow? rowB)
     {
-      ArgumentUtility.CheckNotNull(nameof(rowA), rowA!);
-      ArgumentUtility.CheckNotNull(nameof(rowB), rowB!);
+      ArgumentNullException.ThrowIfNull(rowA!);
+      ArgumentNullException.ThrowIfNull(rowB!);
 
       object? valueA = GetPropertyPathValueFromCache(rowA);
       object? valueB = GetPropertyPathValueFromCache(rowB);
@@ -88,8 +87,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 
     private int CompareStringValues (BocListRow? rowA, BocListRow? rowB)
     {
-      ArgumentUtility.CheckNotNull(nameof(rowA), rowA!);
-      ArgumentUtility.CheckNotNull(nameof(rowB), rowB!);
+      ArgumentNullException.ThrowIfNull(rowA!);
+      ArgumentNullException.ThrowIfNull(rowB!);
 
       var valueA = GetPropertyPathStringValueFromCache(rowA);
       var valueB = GetPropertyPathStringValueFromCache(rowB);

@@ -39,8 +39,8 @@ namespace Remotion.Web.Utilities
     /// </remarks>
     public static string GetAbsoluteUrlWithProtocolAndHostname (HttpContextBase context, string virtualPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(virtualPath), virtualPath);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(virtualPath);
 
       if (HasScheme(virtualPath))
         return virtualPath;
@@ -82,8 +82,8 @@ namespace Remotion.Web.Utilities
     /// </remarks>
     public static string ResolveUrlCaseSensitive (HttpContextBase context, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(relativeUrl), relativeUrl);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(relativeUrl);
 
       // HtppResponse.ApplyAppPathModifier (string)
       // "~"            "/AppDir/"
@@ -235,10 +235,10 @@ namespace Remotion.Web.Utilities
     /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/AddParameter/*' />
     public static string AddParameter (string url, string? name, string value, Encoding encoding)
     {
-      ArgumentUtility.CheckNotNull(nameof(url), url);
+      ArgumentNullException.ThrowIfNull(url);
       ArgumentUtility.CheckNotEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(value), value);
-      ArgumentUtility.CheckNotNull(nameof(encoding), encoding);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(encoding);
 
       string delimiter;
       bool hasQueryString = url.IndexOf('?') != -1;
@@ -274,7 +274,7 @@ namespace Remotion.Web.Utilities
     /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/AddParameters/*' />
     public static string AddParameters (string url, NameValueCollection queryStringCollection, Encoding encoding)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryStringCollection), queryStringCollection);
+      ArgumentNullException.ThrowIfNull(queryStringCollection);
 
       for (int i = 0; i < queryStringCollection.Count; i++)
       {
@@ -329,9 +329,9 @@ namespace Remotion.Web.Utilities
     /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/DeleteParameter/*' />
     public static string DeleteParameter (string url, string name, Encoding encoding)
     {
-      ArgumentUtility.CheckNotNull(nameof(url), url);
+      ArgumentNullException.ThrowIfNull(url);
       ArgumentUtility.CheckNotEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(encoding), encoding);
+      ArgumentNullException.ThrowIfNull(encoding);
 
       var urlParts = url.Split(new []{'?'}, 2, StringSplitOptions.None);
       if (urlParts.Length == 1)
@@ -354,9 +354,9 @@ namespace Remotion.Web.Utilities
     /// <include file='../Doc/include/Utilities/UrlUtility.xml' path='UrlUtility/GetParameter/*' />
     public static string? GetParameter (string url, string name, Encoding encoding)
     {
-      ArgumentUtility.CheckNotNull(nameof(url), url);
+      ArgumentNullException.ThrowIfNull(url);
       ArgumentUtility.CheckNotEmpty(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(encoding), encoding);
+      ArgumentNullException.ThrowIfNull(encoding);
 
       var urlParts = url.Split(new []{'?'}, 2, StringSplitOptions.None);
       if (urlParts.Length == 1)

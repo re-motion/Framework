@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         IEagerFetcher eagerFetcher)
         : base(persistenceStrategy, loadedObjectDataRegistrationAgent, loadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(persistenceStrategy), persistenceStrategy);
-      ArgumentUtility.CheckNotNull(nameof(eagerFetcher), eagerFetcher);
+      ArgumentNullException.ThrowIfNull(persistenceStrategy);
+      ArgumentNullException.ThrowIfNull(eagerFetcher);
 
       _persistenceStrategy = persistenceStrategy;
       _eagerFetcher = eagerFetcher;
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public override ICollection<ILoadedObjectData> GetOrLoadCollectionQueryResult (IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       var pendingRegistrationCollector = new LoadedObjectDataPendingRegistrationCollector();
 
@@ -85,8 +85,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         IQuery query,
         LoadedObjectDataPendingRegistrationCollector pendingRegistrationCollector)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
-      ArgumentUtility.CheckNotNull(nameof(pendingRegistrationCollector), pendingRegistrationCollector);
+      ArgumentNullException.ThrowIfNull(query);
+      ArgumentNullException.ThrowIfNull(pendingRegistrationCollector);
 
       var loadedObjectDataWithSource = _persistenceStrategy.ExecuteFetchQuery(query, LoadedObjectDataProvider).ConvertToCollection();
 

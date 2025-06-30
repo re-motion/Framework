@@ -80,7 +80,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
           () => new AddingPropertyValidationRuleCollector<Customer, string>(_property, _ => "", typeof(Customer)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'collectorType' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  "The value is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
                   + "which cannot be assigned to type 'Remotion.Validation.IValidationRuleCollector'.",
                   "collectorType"));
     }

@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -72,8 +71,8 @@ public class WxeMethodStep: WxeStep
   /// <include file='../Doc/include/ExecutionEngine/WxeMethodStep.xml' path='WxeMethodStep/Ctor/*' />
   public WxeMethodStep (WxeStepList target, MethodInfo method)
   {
-    ArgumentUtility.CheckNotNull(nameof(target), target);
-    ArgumentUtility.CheckNotNull(nameof(method), method);
+    ArgumentNullException.ThrowIfNull(target);
+    ArgumentNullException.ThrowIfNull(method);
 
     Type targetType = target.GetType();
     Type declaringType = method.DeclaringType!; // TODO RM-8118: not null assertion
@@ -95,15 +94,15 @@ public class WxeMethodStep: WxeStep
 
   public WxeMethodStep (Action method)
       : this(
-          GetTargetFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)),
-          GetMethodFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)))
+          GetTargetFromDelegate(method ?? throw new ArgumentNullException(nameof(method))),
+          GetMethodFromDelegate(method ?? throw new ArgumentNullException(nameof(method))))
   {
   }
 
   public WxeMethodStep (Action<WxeContext> method)
       : this(
-          GetTargetFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)),
-          GetMethodFromDelegate(ArgumentUtility.CheckNotNull(nameof(method), method)))
+          GetTargetFromDelegate(method ?? throw new ArgumentNullException(nameof(method))),
+          GetMethodFromDelegate(method ?? throw new ArgumentNullException(nameof(method))))
   {
   }
 

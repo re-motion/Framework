@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Validation
 {
@@ -29,8 +28,8 @@ namespace Remotion.ObjectBinding.Validation
         [NotNull] IBusinessObject validatedObject,
         [NotNull] string errorMessage)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatedObject), validatedObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(errorMessage), errorMessage);
+      ArgumentNullException.ThrowIfNull(validatedObject);
+      ArgumentException.ThrowIfNullOrEmpty(errorMessage);
 
       return new BusinessObjectValidationFailure(errorMessage, validatedObject, null);
     }
@@ -40,9 +39,9 @@ namespace Remotion.ObjectBinding.Validation
         [NotNull] IBusinessObject validatedObject,
         [NotNull] IBusinessObjectProperty validatedProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatedObject), validatedObject);
-      ArgumentUtility.CheckNotNull(nameof(validatedProperty), validatedProperty);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(errorMessage), errorMessage);
+      ArgumentNullException.ThrowIfNull(validatedObject);
+      ArgumentNullException.ThrowIfNull(validatedProperty);
+      ArgumentException.ThrowIfNullOrEmpty(errorMessage);
 
       return new BusinessObjectValidationFailure(errorMessage, validatedObject, validatedProperty);
     }

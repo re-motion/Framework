@@ -42,8 +42,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
           LoadedObjectDataPendingRegistrationCollector dataPendingRegistrationCollector,
           ClientTransaction clientTransaction)
       {
-        ArgumentUtility.CheckNotNull(nameof(dataPendingRegistrationCollector), dataPendingRegistrationCollector);
-        ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
+        ArgumentNullException.ThrowIfNull(dataPendingRegistrationCollector);
+        ArgumentNullException.ThrowIfNull(clientTransaction);
 
         _dataPendingRegistrationCollector = dataPendingRegistrationCollector;
         _clientTransaction = clientTransaction;
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       public void VisitFreshlyLoadedObject (FreshlyLoadedObjectData freshlyLoadedObjectData)
       {
-        ArgumentUtility.CheckNotNull(nameof(freshlyLoadedObjectData), freshlyLoadedObjectData);
+        ArgumentNullException.ThrowIfNull(freshlyLoadedObjectData);
 
         var consolidatedData = _dataPendingRegistrationCollector.Add(freshlyLoadedObjectData);
         _loadedObjectData.Add(consolidatedData);
@@ -75,28 +75,28 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
       public void VisitAlreadyExistingLoadedObject (AlreadyExistingLoadedObjectData alreadyExistingLoadedObjectData)
       {
-        ArgumentUtility.CheckNotNull(nameof(alreadyExistingLoadedObjectData), alreadyExistingLoadedObjectData);
+        ArgumentNullException.ThrowIfNull(alreadyExistingLoadedObjectData);
 
         _loadedObjectData.Add(alreadyExistingLoadedObjectData);
       }
 
       public void VisitNullLoadedObject (NullLoadedObjectData nullLoadedObjectData)
       {
-        ArgumentUtility.CheckNotNull(nameof(nullLoadedObjectData), nullLoadedObjectData);
+        ArgumentNullException.ThrowIfNull(nullLoadedObjectData);
 
         _loadedObjectData.Add(nullLoadedObjectData);
       }
 
       public void VisitInvalidLoadedObject (InvalidLoadedObjectData invalidLoadedObjectData)
       {
-        ArgumentUtility.CheckNotNull(nameof(invalidLoadedObjectData), invalidLoadedObjectData);
+        ArgumentNullException.ThrowIfNull(invalidLoadedObjectData);
 
         _loadedObjectData.Add(invalidLoadedObjectData);
       }
 
       public void VisitNotFoundLoadedObject (NotFoundLoadedObjectData notFoundLoadedObjectData)
       {
-        ArgumentUtility.CheckNotNull(nameof(notFoundLoadedObjectData), notFoundLoadedObjectData);
+        ArgumentNullException.ThrowIfNull(notFoundLoadedObjectData);
         _notFoundObjectIDs.Add(notFoundLoadedObjectData.ObjectID);
 
         _loadedObjectData.Add(notFoundLoadedObjectData);
@@ -112,9 +112,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         IDataManager dataManager,
         ILoadedObjectDataRegistrationListener registrationListener)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(dataManager), dataManager);
-      ArgumentUtility.CheckNotNull(nameof(registrationListener), registrationListener);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(dataManager);
+      ArgumentNullException.ThrowIfNull(registrationListener);
 
       _dataManager = dataManager;
       _clientTransaction = clientTransaction;
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     public IEnumerable<ILoadedObjectData> BeginRegisterIfRequired (
         IEnumerable<ILoadedObjectData> loadedObjects, bool throwOnNotFound, LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector)
     {
-      ArgumentUtility.CheckNotNull(nameof(loadedObjects), loadedObjects);
+      ArgumentNullException.ThrowIfNull(loadedObjects);
 
       var visitor = new RegisteredDataContainerGatheringVisitor(pendingLoadedObjectDataCollector, _clientTransaction);
       foreach (var loadedObject in loadedObjects)
@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void EndRegisterIfRequired (LoadedObjectDataPendingRegistrationCollector pendingLoadedObjectDataCollector)
     {
-      ArgumentUtility.CheckNotNull(nameof(pendingLoadedObjectDataCollector), pendingLoadedObjectDataCollector);
+      ArgumentNullException.ThrowIfNull(pendingLoadedObjectDataCollector);
 
       if (pendingLoadedObjectDataCollector.DataPendingRegistration.Count == 0)
         return;

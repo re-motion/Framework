@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.Serialization
 {
@@ -32,19 +31,19 @@ namespace Remotion.Mixins.Context.Serialization
 
     public void AddKind (string kind)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(kind), kind);
+      ArgumentException.ThrowIfNullOrEmpty(kind);
       SetValue(0, kind);
     }
 
     public void AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
       SetValue(1, assembly);
     }
 
     public void AddLocation (string location)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(location), location);
+      ArgumentException.ThrowIfNullOrEmpty(location);
       SetValue(2, location);
     }
   }

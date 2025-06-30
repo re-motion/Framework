@@ -32,7 +32,7 @@ namespace Remotion.Utilities
 
     public CompoundTypeConverterFactory (IEnumerable<ITypeConverterFactory> typeConverterFactories)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeConverterFactories), typeConverterFactories);
+      ArgumentNullException.ThrowIfNull(typeConverterFactories);
 
       _typeConverterFactories = typeConverterFactories.ToList().AsReadOnly();
     }
@@ -44,7 +44,7 @@ namespace Remotion.Utilities
 
     public TypeConverter? CreateTypeConverterOrDefault (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _typeConverterFactories.Select(f => f.CreateTypeConverterOrDefault(type)).FirstOrDefault(c => c != null);
     }

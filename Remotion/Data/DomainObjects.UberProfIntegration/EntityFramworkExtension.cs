@@ -24,7 +24,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
 {
@@ -178,7 +177,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public EntityFrameworkExtension (Guid clientTransactionID, EntityFrameworkAppenderProxy appenderProxy)
     {
-      ArgumentUtility.CheckNotNull(nameof(appenderProxy), appenderProxy);
+      ArgumentNullException.ThrowIfNull(appenderProxy);
 
       _clientTransactionID = clientTransactionID;
       _appenderProxy = appenderProxy;
@@ -226,8 +225,8 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(commandText), commandText);
-      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentException.ThrowIfNullOrEmpty(commandText);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       _appenderProxy.StatementExecuted(_clientTransactionID, queryID, AppendParametersToCommandText(commandText, parameters));
     }

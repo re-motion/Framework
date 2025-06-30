@@ -21,7 +21,6 @@ using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
 using Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Globalization.AclTools.Expansion;
-using Remotion.Utilities;
 
 
 namespace Remotion.SecurityManager.AclTools.Expansion
@@ -55,7 +54,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public void WriteAclExpansion (List<AclExpansionEntry> aclExpansion)
     {
-      ArgumentUtility.CheckNotNull(nameof(aclExpansion), aclExpansion);
+      ArgumentNullException.ThrowIfNull(aclExpansion);
       using (var textWriter = _textWriterFactory.CreateTextWriter(MasterFileName))
       {
         var writerImplementation = new AclExpansionHtmlWriterImplementationBase(textWriter, _indentXml);

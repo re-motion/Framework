@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
@@ -31,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
   {
     public ScriptPair Convert (IScriptBuilder scriptBuilder)
     {
-      ArgumentUtility.CheckNotNull(nameof(scriptBuilder), scriptBuilder);
+      ArgumentNullException.ThrowIfNull(scriptBuilder);
 
       var createScriptStatements = new List<ScriptStatement>();
       var dropScriptStatements = new List<ScriptStatement>();

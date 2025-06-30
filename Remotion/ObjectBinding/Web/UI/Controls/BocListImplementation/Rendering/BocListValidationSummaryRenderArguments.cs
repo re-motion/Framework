@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using System.Collections.Generic;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -52,8 +52,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int rowIndex,
         bool renderCellValidationFailuresAsLinks)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnIndexProvider), columnIndexProvider);
-      ArgumentUtility.CheckNotNull(nameof(validationFailures), validationFailures);
+      ArgumentNullException.ThrowIfNull(columnIndexProvider);
+      ArgumentNullException.ThrowIfNull(validationFailures);
 
       ColumnIndexProvider = columnIndexProvider;
       ValidationFailures = validationFailures;

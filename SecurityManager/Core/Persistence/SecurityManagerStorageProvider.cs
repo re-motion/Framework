@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.SecurityManager.Domain;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Persistence
 {
@@ -52,7 +51,7 @@ namespace Remotion.SecurityManager.Persistence
 
     public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataContainers), dataContainers);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       var dataContainersList = dataContainers;
       base.Save(dataContainersList);

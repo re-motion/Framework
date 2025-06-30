@@ -20,7 +20,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.Resources
@@ -44,8 +43,8 @@ namespace Remotion.Web.Resources
 
       public MappedResourcesPathLocator (IHttpContextProvider httpContextProvider, ResourceRoot resourceRoot)
       {
-        ArgumentUtility.CheckNotNull(nameof(httpContextProvider), httpContextProvider);
-        ArgumentUtility.CheckNotNull(nameof(resourceRoot), resourceRoot);
+        ArgumentNullException.ThrowIfNull(httpContextProvider);
+        ArgumentNullException.ThrowIfNull(resourceRoot);
 
         _httpContextProvider = httpContextProvider;
         _resourceRoot = resourceRoot;
@@ -108,8 +107,8 @@ namespace Remotion.Web.Resources
     public ResourcePathBuilderBasedStaticResourceCacheKeyProvider (IHttpContextProvider httpContextProvider, ResourceRoot resourceRoot)
         : this(
             new MappedResourcesPathLocator(
-                ArgumentUtility.CheckNotNull(nameof(httpContextProvider), httpContextProvider),
-                ArgumentUtility.CheckNotNull(nameof(resourceRoot), resourceRoot)),
+                httpContextProvider ?? throw new ArgumentNullException(nameof(httpContextProvider)),
+                resourceRoot ?? throw new ArgumentNullException(nameof(resourceRoot))),
             new ResourceFileDetailsAppender(),
             ResourceType.CacheableResourceTypes)
     {
@@ -120,9 +119,9 @@ namespace Remotion.Web.Resources
         IResourceFileDetailsAppender resourceFileDetailsAppender,
         IReadOnlyList<ResourceType> resourceTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(mappedResourcesPathLocator), mappedResourcesPathLocator);
-      ArgumentUtility.CheckNotNull(nameof(resourceFileDetailsAppender), resourceFileDetailsAppender);
-      ArgumentUtility.CheckNotNull(nameof(resourceTypes), resourceTypes);
+      ArgumentNullException.ThrowIfNull(mappedResourcesPathLocator);
+      ArgumentNullException.ThrowIfNull(resourceFileDetailsAppender);
+      ArgumentNullException.ThrowIfNull(resourceTypes);
 
       _mappedResourcesPathLocator = mappedResourcesPathLocator;
       _resourceFileDetailsAppender = resourceFileDetailsAppender;

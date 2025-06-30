@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Web.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -29,7 +28,7 @@ namespace Remotion.Web.UI.Controls
 
     public StyleSheetImportRule (IResourceUrl resourceUrl)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceUrl), resourceUrl);
+      ArgumentNullException.ThrowIfNull(resourceUrl);
       _resourceUrl = resourceUrl;
     }
 
@@ -40,7 +39,7 @@ namespace Remotion.Web.UI.Controls
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       writer.WriteLine(string.Format("@import url(\"{0}\");", _resourceUrl.GetUrl()));
     }

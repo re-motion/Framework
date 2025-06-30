@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -43,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
 
     protected BrowserConfigurationBase ([NotNull] IWebTestSettings webTestSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(webTestSettings), webTestSettings);
+      ArgumentNullException.ThrowIfNull(webTestSettings);
 
       _loggerFactory = webTestSettings.LoggerFactory;
       _browserName = webTestSettings.BrowserName;

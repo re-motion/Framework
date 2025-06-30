@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
@@ -27,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     public static RelationEndPointDefinitionCollection CreateForAllRelationEndPoints (ClassDefinition classDefinition, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return
           new RelationEndPointDefinitionCollection(
@@ -40,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationEndPointDefinitionCollection (IEnumerable<IRelationEndPointDefinition> collection, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull(nameof(collection), collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       foreach (var relationEndPoint in collection)
         Add(relationEndPoint);
@@ -65,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool Contains (IRelationEndPointDefinition relationEndPoint)
     {
-      ArgumentUtility.CheckNotNull(nameof(relationEndPoint), relationEndPoint);
+      ArgumentNullException.ThrowIfNull(relationEndPoint);
       if (relationEndPoint.IsAnonymous)
         return false;
 
@@ -74,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool Contains (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
       return BaseContainsKey(propertyName);
     }
 
@@ -87,14 +86,14 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+        ArgumentException.ThrowIfNullOrEmpty(propertyName);
         return (IRelationEndPointDefinition?)BaseGetObject(propertyName);
       }
     }
 
     public int Add (IRelationEndPointDefinition value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (value.IsAnonymous)
         throw new ArgumentException("Anonymous end points cannot be added to this collection.", nameof(value));

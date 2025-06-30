@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
@@ -58,7 +57,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public IQueryable<MetadataObject> CreateQuery (string metadataReference)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(metadataReference), metadataReference);
+      ArgumentException.ThrowIfNullOrEmpty(metadataReference);
 
       MetadataID metadataID = MetadataID.Parse(metadataReference);
 

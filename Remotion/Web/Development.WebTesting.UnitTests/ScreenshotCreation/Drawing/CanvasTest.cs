@@ -4,7 +4,6 @@ using System;
 using System.Drawing;
 using System.IO;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.Resources;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.UnitTests.ScreenshotCreation.Drawing;

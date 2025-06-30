@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
 
     protected GenericTestPageParameterBase ([NotNull] string id, int count)
     {
-      ArgumentUtility.CheckNotNull(nameof(id), id);
+      ArgumentNullException.ThrowIfNull(id);
       if (count < 0)
         count = 0;
 
@@ -52,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
     /// <inheritdoc />
     public virtual void Apply (GenericTestPageParameter data)
     {
-      ArgumentUtility.CheckNotNull(nameof(data), data);
+      ArgumentNullException.ThrowIfNull(data);
 
       Assertion.IsTrue(data.Arguments.Count == Count);
 

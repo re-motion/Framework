@@ -19,7 +19,6 @@ using System.Collections;
 using System.IO;
 using System.Web;
 using System.Web.Hosting;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Web.ResourceHosting
 {
@@ -35,8 +34,8 @@ namespace Remotion.Development.Web.ResourceHosting
     public ResourceVirtualDirectory (string virtualPath, DirectoryInfo physicalDirectory, string? displayName = null)
         : base(virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
-      ArgumentUtility.CheckNotNull(nameof(physicalDirectory), physicalDirectory);
+      ArgumentException.ThrowIfNullOrEmpty(virtualPath);
+      ArgumentNullException.ThrowIfNull(physicalDirectory);
 
       _virtualPath = VirtualPathUtility.AppendTrailingSlash(virtualPath);
       _physicalDirectory = physicalDirectory;

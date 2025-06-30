@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Mixins.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.MixerTools
 {
@@ -24,7 +23,7 @@ namespace Remotion.Mixins.MixerTools
   {
     public ValidationErrorEventArgs (ValidationException validationException)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationException), validationException);
+      ArgumentNullException.ThrowIfNull(validationException);
       ValidationException = validationException;
     }
 

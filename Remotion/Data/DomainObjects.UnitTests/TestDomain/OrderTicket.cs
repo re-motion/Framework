@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 {
@@ -43,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     protected OrderTicket (Order order)
     {
-      ArgumentUtility.CheckNotNull(nameof(order), order);
+      ArgumentNullException.ThrowIfNull(order);
       Order = order;
     }
 

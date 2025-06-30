@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI.HtmlControls;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
@@ -31,7 +30,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     StringCollection IFormGridRowProvider.GetHiddenRows (HtmlTable table)
     {
-      ArgumentUtility.CheckNotNull(nameof(table), table);
+      ArgumentNullException.ThrowIfNull(table);
 
       var providers = GetFormGridRowProvider();
 
@@ -43,7 +42,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     FormGridRowInfoCollection IFormGridRowProvider.GetAdditionalRows (HtmlTable table)
     {
-      ArgumentUtility.CheckNotNull(nameof(table), table);
+      ArgumentNullException.ThrowIfNull(table);
 
       var providers = GetFormGridRowProvider();
       return new FormGridRowInfoCollection(providers.SelectMany(p => p.GetAdditionalRows((TSelf)this, table, GetFormGridManager())).ToArray());

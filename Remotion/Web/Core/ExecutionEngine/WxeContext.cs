@@ -76,12 +76,12 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters" or @name="fallbackOnCurrentUrl" or @name="wxeUrlSettings"]' />
     protected static string GetPermanentUrl (HttpContextBase httpContext, Type functionType, NameValueCollection urlParameters, bool fallbackOnCurrentUrl, WxeUrlSettings wxeUrlSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(httpContext), httpContext);
-      ArgumentUtility.CheckNotNull(nameof(functionType), functionType);
+      ArgumentNullException.ThrowIfNull(httpContext);
+      ArgumentNullException.ThrowIfNull(functionType);
       if (!typeof(WxeFunction).IsAssignableFrom(functionType))
         throw new ArgumentException(string.Format("The functionType '{0}' must be derived from WxeFunction.", functionType), nameof(functionType));
-      ArgumentUtility.CheckNotNull(nameof(urlParameters), urlParameters);
-      ArgumentUtility.CheckNotNull(nameof(wxeUrlSettings), wxeUrlSettings);
+      ArgumentNullException.ThrowIfNull(urlParameters);
+      ArgumentNullException.ThrowIfNull(wxeUrlSettings);
 
       NameValueCollection internalUrlParameters = NameValueCollectionUtility.Clone(urlParameters);
       UrlMapping.UrlMappingEntry? mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
@@ -148,8 +148,8 @@ namespace Remotion.Web.ExecutionEngine
     public static void ExecuteFunctionExternal (
         Page page, WxeFunction function, bool createPermaUrl, NameValueCollection urlParameters, bool returnToCaller)
     {
-      ArgumentUtility.CheckNotNull(nameof(page), page);
-      ArgumentUtility.CheckNotNull(nameof(function), function);
+      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(function);
 
       string href = GetExternalFunctionUrl(function, createPermaUrl, urlParameters);
       if (returnToCaller)
@@ -175,9 +175,9 @@ namespace Remotion.Web.ExecutionEngine
     public static void ExecuteFunctionExternal (
         Page page, WxeFunction function, string target, string features, bool createPermaUrl, NameValueCollection urlParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(page), page);
-      ArgumentUtility.CheckNotNull(nameof(function), function);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(target), target);
+      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentException.ThrowIfNullOrEmpty(target);
 
       string href = GetExternalFunctionUrl(function, createPermaUrl, urlParameters);
 
@@ -228,11 +228,11 @@ namespace Remotion.Web.ExecutionEngine
         WxeUrlSettings wxeUrlSettings,
         IWxeLifetimeManagementSettings wxeLifetimeManagementSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(functionStateManager), functionStateManager);
-      ArgumentUtility.CheckNotNull(nameof(functionState), functionState);
-      ArgumentUtility.CheckNotNull(nameof(wxeUrlSettings), wxeUrlSettings);
-      ArgumentUtility.CheckNotNull(nameof(wxeLifetimeManagementSettings), wxeLifetimeManagementSettings);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(functionStateManager);
+      ArgumentNullException.ThrowIfNull(functionState);
+      ArgumentNullException.ThrowIfNull(wxeUrlSettings);
+      ArgumentNullException.ThrowIfNull(wxeLifetimeManagementSettings);
 
       _httpContext = context;
       _functionStateManager = functionStateManager;
@@ -334,8 +334,8 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="queryString"> An optional list of URL parameters to be appended to the <paramref name="path"/>. </param>
     private string GetResumePath (string path, string functionToken, NameValueCollection? queryString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(path), path);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(functionToken), functionToken);
+      ArgumentException.ThrowIfNullOrEmpty(path);
+      ArgumentException.ThrowIfNullOrEmpty(functionToken);
 
       if (!path.StartsWith("/"))
         throw new ArgumentException("The path must be absolute", nameof(path));
@@ -370,7 +370,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="functionType" or @name="urlParameters" or @name="useParentPermanentUrl"]' />
     public string GetPermanentUrl (Type functionType, NameValueCollection urlParameters, bool useParentPermanentUrl)
     {
-      ArgumentUtility.CheckNotNull(nameof(urlParameters), urlParameters);
+      ArgumentNullException.ThrowIfNull(urlParameters);
 
       string permanentUrl = GetPermanentUrl(_httpContext, functionType, urlParameters, true, _wxeUrlSettings);
 

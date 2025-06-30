@@ -58,7 +58,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     public WxeDemandTargetStaticMethodPermissionAttribute (string methodName, Type securableClass)
       : base(MethodType.Static)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(securableClass), securableClass, typeof(ISecurableObject));
 
       Initialize(methodName, securableClass);

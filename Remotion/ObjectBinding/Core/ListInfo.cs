@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
@@ -27,8 +26,8 @@ namespace Remotion.ObjectBinding
 
     public ListInfo (Type propertyType, Type itemType)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
-      ArgumentUtility.CheckNotNull(nameof(itemType), itemType);
+      ArgumentNullException.ThrowIfNull(propertyType);
+      ArgumentNullException.ThrowIfNull(itemType);
 
       _propertyType = propertyType;
       _itemType = itemType;

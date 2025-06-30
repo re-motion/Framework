@@ -61,9 +61,9 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessControlEntry), accessControlEntry);
-      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(accessControlEntry);
+      ArgumentNullException.ThrowIfNull(resourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       _accessControlEntry = accessControlEntry;
       _resourceUrlFactory = resourceUrlFactory;
@@ -77,8 +77,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     public void RenderTenant (HtmlTextWriter writer, IControl container)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(container), container);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(container);
 
       switch (_accessControlEntry.TenantCondition)
       {
@@ -100,8 +100,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     public void RenderGroup (HtmlTextWriter writer, IControl container)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(container), container);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(container);
 
       switch (_accessControlEntry.GroupCondition)
       {
@@ -129,8 +129,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     public void RenderUser (HtmlTextWriter writer, IControl container)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(container), container);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(container);
 
       switch (_accessControlEntry.UserCondition)
       {
@@ -153,8 +153,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     public void RenderAbstractRole (HtmlTextWriter writer, IControl container)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNull(nameof(container), container);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(container);
 
       RenderLabelBeforePropertyPathString(writer, WebString.Empty, "SpecificAbstractRole.DisplayName");
     }

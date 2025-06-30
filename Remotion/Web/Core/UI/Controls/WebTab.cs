@@ -22,7 +22,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
@@ -50,7 +49,7 @@ public class WebTab: IWebTab, IControlStateManager
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, WebString text, IconInfo? icon)
   {
-    ArgumentUtility.CheckNotNull(nameof(itemID), itemID);
+    ArgumentNullException.ThrowIfNull(itemID);
 
     _itemID = itemID;
     _text = text;
@@ -155,7 +154,7 @@ public class WebTab: IWebTab, IControlStateManager
     get { return _itemID; }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       if (! string.IsNullOrEmpty(value))
       {
         WebTabCollection? tabs = null;
@@ -178,7 +177,7 @@ public class WebTab: IWebTab, IControlStateManager
   }
 
   /// <summary> Gets or sets the text displayed in this tab. </summary>
-  /// <remarks> Must not be <see langword="null"/> or emtpy. The value will not be HTML encoded. </remarks>
+  /// <remarks> Must not be an empty <see cref="WebString"/>. The value will not be HTML encoded. </remarks>
   [PersistenceMode(PersistenceMode.Attribute)]
   [Category("Appearance")]
   [Description("The text displayed in this tab. Use '-' for a separator tab.")]
@@ -189,7 +188,8 @@ public class WebTab: IWebTab, IControlStateManager
     get { return _text; }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value.GetValue());
+      if (value.IsEmpty)
+        throw new ArgumentException("The value cannot be empty.", nameof(value));
       _text = value;
     }
   }
@@ -358,8 +358,8 @@ public class WebTab: IWebTab, IControlStateManager
 
   public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
   {
-    ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
-    ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+    ArgumentNullException.ThrowIfNull(resourceManager);
+    ArgumentNullException.ThrowIfNull(globalizationService);
 
     var key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
     if (! string.IsNullOrEmpty(key))
@@ -414,7 +414,7 @@ public class WebTabClickEventArgs: EventArgs
   /// <summary> Initializes an instance. </summary>
   public WebTabClickEventArgs (WebTab tab)
   {
-    ArgumentUtility.CheckNotNull(nameof(tab), tab);
+    ArgumentNullException.ThrowIfNull(tab);
     _tab = tab;
   }
 

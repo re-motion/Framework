@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
@@ -49,9 +48,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
           null,
           transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(newCollection), newCollection);
-      ArgumentUtility.CheckNotNull(nameof(modifiedCollectionData), modifiedCollectionData);
-      ArgumentUtility.CheckNotNull(nameof(collectionEndPointCollectionManager), collectionEndPointCollectionManager);
+      ArgumentNullException.ThrowIfNull(newCollection);
+      ArgumentNullException.ThrowIfNull(modifiedCollectionData);
+      ArgumentNullException.ThrowIfNull(collectionEndPointCollectionManager);
 
       _newCollection = newCollection;
       _modifiedCollectionData = modifiedCollectionData;

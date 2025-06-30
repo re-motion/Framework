@@ -53,7 +53,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// </summary>
     public bool ShouldConsiderAssembly (AssemblyName assemblyName)
     {
-      ArgumentUtility.CheckNotNull(nameof(assemblyName), assemblyName);
+      ArgumentNullException.ThrowIfNull(assemblyName);
       return true;
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// </returns>
     public bool ShouldIncludeAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
       return assembly.IsDefined(_attributeType, false);
     }
   }

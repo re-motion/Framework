@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel;
 using Remotion.Collections;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Obsolete;
 
 namespace Remotion.Web.ExecutionEngine
@@ -119,7 +118,7 @@ public abstract class WxeStep
   [EditorBrowsable(EditorBrowsableState.Never)]
   public void SetParentStep (WxeStep parentStep)
   {
-    ArgumentUtility.CheckNotNull(nameof(parentStep), parentStep);
+    ArgumentNullException.ThrowIfNull(parentStep);
     _parentStep = parentStep;
   }
 

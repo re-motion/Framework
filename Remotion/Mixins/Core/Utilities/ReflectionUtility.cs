@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Utilities
 {
@@ -31,7 +30,7 @@ namespace Remotion.Mixins.Utilities
 
     public static bool IsMixinType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       if (!typeof(IInitializableMixin).IsAssignableFrom(type))
         return false;
 
@@ -40,33 +39,33 @@ namespace Remotion.Mixins.Utilities
 
     public static bool IsEqualOrInstantiationOf (Type typeToCheck, Type expectedType)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeToCheck), typeToCheck);
-      ArgumentUtility.CheckNotNull(nameof(expectedType), expectedType);
+      ArgumentNullException.ThrowIfNull(typeToCheck);
+      ArgumentNullException.ThrowIfNull(expectedType);
 
       return typeToCheck.Equals(expectedType) || (typeToCheck.IsGenericType && typeToCheck.GetGenericTypeDefinition().Equals(expectedType));
     }
 
     public static bool IsPublicOrProtected (MethodBase methodToCheck)
     {
-      ArgumentUtility.CheckNotNull(nameof(methodToCheck), methodToCheck);
+      ArgumentNullException.ThrowIfNull(methodToCheck);
       return methodToCheck.IsPublic || methodToCheck.IsFamily || methodToCheck.IsFamilyOrAssembly;
     }
 
     public static bool IsPublicOrProtectedOrExplicit (MethodBase methodToCheck)
     {
-      ArgumentUtility.CheckNotNull(nameof(methodToCheck), methodToCheck);
+      ArgumentNullException.ThrowIfNull(methodToCheck);
       return IsPublicOrProtected(methodToCheck) || (methodToCheck.IsPrivate && methodToCheck.IsVirtual);
     }
 
     public static bool IsNewSlotMember (MemberInfo member)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
+      ArgumentNullException.ThrowIfNull(member);
       return CheckMethodAttributeOnMember(member, MethodAttributes.NewSlot);
     }
 
     public static bool IsVirtualMember (MemberInfo member)
     {
-      ArgumentUtility.CheckNotNull(nameof(member), member);
+      ArgumentNullException.ThrowIfNull(member);
       return CheckMethodAttributeOnMember(member, MethodAttributes.Virtual);
     }
 
@@ -139,21 +138,21 @@ namespace Remotion.Mixins.Utilities
 
     public static bool IsAssemblySigned (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
       // C# compiler 7.2 already provides caching for anonymous method.
       return s_isAssemblySignedCache.GetOrAdd(assembly, asm => IsAssemblySigned(asm.GetName()));
     }
 
     public static bool IsAssemblySigned (AssemblyName assemblyName)
     {
-      ArgumentUtility.CheckNotNull(nameof(assemblyName), assemblyName);
+      ArgumentNullException.ThrowIfNull(assemblyName);
       byte[]? publicKeyOrToken = assemblyName.GetPublicKey() ?? assemblyName.GetPublicKeyToken();
       return publicKeyOrToken != null && publicKeyOrToken.Length > 0;
     }
 
     public static bool IsReachableFromSignedAssembly (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (!IsAssemblySigned(type.Assembly))
         return false;
@@ -166,13 +165,13 @@ namespace Remotion.Mixins.Utilities
 
     public static bool IsRangeReachableFromSignedAssembly (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull(nameof(types), types);
+      ArgumentNullException.ThrowIfNull(types);
       return types.All(IsReachableFromSignedAssembly);
     }
 
     public static MethodInfo?[] GetAssociatedMethods (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
+      ArgumentNullException.ThrowIfNull(memberInfo);
 
       switch (memberInfo.MemberType)
       {

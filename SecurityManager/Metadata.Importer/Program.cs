@@ -30,7 +30,6 @@ using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.ServiceLocation;
 using Remotion.Tools.Console.CommandLine;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Metadata.Importer
 {
@@ -75,7 +74,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
 
     private Program (CommandLineArguments arguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(arguments), arguments);
+      ArgumentNullException.ThrowIfNull(arguments);
       _arguments = arguments;
     }
 

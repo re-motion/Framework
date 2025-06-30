@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.ExtensibleEnums;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject.Properties
 {
@@ -80,7 +79,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public EnumerationValueInfo CreateEnumerationValueInfo (IExtensibleEnumInfo extensibleEnumInfo, IBusinessObject? businessObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(extensibleEnumInfo), extensibleEnumInfo);
+      ArgumentNullException.ThrowIfNull(extensibleEnumInfo);
 
       return new EnumerationValueInfo(
           extensibleEnumInfo.Value,

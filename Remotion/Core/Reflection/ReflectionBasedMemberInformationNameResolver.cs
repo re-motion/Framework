@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection
 {
@@ -53,7 +52,7 @@ namespace Remotion.Reflection
     /// <returns>The name of the given <paramref name="propertyInformation"/> as used internally by the mapping.</returns>
     public string GetPropertyName (IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyInformation), propertyInformation);
+      ArgumentNullException.ThrowIfNull(propertyInformation);
 
       return s_propertyNameCache.GetOrAdd(propertyInformation, _getPropertyNameInternalFunc);
     }
@@ -65,14 +64,14 @@ namespace Remotion.Reflection
     /// <returns>The name of the given <paramref name="typeInformation"/> as used internally by the mapping.</returns>
     public string GetTypeName (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeInformation), typeInformation);
+      ArgumentNullException.ThrowIfNull(typeInformation);
 
       return s_typeNameCache.GetOrAdd(typeInformation, _getTypeNameInternalFunc);
     }
 
     public string GetEnumName (Enum enumValue)
     {
-      ArgumentUtility.CheckNotNull(nameof(enumValue), enumValue);
+      ArgumentNullException.ThrowIfNull(enumValue);
 
       return s_enumCache.GetOrAdd(enumValue, _getEnumNameInternalFunc);
     }

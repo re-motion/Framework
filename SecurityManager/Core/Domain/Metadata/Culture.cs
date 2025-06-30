@@ -19,7 +19,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
@@ -35,7 +34,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static Culture? Find (string cultureName)
     {
-      ArgumentUtility.CheckNotNull(nameof(cultureName), cultureName);
+      ArgumentNullException.ThrowIfNull(cultureName);
 
       var result = from c in QueryFactory.CreateLinqQuery<Culture>()
                    where c.CultureName == cultureName
@@ -46,7 +45,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected Culture (string cultureName)
     {
-      ArgumentUtility.CheckNotNull(nameof(cultureName), cultureName);
+      ArgumentNullException.ThrowIfNull(cultureName);
 
       CultureName = cultureName;
     }

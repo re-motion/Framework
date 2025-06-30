@@ -45,13 +45,13 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeUserControlStep (ResourceObjectBase userControl)
     {
-      ArgumentUtility.CheckNotNull(nameof(userControl), userControl);
+      ArgumentNullException.ThrowIfNull(userControl);
       _userControl = userControl;
     }
 
     public override void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (_wxeHandler != null)
       {
@@ -86,9 +86,9 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull(nameof(userControl), userControl);
-      ArgumentUtility.CheckNotNull(nameof(subFunction), subFunction);
-      ArgumentUtility.CheckNotNull(nameof(sender), sender);
+      ArgumentNullException.ThrowIfNull(userControl);
+      ArgumentNullException.ThrowIfNull(subFunction);
+      ArgumentNullException.ThrowIfNull(sender);
 
       IWxePage? wxePage = userControl.WxePage;
       _wxeHandler = wxePage!.WxeHandler;
@@ -125,7 +125,7 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetUserControlExecutor (IUserControlExecutor userControlExecutor)
     {
-      ArgumentUtility.CheckNotNull(nameof(userControlExecutor), userControlExecutor);
+      ArgumentNullException.ThrowIfNull(userControlExecutor);
       _userControlExecutor = userControlExecutor;
     }
 

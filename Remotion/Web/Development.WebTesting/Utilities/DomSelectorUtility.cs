@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static string CreateMatchValueForCssSelector (string propertyValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyValue), propertyValue);
+      ArgumentException.ThrowIfNullOrEmpty(propertyValue);
 
       return string.Format("'{0}'", propertyValue.Replace("'", @"\'"));
     }
@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </remarks>
     public static string CreateMatchValueForXPath (string propertyValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyValue), propertyValue);
+      ArgumentException.ThrowIfNullOrEmpty(propertyValue);
 
       if (propertyValue.Contains("'") && propertyValue.Contains("\""))
         return string.Format("concat('{0}')", propertyValue.Replace("'", "',\"'\",'"));
@@ -64,8 +64,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <returns>The XPath predicate.</returns>
     public static string CreateHasAttributeCheckForXPath (string attributeName, string attributeValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attributeName), attributeName);
-      ArgumentUtility.CheckNotNull(nameof(attributeValue), attributeValue);
+      ArgumentException.ThrowIfNullOrEmpty(attributeName);
+      ArgumentNullException.ThrowIfNull(attributeValue);
 
       return string.Format("[@{0}='{1}']", attributeName, attributeValue);
     }
@@ -77,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <returns>The XPath predicate.</returns>
     public static string CreateHasClassCheckForXPath (string cssClass)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(cssClass), cssClass);
+      ArgumentException.ThrowIfNullOrEmpty(cssClass);
 
       return string.Format("[{0}]", CreateClassCheckClauseForXPath(cssClass));
     }

@@ -21,7 +21,6 @@ using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -39,10 +38,10 @@ namespace Remotion.Mixins.CrossReferencer.Report
         ErrorAggregator<ValidationException> validationErrors,
         IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull(nameof(involvedTypes), involvedTypes);
-      ArgumentUtility.CheckNotNull(nameof(configurationErrors), configurationErrors);
-      ArgumentUtility.CheckNotNull(nameof(validationErrors), validationErrors);
-      ArgumentUtility.CheckNotNull(nameof(outputFormatter), outputFormatter);
+      ArgumentNullException.ThrowIfNull(involvedTypes);
+      ArgumentNullException.ThrowIfNull(configurationErrors);
+      ArgumentNullException.ThrowIfNull(validationErrors);
+      ArgumentNullException.ThrowIfNull(outputFormatter);
 
       _involvedTypes = involvedTypes;
       _configurationErrors = configurationErrors;

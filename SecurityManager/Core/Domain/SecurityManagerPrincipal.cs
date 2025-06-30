@@ -60,7 +60,7 @@ namespace Remotion.SecurityManager.Domain
       get { return s_principal.Current; }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(value), value);
+        ArgumentNullException.ThrowIfNull(value);
         s_principal.SetCurrent(value);
       }
     }
@@ -93,8 +93,8 @@ namespace Remotion.SecurityManager.Domain
         [CanBeNull] IDomainObjectHandle<User>? substitutedUserHandle,
         [CanBeNull] IReadOnlyList<IDomainObjectHandle<Role>>? substitutedRoleHandles)
     {
-      ArgumentUtility.CheckNotNull(nameof(tenantHandle), tenantHandle);
-      ArgumentUtility.CheckNotNull(nameof(userHandle), userHandle);
+      ArgumentNullException.ThrowIfNull(tenantHandle);
+      ArgumentNullException.ThrowIfNull(userHandle);
       if (substitutionHandle == null && (substitutedUserHandle != null || substitutedRoleHandles != null))
       {
         throw new ArgumentException(

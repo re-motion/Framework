@@ -16,7 +16,6 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -38,14 +37,14 @@ public class IgnoreBrowserLogMessageAttribute : WebTestAttribute
 
   public IgnoreBrowserLogMessageAttribute ([NotNull] [RegexPattern] string pattern)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(pattern), pattern);
+    ArgumentException.ThrowIfNullOrEmpty(pattern);
 
     Pattern = pattern;
   }
 
   public IgnoreBrowserLogMessageAttribute ([NotNull] [RegexPattern] string pattern, [NotNull] [ItemCanBeNull] object?[] templateArgs)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(pattern), pattern);
+    ArgumentException.ThrowIfNullOrEmpty(pattern);
     ArgumentUtility.CheckNotNullOrEmpty(nameof(templateArgs), templateArgs);
 
     pattern = string.Format(pattern, templateArgs);
@@ -57,7 +56,7 @@ public class IgnoreBrowserLogMessageAttribute : WebTestAttribute
 
   public override void ApplyValue (IDictionary<string, object> dictionary)
   {
-    ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
+    ArgumentNullException.ThrowIfNull(dictionary);
 
     if (!dictionary.TryGetValue(PropertyKey, out var value) || value is not IList<Regex> patterns)
     {

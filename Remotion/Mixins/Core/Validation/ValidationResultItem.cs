@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Validation
 {
@@ -26,8 +25,8 @@ namespace Remotion.Mixins.Validation
 
     public ValidationResultItem (string ruleName, string message)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(ruleName), ruleName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
+      ArgumentException.ThrowIfNullOrEmpty(ruleName);
+      ArgumentException.ThrowIfNullOrEmpty(message);
 
       _ruleName = ruleName;
       _message = message;

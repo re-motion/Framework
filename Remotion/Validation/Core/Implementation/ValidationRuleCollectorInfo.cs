@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Validation.Providers;
 
 namespace Remotion.Validation.Implementation
@@ -31,8 +30,8 @@ namespace Remotion.Validation.Implementation
 
     public ValidationRuleCollectorInfo (IValidationRuleCollector collector, Type providerType)
     {
-      ArgumentUtility.CheckNotNull(nameof(collector), collector);
-      ArgumentUtility.CheckNotNull(nameof(providerType), providerType);
+      ArgumentNullException.ThrowIfNull(collector);
+      ArgumentNullException.ThrowIfNull(providerType);
 
       _providerType = providerType;
       _collector = collector;

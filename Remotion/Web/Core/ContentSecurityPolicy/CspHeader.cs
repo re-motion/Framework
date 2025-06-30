@@ -6,7 +6,6 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Primitives;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ContentSecurityPolicy;
 
@@ -25,7 +24,7 @@ public class CspHeader
 
   private CspHeader (ImmutableDictionary<string, StringValues> directives)
   {
-    ArgumentUtility.CheckNotNull(nameof(directives), directives);
+    ArgumentNullException.ThrowIfNull(directives);
 
     _directives = directives;
   }
@@ -49,8 +48,8 @@ public class CspHeader
   [Pure]
   public CspHeader AddDirectiveValue (string directive, string value)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(directive), directive);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+    ArgumentException.ThrowIfNullOrEmpty(directive);
+    ArgumentException.ThrowIfNullOrEmpty(value);
     if (value.Contains(' '))
       throw new ArgumentException("Value must not contain spaces.", nameof(value));
 
@@ -76,8 +75,8 @@ public class CspHeader
   [Pure]
   public CspHeader SetDirective (string directive, string value)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(directive), directive);
-    ArgumentUtility.CheckNotNull(nameof(value), value);
+    ArgumentException.ThrowIfNullOrEmpty(directive);
+    ArgumentNullException.ThrowIfNull(value);
 
     var values = ParseDirectiveValues(value);
     return new CspHeader(_directives.SetItem(directive, values));
@@ -99,7 +98,7 @@ public class CspHeader
   [Pure]
   public CspHeader RemoveDirective (string directive)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(directive), directive);
+    ArgumentException.ThrowIfNullOrEmpty(directive);
 
     return _directives.ContainsKey(directive)
         ? new CspHeader(_directives.Remove(directive))
@@ -122,7 +121,7 @@ public class CspHeader
   [Pure]
   public bool TryGetDirectiveValues (string directive, out StringValues values)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(directive), directive);
+    ArgumentException.ThrowIfNullOrEmpty(directive);
 
     return _directives.TryGetValue(directive, out values);
   }
@@ -138,7 +137,7 @@ public class CspHeader
 
   public void ToString (StringBuilder stringBuilder)
   {
-    ArgumentUtility.CheckNotNull(nameof(stringBuilder), stringBuilder);
+    ArgumentNullException.ThrowIfNull(stringBuilder);
 
     var firstDirective = true;
     foreach (var (directiveName, values) in _directives.OrderBy(e => e.Key))

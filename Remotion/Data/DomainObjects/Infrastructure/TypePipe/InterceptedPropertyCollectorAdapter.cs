@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public IEnumerable<IAccessorInterceptor> GetPropertyInterceptors (ClassDefinition classDefinition, Type concreteBaseType)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(concreteBaseType), concreteBaseType, typeof(DomainObject));
 
       var properties = new InterceptedPropertyCollector(classDefinition, _typeConversionProvider).GetProperties();

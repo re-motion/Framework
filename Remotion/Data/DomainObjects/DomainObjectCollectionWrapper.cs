@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -38,7 +37,7 @@ namespace Remotion.Data.DomainObjects
 
     public DomainObjectCollectionWrapper (DomainObjectCollection wrappedCollection)
     {
-      ArgumentUtility.CheckNotNull(nameof(wrappedCollection), wrappedCollection);
+      ArgumentNullException.ThrowIfNull(wrappedCollection);
 
       var requiredItemType = wrappedCollection.RequiredItemType ?? typeof(DomainObject);
       if (!typeof(T).IsAssignableFrom(requiredItemType))

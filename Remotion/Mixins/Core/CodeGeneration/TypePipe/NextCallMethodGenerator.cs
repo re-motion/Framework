@@ -66,11 +66,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         Expression depthField,
         IList<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetClassDefinition), targetClassDefinition);
-      ArgumentUtility.CheckNotNull(nameof(targetTypeForNextCall), targetTypeForNextCall);
-      ArgumentUtility.CheckNotNull(nameof(thisField), thisField);
-      ArgumentUtility.CheckNotNull(nameof(depthField), depthField);
-      ArgumentUtility.CheckNotNull(nameof(mixinInfos), mixinInfos);
+      ArgumentNullException.ThrowIfNull(targetClassDefinition);
+      ArgumentNullException.ThrowIfNull(targetTypeForNextCall);
+      ArgumentNullException.ThrowIfNull(thisField);
+      ArgumentNullException.ThrowIfNull(depthField);
+      ArgumentNullException.ThrowIfNull(mixinInfos);
 
       _targetClassDefinition = targetClassDefinition;
       _targetTypeForNextCall = targetTypeForNextCall;

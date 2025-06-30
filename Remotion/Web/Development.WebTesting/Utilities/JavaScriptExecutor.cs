@@ -34,9 +34,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <exception cref="InvalidOperationException">The JavaScript statement returned a value.</exception>
     public static void ExecuteVoidStatement ([NotNull] IJavaScriptExecutor executor, [NotNull] string statement, [NotNull] params object[] args)
     {
-      ArgumentUtility.CheckNotNull(nameof(executor), executor);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
-      ArgumentUtility.CheckNotNull(nameof(args), args);
+      ArgumentNullException.ThrowIfNull(executor);
+      ArgumentException.ThrowIfNullOrEmpty(statement);
+      ArgumentNullException.ThrowIfNull(args);
 
       var result = executor.ExecuteScript(statement, args);
       if (result != null)
@@ -52,9 +52,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     {
       // TODO RM-8107: Improve null safety.
 
-      ArgumentUtility.CheckNotNull(nameof(executor), executor);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
-      ArgumentUtility.CheckNotNull(nameof(args), args);
+      ArgumentNullException.ThrowIfNull(executor);
+      ArgumentException.ThrowIfNullOrEmpty(statement);
+      ArgumentNullException.ThrowIfNull(args);
 
       var result = executor.ExecuteScript(statement, args);
       if (result == null && !NullableTypeUtility.IsNullableType(typeof(T)))
@@ -71,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static IJavaScriptExecutor GetJavaScriptExecutor ([NotNull] IBrowserSession browserSession)
     {
-      ArgumentUtility.CheckNotNull(nameof(browserSession), browserSession);
+      ArgumentNullException.ThrowIfNull(browserSession);
 
       return (IJavaScriptExecutor)browserSession.Driver.Native;
     }
@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static IJavaScriptExecutor GetJavaScriptExecutor ([NotNull] ControlObject controlObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
+      ArgumentNullException.ThrowIfNull(controlObject);
 
       return (IJavaScriptExecutor)((IWrapsDriver)controlObject.Scope.Native).WrappedDriver;
     }
@@ -91,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static IJavaScriptExecutor GetJavaScriptExecutor ([NotNull] ElementScope element)
     {
-      ArgumentUtility.CheckNotNull(nameof(element), element);
+      ArgumentNullException.ThrowIfNull(element);
 
       return (IJavaScriptExecutor)((IWrapsDriver)element.Native).WrappedDriver;
     }
@@ -101,7 +101,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public static IJavaScriptExecutor GetJavaScriptExecutor ([NotNull] IWebElement webElement)
     {
-      ArgumentUtility.CheckNotNull(nameof(webElement), webElement);
+      ArgumentNullException.ThrowIfNull(webElement);
 
       return (IJavaScriptExecutor)((IWrapsDriver)webElement).WrappedDriver;
     }

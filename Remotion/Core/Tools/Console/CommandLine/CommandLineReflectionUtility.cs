@@ -24,10 +24,8 @@ namespace Remotion.Tools.Console.CommandLine
   {
     public static void SetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty, object value)
     {
-      if (obj == null)
-        throw new ArgumentNullException(nameof(obj));
-      if (fieldOrProperty == null)
-        throw new ArgumentNullException(nameof(fieldOrProperty));
+      ArgumentNullException.ThrowIfNull(obj);
+      ArgumentNullException.ThrowIfNull(fieldOrProperty);
 
       if (fieldOrProperty is FieldInfo)
         ((FieldInfo)fieldOrProperty).SetValue(obj, value);

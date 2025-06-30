@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Implementation
@@ -31,7 +30,7 @@ namespace Remotion.Validation.Implementation
 
     public TypedValidatorDecorator (IValidator validator)
     {
-      ArgumentUtility.CheckNotNull(nameof(validator), validator);
+      ArgumentNullException.ThrowIfNull(validator);
       if (!validator.CanValidateInstancesOfType(typeof(T)))
       {
         throw new ArgumentException(
@@ -49,7 +48,7 @@ namespace Remotion.Validation.Implementation
 
     public ValidationResult Validate (T instance)
     {
-      ArgumentUtility.CheckNotNull(nameof(instance), instance);
+      ArgumentNullException.ThrowIfNull(instance);
 
       return _validator.Validate(instance);
     }
@@ -61,21 +60,21 @@ namespace Remotion.Validation.Implementation
 
     public bool CanValidateInstancesOfType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _validator.CanValidateInstancesOfType(type);
     }
 
     ValidationResult IValidator.Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull(nameof(instance), instance);
+      ArgumentNullException.ThrowIfNull(instance);
 
       return _validator.Validate(instance);
     }
 
     ValidationResult IValidator.Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return _validator.Validate(context);
     }

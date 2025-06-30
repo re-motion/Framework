@@ -16,7 +16,6 @@
 // 
 using System;
 using Moq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -24,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
   {
     public static Mock<IDomainObjectMockEventReceiver> CreateMock (MockBehavior mockBehavior, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       var mock = new Mock<IDomainObjectMockEventReceiver>(mockBehavior);
 

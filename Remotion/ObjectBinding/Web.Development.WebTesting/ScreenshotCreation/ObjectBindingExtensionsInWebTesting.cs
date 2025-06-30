@@ -18,7 +18,6 @@ using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 // ReSharper disable once CheckNamespace
@@ -33,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting
     public static FluentScreenshotElement<ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject>> ForScreenshot (
         [NotNull] this BocListControlObject list)
     {
-      ArgumentUtility.CheckNotNull(nameof(list), list);
+      ArgumentNullException.ThrowIfNull(list);
 
       return SelfResolvableFluentScreenshot.Create(
           new ScreenshotBocList<BocListControlObject, BocListRowControlObject, BocListCellControlObject>(
@@ -51,7 +50,7 @@ namespace Remotion.Web.Development.WebTesting
         where TBocListControlObject : BocListControlObject<TBocListRowControlObject>
         where TBocListRowControlObject : BocListRowControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(list), list);
+      ArgumentNullException.ThrowIfNull(list);
 
       return SelfResolvableFluentScreenshot.Create(
           new ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListCellControlObject>(
@@ -65,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting
     public static FluentScreenshotElement<ScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>> ForScreenshot (
         [NotNull] this BocListAsGridControlObject listAsGrid)
     {
-      ArgumentUtility.CheckNotNull(nameof(listAsGrid), listAsGrid);
+      ArgumentNullException.ThrowIfNull(listAsGrid);
 
       return SelfResolvableFluentScreenshot.Create(
           new ScreenshotBocList<BocListAsGridControlObject, BocListAsGridRowControlObject, BocListAsGridCellControlObject>(

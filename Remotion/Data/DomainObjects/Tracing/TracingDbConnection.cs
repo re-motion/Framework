@@ -17,7 +17,6 @@
 using System;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
@@ -80,8 +79,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDbConnection (IDbConnection connection, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull(nameof(connection), connection);
-      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
+      ArgumentNullException.ThrowIfNull(connection);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
 
       _connection = connection;
       _persistenceExtension = persistenceExtension;

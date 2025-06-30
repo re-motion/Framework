@@ -51,8 +51,8 @@ namespace Remotion.Mixins.Context.FluentBuilders
 
     public ClassContextBuilder (MixinConfigurationBuilder parent, Type targetType)
     {
-      ArgumentUtility.CheckNotNull(nameof(parent), parent);
-      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
+      ArgumentNullException.ThrowIfNull(parent);
+      ArgumentNullException.ThrowIfNull(targetType);
 
       _parent = parent;
       _targetType = targetType;
@@ -140,8 +140,8 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </returns>
     public virtual MixinContextBuilder AddMixin (Type mixinType, MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(origin);
 
       if (AlreadyAppliedSame(mixinType))
       {
@@ -178,7 +178,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A <see cref="MixinContextBuilder"/> object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder AddMixin<TMixin> (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
       return AddMixin(typeof(TMixin), origin);
     }
 
@@ -202,8 +202,8 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixins (MixinContextOrigin origin, params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinTypes), mixinTypes);
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(mixinTypes);
+      ArgumentNullException.ThrowIfNull(origin);
 
       foreach (Type mixinType in mixinTypes)
         AddMixin(mixinType, origin);
@@ -218,7 +218,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddMixins (params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinTypes), mixinTypes);
+      ArgumentNullException.ThrowIfNull(mixinTypes);
 
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
       return AddMixins(origin, mixinTypes);
@@ -233,7 +233,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixins<TMixin1, TMixin2> (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
 
       return AddMixins(origin, typeof(TMixin1), typeof(TMixin2));
     }
@@ -261,7 +261,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixins<TMixin1, TMixin2, TMixin3> (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
       return AddMixins(origin, typeof(TMixin1), typeof(TMixin2), typeof(TMixin3));
     }
 
@@ -288,8 +288,8 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddOrderedMixins (MixinContextOrigin origin, params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
-      ArgumentUtility.CheckNotNull(nameof(mixinTypes), mixinTypes);
+      ArgumentNullException.ThrowIfNull(origin);
+      ArgumentNullException.ThrowIfNull(mixinTypes);
 
       Type? lastMixinType = null;
       foreach (Type mixinType in mixinTypes)
@@ -311,7 +311,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddOrderedMixins (params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinTypes), mixinTypes);
+      ArgumentNullException.ThrowIfNull(mixinTypes);
 
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
       return AddOrderedMixins(origin, mixinTypes);
@@ -327,7 +327,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2> (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
       return AddOrderedMixins(origin, typeof(TMixin1), typeof(TMixin2));
     }
 
@@ -356,7 +356,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2, TMixin3> (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
       return AddOrderedMixins(origin, typeof(TMixin1), typeof(TMixin2), typeof(TMixin3));
     }
 
@@ -385,8 +385,8 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual MixinContextBuilder EnsureMixin (Type mixinType, MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(origin);
 
       MixinContextBuilder? builder;
       if (!_mixinContextBuilders.TryGetValue(mixinType, out builder))
@@ -405,7 +405,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinContextBuilder EnsureMixin (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
       return EnsureMixin(mixinType, origin);
     }
@@ -420,7 +420,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual MixinContextBuilder EnsureMixin<TMixin> (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
       return EnsureMixin(typeof(TMixin), origin);
     }
 
@@ -450,7 +450,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     public virtual ClassContextBuilder EnsureMixins (MixinContextOrigin origin, params Type[] mixinTypes)
     {
       ArgumentUtility.CheckNotNullOrEmpty(nameof(mixinTypes), mixinTypes);
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
 
       foreach (Type mixinType in mixinTypes)
         EnsureMixin(mixinType, origin);
@@ -485,7 +485,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixins<TMixin1, TMixin2> (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
       return EnsureMixins(origin, typeof(TMixin1), typeof(TMixin2));
     }
 
@@ -517,7 +517,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixins<TMixin1, TMixin2, TMixin3> (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
       return EnsureMixins(origin, typeof(TMixin1), typeof(TMixin2), typeof(TMixin3));
     }
 
@@ -546,7 +546,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddComposedInterface (Type interfaceType)
     {
-      ArgumentUtility.CheckNotNull(nameof(interfaceType), interfaceType);
+      ArgumentNullException.ThrowIfNull(interfaceType);
       if (_composedInterfaces.Contains(interfaceType))
       {
         string message = string.Format("{0} is already configured as a composed interface for type {1}.",
@@ -615,7 +615,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder SuppressMixin (IMixinSuppressionRule rule)
     {
-      ArgumentUtility.CheckNotNull(nameof(rule), rule);
+      ArgumentNullException.ThrowIfNull(rule);
       _suppressedMixins.Add(rule);
       return this;
     }
@@ -629,7 +629,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder SuppressMixin (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
       _suppressedMixins.Add(new MixinTreeSuppressionRule(mixinType));
       return this;
     }
@@ -655,7 +655,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder SuppressMixins (params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinTypes), mixinTypes);
+      ArgumentNullException.ThrowIfNull(mixinTypes);
       foreach (Type mixinType in mixinTypes)
         SuppressMixin(mixinType);
       return this;
@@ -698,8 +698,8 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the <see cref="TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixinDependency (Type dependentMixin, Type requiredMixin)
     {
-      ArgumentUtility.CheckNotNull(nameof(dependentMixin), dependentMixin);
-      ArgumentUtility.CheckNotNull(nameof(requiredMixin), requiredMixin);
+      ArgumentNullException.ThrowIfNull(dependentMixin);
+      ArgumentNullException.ThrowIfNull(requiredMixin);
 
       _mixinDependencies.Add(dependentMixin, requiredMixin);
       return this;

@@ -24,7 +24,6 @@ using System.Web.UI.WebControls;
 using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -148,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public static IconInfo? GetIcon (IBusinessObject? businessObject, IBusinessObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
 
       var webUIService = businessObjectProvider.GetService<IBusinessObjectWebUIService>();
 
@@ -171,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public static string? GetToolTip (IBusinessObject businessObject, IBusinessObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
 
       var webUIService = businessObjectProvider.GetService<IBusinessObjectWebUIService>();
 
@@ -183,7 +182,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public static HelpInfo? GetHelpInfo (IBusinessObjectBoundWebControl control)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
+      ArgumentNullException.ThrowIfNull(control);
 
       var dataSource = control.DataSource;
       if (dataSource == null)
@@ -362,7 +361,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An <see cref="IResourceManager"/> from which all resources for this control can be obtained.</returns>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      ArgumentUtility.CheckNotNull(nameof(localResourcesType), localResourcesType);
+      ArgumentNullException.ThrowIfNull(localResourcesType);
 
       return _resourceManagerCache.GetOrCreateValue(
           Tuple.Create(localResourcesType, NamingContainer),
@@ -409,7 +408,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public void AssignLabels (IEnumerable<string> labelIDs)
     {
-      ArgumentUtility.CheckNotNull(nameof(labelIDs), labelIDs);
+      ArgumentNullException.ThrowIfNull(labelIDs);
 
       _assignedLabelIDs = labelIDs.ToList().AsReadOnly();
     }
@@ -480,8 +479,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       string? key;
       key = ResourceManagerUtility.GetGlobalResourceKey(AccessKey);

@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
 {
@@ -50,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
       /// <inheritdoc />
       public bool ContainsKey (string key)
       {
-        ArgumentUtility.CheckNotNull(nameof(key), key);
+        ArgumentNullException.ThrowIfNull(key);
 
         return Keys.Any(e => e == key);
       }
@@ -58,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
       /// <inheritdoc />
       public bool TryGetValue (string key, out string value)
       {
-        ArgumentUtility.CheckNotNull(nameof(key), key);
+        ArgumentNullException.ThrowIfNull(key);
 
         if (ContainsKey(key))
         {
@@ -81,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
       {
         get
         {
-          ArgumentUtility.CheckNotNull(nameof(key), key);
+          ArgumentNullException.ThrowIfNull(key);
 
           return TryGetValue(key, out var value) ? value : throw new KeyNotFoundException($"Could not find a value for the key '{key}'.");
         }
@@ -94,7 +93,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
 
     public WebTestHostingAdapter (ProviderSettings providerSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(providerSettings), providerSettings);
+      ArgumentNullException.ThrowIfNull(providerSettings);
 
       _providerSettings = providerSettings;
     }

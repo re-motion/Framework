@@ -17,7 +17,6 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -30,9 +29,9 @@ namespace Remotion.Mixins.Definitions
 
     public RequiredMethodDefinition (RequirementDefinitionBase declaringRequirement, MethodInfo interfaceMethod, MethodDefinition implementingMethod)
     {
-      ArgumentUtility.CheckNotNull(nameof(declaringRequirement), declaringRequirement);
-      ArgumentUtility.CheckNotNull(nameof(implementingMethod), implementingMethod);
-      ArgumentUtility.CheckNotNull(nameof(interfaceMethod), interfaceMethod);
+      ArgumentNullException.ThrowIfNull(declaringRequirement);
+      ArgumentNullException.ThrowIfNull(implementingMethod);
+      ArgumentNullException.ThrowIfNull(interfaceMethod);
 
       _declaringRequirement = declaringRequirement;
       _interfaceMethod = interfaceMethod;
@@ -66,7 +65,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
     }
   }

@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
           () => new UpdatedColumnsSpecification(new ColumnValue[0]),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'columnValues' cannot be empty.", "columnValues"));
+                  "The value cannot be an empty collection.", "columnValues"));
     }
 
     [Test]

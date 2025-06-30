@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>Returns the <see cref="BindableObjectProvider"/> for the <paramref name="type"/>.</returns>
     public static BindableObjectProvider GetProviderForBindableObjectType (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var providerAttributeType = s_providerAttributeTypeCache.GetOrAdd(type, s_findProviderAttributeTypeFunc);
 
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </remarks>
     public static bool IsBindableObjectImplementation (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (!IsSupportedAsBindableObjectImplementation(type))
         return false;
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     internal static Type GetConcreteTypeForBindableObjectImplementation (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var hasSupportForMixins = !type.IsSealed;
       if (hasSupportForMixins)
@@ -149,8 +149,8 @@ namespace Remotion.ObjectBinding.BindableObject
     public BindableObjectProvider (IMetadataFactory metadataFactory, IBusinessObjectServiceFactory serviceFactory)
         : base(serviceFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(metadataFactory), metadataFactory);
-      ArgumentUtility.CheckNotNull(nameof(serviceFactory), serviceFactory);
+      ArgumentNullException.ThrowIfNull(metadataFactory);
+      ArgumentNullException.ThrowIfNull(serviceFactory);
 
       _metadataFactory = metadataFactory;
 
@@ -183,7 +183,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>Returns the <see cref="BindableObjectClass"/> for the <paramref name="type"/>.</returns>
     public BindableObjectClass GetBindableObjectClass (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _businessObjectClassStore.GetOrAdd(type, _createBindableObjectClassFunc);
     }

@@ -34,7 +34,7 @@ namespace Remotion.Utilities
 
     public TypeConverter? CreateTypeConverterOrDefault (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if ((Nullable.GetUnderlyingType(type) ?? type).IsEnum)
         return new AdvancedEnumConverter(type);

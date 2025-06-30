@@ -43,8 +43,8 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public static HttpContext CreateHttpContext (string httpMethod, string page, string? query)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(httpMethod), httpMethod);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(page), page);
+      ArgumentException.ThrowIfNullOrEmpty(httpMethod);
+      ArgumentException.ThrowIfNullOrEmpty(page);
 
       SimpleWorkerRequest workerRequest =
           new SimpleWorkerRequest(s_appVirtualDir, s_appPhysicalDir, page, query!, new System.IO.StringWriter());
@@ -86,8 +86,8 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public static void SetQueryString (HttpContext context, NameValueCollection queryString)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(queryString), queryString);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(queryString);
 
       PrivateInvoke.InvokeNonPublicMethod(context.Request.QueryString, "MakeReadWrite", new object[0]);
       context.Request.QueryString.Clear();
@@ -100,8 +100,8 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     public static void SetForm (HttpContext context, NameValueCollection form)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(form), form);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(form);
 
       PrivateInvoke.InvokeNonPublicMethod(context.Request.Form, "MakeReadWrite", new object[0]);
       context.Request.Form.Clear();

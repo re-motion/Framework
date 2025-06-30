@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -35,64 +34,64 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public IScriptElement GetCreateElement (TableDefinition tableDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
-      ArgumentUtility.CheckNotNull(nameof(synonymName), synonymName);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymCreateScriptStatement(tableDefinition.TableName, synonymName);
     }
 
     public IScriptElement GetDropElement (TableDefinition tableDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
-      ArgumentUtility.CheckNotNull(nameof(synonymName), synonymName);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymDropScriptStatement(synonymName);
     }
 
     public IScriptElement GetCreateElement (UnionViewDefinition unionViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull(nameof(unionViewDefinition), unionViewDefinition);
-      ArgumentUtility.CheckNotNull(nameof(synonymName), synonymName);
+      ArgumentNullException.ThrowIfNull(unionViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymCreateScriptStatement(unionViewDefinition.ViewName, synonymName);
     }
 
     public IScriptElement GetDropElement (UnionViewDefinition unionViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull(nameof(unionViewDefinition), unionViewDefinition);
-      ArgumentUtility.CheckNotNull(nameof(synonymName), synonymName);
+      ArgumentNullException.ThrowIfNull(unionViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymDropScriptStatement(synonymName);
     }
 
     public IScriptElement GetCreateElement (FilterViewDefinition filterViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull(nameof(filterViewDefinition), filterViewDefinition);
-      ArgumentUtility.CheckNotNull(nameof(synonymName), synonymName);
+      ArgumentNullException.ThrowIfNull(filterViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymCreateScriptStatement(filterViewDefinition.ViewName, synonymName);
     }
 
     public IScriptElement GetDropElement (FilterViewDefinition filterViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull(nameof(filterViewDefinition), filterViewDefinition);
-      ArgumentUtility.CheckNotNull(nameof(synonymName), synonymName);
+      ArgumentNullException.ThrowIfNull(filterViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymDropScriptStatement(synonymName);
     }
 
     public IScriptElement GetCreateElement (EmptyViewDefinition emptyViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull(nameof(emptyViewDefinition), emptyViewDefinition);
-      ArgumentUtility.CheckNotNull(nameof(synonymName), synonymName);
+      ArgumentNullException.ThrowIfNull(emptyViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymCreateScriptStatement(emptyViewDefinition.ViewName, synonymName);
     }
 
     public IScriptElement GetDropElement (EmptyViewDefinition emptyViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull(nameof(emptyViewDefinition), emptyViewDefinition);
-      ArgumentUtility.CheckNotNull(nameof(synonymName), synonymName);
+      ArgumentNullException.ThrowIfNull(emptyViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymDropScriptStatement(synonymName);
     }

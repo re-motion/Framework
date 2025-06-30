@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -36,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public TextBoxControlObject SelectFirst (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindTagWithAttribute(c_htmlTextBoxTag, "type", "text");
       return CreateControlObject(context, scope);
@@ -45,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public TextBoxControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindTagWithAttribute(c_htmlTextBoxTag, "type", "text");
 
@@ -58,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public TextBoxControlObject SelectSingle (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindTagWithAttribute(c_htmlTextBoxTag, "type", "text");
       scope.EnsureSingle();
@@ -68,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public TextBoxControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindTagWithAttribute(c_htmlTextBoxTag, "type", "text");
 
@@ -81,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public TextBoxControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "text");
       var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
@@ -92,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public TextBoxControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "text");
       var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
@@ -107,7 +106,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "text");
       var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
@@ -121,8 +120,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlSelectionContext), controlSelectionContext);
-      ArgumentUtility.CheckNotNull(nameof(newControlObjectContext), newControlObjectContext);
+      ArgumentNullException.ThrowIfNull(controlSelectionContext);
+      ArgumentNullException.ThrowIfNull(newControlObjectContext);
 
       return new TextBoxControlObject(newControlObjectContext);
     }

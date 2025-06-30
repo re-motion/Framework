@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Results;
 using Remotion.Validation.Validators;
 
@@ -45,9 +44,9 @@ namespace Remotion.Validation.Rules
         [CanBeNull] Func<TValidatedType, bool>? condition,
         [NotNull] IReadOnlyCollection<IPropertyValidator> validators)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
-      ArgumentUtility.CheckNotNull(nameof(propertyFunc), propertyFunc);
-      ArgumentUtility.CheckNotNull(nameof(validators), validators);
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentNullException.ThrowIfNull(propertyFunc);
+      ArgumentNullException.ThrowIfNull(validators);
 
       Property = property;
       PropertyFunc = propertyFunc;
@@ -57,7 +56,7 @@ namespace Remotion.Validation.Rules
 
     public IEnumerable<ValidationFailure> Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var instanceToValidate = (TValidatedType?)context.InstanceToValidate;
       if (instanceToValidate == null)
@@ -74,7 +73,7 @@ namespace Remotion.Validation.Rules
 
     public bool IsActive (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (Condition == null)
         return true;

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
@@ -55,14 +54,14 @@ namespace Remotion.Security.Metadata
 
     public void AddLocalization (string cultureName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(cultureName), cultureName);
+      ArgumentException.ThrowIfNullOrEmpty(cultureName);
 
       AddLocalization(new CultureInfo(cultureName.Trim()));
     }
 
     public void AddLocalization (CultureInfo cultureInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(cultureInfo), cultureInfo);
+      ArgumentNullException.ThrowIfNull(cultureInfo);
 
       _cultures.Add(cultureInfo);
     }

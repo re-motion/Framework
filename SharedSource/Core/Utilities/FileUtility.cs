@@ -22,7 +22,7 @@ namespace Remotion.Utilities
   {
     public static void DeleteOnDemandAndWaitForCompletion (string fileName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(fileName), fileName);
+      ArgumentException.ThrowIfNullOrEmpty(fileName);
 
       if (File.Exists(fileName))
         DeleteAndWaitForCompletion(fileName);
@@ -30,7 +30,7 @@ namespace Remotion.Utilities
 
     public static void DeleteAndWaitForCompletion (string fileName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(fileName), fileName);
+      ArgumentException.ThrowIfNullOrEmpty(fileName);
 
       File.Delete(fileName);
       while (File.Exists(fileName))
@@ -39,8 +39,8 @@ namespace Remotion.Utilities
 
     public static void MoveAndWaitForCompletion (string sourceFileName, string destinationFileName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(sourceFileName), sourceFileName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(destinationFileName), destinationFileName);
+      ArgumentException.ThrowIfNullOrEmpty(sourceFileName);
+      ArgumentException.ThrowIfNullOrEmpty(destinationFileName);
 
       File.Move(sourceFileName, destinationFileName);
 

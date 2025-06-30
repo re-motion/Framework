@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
@@ -26,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     public CompletionDetectionStrategyTestHelper ([NotNull] IControlObjectNotifier controlObjectNotifier)
     {
-      ArgumentUtility.CheckNotNull(nameof(controlObjectNotifier), controlObjectNotifier);
+      ArgumentNullException.ThrowIfNull(controlObjectNotifier);
 
       Register(controlObjectNotifier);
     }

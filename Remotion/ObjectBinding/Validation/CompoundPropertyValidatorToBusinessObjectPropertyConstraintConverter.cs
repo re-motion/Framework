@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.ObjectBinding.Validation
@@ -32,7 +31,7 @@ namespace Remotion.ObjectBinding.Validation
     public CompoundPropertyValidatorToBusinessObjectPropertyConstraintConverter (
         IEnumerable<IPropertyValidatorToBusinessObjectPropertyConstraintConverter> converters)
     {
-      ArgumentUtility.CheckNotNull(nameof(converters), converters);
+      ArgumentNullException.ThrowIfNull(converters);
 
       Converters = converters.ToList().AsReadOnly();
     }
@@ -40,7 +39,7 @@ namespace Remotion.ObjectBinding.Validation
 
     public IEnumerable<IBusinessObjectPropertyConstraint> Convert (IReadOnlyCollection<IPropertyValidator> propertyValidators)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyValidators), propertyValidators);
+      ArgumentNullException.ThrowIfNull(propertyValidators);
 
       return Converters.SelectMany(c => c.Convert(propertyValidators));
     }

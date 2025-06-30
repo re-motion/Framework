@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
 namespace Remotion.Web.Development.WebTesting.TestSite.Shared
@@ -33,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 
     public GenericTestOptions ([NotNull] string id, [NotNull] string textContent, [NotNull] string title, bool enabled)
     {
-      ArgumentUtility.CheckNotNull(nameof(id), id);
-      ArgumentUtility.CheckNotNull(nameof(textContent), textContent);
-      ArgumentUtility.CheckNotNull(nameof(title), title);
+      ArgumentNullException.ThrowIfNull(id);
+      ArgumentNullException.ThrowIfNull(textContent);
+      ArgumentNullException.ThrowIfNull(title);
 
       _id = id;
       _textContent = textContent;

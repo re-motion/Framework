@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -32,7 +31,7 @@ namespace Remotion.Data.DomainObjects
 
     public DomainObjectHandle (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       if (objectID.ClassDefinition.ClassType != typeof(T))
       {
         var message = string.Format("The class type of ObjectID '{0}' doesn't match the handle type '{1}'.", objectID, typeof(T));

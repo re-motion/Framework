@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Configuration
 {
@@ -32,21 +31,21 @@ namespace Remotion.Configuration
 
     public override object GetSection (string sectionName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(sectionName), sectionName);
+      ArgumentException.ThrowIfNullOrEmpty(sectionName);
 
       return ConfigurationManager.GetSection(sectionName);
     }
 
     public override ConnectionStringSettings GetConnectionString (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return ConfigurationManager.ConnectionStrings[name];
     }
 
     public override string? GetAppSetting (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return ConfigurationManager.AppSettings[name];
     }

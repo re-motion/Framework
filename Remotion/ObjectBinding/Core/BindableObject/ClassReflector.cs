@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -39,10 +38,10 @@ namespace Remotion.ObjectBinding.BindableObject
         IMetadataFactory metadataFactory,
         BindableObjectGlobalizationService bindableObjectGlobalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
-      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
-      ArgumentUtility.CheckNotNull(nameof(metadataFactory), metadataFactory);
-      ArgumentUtility.CheckNotNull(nameof(bindableObjectGlobalizationService), bindableObjectGlobalizationService);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(metadataFactory);
+      ArgumentNullException.ThrowIfNull(bindableObjectGlobalizationService);
 
       _targetType = targetType;
       _concreteType = BindableObjectProvider.GetConcreteTypeForBindableObjectImplementation(_targetType);

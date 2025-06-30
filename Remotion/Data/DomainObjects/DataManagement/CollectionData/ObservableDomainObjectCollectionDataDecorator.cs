@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
@@ -37,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       public DataChangeEventArgs (OperationKind operation, DomainObject? affectedObject, int index)
       {
         if (operation != OperationKind.Sort)
-          ArgumentUtility.CheckNotNull(nameof(affectedObject), affectedObject!);
+          ArgumentNullException.ThrowIfNull(affectedObject!);
 
         Operation = operation;
         AffectedObject = affectedObject;
@@ -56,7 +55,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     protected override void OnDataChanging (OperationKind operation, DomainObject? affectedObject, int index)
     {
       if (operation != OperationKind.Sort)
-        ArgumentUtility.CheckNotNull(nameof(affectedObject), affectedObject!);
+        ArgumentNullException.ThrowIfNull(affectedObject!);
 
       var eventHandler = CollectionChanging;
       if (eventHandler != null)
@@ -66,7 +65,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     protected override void OnDataChanged (OperationKind operation, DomainObject? affectedObject, int index)
     {
       if (operation != OperationKind.Sort)
-        ArgumentUtility.CheckNotNull(nameof(affectedObject), affectedObject!);
+        ArgumentNullException.ThrowIfNull(affectedObject!);
 
       var eventHandler = CollectionChanged;
       if (eventHandler != null)

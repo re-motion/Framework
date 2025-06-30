@@ -18,7 +18,6 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -61,8 +60,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public TRowControlObject GetRowWhere (string columnItemID, string cellText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnItemID), columnItemID);
-      ArgumentUtility.CheckNotNull(nameof(cellText), cellText);
+      ArgumentException.ThrowIfNullOrEmpty(columnItemID);
+      ArgumentNullException.ThrowIfNull(cellText);
 
       return GetRowWhere().ColumnWithItemIDContainsExactly(columnItemID, cellText);
     }
@@ -72,8 +71,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         string itemID,
         string cellText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
-      ArgumentUtility.CheckNotNull(nameof(cellText), cellText);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
+      ArgumentNullException.ThrowIfNull(cellText);
 
       var cell = GetCellWhere().ColumnWithItemIDContainsExactly(itemID, cellText);
       return GetRowFromCell(cell);
@@ -84,8 +83,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         string itemID,
         string containsCellText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
-      ArgumentUtility.CheckNotNull(nameof(containsCellText), containsCellText);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
+      ArgumentNullException.ThrowIfNull(containsCellText);
 
       var cell = GetCellWhere().ColumnWithItemIDContains(itemID, containsCellText);
       return GetRowFromCell(cell);
@@ -96,7 +95,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         int oneBasedIndex,
         string cellText)
     {
-      ArgumentUtility.CheckNotNull(nameof(cellText), cellText);
+      ArgumentNullException.ThrowIfNull(cellText);
 
       var cell = GetCellWhere().ColumnWithIndexContainsExactly(oneBasedIndex, cellText);
       return GetRowFromCell(cell);
@@ -107,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         int oneBasedIndex,
         string containsCellText)
     {
-      ArgumentUtility.CheckNotNull(nameof(containsCellText), containsCellText);
+      ArgumentNullException.ThrowIfNull(containsCellText);
 
       var cell = GetCellWhere().ColumnWithIndexContains(oneBasedIndex, containsCellText);
       return GetRowFromCell(cell);
@@ -118,8 +117,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         string title,
         string cellText)
     {
-      ArgumentUtility.CheckNotNull(nameof(title), title);
-      ArgumentUtility.CheckNotNull(nameof(cellText), cellText);
+      ArgumentNullException.ThrowIfNull(title);
+      ArgumentNullException.ThrowIfNull(cellText);
 
       var cell = GetCellWhere().ColumnWithTitleContainsExactly(title, cellText);
       return GetRowFromCell(cell);
@@ -130,8 +129,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         string title,
         string containsCellText)
     {
-      ArgumentUtility.CheckNotNull(nameof(title), title);
-      ArgumentUtility.CheckNotNull(nameof(containsCellText), containsCellText);
+      ArgumentNullException.ThrowIfNull(title);
+      ArgumentNullException.ThrowIfNull(containsCellText);
 
       var cell = GetCellWhere().ColumnWithTitleContains(title, containsCellText);
       return GetRowFromCell(cell);
@@ -152,8 +151,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public BocListCellControlObject GetCellWhere (string columnItemID, string cellText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnItemID), columnItemID);
-      ArgumentUtility.CheckNotNull(nameof(cellText), cellText);
+      ArgumentException.ThrowIfNullOrEmpty(columnItemID);
+      ArgumentNullException.ThrowIfNull(cellText);
 
       return GetCellWhere().ColumnWithItemIDContainsExactly(columnItemID, cellText);
     }
@@ -163,8 +162,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         string itemID,
         string cellText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
-      ArgumentUtility.CheckNotNull(nameof(cellText), cellText);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
+      ArgumentNullException.ThrowIfNull(cellText);
 
       var column = GetColumnByItemID(itemID);
       return GetCellWhereColumnContainsExactly(column, cellText);
@@ -175,8 +174,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         string itemID,
         string containsCellText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
-      ArgumentUtility.CheckNotNull(nameof(containsCellText), containsCellText);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
+      ArgumentNullException.ThrowIfNull(containsCellText);
 
       var column = GetColumnByItemID(itemID);
       return GetCellWhereColumnContains(column, containsCellText);
@@ -187,7 +186,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         int oneBasedIndex,
         string cellText)
     {
-      ArgumentUtility.CheckNotNull(nameof(cellText), cellText);
+      ArgumentNullException.ThrowIfNull(cellText);
 
       var column = GetColumnByIndex(oneBasedIndex);
       return GetCellWhereColumnContainsExactly(column, cellText);
@@ -198,7 +197,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         int oneBasedIndex,
         string containsCellText)
     {
-      ArgumentUtility.CheckNotNull(nameof(containsCellText), containsCellText);
+      ArgumentNullException.ThrowIfNull(containsCellText);
 
       var column = GetColumnByIndex(oneBasedIndex);
       return GetCellWhereColumnContains(column, containsCellText);
@@ -209,8 +208,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         string title,
         string cellText)
     {
-      ArgumentUtility.CheckNotNull(nameof(title), title);
-      ArgumentUtility.CheckNotNull(nameof(cellText), cellText);
+      ArgumentNullException.ThrowIfNull(title);
+      ArgumentNullException.ThrowIfNull(cellText);
 
       var column = GetColumnByTitle(title);
       return GetCellWhereColumnContainsExactly(column, cellText);
@@ -221,8 +220,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         string title,
         string containsCellText)
     {
-      ArgumentUtility.CheckNotNull(nameof(title), title);
-      ArgumentUtility.CheckNotNull(nameof(containsCellText), containsCellText);
+      ArgumentNullException.ThrowIfNull(title);
+      ArgumentNullException.ThrowIfNull(containsCellText);
 
       var column = GetColumnByTitle(title);
       return GetCellWhereColumnContains(column, containsCellText);
@@ -288,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public void ClickOnSortColumn ([NotNull] string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnItemID), columnItemID);
+      ArgumentException.ThrowIfNullOrEmpty(columnItemID);
 
       var column = GetColumnByItemID(columnItemID);
       ClickOnSortColumn(column.Index);
@@ -319,7 +318,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public void ClickOnSortColumnByTitle ([NotNull] string columnTitle)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnTitle), columnTitle);
+      ArgumentNullException.ThrowIfNull(columnTitle);
 
       var column = GetColumnByTitle(columnTitle);
       ClickOnSortColumn(column.Index);
@@ -330,7 +329,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public void ChangeViewTo ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       ChangeViewTo(scope => scope.SelectOptionByDMA(DiagnosticMetadataAttributes.ItemID, itemID, Logger), actionOptions);
     }
@@ -348,14 +347,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public void ChangeViewToByLabel ([NotNull] string label, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(label), label);
+      ArgumentNullException.ThrowIfNull(label);
 
       ChangeViewTo(scope => scope.SelectOption(label), actionOptions);
     }
 
     private void ChangeViewTo ([NotNull] Action<ElementScope> selectAction, [CanBeNull] IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull(nameof(selectAction), selectAction);
+      ArgumentNullException.ThrowIfNull(selectAction);
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
       var availableViewsScope = GetAvailableViewsScope();
@@ -368,9 +367,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         ElementScope rowScope,
         IBocListRowControlObjectHostAccessor accessor)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
-      ArgumentUtility.CheckNotNull(nameof(rowScope), rowScope);
-      ArgumentUtility.CheckNotNull(nameof(accessor), accessor);
+      ArgumentException.ThrowIfNullOrEmpty(id);
+      ArgumentNullException.ThrowIfNull(rowScope);
+      ArgumentNullException.ThrowIfNull(accessor);
 
       return (TRowControlObject)Activator.CreateInstance(typeof(TRowControlObject), accessor, Context.CloneForControl(rowScope))!;
     }
@@ -378,8 +377,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     protected override BocListCellControlObject CreateCellControlObject (string id, ElementScope cellScope)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
-      ArgumentUtility.CheckNotNull(nameof(cellScope), cellScope);
+      ArgumentException.ThrowIfNullOrEmpty(id);
+      ArgumentNullException.ThrowIfNull(cellScope);
 
       return new BocListCellControlObject(Context.CloneForControl(cellScope));
     }

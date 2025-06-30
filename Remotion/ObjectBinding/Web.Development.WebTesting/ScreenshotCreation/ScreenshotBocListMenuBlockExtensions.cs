@@ -19,7 +19,6 @@ using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
@@ -40,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(listMenu), listMenu);
+      ArgumentNullException.ThrowIfNull(listMenu);
 
       return listMenu.Target.List.GetDropDownMenu().ForControlObjectScreenshot();
     }
@@ -54,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(listMenu), listMenu);
+      ArgumentNullException.ThrowIfNull(listMenu);
 
       return listMenu.Target.List.GetListMenu().ForControlObjectScreenshot();
     }
@@ -69,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(listMenu), listMenu);
+      ArgumentNullException.ThrowIfNull(listMenu);
 
       var result = listMenu.Target.List.Scope.FindChild("Boc_AvailableViewsList", Options.NoWait);
       result.EnsureExistence();

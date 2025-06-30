@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Infrastructure
 {
@@ -31,15 +30,15 @@ namespace Remotion.Web.Infrastructure
 
     public InfrastructureResourceUrlFactory (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
 
     public IResourceUrl CreateThemedResourceUrl (ResourceType resourceType, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceType), resourceType);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(relativeUrl), relativeUrl);
+      ArgumentNullException.ThrowIfNull(resourceType);
+      ArgumentException.ThrowIfNullOrEmpty(relativeUrl);
 
       return _resourceUrlFactory.CreateThemedResourceUrl(typeof(InfrastructureResourceUrlFactory), resourceType, relativeUrl);
     }

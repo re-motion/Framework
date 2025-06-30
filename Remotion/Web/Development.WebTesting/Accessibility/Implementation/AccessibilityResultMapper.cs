@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility.AxeJsonResultDtos;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
@@ -65,7 +64,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// <inheritdoc />
     public AccessibilityResult Map (AxeResult axeResult)
     {
-      ArgumentUtility.CheckNotNull(nameof(axeResult), axeResult);
+      ArgumentNullException.ThrowIfNull(axeResult);
 
       return new AccessibilityResult(
           axeVersion: axeResult.TestEngine.Version,

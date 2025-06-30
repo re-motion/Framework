@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries
 {
@@ -25,8 +24,8 @@ namespace Remotion.Data.DomainObjects.Queries
   {
     public static Query CreateCopyFromTemplate (this IQuery template, Dictionary<object, object?> parameterValues)
     {
-      ArgumentUtility.CheckNotNull(nameof(template), template);
-      ArgumentUtility.CheckNotNull(nameof(parameterValues), parameterValues);
+      ArgumentNullException.ThrowIfNull(template);
+      ArgumentNullException.ThrowIfNull(parameterValues);
 
       var query = new Query(template.CopyQueryDefinition(), template.CopyQueryParameters(parameterValues));
       template.CopyFetchQueries(parameterValues, query);

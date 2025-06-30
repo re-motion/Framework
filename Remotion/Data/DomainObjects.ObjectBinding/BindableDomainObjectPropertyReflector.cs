@@ -22,7 +22,6 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using ParamList = Remotion.TypePipe.ParamList;
 using PropertyReflector = Remotion.ObjectBinding.BindableObject.PropertyReflector;
 
@@ -81,8 +80,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
             bindableObjectGlobalizationService,
             businessObjectPropertyConstraintProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObjectProvider), businessObjectProvider);
-      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
     }

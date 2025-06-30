@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Web.Compilation;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Infrastructure
 {
@@ -34,13 +33,13 @@ namespace Remotion.Web.Infrastructure
 
     public Type? GetType (string typeName, bool throwOnError, bool ignoreCase)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
+      ArgumentException.ThrowIfNullOrEmpty(typeName);
       return BuildManager.GetType(typeName, throwOnError: throwOnError, ignoreCase: ignoreCase);
     }
 
     public Type? GetCompiledType (string virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
+      ArgumentException.ThrowIfNullOrEmpty(virtualPath);
       return BuildManager.GetCompiledType(virtualPath);
     }
 

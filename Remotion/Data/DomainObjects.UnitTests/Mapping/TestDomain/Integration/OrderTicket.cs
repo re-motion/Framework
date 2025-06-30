@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     protected OrderTicket (Order order)
     {
-      ArgumentUtility.CheckNotNull(nameof(order), order);
+      ArgumentNullException.ThrowIfNull(order);
       Order = order;
     }
 

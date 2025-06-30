@@ -19,7 +19,6 @@ using System.Data;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 {
@@ -38,8 +37,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
-      ArgumentUtility.CheckNotNull(nameof(insertedColumnsSpecification), insertedColumnsSpecification);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
+      ArgumentNullException.ThrowIfNull(insertedColumnsSpecification);
 
       _tableDefinition = tableDefinition;
       _insertedColumnsSpecification = insertedColumnsSpecification;
@@ -57,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(dbCommandFactory), dbCommandFactory);
+      ArgumentNullException.ThrowIfNull(dbCommandFactory);
 
       var command = dbCommandFactory.CreateDbCommand();
       var statement = new StringBuilder();

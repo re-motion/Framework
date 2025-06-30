@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
@@ -32,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
     public ScreenshotBoxAnnotation ([NotNull] Pen pen, WebPadding padding, [CanBeNull] Brush? backgroundBrush)
     {
-      ArgumentUtility.CheckNotNull(nameof(pen), pen);
+      ArgumentNullException.ThrowIfNull(pen);
 
       _pen = pen;
       _padding = padding;
@@ -69,8 +68,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
-      ArgumentUtility.CheckNotNull(nameof(resolvedScreenshotElement), resolvedScreenshotElement);
+      ArgumentNullException.ThrowIfNull(canvas);
+      ArgumentNullException.ThrowIfNull(resolvedScreenshotElement);
 
       // Calculate the bound of the annotation with padding
       var annotationBounds = _padding.Apply(resolvedScreenshotElement.ElementBounds);

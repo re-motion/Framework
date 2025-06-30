@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
@@ -42,10 +41,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] T target,
         [NotNull] ResolvedScreenshotElement resolvedElement)
     {
-      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
-      ArgumentUtility.CheckNotNull(nameof(resolver), resolver);
-      ArgumentUtility.CheckNotNull(nameof(target), target);
-      ArgumentUtility.CheckNotNull(nameof(resolvedElement), resolvedElement);
+      ArgumentNullException.ThrowIfNull(canvas);
+      ArgumentNullException.ThrowIfNull(resolver);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(resolvedElement);
 
       _manipulation = manipulation;
       _canvas = canvas;

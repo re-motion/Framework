@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
 
@@ -36,8 +35,8 @@ namespace Remotion.Validation.Merging
     public IObjectValidatorExtractor Create (
         IEnumerable<RemovingObjectValidatorRegistration> removingObjectValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(removingObjectValidatorRegistrations), removingObjectValidatorRegistrations);
-      ArgumentUtility.CheckNotNull(nameof(logContext), logContext);
+      ArgumentNullException.ThrowIfNull(removingObjectValidatorRegistrations);
+      ArgumentNullException.ThrowIfNull(logContext);
 
       return new ObjectValidatorExtractor(removingObjectValidatorRegistrations, logContext);
     }

@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// <returns></returns>
     public static GenericTestPageParameter AppendArguments (this GenericTestPageParameter parameter, params string[] additionalArguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(parameter), parameter);
+      ArgumentNullException.ThrowIfNull(parameter);
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(additionalArguments), additionalArguments);
 
       var newArguments = parameter.Arguments.Concat(additionalArguments).ToArray();

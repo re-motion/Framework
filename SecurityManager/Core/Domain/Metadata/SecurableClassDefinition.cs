@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static SecurableClassDefinition? FindByName (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       var result = from c in QueryFactory.CreateLinqQuery<SecurableClassDefinition>()
                    where c.Name == name
@@ -138,7 +138,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void AddAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       InsertAccessType(AccessTypeReferences.Count, accessType);
     }
@@ -161,7 +161,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void InsertAccessType (int index, AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
       if (index < 0 || index > AccessTypeReferences.Count)
       {
         throw CreateArgumentOutOfRangeException(
@@ -198,7 +198,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void RemoveAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       var accessTypeReference = AccessTypeReferences.SingleOrDefault(r => r.AccessType == accessType);
       if (accessTypeReference == null)
@@ -235,7 +235,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void MoveAccessType (int index, AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull(nameof(accessType), accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
       if (index < 0 || index >= AccessTypeReferences.Count)
       {
         throw CreateArgumentOutOfRangeException(
@@ -266,7 +266,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void AddStateProperty (StatePropertyDefinition stateProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(stateProperty), stateProperty);
+      ArgumentNullException.ThrowIfNull(stateProperty);
 
       if (StatePropertyReferences.Where(r => r.StateProperty == stateProperty).Any())
       {
@@ -295,7 +295,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// </exception>
     public void RemoveStateProperty (StatePropertyDefinition stateProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(stateProperty), stateProperty);
+      ArgumentNullException.ThrowIfNull(stateProperty);
 
       var statePropertyReference = StatePropertyReferences.SingleOrDefault(r => r.StateProperty == stateProperty);
       if (statePropertyReference == null)
@@ -326,7 +326,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
     /// <exception cref="ArgumentException">Thrown if the specified property does not exist on this <see cref="SecurableClassDefinition"/>.</exception>
     public StatePropertyDefinition GetStateProperty (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       return StateProperties.Single(
           p => p.Name == propertyName,

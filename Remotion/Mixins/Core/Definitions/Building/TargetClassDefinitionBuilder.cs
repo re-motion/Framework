@@ -37,7 +37,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     public TargetClassDefinitionBuilder (IMixinDefinitionSorter mixinSorter)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinSorter), mixinSorter);
+      ArgumentNullException.ThrowIfNull(mixinSorter);
       _mixinSorter = mixinSorter;
     }
 
@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     public TargetClassDefinition Build (ClassContext classContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(classContext), classContext);
+      ArgumentNullException.ThrowIfNull(classContext);
 
       if (classContext.Type.ContainsGenericParameters)
       {
@@ -86,8 +86,8 @@ namespace Remotion.Mixins.Definitions.Building
 
     private void ApplyMixins (TargetClassDefinition classDefinition, ClassContext classContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNull(nameof(classContext), classContext);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(classContext);
 
       // The IMixinDefinitionSorter requires that the mixins have already been added to the class (and that the dependencoes have been set up
       // correctly). Therefore, we add all the mixins, then sort them, then re-add them in the correct order.

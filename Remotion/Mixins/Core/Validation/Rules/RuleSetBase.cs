@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Validation.Rules
 {
@@ -25,8 +24,8 @@ namespace Remotion.Mixins.Validation.Rules
 
     protected void SingleShould (bool test, IValidationLog log, IValidationRule rule)
     {
-      ArgumentUtility.CheckNotNull(nameof(log), log);
-      ArgumentUtility.CheckNotNull(nameof(rule), rule);
+      ArgumentNullException.ThrowIfNull(log);
+      ArgumentNullException.ThrowIfNull(rule);
 
       if (!test)
         log.Warn(rule);
@@ -36,8 +35,8 @@ namespace Remotion.Mixins.Validation.Rules
 
     protected void SingleMust (bool test, IValidationLog log, IValidationRule rule)
     {
-      ArgumentUtility.CheckNotNull(nameof(log), log);
-      ArgumentUtility.CheckNotNull(nameof(rule), rule);
+      ArgumentNullException.ThrowIfNull(log);
+      ArgumentNullException.ThrowIfNull(rule);
 
       if (!test)
         log.Fail(rule);

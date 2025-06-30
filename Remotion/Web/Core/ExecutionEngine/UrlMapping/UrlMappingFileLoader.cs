@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Schema;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Schemas;
 using Remotion.Xml;
 
@@ -39,7 +39,7 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
     /// <inheritdoc />
     public IReadOnlyList<UrlMappingEntry> LoadUrlMappingEntries (string urlMappingFile)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(urlMappingFile), urlMappingFile);
+      ArgumentException.ThrowIfNullOrEmpty(urlMappingFile);
 
       using var reader = new XmlTextReader(urlMappingFile);
 

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -38,9 +37,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         DataContainer dataContainer,
         IEnumerable<IRelationEndPoint> associatedEndPointSequence)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
-      ArgumentUtility.CheckNotNull(nameof(dataContainer), dataContainer);
-      ArgumentUtility.CheckNotNull(nameof(associatedEndPointSequence), associatedEndPointSequence);
+      ArgumentNullException.ThrowIfNull(domainObject);
+      ArgumentNullException.ThrowIfNull(dataContainer);
+      ArgumentNullException.ThrowIfNull(associatedEndPointSequence);
 
       _domainObject = domainObject;
       _domainObjectState = domainObjectState;

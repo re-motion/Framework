@@ -32,27 +32,27 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     public DatabaseAgent (string connectionString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
+      ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
       _connectionString = connectionString;
     }
 
     public void SetConnectionString (string connectionString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
+      ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
       _connectionString = connectionString;
     }
 
     public void SetDatabaseReadWrite (string database)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(database), database);
+      ArgumentException.ThrowIfNullOrEmpty(database);
       ExecuteCommand(string.Format("ALTER DATABASE [{0}] SET READ_WRITE WITH ROLLBACK IMMEDIATE", database));
     }
 
     public void SetDatabaseReadOnly (string database)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(database), database);
+      ArgumentException.ThrowIfNullOrEmpty(database);
       ExecuteCommand(string.Format("ALTER DATABASE [{0}] SET READ_ONLY WITH ROLLBACK IMMEDIATE", database));
     }
 
@@ -63,8 +63,8 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     public int ExecuteBatchFile (string sqlFileName, bool useTransaction, IDictionary<string, string> replacementDictionary)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(sqlFileName), sqlFileName);
-      ArgumentUtility.CheckNotNull(nameof(replacementDictionary), replacementDictionary);
+      ArgumentException.ThrowIfNullOrEmpty(sqlFileName);
+      ArgumentNullException.ThrowIfNull(replacementDictionary);
 
       _fileName = sqlFileName;
       if (!Path.IsPathRooted(sqlFileName))
@@ -86,8 +86,8 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     public int ExecuteBatchString (string commandBatch, bool useTransaction, IDictionary<string, string> replacementDictionary)
     {
-      ArgumentUtility.CheckNotNull(nameof(commandBatch), commandBatch);
-      ArgumentUtility.CheckNotNull(nameof(replacementDictionary), replacementDictionary);
+      ArgumentNullException.ThrowIfNull(commandBatch);
+      ArgumentNullException.ThrowIfNull(replacementDictionary);
 
       foreach (var replacement in replacementDictionary)
         commandBatch = commandBatch.Replace(replacement.Key, replacement.Value);
@@ -127,7 +127,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     public int ExecuteCommand (string commandText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(commandText), commandText);
+      ArgumentException.ThrowIfNullOrEmpty(commandText);
 
       using (IDbConnection connection = CreateConnection())
       {
@@ -138,7 +138,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     public object? ExecuteScalarCommand (string commandText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(commandText), commandText);
+      ArgumentException.ThrowIfNullOrEmpty(commandText);
 
       using (IDbConnection connection = CreateConnection())
       {
@@ -157,8 +157,8 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     protected virtual int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction? transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(connection), connection);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(commandBatch), commandBatch);
+      ArgumentNullException.ThrowIfNull(connection);
+      ArgumentException.ThrowIfNullOrEmpty(commandBatch);
 
       var count = 0;
       foreach (var command in GetCommandTextBatches(commandBatch))

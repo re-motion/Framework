@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain
 {
@@ -37,8 +36,8 @@ namespace Remotion.SecurityManager.Domain
         IDomainObjectHandle<User> userHandle,
         IDomainObjectHandle<Substitution>? substitutionHandle)
     {
-      ArgumentUtility.CheckNotNull(nameof(tenantHandle), tenantHandle);
-      ArgumentUtility.CheckNotNull(nameof(userHandle), userHandle);
+      ArgumentNullException.ThrowIfNull(tenantHandle);
+      ArgumentNullException.ThrowIfNull(userHandle);
 
       return new SecurityManagerPrincipal(tenantHandle, userHandle, null, substitutionHandle, null, null);
     }

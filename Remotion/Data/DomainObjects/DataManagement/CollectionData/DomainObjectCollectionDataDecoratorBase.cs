@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
@@ -32,7 +31,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     protected DomainObjectCollectionDataDecoratorBase (IDomainObjectCollectionData wrappedData)
     {
-      ArgumentUtility.CheckNotNull(nameof(wrappedData), wrappedData);
+      ArgumentNullException.ThrowIfNull(wrappedData);
       _wrappedData = wrappedData;
     }
 
@@ -74,7 +73,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public virtual bool ContainsObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _wrappedData.ContainsObjectID(objectID);
     }
 
@@ -85,13 +84,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public virtual DomainObject? GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _wrappedData.GetObject(objectID);
     }
 
     public virtual int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _wrappedData.IndexOf(objectID);
     }
 
@@ -102,31 +101,31 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public virtual void Insert (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
       _wrappedData.Insert(index, domainObject);
     }
 
     public virtual bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
       return _wrappedData.Remove(domainObject);
     }
 
     public virtual bool Remove (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _wrappedData.Remove(objectID);
     }
 
     public virtual void Replace (int index, DomainObject value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
       _wrappedData.Replace(index, value);
     }
 
     public virtual void Sort (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull(nameof(comparison), comparison);
+      ArgumentNullException.ThrowIfNull(comparison);
       _wrappedData.Sort(comparison);
     }
 

@@ -21,7 +21,6 @@ using System.Globalization;
 using System.Linq;
 using Remotion.ExtensibleEnums;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.ExtensibleEnums.Implementation
 {
@@ -41,7 +40,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
     /// <param name="extensibleEnumGlobalizationServices"> The <see cref="IExtensibleEnumGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundExtensibleEnumGlobalizationService (IEnumerable<IExtensibleEnumGlobalizationService> extensibleEnumGlobalizationServices)
     {
-      ArgumentUtility.CheckNotNull(nameof(extensibleEnumGlobalizationServices), extensibleEnumGlobalizationServices);
+      ArgumentNullException.ThrowIfNull(extensibleEnumGlobalizationServices);
 
       _extensibleEnumGlobalizationServices = extensibleEnumGlobalizationServices.ToArray();
     }
@@ -53,7 +52,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
 
     public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       foreach (var service in _extensibleEnumGlobalizationServices)
       {
@@ -67,7 +66,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       Dictionary<CultureInfo, string> result = new Dictionary<CultureInfo, string>();
 

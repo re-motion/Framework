@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -40,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public FreshlyLoadedObjectData Add (FreshlyLoadedObjectData pendingData)
     {
-      ArgumentUtility.CheckNotNull(nameof(pendingData), pendingData);
+      ArgumentNullException.ThrowIfNull(pendingData);
 
       if (_dataPendingRegistration.TryGetValue(pendingData.ObjectID, out var existingData))
         return existingData;

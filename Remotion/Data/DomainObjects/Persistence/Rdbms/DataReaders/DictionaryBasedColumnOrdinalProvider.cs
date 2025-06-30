@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
@@ -33,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public DictionaryBasedColumnOrdinalProvider (IDictionary<string, int> ordinals)
     {
-      ArgumentUtility.CheckNotNull(nameof(ordinals), ordinals);
+      ArgumentNullException.ThrowIfNull(ordinals);
 
       _ordinals = ordinals;
     }
@@ -45,8 +44,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public int GetOrdinal (ColumnDefinition columnDefinition, IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnDefinition), columnDefinition);
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       int index;
       if (_ordinals.TryGetValue(columnDefinition.Name, out index))

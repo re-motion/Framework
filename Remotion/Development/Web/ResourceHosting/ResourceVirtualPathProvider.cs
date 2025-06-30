@@ -54,7 +54,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public ResourceVirtualPathProvider (ResourcePathMapping[] mappings, FileExtensionHandlerMapping[]? fileExtensionHandlerMappings = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(mappings), mappings);
+      ArgumentNullException.ThrowIfNull(mappings);
 
       var resourceRoot = SafeServiceLocator.Current.GetInstance<ResourceRoot>();
       _resourceRoot = VirtualPathUtility.AppendTrailingSlash(CombineVirtualPath("~/", resourceRoot.Value));
@@ -91,7 +91,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public bool IsMappedPath (string virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
+      ArgumentException.ThrowIfNullOrEmpty(virtualPath);
 
       var checkPath = ToAppRelativeVirtualPath(virtualPath);
 
@@ -106,7 +106,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override bool FileExists (string virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
+      ArgumentException.ThrowIfNullOrEmpty(virtualPath);
 
       if (IsMappedPath(virtualPath))
       {
@@ -119,7 +119,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override VirtualFile GetFile (string virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
+      ArgumentException.ThrowIfNullOrEmpty(virtualPath);
 
       if (IsMappedPath(virtualPath))
         return GetResourceVirtualFile(virtualPath);
@@ -129,7 +129,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override bool DirectoryExists (string virtualDir)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualDir), virtualDir);
+      ArgumentException.ThrowIfNullOrEmpty(virtualDir);
 
       if (IsMappedPath(virtualDir))
       {
@@ -142,7 +142,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override VirtualDirectory GetDirectory (string virtualDir)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualDir), virtualDir);
+      ArgumentException.ThrowIfNullOrEmpty(virtualDir);
 
       if (IsMappedPath(virtualDir))
         return GetResourceVirtualDirectory(virtualDir);
@@ -152,7 +152,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override CacheDependency? GetCacheDependency (string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
+      ArgumentException.ThrowIfNullOrEmpty(virtualPath);
 
       if (IsMappedPath(virtualPath))
         return null;
@@ -270,30 +270,30 @@ namespace Remotion.Development.Web.ResourceHosting
 
     protected virtual string CombineVirtualPath (string basePath, string relativePath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(basePath), basePath);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(relativePath), relativePath);
+      ArgumentException.ThrowIfNullOrEmpty(basePath);
+      ArgumentException.ThrowIfNullOrEmpty(relativePath);
 
       return VirtualPathUtility.Combine(basePath, relativePath);
     }
 
     protected virtual string MakeRelativeVirtualPath (string fromPath, string toPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(fromPath), fromPath);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(toPath), toPath);
+      ArgumentException.ThrowIfNullOrEmpty(fromPath);
+      ArgumentException.ThrowIfNullOrEmpty(toPath);
 
       return VirtualPathUtility.MakeRelative(fromPath, toPath);
     }
 
     protected virtual string ToAppRelativeVirtualPath (string virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
+      ArgumentException.ThrowIfNullOrEmpty(virtualPath);
 
       return VirtualPathUtility.ToAppRelative(virtualPath);
     }
 
     protected virtual string MapPath (string virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(virtualPath), virtualPath);
+      ArgumentException.ThrowIfNullOrEmpty(virtualPath);
 
       return HttpContext.Current.Request.MapPath(virtualPath);
     }

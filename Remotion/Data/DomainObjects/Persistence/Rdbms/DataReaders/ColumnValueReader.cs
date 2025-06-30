@@ -17,7 +17,6 @@
 using System;
 using System.Data;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
@@ -32,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public ColumnValueReader (IDataReader dataReader, IColumnOrdinalProvider columnOrdinalProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(dataReader), dataReader);
-      ArgumentUtility.CheckNotNull(nameof(columnOrdinalProvider), columnOrdinalProvider);
+      ArgumentNullException.ThrowIfNull(dataReader);
+      ArgumentNullException.ThrowIfNull(columnOrdinalProvider);
 
       _dataReader = dataReader;
       _columnOrdinalProvider = columnOrdinalProvider;

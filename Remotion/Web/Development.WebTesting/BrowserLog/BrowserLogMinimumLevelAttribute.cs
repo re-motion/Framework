@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 
 namespace Remotion.Web.Development.WebTesting.BrowserLog;
@@ -43,7 +42,7 @@ public class BrowserLogMinimumLevelAttribute : WebTestAttribute
 
   public override void ApplyValue (IDictionary<string, object> dictionary)
   {
-    ArgumentUtility.CheckNotNull(nameof(dictionary), dictionary);
+    ArgumentNullException.ThrowIfNull(dictionary);
 
     dictionary[PropertyKey] = MinimumLevel;
   }

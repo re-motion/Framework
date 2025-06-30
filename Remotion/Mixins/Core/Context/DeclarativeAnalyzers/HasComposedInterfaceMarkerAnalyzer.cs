@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 {
@@ -29,8 +28,8 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
   {
     public void Analyze (Type type, MixinConfigurationBuilder configurationBuilder)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
-      ArgumentUtility.CheckNotNull(nameof(configurationBuilder), configurationBuilder);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(configurationBuilder);
 
       var composedInterfaceMarkers = (from ifc in type.GetInterfaces()
                                       where ifc.IsGenericType

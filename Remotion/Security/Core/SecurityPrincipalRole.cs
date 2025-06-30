@@ -34,7 +34,7 @@ namespace Remotion.Security
     /// <param name="position">The position in the <paramref name="group"/>. Must not be empty.</param>
     public SecurityPrincipalRole (string group, string position)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(group), group);
+      ArgumentException.ThrowIfNullOrEmpty(group);
       ArgumentUtility.CheckNotEmpty(nameof(position), position);
 
       _group = group;

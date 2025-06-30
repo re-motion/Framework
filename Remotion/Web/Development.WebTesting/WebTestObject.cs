@@ -18,7 +18,6 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -33,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting
 
     protected WebTestObject ([NotNull] TWebTestObjectContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       _logger = context.LoggerFactory.CreateLogger(GetType());
       _context = context;

@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
@@ -51,8 +50,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// a single parameter of type <see cref="IDomainObjectCollectionData"/>.</exception>
     public DomainObjectCollection CreateCollection (Type collectionType, IDomainObjectCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionType), collectionType);
-      ArgumentUtility.CheckNotNull(nameof(dataStrategy), dataStrategy);
+      ArgumentNullException.ThrowIfNull(collectionType);
+      ArgumentNullException.ThrowIfNull(dataStrategy);
 
       var ctor = collectionType.GetConstructor(
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
@@ -78,8 +77,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <returns>A stand-alone instance of <paramref name="collectionType"/>.</returns>
     public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content, Type? requiredItemType)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionType), collectionType);
-      ArgumentUtility.CheckNotNull(nameof(content), content);
+      ArgumentNullException.ThrowIfNull(collectionType);
+      ArgumentNullException.ThrowIfNull(content);
 
       var eventRaiser = new IndirectDomainObjectCollectionEventRaiser();
 
@@ -109,8 +108,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// </remarks>
     public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionType), collectionType);
-      ArgumentUtility.CheckNotNull(nameof(content), content);
+      ArgumentNullException.ThrowIfNull(collectionType);
+      ArgumentNullException.ThrowIfNull(content);
 
       var requiredItemType = GetRequiredItemType(collectionType);
       return CreateCollection(collectionType, content, requiredItemType);
@@ -129,8 +128,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// </remarks>
     public DomainObjectCollection CreateReadOnlyCollection (Type collectionType, IEnumerable<DomainObject> content)
     {
-      ArgumentUtility.CheckNotNull(nameof(collectionType), collectionType);
-      ArgumentUtility.CheckNotNull(nameof(content), content);
+      ArgumentNullException.ThrowIfNull(collectionType);
+      ArgumentNullException.ThrowIfNull(content);
 
       var dataStrategy = new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData(content));
       return CreateCollection(collectionType, dataStrategy);

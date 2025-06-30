@@ -34,7 +34,7 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
 
   public SqlTableValuedDataParameterDefinition (RecordDefinition recordDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(recordDefinition), recordDefinition);
+    ArgumentNullException.ThrowIfNull(recordDefinition);
     ArgumentUtility.CheckNotNullAndType<TableTypeDefinition>(nameof(recordDefinition), recordDefinition.StructuredTypeDefinition);
 
     RecordDefinition = recordDefinition;
@@ -75,8 +75,8 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
   /// </summary>
   public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNull(nameof(command), command);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
+    ArgumentNullException.ThrowIfNull(command);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
     var tvpValue = ArgumentUtility.CheckNotNullAndType<SqlTableValuedParameterValue>(nameof(parameterValue), parameterValue);
 
     var sqlParameter = (SqlParameter)command.CreateParameter();

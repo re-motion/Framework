@@ -26,7 +26,7 @@ namespace Remotion.Web.ExecutionEngine
   {
     public static WxeParameterAttribute? GetAttribute (PropertyInfo property)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(property);
 
       WxeParameterAttribute? attribute = AttributeUtility.GetCustomAttribute<WxeParameterAttribute>(property, false);
       if (attribute == null)

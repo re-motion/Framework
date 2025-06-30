@@ -43,14 +43,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public void AddKind (string kind)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(kind), kind);
+      ArgumentException.ThrowIfNullOrEmpty(kind);
 
       _constructorArguments[0] = Expression.Constant(kind);
     }
 
     public void AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       Assertion.IsNotNull(s_assemblyLoadMethod);
       _constructorArguments[1] = Expression.Call(null, s_assemblyLoadMethod, new[] { Expression.Constant(assembly.GetFullNameChecked()) });

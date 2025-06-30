@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Utilities
 {
@@ -27,7 +26,7 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 
     public string GetIdentifier (T item)
     {
-      ArgumentUtility.CheckNotNull(nameof(item), item);
+      ArgumentNullException.ThrowIfNull(item);
 
       if (!_identifiers.ContainsKey(item))
       {

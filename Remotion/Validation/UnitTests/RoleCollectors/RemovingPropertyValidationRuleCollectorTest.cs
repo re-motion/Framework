@@ -151,7 +151,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
           () => _removingPropertyValidationRuleCollector.RegisterValidator(typeof(Customer), typeof(CustomerValidationRuleCollector1), null),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'validatorType' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  "The value is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
                   + "which cannot be assigned to type 'Remotion.Validation.Validators.IPropertyValidator'.",
                   "validatorType"));
     }
@@ -166,7 +166,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
               null),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'collectorTypeToRemoveFrom' is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
+                  "The value is a 'Remotion.Validation.UnitTests.TestDomain.Customer', "
                   + "which cannot be assigned to type 'Remotion.Validation.IValidationRuleCollector'.",
                   "collectorTypeToRemoveFrom"));
     }

@@ -44,7 +44,7 @@ public class SingleScalarSqlTableTypeDefinitionProvider : ISingleScalarStructure
 
   public SingleScalarSqlTableTypeDefinitionProvider (IStorageTypeInformationProvider storageTypeInformationProvider)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
+    ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
     StorageTypeInformationProvider = storageTypeInformationProvider;
   }
 
@@ -99,7 +99,7 @@ public class SingleScalarSqlTableTypeDefinitionProvider : ISingleScalarStructure
   /// </remarks>
   public IRdbmsStructuredTypeDefinition GetStructuredTypeDefinition (Type dotNetType, bool forDistinctValues)
   {
-    ArgumentUtility.CheckNotNull(nameof(dotNetType), dotNetType);
+    ArgumentNullException.ThrowIfNull(dotNetType);
 
     if (typeof(IExtensibleEnum).IsAssignableFrom(dotNetType))
       dotNetType = typeof(DummyExtensibleEnum); // ExtensibleEnum types have different varchar sizes -> always use our dummy in order to get varchar(max)

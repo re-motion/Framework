@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 using System;
 using System.Threading;
-using Remotion.Utilities;
 
 #nullable enable
 // ReSharper disable once CheckNamespace
@@ -12,7 +11,7 @@ namespace Remotion.Development.UnitTesting
   {
     public static void Run (ThreadStart threadStart)
     {
-      ArgumentUtility.CheckNotNull(nameof(threadStart), threadStart);
+      ArgumentNullException.ThrowIfNull(threadStart);
       new ThreadRunner(threadStart).Run();
     }
 
@@ -26,7 +25,7 @@ namespace Remotion.Development.UnitTesting
 
     public ThreadRunner (ThreadStart threadStart, TimeSpan timeoutTimeSpan)
     {
-      ArgumentUtility.CheckNotNull(nameof(threadStart), threadStart);
+      ArgumentNullException.ThrowIfNull(threadStart);
       _threadStart = threadStart;
       _timeoutTimeSpan = timeoutTimeSpan;
     }

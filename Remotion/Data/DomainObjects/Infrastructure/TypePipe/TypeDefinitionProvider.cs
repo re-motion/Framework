@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
@@ -31,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   {
     public ClassDefinition? GetTypeDefinition (Type domainObjectType)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObjectType), domainObjectType);
+      ArgumentNullException.ThrowIfNull(domainObjectType);
 
       var mappingConfiguration = MappingConfiguration.Current;
       if (!mappingConfiguration.ContainsTypeDefinition(domainObjectType))

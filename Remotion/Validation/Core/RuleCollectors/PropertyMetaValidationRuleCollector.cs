@@ -42,8 +42,8 @@ namespace Remotion.Validation.RuleCollectors
 
     public PropertyMetaValidationRuleCollector (IPropertyInformation property, Type collectorType)
     {
-      ArgumentUtility.CheckNotNull(nameof(property), property);
-      ArgumentUtility.CheckNotNull(nameof(collectorType), collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentNullException.ThrowIfNull(collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
 
       Property = property;
       CollectorType = collectorType;
@@ -57,7 +57,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterMetaValidationRule (IPropertyMetaValidationRule propertyMetaValidationRule)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyMetaValidationRule), propertyMetaValidationRule);
+      ArgumentNullException.ThrowIfNull(propertyMetaValidationRule);
 
       _metaValidationRules.Add(propertyMetaValidationRule);
     }

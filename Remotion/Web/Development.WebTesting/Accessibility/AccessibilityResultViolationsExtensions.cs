@@ -34,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] this IReadOnlyCollection<AccessibilityRuleResult> violations,
         [NotNull] params string[] cssSelector)
     {
-      ArgumentUtility.CheckNotNull(nameof(violations), violations);
+      ArgumentNullException.ThrowIfNull(violations);
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(cssSelector), cssSelector);
 
       return violations.Where(x => !ArrayEquals(x.TargetPath.Select(p => p.CssSelector).ToArray(), cssSelector));
@@ -100,7 +100,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] AccessibilityResultFilter filter)
     {
       ArgumentUtility.CheckNotNullOrItemsNull(nameof(violations), violations);
-      ArgumentUtility.CheckNotNull(nameof(filter), filter);
+      ArgumentNullException.ThrowIfNull(filter);
 
       return violations.Where(
           v => !(v.TargetPath.Select(p => p.CssSelector).Any(s => filter.IgnoreCssSelectors.Contains(s))

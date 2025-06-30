@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.MetaValidation
@@ -34,7 +33,7 @@ namespace Remotion.Validation.MetaValidation
     public PropertyMetaValidationRuleValidatorFactory (
         ISystemPropertyMetaValidationRuleProviderFactory systemPropertyMetaValidationRuleProviderFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(systemPropertyMetaValidationRuleProviderFactory), systemPropertyMetaValidationRuleProviderFactory);
+      ArgumentNullException.ThrowIfNull(systemPropertyMetaValidationRuleProviderFactory);
 
       _systemPropertyMetaValidationRuleProviderFactory = systemPropertyMetaValidationRuleProviderFactory;
     }
@@ -42,7 +41,7 @@ namespace Remotion.Validation.MetaValidation
     public IPropertyMetaValidationRuleValidator CreatePropertyMetaValidationRuleValidator (
         IEnumerable<IPropertyMetaValidationRuleCollector> propertyMetaValidationRuleCollectors)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyMetaValidationRuleCollectors), propertyMetaValidationRuleCollectors);
+      ArgumentNullException.ThrowIfNull(propertyMetaValidationRuleCollectors);
 
       return new PropertyMetaValidationRuleValidator(
           propertyMetaValidationRuleCollectors.ToArray(),

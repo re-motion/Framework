@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 {
@@ -29,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     public SortedRow (BocListRow valueRow, int sortedIndex)
     {
-      ArgumentUtility.CheckNotNull(nameof(valueRow), valueRow);
+      ArgumentNullException.ThrowIfNull(valueRow);
       if (sortedIndex < 0)
         throw new ArgumentOutOfRangeException(nameof(sortedIndex), sortedIndex, "Value cannot be negative");
 

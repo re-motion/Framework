@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 
 // ReSharper disable once CheckNamespace (assembly should have a more general name like ".Remotion", however, we have not found a good name yet)
@@ -43,8 +42,8 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IItemIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return fluentControlSelector.GetControl(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }
@@ -63,8 +62,8 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IItemIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return fluentControlSelector.GetControlOrNull(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }
@@ -82,8 +81,8 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IItemIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentControlSelector), fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return fluentControlSelector.HasControl(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 
@@ -64,8 +63,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private TestCaseData CreateTestCaseData ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
-      ArgumentUtility.CheckNotNull(nameof(method), method);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(method);
 
       var testCaseData = new TestCaseData(
           (GenericSelectorTestAction<TControlSelector, TControl>)((helper, factory, control) =>

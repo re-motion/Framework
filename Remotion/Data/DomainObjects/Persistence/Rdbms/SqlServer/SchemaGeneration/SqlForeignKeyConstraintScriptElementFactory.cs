@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -32,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public IScriptElement GetCreateElement (ForeignKeyConstraintDefinition constraintDefinition, EntityNameDefinition tableName)
     {
-      ArgumentUtility.CheckNotNull(nameof(constraintDefinition), constraintDefinition);
-      ArgumentUtility.CheckNotNull(nameof(tableName), tableName);
+      ArgumentNullException.ThrowIfNull(constraintDefinition);
+      ArgumentNullException.ThrowIfNull(tableName);
 
       return new ScriptStatement(
         string.Format(
@@ -46,8 +45,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public IScriptElement GetDropElement (ForeignKeyConstraintDefinition constraintDefinition, EntityNameDefinition tableName)
     {
-      ArgumentUtility.CheckNotNull(nameof(constraintDefinition), constraintDefinition);
-      ArgumentUtility.CheckNotNull(nameof(tableName), tableName);
+      ArgumentNullException.ThrowIfNull(constraintDefinition);
+      ArgumentNullException.ThrowIfNull(tableName);
 
       return new ScriptStatement(
           string.Format(

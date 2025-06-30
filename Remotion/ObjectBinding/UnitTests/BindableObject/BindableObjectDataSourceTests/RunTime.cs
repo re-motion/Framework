@@ -20,7 +20,6 @@ using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSourceTests
 {
@@ -77,7 +76,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectDataSour
     {
       _dataSource.Type = typeof(SimpleBusinessObjectClass);
       Type type = typeof(SimpleBusinessObjectClass);
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
       Assert.That(_dataSource.BusinessObjectClass, Is.SameAs(BindableObjectProviderTestHelper.GetBindableObjectClass(type)));
     }
 

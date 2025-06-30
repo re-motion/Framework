@@ -18,7 +18,6 @@ using System;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.DPExtensions
 {
@@ -29,15 +28,15 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public InitObjectExpression (Reference objectToBeInitialized, Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectToBeInitialized), objectToBeInitialized);
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(objectToBeInitialized);
+      ArgumentNullException.ThrowIfNull(type);
 
       _objectToBeInitialized = objectToBeInitialized;
       _type = type;
     }
 
     public InitObjectExpression (IMethodEmitter method, Type type)
-        : this(ArgumentUtility.CheckNotNull(nameof(method), method).DeclareLocal(type), type)
+        : this((method ?? throw new ArgumentNullException(nameof(method))).DeclareLocal(type), type)
     {
     }
 

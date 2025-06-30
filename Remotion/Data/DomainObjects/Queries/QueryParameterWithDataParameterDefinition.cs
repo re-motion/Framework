@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries
 {
@@ -31,8 +30,8 @@ namespace Remotion.Data.DomainObjects.Queries
 
     public QueryParameterWithDataParameterDefinition (QueryParameter queryParameter, IDataParameterDefinition dataParameterDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
-      ArgumentUtility.CheckNotNull(nameof(dataParameterDefinition), dataParameterDefinition);
+      ArgumentNullException.ThrowIfNull(queryParameter);
+      ArgumentNullException.ThrowIfNull(dataParameterDefinition);
 
       QueryParameter = queryParameter;
       DataParameterDefinition = dataParameterDefinition;

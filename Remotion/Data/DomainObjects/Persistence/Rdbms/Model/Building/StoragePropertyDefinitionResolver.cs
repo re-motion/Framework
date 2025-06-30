@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public StoragePropertyDefinitionResolver (IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(persistenceModelProvider), persistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(persistenceModelProvider);
       _persistenceModelProvider = persistenceModelProvider;
     }
 
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public IEnumerable<IRdbmsStoragePropertyDefinition> GetStoragePropertiesForHierarchy (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       var allClassesInHierarchy = classDefinition
           .CreateSequence(cd => cd.BaseClass)

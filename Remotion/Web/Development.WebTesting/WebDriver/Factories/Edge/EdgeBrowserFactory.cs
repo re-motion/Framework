@@ -21,7 +21,6 @@ using Coypu.Drivers;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium.Edge;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.BrowserSession.Edge;
 using Remotion.Web.Development.WebTesting.Configuration;
@@ -43,8 +42,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 
     public EdgeBrowserFactory ([NotNull] IEdgeConfiguration edgeConfiguration, [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(edgeConfiguration), edgeConfiguration);
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(edgeConfiguration);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _loggerFactory = loggerFactory;
       _logger = _loggerFactory.CreateLogger(typeof(EdgeBrowserFactory));
@@ -54,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 
     public IBrowserSession CreateBrowser (DriverConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
+      ArgumentNullException.ThrowIfNull(configuration);
 
       var sessionConfiguration = CreateSessionConfiguration(configuration);
       var commandTimeout = configuration.CommandTimeout;

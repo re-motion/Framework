@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
 {
@@ -33,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     public WebTabStripTabDefinition ([NotNull] string itemID, int index, [NotNull] string title, bool isDisabled, [NotNull] string accessKey)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(itemID), itemID);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(title), title);
-      ArgumentUtility.CheckNotNull(nameof(accessKey), accessKey);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
+      ArgumentException.ThrowIfNullOrEmpty(title);
+      ArgumentNullException.ThrowIfNull(accessKey);
 
       _itemID = itemID;
       _index = index;

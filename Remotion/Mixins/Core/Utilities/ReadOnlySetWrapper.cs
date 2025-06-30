@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.Collections
@@ -31,7 +30,7 @@ namespace Remotion.Collections
 
     public ReadOnlySetWrapper (ISet<T> collection)
     {
-      ArgumentUtility.CheckNotNull(nameof(collection), collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       _collection = collection;
     }

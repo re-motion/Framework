@@ -211,7 +211,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="eventArgument"> &lt;command prefix&gt;&lt;node path&gt;</param>
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(eventArgument), eventArgument);
+      ArgumentException.ThrowIfNullOrEmpty(eventArgument);
       EnsureTreeNodesCreated();
 
       eventArgument = eventArgument.Trim();
@@ -349,7 +349,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception>
     protected internal void EvaluateTreeNodeInternal (WebTreeNode node)
     {
-      ArgumentUtility.CheckNotNull(nameof(node), node);
+      ArgumentNullException.ThrowIfNull(node);
 
       if (_evaluateTreeNode == null)
         throw new NullReferenceException("EvaluateTreeNode has no method registered but tree node '" + node.ItemID + "' is not evaluated.");
@@ -458,7 +458,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
     void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
-      ArgumentUtility.CheckNotNull(nameof(values), values);
+      ArgumentNullException.ThrowIfNull(values);
       Dispatch(values);
     }
 
@@ -473,8 +473,8 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       string? key = ResourceManagerUtility.GetGlobalResourceKey(AccessKey);
       if (!string.IsNullOrEmpty(key))
@@ -1348,7 +1348,7 @@ namespace Remotion.Web.UI.Controls
 
     public void AssignLabel (string labelID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(labelID), labelID);
+      ArgumentException.ThrowIfNullOrEmpty(labelID);
 
       _assignedLabelID = labelID;
     }

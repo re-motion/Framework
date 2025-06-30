@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
@@ -33,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     protected StorageProviderManagerBase (IPersistenceExtension persistenceExtension, IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
-      ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
+      ArgumentNullException.ThrowIfNull(storageSettings);
 
       _storageProviders = new Dictionary<string, TStorageProvider>();
       PersistenceExtension = persistenceExtension;
@@ -56,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     public TStorageProvider GetMandatory (string storageProviderID)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(storageProviderID), storageProviderID);
+      ArgumentException.ThrowIfNullOrEmpty(storageProviderID);
 
       if (_storageProviders.TryGetValue(storageProviderID, out var storageProvider))
         return storageProvider;
@@ -75,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Persistence
     public TStorageProvider GetMandatory (StorageProviderDefinition providerDefinition)
     {
       CheckDisposed();
-      ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
+      ArgumentNullException.ThrowIfNull(providerDefinition);
 
 #if DEBUG
       if (providerDefinition != StorageSettings.GetStorageProviderDefinition(providerDefinition.Name))

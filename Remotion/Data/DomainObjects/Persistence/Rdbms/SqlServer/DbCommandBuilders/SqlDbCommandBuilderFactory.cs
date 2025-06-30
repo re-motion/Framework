@@ -41,8 +41,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
     /// </summary>
     public SqlDbCommandBuilderFactory (ISingleScalarStructuredTypeDefinitionProvider tableTypeDefinitionProvider, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(tableTypeDefinitionProvider), tableTypeDefinitionProvider);
-      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+      ArgumentNullException.ThrowIfNull(tableTypeDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
       _tableTypeDefinitionProvider = tableTypeDefinitionProvider;
       _sqlDialect = sqlDialect;
     }
@@ -53,10 +53,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
         IEnumerable<ColumnValue> comparedColumnValues,
         IEnumerable<OrderedColumn> orderedColumns)
     {
-      ArgumentUtility.CheckNotNull(nameof(table), table);
-      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
-      ArgumentUtility.CheckNotNull(nameof(comparedColumnValues), comparedColumnValues);
-      ArgumentUtility.CheckNotNull(nameof(orderedColumns), orderedColumns);
+      ArgumentNullException.ThrowIfNull(table);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
+      ArgumentNullException.ThrowIfNull(comparedColumnValues);
+      ArgumentNullException.ThrowIfNull(orderedColumns);
 
       return new SelectDbCommandBuilder(
           table,
@@ -72,9 +72,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
         ColumnValueTable comparedColumnValueTable,
         IEnumerable<OrderedColumn> orderedColumns)
     {
-      ArgumentUtility.CheckNotNull(nameof(table), table);
-      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
-      ArgumentUtility.CheckNotNull(nameof(orderedColumns), orderedColumns);
+      ArgumentNullException.ThrowIfNull(table);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
+      ArgumentNullException.ThrowIfNull(orderedColumns);
 
       var (columnDefinition, comparedValues) = GetValuesForSingleColumnDefinition(comparedColumnValueTable);
       var tableType = (TableTypeDefinition)_tableTypeDefinitionProvider.GetStructuredTypeDefinition(columnDefinition.StorageTypeInfo.DotNetType, false);
@@ -103,10 +103,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
         IEnumerable<ColumnValue> comparedColumnValues,
         IEnumerable<OrderedColumn> orderedColumns)
     {
-      ArgumentUtility.CheckNotNull(nameof(view), view);
-      ArgumentUtility.CheckNotNull(nameof(selectedColumns), selectedColumns);
-      ArgumentUtility.CheckNotNull(nameof(comparedColumnValues), comparedColumnValues);
-      ArgumentUtility.CheckNotNull(nameof(orderedColumns), orderedColumns);
+      ArgumentNullException.ThrowIfNull(view);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
+      ArgumentNullException.ThrowIfNull(comparedColumnValues);
+      ArgumentNullException.ThrowIfNull(orderedColumns);
 
       return new UnionSelectDbCommandBuilder(
           view,
@@ -118,16 +118,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
 
     public IDbCommandBuilder CreateForQuery (string statement, IEnumerable<QueryParameterWithDataParameterDefinition> parametersWithType)
     {
-      ArgumentUtility.CheckNotNull(nameof(statement), statement);
-      ArgumentUtility.CheckNotNull(nameof(parametersWithType), parametersWithType);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(parametersWithType);
 
       return new SqlQueryDbCommandBuilder(statement, parametersWithType.ToArray(), _sqlDialect);
     }
 
     public IDbCommandBuilder CreateForInsert (TableDefinition tableDefinition, IEnumerable<ColumnValue> insertedColumns)
     {
-      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
-      ArgumentUtility.CheckNotNull(nameof(insertedColumns), insertedColumns);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
+      ArgumentNullException.ThrowIfNull(insertedColumns);
 
       return new InsertDbCommandBuilder(tableDefinition, new InsertedColumnsSpecification(insertedColumns), _sqlDialect);
     }
@@ -137,9 +137,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
         IEnumerable<ColumnValue> updatedColumns,
         IEnumerable<ColumnValue> comparedColumnValues)
     {
-      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
-      ArgumentUtility.CheckNotNull(nameof(updatedColumns), updatedColumns);
-      ArgumentUtility.CheckNotNull(nameof(comparedColumnValues), comparedColumnValues);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
+      ArgumentNullException.ThrowIfNull(updatedColumns);
+      ArgumentNullException.ThrowIfNull(comparedColumnValues);
 
       return new UpdateDbCommandBuilder(
           tableDefinition,
@@ -150,8 +150,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
 
     public IDbCommandBuilder CreateForDelete (TableDefinition tableDefinition, IEnumerable<ColumnValue> comparedColumnValues)
     {
-      ArgumentUtility.CheckNotNull(nameof(tableDefinition), tableDefinition);
-      ArgumentUtility.CheckNotNull(nameof(comparedColumnValues), comparedColumnValues);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
+      ArgumentNullException.ThrowIfNull(comparedColumnValues);
 
       return new DeleteDbCommandBuilder(tableDefinition, new ComparedColumnsSpecification(comparedColumnValues), _sqlDialect);
     }

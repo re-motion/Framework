@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Utilities;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -29,8 +28,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public TargetReferenceReportGenerator (InvolvedType mixinType, IIdentifierGenerator<Type> involvedTypeIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
-      ArgumentUtility.CheckNotNull(nameof(involvedTypeIdentifierGenerator), involvedTypeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(involvedTypeIdentifierGenerator);
 
       _mixinType = mixinType;
       _involvedTypeIdentifierGenerator = involvedTypeIdentifierGenerator;

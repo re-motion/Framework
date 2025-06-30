@@ -21,7 +21,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.Data.SqlClient;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -48,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     protected DatabaseTest (DatabaseAgent databaseAgent, string createTestDataFileName)
     {
-      ArgumentUtility.CheckNotNull(nameof(databaseAgent), databaseAgent);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(createTestDataFileName), createTestDataFileName);
+      ArgumentNullException.ThrowIfNull(databaseAgent);
+      ArgumentException.ThrowIfNullOrEmpty(createTestDataFileName);
 
       _databaseAgent = databaseAgent;
       _createTestDataFileName = createTestDataFileName;

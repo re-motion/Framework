@@ -70,11 +70,11 @@ namespace Remotion.Security
         IFunctionalSecurityStrategy functionalSecurityStrategy,
         IMemberResolver memberResolver)
     {
-      ArgumentUtility.CheckNotNull(nameof(securityProvider), securityProvider);
-      ArgumentUtility.CheckNotNull(nameof(permissionProvider), permissionProvider);
-      ArgumentUtility.CheckNotNull(nameof(principalProvider), principalProvider);
-      ArgumentUtility.CheckNotNull(nameof(functionalSecurityStrategy), functionalSecurityStrategy);
-      ArgumentUtility.CheckNotNull(nameof(memberResolver), memberResolver);
+      ArgumentNullException.ThrowIfNull(securityProvider);
+      ArgumentNullException.ThrowIfNull(permissionProvider);
+      ArgumentNullException.ThrowIfNull(principalProvider);
+      ArgumentNullException.ThrowIfNull(functionalSecurityStrategy);
+      ArgumentNullException.ThrowIfNull(memberResolver);
 
       _securityProvider = securityProvider;
       _permissionProvider = permissionProvider;
@@ -125,9 +125,9 @@ namespace Remotion.Security
 
     public virtual bool HasAccess (ISecurableObject securableObject, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.CheckNotNull(nameof(principal), principal);
-      ArgumentUtility.CheckNotNull(nameof(requiredAccessTypes), requiredAccessTypes);
+      ArgumentNullException.ThrowIfNull(securableObject);
+      ArgumentNullException.ThrowIfNull(principal);
+      ArgumentNullException.ThrowIfNull(requiredAccessTypes);
 
       if (SecurityFreeSection.IsActive)
         return true;
@@ -181,9 +181,9 @@ namespace Remotion.Security
 
     public virtual bool HasStatelessAccess (Type securableClass, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
-      ArgumentUtility.CheckNotNull(nameof(principal), principal);
-      ArgumentUtility.CheckNotNull(nameof(requiredAccessTypes), requiredAccessTypes);
+      ArgumentNullException.ThrowIfNull(securableClass);
+      ArgumentNullException.ThrowIfNull(principal);
+      ArgumentNullException.ThrowIfNull(requiredAccessTypes);
 
       if (SecurityFreeSection.IsActive)
         return true;
@@ -224,8 +224,8 @@ namespace Remotion.Security
 
     public bool HasMethodAccess (ISecurableObject securableObject, string methodName, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentNullException.ThrowIfNull(securableObject);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), methodName, MemberAffiliation.Instance);
@@ -239,8 +239,8 @@ namespace Remotion.Security
 
     public bool HasMethodAccess (ISecurableObject securableObject, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
+      ArgumentNullException.ThrowIfNull(securableObject);
+      ArgumentNullException.ThrowIfNull(methodInfo);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), methodInfo, MemberAffiliation.Instance);
@@ -254,8 +254,8 @@ namespace Remotion.Security
 
     public virtual bool HasMethodAccess (ISecurableObject securableObject, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
+      ArgumentNullException.ThrowIfNull(securableObject);
+      ArgumentNullException.ThrowIfNull(methodInformation);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions(securableObject.GetSecurableType(), methodInformation);
@@ -277,7 +277,7 @@ namespace Remotion.Security
 
       if (!HasMethodAccess(securableObject, methodName, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
+        ArgumentNullException.ThrowIfNull(securableObject);
 
         throw CreatePermissionDeniedException(
             "Access to method '{0}' on type '{1}' has been denied.", methodName, securableObject.GetSecurableType().GetFullNameSafe());
@@ -297,8 +297,8 @@ namespace Remotion.Security
 
       if (!HasMethodAccess(securableObject, methodInfo, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-        ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
+        ArgumentNullException.ThrowIfNull(securableObject);
+        ArgumentNullException.ThrowIfNull(methodInfo);
 
         throw CreatePermissionDeniedException(
             "Access to method '{0}' on type '{1}' has been denied.", methodInfo.Name, securableObject.GetSecurableType().GetFullNameSafe());
@@ -318,8 +318,8 @@ namespace Remotion.Security
 
       if (!HasMethodAccess(securableObject, methodInformation, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-        ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
+        ArgumentNullException.ThrowIfNull(securableObject);
+        ArgumentNullException.ThrowIfNull(methodInformation);
 
         throw CreatePermissionDeniedException(
             "Access to method '{0}' on type '{1}' has been denied.",
@@ -336,8 +336,8 @@ namespace Remotion.Security
 
     public bool HasPropertyReadAccess (ISecurableObject securableObject, string propertyName, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentNullException.ThrowIfNull(securableObject);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), "get_" + propertyName, MemberAffiliation.Instance);
@@ -351,7 +351,7 @@ namespace Remotion.Security
 
     public bool HasPropertyReadAccess (ISecurableObject securableObject, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
+      ArgumentNullException.ThrowIfNull(securableObject);
       ArgumentUtility.DebugCheckNotNull(nameof(methodInfo), methodInfo );
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
@@ -366,9 +366,9 @@ namespace Remotion.Security
 
     public virtual bool HasPropertyReadAccess (ISecurableObject securableObject, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
-      ArgumentUtility.CheckNotNull(nameof(principal), principal);
+      ArgumentNullException.ThrowIfNull(securableObject);
+      ArgumentNullException.ThrowIfNull(methodInformation);
+      ArgumentNullException.ThrowIfNull(principal);
 
       var requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions(securableObject.GetSecurableType(), methodInformation);
       Assertion.DebugIsNotNull(requiredAccessTypeEnums, "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.");
@@ -392,8 +392,8 @@ namespace Remotion.Security
 
       if (!HasPropertyReadAccess(securableObject, propertyName, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+        ArgumentNullException.ThrowIfNull(securableObject);
+        ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
         throw CreatePermissionDeniedException(
             "Access to method '{0}' on type '{1}' has been denied.",
@@ -415,8 +415,8 @@ namespace Remotion.Security
 
       if (!HasPropertyReadAccess(securableObject, methodInfo, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-        ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
+        ArgumentNullException.ThrowIfNull(securableObject);
+        ArgumentNullException.ThrowIfNull(methodInfo);
 
         throw CreatePermissionDeniedException(
             "Access to get-accessor of property '{0}' on type '{1}' has been denied.",
@@ -438,8 +438,8 @@ namespace Remotion.Security
 
       if (!HasPropertyReadAccess(securableObject, methodInformation, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-        ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
+        ArgumentNullException.ThrowIfNull(securableObject);
+        ArgumentNullException.ThrowIfNull(methodInformation);
 
         throw CreatePermissionDeniedException(
             "Access to method '{0}' on type '{1}' has been denied.",
@@ -456,8 +456,8 @@ namespace Remotion.Security
 
     public bool HasPropertyWriteAccess (ISecurableObject securableObject, string propertyName, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+      ArgumentNullException.ThrowIfNull(securableObject);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), "set_" + propertyName, MemberAffiliation.Instance);
@@ -471,8 +471,8 @@ namespace Remotion.Security
 
     public bool HasPropertyWriteAccess (ISecurableObject securableObject, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
+      ArgumentNullException.ThrowIfNull(securableObject);
+      ArgumentNullException.ThrowIfNull(methodInfo);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableObject.GetSecurableType(), methodInfo, MemberAffiliation.Instance);
@@ -486,8 +486,8 @@ namespace Remotion.Security
 
     public virtual bool HasPropertyWriteAccess (ISecurableObject securableObject, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-      ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
+      ArgumentNullException.ThrowIfNull(securableObject);
+      ArgumentNullException.ThrowIfNull(methodInformation);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions(securableObject.GetSecurableType(), methodInformation);
@@ -512,8 +512,8 @@ namespace Remotion.Security
 
       if (!HasPropertyWriteAccess(securableObject, propertyName, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
+        ArgumentNullException.ThrowIfNull(securableObject);
+        ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
         throw CreatePermissionDeniedException(
             "Access to set-accessor of property '{0}' on type '{1}' has been denied.",
@@ -535,8 +535,8 @@ namespace Remotion.Security
 
       if (!HasPropertyWriteAccess(securableObject, methodInfo, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-        ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
+        ArgumentNullException.ThrowIfNull(securableObject);
+        ArgumentNullException.ThrowIfNull(methodInfo);
 
         throw CreatePermissionDeniedException(
             "Access to set-accessor of property '{0}' on type '{1}' has been denied.",
@@ -558,8 +558,8 @@ namespace Remotion.Security
 
       if (!HasPropertyWriteAccess(securableObject, methodInformation, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableObject), securableObject);
-        ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
+        ArgumentNullException.ThrowIfNull(securableObject);
+        ArgumentNullException.ThrowIfNull(methodInformation);
 
         throw CreatePermissionDeniedException(
             "Access to set-accessor of property '{0}' on type '{1}' has been denied.",
@@ -594,7 +594,7 @@ namespace Remotion.Security
 
       if (!HasConstructorAccess(securableClass, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
+        ArgumentNullException.ThrowIfNull(securableClass);
 
         throw CreatePermissionDeniedException("Access to constructor of type '{0}' has been denied.", securableClass.GetFullNameSafe());
       }
@@ -608,8 +608,8 @@ namespace Remotion.Security
 
     public bool HasStaticMethodAccess (Type securableClass, string methodName, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentNullException.ThrowIfNull(securableClass);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableClass, methodName, MemberAffiliation.Static);
@@ -623,8 +623,8 @@ namespace Remotion.Security
 
     public bool HasStaticMethodAccess (Type securableClass, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
-      ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
+      ArgumentNullException.ThrowIfNull(securableClass);
+      ArgumentNullException.ThrowIfNull(methodInfo);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableClass, methodInfo, MemberAffiliation.Static);
@@ -638,8 +638,8 @@ namespace Remotion.Security
 
     public virtual bool HasStaticMethodAccess (Type securableClass, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
-      ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
+      ArgumentNullException.ThrowIfNull(securableClass);
+      ArgumentNullException.ThrowIfNull(methodInformation);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions(securableClass, methodInformation);
@@ -661,8 +661,8 @@ namespace Remotion.Security
 
       if (!HasStaticMethodAccess(securableClass, methodName, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+        ArgumentNullException.ThrowIfNull(securableClass);
+        ArgumentException.ThrowIfNullOrEmpty(methodName);
 
         throw CreatePermissionDeniedException("Access to static method '{0}' on type '{1}' has been denied.", methodName, securableClass.GetFullNameSafe());
       }
@@ -681,8 +681,8 @@ namespace Remotion.Security
 
       if (!HasStaticMethodAccess(securableClass, methodInfo, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
-        ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
+        ArgumentNullException.ThrowIfNull(securableClass);
+        ArgumentNullException.ThrowIfNull(methodInfo);
 
         throw CreatePermissionDeniedException(
             "Access to static method '{0}' on type '{1}' has been denied.",
@@ -704,8 +704,8 @@ namespace Remotion.Security
 
       if (!HasStaticMethodAccess(securableClass, methodInformation, principal))
       {
-        ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
-        ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
+        ArgumentNullException.ThrowIfNull(securableClass);
+        ArgumentNullException.ThrowIfNull(methodInformation);
 
         throw CreatePermissionDeniedException(
             "Access to static method '{0}' on type '{1}' has been denied.",
@@ -724,8 +724,8 @@ namespace Remotion.Security
     [EditorBrowsable(EditorBrowsableState.Never)]
     public bool HasStatelessMethodAccess (Type securableClass, string methodName, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(methodName), methodName);
+      ArgumentNullException.ThrowIfNull(securableClass);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableClass, methodName, MemberAffiliation.Instance);
@@ -741,9 +741,9 @@ namespace Remotion.Security
     [EditorBrowsable(EditorBrowsableState.Never)]
     public bool HasStatelessMethodAccess (Type securableClass, MethodInfo methodInfo, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
-      ArgumentUtility.CheckNotNull(nameof(methodInfo), methodInfo);
-      ArgumentUtility.CheckNotNull(nameof(principal), principal);
+      ArgumentNullException.ThrowIfNull(securableClass);
+      ArgumentNullException.ThrowIfNull(methodInfo);
+      ArgumentNullException.ThrowIfNull(principal);
 
       var methodInformation = _memberResolver.GetMethodInformation(securableClass, methodInfo, MemberAffiliation.Instance);
       return HasStatelessMethodAccess(securableClass, methodInformation, principal);
@@ -758,8 +758,8 @@ namespace Remotion.Security
     [EditorBrowsable(EditorBrowsableState.Never)]
     public virtual bool HasStatelessMethodAccess (Type securableClass, IMethodInformation methodInformation, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull(nameof(securableClass), securableClass);
-      ArgumentUtility.CheckNotNull(nameof(methodInformation), methodInformation);
+      ArgumentNullException.ThrowIfNull(securableClass);
+      ArgumentNullException.ThrowIfNull(methodInformation);
       ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
 
       var requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions(securableClass, methodInformation);

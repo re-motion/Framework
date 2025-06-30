@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     public RdbmsStorageSettingsFactory (string providerName, Type storageObjectFactoryType, string connectionString, string readOnlyConnectionString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(providerName), providerName);
+      ArgumentException.ThrowIfNullOrEmpty(providerName);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(storageObjectFactoryType), storageObjectFactoryType, typeof(IRdbmsStorageObjectFactory));
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(connectionString), connectionString);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(readOnlyConnectionString), readOnlyConnectionString);
+      ArgumentException.ThrowIfNullOrEmpty(connectionString);
+      ArgumentException.ThrowIfNullOrEmpty(readOnlyConnectionString);
 
       ProviderName = providerName;
       ConnectionString = connectionString;
@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// <returns>A new <see cref="StorageSettings"/> object with a single default <see cref="StorageProviderDefinition" /> and no storage groups.</returns>
     public IStorageSettings Create (IStorageObjectFactoryFactory storageObjectFactoryFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageObjectFactoryFactory), storageObjectFactoryFactory);
+      ArgumentNullException.ThrowIfNull(storageObjectFactoryFactory);
 
       var storageObjectFactory = storageObjectFactoryFactory.Create(StorageObjectFactoryType);
       Assertion.IsTrue(

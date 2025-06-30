@@ -31,7 +31,6 @@ using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.ListMenuImplementation;
 using Remotion.Web.UI.Controls.ListMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Rendering
 {

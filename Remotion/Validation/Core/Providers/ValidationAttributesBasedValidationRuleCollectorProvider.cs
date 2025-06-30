@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.Implementation;
 
@@ -37,14 +36,14 @@ namespace Remotion.Validation.Providers
 
     public ValidationAttributesBasedValidationRuleCollectorProvider (IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationMessageFactory), validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
 
       ValidationMessageFactory = validationMessageFactory;
     }
 
     protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull(nameof(types), types);
+      ArgumentNullException.ThrowIfNull(types);
 
       return types.SelectMany(
           t => t.GetProperties(PropertyBindingFlags | BindingFlags.DeclaredOnly)

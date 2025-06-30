@@ -1,5 +1,4 @@
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Security.Development
 {
@@ -21,7 +20,7 @@ namespace Remotion.Security.Development
 
     public void SetCustomSecurityProvider (ISecurityProvider provider)
     {
-      ArgumentUtility.CheckNotNull(nameof(provider), provider);
+      ArgumentNullException.ThrowIfNull(provider);
 
       _customSecurityProvider = provider;
     }

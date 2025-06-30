@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public DomainObjectCollectionData (IEnumerable<DomainObject> domainObjects)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObjects), domainObjects);
+      ArgumentNullException.ThrowIfNull(domainObjects);
 
       foreach (var domainObject in domainObjects)
         Insert(Count, domainObject);
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public bool ContainsObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _objectsByID.ContainsKey(objectID);
     }
 
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public DomainObject? GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       _objectsByID.TryGetValue(objectID, out var result);
       return result;
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       return _orderedObjectIDs.IndexOf(objectID);
     }
@@ -115,7 +115,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public void Insert (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       if (index < 0 || index > Count)
         throw new ArgumentOutOfRangeException(nameof(index));
@@ -129,14 +129,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       return Remove(domainObject.ID);
     }
 
     public bool Remove (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       var index = IndexOf(objectID);
       if (index == -1)
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public void Replace (int index, DomainObject value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(value);
 
       var oldDomainObject = GetObject(index);
       if (oldDomainObject != value)
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public void Sort (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull(nameof(comparison), comparison);
+      ArgumentNullException.ThrowIfNull(comparison);
 
       _orderedObjectIDs.Sort((one, two) =>
       {

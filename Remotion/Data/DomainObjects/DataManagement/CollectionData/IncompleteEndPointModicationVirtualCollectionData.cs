@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public IncompleteEndPointModificationVirtualCollectionData (RelationEndPointID associatedEndPointID)
     {
-      ArgumentUtility.CheckNotNull(nameof(associatedEndPointID), associatedEndPointID);
+      ArgumentNullException.ThrowIfNull(associatedEndPointID);
 
       _associatedEndPointID = associatedEndPointID;
     }

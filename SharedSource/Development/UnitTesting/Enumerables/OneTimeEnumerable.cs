@@ -3,7 +3,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 #nullable enable
 // ReSharper disable once CheckNamespace
@@ -21,7 +20,7 @@ namespace Remotion.Development.UnitTesting.Enumerables
 
       public OneTimeEnumerator (IEnumerator<T> enumerator)
       {
-        ArgumentUtility.CheckNotNull(nameof(enumerator), enumerator);
+        ArgumentNullException.ThrowIfNull(enumerator);
         _enumerator = enumerator;
       }
 
@@ -56,7 +55,7 @@ namespace Remotion.Development.UnitTesting.Enumerables
 
     public OneTimeEnumerable (IEnumerable<T> enumerable)
     {
-      ArgumentUtility.CheckNotNull(nameof(enumerable), enumerable);
+      ArgumentNullException.ThrowIfNull(enumerable);
       _enumerable = enumerable;
     }
 

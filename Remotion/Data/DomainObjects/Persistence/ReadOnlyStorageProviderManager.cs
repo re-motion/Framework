@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence
 
     protected override IReadOnlyStorageProvider CreateStorageProvider (StorageProviderDefinition providerDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(providerDefinition), providerDefinition);
+      ArgumentNullException.ThrowIfNull(providerDefinition);
 
       return providerDefinition.Factory.CreateReadOnlyStorageProvider(providerDefinition, PersistenceExtension);
     }

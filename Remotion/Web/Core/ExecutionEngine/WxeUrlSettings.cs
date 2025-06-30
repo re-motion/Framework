@@ -81,7 +81,7 @@ namespace Remotion.Web.ExecutionEngine
       else
       {
         defaultWxeHandler = defaultWxeHandler.Trim();
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(defaultWxeHandler), defaultWxeHandler);
+        ArgumentException.ThrowIfNullOrEmpty(defaultWxeHandler);
 
         if (defaultWxeHandler.StartsWith("/") || defaultWxeHandler.IndexOf(":") != -1)
           throw new ArgumentException($"No absolute paths are allowed. Resource: '{defaultWxeHandler}'", nameof(defaultWxeHandler));

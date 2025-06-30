@@ -17,7 +17,6 @@
 using System;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.DPExtensions
 {
@@ -29,10 +28,10 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     private readonly IMethodEmitter _methodEmitter;
 
     public ExpressionReference (Type referenceType, Expression expression, IMethodEmitter methodEmitter)
-        : base(ArgumentUtility.CheckNotNull(nameof(referenceType), referenceType))
+        : base(referenceType ?? throw new ArgumentNullException(nameof(referenceType)))
     {
-      ArgumentUtility.CheckNotNull(nameof(expression), expression);
-      ArgumentUtility.CheckNotNull(nameof(methodEmitter), methodEmitter);
+      ArgumentNullException.ThrowIfNull(expression);
+      ArgumentNullException.ThrowIfNull(methodEmitter);
 
       _referenceType = referenceType;
       _methodEmitter = methodEmitter;
@@ -41,7 +40,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void LoadAddressOfReference (ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull(nameof(gen), gen);
+      ArgumentNullException.ThrowIfNull(gen);
 
       LocalReference local = CreateLocal(gen);
       local.LoadAddressOfReference(gen);
@@ -49,7 +48,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void LoadReference (ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull(nameof(gen), gen);
+      ArgumentNullException.ThrowIfNull(gen);
 
       LocalReference local = CreateLocal(gen);
       local.LoadReference(gen);
@@ -57,7 +56,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     private LocalReference CreateLocal (ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull(nameof(gen), gen);
+      ArgumentNullException.ThrowIfNull(gen);
 
       LocalReference local = _methodEmitter.DeclareLocal(_referenceType);
       local.Generate(gen);

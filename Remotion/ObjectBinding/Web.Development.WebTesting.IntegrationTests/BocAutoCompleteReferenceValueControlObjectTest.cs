@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;

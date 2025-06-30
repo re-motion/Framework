@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public UpdatedColumnsSpecification (IEnumerable<ColumnValue> columnValues)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnValues), columnValues);
+      ArgumentNullException.ThrowIfNull(columnValues);
 
       var columnValuesArray = columnValues.ToArray();
       ArgumentUtility.CheckNotEmpty(nameof(columnValues), columnValuesArray);
@@ -49,9 +49,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AppendColumnValueAssignments (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(statement), statement);
-      ArgumentUtility.CheckNotNull(nameof(dbCommand), dbCommand);
-      ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(dbCommand);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       var columnsWithParameters = _columnValues.Select(
           cv =>

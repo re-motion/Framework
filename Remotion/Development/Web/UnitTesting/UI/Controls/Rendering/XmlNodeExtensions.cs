@@ -28,7 +28,11 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public static HtmlHelperBase Helper
     {
       get { return Assertion.IsNotNull(s_helper, "XmlNodeExtensions.Hepler must be set during test-setup."); }
-      set { s_helper = ArgumentUtility.CheckNotNull(nameof(value), value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        s_helper = value;
+      }
     }
 
     public static void AssertChildElementCount (this XmlNode element, int childElementCount)

@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
@@ -42,8 +41,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     public SearchServiceResultItem ([NotNull] string uniqueIdentifier, [NotNull] string displayName, [CanBeNull] string? iconUrl)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(displayName), displayName);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       _uniqueIdentifier = uniqueIdentifier;
       _displayName = displayName;

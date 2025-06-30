@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 {
@@ -38,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public ObjectInititalizationContextScope (IObjectInitializationContext objectInitializationContext)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectInitializationContext), objectInitializationContext);
+      ArgumentNullException.ThrowIfNull(objectInitializationContext);
 
       _previousObjectInitializationContext = s_currentObjectInitializationContext;
       s_currentObjectInitializationContext = objectInitializationContext;

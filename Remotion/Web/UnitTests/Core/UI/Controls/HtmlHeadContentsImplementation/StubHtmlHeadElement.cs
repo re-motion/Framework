@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 
+using System;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation
@@ -27,14 +27,14 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation
 
     public StubHtmlHeadElement (string content)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(content), content);
+      ArgumentException.ThrowIfNullOrEmpty(content);
 
       _content = content;
     }
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       writer.WriteLine(_content);
     }

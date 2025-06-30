@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -35,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public virtual IScriptElement GetDropElement (T indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull(nameof(indexDefinition), indexDefinition);
-      ArgumentUtility.CheckNotNull(nameof(ownerName), ownerName);
+      ArgumentNullException.ThrowIfNull(indexDefinition);
+      ArgumentNullException.ThrowIfNull(ownerName);
 
       return new ScriptStatement(
           string.Format(
@@ -57,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected virtual string GetCreateIndexOptions (IEnumerable<string> optionItems)
     {
-      ArgumentUtility.CheckNotNull(nameof(optionItems), optionItems);
+      ArgumentNullException.ThrowIfNull(optionItems);
 
       var filteredItems = optionItems.Except(new[] { string.Empty, null }).ToList();
       if (filteredItems.Any())
@@ -68,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected virtual IEnumerable<string> GetCreateIndexOptionItems (T indexDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(indexDefinition), indexDefinition);
+      ArgumentNullException.ThrowIfNull(indexDefinition);
 
       yield return GetIndexOption("PAD_INDEX", indexDefinition.PadIndex);
       yield return GetIndexOption("FILLFACTOR", indexDefinition.FillFactor);
@@ -82,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetIndexOption (string optionName , bool? optionValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(optionName), optionName);
+      ArgumentException.ThrowIfNullOrEmpty(optionName);
 
       if (optionValue.HasValue)
         return string.Format("{0} = {1}", optionName, optionValue.Value ? "ON" : "OFF");
@@ -92,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetIndexOption (string optionName , int? optionValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(optionName), optionName);
+      ArgumentException.ThrowIfNullOrEmpty(optionName);
 
       if (optionValue.HasValue)
         return string.Format("{0} = {1}", optionName, optionValue.Value);

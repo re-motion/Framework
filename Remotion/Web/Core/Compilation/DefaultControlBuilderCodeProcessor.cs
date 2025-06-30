@@ -17,7 +17,6 @@
 using System;
 using System.CodeDom;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Compilation
 {
@@ -36,7 +35,7 @@ namespace Remotion.Web.Compilation
         CodeMemberMethod dataBindingMethod,
         Action<CodeCompileUnit, CodeTypeDeclaration, CodeTypeDeclaration, CodeMemberMethod, CodeMemberMethod> baseCall)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseCall), baseCall);
+      ArgumentNullException.ThrowIfNull(baseCall);
       baseCall(codeCompileUnit, baseType, derivedType, buildMethod, dataBindingMethod);
     }
   }

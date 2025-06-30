@@ -18,7 +18,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection
 {
@@ -31,14 +30,14 @@ namespace Remotion.Reflection
 
     public static bool IsGacAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       return s_typeCache.GetOrAdd(assembly, GetTypeCacheValue).IsGacAssembly;
     }
 
     public static IReadOnlyCollection<Type> GetTypes (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       return s_typeCache.GetOrAdd(assembly, GetTypeCacheValue).Types;
     }

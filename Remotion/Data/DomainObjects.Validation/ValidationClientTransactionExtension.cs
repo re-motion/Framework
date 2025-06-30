@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.Validation
     public ValidationClientTransactionExtension (string key, IValidatorProvider validatorProvider)
         : base(key)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatorProvider), validatorProvider);
+      ArgumentNullException.ThrowIfNull(validatorProvider);
 
       _validatorProvider = validatorProvider;
     }
@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public override void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(committedData), committedData);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(committedData);
 
       var validatorCache = new Dictionary<Type, IValidator>();
 
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     private List<ValidationResult> Validate (IReadOnlyList<PersistableData> domainObjectsToValidate, Dictionary<Type, IValidator> validatorCache)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObjectsToValidate), domainObjectsToValidate);
+      ArgumentNullException.ThrowIfNull(domainObjectsToValidate);
 
       var invalidValidationResults = new List<ValidationResult>();
 

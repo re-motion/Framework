@@ -16,13 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -40,8 +38,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurityContextRepository (IDomainRevisionProvider revisionProvider, IUserNamesRevisionProvider userRevisionProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(revisionProvider), revisionProvider);
-      ArgumentUtility.CheckNotNull(nameof(userRevisionProvider), userRevisionProvider);
+      ArgumentNullException.ThrowIfNull(revisionProvider);
+      ArgumentNullException.ThrowIfNull(userRevisionProvider);
 
       _cache = new SecurityContextRevisionBasedCache(revisionProvider);
       _userNamesCache = new SecurityContextUserNamesRevisionBasedCache(userRevisionProvider);
@@ -49,7 +47,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<Tenant> GetTenant (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
 
       var cachedData = _cache.GetData();
       var tenant = cachedData.Tenants.GetValueOrDefault(uniqueIdentifier);
@@ -65,7 +63,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<Group> GetGroup (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
 
       var cachedData = _cache.GetData();
       var group = cachedData.Groups.GetValueOrDefault(uniqueIdentifier);
@@ -81,7 +79,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<User> GetUser (string userName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(userName), userName);
+      ArgumentException.ThrowIfNullOrEmpty(userName);
 
       var cachedData = _userNamesCache.GetData();
       var user = cachedData.Users.GetValueOrDefault(userName);
@@ -97,7 +95,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<Position> GetPosition (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(uniqueIdentifier), uniqueIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
 
       var cachedData = _cache.GetData();
       var position = cachedData.Positions.GetValueOrDefault(uniqueIdentifier);
@@ -113,7 +111,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IDomainObjectHandle<AbstractRoleDefinition> GetAbstractRole (EnumWrapper name)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
+      // EnumWrapper is value type
 
       var cachedData = _cache.GetData();
       var abstractRole = cachedData.AbstractRoles.GetValueOrDefault(name);
@@ -129,7 +127,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurableClassDefinitionData GetClass (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       var cachedData = _cache.GetData();
       var @class = cachedData.Classes.GetValueOrDefault(name);
@@ -145,7 +143,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public IReadOnlyCollection<string> GetStatePropertyValues (IDomainObjectHandle<StatePropertyDefinition> stateProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(stateProperty), stateProperty);
+      ArgumentNullException.ThrowIfNull(stateProperty);
 
       var cachedData = _cache.GetData();
       var values = cachedData.StatePropertyValues.GetValueOrDefault(stateProperty);

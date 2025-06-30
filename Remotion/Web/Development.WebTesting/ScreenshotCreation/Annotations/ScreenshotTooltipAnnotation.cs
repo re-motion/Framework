@@ -17,7 +17,6 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
@@ -37,8 +36,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         [NotNull] ScreenshotTooltipStyle style,
         WebPadding padding)
     {
-      ArgumentUtility.CheckNotNull(nameof(content), content);
-      ArgumentUtility.CheckNotNull(nameof(style), style);
+      ArgumentNullException.ThrowIfNull(content);
+      ArgumentNullException.ThrowIfNull(style);
 
       _content = content;
       _style = style;
@@ -79,8 +78,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// <inheritdoc />
     public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull(nameof(canvas), canvas);
-      ArgumentUtility.CheckNotNull(nameof(resolvedScreenshotElement), resolvedScreenshotElement);
+      ArgumentNullException.ThrowIfNull(canvas);
+      ArgumentNullException.ThrowIfNull(resolvedScreenshotElement);
 
       // Calculate the maximum size of the tooltip
       var border = (int)Math.Round(_style.Border.Width);

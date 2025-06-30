@@ -29,14 +29,14 @@ namespace Remotion.Mixins.CodeGeneration
 
     public TypeFactoryImplementation (IPipelineRegistry pipelineRegistry)
     {
-      ArgumentUtility.CheckNotNull(nameof(pipelineRegistry), pipelineRegistry);
+      ArgumentNullException.ThrowIfNull(pipelineRegistry);
 
       _pipelineRegistry = pipelineRegistry;
     }
 
     public Type GetConcreteType (Type targetOrConcreteType)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetOrConcreteType), targetOrConcreteType);
+      ArgumentNullException.ThrowIfNull(targetOrConcreteType);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext(targetOrConcreteType);
       if (classContext == null)
@@ -54,7 +54,7 @@ namespace Remotion.Mixins.CodeGeneration
 
     public void InitializeUnconstructedInstance (object mixinTarget, InitializationSemantics initializationSemantics)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinTarget), mixinTarget);
+      ArgumentNullException.ThrowIfNull(mixinTarget);
       ArgumentUtility.CheckType<IMixinTarget>(nameof(mixinTarget), mixinTarget);
 
       _pipelineRegistry.DefaultPipeline.ReflectionService.PrepareExternalUninitializedObject(mixinTarget, initializationSemantics);

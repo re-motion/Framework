@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions.Building
 {
@@ -28,8 +27,8 @@ namespace Remotion.Mixins.Definitions.Building
     public MemberOverridePair (TMember baseMember, TMember overrider)
         : this()
     {
-      ArgumentUtility.CheckNotNull(nameof(baseMember), baseMember);
-      ArgumentUtility.CheckNotNull(nameof(overrider), overrider);
+      ArgumentNullException.ThrowIfNull(baseMember);
+      ArgumentNullException.ThrowIfNull(overrider);
 
       BaseMember = baseMember;
       Overrider = overrider;

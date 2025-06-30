@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public PrimaryKeyConstraintDefinition (string constraintName, bool isClustered, IEnumerable<ColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(constraintName), constraintName);
-      ArgumentUtility.CheckNotNull(nameof(columns), columns);
+      ArgumentException.ThrowIfNullOrEmpty(constraintName);
+      ArgumentNullException.ThrowIfNull(columns);
 
       var columnsList = columns.ToList().AsReadOnly();
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(columns), columnsList);
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public void Accept (ITableConstraintDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
 
       visitor.VisitPrimaryKeyConstraintDefinition(this);
     }

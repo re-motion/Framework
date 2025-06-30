@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Context;
 using Remotion.Data.DomainObjects;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain
 {
@@ -47,7 +46,7 @@ namespace Remotion.SecurityManager.Domain
 
     public GuidRevisionValue GetRevision (TRevisionKey key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       var revisions = GetCachedRevisions();
       return revisions.GetOrCreateValue(key, _getRevisionFromDatabaseFunc);
@@ -55,7 +54,7 @@ namespace Remotion.SecurityManager.Domain
 
     public void InvalidateRevision (TRevisionKey key)
     {
-      ArgumentUtility.CheckNotNull(nameof(key), key);
+      ArgumentNullException.ThrowIfNull(key);
 
       var revisions = GetCachedRevisions();
       revisions.Remove(key);

@@ -27,14 +27,14 @@ namespace Remotion.Mixins.CrossReferencer.Formatting
 
     public MemberSignatureUtility (IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull(nameof(outputFormatter), outputFormatter);
+      ArgumentNullException.ThrowIfNull(outputFormatter);
 
       _outputFormatter = outputFormatter;
     }
 
     public XElement? GetMemberSignature (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
+      ArgumentNullException.ThrowIfNull(memberInfo);
 
       switch (memberInfo.MemberType)
       {

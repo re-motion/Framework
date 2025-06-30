@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
@@ -29,7 +28,7 @@ public class PropertyDefinitionAddingEventArgs : EventArgs
 
   public PropertyDefinitionAddingEventArgs (PropertyDefinition propertyDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+    ArgumentNullException.ThrowIfNull(propertyDefinition);
 
     _propertyDefinition = propertyDefinition;
   }
@@ -46,7 +45,7 @@ public class PropertyDefinitionAddedEventArgs : EventArgs
 
   public PropertyDefinitionAddedEventArgs (PropertyDefinition propertyDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+    ArgumentNullException.ThrowIfNull(propertyDefinition);
 
     _propertyDefinition = propertyDefinition;
   }

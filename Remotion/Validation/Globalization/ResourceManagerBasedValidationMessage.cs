@@ -13,8 +13,8 @@ namespace Remotion.Validation.Globalization
 
     public ResourceManagerBasedValidationMessage (IResourceManager resourceManager, Enum resourceIdentifier)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceIdentifier), resourceIdentifier);
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
+      ArgumentNullException.ThrowIfNull(resourceIdentifier);
+      ArgumentNullException.ThrowIfNull(resourceManager);
 
       ResourceManager = resourceManager;
       ResourceIdentifier = resourceIdentifier;
@@ -22,8 +22,8 @@ namespace Remotion.Validation.Globalization
 
     public override string Format (CultureInfo culture, IFormatProvider? formatProvider, params object?[] parameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(culture), culture);
-      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentNullException.ThrowIfNull(culture);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       using (new CultureScope(CultureInfo.InvariantCulture, culture))
       {

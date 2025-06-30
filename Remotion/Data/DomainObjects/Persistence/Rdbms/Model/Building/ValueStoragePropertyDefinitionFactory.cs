@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 {
@@ -33,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     public ValueStoragePropertyDefinitionFactory (
         IStorageTypeInformationProvider storageTypeInformationProvider, IStorageNameProvider storageNameProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageTypeInformationProvider), storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull(nameof(storageNameProvider), storageNameProvider);
+      ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
+      ArgumentNullException.ThrowIfNull(storageNameProvider);
 
       _storageTypeInformationProvider = storageTypeInformationProvider;
       _storageNameProvider = storageNameProvider;
@@ -52,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       IStorageTypeInformation storageType;
       try
@@ -74,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object? value, string columnName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(columnName), columnName);
+      ArgumentException.ThrowIfNullOrEmpty(columnName);
 
       var propertyType = value != null ? value.GetType() : typeof(object);
       IStorageTypeInformation storageType;
@@ -96,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     protected virtual bool MustBeNullable (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       // CreateSequence can deal with null source objects
       var baseClasses = propertyDefinition.ClassDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);

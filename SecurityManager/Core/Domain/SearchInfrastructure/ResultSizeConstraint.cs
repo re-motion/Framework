@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 {
@@ -39,7 +38,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public IQueryable<T> ApplyTo<T> (IQueryable<T> query)
     {
-      ArgumentUtility.CheckNotNull(nameof(query), query);
+      ArgumentNullException.ThrowIfNull(query);
 
       return query.Take(Value);
     }

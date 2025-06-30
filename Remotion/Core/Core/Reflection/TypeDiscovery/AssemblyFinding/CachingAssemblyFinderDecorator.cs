@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -34,7 +33,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public CachingAssemblyFinderDecorator (IAssemblyFinder innerFinder)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerFinder), innerFinder);
+      ArgumentNullException.ThrowIfNull(innerFinder);
 
       _innerFinder = innerFinder;
       _resultCache = new Lazy<IReadOnlyCollection<Assembly>>(

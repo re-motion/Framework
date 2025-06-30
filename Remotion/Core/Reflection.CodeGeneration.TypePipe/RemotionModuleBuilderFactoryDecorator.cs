@@ -38,14 +38,14 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
 
     public RemotionModuleBuilderFactoryDecorator (IModuleBuilderFactory moduleBuilderFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(moduleBuilderFactory), moduleBuilderFactory);
+      ArgumentNullException.ThrowIfNull(moduleBuilderFactory);
 
       _moduleBuilderFactory = moduleBuilderFactory;
     }
 
     public IModuleBuilder CreateModuleBuilder (string assemblyName, string assemblyDirectoryOrNull, bool strongNamed, string keyFilePathOrNull)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(assemblyName), assemblyName);
+      ArgumentException.ThrowIfNullOrEmpty(assemblyName);
 
       var moduleBuilder = _moduleBuilderFactory.CreateModuleBuilder(assemblyName, assemblyDirectoryOrNull, strongNamed, keyFilePathOrNull);
 

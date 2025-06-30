@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns>A list of <see cref="WebTreeNode"/>s grouped by their category.</returns>
     public static IReadOnlyList<WebTreeNode> GroupByCategory (WebTreeNodeCollection nodes)
     {
-      ArgumentUtility.CheckNotNull(nameof(nodes), nodes);
+      ArgumentNullException.ThrowIfNull(nodes);
 
       return nodes.Cast<WebTreeNode>().GroupBy(node => node.Category).SelectMany(node => node).ToArray();
     }

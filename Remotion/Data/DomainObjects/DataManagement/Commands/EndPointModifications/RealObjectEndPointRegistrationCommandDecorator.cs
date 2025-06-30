@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
@@ -37,9 +36,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IVirtualEndPoint newRelatedEndPoint)
       : base(decoratedCommand)
     {
-      ArgumentUtility.CheckNotNull(nameof(realObjectEndPoint), realObjectEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(oldRelatedEndPoint), oldRelatedEndPoint);
-      ArgumentUtility.CheckNotNull(nameof(newRelatedEndPoint), newRelatedEndPoint);
+      ArgumentNullException.ThrowIfNull(realObjectEndPoint);
+      ArgumentNullException.ThrowIfNull(oldRelatedEndPoint);
+      ArgumentNullException.ThrowIfNull(newRelatedEndPoint);
 
       _realObjectEndPoint = realObjectEndPoint;
       _oldRelatedEndPoint = oldRelatedEndPoint;
@@ -72,7 +71,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     protected override IDataManagementCommand Decorate (IDataManagementCommand decoratedCommand)
     {
-      ArgumentUtility.CheckNotNull(nameof(decoratedCommand), decoratedCommand);
+      ArgumentNullException.ThrowIfNull(decoratedCommand);
 
       return new RealObjectEndPointRegistrationCommandDecorator(
           decoratedCommand,

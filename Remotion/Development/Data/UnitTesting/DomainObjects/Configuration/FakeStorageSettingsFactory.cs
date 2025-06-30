@@ -16,7 +16,6 @@
 //
 using System;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
 {
@@ -39,7 +38,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
     /// </summary>
     public void SetUp (IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageSettings), storageSettings);
+      ArgumentNullException.ThrowIfNull(storageSettings);
 
       StorageSettings = storageSettings;
     }
@@ -49,7 +48,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
     /// </summary>
     public IStorageSettings Create (IStorageObjectFactoryFactory storageObjectFactoryFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(storageObjectFactoryFactory), storageObjectFactoryFactory);
+      ArgumentNullException.ThrowIfNull(storageObjectFactoryFactory);
 
       if (StorageSettings == null)
         throw new InvalidOperationException($"{nameof(FakeStorageSettingsFactory)}.{nameof(SetUp)}(...) must be called before performing the current operation.");

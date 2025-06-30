@@ -56,8 +56,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </summary>
     /// <param name="disabledEnumValueID1">The disabled enum values.</param>
     public DisableExtensibleEnumValuesAttribute (string disabledEnumValueID1)
-        : this(new[] {
-            ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID1), disabledEnumValueID1) })
+        : this(new[] { disabledEnumValueID1 ?? throw new ArgumentNullException(nameof(disabledEnumValueID1)) })
     {
     }
 
@@ -70,8 +69,8 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID1,
         string disabledEnumValueID2)
       : this(new[] {
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID1), disabledEnumValueID1),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID2), disabledEnumValueID2),
+          disabledEnumValueID1 ?? throw new ArgumentNullException(nameof(disabledEnumValueID1)),
+          disabledEnumValueID2 ?? throw new ArgumentNullException(nameof(disabledEnumValueID2)),
       })
     {
     }
@@ -87,9 +86,9 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID2,
         string disabledEnumValueID3)
       : this(new[] {
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID1), disabledEnumValueID1),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID2), disabledEnumValueID2),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID3), disabledEnumValueID3),
+          disabledEnumValueID1 ?? throw new ArgumentNullException(nameof(disabledEnumValueID1)),
+          disabledEnumValueID2 ?? throw new ArgumentNullException(nameof(disabledEnumValueID2)),
+          disabledEnumValueID3 ?? throw new ArgumentNullException(nameof(disabledEnumValueID3)),
       })
     {
     }
@@ -107,10 +106,10 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID3,
         string disabledEnumValueID4)
       : this(new[] {
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID1), disabledEnumValueID1),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID2), disabledEnumValueID2),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID3), disabledEnumValueID3),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID4), disabledEnumValueID4),
+          disabledEnumValueID1 ?? throw new ArgumentNullException(nameof(disabledEnumValueID1)),
+          disabledEnumValueID2 ?? throw new ArgumentNullException(nameof(disabledEnumValueID2)),
+          disabledEnumValueID3 ?? throw new ArgumentNullException(nameof(disabledEnumValueID3)),
+          disabledEnumValueID4 ?? throw new ArgumentNullException(nameof(disabledEnumValueID4)),
       })
     {
     }
@@ -130,11 +129,11 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID4,
         string disabledEnumValueID5)
       : this(new[] {
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID1), disabledEnumValueID1),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID2), disabledEnumValueID2),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID3), disabledEnumValueID3),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID4), disabledEnumValueID4),
-          ArgumentUtility.CheckNotNull(nameof(disabledEnumValueID5), disabledEnumValueID5),
+          disabledEnumValueID1 ?? throw new ArgumentNullException(nameof(disabledEnumValueID1)),
+          disabledEnumValueID2 ?? throw new ArgumentNullException(nameof(disabledEnumValueID2)),
+          disabledEnumValueID3 ?? throw new ArgumentNullException(nameof(disabledEnumValueID3)),
+          disabledEnumValueID4 ?? throw new ArgumentNullException(nameof(disabledEnumValueID4)),
+          disabledEnumValueID5 ?? throw new ArgumentNullException(nameof(disabledEnumValueID5)),
       })
     {
     }

@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {
@@ -33,14 +32,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
 
     public CompoundBocListValidationFailureHandler (IEnumerable<IBocListValidationFailureHandler> validationFailureHandlers)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationFailureHandlers), validationFailureHandlers);
+      ArgumentNullException.ThrowIfNull(validationFailureHandlers);
 
       ValidationFailureHandlers = validationFailureHandlers.ToArray();
     }
 
     public void HandleValidationFailures (ValidationFailureHandlingContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       foreach (var validationFailureHandler in ValidationFailureHandlers)
       {

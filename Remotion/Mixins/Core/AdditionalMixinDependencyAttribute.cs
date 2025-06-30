@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -69,9 +68,9 @@ namespace Remotion.Mixins
 
     public AdditionalMixinDependencyAttribute (Type targetType, Type dependentMixin, Type dependency)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
-      ArgumentUtility.CheckNotNull(nameof(dependentMixin), dependentMixin);
-      ArgumentUtility.CheckNotNull(nameof(dependency), dependency);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(dependentMixin);
+      ArgumentNullException.ThrowIfNull(dependency);
 
       _targetType = targetType;
       _dependentMixin = dependentMixin;
@@ -100,8 +99,8 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Assembly attributeTarget)
     {
-      ArgumentUtility.CheckNotNull(nameof(configurationBuilder), configurationBuilder);
-      ArgumentUtility.CheckNotNull(nameof(attributeTarget), attributeTarget);
+      ArgumentNullException.ThrowIfNull(configurationBuilder);
+      ArgumentNullException.ThrowIfNull(attributeTarget);
 
       configurationBuilder.ForClass(TargetType).AddMixinDependency(DependentMixin, Dependency);
     }

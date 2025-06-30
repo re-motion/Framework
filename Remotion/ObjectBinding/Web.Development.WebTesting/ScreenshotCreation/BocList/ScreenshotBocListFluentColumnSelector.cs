@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -44,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         bool includeHeader)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentList), fluentList);
+      ArgumentNullException.ThrowIfNull(fluentList);
 
       _fluentList = fluentList;
       _includeHeader = includeHeader;

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Resources
 {
@@ -28,7 +27,7 @@ namespace Remotion.Web.Resources
 
     public StaticResourceUrl (string url)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(url), url);
+      ArgumentException.ThrowIfNullOrEmpty(url);
 
       _url = url;
     }

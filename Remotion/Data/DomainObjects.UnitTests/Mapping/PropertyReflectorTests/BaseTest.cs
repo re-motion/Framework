@@ -19,7 +19,6 @@ using System.Reflection;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IPropertyDefaultValueProvider propertyDefaultValueProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(property), property);
+      ArgumentException.ThrowIfNullOrEmpty(property);
 
       Type type = typeof(T);
       ClassDefinition classDefinition;
@@ -52,8 +51,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IPropertyDefaultValueProvider propertyDefaultValueProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(property), property);
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentException.ThrowIfNullOrEmpty(property);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       Type type = typeof(T);
       var propertyInfo = PropertyInfoAdapter.Create(

@@ -19,7 +19,6 @@ using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 
 namespace Remotion.Web.Development.WebTesting
@@ -50,9 +49,9 @@ namespace Remotion.Web.Development.WebTesting
 
     protected WebTestAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(control);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(logger);
 
       _logger = logger;
       _control = control;
@@ -79,7 +78,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="options">See <see cref="IWebTestActionOptions"/> for more information.</param>
     public void Execute ([NotNull] IWebTestActionOptions options)
     {
-      ArgumentUtility.CheckNotNull(nameof(options), options);
+      ArgumentNullException.ThrowIfNull(options);
 
       _actionID = WebTestActionSequenceNumberGenerator.GetNextSequenceNumber();
       var completionDetectionStrategy = options.CompletionDetectionStrategy ?? new NullCompletionDetectionStrategy();
@@ -116,7 +115,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected void OutputDebugMessage ([NotNull] string message)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(message), message);
+      ArgumentException.ThrowIfNullOrEmpty(message);
 
       _logger.LogDebug("Action {0}: {1}", _actionID, message);
     }

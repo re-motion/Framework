@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
@@ -34,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
       public NestedPropertyInfo (IRdbmsStoragePropertyDefinition storagePropertyDefinition, Func<object?, object?> valueAccessor)
       {
-        ArgumentUtility.CheckNotNull(nameof(storagePropertyDefinition), storagePropertyDefinition);
-        ArgumentUtility.CheckNotNull(nameof(valueAccessor), valueAccessor);
+        ArgumentNullException.ThrowIfNull(storagePropertyDefinition);
+        ArgumentNullException.ThrowIfNull(valueAccessor);
 
         _storagePropertyDefinition = storagePropertyDefinition;
         _valueAccessor = valueAccessor;
@@ -58,9 +57,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public CompoundStoragePropertyDefinition (Type propertyType, IEnumerable<NestedPropertyInfo> properties, Func<object?[], object?> valueCombinator)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
-      ArgumentUtility.CheckNotNull(nameof(properties), properties);
-      ArgumentUtility.CheckNotNull(nameof(valueCombinator), valueCombinator);
+      ArgumentNullException.ThrowIfNull(propertyType);
+      ArgumentNullException.ThrowIfNull(properties);
+      ArgumentNullException.ThrowIfNull(valueCombinator);
 
       _propertyType = propertyType;
       _properties = properties.ToArray();
@@ -104,7 +103,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
-      ArgumentUtility.CheckNotNull(nameof(values), values);
+      ArgumentNullException.ThrowIfNull(values);
 
       var valueList = values.ToList();
       return ColumnValueTable.Combine(
@@ -113,14 +112,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnValueProvider), columnValueProvider);
+      ArgumentNullException.ThrowIfNull(columnValueProvider);
       var values = _properties.Select(p => p.StoragePropertyDefinition.CombineValue(columnValueProvider)).ToArray();
       return _valueCombinator(values);
     }
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull(nameof(equivalentProperties), equivalentProperties);
+      ArgumentNullException.ThrowIfNull(equivalentProperties);
       var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,

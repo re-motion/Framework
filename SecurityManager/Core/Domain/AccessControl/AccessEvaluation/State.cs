@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -29,9 +28,9 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public State (IDomainObjectHandle<StatePropertyDefinition> propertyHandle, string propertyName, string value)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyHandle), propertyHandle);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(propertyName), propertyName);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentNullException.ThrowIfNull(propertyHandle);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(value);
 
       _propertyHandle = propertyHandle;
       _propertyName = propertyName;

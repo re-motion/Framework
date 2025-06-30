@@ -22,7 +22,6 @@ using System.IO;
 using System.Web;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Compilation;
 using Remotion.Web.ContentSecurityPolicy;
 using Remotion.Web.Infrastructure;
@@ -757,7 +756,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// </summary>
   public sealed override void ProcessRequest (HttpContext httpContext)
   {
-    ArgumentUtility.CheckNotNull(nameof(httpContext), httpContext);
+    ArgumentNullException.ThrowIfNull(httpContext);
     _httpContext = new HttpContextWrapper(httpContext);
     ProcessRequestImplementation(httpContext);
   }
@@ -765,7 +764,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <inheritdoc cref="Page.ProcessRequest"/>
   protected virtual void ProcessRequestImplementation (HttpContext httpContext)
   {
-    ArgumentUtility.CheckNotNull(nameof(httpContext), httpContext);
+    ArgumentNullException.ThrowIfNull(httpContext);
     base.ProcessRequest(httpContext);
   }
 

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
 {
@@ -27,8 +26,8 @@ namespace Remotion.Mixins.Context
 
     public ClassContext DeriveContext (ClassContext contextToBeDerived, IEnumerable<ClassContext> baseContexts)
     {
-      ArgumentUtility.CheckNotNull(nameof(contextToBeDerived), contextToBeDerived);
-      ArgumentUtility.CheckNotNull(nameof(baseContexts), baseContexts);
+      ArgumentNullException.ThrowIfNull(contextToBeDerived);
+      ArgumentNullException.ThrowIfNull(baseContexts);
 
       var mixins = new List<MixinContext>(contextToBeDerived.Mixins);
       var interfaces = new List<Type>(contextToBeDerived.ComposedInterfaces);

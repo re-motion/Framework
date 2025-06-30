@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 {
@@ -30,7 +29,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 
     public static AssemblyName GetAssemblyName (string filePath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(filePath), filePath);
+      ArgumentException.ThrowIfNullOrEmpty(filePath);
 
       // C# compiler 7.2 does not provide caching for delegate but calls are only during application start so no caching is needed.
       return s_cache.GetOrAdd(filePath, AssemblyName.GetAssemblyName);

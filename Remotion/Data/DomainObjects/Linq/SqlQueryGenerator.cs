@@ -22,7 +22,6 @@ using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq
 {
@@ -42,9 +41,9 @@ namespace Remotion.Data.DomainObjects.Linq
         ISqlGenerationStage generationStage,
         int tableValuedParameterThreshold)
     {
-      ArgumentUtility.CheckNotNull(nameof(preparationStage), preparationStage);
-      ArgumentUtility.CheckNotNull(nameof(resolutionStage), resolutionStage);
-      ArgumentUtility.CheckNotNull(nameof(generationStage), generationStage);
+      ArgumentNullException.ThrowIfNull(preparationStage);
+      ArgumentNullException.ThrowIfNull(resolutionStage);
+      ArgumentNullException.ThrowIfNull(generationStage);
 
       _preparationStage = preparationStage;
       _resolutionStage = resolutionStage;
@@ -76,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns>A <see cref="SqlCommandData"/> instance containing the SQL text, parameters, and an in-memory projection for the given query model.</returns>
     public virtual SqlQueryGeneratorResult CreateSqlQuery (QueryModel queryModel)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryModel), queryModel);
+      ArgumentNullException.ThrowIfNull(queryModel);
 
       SqlStatement sqlStatement;
       try

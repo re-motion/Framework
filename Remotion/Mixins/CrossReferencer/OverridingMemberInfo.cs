@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
 {
@@ -41,7 +40,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public OverridingMemberInfo (MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull(nameof(memberInfo), memberInfo);
+      ArgumentNullException.ThrowIfNull(memberInfo);
       _memberInfo = memberInfo;
     }
 

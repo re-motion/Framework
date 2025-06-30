@@ -1,11 +1,9 @@
 ﻿// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
-using System.Web;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.Web.ContentSecurityPolicy;
-using Remotion.Web.Resources;
 
 namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 {

@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     /// <param name="oppositeProperty">The name of the opposite property. Must not be <see langword="null" /> or empty.</param>
     public BidirectionalRelationAttribute (string oppositeProperty)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(oppositeProperty), oppositeProperty);
+      ArgumentException.ThrowIfNullOrEmpty(oppositeProperty);
 
       _oppositeProperty = oppositeProperty;
     }
@@ -72,9 +72,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       get { return _sortExpression; }
       set
       {
-        ArgumentUtility.CheckNotNull(nameof(value), value);
+        ArgumentNullException.ThrowIfNull(value);
         value = value.Trim();
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+        ArgumentException.ThrowIfNullOrEmpty(value);
         _sortExpression = StringUtility.EmptyToNull(value);
       }
     }

@@ -30,23 +30,23 @@ namespace Remotion.Mixins.Context
   {
     public static MixinContextOrigin CreateForCustomAttribute (Attribute attribute, MemberInfo target)
     {
-      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
-      ArgumentUtility.CheckNotNull(nameof(target), target);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(target);
 
       return new MixinContextOrigin(attribute.GetType().Name, target.Module.Assembly, target.ToString()!);
     }
 
     public static MixinContextOrigin CreateForCustomAttribute (Attribute attribute, Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull(nameof(attribute), attribute);
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       return new MixinContextOrigin(attribute.GetType().Name, assembly, "assembly");
     }
 
     public static MixinContextOrigin CreateForMethod (MethodBase methodBase)
     {
-      ArgumentUtility.CheckNotNull(nameof(methodBase), methodBase);
+      ArgumentNullException.ThrowIfNull(methodBase);
 
       var location = String.Format("{0}, declaring type: {1}", methodBase, methodBase.DeclaringType);
       return new MixinContextOrigin("Method", methodBase.Module.Assembly, location);
@@ -54,13 +54,13 @@ namespace Remotion.Mixins.Context
 
     public static MixinContextOrigin CreateForStackFrame (StackFrame stackFrame)
     {
-      ArgumentUtility.CheckNotNull(nameof(stackFrame), stackFrame);
+      ArgumentNullException.ThrowIfNull(stackFrame);
       return CreateForMethod(stackFrame.GetMethod()!);
     }
 
     public static MixinContextOrigin Deserialize (IMixinContextOriginDeserializer deserializer)
     {
-      ArgumentUtility.CheckNotNull(nameof(deserializer), deserializer);
+      ArgumentNullException.ThrowIfNull(deserializer);
 
       return new MixinContextOrigin(deserializer.GetKind(), deserializer.GetAssembly(), deserializer.GetLocation());
     }
@@ -71,9 +71,9 @@ namespace Remotion.Mixins.Context
 
     public MixinContextOrigin (string kind, Assembly assembly, string location)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(kind), kind);
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(location), location);
+      ArgumentException.ThrowIfNullOrEmpty(kind);
+      ArgumentNullException.ThrowIfNull(assembly);
+      ArgumentException.ThrowIfNullOrEmpty(location);
 
       _kind = kind;
       _assembly = assembly;
@@ -103,7 +103,7 @@ namespace Remotion.Mixins.Context
 
     public void Serialize (IMixinContextOriginSerializer serializer)
     {
-      ArgumentUtility.CheckNotNull(nameof(serializer), serializer);
+      ArgumentNullException.ThrowIfNull(serializer);
 
       serializer.AddKind(_kind);
       serializer.AddAssembly(_assembly);

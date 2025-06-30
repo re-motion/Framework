@@ -17,7 +17,6 @@
 using System;
 using System.Threading;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
@@ -29,8 +28,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public SecurityExecutionListener (WxeFunction function, IWxeFunctionExecutionListener innerListener, [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
     {
-      ArgumentUtility.CheckNotNull(nameof(function), function);
-      ArgumentUtility.CheckNotNull(nameof(innerListener), innerListener);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentNullException.ThrowIfNull(innerListener);
 
       _function = function;
       _innerListener = innerListener;
@@ -58,7 +57,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// <summary>Play is invoked when the function's <see cref="WxeFunction.Execute(WxeContext)"/> method is invoked (first and subsequent calls).</summary>
     public void OnExecutionPlay (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (!_function.IsExecutionStarted)
       {
@@ -72,7 +71,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// <summary>Stop is invoked when the function's <see cref="WxeFunction.Execute(WxeContext)"/> method is completed successfully.</summary>
     public void OnExecutionStop (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       _innerListener.OnExecutionStop(context);
     }
 
@@ -82,14 +81,14 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </summary>
     public void OnExecutionPause (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       _innerListener.OnExecutionPause(context);
     }
 
     /// <summary>Play is invoked when the function's <see cref="WxeFunction.Execute(WxeContext)"/> method fails.</summary>
     public void OnExecutionFail (WxeContext context, Exception exception)
     {
-      ArgumentUtility.CheckNotNull(nameof(context), context);
+      ArgumentNullException.ThrowIfNull(context);
       _innerListener.OnExecutionFail(context, exception);
     }
   }

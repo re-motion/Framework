@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
@@ -38,10 +37,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         IEnumerable<ColumnDefinition> referencingColumns,
         IEnumerable<ColumnDefinition> referencedColumns)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(constraintName), constraintName);
-      ArgumentUtility.CheckNotNull(nameof(referencedTableName), referencedTableName);
-      ArgumentUtility.CheckNotNull(nameof(referencingColumns), referencingColumns);
-      ArgumentUtility.CheckNotNull(nameof(referencedColumns), referencedColumns);
+      ArgumentException.ThrowIfNullOrEmpty(constraintName);
+      ArgumentNullException.ThrowIfNull(referencedTableName);
+      ArgumentNullException.ThrowIfNull(referencingColumns);
+      ArgumentNullException.ThrowIfNull(referencedColumns);
 
       _constraintName = constraintName;
       _referencedTableName = referencedTableName;
@@ -74,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public void Accept (ITableConstraintDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull(nameof(visitor), visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
 
       visitor.VisitForeignKeyConstraintDefinition(this);
     }

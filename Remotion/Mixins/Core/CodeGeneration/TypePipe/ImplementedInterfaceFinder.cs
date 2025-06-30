@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Mixins.Definitions;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -38,10 +37,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         IEnumerable<RequiredTargetCallTypeDefinition> requiredTargetCallTypes,
         IEnumerable<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull(nameof(alreadyImplementedInterfaces), alreadyImplementedInterfaces);
-      ArgumentUtility.CheckNotNull(nameof(receivedInterfaces), receivedInterfaces);
-      ArgumentUtility.CheckNotNull(nameof(requiredTargetCallTypes), requiredTargetCallTypes);
-      ArgumentUtility.CheckNotNull(nameof(mixinInfos), mixinInfos);
+      ArgumentNullException.ThrowIfNull(alreadyImplementedInterfaces);
+      ArgumentNullException.ThrowIfNull(receivedInterfaces);
+      ArgumentNullException.ThrowIfNull(requiredTargetCallTypes);
+      ArgumentNullException.ThrowIfNull(mixinInfos);
 
       _alreadyImplementedInterfaces = alreadyImplementedInterfaces;
       _receivedInterfaces = receivedInterfaces;

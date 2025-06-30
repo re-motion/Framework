@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 {
@@ -33,14 +32,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
 
     public ColumnNamesAreUniqueWithinInheritanceTreeValidationRule (IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(rdbmsPersistenceModelProvider), rdbmsPersistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(rdbmsPersistenceModelProvider);
 
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
     }
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       var validationResults = new List<MappingValidationResult>();
       if (classDefinition.BaseClass == null) //if class definition is inheritance root class

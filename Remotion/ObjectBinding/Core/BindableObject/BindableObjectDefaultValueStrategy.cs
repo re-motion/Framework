@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ObjectBinding.BindableObject.Properties;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -32,8 +31,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public bool IsDefaultValue (IBusinessObject obj, PropertyBase property)
     {
-      ArgumentUtility.CheckNotNull(nameof(obj), obj);
-      ArgumentUtility.CheckNotNull(nameof(property), property);
+      ArgumentNullException.ThrowIfNull(obj);
+      ArgumentNullException.ThrowIfNull(property);
 
       return false;
     }

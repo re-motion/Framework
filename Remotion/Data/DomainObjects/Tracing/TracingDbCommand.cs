@@ -20,7 +20,6 @@ using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
@@ -103,8 +102,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDbCommand (IDbCommand command, IPersistenceExtension persistenceExtension, Guid connectionID)
     {
-      ArgumentUtility.CheckNotNull(nameof(command), command);
-      ArgumentUtility.CheckNotNull(nameof(persistenceExtension), persistenceExtension);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
 
       _command = command;
       _persistenceExtension = persistenceExtension;

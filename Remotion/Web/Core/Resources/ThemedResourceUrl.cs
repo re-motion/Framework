@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Resources
 {
@@ -34,11 +33,11 @@ namespace Remotion.Web.Resources
 
     public ThemedResourceUrl (IResourcePathBuilder resourcePathBuilder, Type definingType, ResourceType resourceType, ResourceTheme resourceTheme, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourcePathBuilder), resourcePathBuilder);
-      ArgumentUtility.CheckNotNull(nameof(definingType), definingType);
-      ArgumentUtility.CheckNotNull(nameof(resourceType), resourceType);
-      ArgumentUtility.CheckNotNull(nameof(resourceTheme), resourceTheme);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(relativeUrl), relativeUrl);
+      ArgumentNullException.ThrowIfNull(resourcePathBuilder);
+      ArgumentNullException.ThrowIfNull(definingType);
+      ArgumentNullException.ThrowIfNull(resourceType);
+      ArgumentNullException.ThrowIfNull(resourceTheme);
+      ArgumentException.ThrowIfNullOrEmpty(relativeUrl);
 
       _resourcePathBuilder = resourcePathBuilder;
       _definingType = definingType;

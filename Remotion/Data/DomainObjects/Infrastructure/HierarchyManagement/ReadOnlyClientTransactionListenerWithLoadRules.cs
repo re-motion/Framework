@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void AddCurrentlyLoadingObjectIDs (IEnumerable<ObjectID> objectIds)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIds), objectIds);
+      ArgumentNullException.ThrowIfNull(objectIds);
 
       Assertion.DebugAssert(!objectIds.Any(id => _currentlyLoadingObjectIDs.Contains(id)));
       _currentlyLoadingObjectIDs.UnionWith(objectIds);
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void RemoveCurrentlyLoadingObjectIDs (IEnumerable<ObjectID> objectIds)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIds), objectIds);
+      ArgumentNullException.ThrowIfNull(objectIds);
 
       Assertion.DebugAssert(objectIds.All(id => _currentlyLoadingObjectIDs.Contains(id)));
       _currentlyLoadingObjectIDs.ExceptWith(objectIds);
@@ -62,8 +62,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public override void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (IsInLoadMode)
       {
@@ -75,8 +75,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public override void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       if (IsInLoadMode)
       {
@@ -89,9 +89,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     public override void PropertyValueChanging (
         ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(domainObject);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       if (IsInLoadMode)
       {
@@ -116,9 +116,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
         DomainObject? oldRelatedObject,
         DomainObject? newRelatedObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
-      ArgumentUtility.CheckNotNull(nameof(relationEndPointDefinition), relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(domainObject);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
 
       if (IsInLoadMode)
       {

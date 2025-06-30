@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Globalization;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
@@ -26,15 +25,15 @@ namespace Remotion.Validation.Implementation
 
     public InvariantValidationMessage (string validationMessage)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(validationMessage), validationMessage);
+      ArgumentException.ThrowIfNullOrEmpty(validationMessage);
 
       _validationMessage = validationMessage;
     }
 
     public override string Format (CultureInfo culture, IFormatProvider? formatProvider, params object?[] parameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(culture), culture);
-      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentNullException.ThrowIfNull(culture);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       return string.Format(formatProvider ?? CultureInfo.InvariantCulture, _validationMessage, parameters);
     }

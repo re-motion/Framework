@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -33,7 +32,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public OrganizationalStructureTestHelper (ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull(nameof(transaction), transaction);
+      ArgumentNullException.ThrowIfNull(transaction);
       _transaction = transaction;
       _factory = new OrganizationalStructureFactory();
     }

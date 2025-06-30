@@ -134,7 +134,7 @@ namespace Remotion.Collections.Caching
 
     public ConcurrentCache ([JetBrains.Annotations.NotNull] IEqualityComparer<TKey> comparer)
     {
-      ArgumentUtility.CheckNotNull(nameof(comparer), comparer);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       _innerDictionary = new ConcurrentDictionary<TKey, SynchronizedValue>(comparer);
     }

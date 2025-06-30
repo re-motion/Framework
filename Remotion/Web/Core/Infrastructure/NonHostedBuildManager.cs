@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Infrastructure
 {
@@ -33,7 +32,7 @@ namespace Remotion.Web.Infrastructure
 
     public Type? GetType (string typeName, bool throwOnError, bool ignoreCase)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName);
+      ArgumentException.ThrowIfNullOrEmpty(typeName);
 
       return Type.GetType(typeName, throwOnError: throwOnError, ignoreCase: ignoreCase);
     }

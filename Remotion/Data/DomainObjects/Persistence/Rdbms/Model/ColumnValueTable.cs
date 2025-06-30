@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
@@ -38,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
       public Row (IEnumerable<object?> values)
       {
-        ArgumentUtility.CheckNotNull(nameof(values), values);
+        ArgumentNullException.ThrowIfNull(values);
 
         _values = values;
       }
@@ -72,8 +71,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnValueTable (IEnumerable<ColumnDefinition> columns, IEnumerable<Row> rows)
     {
-      ArgumentUtility.CheckNotNull(nameof(columns), columns);
-      ArgumentUtility.CheckNotNull(nameof(rows), rows);
+      ArgumentNullException.ThrowIfNull(columns);
+      ArgumentNullException.ThrowIfNull(rows);
 
       _columns = columns;
       _rows = rows;

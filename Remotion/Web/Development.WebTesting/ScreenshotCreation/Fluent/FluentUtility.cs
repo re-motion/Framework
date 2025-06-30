@@ -40,9 +40,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] IScreenshotAnnotation annotation)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(builder), builder);
-      ArgumentUtility.CheckNotNull(nameof(fluentTarget), fluentTarget);
-      ArgumentUtility.CheckNotNull(nameof(annotation), annotation);
+      ArgumentNullException.ThrowIfNull(builder);
+      ArgumentNullException.ThrowIfNull(fluentTarget);
+      ArgumentNullException.ThrowIfNull(annotation);
 
       builder.Annotate(
           fluentTarget,
@@ -62,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentTarget), fluentTarget);
+      ArgumentNullException.ThrowIfNull(fluentTarget);
       if (target.HasValue && target.Value == null)
         throw new ArgumentNullException(nameof(target), "Value of optional parameter cannot be null.");
 
@@ -84,9 +84,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         where TSource : notnull
         where TTarget : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentTarget), fluentTarget);
-      ArgumentUtility.CheckNotNull(nameof(target), target);
-      ArgumentUtility.CheckNotNull(nameof(resolver), resolver);
+      ArgumentNullException.ThrowIfNull(fluentTarget);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(resolver);
 
       return new FluentScreenshotElement<TTarget>(
           target,
@@ -102,7 +102,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
         where T : ControlObject
     {
-      ArgumentUtility.CheckNotNull(nameof(controlObject), controlObject);
+      ArgumentNullException.ThrowIfNull(controlObject);
 
       return new FluentScreenshotElement<T>(controlObject, ControlObjectResolver.Instance, minimumElementVisibility);
     }
@@ -114,7 +114,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] ElementScope element,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(element), element);
+      ArgumentNullException.ThrowIfNull(element);
 
       return new FluentScreenshotElement<ElementScope>(element, ElementScopeResolver.Instance, minimumElementVisibility);
     }
@@ -136,7 +136,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] IWebElement webElement,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(webElement), webElement);
+      ArgumentNullException.ThrowIfNull(webElement);
 
       return new FluentScreenshotElement<IWebElement>(webElement, WebElementResolver.Instance, minimumElementVisibility);
     }
@@ -150,9 +150,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] IScreenshotCropping cropping)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull(nameof(builder), builder);
-      ArgumentUtility.CheckNotNull(nameof(fluentTarget), fluentTarget);
-      ArgumentUtility.CheckNotNull(nameof(cropping), cropping);
+      ArgumentNullException.ThrowIfNull(builder);
+      ArgumentNullException.ThrowIfNull(fluentTarget);
+      ArgumentNullException.ThrowIfNull(cropping);
 
       builder.Crop(fluentTarget, FluentResolver<T>.Instance, cropping, new FluentTransformation<T>(fluentTarget));
     }

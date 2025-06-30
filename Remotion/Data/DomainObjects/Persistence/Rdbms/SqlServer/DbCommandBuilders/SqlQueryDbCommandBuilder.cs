@@ -24,7 +24,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
 
@@ -57,9 +56,9 @@ public class SqlQueryDbCommandBuilder : QueryDbCommandBuilder
   public SqlQueryDbCommandBuilder (string statement, IReadOnlyCollection<QueryParameterWithDataParameterDefinition> parameters, ISqlDialect sqlDialect)
       : base(statement, parameters, sqlDialect)
   {
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(statement), statement);
-    ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
-    ArgumentUtility.CheckNotNull(nameof(sqlDialect), sqlDialect);
+    ArgumentException.ThrowIfNullOrEmpty(statement);
+    ArgumentNullException.ThrowIfNull(parameters);
+    ArgumentNullException.ThrowIfNull(sqlDialect);
 
     var tvp = parameters.Where(p => p.DataParameterDefinition is SqlTableValuedDataParameterDefinition);
     _tvpToTempTable = tvp.ToDictionary(
@@ -102,7 +101,7 @@ public class SqlQueryDbCommandBuilder : QueryDbCommandBuilder
 
   public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
   {
-    ArgumentUtility.CheckNotNull(nameof(dbCommandFactory), dbCommandFactory);
+    ArgumentNullException.ThrowIfNull(dbCommandFactory);
 
     var command = base.Create(dbCommandFactory);
     if (_tvpToTempTable.Count == 0)

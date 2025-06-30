@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Web.UI;
 using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
@@ -122,7 +121,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value!);
+      ArgumentNullException.ThrowIfNull(value!);
 
       base.OnInsertComplete(index, value);
       _isChanged |= _isEditing;
@@ -140,8 +139,8 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      ArgumentUtility.CheckNotNull(nameof(oldValue), oldValue!);
-      ArgumentUtility.CheckNotNull(nameof(newValue), newValue!);
+      ArgumentNullException.ThrowIfNull(oldValue!);
+      ArgumentNullException.ThrowIfNull(newValue!);
 
       base.OnSetComplete(index, oldValue, newValue);
       _isChanged |= _isEditing;
@@ -151,7 +150,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnRemoveComplete (int index, object? value)
     {
-      ArgumentUtility.CheckNotNull(nameof(value), value!);
+      ArgumentNullException.ThrowIfNull(value!);
 
       base.OnRemoveComplete(index, value);
       _isChanged |= _isEditing;
@@ -171,7 +170,7 @@ namespace Remotion.Web.UI.Controls
 
     protected void AddRange (IList values)
     {
-      ArgumentUtility.CheckNotNull(nameof(values), values);
+      ArgumentNullException.ThrowIfNull(values);
       ArgumentUtility.CheckItemsNotNullAndType(nameof(values), values, typeof(IControlItem));
 
       BeginEdit();
@@ -238,7 +237,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception>
     public IControlItem FindMandatory (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(id), id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
 
       var item = Find(id);
       if (item == null)
@@ -318,8 +317,8 @@ namespace Remotion.Web.UI.Controls
 
     public void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       for (int i = 0; i < InnerList.Count; i++)
       {

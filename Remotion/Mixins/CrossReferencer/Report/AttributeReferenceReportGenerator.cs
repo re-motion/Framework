@@ -34,8 +34,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
         Type type,
         IIdentifierGenerator<Type> attributeIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
-      ArgumentUtility.CheckNotNull(nameof(attributeIdentifierGenerator), attributeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(attributeIdentifierGenerator);
 
       _type = type;
       _attributeIdentifierGenerator = attributeIdentifierGenerator;

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 {
@@ -35,8 +34,8 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
         IEnumerable<IMixinDeclarationAnalyzer<Type>> typeAnalyzers,
         IEnumerable<IMixinDeclarationAnalyzer<Assembly>> assemblyAnalyzers)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeAnalyzers), typeAnalyzers);
-      ArgumentUtility.CheckNotNull(nameof(assemblyAnalyzers), assemblyAnalyzers);
+      ArgumentNullException.ThrowIfNull(typeAnalyzers);
+      ArgumentNullException.ThrowIfNull(assemblyAnalyzers);
 
       _typeAnalyzers = typeAnalyzers.ConvertToCollection();
       _assemblyAnalyzers = assemblyAnalyzers.ConvertToCollection();
@@ -44,8 +43,8 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 
     public void Analyze (IEnumerable<Type> types, MixinConfigurationBuilder configurationBuilder)
     {
-      ArgumentUtility.CheckNotNull(nameof(types), types);
-      ArgumentUtility.CheckNotNull(nameof(configurationBuilder), configurationBuilder);
+      ArgumentNullException.ThrowIfNull(types);
+      ArgumentNullException.ThrowIfNull(configurationBuilder);
 
       var assemblies = new HashSet<Assembly>();
 

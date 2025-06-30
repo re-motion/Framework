@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ExtensibleEnums.Infrastructure
 {
@@ -34,7 +33,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     public ExtensibleEnumDefinitionCache (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull(nameof(valueDiscoveryService), valueDiscoveryService);
+      ArgumentNullException.ThrowIfNull(valueDiscoveryService);
 
       _valueDiscoveryService = valueDiscoveryService;
 
@@ -63,7 +62,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     /// <see cref="ExtensibleEnumInfo{T}"/>.</exception>
     public IExtensibleEnumDefinition GetDefinition (Type extensibleEnumType)
     {
-      ArgumentUtility.CheckNotNull(nameof(extensibleEnumType), extensibleEnumType);
+      ArgumentNullException.ThrowIfNull(extensibleEnumType);
 
       return _cache.GetOrAdd(extensibleEnumType, _createDefinitionFunc);
     }

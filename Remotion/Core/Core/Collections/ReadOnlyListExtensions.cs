@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Collections
 {
@@ -20,7 +19,7 @@ namespace Remotion.Collections
     /// <returns>The index of the first occurence of <paramref name="value"/> in <paramref name="list"/>, or <c>-1</c> if not found.</returns>
     public static int IndexOf<T> (this IReadOnlyList<T> list, T value)
     {
-      ArgumentUtility.CheckNotNull(nameof(list), list);
+      ArgumentNullException.ThrowIfNull(list);
 
       for (var i = 0; i < list.Count; i++)
       {

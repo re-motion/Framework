@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
 {
@@ -40,7 +39,7 @@ namespace Remotion.Mixins.Context
     /// <returns>The types from which the given <paramref name="targetType"/> inherits its mixins.</returns>
     public IEnumerable<Type> GetTypesToInheritFrom (Type targetType)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetType), targetType);
+      ArgumentNullException.ThrowIfNull(targetType);
 
       if (targetType.IsGenericType && !targetType.IsGenericTypeDefinition)
         yield return targetType.GetGenericTypeDefinition();

@@ -48,11 +48,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
         IEnlistedDomainObjectManager enlistedDomainObjectManager,
         IPersistenceStrategy persistenceStrategy)
     {
-      ArgumentUtility.CheckNotNull(nameof(clientTransaction), clientTransaction);
-      ArgumentUtility.CheckNotNull(nameof(eventSink), eventSink);
-      ArgumentUtility.CheckNotNull(nameof(invalidDomainObjectManager), invalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull(nameof(dataManager), dataManager);
-      ArgumentUtility.CheckNotNull(nameof(persistenceStrategy), persistenceStrategy);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(eventSink);
+      ArgumentNullException.ThrowIfNull(invalidDomainObjectManager);
+      ArgumentNullException.ThrowIfNull(dataManager);
+      ArgumentNullException.ThrowIfNull(persistenceStrategy);
 
       _clientTransaction = clientTransaction;
       _eventSink = eventSink;
@@ -94,8 +94,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public DomainObject NewObject (ClassDefinition classDefinition, ParamList constructorParameters)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
-      ArgumentUtility.CheckNotNull(nameof(constructorParameters), constructorParameters);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(constructorParameters);
 
       if (classDefinition.IsAbstract)
         throw new InvalidOperationException(
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public DomainObject GetObjectReference (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       if (_invalidDomainObjectManager.IsInvalid(objectID))
         return _invalidDomainObjectManager.GetInvalidObjectReference(objectID);
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public DomainObject GetObject (ObjectID objectID, bool includeDeleted)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       // GetDataContainerWithLazyLoad throws on invalid objectID
       var dataContainer = _dataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true)!;
@@ -153,7 +153,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public DomainObject? TryGetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       if (_invalidDomainObjectManager.IsInvalid(objectID))
         return _invalidDomainObjectManager.GetInvalidObjectReference(objectID);
@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     public T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       // GetDataContainersWithLazyLoad throws on invalid objectID
       return _dataManager.GetDataContainersWithLazyLoad(objectIDs, throwOnNotFound: true).Select(dc => dc!)
@@ -180,7 +180,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     public T?[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull(nameof(objectIDs), objectIDs);
+      ArgumentNullException.ThrowIfNull(objectIDs);
 
       var objectIDsAsCollection = objectIDs.ConvertToCollection();
 
@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public void Delete (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       // DataManager checks that object is enlisted and not invalid
       var command = _dataManager.CreateDeleteCommand(domainObject);

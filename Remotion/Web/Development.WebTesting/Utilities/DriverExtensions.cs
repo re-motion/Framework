@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using System.Collections.Generic;
 using Coypu;
 using JetBrains.Annotations;
@@ -21,7 +22,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </returns>
     public static string GetBrowserName ([NotNull] this IDriver driver)
     {
-      ArgumentUtility.CheckNotNull(nameof(driver), driver);
+      ArgumentNullException.ThrowIfNull(driver);
 
       return driver.Native switch
       {
@@ -59,7 +59,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </returns>
     public static string GetBrowserVersion ([NotNull] this IDriver driver)
     {
-      ArgumentUtility.CheckNotNull(nameof(driver), driver);
+      ArgumentNullException.ThrowIfNull(driver);
 
       if (!(driver.Native is IHasCapabilities driverWithCapabilities))
         return c_unknown;
@@ -81,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </returns>
     public static string GetWebDriverVersion ([NotNull] this IDriver driver)
     {
-      ArgumentUtility.CheckNotNull(nameof(driver), driver);
+      ArgumentNullException.ThrowIfNull(driver);
 
       if (!(driver.Native is IHasCapabilities driverWithCapabilities))
         return c_unknown;

@@ -23,7 +23,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using Remotion.Collections;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 
 namespace Remotion.Web.ExecutionEngine
@@ -48,8 +47,8 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="callArguments">The <see cref="IWxeCallArguments"/> used to control the function invocation. Must not be <see langword="null" />.</param>
     public void ExecuteFunction (WxeFunction function, IWxeCallArguments callArguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(function), function);
-      ArgumentUtility.CheckNotNull(nameof(callArguments), callArguments);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentNullException.ThrowIfNull(callArguments);
 
       callArguments.Dispatch(_wxePageInfo.Executor, function);
     }

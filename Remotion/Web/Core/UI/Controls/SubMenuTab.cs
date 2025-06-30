@@ -16,7 +16,6 @@
 // 
 using System;
 using System.ComponentModel;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -50,7 +49,7 @@ namespace Remotion.Web.UI.Controls
 
     protected internal void SetParent (MainMenuTab parent)
     {
-      ArgumentUtility.CheckNotNull(nameof(parent), parent);
+      ArgumentNullException.ThrowIfNull(parent);
       _parent = parent;
     }
   }

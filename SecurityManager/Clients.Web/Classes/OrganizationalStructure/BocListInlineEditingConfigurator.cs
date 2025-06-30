@@ -21,7 +21,6 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.UI;
 using Remotion.SecurityManager.Domain;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
@@ -43,8 +42,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     public BocListInlineEditingConfigurator (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceUrlFactory), resourceUrlFactory);
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       _resourceUrlFactory = resourceUrlFactory;
       _globalizationService = globalizationService;
@@ -53,8 +52,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     public virtual void Configure<TBusinessObject> (BocList bocList, Func<TBusinessObject> newObjectFactory)
         where TBusinessObject: BaseSecurityManagerObject
     {
-      ArgumentUtility.CheckNotNull(nameof(bocList), bocList);
-      ArgumentUtility.CheckNotNull(nameof(newObjectFactory), newObjectFactory);
+      ArgumentNullException.ThrowIfNull(bocList);
+      ArgumentNullException.ThrowIfNull(newObjectFactory);
 
       bocList.FixedColumns.Insert(
           0,
@@ -87,8 +86,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private void HandleEditableRowChangesCanceled (object sender, BocListItemEventArgs e)
     {
-      ArgumentUtility.CheckNotNull(nameof(sender), sender);
-      ArgumentUtility.CheckNotNull(nameof(e), e);
+      ArgumentNullException.ThrowIfNull(sender);
+      ArgumentNullException.ThrowIfNull(e);
 
       var businessObject = (BaseSecurityManagerObject)e.BusinessObject;
       if (businessObject.State.IsNew)

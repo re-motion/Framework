@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands
 {
@@ -42,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     private ExpandedCommand (CompositeCommand compositeCommand)
     {
-      ArgumentUtility.CheckNotNull(nameof(compositeCommand), compositeCommand);
+      ArgumentNullException.ThrowIfNull(compositeCommand);
 
       _compositeCommand = compositeCommand;
     }

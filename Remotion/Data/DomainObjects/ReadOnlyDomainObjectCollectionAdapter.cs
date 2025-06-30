@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -33,7 +32,7 @@ namespace Remotion.Data.DomainObjects
 
     public ReadOnlyDomainObjectCollectionAdapter (DomainObjectCollection wrappedData)
     {
-      ArgumentUtility.CheckNotNull(nameof(wrappedData), wrappedData);
+      ArgumentNullException.ThrowIfNull(wrappedData);
       _wrappedData = wrappedData;
     }
 
@@ -69,13 +68,13 @@ namespace Remotion.Data.DomainObjects
 
     public bool Contains (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _wrappedData.Contains(objectID);
     }
 
     public bool ContainsObject (T domainObject)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainObject), domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
       return _wrappedData.ContainsObject(domainObject);
     }
 
@@ -88,20 +87,20 @@ namespace Remotion.Data.DomainObjects
     {
       get
       {
-        ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+        ArgumentNullException.ThrowIfNull(objectID);
         return GetObject(objectID);
       }
     }
 
     public T? GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return (T?)_wrappedData[objectID];
     }
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull(nameof(objectID), objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       return _wrappedData.IndexOf(objectID);
     }
 
@@ -112,7 +111,7 @@ namespace Remotion.Data.DomainObjects
 
     public int IndexOf (T item)
     {
-      ArgumentUtility.CheckNotNull(nameof(item), item);
+      ArgumentNullException.ThrowIfNull(item);
       return _wrappedData.IndexOf(item);
     }
 

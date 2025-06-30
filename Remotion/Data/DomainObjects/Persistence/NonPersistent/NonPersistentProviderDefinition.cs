@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 {
@@ -35,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
 
     public override bool IsIdentityTypeSupported (Type identityType)
     {
-      ArgumentUtility.CheckNotNull(nameof(identityType), identityType);
+      ArgumentNullException.ThrowIfNull(identityType);
 
       return (identityType == typeof(Guid));
     }

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
 {
@@ -75,10 +74,10 @@ namespace Remotion.Validation.Results
         [NotNull] string errorMessage,
         [NotNull] string localizedValidationMessage)
     {
-      ArgumentUtility.CheckNotNull(nameof(validatedObject), validatedObject);
-      ArgumentUtility.CheckNotNull(nameof(validatedProperties), validatedProperties);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(errorMessage), errorMessage);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(localizedValidationMessage), localizedValidationMessage);
+      ArgumentNullException.ThrowIfNull(validatedObject);
+      ArgumentNullException.ThrowIfNull(validatedProperties);
+      ArgumentException.ThrowIfNullOrEmpty(errorMessage);
+      ArgumentException.ThrowIfNullOrEmpty(localizedValidationMessage);
 
       ValidatedObject = validatedObject;
       ValidatedProperties = validatedProperties;

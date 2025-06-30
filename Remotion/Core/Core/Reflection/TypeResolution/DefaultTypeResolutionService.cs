@@ -34,14 +34,14 @@ namespace Remotion.Reflection.TypeResolution
 
     public Assembly? GetAssembly (AssemblyName name)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
+      ArgumentNullException.ThrowIfNull(name);
 
       return GetAssembly(name, false);
     }
 
     public Assembly? GetAssembly (AssemblyName name, bool throwOnError)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
+      ArgumentNullException.ThrowIfNull(name);
 
       try
       {
@@ -84,7 +84,7 @@ namespace Remotion.Reflection.TypeResolution
 
     public string? GetPathOfAssembly (AssemblyName name)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
+      ArgumentNullException.ThrowIfNull(name);
 
       var assembly = GetAssembly(name, throwOnError: false);
       if (assembly == null)

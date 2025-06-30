@@ -19,7 +19,6 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
-using Remotion.Utilities;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI.Globalization;
 
@@ -200,7 +199,7 @@ namespace Remotion.Web.UI.Controls
 
     private void ValidateItemId (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(value), value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       if (! string.IsNullOrEmpty(value))
       {
         WebTreeNodeCollection? nodes = null;
@@ -399,8 +398,8 @@ namespace Remotion.Web.UI.Controls
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull(nameof(resourceManager), resourceManager);
-      ArgumentUtility.CheckNotNull(nameof(globalizationService), globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
       if (! string.IsNullOrEmpty(key))

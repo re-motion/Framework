@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Utilities;
-using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.Mixins.Definitions.Building
@@ -32,7 +31,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     public MixinDefinitionBuilder (TargetClassDefinition targetClass)
     {
-      ArgumentUtility.CheckNotNull(nameof(targetClass), targetClass);
+      ArgumentNullException.ThrowIfNull(targetClass);
       _targetClass = targetClass;
       _targetRequirementsAnalyzer = new RequirementsAnalyzer(MixinGenericArgumentFinder.TargetArgumentFinder);
       _nextRequirementsAnalyzer = new RequirementsAnalyzer(MixinGenericArgumentFinder.NextArgumentFinder);
@@ -45,8 +44,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     public void Apply (MixinContext mixinContext, int index)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinContext), mixinContext);
-      ArgumentUtility.CheckNotNull(nameof(index), index);
+      ArgumentNullException.ThrowIfNull(mixinContext);
 
       MixinDefinition mixin = CreateMixinDefinition(mixinContext);
 

@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
 {
@@ -45,8 +44,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
         [NotNull] IScreenshotElementResolver<T> resolver,
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
     {
-      ArgumentUtility.CheckNotNull(nameof(target), target);
-      ArgumentUtility.CheckNotNull(nameof(resolver), resolver);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(resolver);
 
       _target = target;
       _resolver = resolver;
@@ -96,7 +95,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
     /// <inheritdoc />
     ResolvedScreenshotElement IFluentScreenshotElement.ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull(nameof(locator), locator);
+      ArgumentNullException.ThrowIfNull(locator);
 
       return _resolver.ResolveDesktopCoordinates(_target, locator);
     }

@@ -399,7 +399,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           () => _orderClass.GetRelationEndPointDefinition(string.Empty),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'propertyName' cannot be empty.", "propertyName"));
+                  "The value cannot be an empty string.", "propertyName"));
     }
 
     [Test]
@@ -480,7 +480,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(
           () => _orderClass.GetPropertyDefinition(string.Empty),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'propertyName' cannot be empty.", "propertyName"));
+              .With.ArgumentExceptionMessageEqualTo("The value cannot be an empty string.", "propertyName"));
     }
 
     [Test]

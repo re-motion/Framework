@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 {
@@ -29,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     public SortedPropertySpecification (PropertyDefinition propertyDefinition, SortOrder order)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyDefinition), propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       var underlyingType = Nullable.GetUnderlyingType(propertyDefinition.PropertyType) ?? propertyDefinition.PropertyType;
 

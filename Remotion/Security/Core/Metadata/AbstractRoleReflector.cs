@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
@@ -41,7 +40,7 @@ namespace Remotion.Security.Metadata
 
     public AbstractRoleReflector (IEnumerationReflector enumerationReflector)
     {
-      ArgumentUtility.CheckNotNull(nameof(enumerationReflector), enumerationReflector);
+      ArgumentNullException.ThrowIfNull(enumerationReflector);
       _enumerationReflector = enumerationReflector;
     }
 
@@ -54,8 +53,8 @@ namespace Remotion.Security.Metadata
 
     public List<EnumValueInfo> GetAbstractRoles (Assembly assembly, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull(nameof(assembly), assembly);
-      ArgumentUtility.CheckNotNull(nameof(cache), cache);
+      ArgumentNullException.ThrowIfNull(assembly);
+      ArgumentNullException.ThrowIfNull(cache);
 
       List<EnumValueInfo> abstractRoles = new List<EnumValueInfo>();
       foreach (Type type in AssemblyTypeCache.GetTypes(assembly))

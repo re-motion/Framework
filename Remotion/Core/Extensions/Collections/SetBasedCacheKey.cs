@@ -59,7 +59,7 @@ namespace Remotion.Collections
 
     public SetBasedCacheKey (IEnumerable<T> items)
     {
-      ArgumentUtility.CheckNotNull(nameof(items), items);
+      ArgumentNullException.ThrowIfNull(items);
       _items = new HashSet<T>(items);
       _cachedHashCode = CalculateHashCode(_items);
     }

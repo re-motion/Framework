@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
@@ -31,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotTabbedMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentTabbedMenu), fluentTabbedMenu);
+      ArgumentNullException.ThrowIfNull(fluentTabbedMenu);
 
       return new ScreenshotTabbedMenuSelector(fluentTabbedMenu.Target.Scope.FindCss("td.tabbedMainMenuCell"));
     }
@@ -41,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static FluentScreenshotElement<ScreenshotTabbedSubMenu> GetSubMenu ([NotNull] this IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentTabbedMenu), fluentTabbedMenu);
+      ArgumentNullException.ThrowIfNull(fluentTabbedMenu);
 
       var target = fluentTabbedMenu.Target.Scope.FindCss("td.tabbedSubMenuCell");
 
@@ -53,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotTabbedMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotTabbedSubMenu> fluentTabbedSubMenu)
     {
-      ArgumentUtility.CheckNotNull(nameof(fluentTabbedSubMenu), fluentTabbedSubMenu);
+      ArgumentNullException.ThrowIfNull(fluentTabbedSubMenu);
 
       return new ScreenshotTabbedMenuSelector(fluentTabbedSubMenu.Target.Element);
     }

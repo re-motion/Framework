@@ -24,7 +24,6 @@ using Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.UnitTests.TestDomain;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 {
@@ -426,7 +425,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurityToken CreateTokenWithOwningTenant (User principalUser, Tenant owningTenant)
     {
-      ArgumentUtility.CheckNotNull(nameof(principalUser), principalUser);
+      ArgumentNullException.ThrowIfNull(principalUser);
       return CreateToken(principalUser, owningTenant, null, null, null);
     }
 
@@ -438,19 +437,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurityToken CreateTokenWithOwningGroup (User principalUser, Group owningGroup)
     {
-      ArgumentUtility.CheckNotNull(nameof(principalUser), principalUser);
+      ArgumentNullException.ThrowIfNull(principalUser);
       return CreateToken(principalUser, null, owningGroup, null, null);
     }
 
     public SecurityToken CreateTokenWithOwningUser (User principalUser, User owningUser)
     {
-      ArgumentUtility.CheckNotNull(nameof(principalUser), principalUser);
+      ArgumentNullException.ThrowIfNull(principalUser);
       return CreateToken(principalUser, null, null, owningUser, null);
     }
 
     public SecurityToken CreateToken (User principalUser, Tenant owningTenant, Group owningGroup, User owningUser, IEnumerable<AbstractRoleDefinition> abstractRoleDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(principalUser), principalUser);
+      ArgumentNullException.ThrowIfNull(principalUser);
       var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>>();
 
       if (abstractRoleDefinitions != null)
@@ -521,7 +520,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecificGroup (Group group)
     {
-      ArgumentUtility.CheckNotNull(nameof(group), group);
+      ArgumentNullException.ThrowIfNull(group);
 
       using (_transaction.EnterNonDiscardingScope())
       {
@@ -536,7 +535,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithBranchOfOwningGroup (GroupType groupType)
     {
-      ArgumentUtility.CheckNotNull(nameof(groupType), groupType);
+      ArgumentNullException.ThrowIfNull(groupType);
       using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlEntry entry = AccessControlEntry.NewObject();
@@ -549,7 +548,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecificGroupType (GroupType groupType)
     {
-      ArgumentUtility.CheckNotNull(nameof(groupType), groupType);
+      ArgumentNullException.ThrowIfNull(groupType);
       using (_transaction.EnterNonDiscardingScope())
       {
         AccessControlEntry entry = AccessControlEntry.NewObject();
@@ -586,7 +585,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecificTenant (Tenant tenant)
     {
-      ArgumentUtility.CheckNotNull(nameof(tenant), tenant);
+      ArgumentNullException.ThrowIfNull(tenant);
 
       using (_transaction.EnterNonDiscardingScope())
       {

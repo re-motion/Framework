@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Drawing;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -67,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public Rectangle ApplyOnElement (Rectangle screenshotBounds, ResolvedScreenshotElement screenshotElement)
     {
-      ArgumentUtility.CheckNotNull(nameof(screenshotElement), screenshotElement);
+      ArgumentNullException.ThrowIfNull(screenshotElement);
 
       var area = _padding.Apply(screenshotElement.ElementBounds);
 

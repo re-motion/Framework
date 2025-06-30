@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -33,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BocListRowWithValidationFailureComparer (IBocListValidationFailureRepository validationFailureRepository)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationFailureRepository), validationFailureRepository);
+      ArgumentNullException.ThrowIfNull(validationFailureRepository);
 
       ValidationFailureRepository = validationFailureRepository;
     }

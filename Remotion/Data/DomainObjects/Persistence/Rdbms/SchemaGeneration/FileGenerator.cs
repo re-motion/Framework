@@ -17,7 +17,6 @@
 using System;
 using System.IO;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
@@ -30,14 +29,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public FileGenerator (string outputPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(outputPath), outputPath);
+      ArgumentNullException.ThrowIfNull(outputPath);
 
       _outputPath = outputPath;
     }
 
     public void WriteScriptsToDisk (Script script, bool includeStorageProviderName)
     {
-      ArgumentUtility.CheckNotNull(nameof(script), script);
+      ArgumentNullException.ThrowIfNull(script);
 
       CreateOutputPath();
 

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Validation
 {
@@ -37,7 +36,7 @@ namespace Remotion.Validation
 
     public IValidator GetValidator (Type type)
     {
-      ArgumentUtility.CheckNotNull(nameof(type), type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var cachedResult = _cache.GetOrAdd(
           type,

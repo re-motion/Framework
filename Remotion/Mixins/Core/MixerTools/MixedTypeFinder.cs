@@ -21,7 +21,6 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.Mixins.Context;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.MixerTools
 {
@@ -34,7 +33,7 @@ namespace Remotion.Mixins.MixerTools
 
     public MixedTypeFinder (ITypeDiscoveryService typeDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeDiscoveryService), typeDiscoveryService);
+      ArgumentNullException.ThrowIfNull(typeDiscoveryService);
 
       _typeDiscoveryService = typeDiscoveryService;
     }
@@ -46,7 +45,7 @@ namespace Remotion.Mixins.MixerTools
 
     public IEnumerable<Type> FindMixedTypes (MixinConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull(nameof(configuration), configuration);
+      ArgumentNullException.ThrowIfNull(configuration);
 
       var types = _typeDiscoveryService.GetTypes(null, false);
       s_logger.LogInformation(

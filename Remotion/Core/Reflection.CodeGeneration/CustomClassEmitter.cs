@@ -34,7 +34,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public static string FlattenTypeName (string fullName)
     {
-      ArgumentUtility.CheckNotNull(nameof(fullName), fullName);
+      ArgumentNullException.ThrowIfNull(fullName);
       return fullName.Replace("+", "/");
     }
 
@@ -45,7 +45,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public CustomClassEmitter (AbstractTypeEmitter innerEmitter)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerEmitter), innerEmitter);
+      ArgumentNullException.ThrowIfNull(innerEmitter);
       _innerEmitter = innerEmitter;
     }
 
@@ -57,7 +57,7 @@ namespace Remotion.Reflection.CodeGeneration
     public CustomClassEmitter (ModuleScope scope, string name, Type baseType, Type[] interfaces, TypeAttributes flags, bool forceUnsigned)
         : this(
             new ClassEmitterSupportingOpenGenericBaseType(
-                ArgumentUtility.CheckNotNull(nameof(scope), scope),
+                scope ?? throw new ArgumentNullException(nameof(scope)),
                 ArgumentUtility.CheckNotNullOrEmpty(nameof(name), name),
                 CheckBaseType(baseType),
                 CheckInterfaces(interfaces),
@@ -68,7 +68,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     private static Type CheckBaseType (Type baseType)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseType), baseType);
+      ArgumentNullException.ThrowIfNull(baseType);
       if (baseType.IsInterface)
         throw new ArgumentException("Base type must not be an interface (" + baseType.GetFullNameSafe() + ").", nameof(baseType));
       if (baseType.IsSealed)
@@ -78,7 +78,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     private static Type[] CheckInterfaces (Type[] interfaces)
     {
-      ArgumentUtility.CheckNotNull(nameof(interfaces), interfaces);
+      ArgumentNullException.ThrowIfNull(interfaces);
       foreach (Type interfaceType in interfaces)
       {
         if (!interfaceType.IsInterface)
@@ -109,14 +109,14 @@ namespace Remotion.Reflection.CodeGeneration
 
     public ConstructorEmitter CreateConstructor (ArgumentReference[] arguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(arguments), arguments);
+      ArgumentNullException.ThrowIfNull(arguments);
 
       return InnerEmitter.CreateConstructor(arguments);
     }
 
     public ConstructorEmitter CreateConstructor (Type[] arguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(arguments), arguments);
+      ArgumentNullException.ThrowIfNull(arguments);
 
       ArgumentReference[] argumentReferences = ArgumentsUtil.ConvertToArgumentReference(arguments);
       return CreateConstructor(argumentReferences);
@@ -134,42 +134,42 @@ namespace Remotion.Reflection.CodeGeneration
 
     public FieldReference CreateField (string name, Type fieldType)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(fieldType), fieldType);
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(fieldType);
 
       return InnerEmitter.CreateField(name, fieldType);
     }
 
     public FieldReference CreateField (string name, Type fieldType, FieldAttributes attributes)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(fieldType), fieldType);
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(fieldType);
 
       return InnerEmitter.CreateField(name, fieldType, attributes);
     }
 
     public FieldReference CreateStaticField (string name, Type fieldType)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(fieldType), fieldType);
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(fieldType);
 
       return InnerEmitter.CreateStaticField(name, fieldType);
     }
 
     public FieldReference CreateStaticField (string name, Type fieldType, FieldAttributes attributes)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(fieldType), fieldType);
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(fieldType);
 
       return InnerEmitter.CreateStaticField(name, fieldType, attributes);
     }
 
     public IMethodEmitter CreateMethod (string name, MethodAttributes attributes, Type returnType, Type[] parameterTypes)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(attributes), attributes);
-      ArgumentUtility.CheckNotNull(nameof(returnType), returnType);
-      ArgumentUtility.CheckNotNull(nameof(parameterTypes), parameterTypes);
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(attributes);
+      ArgumentNullException.ThrowIfNull(returnType);
+      ArgumentNullException.ThrowIfNull(parameterTypes);
 
       var method = new CustomMethodEmitter(this, name, attributes, returnType, parameterTypes);
       return method;
@@ -177,17 +177,17 @@ namespace Remotion.Reflection.CodeGeneration
 
     public IMethodEmitter CreateMethod (string name, MethodAttributes attributes, MethodInfo methodToUseAsATemplate)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(attributes), attributes);
-      ArgumentUtility.CheckNotNull(nameof(methodToUseAsATemplate), methodToUseAsATemplate);
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(attributes);
+      ArgumentNullException.ThrowIfNull(methodToUseAsATemplate);
 
       return new CustomMethodEmitter(this, name, attributes, methodToUseAsATemplate);
     }
 
     public CustomPropertyEmitter CreateProperty (string name, PropertyKind propertyKind, Type propertyType)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(propertyType);
 
       return new CustomPropertyEmitter(this, name, propertyKind, propertyType, Type.EmptyTypes, PropertyAttributes.None);
     }
@@ -195,25 +195,25 @@ namespace Remotion.Reflection.CodeGeneration
     public CustomPropertyEmitter CreateProperty (
         string name, PropertyKind propertyKind, Type propertyType, Type[] indexParameters, PropertyAttributes attributes)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(propertyType), propertyType);
-      ArgumentUtility.CheckNotNull(nameof(indexParameters), indexParameters);
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(propertyType);
+      ArgumentNullException.ThrowIfNull(indexParameters);
 
       return new CustomPropertyEmitter(this, name, propertyKind, propertyType, indexParameters, attributes);
     }
 
     public CustomEventEmitter CreateEvent (string name, EventKind eventKind, Type eventType, EventAttributes attributes)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(eventType), eventType);
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(eventType);
 
       return new CustomEventEmitter(this, name, eventKind, eventType, attributes);
     }
 
     public CustomEventEmitter CreateEvent (string name, EventKind eventKind, Type eventType)
     {
-      ArgumentUtility.CheckNotNull(nameof(name), name);
-      ArgumentUtility.CheckNotNull(nameof(eventType), eventType);
+      ArgumentNullException.ThrowIfNull(name);
+      ArgumentNullException.ThrowIfNull(eventType);
 
       return CreateEvent(name, eventKind, eventType, EventAttributes.None);
     }
@@ -225,7 +225,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public IMethodEmitter CreateMethodOverride (MethodInfo baseMethod)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseMethod), baseMethod);
+      ArgumentNullException.ThrowIfNull(baseMethod);
       MethodAttributes oldVisibility = baseMethod.Attributes & MethodAttributes.MemberAccessMask;
       return CreateMethodOverrideOrInterfaceImplementation(baseMethod, true, MethodAttributes.ReuseSlot | oldVisibility);
     }
@@ -233,14 +233,14 @@ namespace Remotion.Reflection.CodeGeneration
     /// <inheritdoc />
     public IMethodEmitter CreateFullNamedMethodOverride (MethodInfo baseMethod)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseMethod), baseMethod);
+      ArgumentNullException.ThrowIfNull(baseMethod);
       MethodAttributes oldVisibility = baseMethod.Attributes & MethodAttributes.MemberAccessMask;
       return CreateMethodOverrideOrInterfaceImplementation(baseMethod, false, MethodAttributes.ReuseSlot | MethodAttributes.Final | oldVisibility);
     }
 
     public IMethodEmitter CreateInterfaceMethodImplementation (MethodInfo interfaceMethod)
     {
-      ArgumentUtility.CheckNotNull(nameof(interfaceMethod), interfaceMethod);
+      ArgumentNullException.ThrowIfNull(interfaceMethod);
       return CreateMethodOverrideOrInterfaceImplementation(
           interfaceMethod, false, MethodAttributes.NewSlot | MethodAttributes.Private | MethodAttributes.Final);
     }
@@ -248,7 +248,7 @@ namespace Remotion.Reflection.CodeGeneration
     /// <inheritdoc />
     public IMethodEmitter CreatePublicInterfaceMethodImplementation (MethodInfo interfaceMethod)
     {
-      ArgumentUtility.CheckNotNull(nameof(interfaceMethod), interfaceMethod);
+      ArgumentNullException.ThrowIfNull(interfaceMethod);
       return CreateMethodOverrideOrInterfaceImplementation(interfaceMethod, true, MethodAttributes.NewSlot | MethodAttributes.Public);
     }
 
@@ -257,7 +257,7 @@ namespace Remotion.Reflection.CodeGeneration
         bool keepName,
         MethodAttributes visibilityFlags)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseOrInterfaceMethod), baseOrInterfaceMethod);
+      ArgumentNullException.ThrowIfNull(baseOrInterfaceMethod);
 
       MethodAttributes methodDefinitionAttributes = MethodAttributes.HideBySig | MethodAttributes.Virtual | visibilityFlags;
       if (baseOrInterfaceMethod.IsSpecialName)
@@ -275,28 +275,28 @@ namespace Remotion.Reflection.CodeGeneration
     // does not create the property's methods
     public CustomPropertyEmitter CreatePropertyOverride (PropertyInfo baseProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseProperty), baseProperty);
+      ArgumentNullException.ThrowIfNull(baseProperty);
       return CreatePropertyOverrideOrInterfaceImplementation(baseProperty, true);
     }
 
     // does not create the property's methods
     public CustomPropertyEmitter CreateInterfacePropertyImplementation (PropertyInfo interfaceProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(interfaceProperty), interfaceProperty);
+      ArgumentNullException.ThrowIfNull(interfaceProperty);
       return CreatePropertyOverrideOrInterfaceImplementation(interfaceProperty, false);
     }
 
     // does not create the property's methods
     public CustomPropertyEmitter CreatePublicInterfacePropertyImplementation (PropertyInfo interfaceProperty)
     {
-      ArgumentUtility.CheckNotNull(nameof(interfaceProperty), interfaceProperty);
+      ArgumentNullException.ThrowIfNull(interfaceProperty);
       return CreatePropertyOverrideOrInterfaceImplementation(interfaceProperty, true);
     }
 
     // does not create the property's methods
     private CustomPropertyEmitter CreatePropertyOverrideOrInterfaceImplementation (PropertyInfo baseOrInterfaceProperty, bool keepName)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseOrInterfaceProperty), baseOrInterfaceProperty);
+      ArgumentNullException.ThrowIfNull(baseOrInterfaceProperty);
 
       string propertyName = GetMemberOverrideName(baseOrInterfaceProperty, keepName);
       Type[] indexParameterTypes = Array.ConvertAll(baseOrInterfaceProperty.GetIndexParameters(), p => p.ParameterType);
@@ -314,21 +314,21 @@ namespace Remotion.Reflection.CodeGeneration
     // does not create the event's methods
     public CustomEventEmitter CreateEventOverride (EventInfo baseEvent)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseEvent), baseEvent);
+      ArgumentNullException.ThrowIfNull(baseEvent);
       return CreateEventOverrideOrInterfaceImplementation(baseEvent, true);
     }
 
     // does not create the event's methods
     public CustomEventEmitter CreateInterfaceEventImplementation (EventInfo interfaceEvent)
     {
-      ArgumentUtility.CheckNotNull(nameof(interfaceEvent), interfaceEvent);
+      ArgumentNullException.ThrowIfNull(interfaceEvent);
       return CreateEventOverrideOrInterfaceImplementation(interfaceEvent, false);
     }
 
     // does not create the event's methods
     public CustomEventEmitter CreatePublicInterfaceEventImplementation (EventInfo interfaceEvent)
     {
-      ArgumentUtility.CheckNotNull(nameof(interfaceEvent), interfaceEvent);
+      ArgumentNullException.ThrowIfNull(interfaceEvent);
       return CreateEventOverrideOrInterfaceImplementation(interfaceEvent, true);
     }
 
@@ -347,7 +347,7 @@ namespace Remotion.Reflection.CodeGeneration
     // does not create the event's methods
     private CustomEventEmitter CreateEventOverrideOrInterfaceImplementation (EventInfo baseOrInterfaceEvent, bool keepName)
     {
-      ArgumentUtility.CheckNotNull(nameof(baseOrInterfaceEvent), baseOrInterfaceEvent);
+      ArgumentNullException.ThrowIfNull(baseOrInterfaceEvent);
 
       string eventName = GetMemberOverrideName(baseOrInterfaceEvent, keepName);
       CustomEventEmitter newEvent = CreateEvent(eventName, EventKind.Instance, baseOrInterfaceEvent.EventHandlerType!, EventAttributes.None);
@@ -356,7 +356,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public void AddCustomAttribute (CustomAttributeBuilder customAttribute)
     {
-      ArgumentUtility.CheckNotNull(nameof(customAttribute), customAttribute);
+      ArgumentNullException.ThrowIfNull(customAttribute);
       TypeBuilder.SetCustomAttribute(customAttribute);
     }
 
@@ -367,8 +367,8 @@ namespace Remotion.Reflection.CodeGeneration
 
     public void ReplicateBaseTypeConstructors (Action<ConstructorEmitter> preStatementsAdder, Action<ConstructorEmitter> postStatementsAdder)
     {
-      ArgumentUtility.CheckNotNull(nameof(preStatementsAdder), preStatementsAdder);
-      ArgumentUtility.CheckNotNull(nameof(postStatementsAdder), postStatementsAdder);
+      ArgumentNullException.ThrowIfNull(preStatementsAdder);
+      ArgumentNullException.ThrowIfNull(postStatementsAdder);
 
       ConstructorInfo[] constructors = BaseType!.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       foreach (ConstructorInfo constructor in constructors)
@@ -380,9 +380,9 @@ namespace Remotion.Reflection.CodeGeneration
 
     private void ReplicateBaseTypeConstructor (ConstructorInfo constructor, Action<ConstructorEmitter> preStatementsAdder, Action<ConstructorEmitter> postStatementsAdder)
     {
-      ArgumentUtility.CheckNotNull(nameof(constructor), constructor);
-      ArgumentUtility.CheckNotNull(nameof(preStatementsAdder), preStatementsAdder);
-      ArgumentUtility.CheckNotNull(nameof(postStatementsAdder), postStatementsAdder);
+      ArgumentNullException.ThrowIfNull(constructor);
+      ArgumentNullException.ThrowIfNull(preStatementsAdder);
+      ArgumentNullException.ThrowIfNull(postStatementsAdder);
 
       ArgumentReference[] arguments = ArgumentsUtil.ConvertToArgumentReference(constructor.GetParameters());
       ConstructorEmitter newConstructor = InnerEmitter.CreateConstructor(arguments);
@@ -397,7 +397,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public MethodInfo GetPublicMethodWrapper (MethodInfo methodToBeWrapped)
     {
-      ArgumentUtility.CheckNotNull(nameof(methodToBeWrapped), methodToBeWrapped);
+      ArgumentNullException.ThrowIfNull(methodToBeWrapped);
 
       // C# compiler 7.2 does not provide caching for delegate but during type generation there is already a significant amount of GC pressure so the delegate creation does not matter
       return _publicMethodWrappers.GetOrCreateValue(methodToBeWrapped, CreatePublicMethodWrapper).MethodBuilder;

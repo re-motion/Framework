@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
@@ -36,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
             null,
             transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull(nameof(oppositeObjectNullSetter), oppositeObjectNullSetter);
+      ArgumentNullException.ThrowIfNull(oppositeObjectNullSetter);
 
       _oppositeObjectNullSetter = oppositeObjectNullSetter;
     }

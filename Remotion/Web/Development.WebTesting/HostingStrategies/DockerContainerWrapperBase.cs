@@ -28,9 +28,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
         DockerContainerConfigurationParameters configurationParameters,
         ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(docker), docker);
-      ArgumentUtility.CheckNotNull(nameof(configurationParameters), configurationParameters);
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(docker);
+      ArgumentNullException.ThrowIfNull(configurationParameters);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _logger = loggerFactory.CreateLogger<DockerContainerWrapperBase>();
       Docker = docker;

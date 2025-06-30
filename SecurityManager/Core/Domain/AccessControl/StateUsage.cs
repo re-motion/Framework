@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
@@ -29,7 +28,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   {
     public static StateUsage NewObject (StateDefinition stateDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(stateDefinition), stateDefinition);
+      ArgumentNullException.ThrowIfNull(stateDefinition);
 
       return NewObject<StateUsage>(ParamList.Create(stateDefinition));
     }

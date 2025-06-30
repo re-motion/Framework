@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -28,21 +27,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
     public ExtendedScriptElementBuilder (IScriptBuilder innerScriptBuilder)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerScriptBuilder), innerScriptBuilder);
+      ArgumentNullException.ThrowIfNull(innerScriptBuilder);
 
       _innerScriptBuilder = innerScriptBuilder;
     }
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(entityDefinition), entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
 
       _innerScriptBuilder.AddEntityDefinition(entityDefinition);
     }
 
     public void AddStructuredTypeDefinition (IRdbmsStructuredTypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeDefinition), typeDefinition);
+      ArgumentNullException.ThrowIfNull(typeDefinition);
 
       _innerScriptBuilder.AddStructuredTypeDefinition(typeDefinition);
     }

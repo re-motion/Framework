@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -39,8 +38,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyDefaultValueProvider propertyDefaultValueProvider)
         : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(domainModelConstraintProvider), domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull(nameof(propertyDefaultValueProvider), propertyDefaultValueProvider);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(propertyDefaultValueProvider);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
       _propertyDefaultValueProvider = propertyDefaultValueProvider;

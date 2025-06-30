@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
 {
@@ -117,7 +116,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     /// </summary>
     public void SetLoggerFactory (ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _loggerFactory = loggerFactory;
     }

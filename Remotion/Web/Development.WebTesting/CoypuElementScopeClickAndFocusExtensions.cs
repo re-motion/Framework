@@ -20,7 +20,6 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
@@ -41,9 +40,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </param>
     public static void ContextClick ([NotNull] this ElementScope scope, [NotNull] WebTestObjectContext context, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
-      ArgumentUtility.CheckNotNull(nameof(context), context);
-      ArgumentUtility.CheckNotNull(nameof(logger), logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(logger);
 
       // Hack: Coypu does not directly support the Actions interface, therefore we need to fall back to using Selenium.
       RetryUntilTimeout.Run(
@@ -70,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <exception cref="WebTestException">The element is currently disabled.</exception>
     public static void Focus ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (scope.Disabled)
         throw AssertionExceptionUtility.CreateControlDisabledException(scope.GetDriver());
@@ -88,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </param>
     public static void FocusClick ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull(nameof(scope), scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       scope.Focus(logger);
       scope.Click();

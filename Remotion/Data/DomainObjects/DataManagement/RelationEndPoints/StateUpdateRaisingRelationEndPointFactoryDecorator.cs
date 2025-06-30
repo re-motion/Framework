@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -32,8 +31,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public StateUpdateRaisingRelationEndPointFactoryDecorator (IRelationEndPointFactory innerFactory, IVirtualEndPointStateUpdateListener listener)
     {
-      ArgumentUtility.CheckNotNull(nameof(innerFactory), innerFactory);
-      ArgumentUtility.CheckNotNull(nameof(listener), listener);
+      ArgumentNullException.ThrowIfNull(innerFactory);
+      ArgumentNullException.ThrowIfNull(listener);
 
       _innerFactory = innerFactory;
       _listener = listener;

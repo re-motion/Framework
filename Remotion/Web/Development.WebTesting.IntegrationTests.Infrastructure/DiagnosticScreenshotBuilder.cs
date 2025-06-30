@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 
@@ -34,8 +32,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
     public static DiagnosticScreenshotBuilder CreateDesktopScreenshot ([NotNull] IBrowserContentLocator contentLocator, [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(contentLocator), contentLocator);
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(contentLocator);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
     }
@@ -46,9 +44,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
         [NotNull] IBrowserSession browserSession,
         [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(contentLocator), contentLocator);
-      ArgumentUtility.CheckNotNull(nameof(browserSession), browserSession);
-      ArgumentUtility.CheckNotNull(nameof(loggerFactory), loggerFactory);
+      ArgumentNullException.ThrowIfNull(contentLocator);
+      ArgumentNullException.ThrowIfNull(browserSession);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       return new DiagnosticScreenshotBuilder(
           Screenshot.TakeBrowserScreenshot(browserSession, contentLocator),
@@ -63,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     public void SaveAnnotation ([NotNull] string path, bool overwriteFileIfExists = false)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(path), path);
+      ArgumentException.ThrowIfNullOrEmpty(path);
 
       if (!overwriteFileIfExists && File.Exists(path))
         throw new InvalidOperationException(string.Format("A screenshot with the file name '{0}' does already exist.", path));

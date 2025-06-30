@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.Serialization
 {
@@ -35,7 +34,7 @@ namespace Remotion.Mixins.Context.Serialization
 
     public void AddMixinType (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull(nameof(mixinType), mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
       SetValue(0, mixinType);
     }
 
@@ -51,13 +50,13 @@ namespace Remotion.Mixins.Context.Serialization
 
     public void AddExplicitDependencies (IEnumerable<Type> explicitDependencies)
     {
-      ArgumentUtility.CheckNotNull(nameof(explicitDependencies), explicitDependencies);
+      ArgumentNullException.ThrowIfNull(explicitDependencies);
       SetValue(3, explicitDependencies.ToArray());
     }
 
     public void AddOrigin (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull(nameof(origin), origin);
+      ArgumentNullException.ThrowIfNull(origin);
 
       var originSerializer = CreateMixinContextOriginSerializer();
       origin.Serialize(originSerializer);

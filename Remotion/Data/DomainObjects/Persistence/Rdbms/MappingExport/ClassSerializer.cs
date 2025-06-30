@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 {
@@ -31,14 +30,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public ClassSerializer (ITableSerializer tableSerializer)
     {
-      ArgumentUtility.CheckNotNull(nameof(tableSerializer), tableSerializer);
+      ArgumentNullException.ThrowIfNull(tableSerializer);
 
       _tableSerializer = tableSerializer;
     }
 
     public XElement Serialize (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(classDefinition), classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return new XElement(
           Constants.Namespace + "class",

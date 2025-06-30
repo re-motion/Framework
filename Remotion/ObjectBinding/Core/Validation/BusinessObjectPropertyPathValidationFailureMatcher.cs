@@ -16,7 +16,6 @@
 //
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Validation
 {
@@ -30,7 +29,7 @@ namespace Remotion.ObjectBinding.Validation
 
     public BusinessObjectPropertyPathValidationFailureMatcher (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       PropertyPath = propertyPath;
     }
@@ -39,8 +38,8 @@ namespace Remotion.ObjectBinding.Validation
         IBusinessObject businessObject,
         IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNull(nameof(validationResult), validationResult);
+      ArgumentNullException.ThrowIfNull(businessObject);
+      ArgumentNullException.ThrowIfNull(validationResult);
 
       return GetMatchingValidationFailures(PropertyPath, businessObject, validationResult);
     }

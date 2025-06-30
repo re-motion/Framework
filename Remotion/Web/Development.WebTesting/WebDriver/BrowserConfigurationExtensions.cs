@@ -17,7 +17,6 @@
 using System;
 using Coypu.Drivers;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
@@ -36,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChrome ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull(nameof(browserConfiguration), browserConfiguration);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
       return browserConfiguration is IChromeConfiguration;
     }
@@ -47,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsEdge ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull(nameof(browserConfiguration), browserConfiguration);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
       return browserConfiguration is IEdgeConfiguration;
     }
@@ -58,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChromium ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull(nameof(browserConfiguration), browserConfiguration);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
       return browserConfiguration is IChromeConfiguration || browserConfiguration is IEdgeConfiguration;
     }
@@ -69,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsFirefox ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull(nameof(browserConfiguration), browserConfiguration);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
       return browserConfiguration is IFirefoxConfiguration;
     }
@@ -79,7 +78,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool UseBidiLog ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull(nameof(browserConfiguration), browserConfiguration);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
       return IsFirefox(browserConfiguration);
     }
@@ -90,7 +89,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChrome ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull(nameof(browser), browser);
+      ArgumentNullException.ThrowIfNull(browser);
 
       return browser == Browser.Chrome;
     }
@@ -101,7 +100,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsEdge ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull(nameof(browser), browser);
+      ArgumentNullException.ThrowIfNull(browser);
 
       return browser == Browser.Edge;
     }
@@ -112,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChromium ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull(nameof(browser), browser);
+      ArgumentNullException.ThrowIfNull(browser);
 
       return browser == Browser.Chrome || browser == Browser.Edge;
     }
@@ -123,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsFirefox ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull(nameof(browser), browser);
+      ArgumentNullException.ThrowIfNull(browser);
 
       return browser == Browser.Firefox;
     }

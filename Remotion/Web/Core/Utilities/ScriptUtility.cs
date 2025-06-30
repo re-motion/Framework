@@ -18,7 +18,6 @@ using System;
 using System.Text;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -57,7 +56,7 @@ namespace Remotion.Web.Utilities
     /// </remarks>
     public static string EscapeClientScript (string input)
     {
-      ArgumentUtility.CheckNotNull(nameof(input), input);
+      ArgumentNullException.ThrowIfNull(input);
 
       StringBuilder output = new StringBuilder(input.Length + 5);
       for (int idxChars = 0; idxChars < input.Length; idxChars++)
@@ -127,15 +126,15 @@ namespace Remotion.Web.Utilities
 
     public ScriptUtility (IInfrastructureResourceUrlFactory infrastructureResourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(infrastructureResourceUrlFactory), infrastructureResourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(infrastructureResourceUrlFactory);
 
       _infrastructureResourceUrlFactory = infrastructureResourceUrlFactory;
     }
 
     public void RegisterJavaScriptInclude (IControl control, HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(control), control);
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(control);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       string key = typeof(ScriptUtility).GetFullNameChecked() + "_StyleUtility";
       if (!htmlHeadAppender.IsRegistered(key))

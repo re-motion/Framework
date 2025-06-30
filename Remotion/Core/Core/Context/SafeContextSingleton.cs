@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Context
 {
@@ -38,8 +37,8 @@ namespace Remotion.Context
 
     public SafeContextSingleton (string currentKey, Func<T> creator)
     {
-      ArgumentUtility.CheckNotNull(nameof(currentKey), currentKey);
-      ArgumentUtility.CheckNotNull(nameof(creator), creator);
+      ArgumentNullException.ThrowIfNull(currentKey);
+      ArgumentNullException.ThrowIfNull(creator);
 
       _currentKey = currentKey;
       _creator = creator;

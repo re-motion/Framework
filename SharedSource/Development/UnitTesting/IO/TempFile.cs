@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 using System;
 using System.IO;
-using Remotion.Utilities;
 
 #nullable enable
 // ReSharper disable once CheckNamespace
@@ -43,7 +42,7 @@ namespace Remotion.Development.UnitTesting.IO
 
     public void WriteStream (Stream stream)
     {
-      ArgumentUtility.CheckNotNull(nameof(stream), stream);
+      ArgumentNullException.ThrowIfNull(stream);
 
       using (StreamReader streamReader = new StreamReader(stream))
       {
@@ -60,14 +59,14 @@ namespace Remotion.Development.UnitTesting.IO
 
     public void WriteAllBytes (byte[] bytes)
     {
-      ArgumentUtility.CheckNotNull(nameof(bytes), bytes);
+      ArgumentNullException.ThrowIfNull(bytes);
 
       File.WriteAllBytes(_fileName!, bytes);
     }
 
     public void WriteAllText (string text)
     {
-      ArgumentUtility.CheckNotNull(nameof(text), text);
+      ArgumentNullException.ThrowIfNull(text);
 
       File.WriteAllText(_fileName!, text);
     }

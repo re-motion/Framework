@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
     public QueryDbCommandBuilder (string statement, IEnumerable<QueryParameterWithDataParameterDefinition> parameters, ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull(nameof(statement), statement);
-      ArgumentUtility.CheckNotNull(nameof(parameters), parameters);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       _statement = statement;
       _parameters = parameters.ToDictionary(param => param.QueryParameter.Name, param => param).AsReadOnly();
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(dbCommandFactory), dbCommandFactory);
+      ArgumentNullException.ThrowIfNull(dbCommandFactory);
 
       var command = dbCommandFactory.CreateDbCommand();
 
