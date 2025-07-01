@@ -16,7 +16,10 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
+using System.Reflection;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
 
@@ -25,14 +28,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
   [TestFixture]
   public class TracingDbConnectionTest
   {
-    private IDbConnection _connection;
-    private Mock<IDbConnection> _innerConnectionMock;
+    private DbConnection _connection;
+    private Mock<DbConnection> _innerConnectionMock;
     private Mock<IPersistenceExtension> _extensionMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _innerConnectionMock = new Mock<IDbConnection>(MockBehavior.Strict);
+      _innerConnectionMock = new Mock<DbConnection>(MockBehavior.Strict);
+      _innerConnectionMock.Protected().Setup("Dispose", [false]); // for Finalizer
       _extensionMock = new Mock<IPersistenceExtension>(MockBehavior.Strict);
 
       _connection = new TracingDbConnection(_innerConnectionMock.Object, _extensionMock.Object);
@@ -139,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void Dispose_ConnectionOpen ()
     {
       var sequence = new VerifiableSequence();
-      _innerConnectionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerConnectionMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
       _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ConnectionClosed(((TracingDbConnection)_connection).ConnectionID)).Verifiable();
 
       _connection.Dispose();
@@ -165,10 +169,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void BeginTransaction ()
     {
       var isolationLevel = IsolationLevel.Chaos;
-      var dbTransactionMock = new Mock<IDbTransaction>(MockBehavior.Strict);
+      var dbTransactionMock = new Mock<DbTransaction>(MockBehavior.Strict);
       dbTransactionMock.Setup(mock => mock.IsolationLevel).Returns(isolationLevel).Verifiable();
 
-      _innerConnectionMock.Setup(mock => mock.BeginTransaction()).Returns(dbTransactionMock.Object).Verifiable();
+      _innerConnectionMock.Protected().Setup<DbTransaction>("BeginDbTransaction", IsolationLevel.Unspecified).Returns(dbTransactionMock.Object).Verifiable();
       _extensionMock.Setup(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel)).Verifiable();
 
       var tracingDbTransaction = ((TracingDbConnection)_connection).BeginTransaction();
@@ -186,9 +190,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var isolationLevel = IsolationLevel.Chaos;
 
-      var dbTransactionMock = new Mock<IDbTransaction>(MockBehavior.Strict);
+      var dbTransactionMock = new Mock<DbTransaction>(MockBehavior.Strict);
+      dbTransactionMock.Setup(mock => mock.IsolationLevel).Returns(isolationLevel).Verifiable();
 
-      _innerConnectionMock.Setup(mock => mock.BeginTransaction(isolationLevel)).Returns(dbTransactionMock.Object).Verifiable();
+      _innerConnectionMock.Protected().Setup<DbTransaction>("BeginDbTransaction", isolationLevel).Returns(dbTransactionMock.Object).Verifiable();
       _extensionMock.Setup(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel)).Verifiable();
 
       var tracingDbTransaction = ((TracingDbConnection)_connection).BeginTransaction(isolationLevel);
@@ -205,8 +210,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void CreateCommand ()
     {
-      var commandMock = new Mock<IDbCommand>(MockBehavior.Strict);
-      _innerConnectionMock.Setup(mock => mock.CreateCommand()).Returns(commandMock.Object).Verifiable();
+      var commandMock = new Mock<DbCommand>(MockBehavior.Strict);
+      commandMock.Protected().Setup("Dispose", [false]); // for Finalizer
+      _innerConnectionMock.Protected().Setup<DbCommand>("CreateDbCommand").Returns(commandMock.Object).Verifiable();
 
       var tracingDbCommand = ((TracingDbConnection)_connection).CreateCommand();
 
@@ -220,50 +226,120 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     }
 
     [Test]
-    public void BeginTransactionExplicitInterfaceImplementation ()
+    public void BeginTransaction_CallerIsAbstractBaseClass ()
     {
       var isolationLevel = IsolationLevel.Chaos;
-      var dbTransactionMock = new Mock<IDbTransaction>(MockBehavior.Strict);
+      var dbTransactionMock = new Mock<DbTransaction>(MockBehavior.Strict);
       dbTransactionMock.Setup(mock => mock.IsolationLevel).Returns(isolationLevel).Verifiable();
 
-      _innerConnectionMock.Setup(mock => mock.BeginTransaction()).Returns(dbTransactionMock.Object).Verifiable();
+      _innerConnectionMock.Protected().Setup<DbTransaction>("BeginDbTransaction", IsolationLevel.Unspecified).Returns(dbTransactionMock.Object).Verifiable();
       _extensionMock.Setup(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel)).Verifiable();
 
-      _connection.BeginTransaction();
+      var tracingDbTransaction = _connection.BeginTransaction() as TracingDbTransaction ?? throw new InvalidCastException("BeginTransaction did not return TracingDbTransaction");
 
       _innerConnectionMock.Verify();
       _extensionMock.Verify();
       dbTransactionMock.Verify();
+      Assert.That(tracingDbTransaction.WrappedInstance, Is.EqualTo(dbTransactionMock.Object));
+      Assert.That(tracingDbTransaction.PersistenceExtension, Is.EqualTo(_extensionMock.Object));
+      Assert.That(tracingDbTransaction.ConnectionID, Is.EqualTo(((TracingDbConnection)_connection).ConnectionID));
     }
 
     [Test]
-    public void BeginTransactionExplicitInterfaceImplementationWithIsolationLevel ()
+    public void BeginTransaction_WithIsolationLevel_CallerIsAbstractBaseClass ()
     {
       var isolationLevel = IsolationLevel.Chaos;
 
-      var dbTransactionMock = new Mock<IDbTransaction>(MockBehavior.Strict);
+      var dbTransactionMock = new Mock<DbTransaction>(MockBehavior.Strict);
+      dbTransactionMock.Setup(mock => mock.IsolationLevel).Returns(isolationLevel).Verifiable();
 
-      _innerConnectionMock.Setup(mock => mock.BeginTransaction(isolationLevel)).Returns(dbTransactionMock.Object).Verifiable();
+      _innerConnectionMock.Protected().Setup<DbTransaction>("BeginDbTransaction", isolationLevel).Returns(dbTransactionMock.Object).Verifiable();
       _extensionMock.Setup(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel)).Verifiable();
 
-      _connection.BeginTransaction(isolationLevel);
+      var tracingDbTransaction = _connection.BeginTransaction(isolationLevel) as TracingDbTransaction ?? throw new InvalidCastException("BeginTransaction did not return TracingDbTransaction");
 
       _innerConnectionMock.Verify();
       _extensionMock.Verify();
       dbTransactionMock.Verify();
+
+      Assert.That(tracingDbTransaction.WrappedInstance, Is.EqualTo(dbTransactionMock.Object));
+      Assert.That(tracingDbTransaction.PersistenceExtension, Is.EqualTo(_extensionMock.Object));
+      Assert.That(tracingDbTransaction.ConnectionID, Is.EqualTo(((TracingDbConnection)_connection).ConnectionID));
     }
 
     [Test]
-    public void CreateCommandExplicitInterfaceImplementation ()
+    public void CreateCommand_CallerIsAbstractBaseClass ()
     {
-      var commandMock = new Mock<IDbCommand>(MockBehavior.Strict);
-      _innerConnectionMock.Setup(mock => mock.CreateCommand()).Returns(commandMock.Object).Verifiable();
+      var commandMock = new Mock<DbCommand>(MockBehavior.Strict);
+      commandMock.Protected().Setup("Dispose", [false]); // for Finalizer
+      _innerConnectionMock.Protected().Setup<DbCommand>("CreateDbCommand").Returns(commandMock.Object).Verifiable();
 
-      var result = _connection.CreateCommand();
+      var tracingDbCommand = _connection.CreateCommand() as TracingDbCommand ?? throw new InvalidCastException("CreateCommand did not return TracingDbCommand");
 
       _innerConnectionMock.Verify();
       _extensionMock.Verify();
       commandMock.Verify();
+
+      Assert.That(tracingDbCommand.WrappedInstance, Is.EqualTo(commandMock.Object));
+      Assert.That(tracingDbCommand.PersistenceExtension, Is.EqualTo(_extensionMock.Object));
+      Assert.That(tracingDbCommand.ConnectionID, Is.EqualTo(((TracingDbConnection)_connection).ConnectionID));
+    }
+
+    [Test]
+    public void BeginTransaction_CallerIsInterface ()
+    {
+      var isolationLevel = IsolationLevel.Chaos;
+      var dbTransactionMock = new Mock<DbTransaction>(MockBehavior.Strict);
+      dbTransactionMock.Setup(mock => mock.IsolationLevel).Returns(isolationLevel).Verifiable();
+
+      _innerConnectionMock.Protected().Setup<DbTransaction>("BeginDbTransaction", IsolationLevel.Unspecified).Returns(dbTransactionMock.Object).Verifiable();
+      _extensionMock.Setup(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel)).Verifiable();
+
+      ((IDbConnection)_connection).BeginTransaction();
+
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      dbTransactionMock.Verify();
+    }
+
+    [Test]
+    public void BeginTransaction_WithIsolationLevel_CallerIsInterface ()
+    {
+      var isolationLevel = IsolationLevel.Chaos;
+
+      var dbTransactionMock = new Mock<DbTransaction>(MockBehavior.Strict);
+      dbTransactionMock.Setup(mock => mock.IsolationLevel).Returns(isolationLevel).Verifiable();
+
+      _innerConnectionMock.Protected().Setup<DbTransaction>("BeginDbTransaction", isolationLevel).Returns(dbTransactionMock.Object).Verifiable();
+      _extensionMock.Setup(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel)).Verifiable();
+
+      ((IDbConnection)_connection).BeginTransaction(isolationLevel);
+
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      dbTransactionMock.Verify();
+    }
+
+    [Test]
+    public void CreateCommand_CallerIsInterface ()
+    {
+      var commandMock = new Mock<DbCommand>(MockBehavior.Strict);
+      commandMock.Protected().Setup("Dispose", [false]); // for Finalizer
+      _innerConnectionMock.Protected().Setup<DbCommand>("CreateDbCommand").Returns(commandMock.Object).Verifiable();
+
+      ((IDbConnection)_connection).CreateCommand();
+
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      commandMock.Verify();
+    }
+
+    [Test]
+    public void NoFinalizerImplemented ()
+    {
+      var type = typeof(TracingDbConnection);
+      var finalizer = type.GetMethod("Finalize", BindingFlags.Instance | BindingFlags.NonPublic);
+      Assert.That(finalizer?.DeclaringType, Is.Not.EqualTo(typeof(object)));
     }
   }
 }

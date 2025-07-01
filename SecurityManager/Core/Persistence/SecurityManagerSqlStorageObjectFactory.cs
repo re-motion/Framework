@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -53,7 +53,7 @@ namespace Remotion.SecurityManager.Persistence
               storageProviderDefinition.ConnectionString,
               persistenceExtension,
               commandFactory,
-              (Func<IDbConnection>)(() => new SqlConnection())));
+              (Func<DbConnection>)(() => new SqlConnection())));
     }
 
     protected override IReadOnlyStorageProvider CreateReadOnlyStorageProvider (
@@ -71,7 +71,7 @@ namespace Remotion.SecurityManager.Persistence
               storageProviderDefinition.ReadOnlyConnectionString,
               persistenceExtension,
               commandFactory,
-              (Func<IDbConnection>)(() => new SqlConnection())));
+              (Func<DbConnection>)(() => new SqlConnection())));
     }
   }
 }

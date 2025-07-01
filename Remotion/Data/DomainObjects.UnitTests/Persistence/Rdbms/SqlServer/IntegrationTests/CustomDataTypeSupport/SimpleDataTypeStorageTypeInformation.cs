@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain;
@@ -74,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       get { return typeof(string); }
     }
 
-    public IDbDataParameter CreateDataParameter (IDbCommand command, object value)
+    public DbParameter CreateDataParameter (DbCommand command, object value)
     {
       ArgumentNullException.ThrowIfNull(command);
 
@@ -95,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       return parameter;
     }
 
-    public object Read (IDataReader dataReader, int ordinal)
+    public object Read (DbDataReader dataReader, int ordinal)
     {
       ArgumentNullException.ThrowIfNull(dataReader);
 

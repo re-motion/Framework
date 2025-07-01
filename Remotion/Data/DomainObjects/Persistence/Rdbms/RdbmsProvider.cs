@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -35,7 +36,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
   private readonly string _connectionString;
   private readonly IPersistenceExtension _persistenceExtension;
   private readonly IRdbmsProviderCommandFactory _rdbmsProviderCommandFactory;
-  private readonly Func<IDbConnection> _connectionFactory;
+  private readonly Func<DbConnection> _connectionFactory;
   private bool _disposed;
 
   private TracingDbConnection? _connection;
@@ -46,7 +47,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
       string connectionString,
       IPersistenceExtension persistenceExtension,
       IRdbmsProviderCommandFactory rdbmsProviderCommandFactory,
-      Func<IDbConnection> connectionFactory)
+      Func<DbConnection> connectionFactory)
   {
     ArgumentNullException.ThrowIfNull(definition);
     ArgumentException.ThrowIfNullOrEmpty(connectionString);
@@ -377,12 +378,12 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
     return command;
   }
 
-  IDbCommand IDbCommandFactory.CreateDbCommand ()
+  DbCommand IDbCommandFactory.CreateDbCommand ()
   {
     return CreateDbCommand();
   }
 
-  public virtual IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
+  public virtual DbDataReader ExecuteReader (DbCommand command, CommandBehavior behavior)
   {
     CheckDisposed();
     ArgumentNullException.ThrowIfNull(command);
@@ -398,7 +399,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
     }
   }
 
-  public virtual object? ExecuteScalar (IDbCommand command)
+  public virtual object? ExecuteScalar (DbCommand command)
   {
     CheckDisposed();
     ArgumentNullException.ThrowIfNull(command);
@@ -413,7 +414,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
     }
   }
 
-  public virtual int ExecuteNonQuery (IDbCommand command)
+  public virtual int ExecuteNonQuery (DbCommand command)
   {
     CheckDisposed();
     ArgumentNullException.ThrowIfNull(command);
@@ -428,7 +429,7 @@ public class RdbmsProvider : IStorageProvider, IRdbmsProviderReadOnlyCommandExec
     }
   }
 
-  protected IDbConnection CreateConnection ()
+  protected DbConnection CreateConnection ()
   {
     return _connectionFactory();
   }

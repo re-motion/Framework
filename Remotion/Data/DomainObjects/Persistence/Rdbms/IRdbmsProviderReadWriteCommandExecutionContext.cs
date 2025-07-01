@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
   /// <see cref="IRdbmsProviderCommand{T}"/> can be executed.
   /// </summary>
   public interface IRdbmsProviderReadWriteCommandExecutionContext
-      : IDbCommandFactory, IScalarCommandExecutionContext, IDataReaderCommandExecutionContext, INonQueryCommandExecutionContext
+      : IDbCommandFactory, IScalarCommandExecutionContext, IDbDataReaderCommandExecutionContext, INonQueryCommandExecutionContext
   {
   }
 }

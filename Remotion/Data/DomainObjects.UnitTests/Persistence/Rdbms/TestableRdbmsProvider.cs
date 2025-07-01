@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 
@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         string connectionString,
         IPersistenceExtension persistenceExtension,
         IRdbmsProviderCommandFactory commandFactory,
-        Func<IDbConnection> connectionFactory)
+        Func<DbConnection> connectionFactory)
       : base(definition, connectionString, persistenceExtension, commandFactory, connectionFactory)
     {
 

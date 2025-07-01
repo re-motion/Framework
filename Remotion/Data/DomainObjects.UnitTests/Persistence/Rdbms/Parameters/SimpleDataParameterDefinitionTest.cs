@@ -17,8 +17,10 @@
 using System;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using JetBrains.Annotations;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
@@ -132,8 +134,9 @@ public class SimpleDataParameterDefinitionTest
   public void CreateDataParameter_SetsNameValueTypeSize (Type dataType, DbType dbType, bool hasSize, [CanBeNull] object testValue)
   {
     testValue ??= DBNull.Value;
-    var commandMock = new Mock<IDbCommand>(MockBehavior.Strict);
-    var dataParameterStub = new Mock<IDbDataParameter>();
+    var commandMock = new Mock<DbCommand>(MockBehavior.Strict);
+    commandMock.Protected().Setup("Dispose", [false]); // for Finalizer
+    var dataParameterStub = new Mock<DbParameter>();
 
     var storageTypeInformation = new StorageTypeInformation(
         dataType,
@@ -145,7 +148,8 @@ public class SimpleDataParameterDefinitionTest
         Mock.Of<TypeConverter>());
 
     commandMock
-        .Setup(_ => _.CreateParameter())
+        .Protected()
+        .Setup<DbParameter>("CreateDbParameter")
         .Returns(dataParameterStub.Object);
 
     dataParameterStub.SetupProperty(_ => _.ParameterName);

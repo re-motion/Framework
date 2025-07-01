@@ -21,6 +21,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
 /// <summary>
 /// An execution context in which an <see cref="IRdbmsProviderCommandWithReadOnlySupport{T}"/> can be executed.
 /// </summary>
-public interface IRdbmsProviderReadOnlyCommandExecutionContext : IDbCommandFactory, IScalarCommandExecutionContext, IDataReaderCommandExecutionContext
+public interface IRdbmsProviderReadOnlyCommandExecutionContext : IDbCommandFactory, IScalarCommandExecutionContext, IDbDataReaderCommandExecutionContext
 {
 }

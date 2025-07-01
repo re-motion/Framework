@@ -16,68 +16,24 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
   /// <summary>
-  /// Provides a wrapper for implementations of <see cref="IDbConnection"/>. The lifetime of the connection is traced using the
+  /// Provides a wrapper for implementations of <see cref="DbConnection"/>. The lifetime of the connection is traced using the
   /// <see cref="IPersistenceExtension"/> passed during the instantiation.
   /// </summary>
-  public class TracingDbConnection : IDbConnection
+  public sealed class TracingDbConnection : DbConnection
   {
-    #region IDbConnection implementation
-
-    public void ChangeDatabase (string databaseName)
-    {
-      _connection.ChangeDatabase(databaseName);
-    }
-
-    [AllowNull]
-    public string ConnectionString
-    {
-      get { return _connection.ConnectionString; }
-      set { _connection.ConnectionString = value; }
-    }
-
-    public int ConnectionTimeout
-    {
-      get { return _connection.ConnectionTimeout; }
-    }
-
-    public string Database
-    {
-      get { return _connection.Database; }
-    }
-
-    public ConnectionState State
-    {
-      get { return _connection.State; }
-    }
-
-    IDbTransaction IDbConnection.BeginTransaction ()
-    {
-      return BeginTransaction();
-    }
-
-    IDbTransaction IDbConnection.BeginTransaction (IsolationLevel isolationLevel)
-    {
-      return BeginTransaction(isolationLevel);
-    }
-
-    IDbCommand IDbConnection.CreateCommand ()
-    {
-      return CreateCommand();
-    }
-
-    #endregion
-
-    private readonly IDbConnection _connection;
+    private readonly DbConnection _connection;
     private readonly IPersistenceExtension _persistenceExtension;
     private readonly Guid _connectionID;
     private bool _isConnectionClosed;
 
-    public TracingDbConnection (IDbConnection connection, IPersistenceExtension persistenceExtension)
+    public TracingDbConnection (DbConnection connection, IPersistenceExtension persistenceExtension)
     {
       ArgumentNullException.ThrowIfNull(connection);
       ArgumentNullException.ThrowIfNull(persistenceExtension);
@@ -87,66 +43,85 @@ namespace Remotion.Data.DomainObjects.Tracing
       _connectionID = Guid.NewGuid();
     }
 
-    public IDbConnection WrappedInstance
+
+    [AllowNull]
+    public override string ConnectionString
     {
-      get { return _connection; }
+      get => _connection.ConnectionString;
+      set => _connection.ConnectionString = value;
+    }
+    public DbConnection WrappedInstance => _connection;
+    public Guid ConnectionID => _connectionID;
+    public IPersistenceExtension PersistenceExtension => _persistenceExtension;
+    public override int ConnectionTimeout => _connection.ConnectionTimeout;
+    public override string Database => _connection.Database;
+    public override string DataSource => _connection.DataSource;
+    public override string ServerVersion => _connection.ServerVersion;
+    public override ConnectionState State => _connection.State;
+
+
+    public override void ChangeDatabase (string databaseName)
+    {
+      _connection.ChangeDatabase(databaseName);
     }
 
-    public Guid ConnectionID
+    public new TracingDbTransaction BeginTransaction ()
     {
-      get { return _connectionID; }
+      return (TracingDbTransaction)base.BeginTransaction();
     }
 
-    public IPersistenceExtension PersistenceExtension
+    public new TracingDbTransaction BeginTransaction (IsolationLevel isolationLevel)
     {
-      get { return _persistenceExtension; }
+      return (TracingDbTransaction)base.BeginTransaction(isolationLevel);
     }
 
-    public void Open ()
+    protected override TracingDbTransaction BeginDbTransaction (IsolationLevel isolationLevel)
+    {
+      var transaction = _connection.BeginTransaction(isolationLevel);
+      PersistenceExtension.TransactionBegan(_connectionID, transaction.IsolationLevel);
+      return CreateTracingTransaction(transaction);
+    }
+
+    public new TracingDbCommand CreateCommand ()
+    {
+      return (TracingDbCommand)base.CreateCommand();
+    }
+
+    protected override TracingDbCommand CreateDbCommand ()
+    {
+      return CreateTracingCommand(_connection.CreateCommand());
+    }
+
+    public override void Open ()
     {
       _connection.Open();
       PersistenceExtension.ConnectionOpened(_connectionID);
     }
 
-    public void Close ()
+    public override void Close ()
     {
       _connection.Close();
 
       TraceConnectionClosed();
     }
 
-    public void Dispose ()
+    protected override void Dispose (bool disposing)
     {
-      _connection.Dispose();
+      if (disposing)
+      {
+        _connection.Dispose();
 
-      TraceConnectionClosed();
+        TraceConnectionClosed();
+      }
     }
 
-    public TracingDbTransaction BeginTransaction ()
-    {
-      var transaction = _connection.BeginTransaction();
-      PersistenceExtension.TransactionBegan(_connectionID, transaction.IsolationLevel);
-      return CreateTracingTransaction(transaction);
-    }
 
-    public TracingDbTransaction BeginTransaction (IsolationLevel isolationLevel)
-    {
-      var transaction = _connection.BeginTransaction(isolationLevel);
-      PersistenceExtension.TransactionBegan(_connectionID, isolationLevel);
-      return CreateTracingTransaction(transaction);
-    }
-
-    public TracingDbCommand CreateCommand ()
-    {
-      return CreateTracingCommand(_connection.CreateCommand());
-    }
-
-    private TracingDbTransaction CreateTracingTransaction (IDbTransaction transaction)
+    private TracingDbTransaction CreateTracingTransaction (DbTransaction transaction)
     {
       return new TracingDbTransaction(transaction, _persistenceExtension, _connectionID);
     }
 
-    private TracingDbCommand CreateTracingCommand (IDbCommand command)
+    private TracingDbCommand CreateTracingCommand (DbCommand command)
     {
       return new TracingDbCommand(command, _persistenceExtension, _connectionID);
     }

@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
   {
     private ColumnDefinition _columnDefinition;
     private NameBasedColumnOrdinalProvider _nameBasedColumnOrdinalProvider;
-    private Mock<IDataReader> _dataReaderStub;
+    private Mock<DbDataReader> _dataReaderStub;
 
     [SetUp]
     public void SetUp ()
     {
       _columnDefinition = ColumnDefinitionObjectMother.CreateColumn("Testcolumn");
-      _dataReaderStub = new Mock<IDataReader>();
+      _dataReaderStub = new Mock<DbDataReader>();
       _nameBasedColumnOrdinalProvider = new NameBasedColumnOrdinalProvider();
     }
 

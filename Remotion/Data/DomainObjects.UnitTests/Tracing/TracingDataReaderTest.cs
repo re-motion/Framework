@@ -16,7 +16,10 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
+using System.Reflection;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
 
@@ -25,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
   [TestFixture]
   public class TracingDataReaderTest
   {
-    private Mock<IDataReader> _innerDataReader;
+    private Mock<DbDataReader> _innerDataReader;
     private Mock<IPersistenceExtension> _extensionMock;
     private Guid _connectionID;
     private Guid _queryID;
@@ -34,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [SetUp]
     public void SetUp ()
     {
-      _innerDataReader = new Mock<IDataReader>(MockBehavior.Strict);
+      _innerDataReader = new Mock<DbDataReader>(MockBehavior.Strict);
       _extensionMock = new Mock<IPersistenceExtension>(MockBehavior.Strict);
       _connectionID = Guid.NewGuid();
       _queryID = Guid.NewGuid();
@@ -405,9 +408,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetData ()
     {
-      var dataReaderMock = new Mock<IDataReader>(MockBehavior.Strict);
+      var dataReaderMock = new Mock<DbDataReader>(MockBehavior.Strict);
       int i = 5;
-      _innerDataReader.Setup(mock => mock.GetData(i)).Returns(dataReaderMock.Object).Verifiable();
+      _innerDataReader.Protected().Setup<DbDataReader>("GetDbDataReader", i).Returns(dataReaderMock.Object).Verifiable();
 
       var result = _dataReader.GetData(i);
 
@@ -517,7 +520,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryCompleted(_connectionID, _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 0))
           .Verifiable();
-      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
 
       _dataReader.Dispose();
       _innerDataReader.Verify();
@@ -550,7 +553,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
           .Setup(mock => mock.QueryCompleted(_connectionID,  _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 0))
           .Verifiable();
       _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Close()).Verifiable();
-      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
 
       _dataReader.Close();
       _dataReader.Dispose();
@@ -603,5 +606,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       sequence.Verify();
     }
 
+    [Test]
+    public void NoFinalizerImplemented ()
+    {
+      var type = typeof(TracingDataReader);
+      var finalizer = type.GetMethod("Finalize", BindingFlags.Instance | BindingFlags.NonPublic);
+      Assert.That(finalizer?.DeclaringType,  Is.EqualTo(typeof(object)));
+    }
   }
 }

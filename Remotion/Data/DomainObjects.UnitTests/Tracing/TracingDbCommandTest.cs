@@ -17,8 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using System.Reflection;
 using Microsoft.Data.SqlClient;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
 
@@ -28,14 +31,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
   public class TracingDbCommandTest
   {
     private TracingDbCommand _command;
-    private Mock<IDbCommand> _innerCommandMock;
+    private Mock<DbCommand> _innerCommandMock;
     private Mock<IPersistenceExtension> _extensionMock;
     private Guid _connectionID;
 
     [SetUp]
     public void SetUp ()
     {
-      _innerCommandMock = new Mock<IDbCommand>(MockBehavior.Strict);
+      _innerCommandMock = new Mock<DbCommand>(MockBehavior.Strict);
+      _innerCommandMock.Protected().Setup("Dispose", [false]); // for Finalizer
       _extensionMock = new Mock<IPersistenceExtension>(MockBehavior.Strict);
       _connectionID = Guid.NewGuid();
 
@@ -45,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void Dispose ()
     {
-      _innerCommandMock.Setup(mock => mock.Dispose()).Verifiable();
+      _innerCommandMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       _command.Dispose();
 
@@ -78,8 +82,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void CreateParameter ()
     {
-      var parameterStub = new Mock<IDbDataParameter>();
-      _innerCommandMock.Setup(mock => mock.CreateParameter()).Returns(parameterStub.Object);
+      var parameterStub = new Mock<DbParameter>();
+      _innerCommandMock.Protected().Setup<DbParameter>("CreateDbParameter").Returns(parameterStub.Object);
 
       Assert.That(_command.CreateParameter(), Is.SameAs(parameterStub.Object));
     }
@@ -87,8 +91,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetConnectionFromInterface ()
     {
-      var connectionStub = new Mock<IDbConnection>();
-      _innerCommandMock.Setup(mock => mock.Connection).Returns(connectionStub.Object);
+      var connectionStub = new Mock<DbConnection>();
+      _innerCommandMock.Protected().Setup<DbConnection>("DbConnection").Returns(connectionStub.Object);
 
       Assert.That(((IDbCommand)_command).Connection, Is.SameAs(connectionStub.Object));
     }
@@ -96,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void SetConnectionFromInterface ()
     {
-      var connectionStub = new Mock<IDbConnection>();
+      var connectionStub = new Mock<DbConnection>();
       _innerCommandMock.SetupSet(mock => mock.Connection = connectionStub.Object).Verifiable();
 
       ((IDbCommand)_command).Connection = connectionStub.Object;
@@ -108,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void SetInnerConnection_WithInstance ()
     {
-      var connectionStub = new Mock<IDbConnection>();
+      var connectionStub = new Mock<DbConnection>();
       _innerCommandMock.SetupSet(mock => mock.Connection = connectionStub.Object).Verifiable();
 
       _command.SetInnerConnection(new TracingDbConnection(connectionStub.Object, new Mock<IPersistenceExtension>().Object));
@@ -131,8 +135,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetTransactionFromInterface ()
     {
-      var transactionStub = new Mock<IDbTransaction>();
-      _innerCommandMock.Setup(mock => mock.Transaction).Returns(transactionStub.Object);
+      var transactionStub = new Mock<DbTransaction>();
+      _innerCommandMock.Protected().Setup<DbTransaction>("DbTransaction").Returns(transactionStub.Object);
 
       Assert.That(((IDbCommand)_command).Transaction, Is.SameAs(transactionStub.Object));
     }
@@ -140,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void SetTransactionFromInterface ()
     {
-      var transactionStub = new Mock<IDbTransaction>();
+      var transactionStub = new Mock<DbTransaction>();
       _innerCommandMock.SetupSet(mock => mock.Transaction = transactionStub.Object).Verifiable();
 
       ((IDbCommand)_command).Transaction = transactionStub.Object;
@@ -152,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void SetInnerTransaction_WithInstance ()
     {
-      var transactionStub = new Mock<IDbTransaction>();
+      var transactionStub = new Mock<DbTransaction>();
       _innerCommandMock.SetupSet(mock => mock.Transaction = transactionStub.Object).Verifiable();
 
       _command.SetInnerTransaction(new TracingDbTransaction(transactionStub.Object, new Mock<IPersistenceExtension>().Object, Guid.NewGuid()));
@@ -230,8 +234,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetParameters ()
     {
-      var collectionStub = new Mock<IDataParameterCollection>();
-      _innerCommandMock.Setup(mock => mock.Parameters).Returns(collectionStub.Object);
+      var collectionStub = new Mock<DbParameterCollection>();
+      _innerCommandMock.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(collectionStub.Object);
       Assert.That(_command.Parameters, Is.SameAs(collectionStub.Object));
     }
 
@@ -257,7 +261,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void ExecuteNonQuery ()
     {
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
-      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
+      _innerCommandMock.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(CreateParameterCollection());
       var sequence = new VerifiableSequence();
       _extensionMock
           .InVerifiableSequence(sequence)
@@ -282,7 +286,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       Exception exception = new Exception("TestException");
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
-      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
+      _innerCommandMock.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(CreateParameterCollection());
 
       var sequence = new VerifiableSequence();
       _extensionMock
@@ -303,23 +307,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void ExecuteReader ()
     {
-      var readerStub = new Mock<IDataReader>();
+      var readerStub = new Mock<DbDataReader>();
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
-      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
+      _innerCommandMock.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(CreateParameterCollection());
 
       var sequence = new VerifiableSequence();
       _extensionMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
-      _innerCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecuteReader()).Returns(readerStub.Object).Verifiable();
+      _innerCommandMock.InVerifiableSequence(sequence).Protected().Setup<DbDataReader>("ExecuteDbDataReader", CommandBehavior.Default).Returns(readerStub.Object).Verifiable();
 
       _extensionMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuted(_connectionID, _command.QueryID, It.Is<TimeSpan>(_ => _ > TimeSpan.Zero)))
           .Verifiable();
 
-      IDataReader actualReader = _command.ExecuteReader();
+      DbDataReader actualReader = _command.ExecuteReader();
 
       Assert.That(actualReader, Is.InstanceOf(typeof(TracingDataReader)));
       Assert.That(((TracingDataReader)actualReader).WrappedInstance, Is.SameAs(readerStub.Object));
@@ -337,14 +341,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       Exception exception = new Exception("TestException");
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
-      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
+      _innerCommandMock.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(CreateParameterCollection());
 
       var sequence = new VerifiableSequence();
       _extensionMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
-      _innerCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecuteReader()).Throws(exception).Verifiable();
+      _innerCommandMock.InVerifiableSequence(sequence).Protected().Setup<DbDataReader>("ExecuteDbDataReader", CommandBehavior.Default).Throws(exception).Verifiable();
 
       _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
 
@@ -358,9 +362,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void ExecuteReaderWithOverload ()
     {
-      var readerStub = new Mock<IDataReader>();
+      var readerStub = new Mock<DbDataReader>();
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
-      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
+      _innerCommandMock.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(CreateParameterCollection());
 
       var sequence = new VerifiableSequence();
       _extensionMock
@@ -369,7 +373,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
           .Verifiable();
       _innerCommandMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly))
+          .Protected()
+          .Setup<DbDataReader>("ExecuteDbDataReader", CommandBehavior.SchemaOnly)
           .Returns(readerStub.Object)
           .Verifiable();
 
@@ -378,7 +383,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
           .Setup(mock => mock.QueryExecuted(_connectionID, _command.QueryID, It.Is<TimeSpan>(_ => _ > TimeSpan.Zero)))
           .Verifiable();
 
-      IDataReader actualReader = _command.ExecuteReader(CommandBehavior.SchemaOnly);
+      DbDataReader actualReader = _command.ExecuteReader(CommandBehavior.SchemaOnly);
 
       Assert.That(actualReader, Is.InstanceOf(typeof(TracingDataReader)));
       Assert.That(((TracingDataReader)actualReader).WrappedInstance, Is.SameAs(readerStub.Object));
@@ -396,14 +401,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       Exception exception = new Exception("TestException");
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
-      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
+      _innerCommandMock.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(CreateParameterCollection());
 
       var sequence = new VerifiableSequence();
       _extensionMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
-      _innerCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly)).Throws(exception).Verifiable();
+      _innerCommandMock
+          .InVerifiableSequence(sequence)
+          .Protected()
+          .Setup<DbDataReader>("ExecuteDbDataReader", CommandBehavior.SchemaOnly)
+          .Throws(exception)
+          .Verifiable();
 
       _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
 
@@ -418,7 +428,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void ExecuteScalar ()
     {
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
-      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
+      _innerCommandMock.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(CreateParameterCollection());
 
       var sequence = new VerifiableSequence();
       _extensionMock
@@ -446,7 +456,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       Exception exception = new Exception("TestException");
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
-      _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
+      _innerCommandMock.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(CreateParameterCollection());
 
       var sequence = new VerifiableSequence();
       _extensionMock
@@ -464,10 +474,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       sequence.Verify();
     }
 
-    private IDataParameterCollection CreateParameterCollection ()
+    private DbParameterCollection CreateParameterCollection ()
     {
       var command = new SqlCommand();
       return command.Parameters;
+    }
+
+    [Test]
+    public void NoFinalizerImplemented ()
+    {
+      var type = typeof(TracingDbCommand);
+      var finalizer = type.GetMethod("Finalize", BindingFlags.Instance | BindingFlags.NonPublic);
+      Assert.That(finalizer?.DeclaringType, Is.Not.EqualTo(typeof(object)));
     }
   }
 }

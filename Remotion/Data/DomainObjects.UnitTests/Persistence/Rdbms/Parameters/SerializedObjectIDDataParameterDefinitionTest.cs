@@ -16,7 +16,9 @@
 //
 using System;
 using System.Data;
+using System.Data.Common;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
@@ -93,15 +95,15 @@ public class SerializedObjectIDDataParameterDefinitionTest : StandardMappingTest
   [Test]
   public void CreateDataParameter_SetsNameValueTypeSize_AnsiString255 ()
   {
-    var commandStub = new Mock<IDbCommand>();
-    var dataParameterStub = new Mock<IDbDataParameter>();
+    var commandStub = new Mock<DbCommand>();
+    var dataParameterStub = new Mock<DbParameter>();
 
     var storageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: DbType.AnsiString, storageTypeLength: 255);
 
     var objectID = DomainObjectIDs.Order1;
     var testValue = ObjectIDStringSerializer.Instance.Serialize(objectID);
 
-    commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterStub.Object);
+    commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterStub.Object);
 
     dataParameterStub.SetupProperty(_ => _.ParameterName);
     dataParameterStub.SetupProperty(_ => _.DbType);
@@ -122,10 +124,10 @@ public class SerializedObjectIDDataParameterDefinitionTest : StandardMappingTest
   [Test]
   public void CreateDataParameter_WithDBNullValue_SetsNameValueTypeSize_AnsiString255 ()
   {
-    var commandStub = new Mock<IDbCommand>();
-    var dataParameterStub = new Mock<IDbDataParameter>();
+    var commandStub = new Mock<DbCommand>();
+    var dataParameterStub = new Mock<DbParameter>();
 
-    commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterStub.Object);
+    commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterStub.Object);
 
     var storageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: DbType.AnsiString, storageTypeLength: 255);
 

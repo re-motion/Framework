@@ -16,7 +16,7 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -56,7 +56,7 @@ public class SqlTableValuedParameterComparedColumnSpecification : IComparedColum
   }
 
   /// <inheritdoc />
-  public void AddParameters (IDbCommand command, ISqlDialect sqlDialect)
+  public void AddParameters (DbCommand command, ISqlDialect sqlDialect)
   {
     ArgumentNullException.ThrowIfNull(command);
     ArgumentNullException.ThrowIfNull(sqlDialect);
@@ -68,7 +68,7 @@ public class SqlTableValuedParameterComparedColumnSpecification : IComparedColum
   }
 
   /// <inheritdoc />
-  public void AppendComparisons (StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect)
+  public void AppendComparisons (StringBuilder statement, DbCommand command, ISqlDialect sqlDialect)
   {
     ArgumentNullException.ThrowIfNull(statement);
     ArgumentNullException.ThrowIfNull(command);

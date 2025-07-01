@@ -16,14 +16,15 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
 
 /// <summary>
 /// Represents the aspect of <see cref="IRdbmsProviderReadOnlyCommandExecutionContext"/> or <see cref="IRdbmsProviderReadWriteCommandExecutionContext"/> that enables the
-/// execution of an <see cref="IDbCommand"/> that returns an <see cref="IDataReader"/>.
+/// execution of an <see cref="DbCommand"/> that returns an <see cref="DbDataReader"/>.
 /// </summary>
-public interface IDataReaderCommandExecutionContext
+public interface IDbDataReaderCommandExecutionContext
 {
-  IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior);
+  DbDataReader ExecuteReader (DbCommand command, CommandBehavior behavior);
 }

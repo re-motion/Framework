@@ -17,13 +17,14 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
   /// <summary>
   /// Defines an API for classes providing information about the storage type of a value in a relational database.
-  /// In addition, it can create an unnamed <see cref="IDbDataParameter"/> for a given value (convertible to the storage format) or read and 
-  /// convert a value from an <see cref="IDataReader"/>.
+  /// In addition, it can create an unnamed <see cref="DbParameter"/> for a given value (convertible to the storage format) or read and 
+  /// convert a value from an <see cref="DbDataReader"/>.
   /// </summary>
   public interface IStorageTypeInformation
   {
@@ -71,14 +72,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     int? StorageTypeLength { get; }
 
     /// <summary>
-    /// Reads a value from the specified <see cref="IDataReader"/> at the given <paramref name="ordinal"/>, returning it as an instance of 
+    /// Reads a value from the specified <see cref="DbDataReader"/> at the given <paramref name="ordinal"/>, returning it as an instance of 
     /// <see cref="DotNetType"/> (or <see langword="null" />).
     /// </summary>
-    /// <param name="dataReader">The <see cref="IDataReader"/> to read from.</param>
+    /// <param name="dataReader">The <see cref="DbDataReader"/> to read from.</param>
     /// <param name="ordinal">The ordinal identifying the value to be read.</param>
     /// <returns>A (possibly converted) value read from the given <paramref name="dataReader"/>.</returns>
     /// <exception cref="NotSupportedException">The read value cannot be converted to the <see cref="DotNetType"/>.</exception>
-    object? Read (IDataReader dataReader, int ordinal);
+    object? Read (DbDataReader dataReader, int ordinal);
 
     /// <summary>
     /// Converts a value to the <see cref="StorageTypeInformation.StorageType"/>, so that it can be stored by the database.

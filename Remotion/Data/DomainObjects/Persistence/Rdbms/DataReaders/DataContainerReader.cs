@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -25,10 +25,10 @@ using Remotion.Data.DomainObjects.Validation;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
   /// <summary>
-  /// Reads data from an <see cref="IDataReader"/> and converts it into <see cref="DataContainer"/> instances.
+  /// Reads data from an <see cref="DbDataReader"/> and converts it into <see cref="DataContainer"/> instances.
   /// The command whose data is converted must return an ID, a timestamp (as defined by the given <see cref="IRdbmsStoragePropertyDefinition"/> 
   /// instances), and values for each persistent property of the <see cref="ClassDefinition"/> matching the <see cref="ObjectID"/> read from the 
-  /// <see cref="IDataReader"/>.
+  /// <see cref="DbDataReader"/>.
   /// </summary>
   public class DataContainerReader : IObjectReader<DataContainer?>
   {
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _dataContainerValidator; }
     }
 
-    public virtual DataContainer? Read (IDataReader dataReader)
+    public virtual DataContainer? Read (DbDataReader dataReader)
     {
       ArgumentNullException.ThrowIfNull(dataReader);
 
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         return null;
     }
 
-    public virtual IEnumerable<DataContainer?> ReadSequence (IDataReader dataReader)
+    public virtual IEnumerable<DataContainer?> ReadSequence (DbDataReader dataReader)
     {
       ArgumentNullException.ThrowIfNull(dataReader);
 
@@ -104,7 +104,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       }
     }
 
-    protected virtual DataContainer? CreateDataContainerFromReader (IDataReader dataReader, ColumnValueReader columnValueReader)
+    protected virtual DataContainer? CreateDataContainerFromReader (DbDataReader dataReader, ColumnValueReader columnValueReader)
     {
       ArgumentNullException.ThrowIfNull(dataReader);
 

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 
@@ -25,9 +26,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   {
     public interface ICommandExecutionListener
     {
-      void OnExecuteReader (IDbCommand command, CommandBehavior behavior);
-      void OnExecuteScalar (IDbCommand command);
-      void OnExecuteNonQuery (IDbCommand command);
+      void OnExecuteReader (DbCommand command, CommandBehavior behavior);
+      void OnExecuteScalar (DbCommand command);
+      void OnExecuteNonQuery (DbCommand command);
     }
 
     private readonly ICommandExecutionListener _listener;
@@ -37,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         string connectionString,
         IPersistenceExtension persistenceExtension,
         IRdbmsProviderCommandFactory rdbmsProviderCommandFactory,
-        Func<IDbConnection> connectionFactory,
+        Func<DbConnection> connectionFactory,
         ICommandExecutionListener listener)
         : base(definition, connectionString, persistenceExtension, rdbmsProviderCommandFactory, connectionFactory)
     {
@@ -45,19 +46,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       _listener = listener;
     }
 
-    public override IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
+    public override DbDataReader ExecuteReader (DbCommand command, CommandBehavior behavior)
     {
       _listener.OnExecuteReader(command, behavior);
       return base.ExecuteReader(command, behavior);
     }
 
-    public override object ExecuteScalar (IDbCommand command)
+    public override object ExecuteScalar (DbCommand command)
     {
       _listener.OnExecuteScalar(command);
       return base.ExecuteScalar(command);
     }
 
-    public override int ExecuteNonQuery (IDbCommand command)
+    public override int ExecuteNonQuery (DbCommand command)
     {
       _listener.OnExecuteNonQuery(command);
       return base.ExecuteNonQuery(command);

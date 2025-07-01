@@ -16,24 +16,28 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
+using System.Reflection;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 {
   [TestFixture]
   public class TracingDbTransactionTest
   {
-    private Mock<IDbTransaction> _innerTransactionMock;
+    private Mock<DbTransaction> _innerTransactionMock;
     private Mock<IPersistenceExtension> _extensionMock;
     private Guid _connectionID;
-    private IDbTransaction _transaction;
+    private DbTransaction _transaction;
 
     [SetUp]
     public void SetUp ()
     {
-      _innerTransactionMock = new Mock<IDbTransaction>(MockBehavior.Strict);
+      _innerTransactionMock = new Mock<DbTransaction>(MockBehavior.Strict);
       _extensionMock = new Mock<IPersistenceExtension>(MockBehavior.Strict);
       _connectionID = Guid.NewGuid();
 
@@ -68,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void Dispose ()
     {
       var sequence = new VerifiableSequence();
-      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
       _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
 
       _transaction.Dispose();
@@ -81,9 +85,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void Dispose_DisposedTransaction ()
     {
       var sequence = new VerifiableSequence();
-      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
       _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
-      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
 
       _transaction.Dispose();
       _transaction.Dispose();
@@ -109,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void Commit_DisposedTransaction ()
     {
       var sequence = new VerifiableSequence();
-      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
       _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
       _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
 
@@ -137,7 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void Rollback_DisposedTransaction ()
     {
       var sequence = new VerifiableSequence();
-      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
       _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
       _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Rollback()).Verifiable();
 
@@ -151,8 +155,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetConnection ()
     {
-      var dbConnection = new Mock<IDbConnection>(MockBehavior.Strict);
-      _innerTransactionMock.Setup(mock => mock.Connection).Returns(dbConnection.Object).Verifiable();
+      var dbConnection = new Mock<DbConnection>(MockBehavior.Strict);
+      dbConnection.Protected().Setup("Dispose", [false]); // for Finalizer
+      _innerTransactionMock.Protected().Setup<DbConnection>("DbConnection").Returns(dbConnection.Object).Verifiable();
 
       var result = _transaction.Connection;
 
@@ -173,6 +178,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       Assert.That(result, Is.EqualTo(isolationLevel));
       _innerTransactionMock.Verify();
       _extensionMock.Verify();
+    }
+
+    [Test]
+    public void NoFinalizerImplemented ()
+    {
+      var type = typeof(TracingDbTransaction);
+      var finalizer = type.GetMethod("Finalize", BindingFlags.Instance | BindingFlags.NonPublic);
+      Assert.That(finalizer?.DeclaringType, Is.EqualTo(typeof(object)));
     }
   }
 }

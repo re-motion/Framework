@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Data;
+using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
@@ -73,7 +74,7 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
   /// Creates a <see cref="SqlDbType.Structured"/> <see cref="SqlParameter"/> with its <see cref="SqlParameter.TypeName"/> determined by the given
   /// <see cref="SqlTableValuedParameterValue"/>.
   /// </summary>
-  public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
+  public DbParameter CreateDataParameter (DbCommand command, string parameterName, object parameterValue)
   {
     ArgumentNullException.ThrowIfNull(command);
     ArgumentException.ThrowIfNullOrEmpty(parameterName);

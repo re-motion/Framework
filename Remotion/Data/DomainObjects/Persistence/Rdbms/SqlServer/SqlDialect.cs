@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 
@@ -52,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
       return "[" + identifier + "]";
     }
 
-    public IDbDataParameter CreateDataParameter (IDbCommand command, IStorageTypeInformation storageTypeInformation, string parameterName, object? value)
+    public DbParameter CreateDataParameter (DbCommand command, IStorageTypeInformation storageTypeInformation, string parameterName, object? value)
     {
       ArgumentNullException.ThrowIfNull(command);
       ArgumentNullException.ThrowIfNull(storageTypeInformation);

@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       _sqlDialect = sqlDialect;
     }
 
-    public abstract IDbCommand Create (IDbCommandFactory dbCommandFactory);
+    public abstract DbCommand Create (IDbCommandFactory dbCommandFactory);
 
     public ISqlDialect SqlDialect
     {
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected virtual void AppendSelectClause (
         StringBuilder statement,
-        IDbCommand command,
+        DbCommand command,
         ISelectedColumnsSpecification selectedColumns)
     {
       ArgumentNullException.ThrowIfNull(statement);
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected virtual void AppendFromClause (
         StringBuilder statement,
-        IDbCommand command,
+        DbCommand command,
         TableDefinition tableDefinition)
     {
       ArgumentNullException.ThrowIfNull(statement);
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected void AppendTableName (
         StringBuilder statement,
-        IDbCommand command,
+        DbCommand command,
         TableDefinition tableDefinition)
     {
       ArgumentNullException.ThrowIfNull(statement);
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected virtual void AppendWhereClause (
         StringBuilder statement,
-        IDbCommand command,
+        DbCommand command,
         IComparedColumnsSpecification comparedColumns)
     {
       ArgumentNullException.ThrowIfNull(statement);
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected virtual void AppendOrderByClause (
         StringBuilder statement,
-        IDbCommand command,
+        DbCommand command,
         IOrderedColumnsSpecification orderedColumnsSpecification)
     {
       ArgumentNullException.ThrowIfNull(statement);

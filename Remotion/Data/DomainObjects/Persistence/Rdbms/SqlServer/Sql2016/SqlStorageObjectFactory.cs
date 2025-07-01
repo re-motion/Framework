@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
@@ -478,7 +478,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
               rdbmsProviderDefinition.ConnectionString,
               persistenceExtension,
               commandFactory,
-              (Func<IDbConnection>)(() => new SqlConnection())));
+              (Func<DbConnection>)(() => new SqlConnection())));
     }
 
     protected virtual IReadOnlyStorageProvider CreateReadOnlyStorageProvider (
@@ -496,7 +496,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
               rdbmsProviderDefinition.ReadOnlyConnectionString,
               persistenceExtension,
               commandFactory,
-              (Func<IDbConnection>)(() => new SqlConnection())));
+              (Func<DbConnection>)(() => new SqlConnection())));
     }
 
 

@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 {
   public interface IDbCommandBuilder
   {
-    IDbCommand Create (IDbCommandFactory dbCommandFactory);
+    DbCommand Create (IDbCommandFactory dbCommandFactory);
   }
 }

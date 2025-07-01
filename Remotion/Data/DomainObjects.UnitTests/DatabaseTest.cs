@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Transactions;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.Database;
@@ -111,12 +111,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
       get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_SchemaGenerationTestDomain3"); }
     }
 
-    protected IDbCommand CreateCommand (string table, Guid id, IDbConnection connection)
+    protected DbCommand CreateCommand (string table, Guid id, DbConnection connection)
     {
-      IDbCommand command = connection.CreateCommand();
+      DbCommand command = connection.CreateCommand();
       command.CommandText = string.Format("SELECT * FROM [{0}] where ID = @id", table);
 
-      IDbDataParameter parameter = command.CreateParameter();
+      DbParameter parameter = command.CreateParameter();
       parameter.ParameterName = "@id";
       parameter.Value = id;
       command.Parameters.Add(parameter);

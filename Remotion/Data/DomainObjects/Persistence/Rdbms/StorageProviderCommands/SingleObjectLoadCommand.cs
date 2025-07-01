@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
     }
 
     private T? Execute<TExecutionContext> (TExecutionContext executionContext)
-        where TExecutionContext : IDbCommandFactory, IDataReaderCommandExecutionContext
+        where TExecutionContext : IDbCommandFactory, IDbDataReaderCommandExecutionContext
     {
       using (var command = _dbCommandBuilder.Create(executionContext))
       {

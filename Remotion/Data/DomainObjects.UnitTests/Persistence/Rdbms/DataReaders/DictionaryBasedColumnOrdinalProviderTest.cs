@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
   {
     private ColumnDefinition _columnDefinition;
     private DictionaryBasedColumnOrdinalProvider _dictionaryBasedColumnOrdinalProvider;
-    private Mock<IDataReader> _dataReaderStub;
+    private Mock<DbDataReader> _dataReaderStub;
     private Dictionary<string, int> _ordinals;
 
     [SetUp]
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _columnDefinition = ColumnDefinitionObjectMother.CreateColumn("Testcolumn 1");
       var columnDefinition2 = ColumnDefinitionObjectMother.CreateColumn("Testcolumn 2");
-      _dataReaderStub = new Mock<IDataReader>();
+      _dataReaderStub = new Mock<DbDataReader>();
       _ordinals = new Dictionary<string, int> { { _columnDefinition.Name, 5 }, { columnDefinition2.Name, 3} };
       _dictionaryBasedColumnOrdinalProvider = new DictionaryBasedColumnOrdinalProvider(_ordinals);
     }

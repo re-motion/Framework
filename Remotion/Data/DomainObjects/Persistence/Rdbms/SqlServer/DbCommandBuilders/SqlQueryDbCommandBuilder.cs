@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
@@ -28,7 +29,7 @@ using Remotion.Data.DomainObjects.Queries;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
 
 /// <summary>
-/// Builds an <see cref="IDbCommand"/> with MS SQL Server-specific features for a given <see cref="IQuery"/>.
+/// Builds an <see cref="DbCommand"/> with MS SQL Server-specific features for a given <see cref="IQuery"/>.
 /// </summary>
 /// <remarks>
 /// When using table-valued parameters, the command is rewritten to select the TVP records into a temporary table, with an index if possible.
@@ -99,7 +100,7 @@ public class SqlQueryDbCommandBuilder : QueryDbCommandBuilder
     return storageTypeLength <= maxLength;
   }
 
-  public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
+  public override DbCommand Create (IDbCommandFactory dbCommandFactory)
   {
     ArgumentNullException.ThrowIfNull(dbCommandFactory);
 

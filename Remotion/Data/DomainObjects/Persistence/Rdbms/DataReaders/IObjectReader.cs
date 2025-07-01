@@ -16,16 +16,16 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
   /// <summary>
-  /// Defines an interface for classes reading data from an <see cref="IDataReader"/> and composing objects from the result.
+  /// Defines an interface for classes reading data from an <see cref="DbDataReader"/> and composing objects from the result.
   /// </summary>
   public interface IObjectReader<out T>
   {
-    T? Read (IDataReader dataReader);
-    IEnumerable<T> ReadSequence (IDataReader dataReader);
+    T? Read (DbDataReader dataReader);
+    IEnumerable<T> ReadSequence (DbDataReader dataReader);
   }
 }

@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Resources;
@@ -30,21 +30,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
     {
     }
 
-    protected override int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction transaction)
+    protected override int ExecuteBatchString (DbConnection connection, string commandBatch, DbTransaction transaction)
     {
       int batch =  base.ExecuteBatchString(connection, commandBatch, transaction);
       LoadBlobs(connection, transaction);
       return batch;
     }
 
-    private void LoadBlobs (IDbConnection connection, IDbTransaction transaction)
+    private void LoadBlobs (DbConnection connection, DbTransaction transaction)
     {
       DomainObjectIDs domainObjectIDs = StandardConfiguration.Instance.GetDomainObjectIDs();
       UpdateClassWithAllDataTypes(connection, transaction, domainObjectIDs.ClassWithAllDataTypes1, ResourceManager.GetImage1());
       UpdateClassWithAllDataTypes(connection, transaction, domainObjectIDs.ClassWithAllDataTypes2, ResourceManager.GetImage2());
     }
 
-    private void UpdateClassWithAllDataTypes (IDbConnection connection, IDbTransaction transaction, ObjectID id, byte[] binary)
+    private void UpdateClassWithAllDataTypes (DbConnection connection, DbTransaction transaction, ObjectID id, byte[] binary)
     {
       string updateText = "Update [TableWithAllDataTypes] set [Binary] = @binary where [ID] = @id";
       using (SqlCommand command = (SqlCommand)CreateCommand(connection, updateText, transaction))

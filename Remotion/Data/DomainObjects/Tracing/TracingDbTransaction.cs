@@ -16,22 +16,24 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
   /// <summary>
-  /// Provides a wrapper for implementations of <see cref="IDbTransaction"/>. The lifetime of the transaction is traced using the
+  /// Provides a wrapper for implementations of <see cref="DbTransaction"/>. The lifetime of the transaction is traced using the
   /// <see cref="IPersistenceExtension"/> passed during the instantiation.
   /// </summary>
-  public class TracingDbTransaction : IDbTransaction
+  public sealed class TracingDbTransaction : DbTransaction
   {
-    private readonly IDbTransaction _transaction;
+    private readonly DbTransaction _transaction;
     private readonly IPersistenceExtension _persistenceExtension;
     private readonly Guid _connectionID;
     private readonly Guid _transactionID;
     private bool _isTransactionDisposed;
 
-    public TracingDbTransaction (IDbTransaction transaction, IPersistenceExtension persistenceExtension, Guid connectionID)
+    public TracingDbTransaction (DbTransaction transaction, IPersistenceExtension persistenceExtension, Guid connectionID)
     {
       ArgumentNullException.ThrowIfNull(transaction);
       ArgumentNullException.ThrowIfNull(persistenceExtension);
@@ -41,28 +43,31 @@ namespace Remotion.Data.DomainObjects.Tracing
       _transactionID = Guid.NewGuid();
     }
 
-    public IDbTransaction WrappedInstance
+    public DbTransaction WrappedInstance => _transaction;
+    public Guid ConnectionID => _connectionID;
+    public Guid TransactionID => _transactionID;
+    public IPersistenceExtension PersistenceExtension => _persistenceExtension;
+    protected override DbConnection? DbConnection => _transaction.Connection;
+    public override IsolationLevel IsolationLevel => _transaction.IsolationLevel;
+
+    public override void Commit ()
     {
-      get { return _transaction; }
+      _transaction.Commit();
+      if (!_isTransactionDisposed)
+        PersistenceExtension.TransactionCommitted(_connectionID);
     }
 
-    public Guid ConnectionID
+    public override void Rollback ()
     {
-      get { return _connectionID; }
+      _transaction.Rollback();
+      if (!_isTransactionDisposed)
+        PersistenceExtension.TransactionRolledBack(_connectionID);
     }
 
-    public Guid TransactionID
+    protected override void Dispose (bool disposing)
     {
-      get { return _transactionID; }
-    }
+      Assertion.DebugAssert(disposing, "Type is sealed without an implemented Finalizer. 'disposing' flag is always true");
 
-    public IPersistenceExtension PersistenceExtension
-    {
-      get { return _persistenceExtension; }
-    }
-
-    public void Dispose ()
-    {
       _transaction.Dispose();
 
       if (!_isTransactionDisposed)
@@ -70,30 +75,6 @@ namespace Remotion.Data.DomainObjects.Tracing
         PersistenceExtension.TransactionDisposed(_connectionID);
         _isTransactionDisposed = true;
       }
-    }
-
-    public void Commit ()
-    {
-      _transaction.Commit();
-      if (!_isTransactionDisposed)
-        PersistenceExtension.TransactionCommitted(_connectionID);
-    }
-
-    public void Rollback ()
-    {
-      _transaction.Rollback();
-      if (!_isTransactionDisposed)
-        PersistenceExtension.TransactionRolledBack(_connectionID);
-    }
-
-    IDbConnection? IDbTransaction.Connection
-    {
-      get { return _transaction.Connection; }
-    }
-
-    public IsolationLevel IsolationLevel
-    {
-      get { return _transaction.IsolationLevel; }
     }
   }
 }

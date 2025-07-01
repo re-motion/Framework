@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using System.Linq;
 using Moq;
@@ -76,8 +77,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       _executionListenerStrictMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.OnExecuteReader(It.Is<IDbCommand>(cmd => cmd.CommandText == expectedSql), expectedCommandBehavior))
-          .Callback((IDbCommand command, CommandBehavior _) => CheckCommand(command, expectedSql, expectedParametersData))
+          .Setup(mock => mock.OnExecuteReader(It.Is<DbCommand>(cmd => cmd.CommandText == expectedSql), expectedCommandBehavior))
+          .Callback((DbCommand command, CommandBehavior _) => CheckCommand(command, expectedSql, expectedParametersData))
           .Verifiable();
     }
 
@@ -88,8 +89,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       _executionListenerStrictMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.OnExecuteScalar(It.IsAny<IDbCommand>()))
-          .Callback((IDbCommand command) => CheckCommand(command, expectedSql, expectedParametersData))
+          .Setup(mock => mock.OnExecuteScalar(It.IsAny<DbCommand>()))
+          .Callback((DbCommand command) => CheckCommand(command, expectedSql, expectedParametersData))
           .Verifiable();
     }
 
@@ -100,12 +101,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       _executionListenerStrictMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.OnExecuteNonQuery(It.Is<IDbCommand>(cmd => cmd.CommandText == expectedSql)))
-          .Callback((IDbCommand command) => CheckCommand(command, expectedSql, expectedParametersData))
+          .Setup(mock => mock.OnExecuteNonQuery(It.Is<DbCommand>(cmd => cmd.CommandText == expectedSql)))
+          .Callback((DbCommand command) => CheckCommand(command, expectedSql, expectedParametersData))
           .Verifiable();
     }
 
-    public void CheckCommand (IDbCommand sqlCommand, string expectedSql, params Tuple<string, DbType, object>[] expectedParametersData)
+    public void CheckCommand (DbCommand sqlCommand, string expectedSql, params Tuple<string, DbType, object>[] expectedParametersData)
     {
       try
       {
