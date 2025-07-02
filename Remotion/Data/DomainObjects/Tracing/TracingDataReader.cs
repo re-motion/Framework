@@ -16,9 +16,13 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
@@ -48,6 +52,10 @@ namespace Remotion.Data.DomainObjects.Tracing
       _stopwatch = Stopwatch.StartNew();
     }
 
+    public DbDataReader WrappedInstance => _dataReader;
+    public Guid ConnectionID => _connectionID;
+    public Guid QueryID => _queryID;
+    public IPersistenceExtension PersistenceExtension => _persistenceExtension;
     public override int FieldCount => _dataReader.FieldCount;
     public override bool HasRows => _dataReader.HasRows;
     public override object this [int i] => _dataReader[i];
@@ -55,10 +63,7 @@ namespace Remotion.Data.DomainObjects.Tracing
     public override int Depth => _dataReader.Depth;
     public override bool IsClosed => _dataReader.IsClosed;
     public override int RecordsAffected => _dataReader.RecordsAffected;
-    public DbDataReader WrappedInstance => _dataReader;
-    public Guid ConnectionID => _connectionID;
-    public Guid QueryID => _queryID;
-    public IPersistenceExtension PersistenceExtension => _persistenceExtension;
+    public override int VisibleFieldCount => _dataReader.VisibleFieldCount;
 
 
     public override string GetName (int i)
@@ -171,9 +176,19 @@ namespace Remotion.Data.DomainObjects.Tracing
       return _dataReader.IsDBNull(i);
     }
 
+    public override Task<bool> IsDBNullAsync (int ordinal, CancellationToken cancellationToken)
+    {
+      return _dataReader.IsDBNullAsync(ordinal, cancellationToken);
+    }
+
     public override bool NextResult ()
     {
       return _dataReader.NextResult();
+    }
+
+    public override Task<bool> NextResultAsync (CancellationToken cancellationToken)
+    {
+      return _dataReader.NextResultAsync(cancellationToken);
     }
 
     public override DataTable? GetSchemaTable ()
@@ -181,10 +196,26 @@ namespace Remotion.Data.DomainObjects.Tracing
       return _dataReader.GetSchemaTable();
     }
 
+    public override Task<DataTable?> GetSchemaTableAsync (CancellationToken cancellationToken = default)
+    {
+      return _dataReader.GetSchemaTableAsync(cancellationToken);
+    }
+
+    public override Task<ReadOnlyCollection<DbColumn>> GetColumnSchemaAsync (CancellationToken cancellationToken = default)
+    {
+      return _dataReader.GetColumnSchemaAsync(cancellationToken);
+    }
+
     public override void Close ()
     {
       TraceQueryCompleted();
       _dataReader.Close();
+    }
+
+    public override Task CloseAsync ()
+    {
+      TraceQueryCompleted();
+      return _dataReader.CloseAsync();
     }
 
     public override bool Read ()
@@ -195,9 +226,49 @@ namespace Remotion.Data.DomainObjects.Tracing
       return hasRecord;
     }
 
+    public override async Task<bool> ReadAsync (CancellationToken cancellationToken)
+    {
+      var hasRecord = await _dataReader.ReadAsync(cancellationToken);
+      if (hasRecord)
+        _rowCount++;
+      return hasRecord;
+    }
+
     protected override DbDataReader GetDbDataReader (int i)
     {
       return _dataReader.GetData(i);
+    }
+
+    public override Type GetProviderSpecificFieldType (int ordinal)
+    {
+      return _dataReader.GetProviderSpecificFieldType(ordinal);
+    }
+
+    public override object GetProviderSpecificValue (int ordinal)
+    {
+      return _dataReader.GetProviderSpecificValue(ordinal);
+    }
+
+    public override int GetProviderSpecificValues (object[] values) => _dataReader.GetProviderSpecificValues(values);
+
+    public override Stream GetStream (int ordinal)
+    {
+      return _dataReader.GetStream(ordinal);
+    }
+
+    public override TextReader GetTextReader (int ordinal)
+    {
+      return _dataReader.GetTextReader(ordinal);
+    }
+
+    public override T GetFieldValue<T> (int ordinal)
+    {
+      return _dataReader.GetFieldValue<T>(ordinal);
+    }
+
+    public override Task<T> GetFieldValueAsync<T> (int ordinal, CancellationToken cancellationToken)
+    {
+      return _dataReader.GetFieldValueAsync<T>(ordinal, cancellationToken);
     }
 
     protected override void Dispose (bool disposing)
@@ -206,6 +277,12 @@ namespace Remotion.Data.DomainObjects.Tracing
 
       TraceQueryCompleted();
       _dataReader.Dispose();
+    }
+
+    public override ValueTask DisposeAsync ()
+    {
+      TraceQueryCompleted();
+      return _dataReader.DisposeAsync();
     }
 
     private void TraceQueryCompleted ()

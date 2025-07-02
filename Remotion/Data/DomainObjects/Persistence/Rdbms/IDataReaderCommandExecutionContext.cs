@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
 /// Represents the aspect of <see cref="IRdbmsProviderReadOnlyCommandExecutionContext"/> or <see cref="IRdbmsProviderReadWriteCommandExecutionContext"/> that enables the
 /// execution of an <see cref="DbCommand"/> that returns an <see cref="DbDataReader"/>.
 /// </summary>
-public interface IDbDataReaderCommandExecutionContext
+public interface IDataReaderCommandExecutionContext
 {
   DbDataReader ExecuteReader (DbCommand command, CommandBehavior behavior);
 }

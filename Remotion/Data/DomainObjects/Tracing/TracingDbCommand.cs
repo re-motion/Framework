@@ -21,6 +21,8 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
@@ -45,6 +47,12 @@ namespace Remotion.Data.DomainObjects.Tracing
       _connectionID = connectionID;
       _queryID = Guid.NewGuid();
     }
+
+    public DbCommand WrappedInstance => _command;
+    public Guid ConnectionID => _connectionID;
+    public Guid QueryID => _queryID;
+    public IPersistenceExtension PersistenceExtension => _persistenceExtension;
+    protected override DbParameterCollection DbParameterCollection => _command.Parameters;
 
     [AllowNull]
     public override string CommandText
@@ -82,24 +90,25 @@ namespace Remotion.Data.DomainObjects.Tracing
       get => _command.Connection;
       set => _command.Connection = value;
     }
+
     protected override DbTransaction? DbTransaction
     {
       get => _command.Transaction;
       set => _command.Transaction = value;
     }
 
-    public DbCommand WrappedInstance => _command;
-    public Guid ConnectionID => _connectionID;
-    public Guid QueryID => _queryID;
-    public IPersistenceExtension PersistenceExtension => _persistenceExtension;
-    protected override DbParameterCollection DbParameterCollection => _command.Parameters;
-
-
     public override int ExecuteNonQuery ()
     {
       int numberOfRowsAffected = ExecuteWithProfiler(() => _command.ExecuteNonQuery());
       _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, numberOfRowsAffected);
 
+      return numberOfRowsAffected;
+    }
+
+    public override async Task<int> ExecuteNonQueryAsync (CancellationToken cancellationToken)
+    {
+      var numberOfRowsAffected = await ExecuteWithProfilerAsync(() => _command.ExecuteNonQueryAsync(cancellationToken));
+      _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, numberOfRowsAffected);
       return numberOfRowsAffected;
     }
 
@@ -113,9 +122,30 @@ namespace Remotion.Data.DomainObjects.Tracing
       return (TracingDataReader)base.ExecuteReader(behavior);
     }
 
+    protected override TracingDataReader ExecuteDbDataReader (CommandBehavior behavior)
+    {
+      DbDataReader dataReader = ExecuteWithProfiler(() => _command.ExecuteReader(behavior));
+
+      return new TracingDataReader(dataReader, _persistenceExtension, _connectionID, _queryID);
+    }
+
+    protected override async Task<DbDataReader> ExecuteDbDataReaderAsync (CommandBehavior behavior, CancellationToken cancellationToken)
+    {
+      DbDataReader dataReader = await ExecuteWithProfilerAsync(() => _command.ExecuteReaderAsync(behavior, cancellationToken));
+
+      return new TracingDataReader(dataReader, _persistenceExtension, _connectionID, _queryID);
+    }
+
     public override object? ExecuteScalar ()
     {
       object? result = ExecuteWithProfiler(() => _command.ExecuteScalar());
+      _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, 1);
+      return result;
+    }
+
+    public override async Task<object?> ExecuteScalarAsync (CancellationToken cancellationToken)
+    {
+      var result = await ExecuteWithProfilerAsync(() => _command.ExecuteScalarAsync(cancellationToken));
       _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, 1);
       return result;
     }
@@ -135,6 +165,11 @@ namespace Remotion.Data.DomainObjects.Tracing
       _command.Prepare();
     }
 
+    public override Task PrepareAsync (CancellationToken cancellationToken = default)
+    {
+      return _command.PrepareAsync(cancellationToken);
+    }
+
     public override void Cancel ()
     {
       _command.Cancel();
@@ -145,19 +180,17 @@ namespace Remotion.Data.DomainObjects.Tracing
       return _command.CreateParameter();
     }
 
-    protected override TracingDataReader ExecuteDbDataReader (CommandBehavior behavior)
-    {
-      DbDataReader dataReader = ExecuteWithProfiler(() => _command.ExecuteReader(behavior));
-
-      return new TracingDataReader(dataReader, _persistenceExtension, _connectionID, _queryID);
-    }
-
     protected override void Dispose (bool disposing)
     {
       if (disposing)
       {
         _command.Dispose();
       }
+    }
+
+    public override ValueTask DisposeAsync ()
+    {
+      return _command.DisposeAsync();
     }
 
     private T ExecuteWithProfiler<T> (Func<T> operation)
@@ -167,6 +200,24 @@ namespace Remotion.Data.DomainObjects.Tracing
         _persistenceExtension.QueryExecuting(_connectionID, _queryID, _command.CommandText, ConvertToDictionary(_command.Parameters));
         var stopWatch = Stopwatch.StartNew();
         T result = operation();
+        _persistenceExtension.QueryExecuted(_connectionID, _queryID, stopWatch.Elapsed);
+        return result;
+      }
+      catch (Exception ex)
+      {
+        _persistenceExtension.QueryError(_connectionID, _queryID, ex);
+        throw;
+      }
+    }
+
+    private async Task<T> ExecuteWithProfilerAsync<T> (Func<Task<T>> operation)
+    {
+      try
+      {
+        _persistenceExtension.QueryExecuting(_connectionID, _queryID, _command.CommandText, ConvertToDictionary(_command.Parameters));
+        var stopWatch = Stopwatch.StartNew();
+
+        T result = await operation();
         _persistenceExtension.QueryExecuted(_connectionID, _queryID, stopWatch.Elapsed);
         return result;
       }

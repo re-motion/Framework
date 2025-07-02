@@ -64,14 +64,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
     }
 
     private IEnumerable<ObjectID?> Execute<TExecutionContext> (TExecutionContext executionContext)
-        where TExecutionContext : IDbCommandFactory, IDbDataReaderCommandExecutionContext
+        where TExecutionContext : IDbCommandFactory, IDataReaderCommandExecutionContext
     {
       return _dbCommandBuilders.SelectMany(b => LoadObjectIDsFromCommandBuilder(b, executionContext));
     }
 
     private IEnumerable<ObjectID?> LoadObjectIDsFromCommandBuilder<TExecutionContext> (
         IDbCommandBuilder commandBuilder, TExecutionContext executionContext)
-        where TExecutionContext : IDbCommandFactory, IDbDataReaderCommandExecutionContext
+        where TExecutionContext : IDbCommandFactory, IDataReaderCommandExecutionContext
     {
       ArgumentNullException.ThrowIfNull(commandBuilder);
 

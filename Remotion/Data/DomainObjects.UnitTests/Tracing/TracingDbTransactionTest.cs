@@ -17,12 +17,12 @@
 using System;
 using System.Data;
 using System.Data.Common;
-using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
-using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 {
@@ -69,6 +69,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     }
 
     [Test]
+    public void GetPersistenceExtension ()
+    {
+      var result = ((TracingDbTransaction)_transaction).PersistenceExtension;
+
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(_extensionMock.Object));
+    }
+
+    [Test]
     public void Dispose ()
     {
       var sequence = new VerifiableSequence();
@@ -91,6 +101,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 
       _transaction.Dispose();
       _transaction.Dispose();
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+    }
+
+    [Test]
+    public void DisposeAsync ()
+    {
+      var sequence = new VerifiableSequence();
+      var assumedResult = ValueTask.FromException(new InvalidOperationException("Should not get called."));
+
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.DisposeAsync()).Returns(assumedResult).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+
+      var result = _transaction.DisposeAsync();
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void DisposeAsync_DisposedTransaction ()
+    {
+      var sequence = new VerifiableSequence();
+      var exception = new InvalidOperationException("Should not get called.");
+      var firstAssumedResult = ValueTask.FromException(exception);
+      var secondAssumedResult = ValueTask.FromException(exception);
+
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.DisposeAsync()).Returns(firstAssumedResult).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.DisposeAsync()).Returns(secondAssumedResult).Verifiable();
+
+      var result = _transaction.DisposeAsync();
+      var result2 = _transaction.DisposeAsync();
+
       _innerTransactionMock.Verify();
       _extensionMock.Verify();
       sequence.Verify();
@@ -125,6 +171,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     }
 
     [Test]
+    public async Task CommitAsync ()
+    {
+      var token = CancellationToken.None;
+      var sequence = new VerifiableSequence();
+      var taskCompletionSource = new TaskCompletionSource();
+      var assumedResult = taskCompletionSource.Task;
+
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.CommitAsync(token)).Returns(assumedResult).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionCommitted(_connectionID)).Verifiable();
+
+      var task = _transaction.CommitAsync(token);
+      Assert.That(task, Is.Not.EqualTo(assumedResult));
+      _extensionMock.Verify(mock => mock.TransactionCommitted(_connectionID), Times.Never);
+      taskCompletionSource.SetResult();
+      await task;
+
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+    }
+
+    [Test]
+    public async Task CommitAsync_DisposedTransaction ()
+    {
+      var token = CancellationToken.None;
+      var sequence = new VerifiableSequence();
+      var taskCompletionSource = new TaskCompletionSource();
+      var assumedResult = taskCompletionSource.Task;
+
+      _innerTransactionMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.CommitAsync(token)).Returns(assumedResult).Verifiable();
+
+      _transaction.Dispose();
+      var task = _transaction.CommitAsync(token);
+      Assert.That(task, Is.Not.EqualTo(assumedResult));
+      taskCompletionSource.SetResult();
+      await task;
+
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify(mock => mock.TransactionCommitted(_connectionID), Times.Never);
+      sequence.Verify();
+    }
+
+    [Test]
     public void Rollback ()
     {
       var sequence = new VerifiableSequence();
@@ -150,6 +241,146 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerTransactionMock.Verify();
       _extensionMock.Verify();
       sequence.Verify();
+    }
+
+    [Test]
+    public void RollbackOverload ()
+    {
+      var sequence = new VerifiableSequence();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Rollback("someSavepoint")).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionRolledBack(_connectionID)).Verifiable();
+
+      _transaction.Rollback("someSavepoint");
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+    }
+
+    [Test]
+    public void RollbackOverload_DisposedTransaction ()
+    {
+      var sequence = new VerifiableSequence();
+      _innerTransactionMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Rollback("someSavepoint")).Verifiable();
+
+      _transaction.Dispose();
+      _transaction.Rollback("someSavepoint");
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+    }
+
+    [Test]
+    public async Task RollbackAsync ()
+    {
+      var token = CancellationToken.None;
+      var sequence = new VerifiableSequence();
+      var taskCompletionSource = new TaskCompletionSource();
+      var assumedResult = taskCompletionSource.Task;
+
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.RollbackAsync(token)).Returns(assumedResult).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionRolledBack(_connectionID)).Verifiable();
+
+      var task = _transaction.RollbackAsync(token);
+      Assert.That(task, Is.Not.EqualTo(assumedResult));
+      _extensionMock.Verify(mock => mock.TransactionRolledBack(_connectionID), Times.Never);
+      taskCompletionSource.SetResult();
+      await task;
+
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+    }
+
+    [Test]
+    public void RollbackAsync_DisposedTransaction ()
+    {
+      var token = CancellationToken.None;
+      var sequence = new VerifiableSequence();
+      var assumedResult = Task.CompletedTask;
+
+      _innerTransactionMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.RollbackAsync(token)).Returns(assumedResult).Verifiable();
+
+      _transaction.Dispose();
+      var result = _transaction.RollbackAsync(token);
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public async Task RollbackAsyncOverload ()
+    {
+      var token = CancellationToken.None;
+      var sequence = new VerifiableSequence();
+      var taskCompletionSource = new TaskCompletionSource();
+      var assumedResult = taskCompletionSource.Task;
+
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.RollbackAsync("someSavePoint", token)).Returns(assumedResult).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionRolledBack(_connectionID)).Verifiable();
+
+      var task = _transaction.RollbackAsync("someSavePoint", token);
+      Assert.That(task, Is.Not.EqualTo(assumedResult));
+      _extensionMock.Verify(mock => mock.TransactionRolledBack(_connectionID), Times.Never);
+      taskCompletionSource.SetResult();
+      await task;
+
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+    }
+
+    [Test]
+    public void RollbackAsyncOverload_DisposedTransaction ()
+    {
+      var token = CancellationToken.None;
+      var sequence = new VerifiableSequence();
+      var assumedResult = Task.CompletedTask;
+
+      _innerTransactionMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.RollbackAsync("someSavepoint", token)).Returns(assumedResult).Verifiable();
+
+      _transaction.Dispose();
+      var result = _transaction.RollbackAsync("someSavepoint", token);
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void Release ()
+    {
+      var param = "someSavepoint";
+      var sequence = new VerifiableSequence();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Release(param)).Verifiable();
+
+      _transaction.Release(param);
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+    }
+
+    [Test]
+    public void ReleaseAsync ()
+    {
+      var param = "someSavepoint";
+      var sequence = new VerifiableSequence();
+      var token = CancellationToken.None;
+      var assumedResult = Task.FromException(new InvalidOperationException("Should not get called."));
+
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.ReleaseAsync(param, token)).Returns(assumedResult).Verifiable();
+
+      var result = _transaction.ReleaseAsync(param, token);
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -181,11 +412,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     }
 
     [Test]
-    public void NoFinalizerImplemented ()
+    public void GetSupportsSavepoints ()
     {
-      var type = typeof(TracingDbTransaction);
-      var finalizer = type.GetMethod("Finalize", BindingFlags.Instance | BindingFlags.NonPublic);
-      Assert.That(finalizer?.DeclaringType, Is.EqualTo(typeof(object)));
+      var assumedResult = true;
+      _innerTransactionMock.Setup(mock => mock.SupportsSavepoints).Returns(assumedResult).Verifiable();
+
+      var result = _transaction.SupportsSavepoints;
+
+      Assert.That(result, Is.EqualTo(assumedResult));
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+    }
+
+    [Test]
+    public void TestNoFinalizerImplemented ()
+    {
+      TracingTestHelper.AssertNoFinalizerImplemented(typeof(TracingDbTransaction));
+    }
+
+    [Test]
+    public void TestAllVirtualMethodsOverridden ()
+    {
+      TracingTestHelper.AssertAllVirtualMethodsOverridden(typeof(TracingDbTransaction));
     }
   }
 }
