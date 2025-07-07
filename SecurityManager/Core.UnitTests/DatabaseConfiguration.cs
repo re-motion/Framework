@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 
 namespace Remotion.SecurityManager.UnitTests

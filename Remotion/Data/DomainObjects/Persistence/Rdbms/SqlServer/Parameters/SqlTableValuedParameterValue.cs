@@ -18,7 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.SqlServer.Server;
+using Microsoft.Data.SqlClient.Server;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;

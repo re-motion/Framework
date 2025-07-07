@@ -16,7 +16,7 @@
 // 
 using System;
 using System.ComponentModel.Design;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;

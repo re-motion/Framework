@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;

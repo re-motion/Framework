@@ -27,7 +27,7 @@
     <PackageReference Include="Remotion.Linq.EagerFetching" />
     <PackageReference Include="Remotion.Linq.SqlBackend" />
     <PackageReference Include="Remotion.TypePipe" />
-    <PackageReference Include="System.Data.SqlClient" />
+    <PackageReference Include="Microsoft.Data.SqlClient" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

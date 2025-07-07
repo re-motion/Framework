@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
