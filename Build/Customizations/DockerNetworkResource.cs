@@ -12,13 +12,10 @@ public class DockerNetworkResource : ITestResource
 
   public INetwork Network { get; }
 
-  public DockerNetworkResource (string name, string networkName)
+  public DockerNetworkResource (string name, INetwork network)
   {
     Name = name;
-    Network = new NetworkBuilder()
-        .WithName(networkName)
-        .WithCleanUp(true)
-        .Build();
+    Network = network;
   }
 
   public void Dispose ()
