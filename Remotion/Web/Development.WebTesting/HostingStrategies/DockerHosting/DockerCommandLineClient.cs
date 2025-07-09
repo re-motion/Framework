@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
   public class DockerCommandLineClient : IDockerClient
   {
     private  readonly ILogger _logger;
-    private readonly string _dockerExeFullPath;
+    private readonly string _dockerExecutablePath;
     private readonly TimeSpan _pullTimeout;
     private readonly TimeSpan _commandTimeout = TimeSpan.FromSeconds(15);
 
@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
       _logger = loggerFactory.CreateLogger<DockerCommandLineClient>();
       _pullTimeout = pullTimeout;
-      _dockerExeFullPath = GetDockerExeFullPath();
+      _dockerExecutablePath = GetDockerExecutablePath();
     }
 
     /// <inheritdoc />
@@ -134,7 +134,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     {
       ArgumentException.ThrowIfNullOrEmpty(containerName);
 
-      using (var p = Process.Start(_dockerExeFullPath, $"inspect {containerName}"))
+      using (var p = Process.Start(_dockerExecutablePath, $"inspect {containerName}"))
       {
         p.WaitForExit((int)_commandTimeout.TotalMilliseconds);
 
@@ -193,7 +193,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
       if (!string.IsNullOrEmpty(workingDirectory))
         startInfo.WorkingDirectory = workingDirectory;
 
-      startInfo.FileName = _dockerExeFullPath;
+      startInfo.FileName = _dockerExecutablePath;
       startInfo.Arguments = dockerCommand;
 
       using (var dockerProcess = new Process { StartInfo = startInfo })
@@ -236,8 +236,12 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
       }
     }
 
-    private string GetDockerExeFullPath ()
+    private string GetDockerExecutablePath ()
     {
+      // On non-windows system we assume docker is part of the path
+      if (!OperatingSystem.IsWindows())
+        return "docker";
+
       var programFiles = Environment.GetEnvironmentVariable("ProgramW6432");
       if (string.IsNullOrEmpty(programFiles))
         programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
