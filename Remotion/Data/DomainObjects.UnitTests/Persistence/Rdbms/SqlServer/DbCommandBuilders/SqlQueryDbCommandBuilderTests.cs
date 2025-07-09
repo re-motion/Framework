@@ -68,7 +68,7 @@ public class SqlQueryDbCommandBuilderTests
 
                    DROP TABLE [#@tvp];
 
-                   """));
+                   """.ReplaceLineEndings()));
   }
 
   [Test]
@@ -116,7 +116,7 @@ public class SqlQueryDbCommandBuilderTests
             MyNumber = @int OR 
             MyOtherNumber IN (SELECT [Value] FROM @tvpInt)
         )
-        """,
+        """.ReplaceLineEndings(),
         [
             new QueryParameterWithDataParameterDefinition(new QueryParameter("@dateTime", DateTime.Now), dateTimeParameterDefinition),
             new QueryParameterWithDataParameterDefinition(new QueryParameter("@tvpGuid", guidRecords), tvpGuidParameterDefinition),
@@ -150,7 +150,7 @@ public class SqlQueryDbCommandBuilderTests
                    DROP TABLE [#@tvpGuid];
                    DROP TABLE [#@tvpInt];
 
-                   """));
+                   """.ReplaceLineEndings()));
   }
 
   private static SqlTableValuedDataParameterDefinition GetTvpParameterDefinition (StorageTypeInformation storageTypeInformation)
