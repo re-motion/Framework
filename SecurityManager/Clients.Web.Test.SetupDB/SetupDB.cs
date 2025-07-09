@@ -17,7 +17,7 @@
 using System;
 using System.Collections;
 using System.Configuration;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.IO;
 
 namespace Remotion.SecurityManager.Clients.Web.Test.SetupDB

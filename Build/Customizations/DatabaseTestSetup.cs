@@ -29,7 +29,7 @@ public class DatabaseTestSetup : ITestExecutionWrapper, IRequiresTestParameters
   private const string c_databaseConnectionStringParameterNameTemplate = "DatabaseConnectionString{0}";
   private const string c_databaseNamePrefixParameterNameTemplate = "DatabaseNamePrefixMsSql{0}";
 
-  private const string c_defaultConnectionString = "Data Source=localhost;Integrated Security=True";
+  private const string c_defaultConnectionString = "Data Source=localhost;TrustServerCertificate=true;Integrated Security=true";
 
   public void ConfigureTestParameters (TestParameterBuilder builder)
   {
