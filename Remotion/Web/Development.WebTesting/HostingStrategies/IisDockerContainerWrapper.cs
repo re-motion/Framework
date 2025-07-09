@@ -23,7 +23,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
   /// <summary>
   /// Represents an IIS Docker container and manages its lifecycle.
   /// </summary>
-  public class IisDockerContainerWrapper : DockerContainerWrapperBase
+  public class IisDockerContainerWrapper : WebApplicationDockerContainerWrapperBase
   {
     public IisDockerContainerWrapper (
         IDockerClient docker,
