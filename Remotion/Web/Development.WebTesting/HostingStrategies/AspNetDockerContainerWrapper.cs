@@ -11,7 +11,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies;
 /// <summary>
 /// Represents an ASP.NET Core Docker container and manages its lifecycle.
 /// </summary>
-public class AspNetDockerContainerWrapper : DockerContainerWrapperBase
+public class AspNetDockerContainerWrapper : WebApplicationDockerContainerWrapperBase
 {
   private readonly string _processPath;
   private readonly string? _processArguments;
