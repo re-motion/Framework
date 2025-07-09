@@ -41,6 +41,9 @@
           <xs:complexType>
             <xs:attribute name="enabled" type="xs:boolean" use="required" />
             <xs:attribute name="url" type="c:RequiredStringType" use="required" />
+            <xs:attribute name="hostRemoteDriverInDocker" type="xs:boolean" default="false" />
+            <xs:attribute name="dockerImageName" type="c:RequiredStringType" />
+            <xs:attribute name="dockerCustomArguments" type="c:RequiredStringType" />
           </xs:complexType>
         </xs:element>
       </xs:all>

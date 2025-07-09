@@ -12,4 +12,13 @@ public class RemoteDriverSettingsDto : IWebTestRemoteDriverSettings
 
   /// <inheritdoc cref="IWebTestRemoteDriverSettings.Url" />
   public string Url { get; init; } = "";
+
+  /// <inheritdoc cref="IWebTestRemoteDriverSettings.HostRemoteDriverInDocker" />
+  public bool HostRemoteDriverInDocker { get; init; } = false;
+
+  /// <inheritdoc cref="IWebTestRemoteDriverSettings.DockerImageName" />
+  public string? DockerImageName { get; init; } = null;
+
+  /// <inheritdoc cref="IWebTestRemoteDriverSettings.DockerCustomArguments" />
+  public string? DockerCustomArguments { get; init; } = null;
 }

@@ -26,11 +26,17 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
   {
     private readonly ConfigurationProperty _enabledProperty;
     private readonly ConfigurationProperty _urlProperty;
+    private readonly ConfigurationProperty _hostRemoteDriverProperty;
+    private readonly ConfigurationProperty _dockerImageNameProperty;
+    private readonly ConfigurationProperty _dockerCustomArgumentsProperty;
 
     public RemoteDriverConfigurationElement ()
     {
       _enabledProperty = new ConfigurationProperty("enabled", typeof(bool), false);
       _urlProperty = new ConfigurationProperty("url", typeof(string), "");
+      _hostRemoteDriverProperty = new ConfigurationProperty("hostRemoteDriverInDocker", typeof(bool), false);
+      _dockerImageNameProperty = new ConfigurationProperty("dockerImageName", typeof(string), null);
+      _dockerCustomArgumentsProperty = new ConfigurationProperty("dockerCustomArguments", typeof(string), null);
     }
 
     /// <inheritdoc cref="IWebTestRemoteDriverSettings.Enabled" />
@@ -39,7 +45,16 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
     /// <inheritdoc cref="IWebTestRemoteDriverSettings.Url" />
     public string Url => (string)this[_urlProperty];
 
+    /// <inheritdoc cref="IWebTestRemoteDriverSettings.HostRemoteDriverInDocker" />
+    public bool HostRemoteDriverInDocker => (bool)this[_hostRemoteDriverProperty];
+
+    /// <inheritdoc cref="IWebTestRemoteDriverSettings.DockerImageName" />
+    public string? DockerImageName => (string?)this[_dockerImageNameProperty];
+
+    /// <inheritdoc cref="IWebTestRemoteDriverSettings.DockerCustomArguments" />
+    public string? DockerCustomArguments => (string?)this[_dockerCustomArgumentsProperty];
+
     /// <inheritdoc />
-    protected override ConfigurationPropertyCollection Properties => new() { _enabledProperty, _urlProperty };
+    protected override ConfigurationPropertyCollection Properties => new() { _enabledProperty, _urlProperty, _hostRemoteDriverProperty, _dockerImageNameProperty, _dockerCustomArgumentsProperty };
   }
 }
