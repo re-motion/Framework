@@ -40,6 +40,9 @@
     <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs" Link="SharedSource\Utilities\NullableTypeUtility.cs" />
   </ItemGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="Remotion.Web.Development.WebTesting.UnitTests"/>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="THIRD-PARTY-NOTICES.txt" Pack="true" PackagePath=""/>
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />

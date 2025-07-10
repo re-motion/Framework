@@ -39,6 +39,11 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     bool Headless { get; }
 
     /// <summary>
+    /// Gets the features associated with the browser session.
+    /// </summary>
+    IReadOnlyWebTestFeatureCollection Features { get; }
+
+    /// <summary>
     /// Returns the new browser log entries of the <see cref="IBrowserSession"/> since the last call of <see cref="GetBrowserLogs"/>, <see cref="ResetBrowserLogs"/>, or
     /// the last refresh of the page, if no <see cref="GetBrowserLogs"/> or <see cref="ResetBrowserLogs"/> call was made.
     /// </summary>

@@ -38,6 +38,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   /// </summary>
   public class ChromeConfiguration : BrowserConfigurationBase, IChromeConfiguration
   {
+    public static void ApplyDefaultWebTestFeatures (
+        WebTestFeatureCollection features,
+        IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
+
+      // Placeholder for future chrome specific feature additions
+    }
+
     private const string c_userDataFolderPrefix = "userdata";
     private const string c_partialFileDownloadExtension = ".crdownload";
 
@@ -97,6 +107,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
           webTestSettings.LoggerFactory);
 
       DisableSecurityWarningsBehavior = webTestSettings.Chrome.DisableSecurityWarningsBehavior;
+
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
 
     public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory(this, LoggerFactory);

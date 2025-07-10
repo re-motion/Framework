@@ -89,5 +89,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     /// Returns the <see cref="ScreenshotTooltipStyle"/> that will be used when drawing tooltips for this browser.
     /// </summary>
     ScreenshotTooltipStyle TooltipStyle { [NotNull] get; }
+
+    /// <summary>
+    /// Gets the features associated with the browser configuration.
+    /// </summary>
+    IReadOnlyWebTestFeatureCollection Features { get; }
   }
 }

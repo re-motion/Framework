@@ -16,9 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
-using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 
@@ -29,8 +27,17 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Edge
   /// </summary>
   public class EdgeBrowserSession : BrowserSessionBase<IEdgeConfiguration>
   {
+    public static void ApplyDefaultWebTestFeatures (
+        WebTestFeatureCollection features,
+        IBrowserSession browserSession)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserSession);
+
+      features.Set<IBrowserLogProvider>(new SeleniumBrowserLogProvider(browserSession.Driver));
+    }
+
     private readonly IReadOnlyCollection<IBrowserSessionCleanUpStrategy> _cleanUpStrategies;
-    private readonly List<BrowserLogEntry> _browserLogEntries = new();
 
     public EdgeBrowserSession (
         [NotNull] Coypu.BrowserSession value,
@@ -41,22 +48,8 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Edge
         : base(value, configuration, driverProcessID, headless)
     {
       _cleanUpStrategies = cleanUpStrategies ?? Array.Empty<IBrowserSessionCleanUpStrategy>();
-    }
 
-    /// <inheritdoc />
-    public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
-    {
-      var newEntries = ((IWebDriver)Driver.Native).Manage().Logs.GetLog(LogType.Browser)
-          .Select(logEntry => new BrowserLogEntry(logEntry));
-      _browserLogEntries.AddRange(newEntries);
-      return _browserLogEntries;
-    }
-
-    /// <inheritdoc />
-    public override void ResetBrowserLogs ()
-    {
-      GetBrowserLogs(); // fetch the pending entries so that they are cleared as well
-      _browserLogEntries.Clear();
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
 
     /// <inheritdoc />

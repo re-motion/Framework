@@ -32,6 +32,16 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
   public abstract class BrowserSessionBase<T> : IBrowserSession
       where T : IBrowserConfiguration
   {
+    public static void ApplyCommonWebTestFeatureDefaults (
+        WebTestFeatureCollection features,
+        IBrowserSession browserSession)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserSession);
+
+      // Placeholder for future feature additions for all browser session
+    }
+
     private readonly TimeSpan _browserProcessesShutdownTime = TimeSpan.FromSeconds(60);
 
     private readonly T _browserConfiguration;
@@ -39,6 +49,8 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     private readonly int _driverProcessID;
     private readonly bool _headless;
     private bool _isDisposed;
+
+    private readonly WebTestFeatureCollection _features;
 
     protected BrowserSessionBase (
         [NotNull] Coypu.BrowserSession value,
@@ -56,13 +68,16 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       _browserConfiguration = browserConfiguration;
       _driverProcessID = driverProcessId;
       _headless = headless;
+
+      _features = new WebTestFeatureCollection(_browserConfiguration.Features);
+      ApplyCommonWebTestFeatureDefaults(FeaturesMutable, this);
     }
 
     /// <inheritdoc />
-    public abstract IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ();
+    public IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs () => Features.Get<IBrowserLogProvider>().GetBrowserLogs();
 
     /// <inheritdoc />
-    public abstract void ResetBrowserLogs ();
+    public void ResetBrowserLogs () => Features.Get<IBrowserLogProvider>().ResetBrowserLogs();
 
     /// <summary>
     /// Returns the <see cref="IBrowserConfiguration"/> associated with the underlying <see cref="Coypu.BrowserSession"/>.
@@ -92,6 +107,14 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       get { return _headless; }
     }
 
+    public IReadOnlyWebTestFeatureCollection Features => _features;
+
+    /// <summary>
+    /// Mutable features collection intended to allow mutation during the construction of the browser session.
+    /// Manipulating the collection after construction is not supported.
+    /// </summary>
+    protected WebTestFeatureCollection FeaturesMutable => _features;
+
     public BrowserWindow FindWindow (string locator, Options? options = null)
     {
       ArgumentException.ThrowIfNullOrEmpty(locator);
@@ -114,6 +137,8 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
         return;
 
       _isDisposed = true;
+
+      _features.Dispose();
 
       // Get processes for driver and main browser, as well as the sub processes of the browser
       var driverProcess = FindDriverProcess();
