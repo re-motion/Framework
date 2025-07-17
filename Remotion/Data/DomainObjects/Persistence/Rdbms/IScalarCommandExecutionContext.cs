@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
 
 /// <summary>
 /// Represents the aspect of <see cref="IRdbmsProviderReadOnlyCommandExecutionContext"/> or <see cref="IRdbmsProviderReadWriteCommandExecutionContext"/> that enables the
-/// execution of an <see cref="IDbCommand"/> that returns a scalar value.
+/// execution of an <see cref="DbCommand"/> that returns a scalar value.
 /// </summary>
 public interface IScalarCommandExecutionContext
 {
-  object? ExecuteScalar (IDbCommand command);
+  object? ExecuteScalar (DbCommand command);
 }

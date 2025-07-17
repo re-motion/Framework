@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
       get { return Array.AsReadOnly(_comparedColumnValues); }
     }
 
-    public void AddParameters (IDbCommand command, ISqlDialect sqlDialect)
+    public void AddParameters (DbCommand command, ISqlDialect sqlDialect)
     {
       ArgumentNullException.ThrowIfNull(command);
       ArgumentNullException.ThrowIfNull(sqlDialect);
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
     }
 
     public void AppendComparisons (
-        StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect)
+        StringBuilder statement, DbCommand command, ISqlDialect sqlDialect)
     {
       ArgumentNullException.ThrowIfNull(statement);
       ArgumentNullException.ThrowIfNull(command);

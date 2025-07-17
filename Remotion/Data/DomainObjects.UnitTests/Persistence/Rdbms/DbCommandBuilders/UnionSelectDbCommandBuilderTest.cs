@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 using Moq;
 using NUnit.Framework;
@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
   {
     private Mock<ISelectedColumnsSpecification> _originalSelectedColumnsStub;
     private Mock<ISqlDialect> _sqlDialectStub;
-    private Mock<IDbCommand> _dbCommandStub;
+    private Mock<DbCommand> _dbCommandStub;
     private Mock<IOrderedColumnsSpecification> _orderedColumnsStub;
     private TableDefinition _table1;
     private TableDefinition _table2;
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _sqlDialectStub = new Mock<ISqlDialect>();
       _sqlDialectStub.Setup(stub => stub.StatementDelimiter).Returns(";");
 
-      _dbCommandStub = new Mock<IDbCommand>();
+      _dbCommandStub = new Mock<DbCommand>();
       _dbCommandStub.SetupProperty(stub => stub.CommandText);
 
       _dbCommandFactoryStub = new Mock<IDbCommandFactory>();
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
           .Verifiable();
       _comparedColumnsStrictMock
           .Setup(stub => stub.AppendComparisons(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
-          .Callback((StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect) => statement.Append("[delimited FKID] = pFKID"))
+          .Callback((StringBuilder statement, DbCommand command, ISqlDialect sqlDialect) => statement.Append("[delimited FKID] = pFKID"))
           .Verifiable();
 
       var result = builder.Create(_dbCommandFactoryStub.Object);
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _comparedColumnsStrictMock
           .Setup(stub => stub.AppendComparisons(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
-          .Callback((StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect) => statement.Append("[delimited FKID] = pFKID"));
+          .Callback((StringBuilder statement, DbCommand command, ISqlDialect sqlDialect) => statement.Append("[delimited FKID] = pFKID"));
 
       var result = builder.Create(_dbCommandFactoryStub.Object);
 

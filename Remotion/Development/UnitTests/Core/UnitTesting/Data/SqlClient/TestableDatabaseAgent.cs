@@ -15,26 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Remotion.Development.UnitTesting.Data.SqlClient;
 
 namespace Remotion.Development.UnitTests.Core.UnitTesting.Data.SqlClient
 {
   public class TestableDatabaseAgent : DatabaseAgent
   {
-    private readonly IDbConnection _connection;
+    private readonly DbConnection _connection;
 
-    public TestableDatabaseAgent (IDbConnection connection) : base("blabla")
+    public TestableDatabaseAgent (DbConnection connection) : base("blabla")
     {
       _connection = connection;
     }
 
-    protected override IDbConnection CreateConnection ()
+    protected override DbConnection CreateConnection ()
     {
       return _connection;
     }
 
-    public new int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction transaction)
+    public new int ExecuteBatchString (DbConnection connection, string commandBatch, DbTransaction transaction)
     {
       return base.ExecuteBatchString(connection, commandBatch, transaction);
     }

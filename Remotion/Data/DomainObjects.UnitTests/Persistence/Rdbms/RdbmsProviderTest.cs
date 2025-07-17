@@ -17,9 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using System.Linq;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
@@ -45,12 +47,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
   {
     public interface IConnectionCreator
     {
-      IDbConnection CreateConnection ();
+      DbConnection CreateConnection ();
     }
     private Mock<IRdbmsProviderCommandFactory> _commandFactoryMock;
-    private Mock<IDbConnection> _connectionStub;
-    private Mock<IDbTransaction> _transactionStub;
-    private Mock<IDbCommand> _commandMock;
+    private Mock<DbConnection> _connectionStub;
+    private Mock<DbTransaction> _transactionStub;
+    private Mock<DbCommand> _commandMock;
 
     private Mock<IConnectionCreator> _connectionCreatorMock;
     private TestableRdbmsProvider _provider;
@@ -61,10 +63,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       _commandFactoryMock = new Mock<IRdbmsProviderCommandFactory>(MockBehavior.Strict);
 
-      _connectionStub = new Mock<IDbConnection>();
+      _connectionStub = new Mock<DbConnection>();
       _connectionStub.Setup(stub => stub.State).Returns(ConnectionState.Open);
-      _transactionStub = new Mock<IDbTransaction>();
-      _commandMock = new Mock<IDbCommand>(MockBehavior.Strict);
+      _transactionStub = new Mock<DbTransaction>();
+      _commandMock = new Mock<DbCommand>(MockBehavior.Strict);
+      _commandMock.Protected().Setup("Dispose", [false]); // for Finalizer
 
       _connectionCreatorMock = new Mock<IConnectionCreator>(MockBehavior.Strict);
 
@@ -123,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void BeginTransaction_Twice ()
     {
       _connectionCreatorMock.Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object).Verifiable();
-      _connectionStub.Setup(stub => stub.BeginTransaction(IsolationLevel.Serializable)).Returns(_transactionStub.Object);
+      _connectionStub.Protected().Setup<DbTransaction>("BeginDbTransaction", IsolationLevel.Serializable).Returns(_transactionStub.Object);
 
       _provider.BeginTransaction();
       Assert.That(
@@ -738,12 +741,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       _connectionCreatorMock.Setup(mock => mock.CreateConnection()).Returns(_connectionStub.Object);
 
-      _connectionStub.Setup(stub => stub.BeginTransaction(_provider.IsolationLevel)).Returns(_transactionStub.Object);
+      _connectionStub.Protected().Setup<DbTransaction>("BeginDbTransaction", _provider.IsolationLevel).Returns(_transactionStub.Object);
 
       _provider.Connect();
       _provider.BeginTransaction();
 
-      _connectionStub.Setup(stub => stub.CreateCommand()).Returns(_commandMock.Object);
+      _connectionStub.Protected().Setup<DbCommand>("CreateDbCommand").Returns(_commandMock.Object);
 
       _commandMock.SetupSet(mock => mock.Connection = _connectionStub.Object).Verifiable();
       _commandMock.SetupSet(mock => mock.Transaction = _transactionStub.Object).Verifiable();
@@ -761,7 +764,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       _provider.Connect();
 
-      _connectionStub.Setup(stub => stub.CreateCommand()).Returns(_commandMock.Object);
+      _connectionStub.Protected().Setup<DbCommand>("CreateDbCommand").Returns(_commandMock.Object);
 
       _commandMock.SetupSet(mock => mock.Connection = _connectionStub.Object).Verifiable();
       _commandMock.SetupSet(mock => mock.Transaction = null).Verifiable();
@@ -787,11 +790,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       _provider.Connect();
 
-      _connectionStub.Setup(stub => stub.CreateCommand()).Returns(_commandMock.Object);
+      _connectionStub.Protected().Setup<DbCommand>("CreateDbCommand").Returns(_commandMock.Object);
 
       var exception = new Exception();
       _commandMock.SetupSet(mock => mock.Connection = _connectionStub.Object).Throws(exception).Verifiable();
-      _commandMock.Setup(mock => mock.Dispose()).Verifiable();
+      _commandMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       Assert.That(() => _provider.CreateDbCommand(), Throws.Exception.SameAs(exception));
 
@@ -805,12 +808,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       _provider.Connect();
 
-      _connectionStub.Setup(stub => stub.CreateCommand()).Returns(_commandMock.Object);
+      _connectionStub.Protected().Setup<DbCommand>("CreateDbCommand").Returns(_commandMock.Object);
 
       var exception = new Exception();
       _commandMock.SetupSet(mock => mock.Connection = _connectionStub.Object).Verifiable();
       _commandMock.SetupSet(mock => mock.Transaction = null).Throws(exception).Verifiable();
-      _commandMock.Setup(mock => mock.Dispose()).Verifiable();
+      _commandMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       Assert.That(() => _provider.CreateDbCommand(), Throws.Exception.SameAs(exception));
 
@@ -829,8 +832,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void ExecuteReader ()
     {
-      var dataReaderStub = new Mock<IDataReader>();
-      _commandMock.Setup(mock => mock.ExecuteReader(CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo)).Returns(dataReaderStub.Object).Verifiable();
+      var dataReaderStub = new Mock<DbDataReader>();
+      _commandMock.Protected().Setup<DbDataReader>("ExecuteDbDataReader", CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo).Returns(dataReaderStub.Object).Verifiable();
 
       var result = _provider.ExecuteReader(_commandMock.Object, CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo);
 
@@ -842,7 +845,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public void ExecuteReader_Exception ()
     {
       var exception = new Exception("Test");
-      _commandMock.Setup(mock => mock.ExecuteReader(CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo)).Throws(exception).Verifiable();
+      _commandMock.Protected().Setup<DbDataReader>("ExecuteDbDataReader", CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo).Throws(exception).Verifiable();
 
       Assert.That(() => _provider.ExecuteReader(_commandMock.Object, CommandBehavior.SequentialAccess | CommandBehavior.KeyInfo),
           Throws.TypeOf<RdbmsProviderException>()

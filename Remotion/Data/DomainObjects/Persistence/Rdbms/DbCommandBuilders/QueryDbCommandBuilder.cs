@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -27,7 +27,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 {
   /// <summary>
-  /// Builds an <see cref="IDbCommand"/> for a given <see cref="IQuery"/>.
+  /// Builds an <see cref="DbCommand"/> for a given <see cref="IQuery"/>.
   /// </summary>
   public class QueryDbCommandBuilder : DbCommandBuilder
   {
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
     }
 
 
-    public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
+    public override DbCommand Create (IDbCommandFactory dbCommandFactory)
     {
       ArgumentNullException.ThrowIfNull(dbCommandFactory);
 

@@ -17,7 +17,9 @@
 using System;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
@@ -63,8 +65,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [TestCase(1, TestName = "CreateDataParameter_WithPositiveSize_SetsSizeOnParameter.")]
     public void CreateDataParameter (int? storageTypeSize)
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(
           typeof(bool),
@@ -77,8 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
 
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns("");
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
-
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
       dataParameterMock.SetupSet(_ => _.Value = "").Verifiable();
@@ -97,8 +98,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithStringValueExceedingFixedSize_DoesNotInitializeSize ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(
           typeof(string),
@@ -111,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
 
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns("converted value");
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
@@ -128,8 +129,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithStringValueWithFixedSizeAndMaxSize_InitializesToMaxSize ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(
           typeof(string),
@@ -142,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
 
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns("converted value");
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
@@ -159,8 +160,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithCharArrayValueExceedingFixedSize_DoesNotInitializeSize ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(
           typeof(char[]),
@@ -174,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
       var convertedValue = new char[10];
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns(convertedValue);
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
@@ -191,8 +192,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithCharArrayFixedSizeWithMaxSize_InitializesToMaxSize ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(
           typeof(char[]),
@@ -206,7 +207,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
       var convertedValue = new char[5];
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns(convertedValue);
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
@@ -223,8 +224,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithByteArrayValueExceedingFixedSize_DoesNotInitializeSize ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(
           typeof(byte[]),
@@ -238,7 +239,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
       var convertedValue = new byte[10];
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns(convertedValue);
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
@@ -255,13 +256,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithNullResult ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(typeof(bool), "test", DbType.Boolean, false, null, typeof(int), _typeConverterStub.Object);
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns((object)null);
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
@@ -278,8 +279,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithNullResult_AndParameterSize_SetsSize ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(
           typeof(byte[]),
@@ -292,7 +293,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
 
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, "value", storageTypeInformation.StorageType)).Returns((object)null);
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
@@ -309,13 +310,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithNullInput_NoSize ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(typeof(bool), "test", DbType.Boolean, false, null, typeof(int), _typeConverterStub.Object);
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, null, storageTypeInformation.StorageType)).Returns(DBNull.Value);
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
@@ -332,13 +333,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithNullInput_WithSize ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(typeof(string), "test", DbType.String, false, 5, typeof(string), _typeConverterStub.Object);
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, null, storageTypeInformation.StorageType)).Returns(DBNull.Value);
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();
@@ -355,8 +356,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithConvertedValueNull_AndFullTextMaxLength_SetsSize ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var value = "dummyInput";
       var storageTypeInformationStub = new Mock<IStorageTypeInformation>();
@@ -367,7 +368,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
 
       storageTypeInformationStub.Setup(_ => _.ConvertToStorageType(value)).Returns((object)null);
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = DbType.String).Verifiable();
@@ -384,8 +385,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
     [Test]
     public void CreateDataParameter_WithConvertedValueNotAString_ButDbTypeString_DoesNotSetSize ()
     {
-      var commandStub = new Mock<IDbCommand>();
-      var dataParameterMock = new Mock<IDbDataParameter>();
+      var commandStub = new Mock<DbCommand>();
+      var dataParameterMock = new Mock<DbParameter>();
 
       var storageTypeInformation = new StorageTypeInformation(
           typeof(byte[]),
@@ -399,7 +400,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer
       var value = new[] { 1, 2, 3 };
       _typeConverterStub.Setup(_ => _.ConvertTo(null, null, value, storageTypeInformation.StorageType)).Returns(new [] { 1, 2, 3 });
 
-      commandStub.Setup(_ => _.CreateParameter()).Returns(dataParameterMock.Object);
+      commandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(dataParameterMock.Object);
 
       dataParameterMock.SetupSet(_ => _.ParameterName = "@dummy").Verifiable();
       dataParameterMock.SetupSet(_ => _.DbType = storageTypeInformation.StorageDbType).Verifiable();

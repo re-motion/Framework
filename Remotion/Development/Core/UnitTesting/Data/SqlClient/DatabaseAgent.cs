@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.SqlClient;
+using System.Data.Common;
 using System.IO;
 using System.Text;
 using Remotion.Utilities;
@@ -93,12 +94,12 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
         commandBatch = commandBatch.Replace(replacement.Key, replacement.Value);
 
       var count = 0;
-      using (IDbConnection connection = CreateConnection())
+      using (DbConnection connection = CreateConnection())
       {
         connection.Open();
         if (useTransaction)
         {
-          using (IDbTransaction transaction = connection.BeginTransaction())
+          using (DbTransaction transaction = connection.BeginTransaction())
           {
             count = ExecuteBatchString(connection, commandBatch, transaction);
             transaction.Commit();
@@ -111,14 +112,14 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       return count;
     }
 
-    protected virtual IDbConnection CreateConnection ()
+    protected virtual DbConnection CreateConnection ()
     {
       return new SqlConnection(_connectionString);
     }
 
-    protected virtual IDbCommand CreateCommand (IDbConnection connection, string commandText, IDbTransaction? transaction)
+    protected virtual DbCommand CreateCommand (DbConnection connection, string commandText, DbTransaction? transaction)
     {
-      IDbCommand command = connection.CreateCommand();
+      DbCommand command = connection.CreateCommand();
       command.CommandType = CommandType.Text;
       command.CommandText = commandText;
       command.Transaction = transaction;
@@ -129,7 +130,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
     {
       ArgumentException.ThrowIfNullOrEmpty(commandText);
 
-      using (IDbConnection connection = CreateConnection())
+      using (DbConnection connection = CreateConnection())
       {
         connection.Open();
         return ExecuteCommand(connection, commandText, null);
@@ -140,7 +141,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
     {
       ArgumentException.ThrowIfNullOrEmpty(commandText);
 
-      using (IDbConnection connection = CreateConnection())
+      using (DbConnection connection = CreateConnection())
       {
         connection.Open();
         return ExecuteScalarCommand(connection, commandText, null);
@@ -155,7 +156,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     public byte[] GetLastUsedTimestamp () => (byte[])ExecuteScalarCommand("SELECT @@DBTS")!;
 
-    protected virtual int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction? transaction)
+    protected virtual int ExecuteBatchString (DbConnection connection, string commandBatch, DbTransaction? transaction)
     {
       ArgumentNullException.ThrowIfNull(connection);
       ArgumentException.ThrowIfNullOrEmpty(commandBatch);
@@ -185,17 +186,17 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       return count;
     }
 
-    protected virtual int ExecuteCommand (IDbConnection connection, string commandText, IDbTransaction? transaction)
+    protected virtual int ExecuteCommand (DbConnection connection, string commandText, DbTransaction? transaction)
     {
-      using (IDbCommand command = CreateCommand(connection, commandText, transaction))
+      using (DbCommand command = CreateCommand(connection, commandText, transaction))
       {
         return command.ExecuteNonQuery();
       }
     }
 
-    protected virtual object? ExecuteScalarCommand (IDbConnection connection, string commandText, IDbTransaction? transaction)
+    protected virtual object? ExecuteScalarCommand (DbConnection connection, string commandText, DbTransaction? transaction)
     {
-      using (IDbCommand command = CreateCommand(connection, commandText, transaction))
+      using (DbCommand command = CreateCommand(connection, commandText, transaction))
       {
         return command.ExecuteScalar();
       }

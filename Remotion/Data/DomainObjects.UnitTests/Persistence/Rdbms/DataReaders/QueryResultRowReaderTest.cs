@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
   {
     private Mock<IStorageTypeInformationProvider> _storageTypeInformationProviderStub;
     private QueryResultRowReader _queryResultRowReader;
-    private Mock<IDataReader> _dataReaderStrictMock;
+    private Mock<DbDataReader> _dataReaderStrictMock;
 
     [SetUp]
     public void SetUp ()
     {
       _storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();
-      _dataReaderStrictMock = new Mock<IDataReader>(MockBehavior.Strict);
+      _dataReaderStrictMock = new Mock<DbDataReader>(MockBehavior.Strict);
 
       _queryResultRowReader = new QueryResultRowReader(_storageTypeInformationProviderStub.Object);
     }

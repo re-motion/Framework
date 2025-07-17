@@ -16,7 +16,9 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
@@ -29,8 +31,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
   public class SingleObjectLoadCommandTest
   {
     private Mock<IDbCommandBuilder> _dbCommandBuilderMock;
-    private Mock<IDbCommand> _dbCommandMock;
-    private Mock<IDataReader> _dataReaderMock;
+    private Mock<DbCommand> _dbCommandMock;
+    private Mock<DbDataReader> _dataReaderMock;
     private SingleObjectLoadCommand<object> _command;
     private Mock<IObjectReader<object>> _objectReaderMock;
     private object _fakeResult;
@@ -42,10 +44,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       _fakeResult = new object();
 
-      _dataReaderMock = new Mock<IDataReader>();
+      _dataReaderMock = new Mock<DbDataReader>();
       _readWriteExecutionContextMock = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>(MockBehavior.Strict);
       _readOnlyExecutionContextMock = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>(MockBehavior.Strict);
-      _dbCommandMock = new Mock<IDbCommand>(MockBehavior.Strict);
+      _dbCommandMock = new Mock<DbCommand>(MockBehavior.Strict);
+      _dbCommandMock.Protected().Setup("Dispose", [false]); // for Finalizer
       _dbCommandBuilderMock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
       _objectReaderMock = new Mock<IObjectReader<object>>(MockBehavior.Strict);
 
@@ -71,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandBuilderMock.Setup(mock => mock.Create(_readWriteExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
 
-      _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       var result = _command.Execute(_readWriteExecutionContextMock.Object);
 
@@ -94,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandBuilderMock.Setup(mock => mock.Create(_readWriteExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
 
-      _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       var result = _command.Execute(_readWriteExecutionContextMock.Object);
 
@@ -117,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandBuilderMock.Setup(mock => mock.Create(_readOnlyExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
 
-      _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       var result = _command.Execute(_readOnlyExecutionContextMock.Object);
 
@@ -140,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandBuilderMock.Setup(mock => mock.Create(_readOnlyExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
 
-      _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       var result = _command.Execute(_readOnlyExecutionContextMock.Object);
 

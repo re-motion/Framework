@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
       get { return Array.AsReadOnly(_columnValues); }
     }
 
-    public void AppendColumnNames (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
+    public void AppendColumnNames (StringBuilder statement, DbCommand dbCommand, ISqlDialect sqlDialect)
     {
       ArgumentNullException.ThrowIfNull(statement);
       ArgumentNullException.ThrowIfNull(dbCommand);
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
       statement.Append(columNames);
     }
 
-    public void AppendColumnValues (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
+    public void AppendColumnValues (StringBuilder statement, DbCommand dbCommand, ISqlDialect sqlDialect)
     {
       ArgumentNullException.ThrowIfNull(statement);
       ArgumentNullException.ThrowIfNull(dbCommand);

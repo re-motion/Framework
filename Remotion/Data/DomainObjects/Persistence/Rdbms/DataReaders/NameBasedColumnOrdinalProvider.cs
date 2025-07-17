@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
   /// </summary>
   public class NameBasedColumnOrdinalProvider : IColumnOrdinalProvider
   {
-    public int GetOrdinal (ColumnDefinition columnDefinition, IDataReader dataReader)
+    public int GetOrdinal (ColumnDefinition columnDefinition, DbDataReader dataReader)
     {
       ArgumentNullException.ThrowIfNull(columnDefinition);
       ArgumentNullException.ThrowIfNull(dataReader);

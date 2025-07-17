@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
   [TestFixture]
   public class ColumnValueReaderTest
   {
-    private Mock<IDataReader> _dataReaderStub;
+    private Mock<DbDataReader> _dataReaderStub;
     private Mock<IColumnOrdinalProvider> _columnOrdinalProviderStub;
     private Mock<IStorageTypeInformation> _storageTypeInformationStrictMock;
     private ColumnDefinition _columnDefinition;
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [SetUp]
     public void SetUp ()
     {
-      _dataReaderStub = new Mock<IDataReader>();
+      _dataReaderStub = new Mock<DbDataReader>();
       _columnOrdinalProviderStub = new Mock<IColumnOrdinalProvider>();
       _storageTypeInformationStrictMock = new Mock<IStorageTypeInformation>(MockBehavior.Strict);
       _columnDefinition = ColumnDefinitionObjectMother.CreateColumn(storageTypeInformation: _storageTypeInformationStrictMock.Object);

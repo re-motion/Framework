@@ -15,9 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
@@ -35,9 +36,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     private Mock<IOrderedColumnsSpecification> _orderedColumnsStub;
 
     private Mock<ISqlDialect> _sqlDialectStub;
-    private Mock<IDbCommand> _dbCommandStub;
-    private Mock<IDbDataParameter> _dbDataParameterStub;
-    private Mock<IDataParameterCollection> _dataParameterCollectionMock;
+    private Mock<DbCommand> _dbCommandStub;
+    private Mock<DbParameter> _dbDataParameterStub;
+    private Mock<DbParameterCollection> _dataParameterCollectionMock;
     private Mock<IDbCommandFactory> _dbCommandFactoryStub;
 
     public override void SetUp ()
@@ -53,12 +54,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _sqlDialectStub = new Mock<ISqlDialect>();
       _sqlDialectStub.Setup(stub => stub.StatementDelimiter).Returns(";");
-      _dbDataParameterStub = new Mock<IDbDataParameter>();
-      _dataParameterCollectionMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
+      _dbDataParameterStub = new Mock<DbParameter>();
+      _dataParameterCollectionMock = new Mock<DbParameterCollection>(MockBehavior.Strict);
 
-      _dbCommandStub = new Mock<IDbCommand>();
-      _dbCommandStub.Setup(stub => stub.CreateParameter()).Returns(_dbDataParameterStub.Object);
-      _dbCommandStub.Setup(stub => stub.Parameters).Returns(_dataParameterCollectionMock.Object);
+      _dbCommandStub = new Mock<DbCommand>();
+      _dbCommandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(_dbDataParameterStub.Object);
+      _dbCommandStub.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(_dataParameterCollectionMock.Object);
       _dbCommandStub.SetupProperty(stub => stub.CommandText);
 
       _dbCommandFactoryStub = new Mock<IDbCommandFactory>();
@@ -81,7 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _comparedColumnsStrictMock.Setup(stub => stub.AddParameters(_dbCommandStub.Object, _sqlDialectStub.Object)).Verifiable();
       _comparedColumnsStrictMock
           .Setup(stub => stub.AppendComparisons(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
-          .Callback((StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect) => statement.Append("[ID] = @ID"))
+          .Callback((StringBuilder statement, DbCommand command, ISqlDialect sqlDialect) => statement.Append("[ID] = @ID"))
           .Verifiable();
 
       _orderedColumnsStub.Setup(stub => stub.IsEmpty).Returns(false);
@@ -116,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _comparedColumnsStrictMock.Setup(stub => stub.AddParameters(_dbCommandStub.Object, _sqlDialectStub.Object)).Verifiable();
       _comparedColumnsStrictMock
           .Setup(stub => stub.AppendComparisons(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
-          .Callback((StringBuilder statement, IDbCommand _, ISqlDialect _) => statement.Append("[ID] = @ID"))
+          .Callback((StringBuilder statement, DbCommand _, ISqlDialect _) => statement.Append("[ID] = @ID"))
           .Verifiable();
 
       _orderedColumnsStub.Setup(stub => stub.IsEmpty).Returns(true);

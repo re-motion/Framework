@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
   /// The <see cref="MultiDataContainerSaveCommand"/> saves a sequence of <see cref="DataContainer"/> instances by executing the given
-  /// <see cref="IDbCommand"/> instances.
+  /// <see cref="DbCommand"/> instances.
   /// </summary>
   public class MultiDataContainerSaveCommand : IRdbmsProviderCommand
   {

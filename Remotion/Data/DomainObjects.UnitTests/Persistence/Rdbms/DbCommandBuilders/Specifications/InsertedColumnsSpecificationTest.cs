@@ -15,9 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
@@ -38,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     private ColumnValue _columnValue2;
     private Mock<ISqlDialect> _sqlDialectStub;
     private InsertedColumnsSpecification _insertedColumnsSpecification;
-    private Mock<IDbCommand> _dbCommandStub;
+    private Mock<DbCommand> _dbCommandStub;
     private StringBuilder _statement;
 
     [SetUp]
@@ -56,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       _insertedColumnsSpecification = new InsertedColumnsSpecification(new[] { _columnValue1,  _columnValue2 });
 
       _sqlDialectStub = new Mock<ISqlDialect>();
-      _dbCommandStub = new Mock<IDbCommand>();
+      _dbCommandStub = new Mock<DbCommand>();
       _statement = new StringBuilder();
     }
 
@@ -74,18 +75,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     [Test]
     public void AppendColumnValues ()
     {
-      var parameter1Stub = new Mock<IDbDataParameter>(MockBehavior.Strict);
+      var parameter1Stub = new Mock<DbParameter>(MockBehavior.Strict);
       parameter1Stub.Setup(_ => _.ParameterName).Returns("@ID");
 
-      var parameter2Stub = new Mock<IDbDataParameter>(MockBehavior.Strict);
+      var parameter2Stub = new Mock<DbParameter>(MockBehavior.Strict);
       parameter2Stub.Setup(_ => _.ParameterName).Returns("@Timestamp");
 
-      var dataParameterCollectionMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
+      var dataParameterCollectionMock = new Mock<DbParameterCollection>(MockBehavior.Strict);
 
-      _dbCommandStub.Setup(_ => _.Parameters).Returns(dataParameterCollectionMock.Object);
+      _dbCommandStub.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(dataParameterCollectionMock.Object);
       _dbCommandStub.SetupProperty(_ => _.CommandText);
       _dbCommandStub
-          .SetupSequence(_ => _.CreateParameter())
+          .Protected()
+          .SetupSequence<DbParameter>("CreateDbParameter")
           .Returns(parameter1Stub.Object)
           .Returns(parameter2Stub.Object);
 

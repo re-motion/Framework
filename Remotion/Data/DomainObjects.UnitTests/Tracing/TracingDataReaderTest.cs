@@ -15,8 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.Common;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
 
@@ -25,16 +31,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
   [TestFixture]
   public class TracingDataReaderTest
   {
-    private Mock<IDataReader> _innerDataReader;
+    private Mock<DbDataReader> _innerDataReader;
     private Mock<IPersistenceExtension> _extensionMock;
     private Guid _connectionID;
     private Guid _queryID;
-    private TracingDataReader _dataReader;
+    private DbDataReader _dataReader;
 
     [SetUp]
     public void SetUp ()
     {
-      _innerDataReader = new Mock<IDataReader>(MockBehavior.Strict);
+      _innerDataReader = new Mock<DbDataReader>(MockBehavior.Strict);
       _extensionMock = new Mock<IPersistenceExtension>(MockBehavior.Strict);
       _connectionID = Guid.NewGuid();
       _queryID = Guid.NewGuid();
@@ -205,7 +211,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetWrappedInstance ()
     {
-      var wrappedInstance = _dataReader.WrappedInstance;
+      var wrappedInstance = ((TracingDataReader)_dataReader).WrappedInstance;
 
       Assert.That(wrappedInstance, Is.EqualTo(_innerDataReader.Object));
     }
@@ -213,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetConnectionId ()
     {
-      var connectionID = _dataReader.ConnectionID;
+      var connectionID = ((TracingDataReader)_dataReader).ConnectionID;
 
       Assert.That(connectionID, Is.EqualTo(_connectionID));
     }
@@ -221,7 +227,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetQueryID ()
     {
-      var queryID = _dataReader.QueryID;
+      var queryID = ((TracingDataReader)_dataReader).QueryID;
 
       Assert.That(queryID, Is.EqualTo(_queryID));
     }
@@ -229,7 +235,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetPersistenceListener ()
     {
-      var persistenceListener = _dataReader.PersistenceExtension;
+      var persistenceListener = ((TracingDataReader)_dataReader).PersistenceExtension;
 
       Assert.That(persistenceListener, Is.EqualTo(_extensionMock.Object));
     }
@@ -405,9 +411,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void GetData ()
     {
-      var dataReaderMock = new Mock<IDataReader>(MockBehavior.Strict);
+      var dataReaderMock = new Mock<DbDataReader>(MockBehavior.Strict);
       int i = 5;
-      _innerDataReader.Setup(mock => mock.GetData(i)).Returns(dataReaderMock.Object).Verifiable();
+      _innerDataReader.Protected().Setup<DbDataReader>("GetDbDataReader", i).Returns(dataReaderMock.Object).Verifiable();
 
       var result = _dataReader.GetData(i);
 
@@ -425,6 +431,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerDataReader.Setup(mock => mock.IsDBNull(i)).Returns(assumedResult).Verifiable();
 
       var result = _dataReader.IsDBNull(i);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void IsDBNullAsync ()
+    {
+      var param = 73;
+      var token = CancellationToken.None;
+      var assumedResult = Task.FromException<bool>(new InvalidOperationException("Should not get called."));
+
+      _innerDataReader.Setup(mock => mock.IsDBNullAsync(param, token)).Returns(assumedResult).Verifiable();
+
+      var result =  _dataReader.IsDBNullAsync(param, token);
 
       _innerDataReader.Verify();
       _extensionMock.Verify();
@@ -458,12 +480,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     }
 
     [Test]
+    public void NextResultAsync ()
+    {
+      var param = CancellationToken.None;
+      var assumedResult = Task.FromException<bool>(new InvalidOperationException("Should not get called."));
+
+      _innerDataReader.Setup(mock => mock.NextResultAsync(param)).Returns(assumedResult).Verifiable();
+
+      var result = _dataReader.NextResultAsync(param);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
     public void GetSchemaTable ()
     {
       DataTable assumedResult = new DataTable();
       _innerDataReader.Setup(mock => mock.GetSchemaTable()).Returns(assumedResult).Verifiable();
 
       var result = _dataReader.GetSchemaTable();
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void GetSchemaTableAsync ()
+    {
+      var param = CancellationToken.None;
+      var assumedResult = Task.FromException<DataTable>(new InvalidOperationException("Should not get called."));
+
+      _innerDataReader.Setup(mock => mock.GetSchemaTableAsync(param)).Returns(assumedResult).Verifiable();
+
+      var result = _dataReader.GetSchemaTableAsync(param);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void GetColumnSchemaAsync ()
+    {
+      var param = CancellationToken.None;
+      var assumedResult = Task.FromException<ReadOnlyCollection<DbColumn>>(new InvalidOperationException("Should not get called."));
+
+      _innerDataReader.Setup(mock => mock.GetColumnSchemaAsync(param)).Returns(assumedResult).Verifiable();
+
+      var result = _dataReader.GetColumnSchemaAsync(param);
 
       _innerDataReader.Verify();
       _extensionMock.Verify();
@@ -517,12 +584,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryCompleted(_connectionID, _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 0))
           .Verifiable();
-      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
 
       _dataReader.Dispose();
       _innerDataReader.Verify();
       _extensionMock.Verify();
       sequence.Verify();
+    }
+
+    [Test]
+    public void DisposeAsync ()
+    {
+      var sequence = new VerifiableSequence();
+      var assumedResult = ValueTask.FromException(new InvalidOperationException("Should not get called."));
+
+      _extensionMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.QueryCompleted(_connectionID, _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 0))
+          .Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.DisposeAsync()).Returns(assumedResult).Verifiable();
+
+      var result = _dataReader.DisposeAsync();
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
@@ -542,6 +628,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     }
 
     [Test]
+    public void CloseAsync ()
+    {
+      var sequence = new VerifiableSequence();
+      var assumedResult = Task.FromException(new InvalidOperationException("Should not get called."));
+      _extensionMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.QueryCompleted(_connectionID, _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 0))
+          .Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.CloseAsync()).Returns(assumedResult).Verifiable();
+
+      var result = _dataReader.CloseAsync();
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
     public void CloseAndDispose ()
     {
       var sequence = new VerifiableSequence();
@@ -550,7 +655,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
           .Setup(mock => mock.QueryCompleted(_connectionID,  _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 0))
           .Verifiable();
       _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Close()).Verifiable();
-      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
 
       _dataReader.Close();
       _dataReader.Dispose();
@@ -603,5 +708,167 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       sequence.Verify();
     }
 
+    [Test]
+    public void ReadAsync_HasRecord ()
+    {
+      var token = CancellationToken.None;
+      _innerDataReader.Setup(mock => mock.ReadAsync(token)).Returns(Task.FromResult(true)).Verifiable();
+
+      var hasRecord = _dataReader.ReadAsync(token);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(hasRecord.Result, Is.True);
+    }
+
+    [Test]
+    public void ReadAsync_NoRecord ()
+    {
+      var token = CancellationToken.None;
+      _innerDataReader.Setup(mock => mock.ReadAsync(token)).Returns(Task.FromResult(false)).Verifiable();
+
+      var hasRecord = _dataReader.ReadAsync(token);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(hasRecord.Result, Is.False);
+    }
+
+    [Test]
+    public async Task ReadAsyncAndCloseAsync ()
+    {
+      var token = CancellationToken.None;
+      var sequence = new VerifiableSequence();
+      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.ReadAsync(token)).Returns(Task.FromResult(true)).Verifiable();
+      _extensionMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.QueryCompleted(_connectionID, _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 1))
+          .Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.CloseAsync()).Returns(Task.CompletedTask).Verifiable();
+
+      await _dataReader.ReadAsync(token);
+      await _dataReader.CloseAsync();
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      sequence.Verify();
+    }
+
+    [Test]
+    public void VisibleFieldCount ()
+    {
+      var assumedResult = 73;
+
+      _innerDataReader.Setup(mock => mock.VisibleFieldCount).Returns(assumedResult).Verifiable();
+
+      var result = _dataReader.VisibleFieldCount;
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void GetProviderSpecificFieldType ()
+    {
+      var param = 73;
+      var assumedResult = typeof(short);
+
+      _innerDataReader.Setup(mock => mock.GetProviderSpecificFieldType(param)).Returns(assumedResult).Verifiable();
+
+      var result =  _dataReader.GetProviderSpecificFieldType(param);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void GetProviderSpecificValue ()
+    {
+      var param = 73;
+      var assumedResult = (short)58;
+
+      _innerDataReader.Setup(mock => mock.GetProviderSpecificValue(param)).Returns(assumedResult).Verifiable();
+
+      var result =  _dataReader.GetProviderSpecificValue(param);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void GetProviderSpecificValues ()
+    {
+      var param = new object[] {73, "asdf"};
+      var assumedResult = (short)58;
+
+      _innerDataReader.Setup(mock => mock.GetProviderSpecificValues(param)).Returns(assumedResult).Verifiable();
+
+      var result =  _dataReader.GetProviderSpecificValues(param);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void GetTextReader ()
+    {
+      var param = 73;
+      var assumedResult = new StringReader("");
+
+      _innerDataReader.Setup(mock => mock.GetTextReader(param)).Returns(assumedResult).Verifiable();
+
+      var result =  _dataReader.GetTextReader(param);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void GetFieldValue ()
+    {
+      var param = 73;
+      var assumedResult = (short)58;
+
+      _innerDataReader.Setup(mock => mock.GetFieldValue<short>(param)).Returns(assumedResult).Verifiable();
+
+      var result =  _dataReader.GetFieldValue<short>(param);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void GetFieldValueAsync ()
+    {
+      var param = 73;
+      var token = CancellationToken.None;
+      var assumedResult = Task.FromException<short>(new InvalidOperationException("Should not get called."));
+
+      _innerDataReader.Setup(mock => mock.GetFieldValueAsync<short>(param, token)).Returns(assumedResult).Verifiable();
+
+      var result =  _dataReader.GetFieldValueAsync<short>(param, token);
+
+      _innerDataReader.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
+    }
+
+    [Test]
+    public void TestNoFinalizerImplemented ()
+    {
+      TracingTestHelper.AssertNoFinalizerImplemented(typeof(TracingDataReader));
+    }
+
+    [Test]
+    public void TestAllVirtualMethodsOverridden ()
+    {
+      TracingTestHelper.AssertAllVirtualMethodsOverridden(typeof(TracingDataReader));
+    }
   }
 }

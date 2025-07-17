@@ -16,13 +16,13 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
   /// <summary>
-  /// Reads data from an <see cref="IDataReader"/> and converts it into <see cref="ObjectID"/> instances.
+  /// Reads data from an <see cref="DbDataReader"/> and converts it into <see cref="ObjectID"/> instances.
   /// The command whose data is converted must return an ID (as defined by the given <see cref="IRdbmsStoragePropertyDefinition"/>).
   /// </summary>
   public class ObjectIDReader : IObjectReader<ObjectID?>
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _columnOrdinalProvider; }
     }
 
-    public ObjectID? Read (IDataReader dataReader)
+    public ObjectID? Read (DbDataReader dataReader)
     {
       ArgumentNullException.ThrowIfNull(dataReader);
 
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         return null;
     }
 
-    public IEnumerable<ObjectID?> ReadSequence (IDataReader dataReader)
+    public IEnumerable<ObjectID?> ReadSequence (DbDataReader dataReader)
     {
       ArgumentNullException.ThrowIfNull(dataReader);
 

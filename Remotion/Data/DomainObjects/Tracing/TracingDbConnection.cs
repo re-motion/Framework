@@ -16,68 +16,25 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
   /// <summary>
-  /// Provides a wrapper for implementations of <see cref="IDbConnection"/>. The lifetime of the connection is traced using the
+  /// Provides a wrapper for implementations of <see cref="DbConnection"/>. The lifetime of the connection is traced using the
   /// <see cref="IPersistenceExtension"/> passed during the instantiation.
   /// </summary>
-  public class TracingDbConnection : IDbConnection
+  public sealed class TracingDbConnection : DbConnection
   {
-    #region IDbConnection implementation
-
-    public void ChangeDatabase (string databaseName)
-    {
-      _connection.ChangeDatabase(databaseName);
-    }
-
-    [AllowNull]
-    public string ConnectionString
-    {
-      get { return _connection.ConnectionString; }
-      set { _connection.ConnectionString = value; }
-    }
-
-    public int ConnectionTimeout
-    {
-      get { return _connection.ConnectionTimeout; }
-    }
-
-    public string Database
-    {
-      get { return _connection.Database; }
-    }
-
-    public ConnectionState State
-    {
-      get { return _connection.State; }
-    }
-
-    IDbTransaction IDbConnection.BeginTransaction ()
-    {
-      return BeginTransaction();
-    }
-
-    IDbTransaction IDbConnection.BeginTransaction (IsolationLevel isolationLevel)
-    {
-      return BeginTransaction(isolationLevel);
-    }
-
-    IDbCommand IDbConnection.CreateCommand ()
-    {
-      return CreateCommand();
-    }
-
-    #endregion
-
-    private readonly IDbConnection _connection;
+    private readonly DbConnection _connection;
     private readonly IPersistenceExtension _persistenceExtension;
     private readonly Guid _connectionID;
     private bool _isConnectionClosed;
 
-    public TracingDbConnection (IDbConnection connection, IPersistenceExtension persistenceExtension)
+    public TracingDbConnection (DbConnection connection, IPersistenceExtension persistenceExtension)
     {
       ArgumentNullException.ThrowIfNull(connection);
       ArgumentNullException.ThrowIfNull(persistenceExtension);
@@ -87,66 +44,167 @@ namespace Remotion.Data.DomainObjects.Tracing
       _connectionID = Guid.NewGuid();
     }
 
-    public IDbConnection WrappedInstance
+    public DbConnection WrappedInstance => _connection;
+    public Guid ConnectionID => _connectionID;
+    public IPersistenceExtension PersistenceExtension => _persistenceExtension;
+    public override int ConnectionTimeout => _connection.ConnectionTimeout;
+    public override string Database => _connection.Database;
+    public override string DataSource => _connection.DataSource;
+    protected override DbProviderFactory? DbProviderFactory => DbProviderFactories.GetFactory(_connection);
+    public override string ServerVersion => _connection.ServerVersion;
+    public override ConnectionState State => _connection.State;
+    public override bool CanCreateBatch => _connection.CanCreateBatch;
+
+    [AllowNull]
+    public override string ConnectionString
     {
-      get { return _connection; }
+      get => _connection.ConnectionString;
+      set => _connection.ConnectionString = value;
     }
 
-    public Guid ConnectionID
+    public override event StateChangeEventHandler? StateChange
     {
-      get { return _connectionID; }
+      add => _connection.StateChange += value;
+      remove => _connection.StateChange -= value;
     }
 
-    public IPersistenceExtension PersistenceExtension
+    protected override DbBatch CreateDbBatch ()
     {
-      get { return _persistenceExtension; }
+      return _connection.CreateBatch();
     }
 
-    public void Open ()
+    public override void ChangeDatabase (string databaseName)
+    {
+      _connection.ChangeDatabase(databaseName);
+    }
+
+    public override Task ChangeDatabaseAsync (string databaseName, CancellationToken cancellationToken = default)
+    {
+      return _connection.ChangeDatabaseAsync(databaseName, cancellationToken);
+    }
+
+    public override void EnlistTransaction (System.Transactions.Transaction? transaction)
+    {
+      _connection.EnlistTransaction(transaction);
+    }
+
+    public override DataTable GetSchema ()
+    {
+      return _connection.GetSchema();
+    }
+
+    public override Task<DataTable> GetSchemaAsync (CancellationToken cancellationToken = default)
+    {
+      return _connection.GetSchemaAsync(cancellationToken);
+    }
+
+    public override DataTable GetSchema (string collectionName)
+    {
+      return _connection.GetSchema(collectionName);
+    }
+
+    public override Task<DataTable> GetSchemaAsync (string collectionName, CancellationToken cancellationToken = default)
+    {
+      return _connection.GetSchemaAsync(collectionName, cancellationToken);
+    }
+
+    public override DataTable GetSchema (string collectionName, string?[] restrictionValues)
+    {
+      return _connection.GetSchema(collectionName, restrictionValues);
+    }
+
+    public override Task<DataTable> GetSchemaAsync (string collectionName, string?[] restrictionValues, CancellationToken cancellationToken = default)
+    {
+      return _connection.GetSchemaAsync(collectionName, restrictionValues, cancellationToken);
+    }
+
+    public new TracingDbTransaction BeginTransaction ()
+    {
+      return (TracingDbTransaction)base.BeginTransaction();
+    }
+
+    public new TracingDbTransaction BeginTransaction (IsolationLevel isolationLevel)
+    {
+      return (TracingDbTransaction)base.BeginTransaction(isolationLevel);
+    }
+
+    protected override TracingDbTransaction BeginDbTransaction (IsolationLevel isolationLevel)
+    {
+      var transaction = _connection.BeginTransaction(isolationLevel);
+      PersistenceExtension.TransactionBegan(_connectionID, transaction.IsolationLevel);
+      return CreateTracingTransaction(transaction);
+    }
+
+    protected override async ValueTask<DbTransaction> BeginDbTransactionAsync (IsolationLevel isolationLevel, CancellationToken cancellationToken)
+    {
+      var transaction = await _connection.BeginTransactionAsync(isolationLevel, cancellationToken);
+      PersistenceExtension.TransactionBegan(_connectionID, transaction.IsolationLevel);
+      return CreateTracingTransaction(transaction);
+    }
+
+    public new TracingDbCommand CreateCommand ()
+    {
+      return (TracingDbCommand)base.CreateCommand();
+    }
+
+    protected override TracingDbCommand CreateDbCommand ()
+    {
+      return CreateTracingCommand(_connection.CreateCommand());
+    }
+
+    public override void Open ()
     {
       _connection.Open();
       PersistenceExtension.ConnectionOpened(_connectionID);
     }
 
-    public void Close ()
+    public override async Task OpenAsync (CancellationToken cancellationToken)
+    {
+      await _connection.OpenAsync(cancellationToken);
+      PersistenceExtension.ConnectionOpened(_connectionID);
+    }
+
+    public override void Close ()
     {
       _connection.Close();
 
       TraceConnectionClosed();
     }
 
-    public void Dispose ()
+    public override async Task CloseAsync ()
     {
-      _connection.Dispose();
-
+      await _connection.CloseAsync();
       TraceConnectionClosed();
     }
 
-    public TracingDbTransaction BeginTransaction ()
+    protected override void OnStateChange (StateChangeEventArgs stateChange)
     {
-      var transaction = _connection.BeginTransaction();
-      PersistenceExtension.TransactionBegan(_connectionID, transaction.IsolationLevel);
-      return CreateTracingTransaction(transaction);
+      // Method is only implemented to satisfy rule that all virtual members should be re-implemented in the decorator.
+      throw new InvalidOperationException("State Change notifications are always triggered by the wrapped connection instance.");
     }
 
-    public TracingDbTransaction BeginTransaction (IsolationLevel isolationLevel)
+    protected override void Dispose (bool disposing)
     {
-      var transaction = _connection.BeginTransaction(isolationLevel);
-      PersistenceExtension.TransactionBegan(_connectionID, isolationLevel);
-      return CreateTracingTransaction(transaction);
+      if (disposing)
+      {
+        _connection.Dispose();
+
+        TraceConnectionClosed();
+      }
     }
 
-    public TracingDbCommand CreateCommand ()
+    public override async ValueTask DisposeAsync ()
     {
-      return CreateTracingCommand(_connection.CreateCommand());
+      await _connection.DisposeAsync();
+      TraceConnectionClosed();
     }
 
-    private TracingDbTransaction CreateTracingTransaction (IDbTransaction transaction)
+    private TracingDbTransaction CreateTracingTransaction (DbTransaction transaction)
     {
       return new TracingDbTransaction(transaction, _persistenceExtension, _connectionID);
     }
 
-    private TracingDbCommand CreateTracingCommand (IDbCommand command)
+    private TracingDbCommand CreateTracingCommand (DbCommand command)
     {
       return new TracingDbCommand(command, _persistenceExtension, _connectionID);
     }

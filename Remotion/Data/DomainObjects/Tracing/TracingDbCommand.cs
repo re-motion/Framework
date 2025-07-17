@@ -17,90 +17,27 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
   /// <summary>
-  /// Provides a wrapper for implementations of <see cref="IDbCommand"/>. Execution of the query is traced using the 
+  /// Provides a wrapper for implementations of <see cref="DbCommand"/>. Execution of the query is traced using the 
   /// <see cref="IPersistenceExtension"/> passed during the instantiation.
   /// </summary>
-  public class TracingDbCommand : IDbCommand
+  public sealed class TracingDbCommand : DbCommand
   {
-    #region IDbCommand implementation
-
-    public void Dispose ()
-    {
-      _command.Dispose();
-    }
-
-    public void Prepare ()
-    {
-      _command.Prepare();
-    }
-
-    public void Cancel ()
-    {
-      _command.Cancel();
-    }
-
-    public IDbDataParameter CreateParameter ()
-    {
-      return _command.CreateParameter();
-    }
-
-    IDbConnection? IDbCommand.Connection
-    {
-      get { return _command.Connection; }
-      set { _command.Connection = value; }
-    }
-
-    IDbTransaction? IDbCommand.Transaction
-    {
-      get { return _command.Transaction; }
-      set { _command.Transaction = value; }
-    }
-
-    [AllowNull]
-    public string CommandText
-    {
-      get { return _command.CommandText; }
-      set { _command.CommandText = value; }
-    }
-
-    public int CommandTimeout
-    {
-      get { return _command.CommandTimeout; }
-      set { _command.CommandTimeout = value; }
-    }
-
-    public CommandType CommandType
-    {
-      get { return _command.CommandType; }
-      set { _command.CommandType = value; }
-    }
-
-    public IDataParameterCollection Parameters
-    {
-      get { return _command.Parameters; }
-    }
-
-    public UpdateRowSource UpdatedRowSource
-    {
-      get { return _command.UpdatedRowSource; }
-      set { _command.UpdatedRowSource = value; }
-    }
-
-    #endregion
-
-    private readonly IDbCommand _command;
+    private readonly DbCommand _command;
     private readonly IPersistenceExtension _persistenceExtension;
     private readonly Guid _connectionID;
     private readonly Guid _queryID;
 
-    public TracingDbCommand (IDbCommand command, IPersistenceExtension persistenceExtension, Guid connectionID)
+    public TracingDbCommand (DbCommand command, IPersistenceExtension persistenceExtension, Guid connectionID)
     {
       ArgumentNullException.ThrowIfNull(command);
       ArgumentNullException.ThrowIfNull(persistenceExtension);
@@ -111,27 +48,56 @@ namespace Remotion.Data.DomainObjects.Tracing
       _queryID = Guid.NewGuid();
     }
 
-    public IDbCommand WrappedInstance
+    public DbCommand WrappedInstance => _command;
+    public Guid ConnectionID => _connectionID;
+    public Guid QueryID => _queryID;
+    public IPersistenceExtension PersistenceExtension => _persistenceExtension;
+    protected override DbParameterCollection DbParameterCollection => _command.Parameters;
+
+    [AllowNull]
+    public override string CommandText
     {
-      get { return _command; }
+      get => _command.CommandText;
+      set => _command.CommandText = value;
     }
 
-    public Guid ConnectionID
+    public override int CommandTimeout
     {
-      get { return _connectionID; }
+      get => _command.CommandTimeout;
+      set => _command.CommandTimeout = value;
     }
 
-    public Guid QueryID
+    public override CommandType CommandType
     {
-      get { return _queryID; }
+      get => _command.CommandType;
+      set => _command.CommandType = value;
     }
 
-    public IPersistenceExtension PersistenceExtension
+    public override bool DesignTimeVisible
     {
-      get { return _persistenceExtension; }
+      get => _command.DesignTimeVisible;
+      set => _command.DesignTimeVisible = value;
     }
 
-    public int ExecuteNonQuery ()
+    public override UpdateRowSource UpdatedRowSource
+    {
+      get => _command.UpdatedRowSource;
+      set => _command.UpdatedRowSource = value;
+    }
+
+    protected override DbConnection? DbConnection
+    {
+      get => _command.Connection;
+      set => _command.Connection = value;
+    }
+
+    protected override DbTransaction? DbTransaction
+    {
+      get => _command.Transaction;
+      set => _command.Transaction = value;
+    }
+
+    public override int ExecuteNonQuery ()
     {
       int numberOfRowsAffected = ExecuteWithProfiler(() => _command.ExecuteNonQuery());
       _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, numberOfRowsAffected);
@@ -139,23 +105,47 @@ namespace Remotion.Data.DomainObjects.Tracing
       return numberOfRowsAffected;
     }
 
-    public IDataReader ExecuteReader ()
+    public override async Task<int> ExecuteNonQueryAsync (CancellationToken cancellationToken)
     {
-      IDataReader dataReader = ExecuteWithProfiler(() => _command.ExecuteReader());
+      var numberOfRowsAffected = await ExecuteWithProfilerAsync(() => _command.ExecuteNonQueryAsync(cancellationToken));
+      _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, numberOfRowsAffected);
+      return numberOfRowsAffected;
+    }
+
+    public new TracingDataReader ExecuteReader ()
+    {
+      return (TracingDataReader)base.ExecuteReader();
+    }
+
+    public new TracingDataReader ExecuteReader (CommandBehavior behavior)
+    {
+      return (TracingDataReader)base.ExecuteReader(behavior);
+    }
+
+    protected override TracingDataReader ExecuteDbDataReader (CommandBehavior behavior)
+    {
+      DbDataReader dataReader = ExecuteWithProfiler(() => _command.ExecuteReader(behavior));
 
       return new TracingDataReader(dataReader, _persistenceExtension, _connectionID, _queryID);
     }
 
-    public IDataReader ExecuteReader (CommandBehavior behavior)
+    protected override async Task<DbDataReader> ExecuteDbDataReaderAsync (CommandBehavior behavior, CancellationToken cancellationToken)
     {
-      IDataReader dataReader = ExecuteWithProfiler(() => _command.ExecuteReader(behavior));
+      DbDataReader dataReader = await ExecuteWithProfilerAsync(() => _command.ExecuteReaderAsync(behavior, cancellationToken));
 
       return new TracingDataReader(dataReader, _persistenceExtension, _connectionID, _queryID);
     }
 
-    public object? ExecuteScalar ()
+    public override object? ExecuteScalar ()
     {
       object? result = ExecuteWithProfiler(() => _command.ExecuteScalar());
+      _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, 1);
+      return result;
+    }
+
+    public override async Task<object?> ExecuteScalarAsync (CancellationToken cancellationToken)
+    {
+      var result = await ExecuteWithProfilerAsync(() => _command.ExecuteScalarAsync(cancellationToken));
       _persistenceExtension.QueryCompleted(_connectionID, _queryID, TimeSpan.Zero, 1);
       return result;
     }
@@ -168,6 +158,39 @@ namespace Remotion.Data.DomainObjects.Tracing
     public void SetInnerTransaction (TracingDbTransaction? transaction)
     {
       _command.Transaction = transaction == null ? null : transaction.WrappedInstance;
+    }
+
+    public override void Prepare ()
+    {
+      _command.Prepare();
+    }
+
+    public override Task PrepareAsync (CancellationToken cancellationToken = default)
+    {
+      return _command.PrepareAsync(cancellationToken);
+    }
+
+    public override void Cancel ()
+    {
+      _command.Cancel();
+    }
+
+    protected override DbParameter CreateDbParameter ()
+    {
+      return _command.CreateParameter();
+    }
+
+    protected override void Dispose (bool disposing)
+    {
+      if (disposing)
+      {
+        _command.Dispose();
+      }
+    }
+
+    public override ValueTask DisposeAsync ()
+    {
+      return _command.DisposeAsync();
     }
 
     private T ExecuteWithProfiler<T> (Func<T> operation)
@@ -187,9 +210,27 @@ namespace Remotion.Data.DomainObjects.Tracing
       }
     }
 
-    private IDictionary<string, object?> ConvertToDictionary (IDataParameterCollection parameters)
+    private async Task<T> ExecuteWithProfilerAsync<T> (Func<Task<T>> operation)
     {
-      return parameters.Cast<IDbDataParameter>().ToDictionary(parameter => parameter.ParameterName, parameter => parameter.Value);
+      try
+      {
+        _persistenceExtension.QueryExecuting(_connectionID, _queryID, _command.CommandText, ConvertToDictionary(_command.Parameters));
+        var stopWatch = Stopwatch.StartNew();
+
+        T result = await operation();
+        _persistenceExtension.QueryExecuted(_connectionID, _queryID, stopWatch.Elapsed);
+        return result;
+      }
+      catch (Exception ex)
+      {
+        _persistenceExtension.QueryError(_connectionID, _queryID, ex);
+        throw;
+      }
+    }
+
+    private IDictionary<string, object?> ConvertToDictionary (DbParameterCollection parameters)
+    {
+      return parameters.Cast<DbParameter>().ToDictionary(parameter => parameter.ParameterName, parameter => parameter.Value);
     }
   }
 }

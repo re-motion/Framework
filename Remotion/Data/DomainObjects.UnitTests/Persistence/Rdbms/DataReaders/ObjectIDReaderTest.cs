@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
   [TestFixture]
   public class ObjectIDReaderTest : StandardMappingTest
   {
-    private Mock<IDataReader> _dataReaderStrictMock;
+    private Mock<DbDataReader> _dataReaderStrictMock;
     private Mock<IRdbmsStoragePropertyDefinition> _idPropertyStrictMock;
     private Mock<IColumnOrdinalProvider> _columnOrdinalProviderStub;
 
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       base.SetUp();
 
-      _dataReaderStrictMock = new Mock<IDataReader>(MockBehavior.Strict);
+      _dataReaderStrictMock = new Mock<DbDataReader>(MockBehavior.Strict);
       _idPropertyStrictMock = new Mock<IRdbmsStoragePropertyDefinition>(MockBehavior.Strict);
       _columnOrdinalProviderStub = new Mock<IColumnOrdinalProvider>();
 

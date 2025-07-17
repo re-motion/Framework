@@ -16,13 +16,14 @@
 //
 using System;
 using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 
 /// <summary>
-/// Adjusts the <see cref="IDbDataParameter.Size"/> of the created max-length <see cref="DbType.String"/> or <see cref="DbType.AnsiString"/> <see cref="IDbDataParameter"/>,
+/// Adjusts the <see cref="DbParameter.Size"/> of the created max-length <see cref="DbType.String"/> or <see cref="DbType.AnsiString"/> <see cref="DbParameter"/>,
 /// so that it is compatible with MSSQL fulltext indexing.
 /// </summary>
 public class SqlFulltextDataParameterDefinitionDecorator : IDataParameterDefinition
@@ -41,7 +42,7 @@ public class SqlFulltextDataParameterDefinitionDecorator : IDataParameterDefinit
     return InnerDataParameterDefinition.GetParameterValue(value);
   }
 
-  public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
+  public DbParameter CreateDataParameter (DbCommand command, string parameterName, object parameterValue)
   {
     ArgumentNullException.ThrowIfNull(command);
     ArgumentException.ThrowIfNullOrEmpty(parameterName);

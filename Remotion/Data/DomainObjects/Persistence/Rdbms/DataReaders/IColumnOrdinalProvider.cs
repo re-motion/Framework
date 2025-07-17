@@ -15,17 +15,17 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
   /// <summary>
   /// <see cref="IColumnOrdinalProvider"/> defines the API for all implementations that calculate the index of a 
-  /// <see cref="ColumnDefinition"/> in the list of values read by a specified <see cref="IDataReader"/>.
+  /// <see cref="ColumnDefinition"/> in the list of values read by a specified <see cref="DbDataReader"/>.
   /// </summary>
   public interface IColumnOrdinalProvider
   {
-    int GetOrdinal (ColumnDefinition columnDefinition, IDataReader dataReader);
+    int GetOrdinal (ColumnDefinition columnDefinition, DbDataReader dataReader);
   }
 }

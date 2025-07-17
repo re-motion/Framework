@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       get { return _comparedColumnsSpecification; }
     }
 
-    public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
+    public override DbCommand Create (IDbCommandFactory dbCommandFactory)
     {
       ArgumentNullException.ThrowIfNull(dbCommandFactory);
 
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       return command;
     }
 
-    protected virtual void AppendUpdateClause (StringBuilder statement, IDbCommand command, IUpdatedColumnsSpecification updatedColumnsSpecification)
+    protected virtual void AppendUpdateClause (StringBuilder statement, DbCommand command, IUpdatedColumnsSpecification updatedColumnsSpecification)
     {
       ArgumentNullException.ThrowIfNull(statement);
       ArgumentNullException.ThrowIfNull(updatedColumnsSpecification);

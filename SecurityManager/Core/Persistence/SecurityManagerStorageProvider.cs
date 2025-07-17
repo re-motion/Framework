@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Persistence
         string connectionString,
         IPersistenceExtension persistenceExtension,
         IRdbmsProviderCommandFactory commandFactory,
-        Func<IDbConnection> connectionFactory)
+        Func<DbConnection> connectionFactory)
         : base(
             definition,
             connectionString,

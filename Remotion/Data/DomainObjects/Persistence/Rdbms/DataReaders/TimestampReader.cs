@@ -16,13 +16,13 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
   /// <summary>
-  /// Reads data from an <see cref="IDataReader"/> and converts it into timestamp instances.
+  /// Reads data from an <see cref="DbDataReader"/> and converts it into timestamp instances.
   /// The command whose data is converted must return an ID and a timestamp (as defined by the given <see cref="IRdbmsStoragePropertyDefinition"/>
   /// instances).
   /// </summary>
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _columnOrdinalProvider; }
     }
 
-    public Tuple<ObjectID, object>? Read (IDataReader dataReader)
+    public Tuple<ObjectID, object>? Read (DbDataReader dataReader)
     {
       ArgumentNullException.ThrowIfNull(dataReader);
 
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         return null;
     }
 
-    public IEnumerable<Tuple<ObjectID, object>?> ReadSequence (IDataReader dataReader)
+    public IEnumerable<Tuple<ObjectID, object>?> ReadSequence (DbDataReader dataReader)
     {
       ArgumentNullException.ThrowIfNull(dataReader);
 

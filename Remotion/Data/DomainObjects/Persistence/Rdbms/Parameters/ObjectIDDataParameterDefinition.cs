@@ -12,7 +12,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Utilities;
@@ -20,7 +20,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 
 /// <summary>
-/// Can create <see cref="IDbDataParameter"/> instances for <see cref="ObjectID"/> parameter values that refer to <see cref="DomainObject"/>s stored with the same
+/// Can create <see cref="DbParameter"/> instances for <see cref="ObjectID"/> parameter values that refer to <see cref="DomainObject"/>s stored with the same
 /// <see cref="StorageProviderDefinition"/>.
 /// </summary>
 public class ObjectIDDataParameterDefinition : IDataParameterDefinition
@@ -52,7 +52,7 @@ public class ObjectIDDataParameterDefinition : IDataParameterDefinition
   }
 
   /// <inheritdoc />
-  public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
+  public DbParameter CreateDataParameter (DbCommand command, string parameterName, object parameterValue)
   {
     ArgumentNullException.ThrowIfNull(command);
     ArgumentException.ThrowIfNullOrEmpty(parameterName);

@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using JetBrains.Annotations;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
@@ -75,10 +76,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     [Test]
     public void Create_UsesDbCommandFactoryToCreateQueryCommand ()
     {
-      var dataParameterCollectionStrictMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
+      var dataParameterCollectionStrictMock = new Mock<DbParameterCollection>(MockBehavior.Strict);
 
-      var dbCommandStub = new Mock<IDbCommand>();
-      dbCommandStub.Setup(stub => stub.Parameters).Returns(dataParameterCollectionStrictMock.Object);
+      var dbCommandStub = new Mock<DbCommand>();
+      dbCommandStub.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(dataParameterCollectionStrictMock.Object);
       dbCommandStub.SetupProperty(stub => stub.CommandText);
 
       var dbCommandFactoryStub = new Mock<IDbCommandFactory>();
@@ -96,12 +97,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     [Test]
     public void Create_TransfersCommandTextToQueryCommand ()
     {
-      var dataParameterCollectionStrictMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
+      var dataParameterCollectionStrictMock = new Mock<DbParameterCollection>(MockBehavior.Strict);
 
       _valueParameterDefinitionMock.Setup(mock => mock.GetParameterValue(5)).Returns(5);
 
-      var dbCommandStub = new Mock<IDbCommand>();
-      dbCommandStub.Setup(stub => stub.Parameters).Returns(dataParameterCollectionStrictMock.Object);
+      var dbCommandStub = new Mock<DbCommand>();
+      dbCommandStub.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(dataParameterCollectionStrictMock.Object);
       dbCommandStub.SetupProperty(stub => stub.CommandText);
 
       var dbCommandFactoryStub = new Mock<IDbCommandFactory>();
@@ -119,12 +120,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     [Test]
     public void Create_ReplacesTextParameter ()
     {
-      var dataParameterCollectionStrictMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
+      var dataParameterCollectionStrictMock = new Mock<DbParameterCollection>(MockBehavior.Strict);
 
       _valueParameterDefinitionMock.Setup(mock => mock.GetParameterValue(5)).Returns(5);
 
-      var dbCommandStub = new Mock<IDbCommand>();
-      dbCommandStub.Setup(stub => stub.Parameters).Returns(dataParameterCollectionStrictMock.Object);
+      var dbCommandStub = new Mock<DbCommand>();
+      dbCommandStub.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(dataParameterCollectionStrictMock.Object);
       dbCommandStub.SetupProperty(stub => stub.CommandText);
 
       var dbCommandFactoryStub = new Mock<IDbCommandFactory>();
@@ -142,16 +143,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     [Test]
     public void Create_AddsValueParameter ()
     {
-      var dataParameterCollectionStrictMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
+      var dataParameterCollectionStrictMock = new Mock<DbParameterCollection>(MockBehavior.Strict);
 
-      var dbCommandStub = new Mock<IDbCommand>();
-      dbCommandStub.Setup(stub => stub.Parameters).Returns(dataParameterCollectionStrictMock.Object);
+      var dbCommandStub = new Mock<DbCommand>();
+      dbCommandStub.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(dataParameterCollectionStrictMock.Object);
       dbCommandStub.SetupProperty(stub => stub.CommandText);
 
       var dbCommandFactoryStub = new Mock<IDbCommandFactory>();
       dbCommandFactoryStub.Setup(stub => stub.CreateDbCommand()).Returns(dbCommandStub.Object);
 
-      var dbDataParameterStub = new Mock<IDbDataParameter>();
+      var dbDataParameterStub = new Mock<DbParameter>();
 
       _valueParameterDefinitionMock.Setup(mock => mock.GetParameterValue(5)).Returns(5);
       _valueParameterDefinitionMock.Setup(mock => mock.CreateDataParameter(dbCommandStub.Object, _valueQueryParameter.Name, 5))
@@ -189,12 +190,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
                       #noTextRepresentation End
                       """;
 
-      var dataParameterCollectionStrictMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
+      var dataParameterCollectionStrictMock = new Mock<DbParameterCollection>(MockBehavior.Strict);
       for (int i = 0; i < parameterTextRepresentations.Count; i++)
-        dataParameterCollectionStrictMock.Setup(mock => mock.Add(It.IsAny<IDbDataParameter>())).Returns(i);
+        dataParameterCollectionStrictMock.Setup(mock => mock.Add(It.IsAny<DbParameter>())).Returns(i);
 
-      var dbCommandStub = new Mock<IDbCommand>();
-      dbCommandStub.Setup(stub => stub.Parameters).Returns(dataParameterCollectionStrictMock.Object);
+      var dbCommandStub = new Mock<DbCommand>();
+      dbCommandStub.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(dataParameterCollectionStrictMock.Object);
       dbCommandStub.SetupProperty(stub => stub.CommandText);
 
       var dbCommandFactoryStub = new Mock<IDbCommandFactory>();

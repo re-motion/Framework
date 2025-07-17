@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
@@ -32,9 +34,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     private Mock<IDbCommandBuilder> _dbCommandBuilder1Mock;
     private Mock<IDbCommandBuilder> _dbCommandBuilder2Mock;
     private MultiObjectIDLoadCommand _command;
-    private Mock<IDbCommand> _dbCommandMock1;
-    private Mock<IDbCommand> _dbCommandMock2;
-    private Mock<IDataReader> _dataReaderMock;
+    private Mock<DbCommand> _dbCommandMock1;
+    private Mock<DbCommand> _dbCommandMock2;
+    private Mock<DbDataReader> _dataReaderMock;
     private Mock<IObjectReader<ObjectID>> _objectIDReaderStub;
     private ObjectID[] _fakeResult;
     private ObjectID _objectID1;
@@ -48,9 +50,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _objectIDReaderStub = new Mock<IObjectReader<ObjectID>>();
 
-      _dbCommandMock1 = new Mock<IDbCommand>(MockBehavior.Strict);
-      _dbCommandMock2 = new Mock<IDbCommand>(MockBehavior.Strict);
-      _dataReaderMock = new Mock<IDataReader>(MockBehavior.Strict);
+      _dbCommandMock1 = new Mock<DbCommand>(MockBehavior.Strict);
+      _dbCommandMock1.Protected().Setup("Dispose", [false]); // for Finalizer
+      _dbCommandMock2 = new Mock<DbCommand>(MockBehavior.Strict);
+      _dbCommandMock2.Protected().Setup("Dispose", [false]); // for Finalizer
+      _dataReaderMock = new Mock<DbDataReader>(MockBehavior.Strict);
 
       _command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock.Object, _dbCommandBuilder2Mock.Object }, _objectIDReaderStub.Object);
 
@@ -89,12 +93,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dataReaderMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.Dispose())
+          .Protected()
+          .Setup("Dispose", [true])
           .Verifiable();
 
       _dbCommandMock1
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.Dispose())
+          .Protected()
+          .Setup("Dispose", [true])
           .Verifiable();
 
       var command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock.Object }, _objectIDReaderStub.Object);
@@ -117,9 +123,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandBuilder1Mock.Setup(mock => mock.Create(executionContextStub.Object)).Returns(_dbCommandMock1.Object).Verifiable();
       _dbCommandBuilder2Mock.Setup(mock => mock.Create(executionContextStub.Object)).Returns(_dbCommandMock2.Object).Verifiable();
-      _dbCommandMock1.Setup(mock => mock.Dispose()).Verifiable();
-      _dbCommandMock2.Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock1.Protected().Setup("Dispose", [true]).Verifiable();
+      _dbCommandMock2.Protected().Setup("Dispose", [true]).Verifiable();
+      _dataReaderMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       executionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
       executionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock2.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
@@ -134,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandBuilder2Mock.Verify();
       _dbCommandMock1.Verify();
       _dbCommandMock2.Verify();
-      _dataReaderMock.Verify(mock => mock.Dispose(), Times.Exactly(2));
+      _dataReaderMock.Protected().Verify("Dispose", Times.Exactly(2), [true]);
       Assert.That(result, Is.EqualTo(new[] { _objectID1, _objectID1 }));
     }
 
@@ -163,12 +169,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dataReaderMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.Dispose())
+          .Protected()
+          .Setup("Dispose", [true])
           .Verifiable();
 
       _dbCommandMock1
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.Dispose())
+          .Protected()
+          .Setup("Dispose", [true])
           .Verifiable();
 
       var command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock.Object }, _objectIDReaderStub.Object);
@@ -191,9 +199,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandBuilder1Mock.Setup(mock => mock.Create(executionContextStub.Object)).Returns(_dbCommandMock1.Object).Verifiable();
       _dbCommandBuilder2Mock.Setup(mock => mock.Create(executionContextStub.Object)).Returns(_dbCommandMock2.Object).Verifiable();
-      _dbCommandMock1.Setup(mock => mock.Dispose()).Verifiable();
-      _dbCommandMock2.Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock1.Protected().Setup("Dispose", [true]).Verifiable();
+      _dbCommandMock2.Protected().Setup("Dispose", [true]).Verifiable();
+      _dataReaderMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       executionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
       executionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock2.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
@@ -208,7 +216,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandBuilder2Mock.Verify();
       _dbCommandMock1.Verify();
       _dbCommandMock2.Verify();
-      _dataReaderMock.Verify(mock => mock.Dispose(), Times.Exactly(2));
+      _dataReaderMock.Protected().Verify("Dispose", Times.Exactly(2), [true]);
       Assert.That(result, Is.EqualTo(new[] { _objectID1, _objectID1 }));
     }
   }
