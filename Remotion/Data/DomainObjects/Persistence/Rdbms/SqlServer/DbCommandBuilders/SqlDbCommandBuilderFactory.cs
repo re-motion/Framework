@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders
@@ -116,12 +117,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
           _sqlDialect);
     }
 
-    public IDbCommandBuilder CreateForQuery (string statement, IEnumerable<QueryParameterWithDataParameterDefinition> parametersWithType)
+    public IDbCommandBuilder CreateForQuery (QueryStatementType statementType, string statement, IEnumerable<QueryParameterWithDataParameterDefinition> parametersWithType)
     {
       ArgumentNullException.ThrowIfNull(statement);
       ArgumentNullException.ThrowIfNull(parametersWithType);
 
-      return new SqlQueryDbCommandBuilder(statement, parametersWithType.ToArray(), _sqlDialect);
+      return statementType switch
+      {
+          QueryStatementType.Text
+              => new QueryDbCommandBuilder(statement, parametersWithType.ToArray(), _sqlDialect),
+          QueryStatementType.StoredProcedure
+              => new StoredProcedureDbCommandBuilder(statement, parametersWithType, _sqlDialect),
+          _
+              => throw new NotSupportedException($"{nameof(QueryStatementType)} '{statementType}' is not supported.)")
+      };
     }
 
     public IDbCommandBuilder CreateForInsert (TableDefinition tableDefinition, IEnumerable<ColumnValue> insertedColumns)

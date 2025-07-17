@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 
@@ -159,12 +160,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     }
 
     [Test]
-    public void CreateForQuery ()
+    public void CreateForQuery_TextStatementType_ReturnsSqlQueryDbCommandBuilder ()
     {
-      var result = _factory.CreateForQuery("statement", new QueryParameterWithDataParameterDefinition[0]);
+      var result = _factory.CreateForQuery(QueryStatementType.Text, "statement", new QueryParameterWithDataParameterDefinition[0]);
 
-      Assert.That(result, Is.TypeOf(typeof(SqlQueryDbCommandBuilder)));
-      Assert.That(((SqlQueryDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub.Object));
+      Assert.That(result, Is.TypeOf(typeof(QueryDbCommandBuilder)));
+      Assert.That(((QueryDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub.Object));
+    }
+
+    [Test]
+    public void CreateForQuery_StoredProcedureStatementType_ReturnsStoredProcedureDbCommandBuilder ()
+    {
+      var result = _factory.CreateForQuery(QueryStatementType.StoredProcedure, "statement", new QueryParameterWithDataParameterDefinition[0]);
+
+      Assert.That(result, Is.TypeOf<StoredProcedureDbCommandBuilder>());
+      Assert.That(((StoredProcedureDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub.Object));
     }
 
     [Test]

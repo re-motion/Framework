@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 {
@@ -43,7 +44,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IEnumerable<ColumnValue> comparedColumnValue,
         IEnumerable<OrderedColumn> orderedColumns);
 
-    IDbCommandBuilder CreateForQuery (string statement, IEnumerable<QueryParameterWithDataParameterDefinition> parametersWithType);
+    IDbCommandBuilder CreateForQuery (
+        QueryStatementType statementType,
+        string statement,
+        IEnumerable<QueryParameterWithDataParameterDefinition> parametersWithType);
 
     IDbCommandBuilder CreateForInsert (TableDefinition tableDefinition, IEnumerable<ColumnValue> insertedColumns);
     IDbCommandBuilder CreateForUpdate (
