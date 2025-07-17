@@ -45,6 +45,7 @@ public class QueryDefinition
   private readonly string _id;
 
   private readonly string _statement;
+  private readonly QueryStatementType _statementType;
   private readonly QueryType _queryType;
   private readonly Type? _collectionType;
   private readonly StorageProviderDefinition _storageProviderDefinition;
@@ -68,6 +69,8 @@ public class QueryDefinition
   /// </param>
   /// <param name="queryType">
   /// One of the <see cref="QueryType"/> enumeration constants.</param>
+  /// <param name="statementType">
+  /// One of the <see cref="QueryStatementType"/> enumeration constants.</param>
   /// <param name="collectionType">If <paramref name="queryType"/> specifies a collection to be returned, <paramref name="collectionType"/> specifies the type of the collection.
   /// If <paramref name="queryType"/> is <see langword="null"/>, <see cref="DomainObjectCollection"/> is used.
   /// </param>
@@ -90,6 +93,7 @@ public class QueryDefinition
       StorageProviderDefinition storageProviderDefinition,
       string statement,
       QueryType queryType,
+      QueryStatementType statementType,
       Type? collectionType = null,
       IReadOnlyDictionary<string, object>? metaData = null)
   {
@@ -119,6 +123,7 @@ public class QueryDefinition
     _storageProviderDefinition = storageProviderDefinition;
     _statement = statement;
     _queryType = queryType;
+    _statementType = statementType;
     _collectionType = collectionType;
     _metadata = metaData ?? s_emptyMetadata;
   }
@@ -157,6 +162,14 @@ public class QueryDefinition
   public QueryType QueryType
   {
     get { return _queryType; }
+  }
+
+  /// <summary>
+  /// Gets the <see cref="QueryStatementType"/> of this <b>QueryDefinition</b>.
+  /// </summary>
+  public QueryStatementType StatementType
+  {
+    get { return _statementType; }
   }
 
   /// <summary>

@@ -105,6 +105,14 @@ namespace Remotion.Data.DomainObjects.Queries
     }
 
     /// <summary>
+    /// Gets the <see cref="Configuration.QueryDefinition.StatementType"/> of the associated <see cref="Configuration.QueryDefinition"/>.
+    /// </summary>
+    public QueryStatementType StatementType
+    {
+      get { return _definition.StatementType; }
+    }
+
+    /// <summary>
     /// Gets the <see cref="Configuration.QueryDefinition.Statement"/> of the associated <see cref="Configuration.QueryDefinition"/>.
     /// </summary>
     public string Statement

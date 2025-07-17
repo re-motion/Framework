@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Queries
 
     private static QueryDefinition CopyQueryDefinition (this IQuery template)
     {
-      return new QueryDefinition(template.ID, template.StorageProviderDefinition, template.Statement, template.QueryType, template.CollectionType);
+      return new QueryDefinition(template.ID, template.StorageProviderDefinition, template.Statement, template.QueryType, template.StatementType, template.CollectionType);
     }
 
     private static QueryParameterCollection CopyQueryParameters (this IQuery template, Dictionary<object, object?> parameterValues)

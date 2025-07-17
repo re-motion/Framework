@@ -61,6 +61,11 @@ namespace Remotion.Data.DomainObjects.Queries
     QueryType QueryType { get; }
 
     /// <summary>
+    /// Gets the <see cref="Configuration.QueryStatementType"/> of the query.
+    /// </summary>
+    QueryStatementType StatementType { get; }
+
+    /// <summary>
     /// Gets the <see cref="QueryParameter"/>s that are used to execute the query.
     /// </summary>
     QueryParameterCollection Parameters { get; }

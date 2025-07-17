@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
       if ((queryType is QueryType.CustomReadOnly or QueryType.CustomReadWrite) && collectionType != null)
         throw CreateQueryConfigurationException("A custom query '{0}' must not specify a collectionType.", queryID);
 
-      return new QueryDefinition(queryID, storageProviderDefinition, statement, queryType, collectionType);
+      return new QueryDefinition(queryID, storageProviderDefinition, statement, queryType, QueryStatementType.Text, collectionType);
     }
 
     private string FormatXPath (string xPath, ConfigurationNamespaceManager namespaceManager)
