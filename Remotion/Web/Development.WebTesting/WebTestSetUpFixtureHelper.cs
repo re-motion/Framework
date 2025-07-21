@@ -22,7 +22,9 @@ using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies;
+using Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -65,6 +67,8 @@ namespace Remotion.Web.Development.WebTesting
     private readonly string _logDirectory;
     private readonly bool _testSiteStartupCheckEnabled;
     private readonly Uri _testSiteStartupCheckUrl;
+
+    private CustomDockerContainerWrapper? _remoteBrowserDockerContainer;
 
     [PublicAPI]
     protected WebTestSetUpFixtureHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
@@ -125,6 +129,10 @@ namespace Remotion.Web.Development.WebTesting
           throw;
         }
       }
+
+      var remoteDriverSettings = WebTestSettings.Current;
+      if (remoteDriverSettings.RemoteDriver.HostRemoteDriverInDocker)
+        HostDriverBrowserInDocker(remoteDriverSettings);
     }
 
     /// <summary>
@@ -133,11 +141,48 @@ namespace Remotion.Web.Development.WebTesting
     public void OnTearDown ()
     {
       UnhostWebApplication();
+      _remoteBrowserDockerContainer?.Dispose();
     }
 
     private void HostWebApplication ()
     {
       _hostingStrategy.DeployAndStartWebApplication();
+    }
+
+    private void HostDriverBrowserInDocker (IWebTestSettings webTestSettings)
+    {
+      var remoteDriverSettings = webTestSettings.RemoteDriver;
+      var docker = new DockerCommandLineClient(TimeSpan.FromMinutes(3), _loggerFactory);
+
+      var imageNameWithPlaceholders = remoteDriverSettings.DockerImageName ?? "selenium/standalone-{browsername}:{browserversion}.0";
+      var imageName = ReplaceDockerImageNamePlaceholders(imageNameWithPlaceholders, webTestSettings);
+
+      var dockerRunSettings = new DockerRunSettings
+                              {
+                                  ImageName = imageName,
+                                  CustomArguments = remoteDriverSettings.DockerCustomArguments
+                              };
+
+      _remoteBrowserDockerContainer = new CustomDockerContainerWrapper(docker, _loggerFactory, dockerRunSettings);
+      _remoteBrowserDockerContainer.Run();
+
+      VerifyWebApplicationStarted(new Uri(webTestSettings.RemoteDriver.Url), _verifyWebApplicationStartedTimeout);
+    }
+
+    private string ReplaceDockerImageNamePlaceholders (string dockerImageName, IWebTestSettings webTestSettings)
+    {
+      var browserName = webTestSettings.BrowserName.ToLower();
+      var browserVersion = browserName switch
+      {
+          "chrome" => WebTestConfigurationFactory.LatestTestedChromeVersion,
+          "edge" => WebTestConfigurationFactory.LatestTestedEdgeVersion,
+          "firefox" => WebTestConfigurationFactory.LatestTestedFirefoxVersion,
+          _ => ""
+      };
+
+      return dockerImageName
+          .Replace("{browsername}", browserName, StringComparison.OrdinalIgnoreCase)
+          .Replace("{browserversion}", browserVersion, StringComparison.OrdinalIgnoreCase);
     }
 
     private void VerifyWebApplicationStarted (Uri webApplicationRoot, TimeSpan applicationPingTimeout)

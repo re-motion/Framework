@@ -30,6 +30,7 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories.Remote;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 {
@@ -113,6 +114,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory(this, LoggerFactory);
 
+    /// <inheritdoc />
+    /// <remarks>
+    /// Changes made here might also need to be made in <see cref="RemoteBrowserFactory"/>.<see cref="RemoteBrowserFactory.CreateChromeOptions"/>.
+    /// </remarks>
     public virtual ExtendedChromeOptions CreateChromeOptions ()
     {
       var userDirectory = CreateUnusedUserDirectoryPath();

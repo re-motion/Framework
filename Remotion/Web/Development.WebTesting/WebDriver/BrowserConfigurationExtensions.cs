@@ -21,6 +21,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Remote;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver
 {
@@ -37,7 +38,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     {
       ArgumentNullException.ThrowIfNull(browserConfiguration);
 
-      return browserConfiguration is IChromeConfiguration;
+      return browserConfiguration is IChromeConfiguration
+          || (browserConfiguration is RemoteBrowserConfiguration remoteBrowserConfiguration && remoteBrowserConfiguration.Browser.IsChrome());
     }
 
     /// <summary>
@@ -48,7 +50,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     {
       ArgumentNullException.ThrowIfNull(browserConfiguration);
 
-      return browserConfiguration is IEdgeConfiguration;
+      return browserConfiguration is IEdgeConfiguration
+          || (browserConfiguration is RemoteBrowserConfiguration remoteBrowserConfiguration && remoteBrowserConfiguration.Browser.IsEdge());
     }
 
     /// <summary>
@@ -59,7 +62,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     {
       ArgumentNullException.ThrowIfNull(browserConfiguration);
 
-      return browserConfiguration is IChromeConfiguration || browserConfiguration is IEdgeConfiguration;
+      return browserConfiguration.IsChrome() || browserConfiguration.IsEdge();
     }
 
     /// <summary>
@@ -70,7 +73,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     {
       ArgumentNullException.ThrowIfNull(browserConfiguration);
 
-      return browserConfiguration is IFirefoxConfiguration;
+      return browserConfiguration is IFirefoxConfiguration
+          || (browserConfiguration is RemoteBrowserConfiguration remoteBrowserConfiguration && remoteBrowserConfiguration.Browser.IsFirefox());
     }
 
     /// <summary>

@@ -50,6 +50,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _chrome;
     private readonly ConfigurationProperty _edge;
     private readonly ConfigurationProperty _testSiteLayoutProperty;
+    private readonly ConfigurationProperty _remoteDriverProperty;
     private readonly ConfigurationProperty _headless;
     private ILoggerFactory? _loggerFactory;
 
@@ -86,6 +87,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _requestErrorDetectionStrategyProperty = new ConfigurationProperty("requestErrorDetectionStrategy", typeof(string), "None");
       _hostingProperty = new ConfigurationProperty("hosting", typeof(ProviderSettings));
       _testSiteLayoutProperty = new ConfigurationProperty("testSiteLayout", typeof(TestSiteLayoutConfigurationElement));
+      _remoteDriverProperty = new ConfigurationProperty("remoteDriver", typeof(RemoteDriverConfigurationElement));
       _chrome = new ConfigurationProperty("chrome", typeof(ChromiumConfigurationElement));
       _edge = new ConfigurationProperty("edge", typeof(ChromiumConfigurationElement));
       _headless = new ConfigurationProperty("headless", typeof(bool), false);
@@ -110,6 +112,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _cleanUpUnmatchedDownloadedFiles,
                         _requestErrorDetectionStrategyProperty,
                         _hostingProperty,
+                        _remoteDriverProperty,
                         _testSiteLayoutProperty,
                         _chrome,
                         _edge,
@@ -295,6 +298,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     }
 
     /// <summary>
+    /// Contains remote driver settings.
+    /// </summary>
+    public RemoteDriverConfigurationElement RemoteDriver
+    {
+      get { return (RemoteDriverConfigurationElement)this[_remoteDriverProperty]; }
+    }
+
+    /// <summary>
     /// Run the web browser without a user interface (headless mode).
     /// </summary>
     public bool Headless
@@ -305,6 +316,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     IWebTestChromiumSettings IWebTestSettings.Chrome => Chrome;
 
     IWebTestChromiumSettings IWebTestSettings.Edge => Edge;
+
+    IWebTestRemoteDriverSettings IWebTestSettings.RemoteDriver => RemoteDriver;
 
     IWebTestHostingSettings IWebTestSettings.Hosting => new WebTestHostingAdapter(HostingProviderSettings);
 
