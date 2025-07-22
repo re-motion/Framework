@@ -48,19 +48,24 @@
     <statement>select sum(quantity) from [Order] where [CustomerID] = @customerID;</statement>
   </query>
 
-  <query id="TestQueryDefinitionWithQueryTypeCollectionReadWrite" type="collection-readwrite">
+  <query id="TestQueryDefinitionWithQueryTypeCollectionReadWrite" type="collection-readwrite" statementType="text">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;</statement>
   </query>
 
-  <query id="TestQueryDefinitionWithQueryTypeScalarReadWrite" type="scalar-readwrite">
+  <query id="TestQueryDefinitionWithQueryTypeScalarReadWrite" type="scalar-readwrite" statementType="text">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select 0;</statement>
   </query>
 
-  <query id="TestQueryDefinitionWithQueryTypeCustomReadWrite" type="custom-readwrite">
+  <query id="TestQueryDefinitionWithQueryTypeCustomReadWrite" type="custom-readwrite" statementType="text">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>select 0;</statement>
   </query>
 
+  <query id="TestStoredProcedureQuery" type="collection-readonly" statementType="stored-procedure">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>rpf_testSPQuery</statement>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
+  </query>
 </queries>

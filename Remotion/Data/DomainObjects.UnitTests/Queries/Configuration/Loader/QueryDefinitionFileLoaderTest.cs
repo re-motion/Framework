@@ -62,7 +62,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
                                 TestQueryFactory.CreateOrderSumQueryDefinitionWithQueryTypeCustomReadOnly(StorageSettings),
                                 TestQueryFactory.CreateTestQueryWithQueryTypeCollectionReadWrite(StorageSettings),
                                 TestQueryFactory.CreateTestQueryDefinitionWithQueryTypeScalarReadWrite(StorageSettings),
-                                TestQueryFactory.CreateTestQueryWithQueryTypeCustomReadWrite(StorageSettings)
+                                TestQueryFactory.CreateTestQueryWithQueryTypeCustomReadWrite(StorageSettings),
+                                TestQueryFactory.CreateTestStoredProcedureQuery(StorageSettings),
                             };
 
       QueryDefinitionChecker checker = new QueryDefinitionChecker();

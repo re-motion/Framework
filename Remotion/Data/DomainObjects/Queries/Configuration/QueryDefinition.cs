@@ -93,7 +93,7 @@ public class QueryDefinition
       StorageProviderDefinition storageProviderDefinition,
       string statement,
       QueryType queryType,
-      QueryStatementType statementType,
+      QueryStatementType statementType = QueryStatementType.Text,
       Type? collectionType = null,
       IReadOnlyDictionary<string, object>? metaData = null)
   {
