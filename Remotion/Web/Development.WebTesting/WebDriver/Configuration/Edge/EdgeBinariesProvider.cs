@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
   {
     private const string c_webDriverFolderName = @"Remotion.Web.Development.WebTesting.WebDriver\msedgedriver";
 
-    private const string c_driverDownloadUrlFormat = "https://msedgedriver.azureedge.net/{0}/edgedriver_win32.zip";
+    private const string c_driverDownloadUrlFormat = "https://msedgedriver.microsoft.com/{0}/edgedriver_win32.zip";
 
     private const string c_driverExecutableName = "msedgedriver.exe";
     private const string c_edgeExecutableName = "msedge.exe";
