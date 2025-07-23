@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           .Select(queryParameter => GetQueryParameterWithDataParameterDefinition(queryParameter, query))
           .ToList();
 
-      return _dbCommandBuilderFactory.CreateForQuery(query.Statement, queryParametersWithType);
+      return _dbCommandBuilderFactory.CreateForQuery(query.StatementType, query.Statement, queryParametersWithType);
     }
   }
 }

@@ -152,9 +152,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 
 
     [Test]
-    public void GetStoredProcedureResult ()
+    [TestCase("StoredProcedureQuery_AsQuery")]
+    [TestCase("StoredProcedureQuery_AsStoredProcedure")]
+    public void GetStoredProcedureResult (string queryID)
     {
-      var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQuery"))).ToCustomCollection();
+      var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQuery(Queries.GetMandatory(queryID))).ToCustomCollection();
 
       Assert.That(orders, Is.Not.Null, "OrderCollection is null");
       Assert.That(orders.Count, Is.EqualTo(2), "Order count");
@@ -163,9 +165,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     }
 
     [Test]
-    public void GetStoredProcedureResultWithParameter ()
+    [TestCase("StoredProcedureQueryWithParameter_AsQuery")]
+    [TestCase("StoredProcedureQueryWithParameter_AsStoredProcedure")]
+    public void GetStoredProcedureResultWithParameter (string queryID)
     {
-      var query = QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQueryWithParameter"));
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory(queryID));
       query.Parameters.Add("@customerID", DomainObjectIDs.Customer1.Value);
       var orders = (OrderCollection)QueryManager.GetCollection(query).ToCustomCollection();
 
@@ -180,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     {
       DomainObjectIDs.Order1.GetObject<Order>(); // ensure Order1 already exists in transaction
 
-      var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQuery"))).ToCustomCollection();
+      var orders = (OrderCollection)QueryManager.GetCollection(QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQuery_AsQuery"))).ToCustomCollection();
       Assert.That(orders.Count, Is.EqualTo(2), "Order count");
 
       foreach (Order order in orders)

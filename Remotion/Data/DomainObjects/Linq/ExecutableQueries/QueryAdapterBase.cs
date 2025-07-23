@@ -74,6 +74,11 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
       get { return _query.QueryType; }
     }
 
+    public QueryStatementType StatementType
+    {
+      get { return _query.StatementType; }
+    }
+
     public QueryParameterCollection Parameters
     {
       get { return _query.Parameters; }

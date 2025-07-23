@@ -336,7 +336,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FilterQueryResult ()
     {
-      var query = QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQuery"));
+      var query = QueryFactory.CreateQuery(Queries.GetMandatory("StoredProcedureQuery_AsQuery"));
       var orders = (OrderCollection)TestableClientTransaction.QueryManager.GetCollection(query).ToCustomCollection();
 
       TestableClientTransaction.AddListener(_strictListenerMock.Object);

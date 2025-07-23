@@ -43,13 +43,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQuery_FromDefinition ()
     {
-      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.CollectionReadWrite, typeof(OrderCollection));
+      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.CollectionReadWrite, QueryStatementType.Text, typeof(OrderCollection));
 
       IQuery query = QueryFactory.CreateQuery(definition);
       Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
       Assert.That(query.ID, Is.EqualTo(definition.ID));
       Assert.That(query.Parameters, Is.Empty);
       Assert.That(query.QueryType, Is.EqualTo(definition.QueryType));
+      Assert.That(query.StatementType, Is.EqualTo(QueryStatementType.Text));
       Assert.That(query.Statement, Is.EqualTo(definition.Statement));
       Assert.That(query.StorageProviderDefinition, Is.SameAs(definition.StorageProviderDefinition));
     }
@@ -57,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void CreateQuery_FromDefinition_WithParameterCollection ()
     {
-      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.CollectionReadWrite, typeof(OrderCollection));
+      var definition = new QueryDefinition("Test", TestDomainStorageProviderDefinition, "y", QueryType.CollectionReadWrite, QueryStatementType.StoredProcedure, typeof(OrderCollection));
       var parameterCollection = new QueryParameterCollection();
 
       IQuery query = QueryFactory.CreateQuery(definition, parameterCollection);
@@ -65,6 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That(query.ID, Is.EqualTo(definition.ID));
       Assert.That(query.Parameters, Is.SameAs(parameterCollection));
       Assert.That(query.QueryType, Is.EqualTo(definition.QueryType));
+      Assert.That(query.StatementType, Is.EqualTo(QueryStatementType.StoredProcedure));
       Assert.That(query.Statement, Is.EqualTo(definition.Statement));
       Assert.That(query.StorageProviderDefinition, Is.SameAs(definition.StorageProviderDefinition));
     }

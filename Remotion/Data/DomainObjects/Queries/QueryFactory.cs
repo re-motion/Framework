@@ -279,7 +279,7 @@ namespace Remotion.Data.DomainObjects.Queries
       ArgumentNullException.ThrowIfNull(queryParameterCollection);
       ArgumentNullException.ThrowIfNull(collectionType);
 
-      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.CollectionReadOnly, collectionType, metaData);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.CollectionReadOnly, collectionType: collectionType, metaData: metaData);
       return new Query(definition, queryParameterCollection);
     }
 
