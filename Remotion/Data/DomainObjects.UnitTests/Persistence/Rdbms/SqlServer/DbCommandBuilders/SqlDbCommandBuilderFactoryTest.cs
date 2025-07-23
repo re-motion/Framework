@@ -163,8 +163,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
     {
       var result = _factory.CreateForQuery("statement", new QueryParameterWithDataParameterDefinition[0]);
 
-      Assert.That(result, Is.TypeOf(typeof(SqlQueryDbCommandBuilder)));
-      Assert.That(((SqlQueryDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub.Object));
+      Assert.That(result, Is.TypeOf(typeof(QueryDbCommandBuilder)));
+      Assert.That(((QueryDbCommandBuilder)result).SqlDialect, Is.SameAs(_sqlDialectStub.Object));
     }
 
     [Test]
