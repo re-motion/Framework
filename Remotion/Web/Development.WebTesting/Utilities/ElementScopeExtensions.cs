@@ -42,8 +42,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       var driver = ((IWrapsDriver)element.Native).WrappedDriver;
       var jsExecutor = (IJavaScriptExecutor)driver;
 
-      var rawData =
-          (IReadOnlyList<object>)jsExecutor.ExecuteScript("return [arguments[0].scrollLeft, arguments[0].scrollTop];", (IWebElement)element.Native);
+      var rawData = (IReadOnlyList<object>?)jsExecutor.ExecuteScript("return [arguments[0].scrollLeft, arguments[0].scrollTop];", (IWebElement)element.Native);
+      if (rawData == null)
+        throw new InvalidOperationException("Failed to retrieve scroll position via JavaScript execution.");
+
       return new Point((int)(long)rawData[0], (int)(long)rawData[1]);
     }
 

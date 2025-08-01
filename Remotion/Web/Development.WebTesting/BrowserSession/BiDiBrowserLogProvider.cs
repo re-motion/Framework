@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Coypu;
 using OpenQA.Selenium;
 using OpenQA.Selenium.BiDi;
-using OpenQA.Selenium.BiDi.Modules.BrowsingContext;
+using OpenQA.Selenium.BiDi.BrowsingContext;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession;
 

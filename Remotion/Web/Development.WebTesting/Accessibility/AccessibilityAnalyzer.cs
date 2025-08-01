@@ -208,7 +208,10 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([CanBeNull] TimeSpan? timeout = null)
     {
-      var outerFrame = (string)JsExecutor.ExecuteScript("return self.name;");
+      var outerFrame = (string?)JsExecutor.ExecuteScript("return self.name;");
+      if (outerFrame == null)
+        throw new InvalidOperationException("Failed to retrieve the current frame's name via JavaScript execution.");
+
       if (outerFrame != "")
         WebDriver.SwitchTo().DefaultContent();
 
@@ -233,11 +236,10 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
 
       var axeRunFunctionCall = BuildAxeRunFunctionCall(cssSelector);
 
-      string result;
+      string? result;
       using (new PerformanceTimer(Logger, "Accessibility analysis has been performed."))
       {
-        result = (string)JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
-
+        result = (string?)JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
         if (result == null)
           throw new InvalidOperationException("Could not obtain accessibility analysis result.");
       }
@@ -249,7 +251,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
 
     private bool AxeIsInjected ()
     {
-      return (bool)JsExecutor.ExecuteScript("return (typeof axe !== 'undefined')");
+      var result = (bool?)JsExecutor.ExecuteScript("return (typeof axe !== 'undefined')");
+      if (result == null)
+        throw new InvalidOperationException("Failed to determine if Axe library is injected via JavaScript execution.");
+
+      return result.Value;
     }
 
     /// <summary>
