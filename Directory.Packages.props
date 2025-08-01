@@ -6,7 +6,7 @@
     <TypePipeVersion>4.0.0</TypePipeVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Castle.Core" Version="4.4.0" />
+    <PackageVersion Include="Castle.Core" Version="5.2.1" />
     <PackageVersion Include="CoreForms.Web" Version="$(CoreFormsVersion)" />
     <PackageVersion Include="CoreForms.Web.Extensions" Version="$(CoreFormsVersion)" />
     <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(CoreFormsVersion)" />
