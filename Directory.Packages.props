@@ -17,7 +17,7 @@
     <PackageVersion Include="JetBrains.Annotations" Version="2025.2.0" />
     <PackageVersion Include="log4net" Version="3.0.2" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2" />
-    <PackageVersion Include="Microsoft.Maui.Graphics.Skia" Version="8.0.100" />
+    <PackageVersion Include="Microsoft.Maui.Graphics.Skia" Version="10.0.0-preview.6.25359.8" />
     <PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.11.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
@@ -46,7 +46,7 @@
     <PackageVersion Include="Remotion.TypePipe.Documentation" Version="$(TypePipeVersion)" />
     <PackageVersion Include="Selenium.Support" Version="4.28.0" />
     <PackageVersion Include="Selenium.WebDriver" Version="4.28.0" />
-    <PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.0" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.0.2" />
     <PackageVersion Include="CycloneDX" Version="5.4.0" />
     <PackageVersion Include="Testcontainers" Version="4.3.0" />
