@@ -64,7 +64,8 @@ namespace Remotion.Web.Development.WebTesting
 
             var select = new SelectElement(webElement);
             var selectedOption = select.SelectedOption;
-            return new OptionDefinition(selectedOption.GetAttribute("value"), -1, selectedOption.Text, selectedOption.Selected);
+            var itemID = selectedOption.GetAttribute("value") ?? throw new InvalidOperationException("Could not determine item ID.");
+            return new OptionDefinition(itemID, -1, selectedOption.Text, selectedOption.Selected);
           });
     }
 
