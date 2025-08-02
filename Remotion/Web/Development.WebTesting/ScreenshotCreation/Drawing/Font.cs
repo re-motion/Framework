@@ -47,32 +47,26 @@ public class Font : IDisposable
   /// <returns>The measured size of the text.</returns>
   public SizeF MeasureString (string? text, SizeF? layoutArea = null, bool wrapLines = true)
   {
-    var paint = new SKPaint
-                {
-                    TextSize = SkiaFont.Size,
-                    IsAntialias = true,
-                    Typeface = SkiaFont.Typeface,
-                    TextEncoding = SKTextEncoding.Utf16 // Match SKFont default
-                };
+
     if (string.IsNullOrEmpty(text))
       return new SizeF(0, 0);
 
     var widthLimit = layoutArea is { Width: > 0 } ? layoutArea.Value.Width : float.PositiveInfinity;
     var heightLimit = layoutArea is { Height: > 0 } ? layoutArea.Value.Height : float.PositiveInfinity;
 
-    var spaceWidth = paint.MeasureText(" ");
+    var spaceWidth = SkiaFont.MeasureText(" ");
     var maxWidth = 0f;
     var height = Math.Abs(SkiaFont.Metrics.Top) + SkiaFont.Metrics.Bottom + SkiaFont.Metrics.Leading;
 
     var currentWidth = 0f;
     foreach (var word in text.Split(' '))
     {
-      var wordWidth = paint.MeasureText(word) + spaceWidth;
+      var wordWidth = SkiaFont.MeasureText(word) + spaceWidth;
 
       if (currentWidth + wordWidth > widthLimit && wrapLines)
       {
         // new line
-        height += paint.FontSpacing;
+        height += SkiaFont.Spacing;
         currentWidth = 0;
       }
 
