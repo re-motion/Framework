@@ -42,8 +42,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       var driver = ((IWrapsDriver)element.Native).WrappedDriver;
       var jsExecutor = (IJavaScriptExecutor)driver;
 
-      var rawData = jsExecutor.ExecuteScript("return [arguments[0].scrollLeft, arguments[0].scrollTop];", (IWebElement)element.Native) as IReadOnlyList<object>
-                    ?? throw new InvalidOperationException("Could not determine scroll position.");
+      var rawData = (IReadOnlyList<object>?)jsExecutor.ExecuteScript("return [arguments[0].scrollLeft, arguments[0].scrollTop];", (IWebElement)element.Native);
+      if (rawData == null)
+        throw new InvalidOperationException("Could not determine scroll position.");
 
       return new Point((int)(long)rawData[0], (int)(long)rawData[1]);
     }
