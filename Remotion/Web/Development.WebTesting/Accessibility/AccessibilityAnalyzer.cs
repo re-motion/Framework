@@ -22,6 +22,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -209,8 +210,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     public AccessibilityResult Analyze ([CanBeNull] TimeSpan? timeout = null)
     {
       var outerFrame = (string?)JsExecutor.ExecuteScript("return self.name;");
-      if (outerFrame == null)
-        throw new InvalidOperationException("Failed to retrieve the current frame's name via JavaScript execution.");
+      Assertion.IsNotNull(outerFrame, "Failed to retrieve the current frame's name.");
 
       if (outerFrame != "")
         WebDriver.SwitchTo().DefaultContent();
@@ -252,8 +252,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     private bool AxeIsInjected ()
     {
       var result = (bool?)JsExecutor.ExecuteScript("return (typeof axe !== 'undefined')");
-      if (result == null)
-        throw new InvalidOperationException("Failed to determine if Axe library is injected via JavaScript execution.");
+      Assertion.IsNotNull(result, "Failed to determine if aXe library is injected.");
 
       return result.Value;
     }
