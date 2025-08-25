@@ -252,8 +252,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     private bool AxeIsInjected ()
     {
       var result = (bool?)JsExecutor.ExecuteScript("return (typeof axe !== 'undefined')");
-      if (result == null)
-        throw new InvalidOperationException("Failed to determine if Axe library is injected via JavaScript execution.");
+      Assertion.IsNotNull(result, "Failed to determine if aXe library is injected.");
 
       return result.Value;
     }
