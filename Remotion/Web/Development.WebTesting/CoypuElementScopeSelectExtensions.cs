@@ -65,8 +65,7 @@ namespace Remotion.Web.Development.WebTesting
             var select = new SelectElement(webElement);
             var selectedOption = select.SelectedOption;
             var itemID = selectedOption.GetAttribute("value");
-            if (itemID == null)
-              throw new InvalidOperationException("Failed to retrieve the 'value' attribute from the selected option.");
+            Assertion.IsNotNull(itemID, "Failed to retrieve the 'value' attribute from the selected option.");
 
             return new OptionDefinition(itemID, -1, selectedOption.Text, selectedOption.Selected);
           });
