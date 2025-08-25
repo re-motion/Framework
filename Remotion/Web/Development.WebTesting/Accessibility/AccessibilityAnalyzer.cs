@@ -210,7 +210,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     {
       var outerFrame = (string?)JsExecutor.ExecuteScript("return self.name;");
       if (outerFrame == null)
-        throw new InvalidOperationException("Could not determine name of self.");
+        throw new InvalidOperationException("Failed to retrieve the current frame's name via JavaScript execution.");
 
       if (outerFrame != "")
         WebDriver.SwitchTo().DefaultContent();
@@ -253,7 +253,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     {
       var result = (bool?)JsExecutor.ExecuteScript("return (typeof axe !== 'undefined')");
       if (result == null)
-        throw new InvalidOperationException("Could not determine if Axe is injected.");
+        throw new InvalidOperationException("Failed to determine if Axe library is injected via JavaScript execution.");
 
       return result.Value;
     }

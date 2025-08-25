@@ -66,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting
             var selectedOption = select.SelectedOption;
             var itemID = selectedOption.GetAttribute("value");
             if (itemID == null)
-              throw new InvalidOperationException("Could not determine item ID.");
+              throw new InvalidOperationException("Failed to retrieve the 'value' attribute from the selected option.");
 
             return new OptionDefinition(itemID, -1, selectedOption.Text, selectedOption.Selected);
           });
