@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 
-    <CoreFormsVersion>8.0.3</CoreFormsVersion>
+    <CoreFormsVersion>8.0.5</CoreFormsVersion>
   </PropertyGroup>
 
   <ItemGroup>
