@@ -3,10 +3,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Coypu;
-using OpenQA.Selenium;
 using OpenQA.Selenium.BiDi;
-using OpenQA.Selenium.BiDi.BrowsingContext;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession;
 
@@ -19,24 +16,19 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession;
 /// </remarks>
 public class BiDiBrowserLogProvider : IBrowserLogProvider, IDisposable
 {
-  private readonly IDriver _driver;
-
   private readonly ConcurrentQueue<BrowserLogEntry> _logEntries = new();
   private readonly Subscription _eventSubscription;
 
-  public BiDiBrowserLogProvider (IDriver driver)
+  public BiDiBrowserLogProvider (IBidiConnectionProvider bidiProvider)
   {
-    ArgumentNullException.ThrowIfNull(driver);
+    ArgumentNullException.ThrowIfNull(bidiProvider);
 
-    _driver = driver;
-
-    var bidi = ((IWebDriver)driver.Native).AsBiDiAsync().GetAwaiter().GetResult();
-    _eventSubscription = bidi.Log.OnEntryAddedAsync(entry => _logEntries.Enqueue(new BrowserLogEntry(entry))).GetAwaiter().GetResult();
-
-    // Accept all user prompts as they come up - IWebTestHelper.AcceptPossibleModalDialog() does not work with BiDi
-    // because the WebTest-Thread is not continued when a user prompt is shown.
-    bidi.BrowsingContext.OnUserPromptOpenedAsync(args => args.BiDi.BrowsingContext.HandleUserPromptAsync(args.Context, new HandleUserPromptOptions { Accept = true })).Wait();
-  }
+    bidiProvider.OpenBidiConnection();
+    _eventSubscription = bidiProvider.BiDiConnection.Log.OnEntryAddedAsync(entry => _logEntries.Enqueue(new BrowserLogEntry(entry)), new SubscriptionOptions
+      {
+          Timeout = bidiProvider.DefaultBidiTimeout
+      }).GetAwaiter().GetResult();
+}
 
   /// <inheritdoc />
   public IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
@@ -52,10 +44,13 @@ public class BiDiBrowserLogProvider : IBrowserLogProvider, IDisposable
 
   public void Dispose ()
   {
-    _eventSubscription.DisposeAsync().AsTask().GetAwaiter().GetResult();
-
-    var driver = (IWebDriver)_driver.Native;
-    var biDi = driver.AsBiDiAsync().GetAwaiter().GetResult();
-    biDi.DisposeAsync().GetAwaiter().GetResult();
+    try
+    {
+      _eventSubscription.DisposeAsync().AsTask().GetAwaiter().GetResult();
+    }
+    catch (Exception)
+    {
+      //ignored
+    }
   }
 }

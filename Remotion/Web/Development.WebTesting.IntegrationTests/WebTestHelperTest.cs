@@ -60,6 +60,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private Mock<ITestContext> _testContext;
     private Dictionary<string,object> _testContextProperties;
 
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
+    {
+      var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
+      //TODO: RM-9595 fix and reenable WebTestHelperTests for firefox
+      //WebTestHelperTests currently cause firefox with Bidi active to hang
+      if (webTestHelper.BrowserConfiguration.IsFirefox())
+      {
+        Assert.Ignore();
+      }
+    }
+
     [SetUp]
     public void SetUp ()
     {

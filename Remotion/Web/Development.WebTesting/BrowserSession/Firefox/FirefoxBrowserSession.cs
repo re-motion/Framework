@@ -24,14 +24,15 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Firefox
   /// </summary>
   public class FirefoxBrowserSession : BrowserSessionBase<IFirefoxConfiguration>
   {
-    public static void ApplyDefaultWebTestFeatures (
+    public static void ApplyDefaultWebTestFeatures<T> (
         WebTestFeatureCollection features,
-        IBrowserSession browserSession)
+        T browserSession)
+    where T: IBrowserSession, IBidiConnectionProvider
     {
       ArgumentNullException.ThrowIfNull(features);
       ArgumentNullException.ThrowIfNull(browserSession);
 
-      features.Set<IBrowserLogProvider>(new BiDiBrowserLogProvider(browserSession.Driver));
+      features.Set<IBrowserLogProvider>(new BiDiBrowserLogProvider(browserSession));
     }
 
     public FirefoxBrowserSession (Coypu.BrowserSession value, IFirefoxConfiguration browserConfiguration, int driverProcessId, bool headless)

@@ -27,9 +27,10 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Chrome
   /// </summary>
   public class ChromeBrowserSession : BrowserSessionBase<IChromeConfiguration>
   {
-    public static void ApplyDefaultWebTestFeatures (
+    public static void ApplyDefaultWebTestFeatures<T> (
         WebTestFeatureCollection features,
-        IBrowserSession browserSession)
+        T browserSession)
+        where T: IBrowserSession, IBidiConnectionProvider
     {
       ArgumentNullException.ThrowIfNull(features);
       ArgumentNullException.ThrowIfNull(browserSession);
