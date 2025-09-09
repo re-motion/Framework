@@ -40,6 +40,11 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
 
     public static Task VerifyAnalyzerAsync (string source, params DiagnosticResult[] expected)
     {
+      return VerifyAnalyzerAsync(source, parseOptions: null, expected);
+    }
+
+    public static Task VerifyAnalyzerAsync (string source, ParseOptions parseOptions, params DiagnosticResult[] expected)
+    {
       var remotionWebAssemblyLocation = typeof(WebString).Assembly.Location;
       var coreWebAssemblyLocation = typeof(HtmlTextWriter).Assembly.Location;
 
@@ -53,6 +58,8 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
                        project = project
                            .AddMetadataReference(MetadataReference.CreateFromFile(remotionWebAssemblyLocation))
                            .AddMetadataReference(MetadataReference.CreateFromFile(coreWebAssemblyLocation));
+                       if (parseOptions != null)
+                         project = project.WithParseOptions(parseOptions);
                        return project.Solution;
                      } }
                  };
@@ -66,6 +73,7 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
       return assembly.GetCustomAttribute<TargetFrameworkAttribute>()!.FrameworkName switch
       {
           ".NETCoreApp,Version=v8.0" => ReferenceAssemblies.Net.Net80,
+          ".NETCoreApp,Version=v10.0" => new ReferenceAssemblies("net10.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "10.0.0-rc.1.25451.107"), Path.Combine("ref", "net10.0")),
           var frameworkName => throw new NotSupportedException($"'{frameworkName}' is not supported.")
       };
     }
