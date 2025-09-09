@@ -185,7 +185,11 @@ namespace Remotion.Reflection.UnitTests
       Assert.That(
           () => adapter.Invoke("Test", new object[0]),
           Throws.InstanceOf<TargetException>()
+#if NET10_0_OR_GREATER              
+              .With.Message.EqualTo("Object type Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter.ClassWithBaseMember does not match target type System.String."));
+#else
               .With.Message.EqualTo("Object does not match target type."));
+#endif
     }
 
     [Test]
