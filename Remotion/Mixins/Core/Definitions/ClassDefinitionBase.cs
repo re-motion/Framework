@@ -188,7 +188,7 @@ namespace Remotion.Mixins.Definitions
     public IEnumerable<MethodDefinition> GetProtectedOverriders ()
     {
       return from m in GetAllMethods()
-             where m.Base != null && m.MethodInfo.IsFamily || m.MethodInfo.IsFamilyOrAssembly
+             where m.Base != null && (m.MethodInfo.IsFamily || m.MethodInfo.IsFamilyOrAssembly)
              select m;
     }
 
