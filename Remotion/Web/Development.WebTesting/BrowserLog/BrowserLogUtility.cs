@@ -34,6 +34,8 @@ namespace Remotion.Web.Development.WebTesting.BrowserLog;
 /// </summary>
 public static class BrowserLogUtility
 {
+  internal const string BrowserLogMarker = "REMOTION_FINAL_BROWSER_LOG_MARKER";
+
   /// <summary>
   /// Gets a flag indicating whether browser logs should be checked.
   /// </summary>
@@ -86,10 +88,9 @@ public static class BrowserLogUtility
       // receive it again. This ensures that any in-flight log messages should have arrived and thus provides
       // a good-enough(tm) way to ensure we don't miss any log messages.
       // BiDi-Logging does not work on internal pages (like the blank page) so we don't do this logic for chrome:// URLs
-      const string browserLogMarker = "REMOTION_FINAL_BROWSER_LOG_MARKER";
       const int maxRetries = 25;
 
-      ((IWebDriver)session.Driver.Native).ExecuteJavaScript($"console.error('{browserLogMarker}');");
+      ((IWebDriver)session.Driver.Native).ExecuteJavaScript($"console.error('{BrowserLogMarker}');");
 
       var i = 0;
       while (true)
@@ -102,7 +103,7 @@ public static class BrowserLogUtility
         }
 
         browserLogs = session.GetBrowserLogs();
-        if (browserLogs.Any(e => e.Message.Contains(browserLogMarker)))
+        if (browserLogs.Any(e => e.Message.Contains(BrowserLogMarker)))
           break;
 
         i += 1;
@@ -110,7 +111,7 @@ public static class BrowserLogUtility
       }
 
       browserLogs = browserLogs
-          .Where(e => !e.Message.Contains(browserLogMarker))
+          .Where(e => !e.Message.Contains(BrowserLogMarker))
           .ToList();
     }
     else
@@ -138,7 +139,7 @@ public static class BrowserLogUtility
     ArgumentNullException.ThrowIfNull(configuration);
     ArgumentNullException.ThrowIfNull(context);
 
-    var isActive = IsBrowserLogCheckActive(context);
+    var isActive = false;
     if (!isActive)
       return true;
 

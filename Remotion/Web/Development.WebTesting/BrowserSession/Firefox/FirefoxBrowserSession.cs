@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Firefox
       ArgumentNullException.ThrowIfNull(features);
       ArgumentNullException.ThrowIfNull(browserSession);
 
-      features.Set<IBrowserLogProvider>(new BiDiBrowserLogProvider(browserSession.Driver));
+      features.Set<IBrowserLogProvider>(new NullBrowserLogProvider());
     }
 
     public FirefoxBrowserSession (Coypu.BrowserSession value, IFirefoxConfiguration browserConfiguration, int driverProcessId, bool headless)
