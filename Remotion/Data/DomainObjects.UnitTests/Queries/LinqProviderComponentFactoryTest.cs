@@ -35,6 +35,7 @@ using Remotion.Linq.Parsing.Structure.NodeTypeProviders;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.SqlBackend.SqlPreparation.MethodCallTransformers;
 using Remotion.Linq.SqlBackend.SqlPreparation.ResultOperatorHandlers;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -119,6 +120,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       Assert.That(queryParser.NodeTypeProvider.GetNodeType(fetchManyMethod), Is.SameAs(typeof(FetchManyExpressionNode)));
       Assert.That(queryParser.NodeTypeProvider.GetNodeType(thenFetchOneMethod), Is.SameAs(typeof(ThenFetchOneExpressionNode)));
       Assert.That(queryParser.NodeTypeProvider.GetNodeType(thenFetchManyMethod), Is.SameAs(typeof(ThenFetchManyExpressionNode)));
+    }
+
+    [Test]
+    public void CreateQueryParser_RegistersMemoryExtensionsContains ()
+    {
+      var containsMethods = typeof(MemoryExtensions).GetMethods().Where(m => m.Name == "Contains").ToArray();
+      Assert.That(containsMethods.Length, Is.EqualTo(3));
+
+      var queryParser = (QueryParser)_factory.CreateQueryParser();
+
+      foreach (var containsMethod in containsMethods)
+        Assert.That(queryParser.NodeTypeProvider.GetNodeType(containsMethod), Is.SameAs(typeof(ContainsExpressionNode)));
     }
 
     [Test]

@@ -129,6 +129,11 @@ namespace Remotion.Data.DomainObjects.Queries
       var nodeTypeProvider = ExpressionTreeParser.CreateDefaultNodeTypeProvider();
       nodeTypeProvider.InnerProviders.Insert(0, customNodeTypeProvider);
 
+      var memoryExtensionsNodeTypeRegistry = new MethodInfoBasedNodeTypeRegistry();
+      memoryExtensionsNodeTypeRegistry.Register(typeof(MemoryExtensions).GetMethods().Where(m => m.Name == "Contains"), typeof(ContainsExpressionNode));
+
+      nodeTypeProvider.InnerProviders.Add(memoryExtensionsNodeTypeRegistry);
+
       var transformerRegistry = ExpressionTransformerRegistry.CreateDefault();
       var processor = ExpressionTreeParser.CreateDefaultProcessor(transformerRegistry);
       return new ExpressionTreeParser(nodeTypeProvider, processor);
