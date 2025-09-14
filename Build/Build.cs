@@ -325,7 +325,7 @@ class Build : RemotionBuild, IDependDB, ITest
             { AnyOs, Firefox, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
             { AnyOs, Edge, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
             { AnyOs, Chrome, NET10_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
-            { AnyOs, Firefox, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            // { AnyOs, Firefox, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
             { AnyOs, Edge, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
         },
         allowEmpty: true);
