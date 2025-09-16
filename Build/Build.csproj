@@ -10,19 +10,18 @@
     <NukeScriptDirectory>..</NukeScriptDirectory>
     <NukeTelemetryVersion>1</NukeTelemetryVersion>
     <IsPackable>false</IsPackable>
-    <DevelopmentDependency>true</DevelopmentDependency>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Remotion.BuildScript.Nuke" VersionOverride="5.*" />
-    <PackageReference Include="CycloneDX" ExcludeAssets="all" />
-    <PackageReference Include="Testcontainers" />
-    <PackageReference Include="Testcontainers.MsSql" />
+    <PackageReference Include="Remotion.BuildScript.Nuke" VersionOverride="5.*" DevelopmentDependency="true" />
+    <PackageReference Include="CycloneDX" ExcludeAssets="all" DevelopmentDependency="true" />
+    <PackageReference Include="Testcontainers" DevelopmentDependency="true" />
+    <PackageReference Include="Testcontainers.MsSql" DevelopmentDependency="true" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageDownload Include="DependDB.BuildProcessor" Version="[3.0.0-alpha-005]" />
-    <PackageDownload Include="DependDB.BuildProcessor.NuGetPreProcessor" Version="[3.0.0-alpha-005]" />
+    <PackageDownload Include="DependDB.BuildProcessor" Version="[3.0.0-alpha-005]" DevelopmentDependency="true" />
+    <PackageDownload Include="DependDB.BuildProcessor.NuGetPreProcessor" Version="[3.0.0-alpha-005]" DevelopmentDependency="true" />
   </ItemGroup>
 
   <ItemGroup>
