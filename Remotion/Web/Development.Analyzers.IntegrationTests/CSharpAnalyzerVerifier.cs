@@ -34,9 +34,6 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
     {
     }
 
-    private static readonly Lazy<ReferenceAssemblies> s_net80 =
-        new(() => new ReferenceAssemblies("net8.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "8.0.0"), Path.Combine("ref", "net8.0")));
-
     public static DiagnosticResult Diagnostic () => CSharpAnalyzerVerifier<TAnalyzer, DefaultVerifier>.Diagnostic();
 
     public static DiagnosticResult Diagnostic (DiagnosticDescriptor descriptor) => CSharpAnalyzerVerifier<TAnalyzer, DefaultVerifier>.Diagnostic(descriptor);
@@ -68,8 +65,7 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
     {
       return assembly.GetCustomAttribute<TargetFrameworkAttribute>()!.FrameworkName switch
       {
-          // RM-8930 Previous syntax for when the assemblies were easily accessible: ".NETCoreApp,Version=v6.0" => ReferenceAssemblies.Net.Net60
-          ".NETCoreApp,Version=v8.0" => s_net80.Value,
+          ".NETCoreApp,Version=v8.0" => ReferenceAssemblies.Net.Net80,
           var frameworkName => throw new NotSupportedException($"'{frameworkName}' is not supported.")
       };
     }
