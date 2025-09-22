@@ -18,6 +18,13 @@
     <PackageReference Include="Testcontainers" />
     <PackageReference Include="Testcontainers.MsSql" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- Dependency Overrides for vulnerable packages -->
+    <PackageReference Include="Azure.Identity" VersionOverride="1.14.2" />
+    <PackageReference Include="NuGet.Packaging" VersionOverride="6.7.1" />
+    <PackageReference Include="System.Data.SqlClient" VersionOverride="4.8.6" />
+    <PackageReference Include="System.Text.Json" VersionOverride="8.0.5" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageDownload Include="DependDB.BuildProcessor" Version="[3.0.0-alpha-005]" />
