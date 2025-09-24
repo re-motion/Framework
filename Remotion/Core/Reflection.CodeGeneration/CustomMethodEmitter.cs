@@ -36,7 +36,6 @@ namespace Remotion.Reflection.CodeGeneration
     {
       ArgumentNullException.ThrowIfNull(declaringType);
       ArgumentException.ThrowIfNullOrEmpty(name);
-      ArgumentNullException.ThrowIfNull(attributes);
       ArgumentNullException.ThrowIfNull(returnType);
       ArgumentNullException.ThrowIfNull(parameterTypes);
 
@@ -52,7 +51,6 @@ namespace Remotion.Reflection.CodeGeneration
     {
       ArgumentNullException.ThrowIfNull(declaringType);
       ArgumentException.ThrowIfNullOrEmpty(name);
-      ArgumentNullException.ThrowIfNull(attributes);
       ArgumentNullException.ThrowIfNull(methodToUseAsATemplate);
 
       MethodEmitter innerEmitter = declaringType.InnerEmitter.CreateMethod(name, attributes, methodToUseAsATemplate);

@@ -167,7 +167,6 @@ namespace Remotion.Reflection.CodeGeneration
     public IMethodEmitter CreateMethod (string name, MethodAttributes attributes, Type returnType, Type[] parameterTypes)
     {
       ArgumentNullException.ThrowIfNull(name);
-      ArgumentNullException.ThrowIfNull(attributes);
       ArgumentNullException.ThrowIfNull(returnType);
       ArgumentNullException.ThrowIfNull(parameterTypes);
 
@@ -178,7 +177,6 @@ namespace Remotion.Reflection.CodeGeneration
     public IMethodEmitter CreateMethod (string name, MethodAttributes attributes, MethodInfo methodToUseAsATemplate)
     {
       ArgumentNullException.ThrowIfNull(name);
-      ArgumentNullException.ThrowIfNull(attributes);
       ArgumentNullException.ThrowIfNull(methodToUseAsATemplate);
 
       return new CustomMethodEmitter(this, name, attributes, methodToUseAsATemplate);

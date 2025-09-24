@@ -51,7 +51,6 @@ namespace Remotion.Collections.DataStore
     public bool IsExpired (TValue value, DateTime expirationInfo)
     {
       ArgumentNullException.ThrowIfNull(value);
-      ArgumentNullException.ThrowIfNull(expirationInfo);
 
       return expirationInfo <= _utcNowProvider.UtcNow;
     }
