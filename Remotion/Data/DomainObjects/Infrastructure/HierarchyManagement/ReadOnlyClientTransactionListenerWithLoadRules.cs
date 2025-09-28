@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
@@ -41,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public IReadOnlyCollection<ObjectID> CurrentlyLoadingObjectIDs
     {
-      get { return _currentlyLoadingObjectIDs.AsReadOnly(); }
+      get { return Remotion.Collections.CollectionExtensions.AsReadOnly(_currentlyLoadingObjectIDs); }
     }
 
     public virtual void AddCurrentlyLoadingObjectIDs (IEnumerable<ObjectID> objectIds)

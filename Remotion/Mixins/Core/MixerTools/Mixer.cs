@@ -88,7 +88,7 @@ namespace Remotion.Mixins.MixerTools
 
     public IReadOnlyCollection<Type> ProcessedTypes
     {
-      get { return _processedTypes.AsReadOnly(); }
+      get { return Remotion.Collections.CollectionExtensions.AsReadOnly(_processedTypes); }
     }
 
     public IReadOnlyDictionary<Type, Type> FinishedTypes
