@@ -68,6 +68,19 @@ class Build : RemotionBuild, IDependDB, ITest
         AddVersionToPackageJson(packageJsonPath, outputPackageJson, ((IBuildMetadata)this).BuildMetadataPerConfiguration.First().Value.Version);
       });
 
+  [UsedImplicitly]
+  public Target PrepareDotnetSdkInTempDirectory => _ => _
+      .TryDependentFor<IGenerateSbom>()
+      .Executes(() =>
+      {
+        // We need to copy the global.json file to the TEMP directory to ensure the correct SDK is used.
+        var globalJsonFile = ((IBaseBuild)this).Solution.Directory / "global.json";
+
+        FileSystemTasks.CopyFile(
+            globalJsonFile,
+            TemporaryDirectory / "global.json");
+      });
+
   public override ISbomGeneratorBuilder ConfigureSbomGenerationInfoBuilder (Solution solution)
   {
       var version = ((IBuildMetadata)this).GetBaseVersion();
@@ -251,13 +264,15 @@ class Build : RemotionBuild, IDependDB, ITest
     projects.AddUnitTestProject("SecurityManager.Core.UnitTests", databaseTestConfiguration);
   }
 
+  public static readonly DockerExecutionRuntimes Docker_Win_NET10_0 = new(nameof(Docker_Win_NET10_0));
+
   public override void ConfigureSupportedTestDimensions (SupportedTestDimensionsBuilder supportedTestDimensions)
   {
     supportedTestDimensions.AddOperatingSystemsDimension();
 
     supportedTestDimensions.AddSupportedDimension<ExecutionRuntimes>(
-        LocalMachine, EnforcedLocalMachine(Docker_Win_NET8_0), Docker_Win_NET8_0);
-    supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET8_0);
+        LocalMachine, EnforcedLocalMachine(Docker_Win_NET8_0), Docker_Win_NET8_0, EnforcedLocalMachine(Docker_Win_NET10_0), Docker_Win_NET10_0);
+    supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET8_0, NET10_0);
     supportedTestDimensions.AddSupportedDimension<Configurations>(Debug, Release);
     supportedTestDimensions.AddSupportedDimension<Platforms>(x64, x86);
 
@@ -306,9 +321,12 @@ class Build : RemotionBuild, IDependDB, ITest
         "WebTestingTestMatrix",
         new TestDimension[,] // todo docker images need to be wired to the config file
         {
-            { AnyOs, Chrome, NET8_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
-            { AnyOs, Firefox, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
-            { AnyOs, Edge, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { AnyOs, Chrome, NET8_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Firefox, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Edge, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Chrome, NET10_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            // { AnyOs, Firefox, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Edge, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
         },
         allowEmpty: true);
 
@@ -318,15 +336,22 @@ class Build : RemotionBuild, IDependDB, ITest
         {
             { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2016, Debug, x64 },
             { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2016, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2016, Debug, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2016, Release, x64 },
 
             // Local-->
             { Windows, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x86 },
             { Linux, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x64 },
+            { Windows, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Linux, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x64 },
 
             // Exercise compatibility between installed .NET version, target framework and SQL Server
             { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2022, Release, x64 },
             { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2019, Release, x64 },
             { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2017, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2022, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2019, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2017, Release, x64 },
         },
         allowEmpty: true);
 
@@ -336,10 +361,14 @@ class Build : RemotionBuild, IDependDB, ITest
         {
             { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, NoDB, Debug, x64 },
             { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, NoDB, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, NoDB, Debug, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, NoDB, Release, x64 },
 
             //  Local-->
             { Windows, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x86 },
             { Linux, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x64 },
+            { Windows, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Linux, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x64 },
         },
         allowEmpty: true);
   }

@@ -4,15 +4,11 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <CoreFormsVersion>9.1.2</CoreFormsVersion>
     <TypePipeVersion>4.0.0</TypePipeVersion>
+    <Net10CoreFormsVersion>10.0.0-alpha.1</Net10CoreFormsVersion>
+    <Net10PackagesVersion>10.0.0-rc.1.25451.107</Net10PackagesVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Castle.Core" Version="4.4.0" />
-    <PackageVersion Include="CoreForms.Web" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="CoreForms.Web.Extensions" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="CoreForms.Web.Services" Version="$(CoreFormsVersion)" />
     <PackageVersion Include="Fork.Coypu" Version="3.4.0" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.2.0" />
     <PackageVersion Include="log4net" Version="3.1.0" />
@@ -68,6 +64,12 @@
   <Choose>
     <When Condition="$(TargetFramework.StartsWith('net8.0'))">
       <ItemGroup>
+        <PackageVersion Include="CoreForms.Web" Version="$(CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Extensions" Version="$(CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Services" Version="$(CoreFormsVersion)" />
         <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="8.10.0" />
         <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
         <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1" />
@@ -80,6 +82,24 @@
       <ItemGroup>
         <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
         <PackageVersion Include="System.Formats.Asn1" Version="8.0.1" />
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFramework.StartsWith('net10.0'))">
+     <ItemGroup>
+        <PackageVersion Include="CoreForms.Web" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Extensions" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Services" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="8.10.0"/>
+        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="System.CodeDom" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="System.Resources.Extensions" Version="$(Net10PackagesVersion)"/>
       </ItemGroup>
     </When>
   </Choose>

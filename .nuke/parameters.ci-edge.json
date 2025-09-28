@@ -4,7 +4,7 @@
   "TestConfigurations": [ "Debug", "Release" ],
   "TestExecutionRuntimes": [ "EnforcedLocalMachine" ],
   "TestPlatforms": [ "x86", "x64" ],
-  "TestTargetRuntimes": [ "NET8_0" ],
+  "TestTargetRuntimes": [ "NET8_0", "NET10_0" ],
   "TestBrowsers": [ "Edge" ],
   "TestSqlServers": [ "NoDB" ]
 }

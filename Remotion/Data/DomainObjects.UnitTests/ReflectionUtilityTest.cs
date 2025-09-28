@@ -56,6 +56,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void GetAssemblyPath_WithHashInDirectoryName ()
     {
+#if NET10_0_OR_GREATER
+      if (DateTime.Today<new DateTime(2025, 11, 11))
+        Assert.Ignore("AssemblyLoadContext does not work correctly in .NET 10. See https://github.com/dotnet/runtime/issues/119647 for details.");
+#endif
       string directoryPath = Path.Combine(AppContext.BaseDirectory, "#HashTestPath");
       string originalAssemblyPath = typeof(ReflectionUtilityTest).Assembly.Location;
       string newAssemblyPath = Path.Combine(directoryPath, Path.GetFileName(originalAssemblyPath));
