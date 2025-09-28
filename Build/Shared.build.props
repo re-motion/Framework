@@ -44,6 +44,11 @@
   <Import Project="$(ProjectTypePropsFile)" Condition="'$(ProjectTypePropsFile)' != '' AND Exists('$(ProjectTypePropsFile)')" />
 
   <PropertyGroup>
+    <DisabledVulnerabilityWarnings Condition="'$(DisabledVulnerabilityWarnings)' == ''">NU1901;NU1902;NU1903;NU1904</DisabledVulnerabilityWarnings>
+    <NoWarn>$(NoWarn);$(DisabledVulnerabilityWarnings)</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <ProjectFeaturesRoot>$(MSBuildThisFileDirectory)ProjectFeatures\</ProjectFeaturesRoot>
     <UseSourceLink>true</UseSourceLink>
   </PropertyGroup>
