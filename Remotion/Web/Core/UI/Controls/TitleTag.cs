@@ -28,8 +28,6 @@ namespace Remotion.Web.UI.Controls
 
     public TitleTag (PlainTextString title)
     {
-      ArgumentNullException.ThrowIfNull(title);
-
       _title = title;
     }
 
