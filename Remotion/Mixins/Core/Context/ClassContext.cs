@@ -66,7 +66,7 @@ namespace Remotion.Mixins.Context
         : this(
             type ?? throw new ArgumentNullException(nameof(type)),
             new MixinContextCollection(mixins ?? throw new ArgumentNullException(nameof(mixins))),
-            new HashSet<Type>(composedInterfaces ?? throw new ArgumentNullException(nameof(composedInterfaces))).AsReadOnly())
+            Remotion.Collections.CollectionExtensions.AsReadOnly(new HashSet<Type>(composedInterfaces ?? throw new ArgumentNullException(nameof(composedInterfaces)))))
     {
     }
 

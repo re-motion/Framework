@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Mixins.CodeGeneration.Serialization;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
@@ -60,7 +59,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentNullException.ThrowIfNull(overriders);
 
-      _overriders = overriders.AsReadOnly();
+      _overriders = Remotion.Collections.CollectionExtensions.AsReadOnly(overriders);
     }
 
     [MemberNotNull(nameof(_overridden))]
@@ -68,7 +67,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     {
       ArgumentNullException.ThrowIfNull(overridden);
 
-      _overridden = overridden.AsReadOnly();
+      _overridden = Remotion.Collections.CollectionExtensions.AsReadOnly(overridden);
     }
   }
 }

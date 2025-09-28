@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Collections;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -42,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public IReadOnlyCollection<DomainObject> RegisteredObjects
     {
-      get { return _registeredObjects.AsReadOnly(); }
+      get { return Remotion.Collections.CollectionExtensions.AsReadOnly(_registeredObjects); }
     }
 
     public void RegisterForAdditionalCommittingEvents (params DomainObject[] domainObjects)
