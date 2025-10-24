@@ -22,6 +22,7 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -64,7 +65,10 @@ namespace Remotion.Web.Development.WebTesting
 
             var select = new SelectElement(webElement);
             var selectedOption = select.SelectedOption;
-            return new OptionDefinition(selectedOption.GetAttribute("value"), -1, selectedOption.Text, selectedOption.Selected);
+            var itemID = selectedOption.GetAttribute("value");
+            Assertion.IsNotNull(itemID, "Failed to retrieve the 'value' attribute from the selected option.");
+
+            return new OptionDefinition(itemID, -1, selectedOption.Text, selectedOption.Selected);
           });
     }
 

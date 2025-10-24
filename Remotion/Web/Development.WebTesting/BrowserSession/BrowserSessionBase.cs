@@ -21,6 +21,8 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
+using OpenQA.Selenium.BiDi;
+using OpenQA.Selenium.BiDi.BrowsingContext;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
@@ -29,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
   /// <summary>
   /// Wraps around <see cref="Coypu.BrowserSession"/> to handle browser specific routines.
   /// </summary>
-  public abstract class BrowserSessionBase<T> : IBrowserSession
+  public abstract class BrowserSessionBase<T> : IBrowserSession, IBidiConnectionProvider
       where T : IBrowserConfiguration
   {
     public static void ApplyCommonWebTestFeatureDefaults (
@@ -43,14 +45,17 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     }
 
     private readonly TimeSpan _browserProcessesShutdownTime = TimeSpan.FromSeconds(60);
+    private readonly TimeSpan _bidiTimeout = TimeSpan.FromSeconds(1);
 
     private readonly T _browserConfiguration;
     private readonly Coypu.BrowserSession _value;
     private readonly int _driverProcessID;
     private readonly bool _headless;
-    private bool _isDisposed;
-
     private readonly WebTestFeatureCollection _features;
+
+    private BiDi? _bidiConnection;
+    private Subscription? _promptSubscription;
+    private bool _isDisposed;
 
     protected BrowserSessionBase (
         [NotNull] Coypu.BrowserSession value,
@@ -87,9 +92,32 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       get { return _browserConfiguration; }
     }
 
-    public void AcceptModalDialog (Options? options = null)
+    public TimeSpan DefaultBidiTimeout => _bidiTimeout;
+
+    /// <inheritdoc/>/>
+    public BiDi BiDiConnection => _bidiConnection
+                                  ?? throw new InvalidOperationException("Call 'OpenBidiConnection' before accessing 'BiDiConnection'.");
+
+    /// <inheritdoc/>
+    [System.Diagnostics.CodeAnalysis.MemberNotNull(nameof(_bidiConnection))]
+    public void OpenBidiConnection ()
     {
-      _value.AcceptModalDialog(options);
+      if (_bidiConnection != null)
+        return;
+
+      _bidiConnection = ((OpenQA.Selenium.WebDriver)Driver.Native).AsBiDiAsync().GetAwaiter().GetResult();
+
+      // TODO: RM-9596
+      // This should be moved into a scope based PromptHandler that can be used during a test to enable and disable handling of prompts similar to how it works for non bidi prompt handling.
+      // Accept all user prompts as they come up - IWebTestHelper.AcceptPossibleModalDialog() does not work with BiDi
+      // because the WebTest-Thread is not continued when a user prompt is shown.
+      _promptSubscription = _bidiConnection.BrowsingContext.OnUserPromptOpenedAsync(args =>
+              args.BiDi.BrowsingContext.HandleUserPromptAsync(args.Context, new HandleUserPromptOptions { Accept = true, Timeout = _bidiTimeout}).GetAwaiter().GetResult(),
+              new BrowsingContextsSubscriptionOptions(new SubscriptionOptions
+                                                      {
+                                                          Timeout = _bidiTimeout
+                                                      }))
+          .GetAwaiter().GetResult();
     }
 
     public IDriver Driver
@@ -137,8 +165,26 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
         return;
 
       _isDisposed = true;
-
       _features.Dispose();
+
+      try
+      {
+        _promptSubscription?.DisposeAsync().AsTask().GetAwaiter().GetResult();
+      }
+      catch (Exception)
+      {
+        //ignored
+      }
+
+      try
+      {
+        _bidiConnection?.DisposeAsync().AsTask().GetAwaiter().GetResult();
+      }
+      catch (Exception)
+      {
+        //ignored
+      }
+
 
       // Get processes for driver and main browser, as well as the sub processes of the browser
       var driverProcess = FindDriverProcess();

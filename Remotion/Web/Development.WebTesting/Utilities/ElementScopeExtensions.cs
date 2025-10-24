@@ -21,6 +21,7 @@ using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
@@ -42,8 +43,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       var driver = ((IWrapsDriver)element.Native).WrappedDriver;
       var jsExecutor = (IJavaScriptExecutor)driver;
 
-      var rawData =
-          (IReadOnlyList<object>)jsExecutor.ExecuteScript("return [arguments[0].scrollLeft, arguments[0].scrollTop];", (IWebElement)element.Native);
+      var rawData = (IReadOnlyList<object>?)jsExecutor.ExecuteScript("return [arguments[0].scrollLeft, arguments[0].scrollTop];", (IWebElement)element.Native);
+      Assertion.IsNotNull(rawData, "Failed to retrieve the scroll position.");
+
       return new Point((int)(long)rawData[0], (int)(long)rawData[1]);
     }
 

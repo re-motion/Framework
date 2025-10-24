@@ -17,7 +17,7 @@
 using System;
 using System.Globalization;
 using JetBrains.Annotations;
-using OpenQA.Selenium.BiDi.Modules.Log;
+using OpenQA.Selenium.BiDi.Log;
 using OpenQA.Selenium;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession
@@ -47,21 +47,21 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     {
       return bidiLogLevel switch
       {
-          OpenQA.Selenium.BiDi.Modules.Log.Level.Debug => LogLevel.Debug,
-          OpenQA.Selenium.BiDi.Modules.Log.Level.Info => LogLevel.Info,
-          OpenQA.Selenium.BiDi.Modules.Log.Level.Warn => LogLevel.Warning,
-          OpenQA.Selenium.BiDi.Modules.Log.Level.Error => LogLevel.Severe,
+          OpenQA.Selenium.BiDi.Log.Level.Debug => LogLevel.Debug,
+          OpenQA.Selenium.BiDi.Log.Level.Info => LogLevel.Info,
+          OpenQA.Selenium.BiDi.Log.Level.Warn => LogLevel.Warning,
+          OpenQA.Selenium.BiDi.Log.Level.Error => LogLevel.Severe,
           _ => LogLevel.Off
       };
     }
 
-    public BrowserLogEntry ([NotNull] Entry logEntry)
-        : this(GetLogLevel(logEntry.Level), logEntry.Text, logEntry.Timestamp.DateTime)
+    public BrowserLogEntry ([NotNull] OpenQA.Selenium.BiDi.Log.LogEntry logEntry)
+        : this(GetLogLevel(logEntry.Level), logEntry.Text ?? "", logEntry.Timestamp.DateTime)
     {
       ArgumentNullException.ThrowIfNull(logEntry);
     }
 
-    public BrowserLogEntry ([NotNull] LogEntry logEntry)
+    public BrowserLogEntry ([NotNull] OpenQA.Selenium.LogEntry logEntry)
         : this(logEntry.Level, logEntry.Message, logEntry.Timestamp)
     {
       ArgumentNullException.ThrowIfNull(logEntry);
