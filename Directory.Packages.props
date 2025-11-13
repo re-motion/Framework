@@ -11,7 +11,7 @@
     <!-- merge conflict buffer -->
     <Net10CoreFormsVersion>10.0.0-alpha.1</Net10CoreFormsVersion>
     <!-- merge conflict buffer -->
-    <Net10PackagesVersion>10.0.0-rc.1.25451.107</Net10PackagesVersion>
+    <Net10PackagesVersion>10.0.0</Net10PackagesVersion>
     <!-- merge conflict buffer -->
   </PropertyGroup>
   <ItemGroup>
@@ -19,9 +19,9 @@
     <PackageVersion Include="Fork.Coypu" Version="3.5.0" />
     <PackageVersion Include="JetBrains.Annotations" Version="2025.2.0" />
     <PackageVersion Include="log4net" Version="3.1.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.3-beta1.24423.1" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.3-beta1.25564.1" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.1.1" />
-    <PackageVersion Include="Microsoft.Maui.Graphics.Skia" Version="10.0.0-preview.6.25359.8" />
+    <PackageVersion Include="Microsoft.Maui.Graphics.Skia" Version="10.0.10" />
     <PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.11.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
@@ -99,7 +99,7 @@
         <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(Net10CoreFormsVersion)"/>
         <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(Net10CoreFormsVersion)"/>
         <PackageVersion Include="CoreForms.Web.Services" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="8.10.0"/>
+        <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.0.0"/>
         <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(Net10PackagesVersion)"/>
         <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(Net10PackagesVersion)"/>
         <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Net10PackagesVersion)"/>
@@ -112,7 +112,9 @@
   </Choose>
   <ItemGroup>
     <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
+    <!-- Introduced via Moq / .net Standard 1.6.1 as version 4.3.0. -->
     <PackageVersion Include="System.Net.Http" Version="4.3.4" />
+    <!-- Introduced via Moq / .net Standard 1.6.1 as version 4.3.0. -->
     <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 </Project>
