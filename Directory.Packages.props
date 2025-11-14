@@ -4,6 +4,7 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <CoreFormsVersion>9.1.2</CoreFormsVersion>
     <TypePipeVersion>4.0.0</TypePipeVersion>
+    <SqlBackendVersion>3.1.0</SqlBackendVersion>
     <Net10CoreFormsVersion>10.0.0-alpha.1</Net10CoreFormsVersion>
     <Net10PackagesVersion>10.0.0-rc.1.25451.107</Net10PackagesVersion>
   </PropertyGroup>
@@ -29,8 +30,8 @@
     <PackageVersion Include="Remotion.Linq" Version="2.2.0" />
     <PackageVersion Include="Remotion.Linq.Development" Version="2.2.0" />
     <PackageVersion Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
-    <PackageVersion Include="Remotion.Linq.SqlBackend" Version="3.0.0" />
-    <PackageVersion Include="Remotion.Linq.SqlBackend.Development" Version="3.0.0" />
+    <PackageVersion Include="Remotion.Linq.SqlBackend" Version="$(SqlBackendVersion)" />
+    <PackageVersion Include="Remotion.Linq.SqlBackend.Development" Version="$(SqlBackendVersion)" />
     <PackageVersion Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" Version="2024.3.0" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.CommonServiceLocator" Version="2.0.6" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.DynamicLanguageRuntime" Version="1.1.0.10" />
