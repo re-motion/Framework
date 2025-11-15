@@ -2,11 +2,17 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <!-- merge conflict buffer -->
     <CoreFormsVersion>9.1.2</CoreFormsVersion>
-    <TypePipeVersion>4.0.0</TypePipeVersion>
+    <!-- merge conflict buffer -->
+    <TypePipeVersion>4.1.0</TypePipeVersion>
+    <!-- merge conflict buffer -->
     <SqlBackendVersion>3.1.0</SqlBackendVersion>
+    <!-- merge conflict buffer -->
     <Net10CoreFormsVersion>10.0.0-alpha.1</Net10CoreFormsVersion>
+    <!-- merge conflict buffer -->
     <Net10PackagesVersion>10.0.0-rc.1.25451.107</Net10PackagesVersion>
+    <!-- merge conflict buffer -->
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Castle.Core" Version="4.4.0" />
