@@ -207,7 +207,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
 
     private void EditAccessControlEntryControl_Delete (object? sender, EventArgs e)
     {
-      var editAccessControlEntryControl = ArgumentUtility.CheckNotNullAndType<EditAccessControlEntryControl>("sender", sender!);
+      var editAccessControlEntryControl = ArgumentUtility.CheckNotNullAndType<EditAccessControlEntryControl>(nameof(sender), sender!);
       Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
 
       Page.PrepareValidation();

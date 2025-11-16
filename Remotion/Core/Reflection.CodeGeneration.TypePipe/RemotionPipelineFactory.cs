@@ -29,7 +29,6 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
   [ImplementationFor(typeof(IPipelineFactory), Lifetime = LifetimeKind.Singleton)]
   public class RemotionPipelineFactory : DefaultPipelineFactory
   {
-    [CLSCompliant(false)]
     protected override IModuleBuilderFactory NewModuleBuilderFactory (string participantConfigurationID)
     {
       var moduleBuilderFactory = base.NewModuleBuilderFactory(participantConfigurationID);

@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 // ReSharper disable once CheckNamespace
 namespace Remotion.Collections
@@ -20,7 +19,7 @@ namespace Remotion.Collections
 
     public ReadOnlyCollectionWrapper (IReadOnlyCollection<T> collection)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       _collection = collection;
     }
@@ -52,8 +51,6 @@ namespace Remotion.Collections
 
     void ICollection<T>.CopyTo (T[] array, int arrayIndex)
     {
-      ArgumentUtility.CheckNotNull("arrayIndex", arrayIndex);
-
       _collection.ToArray().CopyTo(array, arrayIndex);
     }
 

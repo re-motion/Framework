@@ -40,7 +40,7 @@
     <statement>
       select sum([OrderNo])
       from [Order] inner join [Company] on [CustomerID] = [Company].[ID]
-      where [Company].[Name] in ({companyNames});
+      where [Company].[Name] in (@companyNames);
     </statement>
   </query>
 
@@ -138,15 +138,27 @@
     </statement>
   </query>
 
-  <query id="StoredProcedureQuery" type="collection-readonly">
+  <query id="StoredProcedureQuery_AsQuery" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>rpf_testSPQuery</statement>
     <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 
-  <query id="StoredProcedureQueryWithParameter" type="collection-readonly">
+  <query id="StoredProcedureQueryWithParameter_AsQuery" type="collection-readonly">
     <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
     <statement>exec rpf_testSPQueryWithParameter @customerID</statement>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
+  </query>
+
+  <query id="StoredProcedureQuery_AsStoredProcedure" type="collection-readonly" statementType="stored-procedure">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>rpf_testSPQuery</statement>
+    <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
+  </query>
+
+  <query id="StoredProcedureQueryWithParameter_AsStoredProcedure" type="collection-readonly" statementType="stored-procedure">
+    <storageGroupType>Remotion.Data.DomainObjects.UnitTests::TestDomain.TestDomainAttribute</storageGroupType>
+    <statement>rpf_testSPQueryWithParameter</statement>
     <collectionType>Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderCollection, Remotion.Data.DomainObjects.UnitTests</collectionType>
   </query>
 

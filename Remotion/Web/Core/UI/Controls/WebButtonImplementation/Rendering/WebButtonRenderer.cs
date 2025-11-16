@@ -18,7 +18,6 @@ using System;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
@@ -40,7 +39,7 @@ namespace Remotion.Web.UI.Controls.WebButtonImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();

@@ -22,7 +22,6 @@ using System.Threading;
 using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
-using JetBrains.Annotations;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.Services;

@@ -14,7 +14,9 @@
 using System;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
@@ -62,7 +64,7 @@ public class ObjectIDDataParameterDefinitionTest : StandardMappingTest
     Assert.That(
         () => objectIDDataParameterDefinition.GetParameterValue(dummyValue),
         Throws.InstanceOf<ArgumentException>().With.ArgumentExceptionMessageEqualTo(
-            $"Parameter 'objectID.Value' has type '{typeof(Guid)}' when type '{typeof(int)}' was expected.",
+            $"The value has type '{typeof(Guid)}' when type '{typeof(int)}' was expected.",
             "objectID.Value"));
   }
 
@@ -70,13 +72,13 @@ public class ObjectIDDataParameterDefinitionTest : StandardMappingTest
   public void CreateDataParameter_WithIntValue_SetsNameValueType ()
   {
     var parameterValue = 42;
-    var commandStub = new Mock<IDbCommand>();
-    var dataParameterStub = new Mock<IDbDataParameter>();
+    var commandStub = new Mock<DbCommand>();
+    var dataParameterStub = new Mock<DbParameter>();
 
     var storageTypeInformation = StorageTypeInformationObjectMother.CreateIntStorageTypeInformation();
 
-    commandStub
-        .Setup(_ => _.CreateParameter())
+    commandStub.Protected()
+        .Setup<DbParameter>("CreateDbParameter")
         .Returns(dataParameterStub.Object);
 
     dataParameterStub.SetupProperty(_ => _.ParameterName);
@@ -97,8 +99,8 @@ public class ObjectIDDataParameterDefinitionTest : StandardMappingTest
   public void CreateDataParameter_WithGuidValue_SetsNameValueType ()
   {
     var parameterValue = Guid.NewGuid();
-    var commandStub = new Mock<IDbCommand>();
-    var dataParameterStub = new Mock<IDbDataParameter>();
+    var commandStub = new Mock<DbCommand>();
+    var dataParameterStub = new Mock<DbParameter>();
 
     var storageTypeInformation = new StorageTypeInformation(
         typeof(Guid),
@@ -109,8 +111,8 @@ public class ObjectIDDataParameterDefinitionTest : StandardMappingTest
         typeof(Guid),
         new DefaultConverter(typeof(Guid)));
 
-    commandStub
-        .Setup(_ => _.CreateParameter())
+    commandStub.Protected()
+        .Setup<DbParameter>("CreateDbParameter")
         .Returns(dataParameterStub.Object);
 
     dataParameterStub.SetupProperty(_ => _.ParameterName);
@@ -130,11 +132,11 @@ public class ObjectIDDataParameterDefinitionTest : StandardMappingTest
   [Test]
   public void CreateDataParameter_WithDBNullValue_SetsNameValueType ()
   {
-    var commandStub = new Mock<IDbCommand>();
-    var dataParameterStub = new Mock<IDbDataParameter>();
+    var commandStub = new Mock<DbCommand>();
+    var dataParameterStub = new Mock<DbParameter>();
 
-    commandStub
-        .Setup(_ => _.CreateParameter())
+    commandStub.Protected()
+        .Setup<DbParameter>("CreateDbParameter")
         .Returns(dataParameterStub.Object);
 
     var storageTypeInformation = new StorageTypeInformation(

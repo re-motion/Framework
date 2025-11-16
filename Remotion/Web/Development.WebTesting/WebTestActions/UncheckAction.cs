@@ -19,7 +19,6 @@ using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebTestActions
@@ -43,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (!scope.Selected)
         return;

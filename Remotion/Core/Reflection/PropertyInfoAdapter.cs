@@ -42,7 +42,7 @@ namespace Remotion.Reflection
 
     public static PropertyInfoAdapter Create (PropertyInfo propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
       return s_dataStore.GetOrAdd(propertyInfo, s_ctorFunc);
     }
 
@@ -169,7 +169,7 @@ namespace Remotion.Reflection
     public object? GetValue (object? instance, object[]? indexParameters)
     {
       //TODO RM-7432: Remove null check, parameter should be nullable
-      ArgumentUtility.CheckNotNull("instance", instance!);
+      ArgumentNullException.ThrowIfNull(instance!);
 
       return _propertyInfo.GetValue(instance, indexParameters);
     }
@@ -177,7 +177,7 @@ namespace Remotion.Reflection
     public void SetValue (object? instance, object? value, object[]? indexParameters)
     {
       //TODO RM-7432: Remove null check, parameter should be nullable
-      ArgumentUtility.CheckNotNull("instance", instance!);
+      ArgumentNullException.ThrowIfNull(instance!);
 
       _propertyInfo.SetValue(instance, value, indexParameters);
     }
@@ -213,7 +213,7 @@ namespace Remotion.Reflection
 
     public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull("implementationType", implementationType);
+      ArgumentNullException.ThrowIfNull(implementationType);
 
       // TODO RM-7802: DeclaringType being null should be handled.
       if (!DeclaringType!.IsInterface)

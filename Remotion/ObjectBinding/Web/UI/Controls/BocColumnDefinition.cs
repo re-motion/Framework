@@ -21,7 +21,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
@@ -38,6 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private BocColumnTitleStyle _columnTitleStyle = BocColumnTitleStyle.Text;
     private Unit _width = Unit.Empty;
     private string _cssClass = string.Empty;
+    private bool _isVisible = true;
 
     protected BocColumnDefinition ()
     {
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public IBocColumnRenderer GetRenderer (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
+      ArgumentNullException.ThrowIfNull(serviceLocator);
 
       return GetRendererInternal(serviceLocator);
     }
@@ -100,6 +100,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return ColumnTitleIcon; }
     }
 
+    /// <summary> Gets or sets a flag that determines whether to show this column. </summary>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("A flag determining whether to show this column.")]
+    [DefaultValue(true)]
+    [NotifyParentProperty(true)]
+    public bool IsVisible
+    {
+      get => _isVisible;
+      set => _isVisible = value;
+    }
+
     /// <summary> Gets or sets the text displayed in the column title. </summary>
     /// <remarks>
     ///   Override this property to add validity checks to the set accessor.
@@ -130,7 +142,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _columnTitleIcon; }
       set
       {
-        ArgumentUtility.CheckNotNull("Icon", value);
+        ArgumentNullException.ThrowIfNull(value);
         _columnTitleIcon = value;
       }
     }
@@ -184,8 +196,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
 

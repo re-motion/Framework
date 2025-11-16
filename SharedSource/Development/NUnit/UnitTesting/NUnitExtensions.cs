@@ -8,14 +8,14 @@ namespace Remotion.Development.NUnit.UnitTesting
 {
   public static class NUnitExtensions
   {
-    public static EqualConstraint ArgumentExceptionMessageEqualTo (this ConstraintExpression constraintExpression, string message, string paramName)
+    public static Constraint ArgumentExceptionMessageEqualTo (this ConstraintExpression constraintExpression, string message, string paramName)
     {
       AssertThatMessageContainsWhitespaces(message: message);
       AssertThatParameterDoesNotContainWhitespaces(paramName: paramName);
       return constraintExpression.With.Message.EqualTo(new ArgumentException(message: message, paramName: paramName).Message);
     }
 
-    public static EqualConstraint ArgumentOutOfRangeExceptionMessageEqualTo (this ConstraintExpression constraintExpression, string message, string paramName, int actualValue)
+    public static Constraint ArgumentOutOfRangeExceptionMessageEqualTo (this ConstraintExpression constraintExpression, string message, string paramName, int actualValue)
     {
       AssertThatMessageContainsWhitespaces(message: message);
       AssertThatParameterDoesNotContainWhitespaces(paramName: paramName);

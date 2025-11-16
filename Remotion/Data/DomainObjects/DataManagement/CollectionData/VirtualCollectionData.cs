@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.Mapping;
@@ -46,8 +45,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         IDataContainerMapReadOnlyView dataContainerMap,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull("associatedEndPointID", associatedEndPointID);
-      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
+      ArgumentNullException.ThrowIfNull(associatedEndPointID);
+      ArgumentNullException.ThrowIfNull(dataContainerMap);
 
       _associatedEndPointID = associatedEndPointID;
       _dataContainerMap = dataContainerMap;
@@ -96,7 +95,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public bool ContainsObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       return GetCachedDomainObjects().ContainsKey(objectID);
     }
@@ -104,10 +103,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     public DomainObject GetObject (int index)
     {
       if (index < 0)
-        throw new ArgumentOutOfRangeException("index");
+        throw new ArgumentOutOfRangeException(nameof(index));
 
       if (index >= GetCachedDomainObjects().Count)
-        throw new ArgumentOutOfRangeException("index");
+        throw new ArgumentOutOfRangeException(nameof(index));
 
       var cachedDomainObjects = GetCachedDomainObjectsSorted();
       int itemIndex = 0;
@@ -119,19 +118,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         itemIndex++;
       }
 
-      throw new ArgumentOutOfRangeException("index");
+      throw new ArgumentOutOfRangeException(nameof(index));
     }
 
     public DomainObject? GetObject (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       return GetCachedDomainObjects().GetValueOrDefault(objectID);
     }
 
     public int IndexOf (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       var cachedDomainObjects = GetCachedDomainObjectsSorted();
       int itemIndex = 0;

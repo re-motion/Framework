@@ -113,7 +113,7 @@ namespace Remotion.Collections
       get
       {
         if (index != 0)
-          throw new ArgumentOutOfRangeException("index", index, "The list contains only a single item.");
+          throw new ArgumentOutOfRangeException(nameof(index), index, "The list contains only a single item.");
 
         return _item;
       }

@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -32,7 +31,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public static T GetEndPointWithOppositeDefinition<T> (this IRelationEndPoint endPoint, ObjectID? oppositeObjectID) where T : IRelationEndPoint
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
 
       var oppositeDefinition = endPoint.Definition.GetOppositeEndPointDefinition();
 

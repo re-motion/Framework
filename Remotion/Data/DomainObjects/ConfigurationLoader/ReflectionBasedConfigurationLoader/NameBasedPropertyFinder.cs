@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -38,14 +37,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyMetadataProvider propertyMetadataProvider)
         : base(type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       _propertyName = propertyName;
     }
 
     protected override bool FindPropertiesFilter (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       if (!base.FindPropertiesFilter(propertyInfo))
         return false;
@@ -61,10 +60,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull("persistentMixinFinder", persistentMixinFinder);
-      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(nameResolver);
+      ArgumentNullException.ThrowIfNull(persistentMixinFinder);
+      ArgumentNullException.ThrowIfNull(propertyMetadataProvider);
 
       return new NameBasedPropertyFinder(
           _propertyName,

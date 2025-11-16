@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -172,7 +173,7 @@ public class NavigationCommandTest
   {
     string resource = "~/Test.wxe";
 
-    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, resource));
     string parameter1 = "Value1";
 
@@ -198,7 +199,7 @@ public class NavigationCommandTest
     string mappingID = "Test";
     string resource = "~/Test.wxe";
 
-    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(mappingID, _functionType, resource));
     string parameter1 = "Value1";
 
@@ -225,7 +226,7 @@ public class NavigationCommandTest
     string resource = "~/Test.wxe";
     Type functionWithNestingType = typeof(TestFunctionWithNesting);
 
-    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(mappingID, functionWithNestingType, resource));
     string parameter1 = "Value1";
 
@@ -272,7 +273,7 @@ public class NavigationCommandTest
   {
     string resource = "~/Test.wxe";
 
-    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+    UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")));
     UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_functionType, resource));
     string parameter1 = "Value1";
 

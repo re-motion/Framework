@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -31,13 +30,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public override IScriptElement GetCreateElement (SqlIndexDefinition indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
-      ArgumentUtility.CheckNotNull("ownerName", ownerName);
+      ArgumentNullException.ThrowIfNull(indexDefinition);
+      ArgumentNullException.ThrowIfNull(ownerName);
 
       return new ScriptStatement(
       string.Format(
-         "CREATE {0}{1} INDEX [{2}]\r\n"
-         + "  ON [{3}].[{4}] ({5}){6}{7}",
+         "CREATE {0}{1} INDEX [{2}]{8}  ON [{3}].[{4}] ({5}){6}{7}",
          indexDefinition.IsUnique.HasValue && indexDefinition.IsUnique.Value ? "UNIQUE " : string.Empty,
          indexDefinition.IsClustered.HasValue && indexDefinition.IsClustered.Value ? "CLUSTERED" : "NONCLUSTERED",
          indexDefinition.IndexName,
@@ -45,9 +43,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
          ownerName.EntityName,
          GetIndexedColumnNames(indexDefinition.Columns),
          indexDefinition.IncludedColumns != null
-             ? "\r\n  INCLUDE (" + string.Join(", ", indexDefinition.IncludedColumns.Select(c => "[" + c.Name + "]")) + ")"
+             ? $"{Environment.NewLine}  INCLUDE ({string.Join(", ", indexDefinition.IncludedColumns.Select(c => $"[{c.Name}]"))})"
              : string.Empty,
-         GetCreateIndexOptions(GetCreateIndexOptionItems(indexDefinition))));
+         GetCreateIndexOptions(GetCreateIndexOptionItems(indexDefinition)),
+         Environment.NewLine));
     }
 
     protected override IEnumerable<string> GetCreateIndexOptionItems (SqlIndexDefinition indexDefinition)

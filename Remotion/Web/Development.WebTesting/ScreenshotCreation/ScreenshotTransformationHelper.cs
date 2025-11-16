@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Drawing;
-using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -28,21 +28,21 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     public ScreenshotTransformationHelper (
         ScreenshotManipulation manipulation,
-        Graphics graphics,
+        Canvas canvas,
         IScreenshotElementResolver<T> resolver,
         T target,
         CoordinateSystem coordinateSystem,
         IScreenshotTransformation<T> transformation,
         IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
-      ArgumentUtility.CheckNotNull("resolver", resolver);
-      ArgumentUtility.CheckNotNull("target", target);
-      ArgumentUtility.CheckNotNull("transformation", transformation);
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentNullException.ThrowIfNull(canvas);
+      ArgumentNullException.ThrowIfNull(resolver);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(transformation);
+      ArgumentNullException.ThrowIfNull(locator);
 
       var resolvedElement = Resolve(resolver, target, locator, coordinateSystem);
-      var context = new ScreenshotTransformationContext<T>(manipulation, graphics, resolver, target, resolvedElement);
+      var context = new ScreenshotTransformationContext<T>(manipulation, canvas, resolver, target, resolvedElement);
 
       context = transformation.BeginApply(context);
 
@@ -83,7 +83,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         case CoordinateSystem.Desktop:
           return resolver.ResolveDesktopCoordinates(target, locator);
         default:
-          throw new ArgumentOutOfRangeException("coordinateSystem", coordinateSystem, null);
+          throw new ArgumentOutOfRangeException(nameof(coordinateSystem), coordinateSystem, null);
       }
     }
   }

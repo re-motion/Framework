@@ -66,8 +66,8 @@ namespace Remotion.Utilities.AttributeRetrieval
 
     public object[] GetCustomAttributes (TCustomAttributeProvider memberInfo, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
-      ArgumentUtility.CheckNotNull("attributeType", attributeType);
+      ArgumentNullException.ThrowIfNull(memberInfo);
+      ArgumentNullException.ThrowIfNull(attributeType);
 
       var declaredAttributes = memberInfo.GetCustomAttributes(attributeType, false);
       if (!inherit)

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 {
@@ -37,8 +36,8 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 
     public PrefixNamespace (string prefix, string uri)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("prefix", prefix);
-      ArgumentUtility.CheckNotNullOrEmpty("uri", uri);
+      ArgumentException.ThrowIfNullOrEmpty(prefix);
+      ArgumentException.ThrowIfNullOrEmpty(uri);
 
       _prefix = prefix;
       _uri = uri;

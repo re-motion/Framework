@@ -41,23 +41,23 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
   {
     public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
       return new StubStorageProvider();
     }
 
     public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
       return new StubStorageProvider();
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
       var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
       var dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();

@@ -217,7 +217,7 @@ namespace Remotion.Utilities
 
     private StopwatchScope (MeasurementAction action, string scopeEndString)
     {
-      ArgumentUtility.CheckNotNull("action", action);
+      ArgumentNullException.ThrowIfNull(action);
 
       _action = action;
       _scopeEndString = scopeEndString;

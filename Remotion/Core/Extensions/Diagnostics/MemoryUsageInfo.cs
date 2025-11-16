@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Diagnostics;
-using Remotion.Utilities;
 
 namespace Remotion.Diagnostics
 {
@@ -41,7 +40,7 @@ namespace Remotion.Diagnostics
 
     public MemoryUsageInfo (string description, ByteValue workingSet, ByteValue managedMemoryBeforeCollect, ByteValue managedMemoryAfterCollect)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("description", description);
+      ArgumentException.ThrowIfNullOrEmpty(description);
 
       _description = description;
       _managedMemoryAfterCollect = managedMemoryAfterCollect;

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands
 {
@@ -30,8 +29,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public UnregisterDataContainerCommand (ObjectID objectID, DataContainerMap map)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
-      ArgumentUtility.CheckNotNull("map", map);
+      ArgumentNullException.ThrowIfNull(objectID);
+      ArgumentNullException.ThrowIfNull(map);
 
       _objectID = objectID;
       _map = map;

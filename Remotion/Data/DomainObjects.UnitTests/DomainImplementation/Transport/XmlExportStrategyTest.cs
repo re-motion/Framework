@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
         XmlExportStrategy.Instance.Export(stream, items);
         var actualString = ReplaceKnownXmlNamespaceDeclarations(Encoding.UTF8.GetString(stream.ToArray()));
 
-        Assert.That(actualString, Is.EqualTo(ReplaceKnownXmlNamespaceDeclarations(XmlSerializationStrings.XmlForOrder1Order2)));
+        Assert.That(actualString, Is.EqualTo(ReplaceKnownXmlNamespaceDeclarations(XmlSerializationStrings.XmlForOrder1Order2).ReplaceLineEndings()));
       }
     }
 

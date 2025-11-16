@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
           () => new ConstantEnumerationValueFilter(new Enum[] { TestEnum.Value1, EnumWithUndefinedValue.Value2 }),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Item 1 of parameter 'disabledValues' has the type 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue' "
+                  "Item 1 of the collection has type 'Remotion.ObjectBinding.UnitTests.TestDomain.EnumWithUndefinedValue' "
                   + "instead of 'Remotion.ObjectBinding.UnitTests.TestDomain.TestEnum'.",
                   "disabledValues"));
     }

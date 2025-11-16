@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
@@ -27,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     public static PropertyDefinitionCollection CreateForAllProperties (ClassDefinition classDefinition, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
       return new PropertyDefinitionCollection(
           classDefinition.CreateSequence(cd => cd.BaseClass).SelectMany(cd => cd.MyPropertyDefinitions), makeCollectionReadOnly);
     }
@@ -38,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyDefinitionCollection (IEnumerable<PropertyDefinition> collection, bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       foreach (var propertyDefinition in collection)
         Add(propertyDefinition);
@@ -68,14 +67,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool Contains (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       return BaseContains(propertyDefinition.PropertyName, propertyDefinition);
     }
 
     public bool Contains (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
       return BaseContainsKey(propertyName);
     }
 
@@ -88,14 +87,14 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+        ArgumentException.ThrowIfNullOrEmpty(propertyName);
         return (PropertyDefinition?)BaseGetObject(propertyName);
       }
     }
 
     public int Add (PropertyDefinition value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(value);
 
       int position = BaseAdd(value.PropertyName, value);
 

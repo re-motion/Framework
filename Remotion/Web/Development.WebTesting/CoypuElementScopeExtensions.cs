@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
@@ -56,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     public static void EnsureExistence ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       try
       {
@@ -84,7 +82,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     public static void EnsureSingle ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       var matchBackup = scope.ElementFinder.Options.Match;
 
@@ -119,7 +117,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <exception cref="WebTestException">If multiple matching controls are found.</exception>
     public static bool ExistsWorkaround ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       var scopeTimeoutBackup = scope.ElementFinder.Options.Timeout;
       try
@@ -192,7 +190,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="scope">The <see cref="ElementScope"/> which is asserted to match only a single DOM element.</param>
     public static bool ExistsWithEnsureSingleWorkaround ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       var matchBackup = scope.ElementFinder.Options.Match;
       scope.ElementFinder.Options.Match = Match.Single;
@@ -216,8 +214,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The background color or <see cref="WebColor.Transparent"/> if no background color is set (not even on any parent node).</returns>
     public static WebColor GetComputedBackgroundColor ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var computedBackgroundColor = (string)scope.GetDriver().ExecuteScript(CommonJavaScripts.GetComputedBackgroundColor, scope, scope.Native);
 
@@ -239,8 +237,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The text color or <see cref="WebColor.Transparent"/> if no text color is set (not even on any parent node).</returns>
     public static WebColor GetComputedTextColor ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var computedTextColor = (string)scope.GetDriver().ExecuteScript(CommonJavaScripts.GetComputedTextColor, scope, scope.Native);
 
@@ -256,14 +254,14 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The <see cref="IDriver"/> instance held by <paramref name="scope"/>.</returns>
     internal static IDriver GetDriver ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       return (IDriver)s_driverFieldInfo.Value.GetValue(scope)!;
     }
 
     private static bool IsTransparent ([NotNull] string color)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("color", color);
+      ArgumentException.ThrowIfNullOrEmpty(color);
 
       if (color == "rgba(0, 0, 0, 0)")
         return true;
@@ -292,8 +290,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>True if the HTML element is selected, otherwise false.</returns>
     public static bool IsSelected ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(logger);
 
       return RetryUntilTimeout.Run(
           logger,
@@ -316,8 +314,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>True if the given <paramref name="scope"/> is visible, otherwise false.</returns>
     public static bool IsVisible ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(logger);
 
       return RetryUntilTimeout.Run(
           logger,
@@ -326,21 +324,6 @@ namespace Remotion.Web.Development.WebTesting
             var webElement = (IWebElement)scope.Native;
             return webElement.Displayed;
           });
-    }
-
-    /// <summary>
-    /// Ensures unhovering of the given <paramref name="scope"/> by placing the cursor back at 0/0 in the top-left corner.
-    /// </summary>
-    /// <param name="scope">The <see cref="ElementScope"/> of the element against which the unhover operation is performed.</param>
-    /// <param name="logger">
-    /// The <see cref="ILogger"/> used by the web testing infrastructure for diagnostic output. The <paramref name="logger"/> can be retrieved from
-    /// <see cref="WebTestObject{TWebTestObjectContext}"/>.<see cref="WebTestObject{TWebTestObjectContext}.Logger"/>.
-    /// </param>
-    public static void Unhover ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
-    {
-      ArgumentUtility.CheckNotNull("scope", scope);
-
-      Cursor.Position = new Point(0, 0);
     }
 
     /// <summary>
@@ -360,9 +343,9 @@ namespace Remotion.Web.Development.WebTesting
     [NotNull]
     public static string GetAttribute ([NotNull] this ElementScope scope, [NotNull] string attributeName, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty("attributeName", attributeName);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentException.ThrowIfNullOrEmpty(attributeName);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var result = scope[attributeName];
 

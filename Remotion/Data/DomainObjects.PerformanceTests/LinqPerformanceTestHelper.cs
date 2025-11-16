@@ -27,7 +27,6 @@ using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Linq.Parsing.Structure;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.PerformanceTests
 {
@@ -41,7 +40,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
     public LinqPerformanceTestHelper (Func<IQueryable<T>> queryGenerator)
     {
-      ArgumentUtility.CheckNotNull("queryGenerator", queryGenerator);
+      ArgumentNullException.ThrowIfNull(queryGenerator);
 
       _queryGenerator = queryGenerator;
     }

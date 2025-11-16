@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     public FetchedVirtualObjectRelationDataRegistrationAgent (IVirtualEndPointProvider virtualEndPointProvider)
     {
-      ArgumentUtility.CheckNotNull("virtualEndPointProvider", virtualEndPointProvider);
+      ArgumentNullException.ThrowIfNull(virtualEndPointProvider);
 
       _virtualEndPointProvider = virtualEndPointProvider;
     }
@@ -52,15 +52,15 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         ICollection<ILoadedObjectData> originatingObjects,
         ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("originatingObjects", originatingObjects);
-      ArgumentUtility.CheckNotNull("relatedObjects", relatedObjects);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(originatingObjects);
+      ArgumentNullException.ThrowIfNull(relatedObjects);
 
       if (relationEndPointDefinition.Cardinality != CardinalityType.One || !relationEndPointDefinition.IsVirtual)
       {
         throw new ArgumentException(
             "Only virtual object-valued relation end-points can be handled by this registration agent.",
-            "relationEndPointDefinition");
+            nameof(relationEndPointDefinition));
       }
 
       var groupedRelatedObjects = CorrelateRelatedObjects(relatedObjects, relationEndPointDefinition);

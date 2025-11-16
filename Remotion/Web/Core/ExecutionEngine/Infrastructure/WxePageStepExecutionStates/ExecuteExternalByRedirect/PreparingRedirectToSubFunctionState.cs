@@ -34,14 +34,14 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
         WxeReturnOptions returnOptions)
         : base(executionStateContext, parameters)
     {
-      ArgumentUtility.CheckNotNull("returnOptions", returnOptions);
+      ArgumentNullException.ThrowIfNull(returnOptions);
 
       _returnOptions = returnOptions;
     }
 
     public override void ExecuteSubFunction (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       string functionToken = context.GetFunctionTokenForExternalFunction(Parameters.SubFunction, _returnOptions.IsReturning);
       string destinationUrl = context.GetDestinationUrlForExternalFunction(Parameters.SubFunction, functionToken, Parameters.PermaUrlOptions);

@@ -16,7 +16,6 @@
 //
 using System;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Logging;
 
@@ -29,7 +28,7 @@ public class LazyLogger : ILogger
 
   public LazyLogger (Lazy<ILogger> lazyLogger)
   {
-    ArgumentUtility.CheckNotNull("lazyLogger", lazyLogger);
+    ArgumentNullException.ThrowIfNull(lazyLogger);
 
     _lazyLogger = lazyLogger;
   }

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions.Building
 {
@@ -29,8 +28,8 @@ namespace Remotion.Mixins.Definitions.Building
 
     public ComposedInterfaceDependencyDefinitionBuilder (TargetClassDefinition targetClass, Type composedInterface)
     {
-      ArgumentUtility.CheckNotNull("targetClass", targetClass);
-      ArgumentUtility.CheckNotNull("composedInterface", composedInterface);
+      ArgumentNullException.ThrowIfNull(targetClass);
+      ArgumentNullException.ThrowIfNull(composedInterface);
 
       _targetClass = targetClass;
       _composedInterface = composedInterface;
@@ -58,7 +57,7 @@ namespace Remotion.Mixins.Definitions.Building
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
     {
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentNullException.ThrowIfNull(dependency);
       _targetClass.ComposedInterfaceDependencies.Add((ComposedInterfaceDependencyDefinition)dependency);
     }
   }

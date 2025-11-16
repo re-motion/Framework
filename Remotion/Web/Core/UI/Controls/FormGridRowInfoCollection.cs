@@ -34,12 +34,11 @@ public sealed class FormGridRowInfoCollection : CollectionBase
   /// </param>
   public FormGridRowInfoCollection (FormGridRowInfo[] values)
   {
-    ArgumentUtility.CheckNotNull("values", values);
+    ArgumentNullException.ThrowIfNull(values);
 
     for (int index = 0; index < values.Length; index++)
     {
-      if (values[index] == null)
-        throw new ArgumentNullException("values[" + index + "]");
+      ArgumentNullException.ThrowIfNull(values[index], paramName: "values[" + index + "]");
     }
 
     InnerList.AddRange(values);
@@ -54,7 +53,7 @@ public sealed class FormGridRowInfoCollection : CollectionBase
   /// <param name="value"> The new value of the element at index. </param>
   protected override void OnInsert (int index, object? value)
   {
-    ArgumentUtility.CheckNotNullAndType<FormGridRowInfo>("value", value!);
+    ArgumentUtility.CheckNotNullAndType<FormGridRowInfo>(nameof(value), value!);
     base.OnInsert(index, value);
   }
 

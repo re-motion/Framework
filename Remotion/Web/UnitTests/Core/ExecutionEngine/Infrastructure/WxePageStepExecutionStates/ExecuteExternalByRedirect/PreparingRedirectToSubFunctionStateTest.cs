@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.IO;
 using System.Text;
 using Moq;
 using NUnit.Framework;
@@ -35,7 +36,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       base.SetUp();
 
-      UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(RootFunction.GetType(), "~/root.wxe"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(SubFunction.Object.GetType(), "~/sub.wxe"));
 

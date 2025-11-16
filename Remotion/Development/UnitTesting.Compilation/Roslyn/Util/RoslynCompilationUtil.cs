@@ -54,9 +54,9 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn.Util {
                 compilerFullPath = CompilerFullPath(@"roslyn");
 
             if (fileExt.Equals(".cs", StringComparison.InvariantCultureIgnoreCase))
-                compilerFullPath = Path.Combine(compilerFullPath, "csc.exe");
+                compilerFullPath = Path.Combine(compilerFullPath, "csc.dll");
             else if (fileExt.Equals(".vb", StringComparison.InvariantCultureIgnoreCase))
-                compilerFullPath = Path.Combine(compilerFullPath, "vbc.exe");
+                compilerFullPath = Path.Combine(compilerFullPath, "vbc.dll");
 
 
             //
@@ -156,8 +156,16 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn.Util {
 
         internal static bool IsDebuggerAttached
         {
-            get {
-                return IsDebuggerPresent() || Debugger.IsAttached;
+            get
+            {
+                if (OperatingSystem.IsWindows())
+                {
+                    return IsDebuggerPresent() || Debugger.IsAttached;
+                }
+                else
+                {
+                    return Debugger.IsAttached;
+                }
             }
         }
 

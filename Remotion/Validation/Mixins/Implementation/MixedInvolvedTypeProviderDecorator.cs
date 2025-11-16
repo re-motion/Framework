@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Mixins.Implementation
@@ -35,8 +34,8 @@ namespace Remotion.Validation.Mixins.Implementation
 
     public MixedInvolvedTypeProviderDecorator (IInvolvedTypeProvider involvedTypeProvider, IValidationTypeFilter validationTypeFilter)
     {
-      ArgumentUtility.CheckNotNull("involvedTypeProvider", involvedTypeProvider);
-      ArgumentUtility.CheckNotNull("validationTypeFilter", validationTypeFilter);
+      ArgumentNullException.ThrowIfNull(involvedTypeProvider);
+      ArgumentNullException.ThrowIfNull(validationTypeFilter);
 
       _involvedTypeProvider = involvedTypeProvider;
       _validationTypeFilter = validationTypeFilter;
@@ -49,7 +48,7 @@ namespace Remotion.Validation.Mixins.Implementation
 
     public IEnumerable<IEnumerable<Type>> GetTypes (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       //Note: if the type is a mixin type then the concrete type is passed to the InvolvedTypeProvider. 
       //That is the reason why no compound implementation is possible!

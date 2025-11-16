@@ -15,11 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 {
@@ -38,8 +37,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull("comparedColumnsSpecification", comparedColumnsSpecification);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
+      ArgumentNullException.ThrowIfNull(comparedColumnsSpecification);
 
       _tableDefinition = tableDefinition;
       _comparedColumnsSpecification = comparedColumnsSpecification;
@@ -55,9 +54,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       get { return _comparedColumnsSpecification; }
     }
 
-    public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
+    public override DbCommand Create (IDbCommandFactory dbCommandFactory)
     {
-      ArgumentUtility.CheckNotNull("dbCommandFactory", dbCommandFactory);
+      ArgumentNullException.ThrowIfNull(dbCommandFactory);
 
       var command = dbCommandFactory.CreateDbCommand();
       var statement = new StringBuilder();

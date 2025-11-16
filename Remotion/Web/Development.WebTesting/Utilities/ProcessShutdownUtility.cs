@@ -4,7 +4,6 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities;
 
@@ -15,9 +14,7 @@ internal static class ProcessShutdownUtility
       CancellationToken cancellationToken,
       int timeoutInMilliseconds)
   {
-    ArgumentUtility.CheckNotNull(nameof(process), process);
-    ArgumentUtility.CheckNotNull(nameof(cancellationToken), cancellationToken);
-    ArgumentUtility.CheckNotNull(nameof(timeoutInMilliseconds), timeoutInMilliseconds);
+    ArgumentNullException.ThrowIfNull(process);
 
     var tcs = new TaskCompletionSource<int>();
     cancellationToken.Register(

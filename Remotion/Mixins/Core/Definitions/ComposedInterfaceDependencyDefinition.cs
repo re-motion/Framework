@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -29,7 +28,7 @@ namespace Remotion.Mixins.Definitions
     public ComposedInterfaceDependencyDefinition (RequiredTargetCallTypeDefinition requirement, Type composedInterface, DependencyDefinitionBase? aggregator)
         : base(requirement, aggregator)
     {
-      ArgumentUtility.CheckNotNull("composedInterface", composedInterface);
+      ArgumentNullException.ThrowIfNull(composedInterface);
       _composedInterface = composedInterface;
     }
 
@@ -55,7 +54,7 @@ namespace Remotion.Mixins.Definitions
 
     public override void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
     }
   }

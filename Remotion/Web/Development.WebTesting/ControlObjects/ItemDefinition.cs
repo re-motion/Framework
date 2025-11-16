@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
 {
@@ -33,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     public ItemDefinition ([NotNull] string itemID, int oneBasedIndex, [NotNull] string text, bool isDisabled, [NotNull] string accessKey)
     {
-      ArgumentUtility.CheckNotNull("itemID", itemID);
-      ArgumentUtility.CheckNotNull("text", text);
-      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentNullException.ThrowIfNull(itemID);
+      ArgumentNullException.ThrowIfNull(text);
+      ArgumentNullException.ThrowIfNull(text);
 
       _itemID = itemID;
       _oneBasedIndex = oneBasedIndex;

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.Suppression
 {
@@ -28,7 +27,7 @@ namespace Remotion.Mixins.Context.Suppression
   {
     public MixinTreeSuppressionRule (Type mixinBaseTypeToSuppress)
     {
-      ArgumentUtility.CheckNotNull("mixinBaseTypeToSuppress", mixinBaseTypeToSuppress);
+      ArgumentNullException.ThrowIfNull(mixinBaseTypeToSuppress);
       MixinBaseTypeToSuppress = mixinBaseTypeToSuppress;
     }
 
@@ -36,7 +35,7 @@ namespace Remotion.Mixins.Context.Suppression
 
     public void RemoveAffectedMixins (Dictionary<Type, MixinContext> configuredMixinTypes)
     {
-      ArgumentUtility.CheckNotNull("configuredMixinTypes", configuredMixinTypes);
+      ArgumentNullException.ThrowIfNull(configuredMixinTypes);
 
       foreach (var configuredMixinType in configuredMixinTypes.Keys.ToList()) // need to clone collection, otherwise we can't remove
       {

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration
 {
@@ -32,9 +31,9 @@ namespace Remotion.Reflection.CodeGeneration
 
     protected MethodReferencingAttribute (Type declaringType, string methodName, string methodSignature)
     {
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
-      ArgumentUtility.CheckNotNullOrEmpty("methodSignature", methodSignature);
+      ArgumentNullException.ThrowIfNull(declaringType);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodSignature);
 
       _declaringType = declaringType;
       _methodName = methodName;

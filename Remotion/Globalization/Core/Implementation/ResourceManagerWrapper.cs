@@ -23,9 +23,7 @@ using System.Globalization;
 using System.Linq;
 using System.Resources;
 using Microsoft.Extensions.Logging;
-using Remotion.Collections;
 using Remotion.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
@@ -75,8 +73,8 @@ namespace Remotion.Globalization.Implementation
     /// </param>
     public ResourceManagerWrapper (ResourceManager resourceManager, IReadOnlyList<CultureInfo> availableCultures)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("availableCultures", availableCultures);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(availableCultures);
 
       _resourceManager = resourceManager;
       _availableCultures = availableCultures.SelectMany(GetCultureHierarchy).Distinct().ToArray();
@@ -167,7 +165,7 @@ namespace Remotion.Globalization.Implementation
     /// </summary>
     public bool TryGetString (string id, [MaybeNullWhen(false)] out string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
 
       // We need to load the cultures before any access to the resource manager happens because
       // if a culture has no resources the resource manager creates a fallback resource set for this culture.

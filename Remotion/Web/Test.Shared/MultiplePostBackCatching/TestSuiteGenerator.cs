@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.PostBackTargets;
 using Remotion.Web.Utilities;
 
@@ -37,8 +36,8 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
 
     public TestSuiteGenerator (Page testSuitePage, string testPage)
     {
-      ArgumentUtility.CheckNotNull("page", testSuitePage);
-      ArgumentUtility.CheckNotNullOrEmpty("testPage", testPage);
+      ArgumentNullException.ThrowIfNull(testSuitePage);
+      ArgumentException.ThrowIfNullOrEmpty(testPage);
 
       _testSuitePage = testSuitePage;
       _testPage = testPage;

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
@@ -79,7 +78,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject SelectOption (string value, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption(value)");
@@ -90,7 +89,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string value, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithItemID");
@@ -112,7 +111,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithDisplayText");
@@ -129,7 +128,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
     private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("selectAction", selectAction);
+      ArgumentNullException.ThrowIfNull(selectAction);
 
       var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
       ExecuteAction(new CustomAction(this, Scope, "Select", selectAction, Logger), actualActionOptions);

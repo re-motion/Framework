@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 {
@@ -31,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
+      ArgumentNullException.ThrowIfNull(relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
@@ -45,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
 
       if (relationEndPointDefinition.IsVirtual
           && relationEndPointDefinition.PropertyInfo != null

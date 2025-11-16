@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration
 {
@@ -27,10 +26,10 @@ namespace Remotion.Mixins.CodeGeneration
   {
     public IntroducedMemberAttribute (Type mixin, string mixinMemberName, Type introducedInterface, string interfaceMemberName)
     {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
-      ArgumentUtility.CheckNotNullOrEmpty("mixinMemberName", mixinMemberName);
-      ArgumentUtility.CheckNotNull("introducedInterface", introducedInterface);
-      ArgumentUtility.CheckNotNullOrEmpty("interfaceMemberName", interfaceMemberName);
+      ArgumentNullException.ThrowIfNull(mixin);
+      ArgumentException.ThrowIfNullOrEmpty(mixinMemberName);
+      ArgumentNullException.ThrowIfNull(introducedInterface);
+      ArgumentException.ThrowIfNullOrEmpty(interfaceMemberName);
 
       Mixin = mixin;
       MixinMemberName = mixinMemberName;

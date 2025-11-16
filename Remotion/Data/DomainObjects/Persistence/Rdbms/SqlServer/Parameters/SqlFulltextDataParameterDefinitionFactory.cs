@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 
@@ -30,15 +30,15 @@ public class SqlFulltextDataParameterDefinitionFactory : IDataParameterDefinitio
 
   public SqlFulltextDataParameterDefinitionFactory (IDataParameterDefinitionFactory nextDataParameterDefinitionFactory)
   {
-    ArgumentUtility.CheckNotNull(nameof(nextDataParameterDefinitionFactory), nextDataParameterDefinitionFactory);
+    ArgumentNullException.ThrowIfNull(nextDataParameterDefinitionFactory);
 
     NextDataParameterDefinitionFactory = nextDataParameterDefinitionFactory;
   }
 
   public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter, IQuery query)
   {
-    ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
-    ArgumentUtility.CheckNotNull(nameof(query), query);
+    ArgumentNullException.ThrowIfNull(queryParameter);
+    ArgumentNullException.ThrowIfNull(query);
 
     var innerDataParameterDefinition = NextDataParameterDefinitionFactory.CreateDataParameterDefinition(queryParameter, query);
     if (queryParameter.Value is string or char[])

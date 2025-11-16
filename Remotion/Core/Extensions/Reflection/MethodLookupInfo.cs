@@ -42,7 +42,7 @@ namespace Remotion.Reflection
 
     public Delegate GetInstanceMethodDelegate (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       return s_instanceMethodCache.GetOrAdd(
             new Tuple<Type, string>(delegateType, MemberName),

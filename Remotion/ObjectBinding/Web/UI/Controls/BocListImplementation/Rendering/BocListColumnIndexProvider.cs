@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -33,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocListColumnIndexProvider (IReadOnlyList<BocColumnRenderer> columnDefinitions)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnDefinitions), columnDefinitions);
+      ArgumentNullException.ThrowIfNull(columnDefinitions);
 
       _columnDefinitions = columnDefinitions;
     }
@@ -41,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <inheritdoc />
     public int GetColumnIndex (BocColumnDefinition columnDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnDefinition), columnDefinition);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
 
       return GetBocColumnRenderer(columnDefinition).ColumnIndex;
     }
@@ -49,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <inheritdoc />
     public int GetVisibleColumnIndex (BocColumnDefinition columnDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(columnDefinition), columnDefinition);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
 
       return GetBocColumnRenderer(columnDefinition).VisibleColumnIndex;
     }

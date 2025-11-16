@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -33,7 +32,7 @@ namespace Remotion.Mixins.Definitions
 
     public DefinitionCollectionBase (KeyMaker keyMaker, Predicate<TValue>? guardian)
     {
-      ArgumentUtility.CheckNotNull("keyMaker", keyMaker);
+      ArgumentNullException.ThrowIfNull(keyMaker);
       _keyMaker = keyMaker;
       _guardian = guardian;
     }
@@ -62,10 +61,10 @@ namespace Remotion.Mixins.Definitions
 
     protected internal void Add (TValue newItem)
     {
-      ArgumentUtility.CheckNotNull("newItem", newItem);
+      ArgumentNullException.ThrowIfNull(newItem);
       if (_guardian != null && !_guardian(newItem))
         throw new ArgumentException(string.Format("The item does not match the criteria to be added to the collection: {0}.", _guardian.Method),
-            "newItem");
+            nameof(newItem));
 
       TKey key = _keyMaker(newItem);
 
@@ -91,7 +90,7 @@ namespace Remotion.Mixins.Definitions
 
     internal void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       foreach (TValue value in this)
       {
         value.Accept(visitor);

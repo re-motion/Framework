@@ -27,10 +27,10 @@ using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
-using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories.Remote;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 {
@@ -39,6 +39,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
   /// </summary>
   public class EdgeConfiguration : BrowserConfigurationBase, IEdgeConfiguration
   {
+    public static void ApplyDefaultWebTestFeatures (
+        WebTestFeatureCollection features,
+        IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
+
+      // Placeholder for future edge specific feature additions
+    }
+
     private const string c_userDataFolderPrefix = "userdata";
 
     private static readonly Lazy<EdgeExecutable> s_edgeExecutable =
@@ -56,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
     public override string BrowserExecutableName { get; } = "msedge";
     public override string WebDriverExecutableName { get; } = "msedgedriver";
     public override IDownloadHelper DownloadHelper { get; }
-    public override IBrowserContentLocator Locator { get; } = new EdgeBrowserContentLocator();
+    public override IBrowserContentLocator Locator { get; } = DefaultBrowserContentLocator.Instance;
     public override ScreenshotTooltipStyle TooltipStyle { get; } = ScreenshotTooltipStyle.Edge;
 
     public string BrowserBinaryPath { get; }
@@ -76,8 +86,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
         [NotNull] EdgeExecutable edgeExecutable)
         : base(webTestSettings)
     {
-      ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
-      ArgumentUtility.CheckNotNull("edgeExecutable", edgeExecutable);
+      ArgumentNullException.ThrowIfNull(webTestSettings);
+      ArgumentNullException.ThrowIfNull(edgeExecutable);
 
       BrowserBinaryPath = edgeExecutable.BrowserBinaryPath;
       DriverBinaryPath = edgeExecutable.DriverBinaryPath;
@@ -96,8 +106,14 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
           webTestSettings.LoggerFactory);
 
       DisableSecurityWarningsBehavior = webTestSettings.Edge.DisableSecurityWarningsBehavior;
+
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
 
+    /// <inheritdoc />
+    /// <remarks>
+    /// Changes made here might also need to be made in <see cref="RemoteBrowserFactory"/>.<see cref="RemoteBrowserFactory.CreateEdgeOptions"/>.
+    /// </remarks>
     public virtual ExtendedEdgeOptions CreateEdgeOptions ()
     {
       var userDirectory = CreateUnusedUserDirectoryPath();

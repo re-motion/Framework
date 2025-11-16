@@ -165,7 +165,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       base.RegisterHtmlHeadContents(htmlHeadAppender);
 
@@ -191,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
     ///   between postbacks.
     /// </summary>
-    /// <include file='..\..\..\doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       string? newValue = PageUtility.GetPostBackCollectionItem(Page!, GetValueName());

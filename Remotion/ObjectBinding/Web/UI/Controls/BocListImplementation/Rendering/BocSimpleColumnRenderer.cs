@@ -19,7 +19,6 @@ using System.Web.UI;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
@@ -49,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
-      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -63,8 +62,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected override void RenderCellDataForEditMode (
         BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments, IEditableRow editableRow)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("editableRow", editableRow);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(editableRow);
 
       RenderEditModeControl(renderingContext, arguments, editableRow);
     }
@@ -76,8 +75,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <param name="businessObject">The <see cref="IBusinessObject"/> that acts as a starting point for the property path.</param>
     protected override void RenderOtherIcons (BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(businessObject);
 
       if (renderingContext.ColumnDefinition.EnableIcon)
       {

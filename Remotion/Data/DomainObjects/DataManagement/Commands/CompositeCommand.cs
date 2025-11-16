@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public CompositeCommand (IEnumerable<IDataManagementCommand> commands)
     {
-      ArgumentUtility.CheckNotNull("commands", commands);
+      ArgumentNullException.ThrowIfNull(commands);
 
       // Manual iteration instead of List ctor + LINQ to avoid having to iterate the commands twice
       var commandList = new List<IDataManagementCommand>();

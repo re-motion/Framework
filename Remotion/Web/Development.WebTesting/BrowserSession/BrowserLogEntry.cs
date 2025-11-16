@@ -17,8 +17,8 @@
 using System;
 using System.Globalization;
 using JetBrains.Annotations;
+using OpenQA.Selenium.BiDi.Log;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession
 {
@@ -43,15 +43,33 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     /// </summary>
     public DateTime Timestamp { get; }
 
-    public BrowserLogEntry ([NotNull] LogEntry logEntry)
+    private static LogLevel GetLogLevel ([NotNull] Level bidiLogLevel)
+    {
+      return bidiLogLevel switch
+      {
+          OpenQA.Selenium.BiDi.Log.Level.Debug => LogLevel.Debug,
+          OpenQA.Selenium.BiDi.Log.Level.Info => LogLevel.Info,
+          OpenQA.Selenium.BiDi.Log.Level.Warn => LogLevel.Warning,
+          OpenQA.Selenium.BiDi.Log.Level.Error => LogLevel.Severe,
+          _ => LogLevel.Off
+      };
+    }
+
+    public BrowserLogEntry ([NotNull] OpenQA.Selenium.BiDi.Log.LogEntry logEntry)
+        : this(GetLogLevel(logEntry.Level), logEntry.Text ?? "", logEntry.Timestamp.DateTime)
+    {
+      ArgumentNullException.ThrowIfNull(logEntry);
+    }
+
+    public BrowserLogEntry ([NotNull] OpenQA.Selenium.LogEntry logEntry)
         : this(logEntry.Level, logEntry.Message, logEntry.Timestamp)
     {
-      ArgumentUtility.CheckNotNull("logEntry", logEntry);
+      ArgumentNullException.ThrowIfNull(logEntry);
     }
 
     public BrowserLogEntry (LogLevel level, [NotNull] string message, DateTime timestamp)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("message", message);
+      ArgumentException.ThrowIfNullOrEmpty(message);
 
       Level = level;
       Message = message;

@@ -56,16 +56,16 @@ namespace Remotion.Utilities
     public static Type GetOpenType (int arguments)
     {
       if (arguments > MaxArguments)
-        throw new ArgumentOutOfRangeException("arguments");
+        throw new ArgumentOutOfRangeException(nameof(arguments));
 
       return s_types[arguments];
     }
 
     public static Type MakeClosedType (params Type[] argumentTypes)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("argumentTypes", argumentTypes);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(argumentTypes), argumentTypes);
       if (argumentTypes.Length > MaxArguments)
-        throw new ArgumentOutOfRangeException("argumentTypes");
+        throw new ArgumentOutOfRangeException(nameof(argumentTypes));
 
       if (argumentTypes.Length == 0)
         return typeof(Action);

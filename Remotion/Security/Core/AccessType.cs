@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Security
 {
@@ -40,7 +39,7 @@ namespace Remotion.Security
 
     public static AccessType Get (Enum accessType)
     {
-      ArgumentUtility.CheckNotNull("accessType", accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       return s_accessTypeByEnumCache.GetOrAdd(accessType, s_getInternalFunc);
     }
@@ -55,7 +54,7 @@ namespace Remotion.Security
                 "Enumerated type '{0}' cannot be used as an access type. Valid access types must have the {1} applied.",
                 type.GetFullNameSafe(),
                 typeof(AccessTypeAttribute).GetFullNameSafe()),
-            "accessType");
+            nameof(accessType));
       }
 
       return new AccessType(EnumWrapper.Get(accessType));

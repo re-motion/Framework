@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
@@ -32,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static FluentScreenshotElement<ElementScope> GetMenu ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownMenuControlObject> fluentDropDownMenu)
     {
-      ArgumentUtility.CheckNotNull("fluentDropDownMenu", fluentDropDownMenu);
+      ArgumentNullException.ThrowIfNull(fluentDropDownMenu);
 
       var menu = fluentDropDownMenu.Target.Context.RootScope.FindCss("div.DropDownMenuOptions", Options.NoWait);
       if (!menu.Exists(Options.NoWait))
@@ -46,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static void OpenMenu ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownMenuControlObject> fluentDropDownMenu)
     {
-      ArgumentUtility.CheckNotNull("fluentDropDownMenu", fluentDropDownMenu);
+      ArgumentNullException.ThrowIfNull(fluentDropDownMenu);
 
       if (!fluentDropDownMenu.Target.ExistsDropDownScope())
         fluentDropDownMenu.Target.Scope.FindCss("a.DropDownMenuButton").Click();
@@ -57,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotDropDownMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownMenuControlObject> fluentDropDownMenu)
     {
-      ArgumentUtility.CheckNotNull("fluentDropDownMenu", fluentDropDownMenu);
+      ArgumentNullException.ThrowIfNull(fluentDropDownMenu);
 
       return new ScreenshotDropDownMenuSelector(fluentDropDownMenu.Target);
     }

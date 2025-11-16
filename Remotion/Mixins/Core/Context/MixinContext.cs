@@ -34,7 +34,7 @@ namespace Remotion.Mixins.Context
   {
     public static MixinContext Deserialize (IMixinContextDeserializer deserializer)
     {
-      ArgumentUtility.CheckNotNull("deserializer", deserializer);
+      ArgumentNullException.ThrowIfNull(deserializer);
       return new MixinContext(
           deserializer.GetMixinKind(),
           deserializer.GetMixinType(),
@@ -70,9 +70,9 @@ namespace Remotion.Mixins.Context
         IEnumerable<Type> explicitDependencies,
         MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
-      ArgumentUtility.CheckNotNull("origin", origin);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(explicitDependencies);
+      ArgumentNullException.ThrowIfNull(origin);
 
       _mixinType = mixinType;
       _mixinKind = mixinKind;
@@ -188,7 +188,7 @@ namespace Remotion.Mixins.Context
     /// <returns>An equivalent <see cref="MixinContext"/> that contains the given <paramref name="explicitDependencies"/>.</returns>
     public MixinContext ApplyAdditionalExplicitDependencies (IEnumerable<Type> explicitDependencies)
     {
-      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
+      ArgumentNullException.ThrowIfNull(explicitDependencies);
 
       var newDependencies = _explicitDependencies.Concat(explicitDependencies);
       return new MixinContext(_mixinKind, _mixinType, _introducedMemberVisibility, newDependencies, _origin);
@@ -196,7 +196,7 @@ namespace Remotion.Mixins.Context
 
     public void Serialize (IMixinContextSerializer serializer)
     {
-      ArgumentUtility.CheckNotNull("serializer", serializer);
+      ArgumentNullException.ThrowIfNull(serializer);
 
       serializer.AddMixinType(_mixinType);
       serializer.AddMixinKind(_mixinKind);

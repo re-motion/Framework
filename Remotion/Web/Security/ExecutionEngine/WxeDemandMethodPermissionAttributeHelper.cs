@@ -40,8 +40,8 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     public WxeDemandMethodPermissionAttributeHelper (Type functionType, WxeDemandTargetPermissionAttribute attribute)
     {
-      ArgumentUtility.CheckNotNull("functionType", functionType);
-      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentNullException.ThrowIfNull(functionType);
+      ArgumentNullException.ThrowIfNull(attribute);
 
       switch (attribute.MethodType)
       {
@@ -106,7 +106,7 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     public ISecurableObject GetSecurableObject (WxeFunction function)
     {
-      ArgumentUtility.CheckNotNullAndType("function", function, _functionType);
+      ArgumentUtility.CheckNotNullAndType(nameof(function), function, _functionType);
 
       WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration(function.VariablesContainer.ParameterDeclarations);
       var tuple = GetActualParameterTypeAndValue(parameterDeclaration.Type, function.Variables[parameterDeclaration.Name]);

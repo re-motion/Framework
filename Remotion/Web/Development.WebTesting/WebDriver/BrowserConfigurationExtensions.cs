@@ -17,11 +17,11 @@
 using System;
 using Coypu.Drivers;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Remote;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver
 {
@@ -36,9 +36,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChrome ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
-      return browserConfiguration is IChromeConfiguration;
+      return browserConfiguration is IChromeConfiguration
+          || (browserConfiguration is RemoteBrowserConfiguration remoteBrowserConfiguration && remoteBrowserConfiguration.Browser.IsChrome());
     }
 
     /// <summary>
@@ -47,9 +48,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsEdge ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
-      return browserConfiguration is IEdgeConfiguration;
+      return browserConfiguration is IEdgeConfiguration
+          || (browserConfiguration is RemoteBrowserConfiguration remoteBrowserConfiguration && remoteBrowserConfiguration.Browser.IsEdge());
     }
 
     /// <summary>
@@ -58,9 +60,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChromium ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
-      return browserConfiguration is IChromeConfiguration || browserConfiguration is IEdgeConfiguration;
+      return browserConfiguration.IsChrome() || browserConfiguration.IsEdge();
     }
 
     /// <summary>
@@ -69,9 +71,20 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsFirefox ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
-      return browserConfiguration is IFirefoxConfiguration;
+      return browserConfiguration is IFirefoxConfiguration
+          || (browserConfiguration is RemoteBrowserConfiguration remoteBrowserConfiguration && remoteBrowserConfiguration.Browser.IsFirefox());
+    }
+
+    /// <summary>
+    /// Gets a flag indicating if the browser logs for the browser represented by <paramref name="browserConfiguration"/> should be accessed using the bidirectional API. 
+    /// </summary>
+    public static bool UseBidiLog ([NotNull] this IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
+
+      return IsFirefox(browserConfiguration);
     }
 
     /// <summary>
@@ -80,7 +93,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChrome ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull("browser", browser);
+      ArgumentNullException.ThrowIfNull(browser);
 
       return browser == Browser.Chrome;
     }
@@ -91,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsEdge ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull("browser", browser);
+      ArgumentNullException.ThrowIfNull(browser);
 
       return browser == Browser.Edge;
     }
@@ -102,7 +115,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChromium ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull("browser", browser);
+      ArgumentNullException.ThrowIfNull(browser);
 
       return browser == Browser.Chrome || browser == Browser.Edge;
     }
@@ -113,9 +126,17 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsFirefox ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull("browser", browser);
+      ArgumentNullException.ThrowIfNull(browser);
 
       return browser == Browser.Firefox;
+    }
+
+    /// <summary>
+    /// Gets a flag indicating if the <paramref name="browser"/>'s logs should be accessed using the bidirectional API. 
+    /// </summary>
+    public static bool UseBidiLog ([NotNull] this Browser browser)
+    {
+      return IsFirefox(browser);
     }
   }
 }

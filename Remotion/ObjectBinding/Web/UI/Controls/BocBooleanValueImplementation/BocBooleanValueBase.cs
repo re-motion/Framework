@@ -68,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadValue/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocBooleanValue.xml' path='BocBooleanValue/LoadValue/*' />
     public override void LoadValue (bool interim)
     {
       if (interim)
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-    /// <include file='..\..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (bool? value, bool interim)
     {
       LoadValueInternal(value, interim);
@@ -106,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     }
 
     /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\..\doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/SaveValue/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocBooleanValue.xml' path='BocBooleanValue/SaveValue/*' />
     public override bool SaveValue (bool interim)
     {
       if (interim)
@@ -147,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<bool?>("value", value); }
+      set { Value = ArgumentUtility.CheckType<bool?>(nameof(value), value); }
     }
 
     /// <summary>

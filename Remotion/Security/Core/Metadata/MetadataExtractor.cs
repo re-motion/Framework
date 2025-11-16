@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
@@ -28,7 +27,7 @@ namespace Remotion.Security.Metadata
 
     public MetadataExtractor (IMetadataConverter converter)
     {
-      ArgumentUtility.CheckNotNull("converter", converter);
+      ArgumentNullException.ThrowIfNull(converter);
 
       _assemblies = new List<Assembly>();
       _converter = converter;

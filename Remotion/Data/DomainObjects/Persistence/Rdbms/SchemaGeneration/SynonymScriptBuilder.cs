@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
@@ -41,11 +40,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
         ISynonymScriptElementFactory<EmptyViewDefinition> emptyViewElementFactory,
         ICommentScriptElementFactory commentFactory)
     {
-      ArgumentUtility.CheckNotNull("tableViewElementFactory", tableViewElementFactory);
-      ArgumentUtility.CheckNotNull("unionViewElementFactory", unionViewElementFactory);
-      ArgumentUtility.CheckNotNull("filterViewElementFactory", filterViewElementFactory);
-      ArgumentUtility.CheckNotNull("emptyViewElementFactory", emptyViewElementFactory);
-      ArgumentUtility.CheckNotNull("commentFactory", commentFactory);
+      ArgumentNullException.ThrowIfNull(tableViewElementFactory);
+      ArgumentNullException.ThrowIfNull(unionViewElementFactory);
+      ArgumentNullException.ThrowIfNull(filterViewElementFactory);
+      ArgumentNullException.ThrowIfNull(emptyViewElementFactory);
+      ArgumentNullException.ThrowIfNull(commentFactory);
 
       _tableViewElementFactory = tableViewElementFactory;
       _unionViewElementFactory = unionViewElementFactory;
@@ -79,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
 
       InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           entityDefinition,

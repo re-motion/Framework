@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
 {
@@ -30,7 +29,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
 
     public void Accept (IBusinessObjectConstraintVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
 
       (visitor as IBusinessObjectConstraintVisitor<BusinessObjectPropertyValueLengthConstraint>)?.Visit(this);
     }

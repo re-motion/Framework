@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     protected void CheckOriginatingObjects (IRelationEndPointDefinition relationEndPointDefinition, IEnumerable<ILoadedObjectData> originatingObjects)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("originatingObjects", originatingObjects);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(originatingObjects);
 
       foreach (var originatingObject in originatingObjects)
       {
@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     protected void CheckRelatedObjects (IRelationEndPointDefinition relationEndPointDefinition, IEnumerable<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("relatedObjects", relatedObjects);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(relatedObjects);
 
       var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
 
@@ -66,8 +66,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     private void CheckClassDefinitionOfOriginatingObject (IRelationEndPointDefinition relationEndPointDefinition, ILoadedObjectData originatingObject)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("originatingObject", originatingObject);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(originatingObject);
       Assertion.DebugAssert(originatingObject.IsNull == false, "originatingObject.IsNull == false");
       Assertion.DebugIsNotNull(originatingObject.ObjectID, "originatingObject.ObjectID != null");
 
@@ -93,9 +93,9 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         IRelationEndPointDefinition oppositeEndPointDefinition,
         ObjectID relatedObjectID)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("oppositeEndPointDefinition", oppositeEndPointDefinition);
-      ArgumentUtility.CheckNotNull("relatedObjectID", relatedObjectID);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(oppositeEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(relatedObjectID);
 
 
       if (!oppositeEndPointDefinition.ClassDefinition.IsSameOrBaseClassOf(relatedObjectID.ClassDefinition))
@@ -114,8 +114,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         IEnumerable<LoadedObjectDataWithDataSourceData> loadedObjectData,
         IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("loadedObjectData", loadedObjectData);
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(loadedObjectData);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
       if (!relationEndPointDefinition.IsVirtual)
       {
         throw new ArgumentException(
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
                 "RelationEndPointDefinition for property '{0}' of RelationDefinition '{1}' must be virtual.",
                 relationEndPointDefinition.PropertyName,
                 relationEndPointDefinition.RelationDefinition.ID),
-            "relationEndPointDefinition");
+            nameof(relationEndPointDefinition));
       }
 
       if (relationEndPointDefinition.IsAnonymous)
@@ -132,7 +132,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
             string.Format(
                 "RelationEndPointDefinition for RelationDefinition '{0}' must not be anonymous.",
                 relationEndPointDefinition.RelationDefinition.ID),
-            "relationEndPointDefinition");
+            nameof(relationEndPointDefinition));
       }
 
       var oppositeEndPointDefinition = (RelationEndPointDefinition)relationEndPointDefinition.GetOppositeEndPointDefinition();

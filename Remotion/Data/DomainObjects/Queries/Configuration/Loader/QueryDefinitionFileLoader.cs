@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 
     public QueryDefinitionFileLoader (IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull("storageSettings", storageSettings);
+      ArgumentNullException.ThrowIfNull(storageSettings);
 
       _storageSettings = storageSettings;
     }
@@ -111,6 +111,14 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
       var queryTypeAsString = queryTypeNode.InnerText.Replace("-", "");
       var queryType = (QueryType)Enum.Parse(typeof(QueryType), queryTypeAsString, true);
 
+      var statementType = QueryStatementType.Text;
+      var statementTypeNode = queryNode.SelectSingleNode("@statementType", namespaceManager);
+      if (statementTypeNode != null)
+      {
+        var statementTypeAsString = statementTypeNode.InnerText.Replace("-", "");
+        statementType = (QueryStatementType)Enum.Parse(typeof(QueryStatementType), statementTypeAsString, true);
+      }
+
       var node = queryNode.SelectSingleNode(FormatXPath("{0}:storageGroupType", namespaceManager), namespaceManager);
       var storageProviderDefinition = GetStorageProviderDefinition(node?.InnerText, configurationFile);
 
@@ -126,7 +134,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
       if ((queryType is QueryType.CustomReadOnly or QueryType.CustomReadWrite) && collectionType != null)
         throw CreateQueryConfigurationException("A custom query '{0}' must not specify a collectionType.", queryID);
 
-      return new QueryDefinition(queryID, storageProviderDefinition, statement, queryType, collectionType);
+      return new QueryDefinition(queryID, storageProviderDefinition, statement, queryType, statementType, collectionType);
     }
 
     private string FormatXPath (string xPath, ConfigurationNamespaceManager namespaceManager)

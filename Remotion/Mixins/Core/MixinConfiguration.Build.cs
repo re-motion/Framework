@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -62,7 +61,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static MixinConfigurationBuilder BuildFrom (MixinConfiguration parentConfiguration)
     {
-      ArgumentUtility.CheckNotNull("parentConfiguration", parentConfiguration);
+      ArgumentNullException.ThrowIfNull(parentConfiguration);
       return new MixinConfigurationBuilder(parentConfiguration);
     }
 

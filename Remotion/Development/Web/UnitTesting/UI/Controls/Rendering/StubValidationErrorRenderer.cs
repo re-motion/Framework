@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -36,9 +35,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentNullException.ThrowIfNull(attributeAccessor);
+      ArgumentException.ThrowIfNullOrEmpty(validationErrorID);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       attributeAccessor.SetAttribute(ValidationErrorsIDAttribute, validationErrorID);
       attributeAccessor.SetAttribute(ValidationErrorsAttribute, string.Join(" ", validationErrors));
@@ -49,9 +48,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("attributeCollection", attributeCollection);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentNullException.ThrowIfNull(attributeCollection);
+      ArgumentException.ThrowIfNullOrEmpty(validationErrorID);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       attributeCollection[ValidationErrorsIDAttribute] = validationErrorID;
       attributeCollection[ValidationErrorsAttribute] = string.Join(" ", validationErrors);
@@ -62,9 +61,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentNullException.ThrowIfNull(htmlTextWriter);
+      ArgumentException.ThrowIfNullOrEmpty(validationErrorID);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       htmlTextWriter.AddAttribute(ValidationErrorsIDAttribute, validationErrorID);
       htmlTextWriter.AddAttribute(ValidationErrorsAttribute, string.Join(" ", validationErrors));

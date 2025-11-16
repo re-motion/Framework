@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
@@ -26,6 +25,7 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCas
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocAutoCompleteReferenceValue;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
@@ -35,12 +35,14 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [IgnoreBrowserLogMessage(DuplicateControlIdTemplate, ["body_AmbiguousControl_KeyValue"])]
   public class BocAutoCompleteReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
@@ -90,59 +92,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
             builder.Crop(target, new WebPadding(1));
           });
-    }
-
-    /// <summary>
-    /// Tests that all the navigation and select methods are working and that 
-    /// the items are correctly annotated when using the screenshot API.
-    /// </summary>
-    [Category("Screenshot")]
-    [Test]
-    public void ScreenshotTest_AutoComplete ()
-    {
-      var home = Start();
-
-      var control = home.AutoCompletes().GetByID("body_DataEditControl_PartnerField_NoAutoPostBack");
-      var input = control.ForControlObjectScreenshot();
-      var selectList = input.GetSelectList();
-
-      if (control.IsReadOnly())
-        Assert.Fail("This test requires the control to be not read-only.");
-
-      input.SetValue(string.Empty);
-      selectList.WaitUntilVisible();
-
-      Helper
-          .RunScreenshotTestExact
-          <FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList>, BocAutoCompleteReferenceValueControlObjectTest>(
-              selectList,
-              ScreenshotTestingType.Desktop,
-              (builder, target) =>
-              {
-                builder.AnnotateBox(target, Pens.Transparent, WebPadding.Inner);
-
-                builder.AnnotateBox(target.GetSelectedItem(), Pens.Blue, WebPadding.Inner);
-
-                target.NextPage();
-                builder.AnnotateBox(target.GetSelectedItem(), Pens.Green, WebPadding.Inner);
-
-                target.NextItem();
-                builder.AnnotateBox(target.GetSelectedItem(), Pens.Red, WebPadding.Inner);
-
-                target.PreviousPage();
-                builder.AnnotateBox(target.GetSelectedItem(), Pens.Yellow, WebPadding.Inner);
-
-                target.Select().WithIndex(5);
-                builder.AnnotateBox(target.GetSelectedItem(), Pens.Magenta, WebPadding.Inner);
-
-                target.PreviousItem();
-                builder.AnnotateBox(target.GetSelectedItem(), Pens.Pink, WebPadding.Inner);
-
-                target.Select().WithDisplayText("B, B");
-                builder.AnnotateBox(target.GetSelectedItem(), Pens.Chartreuse, WebPadding.Inner);
-
-                builder.Crop(target);
-              });
     }
 
     /// <summary>
@@ -514,6 +463,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.LoadResourceCausedInternalServerErrorTemplate, ["network 38"])]
     public void TestGetSearchServiceResultsException ()
     {
       var home = Start();

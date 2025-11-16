@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public UnknownRealObjectEndPointSyncState (IVirtualEndPointProvider virtualEndPointProvider)
     {
-      ArgumentUtility.CheckNotNull("virtualEndPointProvider", virtualEndPointProvider);
+      ArgumentNullException.ThrowIfNull(virtualEndPointProvider);
       _virtualEndPointProvider = virtualEndPointProvider;
     }
 
@@ -45,15 +45,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public bool? IsSynchronized (IRealObjectEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
 
       return null;
     }
 
     public void Synchronize (IRealObjectEndPoint endPoint, IVirtualEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       LoadOppositeEndPoint(endPoint);
 
@@ -62,8 +62,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public IDataManagementCommand CreateDeleteCommand (IRealObjectEndPoint endPoint, Action oppositeObjectNullSetter)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeObjectNullSetter", oppositeObjectNullSetter);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(oppositeObjectNullSetter);
 
       LoadOppositeEndPoint(endPoint);
 
@@ -72,8 +72,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, DomainObject? newRelatedObject, Action<DomainObject> oppositeObjectIDSetter)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeObjectIDSetter", oppositeObjectIDSetter);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(oppositeObjectIDSetter);
 
       LoadOppositeEndPoint(endPoint);
 

@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
@@ -32,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public TableScriptBuilder (ITableScriptElementFactory elementFactory, ICommentScriptElementFactory commentFactory)
     {
-      ArgumentUtility.CheckNotNull("elementFactory", elementFactory);
-      ArgumentUtility.CheckNotNull("commentFactory", commentFactory);
+      ArgumentNullException.ThrowIfNull(elementFactory);
+      ArgumentNullException.ThrowIfNull(commentFactory);
 
       _elementFactory = elementFactory;
       _createScriptElements = new ScriptElementCollection();
@@ -49,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
 
       InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           entityDefinition,

@@ -238,7 +238,7 @@ Object 'DerivedTypeWithDomainObjectAttributes' with ID '{domainObject4.ID.Value}
  -- PropertyStub6: Error7
  -- PropertyStub7: Error8
  -- Error9
-";
+".ReplaceLineEndings();
         Assert.That(exception.Message, Is.EqualTo(expectedMessage));
 
         Assert.That(
@@ -313,7 +313,7 @@ Object 'DerivedTypeWithDomainObjectAttributes' with ID '{domainObject4.ID.Value}
 
 Object 'DomainObjectWithoutAnnotatedProperties' with ID '.*':
  -- Name: The value must not be null.
-";
+".ReplaceLineEndings();
 
           Assert.That(exception.Message, Does.Match(expectedMessage));
 

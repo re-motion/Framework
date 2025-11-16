@@ -34,12 +34,12 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 
     public UserRoleAclAceCombination (Role role, AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull("role", role);
-      ArgumentUtility.CheckNotNull("ace", ace);
+      ArgumentNullException.ThrowIfNull(role);
+      ArgumentNullException.ThrowIfNull(ace);
       if (role.User == null)
-        throw new ArgumentException("Role must have a User set.", "role");
+        throw new ArgumentException("Role must have a User set.", nameof(role));
       if (ace.AccessControlList == null)
-        throw new ArgumentException("AccessControlEntry must have an AccessControlList set.", "ace");
+        throw new ArgumentException("AccessControlEntry must have an AccessControlList set.", nameof(ace));
 
       Role = role;
       Ace = ace;

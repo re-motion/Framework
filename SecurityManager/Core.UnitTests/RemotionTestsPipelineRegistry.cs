@@ -20,7 +20,6 @@ using Remotion.Reflection.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests
 {
@@ -39,7 +38,7 @@ namespace Remotion.SecurityManager.UnitTests
     }
 
     public RemotionTestsPipelineRegistry (IPipelineRegistry _, IEnumerable<IParticipant> defaultPipelineParticipants)
-        : base(CreateDefaultPipeline(ArgumentUtility.CheckNotNull("defaultPipelineParticipants", defaultPipelineParticipants)))
+        : base(CreateDefaultPipeline(defaultPipelineParticipants ?? throw new ArgumentNullException(nameof(defaultPipelineParticipants))))
     {
       // Throw away the decorated pipeline registry instance since we want to override it entirely
     }

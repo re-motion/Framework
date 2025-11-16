@@ -2,49 +2,58 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <CoreFormsVersion>9.0.0</CoreFormsVersion>
-    <TypePipeVersion>4.0.0</TypePipeVersion>
+    <!-- merge conflict buffer -->
+    <CoreFormsVersion>9.1.2</CoreFormsVersion>
+    <!-- merge conflict buffer -->
+    <TypePipeVersion>4.1.0</TypePipeVersion>
+    <!-- merge conflict buffer -->
+    <SqlBackendVersion>3.1.0</SqlBackendVersion>
+    <!-- merge conflict buffer -->
+    <Net10CoreFormsVersion>10.0.0</Net10CoreFormsVersion>
+    <!-- merge conflict buffer -->
+    <Net10PackagesVersion>10.0.0</Net10PackagesVersion>
+    <!-- merge conflict buffer -->
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Castle.Core" Version="4.4.0" />
-    <PackageVersion Include="CoreForms.Web" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="CoreForms.Web.Extensions" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="CoreForms.Web.Services" Version="$(CoreFormsVersion)" />
-    <PackageVersion Include="Fork.Coypu" Version="3.4.0" />
-    <PackageVersion Include="JetBrains.Annotations" Version="2024.3.0" />
-    <PackageVersion Include="log4net" Version="2.0.17" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2" />
+    <PackageVersion Include="Fork.Coypu" Version="3.5.0" />
+    <PackageVersion Include="JetBrains.Annotations" Version="2025.2.0" />
+    <PackageVersion Include="log4net" Version="3.1.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.3-beta1.25564.1" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+    <PackageVersion Include="Microsoft.Maui.Graphics.Skia" Version="10.0.10" />
     <PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.11.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.TypeScript.MSBuild" Version="5.6.2" />
+    <PackageVersion Include="Microsoft.TypeScript.MSBuild" Version="5.8.3" />
     <PackageVersion Include="microsoft-ajax.TypeScript.DefinitelyTyped" Version="0.1.4" />
     <PackageVersion Include="Moq" Version="4.16.1" />
     <PackageVersion Include="Moq.VerifiableSequence" Version="4.16.1.2" />
-    <PackageVersion Include="NUnit" Version="4.2.1" />
-    <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageVersion Include="NUnit" Version="4.3.2" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />
     <PackageVersion Include="NUnitTestAdapter" Version="2.3.0" />
     <PackageVersion Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" />
     <PackageVersion Include="Remotion.Linq" Version="2.2.0" />
     <PackageVersion Include="Remotion.Linq.Development" Version="2.2.0" />
     <PackageVersion Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
-    <PackageVersion Include="Remotion.Linq.SqlBackend" Version="3.0.0" />
-    <PackageVersion Include="Remotion.Linq.SqlBackend.Development" Version="3.0.0" />
+    <PackageVersion Include="Remotion.Linq.SqlBackend" Version="$(SqlBackendVersion)" />
+    <PackageVersion Include="Remotion.Linq.SqlBackend.Development" Version="$(SqlBackendVersion)" />
     <PackageVersion Include="Remotion.ThirdParty.Dependency.Jetbrains.Annotations" Version="2024.3.0" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.CommonServiceLocator" Version="2.0.6" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.DynamicLanguageRuntime" Version="1.1.0.10" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.JQuery.Autocomplete" Version="1.1.0-pre" />
+    <PackageVersion Include="Remotion.ThirdPartyDependency.LiberationSans" Version="2.0.1" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.RobotoFonts" Version="2.137.0" />
     <PackageVersion Include="Remotion.ThirdPartyDependency.System.Web" Version="4.8.0" />
     <PackageVersion Include="Remotion.TypePipe" Version="$(TypePipeVersion)" />
     <PackageVersion Include="Remotion.TypePipe.Development" Version="$(TypePipeVersion)" />
     <PackageVersion Include="Remotion.TypePipe.Documentation" Version="$(TypePipeVersion)" />
-    <PackageVersion Include="Selenium.Support" Version="4.21.0" />
-    <PackageVersion Include="Selenium.WebDriver" Version="4.21.0" />
-    <PackageVersion Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageVersion Include="Selenium.Support" Version="4.35.0" />
+    <PackageVersion Include="Selenium.WebDriver" Version="4.35.0" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.0" />
+    <PackageVersion Include="CycloneDX" Version="5.4.0" />
+    <PackageVersion Include="Testcontainers" Version="4.6.0" />
+    <PackageVersion Include="Testcontainers.MsSql" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>
     <!-- Roslyn Analzyers depend on the installed version of MSBuild and .NET SDK.
@@ -62,10 +71,16 @@
   <Choose>
     <When Condition="$(TargetFramework.StartsWith('net8.0'))">
       <ItemGroup>
+        <PackageVersion Include="CoreForms.Web" Version="$(CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Extensions" Version="$(CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Services" Version="$(CoreFormsVersion)" />
         <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="8.10.0" />
         <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
         <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.1" />
-        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.3" />
         <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
         <PackageVersion Include="System.CodeDom" Version="8.0.0" />
         <PackageVersion Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
@@ -76,10 +91,30 @@
         <PackageVersion Include="System.Formats.Asn1" Version="8.0.1" />
       </ItemGroup>
     </When>
+    <When Condition="$(TargetFramework.StartsWith('net10.0'))">
+     <ItemGroup>
+        <PackageVersion Include="CoreForms.Web" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Extensions" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Services" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.0.0"/>
+        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="System.CodeDom" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="System.Resources.Extensions" Version="$(Net10PackagesVersion)"/>
+      </ItemGroup>
+    </When>
   </Choose>
   <ItemGroup>
     <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
+    <!-- Introduced via Moq / .net Standard 1.6.1 as version 4.3.0. -->
     <PackageVersion Include="System.Net.Http" Version="4.3.4" />
+    <!-- Introduced via Moq / .net Standard 1.6.1 as version 4.3.0. -->
     <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 </Project>

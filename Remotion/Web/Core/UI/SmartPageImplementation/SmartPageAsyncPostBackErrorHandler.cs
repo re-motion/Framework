@@ -20,7 +20,6 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.SmartPageImplementation
@@ -35,14 +34,14 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     public SmartPageAsyncPostBackErrorHandler (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       _context = context;
     }
 
     public void HandleError (Exception error)
     {
-      ArgumentUtility.CheckNotNull("error", error);
+      ArgumentNullException.ThrowIfNull(error);
 
       string errorHtml = GetErrorHtml(_context, error);
 

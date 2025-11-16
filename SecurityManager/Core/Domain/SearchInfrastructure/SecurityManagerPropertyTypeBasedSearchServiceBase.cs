@@ -19,7 +19,6 @@ using System.Linq;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 {
@@ -44,14 +43,14 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public override sealed bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentNullException.ThrowIfNull(property);
 
       return typeof(TReferencedObject).IsAssignableFrom(property.PropertyType);
     }
 
     protected override sealed QueryFactory GetQueryFactory (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentNullException.ThrowIfNull(property);
 
       if (!SupportsProperty(property))
       {

@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects
 
       public Expression Transform (MethodCallExpression methodCallExpression)
       {
-        ArgumentUtility.CheckNotNull("methodCallExpression", methodCallExpression);
+        ArgumentNullException.ThrowIfNull(methodCallExpression);
 
         if (methodCallExpression.Method.IsStatic)
         {

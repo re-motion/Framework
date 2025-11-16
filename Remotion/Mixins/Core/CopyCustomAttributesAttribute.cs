@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -48,16 +47,23 @@ namespace Remotion.Mixins
 
     public CopyCustomAttributesAttribute (Type attributeSourceType, params Type[] copiedAttributeTypes)
     {
-      _attributeSourceType = ArgumentUtility.CheckNotNull("attributeSourceType", attributeSourceType);
+      ArgumentNullException.ThrowIfNull(attributeSourceType);
+      ArgumentNullException.ThrowIfNull(copiedAttributeTypes);
+
+      _attributeSourceType = attributeSourceType;
       _attributeSourceMemberName = null;
-      _copiedAttributeTypes = ArgumentUtility.CheckNotNull("copiedAttributeTypes", copiedAttributeTypes);
+      _copiedAttributeTypes = copiedAttributeTypes;
     }
 
     public CopyCustomAttributesAttribute (Type attributeSourceType, string attributeSourceMemberName, params Type[] copiedAttributeTypes)
     {
-      _attributeSourceType = ArgumentUtility.CheckNotNull("attributeSourceType", attributeSourceType);
-      _attributeSourceMemberName = ArgumentUtility.CheckNotNull("attributeSourceMemberName", attributeSourceMemberName);
-      _copiedAttributeTypes = ArgumentUtility.CheckNotNull("copiedAttributeTypes", copiedAttributeTypes);
+      ArgumentNullException.ThrowIfNull(attributeSourceType);
+      ArgumentNullException.ThrowIfNull(attributeSourceMemberName);
+      ArgumentNullException.ThrowIfNull(copiedAttributeTypes);
+
+      _attributeSourceType = attributeSourceType;
+      _attributeSourceMemberName = attributeSourceMemberName;
+      _copiedAttributeTypes = copiedAttributeTypes;
     }
 
     public Type AttributeSourceType
@@ -110,7 +116,7 @@ namespace Remotion.Mixins
 
     public bool IsCopiedAttributeType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
       return CopiedAttributeTypes.Length == 0 || ((IList)CopiedAttributeTypes).Contains(type);
     }
   }

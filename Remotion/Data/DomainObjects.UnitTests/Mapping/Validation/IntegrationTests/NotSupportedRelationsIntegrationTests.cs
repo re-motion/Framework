@@ -33,22 +33,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
               .With.Message.EqualTo(
                   "The relation between property 'RelationProperty2', declared on type 'InvalidRelationClass1', and property 'RelationProperty1' declared on type "
                   + "'InvalidRelationClass2', contains two non-virtual end points. One of the two properties must set 'ContainsForeignKey' to 'false' on the "
-                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + $"'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass1\r\n"
-                  + "Property: RelationProperty2\r\n"
+                  + $"OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass1{Environment.NewLine}"
+                  + $"Property: RelationProperty2{Environment.NewLine}"
                   + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
                   + "OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass1:Remotion.Data.DomainObjects.UnitTests.Mapping."
                   + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites."
                   + "InvalidRelationClass1.RelationProperty2->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
-                  + "NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2.RelationProperty1\r\n"
-                  + "----------\r\n"
+                  + $"NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2.RelationProperty1{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
                   + "The relation between property 'RelationProperty1', declared on type 'InvalidRelationClass2', and property 'RelationProperty2' declared on type "
                   + "'InvalidRelationClass1', contains two non-virtual end points. One of the two properties must set 'ContainsForeignKey' to 'false' on the "
-                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + $"'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2\r\n"
-                  + "Property: RelationProperty1\r\n"
+                  + $"OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2{Environment.NewLine}"
+                  + $"Property: RelationProperty1{Environment.NewLine}"
                   + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
                   + "OneToOne_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2:Remotion.Data.DomainObjects.UnitTests.Mapping."
                   + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsTrueOnBothSites."
@@ -66,23 +66,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
               .With.Message.EqualTo(
                   "The relation between property 'RelationProperty2', declared on type 'InvalidRelationClass1', and property 'RelationProperty1' declared on type "
                   + "'InvalidRelationClass2', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
-                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + $"'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass1\r\n"
-                  + "Property: RelationProperty2\r\n"
+                  + $"OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass1{Environment.NewLine}"
+                  + $"Property: RelationProperty2{Environment.NewLine}"
                   + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
                   + "OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass2:Remotion.Data.DomainObjects.UnitTests.Mapping."
                   + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsFalseOnBothSites."
                   + "InvalidRelationClass2.RelationProperty1->Remotion.Data.DomainObjects.UnitTests.Mapping."
                   + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsFalseOnBothSites."
-                  + "InvalidRelationClass1.RelationProperty2\r\n"
-                  + "----------\r\n"
+                  + $"InvalidRelationClass1.RelationProperty2{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
                   + "The relation between property 'RelationProperty1', declared on type 'InvalidRelationClass2', and property 'RelationProperty2' declared on type "
                   + "'InvalidRelationClass1', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
-                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + $"'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass2\r\n"
-                  + "Property: RelationProperty1\r\n"
+                  + $"OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass2{Environment.NewLine}"
+                  + $"Property: RelationProperty1{Environment.NewLine}"
                   + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
                   + "OneToOne_ContainsForeignKeyIsFalseOnBothSites.InvalidRelationClass1:Remotion.Data.DomainObjects.UnitTests.Mapping."
                   + "TestDomain.Validation.Integration.NotSupportedRelations.OneToOne_ContainsForeignKeyIsFalseOnBothSites."
@@ -99,9 +99,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.OneToMany_ContainsForeignKeyIsTrueOnManySite"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n" +
+                  $"Only relation end points with a property type of 'DomainObject' can contain the foreign key.{Environment.NewLine}{Environment.NewLine}" +
                   "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "OneToMany_ContainsForeignKeyIsTrueOnManySite.InvalidRelationClass2\r\nProperty: RelationProperty2"));
+                  + $"OneToMany_ContainsForeignKeyIsTrueOnManySite.InvalidRelationClass2{Environment.NewLine}Property: RelationProperty2"));
     }
 
     //ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule
@@ -112,9 +112,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.OneToMany_ContainsForeignKeyIsTrueOnBothSites"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "Only relation end points with a property type of 'DomainObject' can contain the foreign key.\r\n\r\n"
+                  $"Only relation end points with a property type of 'DomainObject' can contain the foreign key.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "OneToMany_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2\r\nProperty: RelationProperty2"));
+                  + $"OneToMany_ContainsForeignKeyIsTrueOnBothSites.InvalidRelationClass2{Environment.NewLine}Property: RelationProperty2"));
     }
 
     //SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule
@@ -125,9 +125,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.OneToOne_WithSortExpression"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "Property 'RelationProperty1' of class 'InvalidRelationClass1' must not specify a SortExpression, because cardinality is equal to 'one'.\r\n\r\n"
+                  $"Property 'RelationProperty1' of class 'InvalidRelationClass1' must not specify a SortExpression, because cardinality is equal to 'one'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "OneToOne_WithSortExpression.InvalidRelationClass1\r\nProperty: RelationProperty1"));
+                  + $"OneToOne_WithSortExpression.InvalidRelationClass1{Environment.NewLine}Property: RelationProperty1"));
     }
 
     //SortExpressionIsValidValidationRule
@@ -140,9 +140,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
               .With.Message.EqualTo(
                   "SortExpression 'InvalidProperty' cannot be parsed: 'InvalidProperty' is not a valid mapped property name. Expected the .NET property name of a property declared by the "
                   + "'InvalidRelationClass1' class or its base classes. Alternatively, to resolve ambiguities or to use a property declared by a mixin or a "
-                  + "derived class of 'InvalidRelationClass1', the full unique re-store property identifier can be specified.\r\n\r\n"
+                  + $"derived class of 'InvalidRelationClass1', the full unique re-store property identifier can be specified.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "OneToMany_WithInvalidSortExpression.InvalidRelationClass2\r\nProperty: RelationProperty2"));
+                  + $"OneToMany_WithInvalidSortExpression.InvalidRelationClass2{Environment.NewLine}Property: RelationProperty2"));
     }
 
     //RelationEndPointNamesAreConsistentValidationRule
@@ -153,9 +153,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.Bidirectional_WithBidirectionalRelationAttributeOnOneSite"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "Opposite relation property 'RelationProperty1' declared on type 'InvalidRelationClass1' does not define a matching 'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  $"Opposite relation property 'RelationProperty1' declared on type 'InvalidRelationClass1' does not define a matching 'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "Bidirectional_WithBidirectionalRelationAttributeOnOneSite.InvalidRelationClass2\r\n"
+                  + $"Bidirectional_WithBidirectionalRelationAttributeOnOneSite.InvalidRelationClass2{Environment.NewLine}"
                   + "Property: RelationProperty2"));
     }
 
@@ -167,24 +167,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.Bidirectional_RelationEndPointDefinitionsDoNotMatch"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "The property type of an uni-directional relation property must be assignable to 'DomainObject'.\r\n\r\n"
+                  $"The property type of an uni-directional relation property must be assignable to 'DomainObject'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "Bidirectional_RelationEndPointDefinitionsDoNotMatch.InvalidRelationClass1\r\n"
-                  + "Property: RelationProperty2\r\n"
-                  + "----------\r\n"
+                  + $"Bidirectional_RelationEndPointDefinitionsDoNotMatch.InvalidRelationClass1{Environment.NewLine}"
+                  + $"Property: RelationProperty2{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
                   + "Opposite relation property 'RelationProperty1' declared on type 'InvalidRelationClass2' defines a 'DBBidirectionalRelationAttribute' whose "
-                  + "opposite property does not match.\r\n\r\n"
+                  + $"opposite property does not match.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "Bidirectional_RelationEndPointDefinitionsDoNotMatch.InvalidRelationClass1\r\n"
-                  + "Property: RelationProperty1\r\n"
-                  + "----------\r\n"
+                  + $"Bidirectional_RelationEndPointDefinitionsDoNotMatch.InvalidRelationClass1{Environment.NewLine}"
+                  + $"Property: RelationProperty1{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
                   + "Opposite relation property 'RelationProperty2' declared on type 'InvalidRelationClass1' does not "
-                  + "define a matching 'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + $"define a matching 'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "Bidirectional_RelationEndPointDefinitionsDoNotMatch.InvalidRelationClass2\r\n"
-                  + "Property: RelationProperty1\r\n"
-                  + "----------\r\n"
-                  + "Property 'RelationProperty2' on class 'InvalidRelationClass1' could not be found.\r\n\r\n"
+                  + $"Bidirectional_RelationEndPointDefinitionsDoNotMatch.InvalidRelationClass2{Environment.NewLine}"
+                  + $"Property: RelationProperty1{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
+                  + $"Property 'RelationProperty2' on class 'InvalidRelationClass1' could not be found.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
                   + "Bidirectional_RelationEndPointDefinitionsDoNotMatch.InvalidRelationClass1"));
     }
@@ -197,9 +197,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.Bidirectional_RelatedObjectTypeDoesNotMatchOppositeProperty_BelowInheritanceRoot"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "The type 'BaseRelationClass2' does not match the type of the opposite relation propery 'RelationProperty1' declared on type 'InvalidRelationClass1'.\r\n\r\n"
+                  $"The type 'BaseRelationClass2' does not match the type of the opposite relation propery 'RelationProperty1' declared on type 'InvalidRelationClass1'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "Bidirectional_RelatedObjectTypeDoesNotMatchOppositeProperty_BelowInheritanceRoot.BaseRelationClass2\r\n"
+                  + $"Bidirectional_RelatedObjectTypeDoesNotMatchOppositeProperty_BelowInheritanceRoot.BaseRelationClass2{Environment.NewLine}"
                   + "Property: RelationProperty3"));
     }
 
@@ -210,9 +210,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.Bidirectional_RelatedObjectTypeIsBaseClassOfOppositePropertyType_BelowInheritanceRoot"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "The type 'Base' does not match the type of the opposite relation propery 'RelationPropertyPointingToDerived' declared on type 'InvalidRelationClass'.\r\n\r\n"
+                  $"The type 'Base' does not match the type of the opposite relation propery 'RelationPropertyPointingToDerived' declared on type 'InvalidRelationClass'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "Bidirectional_RelatedObjectTypeIsBaseClassOfOppositePropertyType_BelowInheritanceRoot.Base\r\n"
+                  + $"Bidirectional_RelatedObjectTypeIsBaseClassOfOppositePropertyType_BelowInheritanceRoot.Base{Environment.NewLine}"
                   + "Property: RelationProperty"));
     }
 
@@ -224,19 +224,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.RelationPropertyTypeNotInMapping"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "Opposite relation property 'RelationProperty' declared on type 'ClassNotInMapping' does not define a matching 'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  $"Opposite relation property 'RelationProperty' declared on type 'ClassNotInMapping' does not define a matching 'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "RelationPropertyTypeNotInMapping.InvalidRelationClass1\r\n"
-                  + "Property: RelationProperty\r\n"
-                  + "----------\r\n"
-                  + "Property 'RelationProperty' on class 'ClassNotInMapping' could not be found.\r\n\r\n"
+                  + $"RelationPropertyTypeNotInMapping.InvalidRelationClass1{Environment.NewLine}"
+                  + $"Property: RelationProperty{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
+                  + $"Property 'RelationProperty' on class 'ClassNotInMapping' could not be found.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "RelationPropertyTypeNotInMapping.ClassNotInMapping\r\n"
-                  + "----------\r\n"
+                  + $"RelationPropertyTypeNotInMapping.ClassNotInMapping{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
                   + "The relation property 'RelationProperty' has return type 'ClassNotInMapping', which is not a part of the mapping. Relation properties must "
-                  + "not point to classes above the inheritance root.\r\n\r\n"
+                  + $"not point to classes above the inheritance root.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "RelationPropertyTypeNotInMapping.InvalidRelationClass1\r\n"
+                  + $"RelationPropertyTypeNotInMapping.InvalidRelationClass1{Environment.NewLine}"
                   + "Property: RelationProperty"));
     }
 
@@ -250,21 +250,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
               .With.Message.EqualTo(
                   "The relation between property 'RelationProperty', declared on type 'InvalidRelationClass1', and property 'RelationProperty' declared on type "
                   + "'InvalidRelationClass2', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
-                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + $"'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "ManyToMany.InvalidRelationClass1\r\n"
-                  + "Property: RelationProperty\r\n"
+                  + $"ManyToMany.InvalidRelationClass1{Environment.NewLine}"
+                  + $"Property: RelationProperty{Environment.NewLine}"
                   + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
                   + "ManyToMany.InvalidRelationClass2:Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
                   + "NotSupportedRelations.ManyToMany.InvalidRelationClass2.RelationProperty->Remotion.Data.DomainObjects.UnitTests.Mapping."
-                  + "TestDomain.Validation.Integration.NotSupportedRelations.ManyToMany.InvalidRelationClass1.RelationProperty\r\n"
-                  + "----------\r\n"
+                  + $"TestDomain.Validation.Integration.NotSupportedRelations.ManyToMany.InvalidRelationClass1.RelationProperty{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
                   + "The relation between property 'RelationProperty', declared on type 'InvalidRelationClass2', and property 'RelationProperty' declared on type "
                   + "'InvalidRelationClass1', contains two virtual end points. One of the two properties must set 'ContainsForeignKey' to 'true' on the "
-                  + "'DBBidirectionalRelationAttribute'.\r\n\r\n"
+                  + $"'DBBidirectionalRelationAttribute'.{Environment.NewLine}{Environment.NewLine}"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
-                  + "ManyToMany.InvalidRelationClass2\r\n"
-                  + "Property: RelationProperty\r\n"
+                  + $"ManyToMany.InvalidRelationClass2{Environment.NewLine}"
+                  + $"Property: RelationProperty{Environment.NewLine}"
                   + "Relation ID: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations."
                   + "ManyToMany.InvalidRelationClass1:Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration."
                   + "NotSupportedRelations.ManyToMany.InvalidRelationClass1.RelationProperty->Remotion.Data.DomainObjects.UnitTests."
@@ -279,8 +279,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           Throws.InstanceOf<MappingException>()
               .With.Message.Contains(
                   "The relation property 'BidirectionalRelationProperty' has return type 'DomainObject', which is not a part of the mapping. "
-                  + "Relation properties must not point to classes above the inheritance root.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingDomainObjectType.ClassReferencingDomainObjectType\r\n"
+                  + $"Relation properties must not point to classes above the inheritance root.{Environment.NewLine}{Environment.NewLine}"
+                  + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingDomainObjectType.ClassReferencingDomainObjectType{Environment.NewLine}"
                   + "Property: BidirectionalRelationProperty"));
     }
 
@@ -291,8 +291,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.Bidirectional_ReferencingNonDomainObject"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingNonDomainObject.ClassReferencingNonDomainObject\r\n"
+                  $"The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.{Environment.NewLine}{Environment.NewLine}"
+                  + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingNonDomainObject.ClassReferencingNonDomainObject{Environment.NewLine}"
                   + "Property: BidirectionalRelationProperty"));
     }
 
@@ -303,13 +303,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.Bidirectional_ReferencingObject"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingObject.ClassReferencingObject\r\n"
-                  + "Property: BidirectionalRelationProperty\r\n"
-                  + "----------\r\n"
+                  $"The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.{Environment.NewLine}{Environment.NewLine}"
+                  + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingObject.ClassReferencingObject{Environment.NewLine}"
+                  + $"Property: BidirectionalRelationProperty{Environment.NewLine}"
+                  + $"----------{Environment.NewLine}"
                   + "The property type 'Object' is not supported. If you meant to declare a relation, 'Object' must be derived from 'DomainObject'. "
-                  + "For non-mapped properties, use the 'StorageClassNoneAttribute'.\r\n\r\n"
-                  + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingObject.ClassReferencingObject\r\n"
+                  + $"For non-mapped properties, use the 'StorageClassNoneAttribute'.{Environment.NewLine}{Environment.NewLine}"
+                  + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingObject.ClassReferencingObject{Environment.NewLine}"
                   + "Property: BidirectionalRelationProperty"));
     }
   }

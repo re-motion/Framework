@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands
 {
@@ -37,9 +36,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
         IRelationEndPointRegistrationAgent registrationAgent,
         RelationEndPointMap map)
     {
-      ArgumentUtility.CheckNotNull("endPoints", endPoints);
-      ArgumentUtility.CheckNotNull("registrationAgent", registrationAgent);
-      ArgumentUtility.CheckNotNull("map", map);
+      ArgumentNullException.ThrowIfNull(endPoints);
+      ArgumentNullException.ThrowIfNull(registrationAgent);
+      ArgumentNullException.ThrowIfNull(map);
 
       _endPoints = endPoints.ToArray();
       _registrationAgent = registrationAgent;

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions.Building
 {
@@ -30,8 +29,8 @@ namespace Remotion.Mixins.Definitions.Building
 
     public MemberImplementationFinder (Type declaringType, MixinDefinition implementingMixin)
     {
-      ArgumentUtility.CheckNotNull("implementingMixin", implementingMixin);
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentNullException.ThrowIfNull(implementingMixin);
+      ArgumentNullException.ThrowIfNull(declaringType);
 
       _declaringType = declaringType;
       _mixin = implementingMixin;

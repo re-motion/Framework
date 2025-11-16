@@ -26,7 +26,7 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 {
 
 /// <summary> Contains the configuration data for the URL mapping system of the execution engine. </summary>
-/// <include file='..\..\doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml' path='UrlMappingConfiguration/Class/*' />
+/// <include file='../../Doc/include/ExecutionEngine/UrlMapping/UrlMappingConfiguration.xml' path='UrlMappingConfiguration/Class/*' />
 [XmlType(UrlMappingConfiguration.ElementName, Namespace = UrlMappingConfiguration.SchemaUri)]
 public class UrlMappingConfiguration
 {
@@ -153,7 +153,7 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNullOrEmpty("FunctionTypeName", value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       FunctionType = WebTypeUtility.GetType(value, true)!;
     }
   }
@@ -172,7 +172,7 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNull("FunctionType", value);
+      ArgumentNullException.ThrowIfNull(value);
       if (! typeof(WxeFunction).IsAssignableFrom(value))
         throw new ArgumentException(string.Format("The FunctionType '{0}' must be derived from WxeFunction.", value), "FunctionType");
       _functionType = value;
@@ -193,9 +193,9 @@ public class UrlMappingEntry
     }
     set
     {
-      ArgumentUtility.CheckNotNull("Resource", value);
+      ArgumentNullException.ThrowIfNull(value);
       value = value!.Trim();
-      ArgumentUtility.CheckNotNullOrEmpty("Resource", value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       if (value.StartsWith("/") || value.IndexOf(":") != -1)
         throw new ArgumentException(string.Format("No absolute paths are allowed. Resource: '{0}'", value), "Resource");
       if (! value.StartsWith("~/"))
@@ -240,12 +240,12 @@ public class UrlMappingCollection: CollectionBase
 
   protected virtual void ValidateNewValue (object? value)
   {
-    UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry>("value", value!);
+    UrlMappingEntry entry = ArgumentUtility.CheckNotNullAndType<UrlMappingEntry>(nameof(value), value!);
     base.OnValidate(entry);
     if (Find(entry.Resource) != null)
-      throw new ArgumentException(string.Format("The mapping already contains an entry for the following resource: '{0}'.", entry.Resource), "value");
+      throw new ArgumentException(string.Format("The mapping already contains an entry for the following resource: '{0}'.", entry.Resource), nameof(value));
     if (FindByID(entry.ID) != null)
-      throw new ArgumentException(string.Format("The mapping already contains an entry for the following ID: '{0}'.", entry.ID), "value");
+      throw new ArgumentException(string.Format("The mapping already contains an entry for the following ID: '{0}'.", entry.ID), nameof(value));
   }
 
   protected override void OnInsert (int index, object? value)

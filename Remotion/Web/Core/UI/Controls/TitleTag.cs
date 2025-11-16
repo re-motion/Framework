@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Web.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -29,8 +28,6 @@ namespace Remotion.Web.UI.Controls
 
     public TitleTag (PlainTextString title)
     {
-      ArgumentUtility.CheckNotNull("title", title);
-
       _title = title;
     }
 
@@ -41,7 +38,7 @@ namespace Remotion.Web.UI.Controls
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       writer.RenderBeginTag(HtmlTextWriterTag.Title);
 

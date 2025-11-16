@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
 {
@@ -33,8 +32,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results
 
     public EvaluatedBusinessObjectPropertyPathResult (IBusinessObject resultObject, IBusinessObjectProperty resultProperty)
     {
-      ArgumentUtility.CheckNotNull("resultObject", resultObject);
-      ArgumentUtility.CheckNotNull("resultProperty", resultProperty);
+      ArgumentNullException.ThrowIfNull(resultObject);
+      ArgumentNullException.ThrowIfNull(resultProperty);
 
       _resultObject = resultObject;
       _resultProperty = resultProperty;

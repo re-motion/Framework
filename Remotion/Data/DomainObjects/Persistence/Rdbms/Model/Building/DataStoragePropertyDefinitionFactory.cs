@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IValueStoragePropertyDefinitionFactory valueStoragePropertyDefinitionFactory,
         IRelationStoragePropertyDefinitionFactory relationStoragePropertyDefinitionFactory)
     {
-      ArgumentUtility.CheckNotNull("valueStoragePropertyDefinitionFactory", valueStoragePropertyDefinitionFactory);
-      ArgumentUtility.CheckNotNull("relationStoragePropertyDefinitionFactory", relationStoragePropertyDefinitionFactory);
+      ArgumentNullException.ThrowIfNull(valueStoragePropertyDefinitionFactory);
+      ArgumentNullException.ThrowIfNull(relationStoragePropertyDefinitionFactory);
 
       _valueStoragePropertyDefinitionFactory = valueStoragePropertyDefinitionFactory;
       _relationStoragePropertyDefinitionFactory = relationStoragePropertyDefinitionFactory;
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public virtual IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       var relationEndPointDefinition =
           (RelationEndPointDefinition?)propertyDefinition.ClassDefinition.GetRelationEndPointDefinition(propertyDefinition.PropertyName);

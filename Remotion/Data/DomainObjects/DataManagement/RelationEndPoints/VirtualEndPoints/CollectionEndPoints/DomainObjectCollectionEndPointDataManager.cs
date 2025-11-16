@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public DomainObjectCollectionEndPointDataManager (RelationEndPointID endPointID, IDomainObjectCollectionEndPointChangeDetectionStrategy changeDetectionStrategy)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
-      ArgumentUtility.CheckNotNull("changeDetectionStrategy", changeDetectionStrategy);
+      ArgumentNullException.ThrowIfNull(endPointID);
+      ArgumentNullException.ThrowIfNull(changeDetectionStrategy);
 
       _endPointID = endPointID;
       _changeDetectionStrategy = changeDetectionStrategy;
@@ -95,23 +95,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool ContainsOriginalObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       return OriginalCollectionData.ContainsObjectID(objectID);
     }
 
     public bool ContainsOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       return _originalOppositeEndPoints.Contains(oppositeEndPoint);
     }
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
@@ -134,9 +134,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       if (!ContainsOriginalOppositeEndPoint(oppositeEndPoint))
         throw new InvalidOperationException("The opposite end-point has not been registered.");
@@ -152,9 +152,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool ContainsCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
@@ -163,9 +163,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       if (ContainsCurrentOppositeEndPoint(oppositeEndPoint))
         throw new InvalidOperationException("The opposite end-point has already been registered.");
@@ -177,9 +177,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       if (oppositeEndPoint.IsNull)
-        throw new ArgumentException("End point must not be a null object.", "oppositeEndPoint");
+        throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       if (!ContainsCurrentOppositeEndPoint(oppositeEndPoint))
         throw new InvalidOperationException("The opposite end-point has not been registered.");
@@ -191,13 +191,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public bool ContainsOriginalItemWithoutEndPoint (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
       return _originalItemsWithoutEndPoint.Contains(domainObject);
     }
 
     public void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       _changeCachingDomainObjectCollectionData.RegisterOriginalItem(domainObject);
       _originalItemsWithoutEndPoint.Add(domainObject);
@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       if (!_originalItemsWithoutEndPoint.Contains(domainObject))
       {
@@ -224,14 +224,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void SortCurrentData (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull("comparison", comparison);
+      ArgumentNullException.ThrowIfNull(comparison);
 
       _changeCachingDomainObjectCollectionData.Sort(comparison);
     }
 
     public void SortCurrentAndOriginalData (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull("comparison", comparison);
+      ArgumentNullException.ThrowIfNull(comparison);
 
       _changeCachingDomainObjectCollectionData.SortOriginalAndCurrent(comparison);
     }
@@ -271,8 +271,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void SetDataFromSubTransaction (IDomainObjectCollectionEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider)
     {
-      ArgumentUtility.CheckNotNull("sourceDataManager", sourceDataManager);
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentNullException.ThrowIfNull(sourceDataManager);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
 
       _changeCachingDomainObjectCollectionData.ReplaceContents(sourceDataManager.CollectionData);
       _currentOppositeEndPoints = sourceDataManager.CurrentOppositeEndPoints

@@ -19,7 +19,7 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  scrollbar-width: var(--remotion-themed-popup-scrollbar-style);
+  scrollbar-width: var(--remotion-themed-popup-scrollbar-width);
   scrollbar-color: var(--remotion-themed-popup-scrollbar-color);
 }
 

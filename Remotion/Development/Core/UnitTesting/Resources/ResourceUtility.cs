@@ -17,7 +17,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Resources
 {
@@ -25,8 +24,8 @@ namespace Remotion.Development.UnitTesting.Resources
   {
     public static Stream GetResourceStream (Assembly assembly, string resourceID)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
-      ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
+      ArgumentNullException.ThrowIfNull(assembly);
+      ArgumentException.ThrowIfNullOrEmpty(resourceID);
 
       var resourceStream = assembly.GetManifestResourceStream(resourceID);
       if (resourceStream == null)
@@ -48,8 +47,8 @@ namespace Remotion.Development.UnitTesting.Resources
 
     public static byte[] GetResource (Assembly assembly, string resourceID)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
-      ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
+      ArgumentNullException.ThrowIfNull(assembly);
+      ArgumentException.ThrowIfNullOrEmpty(resourceID);
 
       using (var resourceStream = GetResourceStream(assembly, resourceID))
       {
@@ -59,8 +58,8 @@ namespace Remotion.Development.UnitTesting.Resources
 
     public static byte[] GetResource (Type namespaceProvider, string shortResourceName)
     {
-      ArgumentUtility.CheckNotNull("namespaceProvider", namespaceProvider);
-      ArgumentUtility.CheckNotNullOrEmpty("shortResourceName", shortResourceName);
+      ArgumentNullException.ThrowIfNull(namespaceProvider);
+      ArgumentException.ThrowIfNullOrEmpty(shortResourceName);
 
 
       using (var resourceStream = GetResourceStream(namespaceProvider, shortResourceName))
@@ -71,8 +70,8 @@ namespace Remotion.Development.UnitTesting.Resources
 
     public static string GetResourceString (Assembly assembly, string resourceID)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
-      ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
+      ArgumentNullException.ThrowIfNull(assembly);
+      ArgumentException.ThrowIfNullOrEmpty(resourceID);
 
       using (var resourceStream = GetResourceStream(assembly, resourceID))
       {
@@ -85,8 +84,8 @@ namespace Remotion.Development.UnitTesting.Resources
 
     public static string GetResourceString (Type namespaceProvider, string shortResourceName)
     {
-      ArgumentUtility.CheckNotNull("namespaceProvider", namespaceProvider);
-      ArgumentUtility.CheckNotNullOrEmpty("shortResourceName", shortResourceName);
+      ArgumentNullException.ThrowIfNull(namespaceProvider);
+      ArgumentException.ThrowIfNullOrEmpty(shortResourceName);
 
       using (var resourceStream = GetResourceStream(namespaceProvider, shortResourceName))
       {

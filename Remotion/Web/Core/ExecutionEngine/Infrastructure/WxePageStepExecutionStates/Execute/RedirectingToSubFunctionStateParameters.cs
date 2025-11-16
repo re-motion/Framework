@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Specialized;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute
 {
@@ -32,8 +31,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
         WxeFunction subFunction, NameValueCollection postBackCollection, string destinationUrl, string resumeUrl)
         : base(subFunction, postBackCollection)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("destinationUrl", destinationUrl);
-      ArgumentUtility.CheckNotNullOrEmpty("resumeUrl", resumeUrl);
+      ArgumentException.ThrowIfNullOrEmpty(destinationUrl);
+      ArgumentException.ThrowIfNullOrEmpty(resumeUrl);
 
       _destinationUrl = destinationUrl;
       _resumeUrl = resumeUrl;

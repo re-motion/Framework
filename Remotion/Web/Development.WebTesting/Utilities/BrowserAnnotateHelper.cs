@@ -16,11 +16,9 @@
 // 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
@@ -39,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public BrowserAnnotateHelper (IBrowserConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull("configuration", configuration);
+      ArgumentNullException.ThrowIfNull(configuration);
 
       BrowserConfiguration = configuration;
     }
@@ -47,6 +45,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <summary>
     /// Draws a tooltip with the specified <paramref name="content"/> at the mouse cursor position.
     /// </summary>
+    [Obsolete("Cursor Funktionalität im WebTesting wird nicht mehr unterstützt. See RM-9457. (Version 8.0.0)", error: true)]
     public IFluentScreenshotElement<Rectangle> DrawCursorTooltip (
         [NotNull] ScreenshotBuilder builder,
         [NotNull] IBrowserSession browserSession,
@@ -57,26 +56,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
-      ArgumentUtility.CheckNotNull("browserSession", browserSession);
-      ArgumentUtility.CheckNotNull("content", content);
+      ArgumentNullException.ThrowIfNull(builder);
+      ArgumentNullException.ThrowIfNull(browserSession);
+      ArgumentNullException.ThrowIfNull(content);
 
-      var seleniumDriver = (IWebDriver)browserSession.Driver.Native;
-
-      var clonedStyle = (style ?? BrowserConfiguration.TooltipStyle).Clone(positioning: positioning, wrapLines: wrapLines, maximumSize: maximumSize);
-      var browserContentBounds = BrowserConfiguration.Locator.GetBrowserContentBounds(seleniumDriver).Location;
-
-      // Offset the position of the cursor to translate it to the browser coordinate system.
-      var cursorPosition = Cursor.Position;
-      cursorPosition.Offset(-browserContentBounds.X, -browserContentBounds.Y);
-
-      var tooltipAnnotation = new ScreenshotTooltipAnnotation(
-          content,
-          clonedStyle,
-          padding ?? new WebPadding(0, 20, 0, 25));
-      builder.Annotate(new Rectangle(cursorPosition, new Size(1, 1)), new RectangleResolver(seleniumDriver), tooltipAnnotation);
-
-      return new FluentScreenshotElement<Rectangle>(tooltipAnnotation.TooltipBounds, new RectangleResolver(seleniumDriver));
+      throw new NotSupportedException("Cursor Funktionalität im WebTesting wird nicht mehr unterstützt. See RM-9457.");
     }
 
     /// <summary>
@@ -91,8 +75,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
-      ArgumentUtility.CheckNotNull("controlObject", controlObject);
+      ArgumentNullException.ThrowIfNull(builder);
+      ArgumentNullException.ThrowIfNull(controlObject);
 
       return DrawTooltip(builder, (IWebElement)controlObject.Scope.Native, style, padding, positioning, wrapLines, maximumSize);
     }
@@ -109,8 +93,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentNullException.ThrowIfNull(builder);
+      ArgumentNullException.ThrowIfNull(element);
 
       return DrawTooltip(builder, (IWebElement)element.Native, style, padding, positioning, wrapLines, maximumSize);
     }
@@ -127,8 +111,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         bool? wrapLines = null,
         Size? maximumSize = null)
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
-      ArgumentUtility.CheckNotNull("webElement", webElement);
+      ArgumentNullException.ThrowIfNull(builder);
+      ArgumentNullException.ThrowIfNull(webElement);
 
       var title = webElement.GetAttribute("title");
       if (title == null)

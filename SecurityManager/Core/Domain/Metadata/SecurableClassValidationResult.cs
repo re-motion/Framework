@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Remotion.SecurityManager.Domain.AccessControl;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
@@ -40,7 +39,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public void AddDuplicateStateCombination (StateCombination duplicateStateCombination)
     {
-      ArgumentUtility.CheckNotNull("duplicateStateCombination", duplicateStateCombination);
+      ArgumentNullException.ThrowIfNull(duplicateStateCombination);
 
       _isValid = false;
       _duplicateStateCombinations.Add(duplicateStateCombination);
@@ -53,7 +52,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public void AddInvalidStateCombination (StateCombination invalidStateCombination)
     {
-      ArgumentUtility.CheckNotNull("invalidStateCombination", invalidStateCombination);
+      ArgumentNullException.ThrowIfNull(invalidStateCombination);
 
       _isValid = false;
       _invalidStateCombinations.Add(invalidStateCombination);

@@ -19,7 +19,6 @@ using System;
 using System.Linq;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {
@@ -45,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
     /// </remarks>
     public void HandleValidationFailures (ValidationFailureHandlingContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var hasRowsWithUnhandledValidationFailures = context.ValidationFailureRepository.GetUnhandledValidationFailuresForDataRowsAndContainingDataCells(true).Any();
       if (!hasRowsWithUnhandledValidationFailures)

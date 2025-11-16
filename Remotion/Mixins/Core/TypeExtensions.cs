@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -26,7 +25,7 @@ namespace Remotion.Mixins
   {
     public static Type GetUnderlyingMixedType (this Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return MixinTypeUtility.GetUnderlyingTargetType(type);
     }

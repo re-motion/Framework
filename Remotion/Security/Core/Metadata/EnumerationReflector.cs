@@ -42,10 +42,10 @@ namespace Remotion.Security.Metadata
 
     public Dictionary<Enum, EnumValueInfo> GetValues (Type type, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
       if (!type.IsEnum)
-        throw new ArgumentException(string.Format("The type '{0}' is not an enumerated type.", type.GetFullNameSafe()), "type");
-      ArgumentUtility.CheckNotNull("cache", cache);
+        throw new ArgumentException(string.Format("The type '{0}' is not an enumerated type.", type.GetFullNameSafe()), nameof(type));
+      ArgumentNullException.ThrowIfNull(cache);
 
       IList values = Enum.GetValues(type);
 
@@ -61,8 +61,8 @@ namespace Remotion.Security.Metadata
 
     public EnumValueInfo GetValue (Enum value, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNull("value", value);
-      ArgumentUtility.CheckNotNull("cache", cache);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(cache);
 
       EnumValueInfo? info = cache.GetEnumValueInfo(value);
       if (info == null)

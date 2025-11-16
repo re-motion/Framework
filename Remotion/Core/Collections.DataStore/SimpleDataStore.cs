@@ -98,7 +98,7 @@ namespace Remotion.Collections.DataStore
 
     public SimpleDataStore ([JetBrains.Annotations.NotNull] IEqualityComparer<TKey> comparer)
     {
-      ArgumentUtility.CheckNotNull("comparer", comparer);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       _innerDictionary = new Dictionary<TKey, Data>(comparer);
     }
@@ -116,7 +116,7 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentNullException.ThrowIfNull(key);
 
       return TryGetValueInternal(key, out _);
     }
@@ -124,11 +124,11 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentNullException.ThrowIfNull(key);
       // value can be null
 
       if (TryGetValueInternal(key, out _))
-        throw new ArgumentException(string.Format("The store already contains an element with key '{0}'.", key), "key");
+        throw new ArgumentException(string.Format("The store already contains an element with key '{0}'.", key), nameof(key));
 
       _innerDictionary.Add(key, new Data(value));
     }
@@ -136,7 +136,7 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public bool Remove (TKey key)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentNullException.ThrowIfNull(key);
 
       if (TryGetValueInternal(key, out _))
         return _innerDictionary.Remove(key);
@@ -155,7 +155,7 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        ArgumentUtility.CheckNotNull("key", key);
+        ArgumentNullException.ThrowIfNull(key);
 
         if (TryGetValueInternal(key, out var value))
           return value;
@@ -165,7 +165,7 @@ namespace Remotion.Collections.DataStore
       }
       set
       {
-        ArgumentUtility.CheckNotNull("key", key);
+        ArgumentNullException.ThrowIfNull(key);
 
         if (TryGetValueInternal(key, out _))
           _innerDictionary.Remove(key);
@@ -177,7 +177,7 @@ namespace Remotion.Collections.DataStore
     [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       TryGetValueInternal(key, out var value);
       return value;
@@ -186,7 +186,7 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       return TryGetValueInternal(key, out value);
     }
@@ -194,12 +194,12 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
-      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
+      ArgumentUtility.DebugCheckNotNull(nameof(valueFactory), valueFactory);
 
       if (!TryGetValueInternal(key, out var value))
       {
-        ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
+        ArgumentNullException.ThrowIfNull(valueFactory);
 
         _innerDictionary.Add(key, new Data());
         try

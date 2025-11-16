@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq.Expressions;
-using Remotion.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 {
   public abstract class StandardMappingTest : DatabaseTest
   {
-    public const string CreateTestDataFileName = "Database\\DataDomainObjects_CreateTestData.sql";
+    public const string CreateTestDataFileName = "Database/DataDomainObjects_CreateTestData.sql";
 
     protected StandardMappingTest ()
         : base(new StandardMappingDatabaseAgent(TestDomainConnectionString), CreateTestDataFileName)

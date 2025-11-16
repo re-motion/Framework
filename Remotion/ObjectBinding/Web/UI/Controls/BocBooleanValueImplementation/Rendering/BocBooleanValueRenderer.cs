@@ -25,7 +25,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
@@ -75,9 +74,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IValidationErrorRenderer validationErrorRenderer)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("resourceSetFactory", resourceSetFactory);
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
+      ArgumentNullException.ThrowIfNull(resourceSetFactory);
+      ArgumentNullException.ThrowIfNull(labelReferenceRenderer);
+      ArgumentNullException.ThrowIfNull(validationErrorRenderer);
 
       _resourceSetFactory = resourceSetFactory;
       _labelReferenceRenderer = labelReferenceRenderer;
@@ -86,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       htmlHeadAppender.RegisterObjectBindingWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
@@ -103,7 +102,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     /// </summary>
     public void Render (BocBooleanValueRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       var resourceSet = _resourceSetFactory.CreateResourceSet(renderingContext.Control);
 
@@ -141,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
         var script = GetClickScript(renderingContext, resourceSet);
         checkboxControl.Attributes.Add("onkeydown", "BocBooleanValue.OnKeyDown (this);");
-        renderingContext.Writer.AddAttribute("onclick", script);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, script);
       }
       AddAttributesToRender(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);

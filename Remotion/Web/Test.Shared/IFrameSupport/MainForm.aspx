@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" style="height: 100%">
 <head runat="server">
   <title></title>
-  <script type="text/javascript">
+  <script type="text/javascript" nonce="testsite">
     function Refresh() {
       window.__doPostBack("RefreshButton", "");
     }

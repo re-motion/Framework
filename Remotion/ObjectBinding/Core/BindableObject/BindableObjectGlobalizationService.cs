@@ -21,7 +21,6 @@ using Remotion.Globalization;
 using Remotion.Globalization.ExtensibleEnums;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -55,10 +54,10 @@ namespace Remotion.ObjectBinding.BindableObject
         IEnumerationGlobalizationService enumerationGlobalizationService,
         IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService)
     {
-      ArgumentUtility.CheckNotNull("globalizationServices", globalizationServices);
-      ArgumentUtility.CheckNotNull("memberInformationGlobalizationService", memberInformationGlobalizationService);
-      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
+      ArgumentNullException.ThrowIfNull(globalizationServices);
+      ArgumentNullException.ThrowIfNull(memberInformationGlobalizationService);
+      ArgumentNullException.ThrowIfNull(enumerationGlobalizationService);
+      ArgumentNullException.ThrowIfNull(extensibleEnumGlobalizationService);
 
       _resourceManager = new Lazy<IResourceManager>(
           () => globalizationServices.GetResourceManager(typeof(ResourceIdentifier)),
@@ -75,7 +74,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>The localized display name.</returns>
     public string GetEnumerationValueDisplayName (Enum value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(value);
       return _enumerationGlobalizationService.GetEnumerationValueDisplayName(value);
     }
 
@@ -86,7 +85,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>The localized display name.</returns>
     public string GetExtensibleEnumerationValueDisplayName (IExtensibleEnum value) //move to member info globalization service
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(value);
       return _extensibleEnumGlobalizationService.GetExtensibleEnumValueDisplayName(value);
     }
 
@@ -108,8 +107,8 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>The localized display name.</returns>
     public string GetTypeDisplayName (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentNullException.ThrowIfNull(typeInformation);
+      ArgumentNullException.ThrowIfNull(typeInformationForResourceResolution);
 
       return _memberInformationGlobalizationService.GetTypeDisplayName(typeInformation, typeInformationForResourceResolution);
     }
@@ -122,8 +121,8 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>The localized display name.</returns>
     public string GetPropertyDisplayName (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentNullException.ThrowIfNull(propertyInformation);
+      ArgumentNullException.ThrowIfNull(typeInformationForResourceResolution);
 
       var mixinIntroducedPropertyInformation = propertyInformation as MixinIntroducedPropertyInformation;
       if (mixinIntroducedPropertyInformation != null)

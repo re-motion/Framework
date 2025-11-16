@@ -19,7 +19,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.DPExtensions
 {
@@ -34,9 +33,9 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public TypedMethodInvocationExpression (TypeReference callTarget, MethodInfo method, params Expression[] arguments)
     {
-      ArgumentUtility.CheckNotNull("callTarget", callTarget);
-      ArgumentUtility.CheckNotNull("method", method);
-      ArgumentUtility.CheckNotNull("arguments", arguments);
+      ArgumentNullException.ThrowIfNull(callTarget);
+      ArgumentNullException.ThrowIfNull(method);
+      ArgumentNullException.ThrowIfNull(arguments);
 
       _callTarget = callTarget;
       _method = method;

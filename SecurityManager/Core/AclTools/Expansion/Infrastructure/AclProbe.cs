@@ -47,15 +47,15 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     /// <returns></returns>
     public static AclProbe CreateAclProbe (User user, Role role, AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull("user", user);
-      ArgumentUtility.CheckNotNull("role", role);
-      ArgumentUtility.CheckNotNull("ace", ace);
+      ArgumentNullException.ThrowIfNull(user);
+      ArgumentNullException.ThrowIfNull(role);
+      ArgumentNullException.ThrowIfNull(ace);
       if (user.Tenant == null)
-        throw new ArgumentException("User must have a Tenant set.", "user");
+        throw new ArgumentException("User must have a Tenant set.", nameof(user));
       if (role.Position == null)
-        throw new ArgumentException("User must have a Position set.", "role");
+        throw new ArgumentException("User must have a Position set.", nameof(role));
       if (role.Group == null)
-        throw new ArgumentException("User must have a Group set.", "role");
+        throw new ArgumentException("User must have a Group set.", nameof(role));
 
       AclExpansionAccessConditions accessConditions = new AclExpansionAccessConditions();
       var owningUser = CreateOwningUserEntry(accessConditions, user, ace);

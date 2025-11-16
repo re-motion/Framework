@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.CreateNewObjectID(DomainObjectIDs.OrderViewModel1.ClassDefinition),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.LoadDataContainer(objectID),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.LoadDataContainers(new[] { objectID }),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, objectID),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -187,7 +187,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.Save(new DataContainerCollection()),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -211,7 +211,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.UpdateTimestamps(new DataContainerCollection()),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -233,7 +233,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.ExecuteCollectionQuery(queryStub.Object),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
 
@@ -256,7 +256,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.ExecuteCustomQuery(queryStub.Object),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -278,7 +278,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.ExecuteScalarQuery(queryStub.Object),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -295,7 +295,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.BeginTransaction(),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -312,7 +312,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.Commit(),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
 
     [Test]
@@ -329,7 +329,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       Assert.That(
           () => _provider.Rollback(),
           Throws.Exception.TypeOf<ObjectDisposedException>().With.Message.EqualTo(
-              "A disposed NonPersistentProvider cannot be accessed.\r\nObject name: 'NonPersistentProvider'."));
+              $"A disposed NonPersistentProvider cannot be accessed.{Environment.NewLine}Object name: 'NonPersistentProvider'."));
     }
   }
 }

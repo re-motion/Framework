@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 {
@@ -34,10 +33,10 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
     public CustomSequenceQueryAdapter (IQuery query, Func<IQueryResultRow, TResultItem> resultConversion)
         : base(query)
     {
-      ArgumentUtility.CheckNotNull("resultConversion", resultConversion);
+      ArgumentNullException.ThrowIfNull(resultConversion);
 
       if (query.QueryType != QueryType.CustomReadOnly)
-        throw new ArgumentException("Only custom readonly queries can be used to load custom results.", "query");
+        throw new ArgumentException("Only custom readonly queries can be used to load custom results.", nameof(query));
 
       _resultConversion = resultConversion;
     }
@@ -49,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 
     public override IEnumerable<TResultItem> Execute (IQueryManager queryManager)
     {
-      ArgumentUtility.CheckNotNull("queryManager", queryManager);
+      ArgumentNullException.ThrowIfNull(queryManager);
 
       return queryManager.GetCustom(this, _resultConversion);
     }

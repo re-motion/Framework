@@ -18,7 +18,6 @@ using System;
 using Remotion.Collections.Caching;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -36,14 +35,14 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurityPrincipalRepository (IUserRevisionProvider revisionProvider)
     {
-      ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
+      ArgumentNullException.ThrowIfNull(revisionProvider);
 
       _revisionProvider = revisionProvider;
     }
 
     public User GetUser (string userName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("userName", userName);
+      ArgumentException.ThrowIfNullOrEmpty(userName);
 
       // Optimized for memory allocations
       if (_userCacheValueFactory == null)

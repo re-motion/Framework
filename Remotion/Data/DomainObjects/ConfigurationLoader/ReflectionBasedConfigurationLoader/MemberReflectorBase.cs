@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -35,10 +34,10 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+      ArgumentNullException.ThrowIfNull(nameResolver);
+      ArgumentNullException.ThrowIfNull(propertyMetadataProvider);
 
       _classDefinition = classDefinition;
       _propertyInfo = propertyInfo;

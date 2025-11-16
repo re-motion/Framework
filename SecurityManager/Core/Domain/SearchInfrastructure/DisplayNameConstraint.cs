@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 {
@@ -32,7 +31,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public DisplayNameConstraint (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
       _value = value;
     }
 
@@ -43,7 +42,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public IQueryable<Tenant> ApplyTo (IQueryable<Tenant> tenants)
     {
-      ArgumentUtility.CheckNotNull("tenants", tenants);
+      ArgumentNullException.ThrowIfNull(tenants);
 
       if (HasConstraint())
         return tenants.Where(t => t.Name.Contains(Value));
@@ -53,7 +52,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public IQueryable<Group> ApplyTo (IQueryable<Group> groups)
     {
-      ArgumentUtility.CheckNotNull("groups", groups);
+      ArgumentNullException.ThrowIfNull(groups);
 
       if (HasConstraint())
         return groups.Where(g => g.Name.Contains(Value) || (g.ShortName != null && g.ShortName.Contains(Value)));
@@ -63,7 +62,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public IQueryable<User> ApplyTo (IQueryable<User> users)
     {
-      ArgumentUtility.CheckNotNull("users", users);
+      ArgumentNullException.ThrowIfNull(users);
 
       if (HasConstraint())
         return users.Where(u => u.LastName.Contains(Value) || (u.FirstName != null && u.FirstName.Contains(Value)));
@@ -73,7 +72,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public IQueryable<Position> ApplyTo (IQueryable<Position> positions)
     {
-      ArgumentUtility.CheckNotNull("positions", positions);
+      ArgumentNullException.ThrowIfNull(positions);
 
       if (HasConstraint())
         return positions.Where(t => t.Name.Contains(Value));
@@ -83,7 +82,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public IQueryable<GroupType> ApplyTo (IQueryable<GroupType> groupTypes)
     {
-      ArgumentUtility.CheckNotNull("groupTypes", groupTypes);
+      ArgumentNullException.ThrowIfNull(groupTypes);
 
       if (HasConstraint())
         return groupTypes.Where(t => t.Name.Contains(Value));
@@ -94,7 +93,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
     public IEnumerable<T> ApplyTo<T> (IEnumerable<T> metadataObject)
         where T: MetadataObject
     {
-      ArgumentUtility.CheckNotNull("metadataObject", metadataObject);
+      ArgumentNullException.ThrowIfNull(metadataObject);
 
       if (HasConstraint())
         return metadataObject.Where(t => t.DisplayName.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1);

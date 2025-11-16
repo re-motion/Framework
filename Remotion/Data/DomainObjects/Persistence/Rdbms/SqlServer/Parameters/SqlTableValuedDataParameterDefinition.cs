@@ -17,7 +17,8 @@
 using System;
 using System.Collections;
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.Common;
+using Microsoft.Data.SqlClient;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Utilities;
@@ -34,7 +35,7 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
 
   public SqlTableValuedDataParameterDefinition (RecordDefinition recordDefinition)
   {
-    ArgumentUtility.CheckNotNull(nameof(recordDefinition), recordDefinition);
+    ArgumentNullException.ThrowIfNull(recordDefinition);
     ArgumentUtility.CheckNotNullAndType<TableTypeDefinition>(nameof(recordDefinition), recordDefinition.StructuredTypeDefinition);
 
     RecordDefinition = recordDefinition;
@@ -73,10 +74,10 @@ public class SqlTableValuedDataParameterDefinition : IDataParameterDefinition
   /// Creates a <see cref="SqlDbType.Structured"/> <see cref="SqlParameter"/> with its <see cref="SqlParameter.TypeName"/> determined by the given
   /// <see cref="SqlTableValuedParameterValue"/>.
   /// </summary>
-  public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
+  public DbParameter CreateDataParameter (DbCommand command, string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNull(nameof(command), command);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
+    ArgumentNullException.ThrowIfNull(command);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
     var tvpValue = ArgumentUtility.CheckNotNullAndType<SqlTableValuedParameterValue>(nameof(parameterValue), parameterValue);
 
     var sqlParameter = (SqlParameter)command.CreateParameter();

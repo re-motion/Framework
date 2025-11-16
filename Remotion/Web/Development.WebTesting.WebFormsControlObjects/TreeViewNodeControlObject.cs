@@ -19,7 +19,6 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
@@ -181,7 +180,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       var actualCompletionDetector = MergeWithDefaultActionOptions(Scope, actionOptions);
 
-      const string xpath = "./tbody/tr/td/a[contains(@href,\"','t\")]";
+      const string xpath = "./tbody/tr/td/a[contains(@href,\"','t\")] | ./tbody/tr/td/a[contains(@data-event-content-href,\"','t\")]";
       var expandLinkScope = Scope.FindXPath(xpath);
       ExecuteAction(new SimpleClickAction(this, expandLinkScope, Logger), actualCompletionDetector);
       return this;
@@ -236,7 +235,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     private void ClickNode (IWebTestActionOptions? actionOptions)
     {
       var actualCompletionDetector = MergeWithDefaultActionOptions(Scope, actionOptions);
-      const string nodeClickScopeXpath = "./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]][last()]/a[last()]";
+      const string nodeClickScopeXpath = "./tbody/tr/td[a[contains(@data-event-content-onclick, 'TreeView_SelectNode')]][last()]/a[last()] | ./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]][last()]/a[last()]";
       try
       {
         ExecuteAction(new ClickAction(this, Scope.FindXPath(nodeClickScopeXpath), Logger), actualCompletionDetector);
@@ -249,7 +248,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
     private ElementScope GetCheckboxScope ()
     {
-      const string xpath = "./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']";
+      const string xpath = "./tbody/tr/td[a[contains(@data-event-content-onclick, 'TreeView_SelectNode')]]/input[@type='checkbox'] | ./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']";
       return Scope.FindXPath(xpath);
     }
 
@@ -262,7 +261,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public TreeViewNodeControlObject GetNode (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return GetNode().WithItemID(itemID);
     }
@@ -282,7 +281,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public TreeViewNodeControlObject GetNodeInHierarchy (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       return GetNodeInHierarchy().WithItemID(itemID);
     }

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.UI;
 using Remotion.Web.Utilities;
@@ -39,9 +38,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public WxeExecutor (HttpContext context, IWxePage page, WxePageInfo wxePageInfo)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("page", page);
-      ArgumentUtility.CheckNotNull("wxePageInfo", wxePageInfo);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(wxePageInfo);
 
       _wxePageInfo = wxePageInfo;
       _page = page;
@@ -64,9 +63,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void ExecuteFunction (WxeFunction function, Control? sender, WxeCallOptions options)
     {
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentNullException.ThrowIfNull(function);
       // sender can be null
-      ArgumentUtility.CheckNotNull("options", options);
+      ArgumentNullException.ThrowIfNull(options);
 
       WxePermaUrlOptions permaUrlOptions = options.PermaUrlOptions;
       WxeRepostOptions repostOptions = WxeRepostOptions.DoRepost(sender);
@@ -75,9 +74,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, WxeCallOptionsNoRepost options)
     {
-      ArgumentUtility.CheckNotNull("function", function);
-      ArgumentUtility.CheckNotNull("sender", sender);
-      ArgumentUtility.CheckNotNull("options", options);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentNullException.ThrowIfNull(sender);
+      ArgumentNullException.ThrowIfNull(options);
 
       bool usesEventTarget = options.UsesEventTarget ?? UsesEventTarget;
       WxePermaUrlOptions permaUrlOptions = options.PermaUrlOptions;
@@ -87,9 +86,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void ExecuteFunctionExternalByRedirect (WxeFunction function, Control sender, WxeCallOptionsExternalByRedirect options)
     {
-      ArgumentUtility.CheckNotNull("function", function);
-      ArgumentUtility.CheckNotNull("sender", sender);
-      ArgumentUtility.CheckNotNull("options", options);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentNullException.ThrowIfNull(sender);
+      ArgumentNullException.ThrowIfNull(options);
 
       WxeReturnOptions returnOptions;
       if (options.ReturnToCaller)
@@ -103,9 +102,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void ExecuteFunctionExternal (WxeFunction function, Control sender, WxeCallOptionsExternal options)
     {
-      ArgumentUtility.CheckNotNull("function", function);
-      ArgumentUtility.CheckNotNull("sender", sender);
-      ArgumentUtility.CheckNotNull("options", options);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentNullException.ThrowIfNull(sender);
+      ArgumentNullException.ThrowIfNull(options);
 
       string functionToken = WxeContext.Current!.GetFunctionTokenForExternalFunction(function, options.ReturningPostback); // TODO RM-8118: not null assertion
 
@@ -153,7 +152,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       if (!returningPostback)
         return "window.close();";
 
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentNullException.ThrowIfNull(sender);
 
       if (UsesEventTarget)
       {
@@ -190,7 +189,10 @@ if (   window.opener != null
     && window.opener.document.getElementById('{0}') != null
     && window.opener.document.getElementById('{0}').value == '{1}')
 {{
-  window.opener.wxeDoPostBack('{2}', '{3}', '{4}'); 
+  window.opener.postMessage({{
+    type: 'wxeDoPostBack',
+    args: ['{2}', '{3}', '{4}']
+  }});
 }}
 window.close();
 ",
@@ -214,7 +216,10 @@ if (   window.opener != null
     && window.opener.document.getElementById('{0}') != null
     && window.opener.document.getElementById('{0}').value == '{1}')
 {{
-  window.opener.wxeDoSubmit('{2}', '{3}');
+  window.opener.postMessage({{
+    type: 'wxeDoSubmit',
+    args: ['{2}', '{3}']
+  }});
 }}
 window.close();
 ",

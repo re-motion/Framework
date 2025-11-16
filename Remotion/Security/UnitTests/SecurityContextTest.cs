@@ -92,7 +92,7 @@ namespace Remotion.Security.UnitTests
           () => CreateTestSecurityContextForType(typeof(SimpleType)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'type' is a 'Remotion.Security.UnitTests.SampleDomain.SimpleType', "
+                  "The value is a 'Remotion.Security.UnitTests.SampleDomain.SimpleType', "
                   + "which cannot be assigned to type 'Remotion.Security.ISecurableObject'.",
                   "type"));
     }

@@ -16,7 +16,6 @@
 // 
 using System;
 using Coypu;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
 {
@@ -31,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
 
     public void CheckPageForError (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
     }
   }
 }

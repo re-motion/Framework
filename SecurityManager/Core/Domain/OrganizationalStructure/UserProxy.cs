@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
@@ -32,7 +31,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static UserProxy Create (User user)
     {
-      ArgumentUtility.CheckNotNull("user", user);
+      ArgumentNullException.ThrowIfNull(user);
 
       return new UserProxy(
           user.GetHandle(),

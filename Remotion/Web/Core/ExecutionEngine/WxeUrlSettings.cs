@@ -41,7 +41,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <returns>A new <see cref="WxeUrlSettings"/> object.</returns>
     public static WxeUrlSettings Create (int? maximumUrlLength = null, string? defaultWxeHandler = null)
     {
-      ArgumentUtility.CheckNotEmpty("defaultWxeHandler", defaultWxeHandler);
+      ArgumentUtility.CheckNotEmpty(nameof(defaultWxeHandler), defaultWxeHandler);
 
       var constructedMaximumUrlLength = maximumUrlLength ?? c_defaultMaximumUrlLength;
       var constructedDefaultWxeHandler = defaultWxeHandler;
@@ -81,7 +81,7 @@ namespace Remotion.Web.ExecutionEngine
       else
       {
         defaultWxeHandler = defaultWxeHandler.Trim();
-        ArgumentUtility.CheckNotNullOrEmpty(nameof(defaultWxeHandler), defaultWxeHandler);
+        ArgumentException.ThrowIfNullOrEmpty(defaultWxeHandler);
 
         if (defaultWxeHandler.StartsWith("/") || defaultWxeHandler.IndexOf(":") != -1)
           throw new ArgumentException($"No absolute paths are allowed. Resource: '{defaultWxeHandler}'", nameof(defaultWxeHandler));

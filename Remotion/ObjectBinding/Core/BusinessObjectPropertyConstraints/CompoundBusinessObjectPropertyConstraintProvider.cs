@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
 {
@@ -29,7 +28,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
 
     public CompoundBusinessObjectPropertyConstraintProvider (IEnumerable<IBusinessObjectPropertyConstraintProvider>businessObjectConstraintProviders)
     {
-      ArgumentUtility.CheckNotNull("businessObjectConstraintProviders", businessObjectConstraintProviders);
+      ArgumentNullException.ThrowIfNull(businessObjectConstraintProviders);
 
       BusinessObjectConstraintProviders = businessObjectConstraintProviders.ToList().AsReadOnly();
     }
@@ -39,8 +38,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyConstraints
         IBusinessObjectProperty businessObjectProperty,
         IBusinessObject? businessObject)
     {
-      ArgumentUtility.CheckNotNull("businessObjectClass", businessObjectClass);
-      ArgumentUtility.CheckNotNull("businessObjectProperty", businessObjectProperty);
+      ArgumentNullException.ThrowIfNull(businessObjectClass);
+      ArgumentNullException.ThrowIfNull(businessObjectProperty);
 
       return BusinessObjectConstraintProviders.SelectMany(
           p => p.GetPropertyConstraints(businessObjectClass, businessObjectProperty, businessObject));

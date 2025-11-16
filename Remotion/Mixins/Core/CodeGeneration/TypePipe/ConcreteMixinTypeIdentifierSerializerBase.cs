@@ -18,9 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Mixins.CodeGeneration.Serialization;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -51,7 +49,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_mixinType))]
     public void AddMixinType (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       _mixinType = mixinType;
     }
@@ -59,17 +57,17 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_overriders))]
     public void AddOverriders (HashSet<MethodInfo> overriders)
     {
-      ArgumentUtility.CheckNotNull("overriders", overriders);
+      ArgumentNullException.ThrowIfNull(overriders);
 
-      _overriders = overriders.AsReadOnly();
+      _overriders = Remotion.Collections.CollectionExtensions.AsReadOnly(overriders);
     }
 
     [MemberNotNull(nameof(_overridden))]
     public void AddOverridden (HashSet<MethodInfo> overridden)
     {
-      ArgumentUtility.CheckNotNull("overridden", overridden);
+      ArgumentNullException.ThrowIfNull(overridden);
 
-      _overridden = overridden.AsReadOnly();
+      _overridden = Remotion.Collections.CollectionExtensions.AsReadOnly(overridden);
     }
   }
 }

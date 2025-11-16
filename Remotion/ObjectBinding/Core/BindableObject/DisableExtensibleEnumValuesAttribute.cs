@@ -34,7 +34,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <param name="filterType">The type of the filter to use, must implement <see cref="IEnumerationValueFilter"/>.</param>
     public DisableExtensibleEnumValuesAttribute (Type filterType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("filterType", filterType, typeof(IEnumerationValueFilter));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(filterType), filterType, typeof(IEnumerationValueFilter));
       _filter = (IEnumerationValueFilter)Activator.CreateInstance(filterType)!;
     }
 
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <param name="ids">The ids to disable.</param>
     public DisableExtensibleEnumValuesAttribute (params string[] ids)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("ids", ids);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(ids), ids);
 
       _filter = new DisabledIdentifiersEnumerationFilter(ids);
     }
@@ -56,8 +56,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </summary>
     /// <param name="disabledEnumValueID1">The disabled enum values.</param>
     public DisableExtensibleEnumValuesAttribute (string disabledEnumValueID1)
-        : this(new[] {
-            ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID1) })
+        : this(new[] { disabledEnumValueID1 ?? throw new ArgumentNullException(nameof(disabledEnumValueID1)) })
     {
     }
 
@@ -70,8 +69,8 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID1,
         string disabledEnumValueID2)
       : this(new[] {
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID1),
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID2),
+          disabledEnumValueID1 ?? throw new ArgumentNullException(nameof(disabledEnumValueID1)),
+          disabledEnumValueID2 ?? throw new ArgumentNullException(nameof(disabledEnumValueID2)),
       })
     {
     }
@@ -87,9 +86,9 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID2,
         string disabledEnumValueID3)
       : this(new[] {
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID1),
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID2),
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID3),
+          disabledEnumValueID1 ?? throw new ArgumentNullException(nameof(disabledEnumValueID1)),
+          disabledEnumValueID2 ?? throw new ArgumentNullException(nameof(disabledEnumValueID2)),
+          disabledEnumValueID3 ?? throw new ArgumentNullException(nameof(disabledEnumValueID3)),
       })
     {
     }
@@ -107,10 +106,10 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID3,
         string disabledEnumValueID4)
       : this(new[] {
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID1),
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID2),
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID3),
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID4),
+          disabledEnumValueID1 ?? throw new ArgumentNullException(nameof(disabledEnumValueID1)),
+          disabledEnumValueID2 ?? throw new ArgumentNullException(nameof(disabledEnumValueID2)),
+          disabledEnumValueID3 ?? throw new ArgumentNullException(nameof(disabledEnumValueID3)),
+          disabledEnumValueID4 ?? throw new ArgumentNullException(nameof(disabledEnumValueID4)),
       })
     {
     }
@@ -130,11 +129,11 @@ namespace Remotion.ObjectBinding.BindableObject
         string disabledEnumValueID4,
         string disabledEnumValueID5)
       : this(new[] {
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID1),
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID2),
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID3),
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID4),
-          ArgumentUtility.CheckNotNull("disabledEnumValueID1", disabledEnumValueID5),
+          disabledEnumValueID1 ?? throw new ArgumentNullException(nameof(disabledEnumValueID1)),
+          disabledEnumValueID2 ?? throw new ArgumentNullException(nameof(disabledEnumValueID2)),
+          disabledEnumValueID3 ?? throw new ArgumentNullException(nameof(disabledEnumValueID3)),
+          disabledEnumValueID4 ?? throw new ArgumentNullException(nameof(disabledEnumValueID4)),
+          disabledEnumValueID5 ?? throw new ArgumentNullException(nameof(disabledEnumValueID5)),
       })
     {
     }

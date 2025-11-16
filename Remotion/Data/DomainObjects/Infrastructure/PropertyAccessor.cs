@@ -42,9 +42,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentException">The domain object does not have a property with the given identifier.</exception>
     public PropertyAccessor (IDomainObject domainObject, PropertyAccessorData propertyData, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("propertyData", propertyData);
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentNullException.ThrowIfNull(domainObject);
+      ArgumentNullException.ThrowIfNull(propertyData);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
       DomainObjectCheckUtility.CheckIfRightTransaction(domainObject, clientTransaction);
 
       _domainObject = domainObject;
@@ -336,7 +336,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     private void CheckType (Type typeToCheck)
     {
-      ArgumentUtility.CheckNotNull("typeToCheck", typeToCheck);
+      ArgumentNullException.ThrowIfNull(typeToCheck);
       if (PropertyData.PropertyType != typeToCheck)
         throw new InvalidTypeException(PropertyData.PropertyIdentifier, typeToCheck, PropertyData.PropertyType);
     }

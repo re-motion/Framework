@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
   {
     public static DomainObjectImporter CreateImporterFromStream (Stream stream, IImportStrategy strategy)
     {
-      ArgumentUtility.CheckNotNull("stream", stream);
-      ArgumentUtility.CheckNotNull("strategy", strategy);
+      ArgumentNullException.ThrowIfNull(stream);
+      ArgumentNullException.ThrowIfNull(strategy);
 
       var transportItems = strategy.Import(stream).ToArray();
       return new DomainObjectImporter(transportItems);
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public DomainObjectImporter (TransportItem[] transportItems)
     {
-      ArgumentUtility.CheckNotNull("transportItems", transportItems);
+      ArgumentNullException.ThrowIfNull(transportItems);
       _transportItems = transportItems;
     }
 

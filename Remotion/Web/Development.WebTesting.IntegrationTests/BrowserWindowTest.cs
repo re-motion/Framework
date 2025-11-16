@@ -61,6 +61,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(BrowserHelper.GetWindowBounds(window).Location, Is.EqualTo(position), "Window position does not match the expected position.");
     }
 
+    [Test]
+    public void Test_ContentSize ()
+    {
+      var home = Start();
+      var window = home.Context.Window;
+
+      var size = new Size(600, 600);
+      BrowserHelper.ResizeBrowserContentTo(window, size);
+
+      Assert.That(
+          BrowserHelper.GetBrowserContentBounds(window).Size,
+          Is.EqualTo(size),
+          "Browser content size does not match the expected size.");
+    }
+
     private HtmlPageObject Start ()
     {
       return Start<HtmlPageObject>("Empty.aspx");

@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -27,10 +26,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   {
     public static IVirtualEndPoint CreateVirtualEndPoint (this IRelationEndPointFactory endPointFactory, RelationEndPointID endPointID, bool markDataComplete)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       if (!endPointID.Definition.IsVirtual)
-        throw new ArgumentException("The RelationEndPointID must identify a virtual end-point.", "endPointID");
+        throw new ArgumentException("The RelationEndPointID must identify a virtual end-point.", nameof(endPointID));
 
       if (endPointID.Definition.Cardinality == CardinalityType.One)
       {

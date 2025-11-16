@@ -36,18 +36,16 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
 
     private readonly IModuleBuilderFactory _moduleBuilderFactory;
 
-    [CLSCompliant(false)]
     public RemotionModuleBuilderFactoryDecorator (IModuleBuilderFactory moduleBuilderFactory)
     {
-      ArgumentUtility.CheckNotNull("moduleBuilderFactory", moduleBuilderFactory);
+      ArgumentNullException.ThrowIfNull(moduleBuilderFactory);
 
       _moduleBuilderFactory = moduleBuilderFactory;
     }
 
-    [CLSCompliant(false)]
     public IModuleBuilder CreateModuleBuilder (string assemblyName, string assemblyDirectoryOrNull, bool strongNamed, string keyFilePathOrNull)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
+      ArgumentException.ThrowIfNullOrEmpty(assemblyName);
 
       var moduleBuilder = _moduleBuilderFactory.CreateModuleBuilder(assemblyName, assemblyDirectoryOrNull, strongNamed, keyFilePathOrNull);
 

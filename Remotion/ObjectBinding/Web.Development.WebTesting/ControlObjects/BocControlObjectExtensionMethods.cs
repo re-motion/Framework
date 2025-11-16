@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 {
@@ -25,7 +24,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   {
     public static string GetLabelsText ([NotNull] this BocControlObject bocControlObject)
     {
-      ArgumentUtility.CheckNotNull("bocControlObject", bocControlObject);
+      ArgumentNullException.ThrowIfNull(bocControlObject);
 
       return string.Join(" ", bocControlObject.GetLabels().Select(x => x.GetText()));
     }

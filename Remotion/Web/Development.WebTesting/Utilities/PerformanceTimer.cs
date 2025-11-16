@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -33,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public PerformanceTimer ([NotNull] ILogger logger, string message)
     {
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(logger);
 
       _logger = logger;
       _message = message;

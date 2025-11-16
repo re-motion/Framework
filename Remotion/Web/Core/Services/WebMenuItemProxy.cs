@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.Services
@@ -33,7 +32,7 @@ namespace Remotion.Web.Services
     /// <returns>An <see cref="WebMenuItemProxy"/> representing a <see cref="WebMenuItem"/> in a web service interface. </returns>
     public static WebMenuItemProxy Create (string id, bool isDisabled)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
 
       return new WebMenuItemProxy(id, isDisabled);
     }

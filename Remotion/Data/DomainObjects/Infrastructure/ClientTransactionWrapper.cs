@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     protected internal ClientTransactionWrapper (ClientTransaction wrappedInstance)
     {
-      ArgumentUtility.CheckNotNull("wrappedInstance", wrappedInstance);
+      ArgumentNullException.ThrowIfNull(wrappedInstance);
       _wrappedInstance = wrappedInstance;
     }
 
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public TTransaction To<TTransaction> ()
     {
 // ReSharper disable NotResolvedInText - We use the generic parameter on purpose.
-      ArgumentUtility.CheckTypeIsAssignableFrom("TTransaction", typeof(TTransaction), typeof(ClientTransaction));
+      ArgumentUtility.CheckTypeIsAssignableFrom(nameof(TTransaction), typeof(TTransaction), typeof(ClientTransaction));
 // ReSharper restore NotResolvedInText
       return (TTransaction)(object)_wrappedInstance;
     }
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <remarks>If the type of of of the objects is not supported by the transaction, the object must be ignored.</remarks>
     public virtual void EnsureCompatibility (IEnumerable objects)
     {
-      ArgumentUtility.CheckNotNull("objects", objects);
+      ArgumentNullException.ThrowIfNull(objects);
 
       var domainObjects = objects.OfType<DomainObject>().Distinct();
       var incompatibleObjects = domainObjects.Where(obj => _wrappedInstance.RootTransaction != obj.RootTransaction).ToArray();

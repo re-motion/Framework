@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
-using Remotion.Utilities;
 
 namespace Remotion
 {
@@ -29,7 +28,7 @@ namespace Remotion
     /// <param name="value"> The <see cref="String"/> representation of a <see cref="Guid"/>. </param>
     public PermanentGuidAttribute (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
 
       _value = new Guid(value);
     }

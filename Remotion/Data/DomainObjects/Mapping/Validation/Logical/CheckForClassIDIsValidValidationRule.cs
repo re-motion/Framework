@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Text.RegularExpressions;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 {
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       if (!s_validClassID.IsMatch(classDefinition.ID))
       {

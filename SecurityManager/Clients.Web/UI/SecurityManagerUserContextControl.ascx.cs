@@ -179,7 +179,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI
 
     protected IResourceManager GetResourceManager (Type resourceEnumType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("resourceEnumType", resourceEnumType, typeof(Enum));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(resourceEnumType), resourceEnumType, typeof(Enum));
 
       return ResourceManagerSet.Create(GlobalizationService.GetResourceManager(TypeAdapter.Create(resourceEnumType)), GetResourceManager());
     }

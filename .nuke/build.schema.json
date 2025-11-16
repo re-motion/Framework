@@ -25,6 +25,36 @@
           "type": "boolean",
           "description": "Indicates to continue a previously failed build attempt"
         },
+        "DependDBNugetConfig": {
+          "type": "string"
+        },
+        "DependDBNuGetSources": {
+          "type": "string"
+        },
+        "DependDBProjectBranch": {
+          "type": "string"
+        },
+        "DependDBProjectImportNotificationMailAddress": {
+          "type": "string"
+        },
+        "DependDBProjectImportNotificationMailAddressCc": {
+          "type": "string"
+        },
+        "DependDBProjectName": {
+          "type": "string"
+        },
+        "DependDBProjectVersion": {
+          "type": "string"
+        },
+        "DependDBRetentionTime": {
+          "type": "string"
+        },
+        "DependDBTargetFramework": {
+          "type": "string"
+        },
+        "DependDBTrackedReferences": {
+          "type": "string"
+        },
         "Help": {
           "type": "boolean",
           "description": "Shows the help text for this build assembly"
@@ -93,9 +123,13 @@
               "CIBuild",
               "Clean",
               "CreateTestMatrix",
+              "CreateTestPlan",
               "DetermineBuildMetadata",
               "DetermineProjectMetadata",
+              "DetermineTestResources",
               "FullBuild",
+              "GenerateDependDBOutput",
+              "GenerateSbom",
               "NightlyBuild",
               "Pack",
               "Restore",
@@ -119,9 +153,13 @@
               "CIBuild",
               "Clean",
               "CreateTestMatrix",
+              "CreateTestPlan",
               "DetermineBuildMetadata",
               "DetermineProjectMetadata",
+              "DetermineTestResources",
               "FullBuild",
+              "GenerateDependDBOutput",
+              "GenerateSbom",
               "NightlyBuild",
               "Pack",
               "Restore",
@@ -161,7 +199,7 @@
           "items": {
             "type": "string",
             "enum": [
-              "Docker_Win_NET8_0",
+              "Docker_Win_NET8_0", "Docker_Win_NET10_0",
               "EnforcedLocalMachine(Docker_Win_NET8_0)",
               "LocalMachine"
             ]
@@ -200,13 +238,17 @@
           "items": {
             "type": "string",
             "enum": [
-              "NET8_0_WINDOWS"
+              "NET10_0",
+              "NET8_0"
             ]
           }
         },
         "UseReleaseVersioning": {
           "type": "boolean",
           "description": "Uses release instead of debug versioning when determining the build versions"
+        },
+        "VcsUrlTemplate": {
+          "type": "string"
         },
         "Verbosity": {
           "type": "string",

@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -25,7 +25,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 
 /// <summary>
-/// Can create <see cref="IDbDataParameter"/> instances for <see cref="ObjectID"/> parameter values that refer to <see cref="DomainObject"/>s stored outside the current
+/// Can create <see cref="DbParameter"/> instances for <see cref="ObjectID"/> parameter values that refer to <see cref="DomainObject"/>s stored outside the current
 /// <see cref="StorageProviderDefinition"/>.
 /// </summary>
 public class SerializedObjectIDDataParameterDefinition : IDataParameterDefinition
@@ -34,7 +34,7 @@ public class SerializedObjectIDDataParameterDefinition : IDataParameterDefinitio
 
   public SerializedObjectIDDataParameterDefinition (IStorageTypeInformation storageTypeInformation)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageTypeInformation), storageTypeInformation);
+    ArgumentNullException.ThrowIfNull(storageTypeInformation);
     ArgumentUtility.CheckTypeIsAssignableFrom("storageTypeInformation.DotNetType", storageTypeInformation.DotNetType, typeof(string));
 
     StorageTypeInformation = storageTypeInformation;
@@ -50,11 +50,11 @@ public class SerializedObjectIDDataParameterDefinition : IDataParameterDefinitio
     return StorageTypeInformation.ConvertToStorageType(serializedObjectID);
   }
 
-  public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
+  public DbParameter CreateDataParameter (DbCommand command, string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNull(nameof(command), command);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
-    ArgumentUtility.CheckNotNull(nameof(parameterValue), parameterValue);
+    ArgumentNullException.ThrowIfNull(command);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
+    ArgumentNullException.ThrowIfNull(parameterValue);
 
     var parameter = command.CreateParameter();
     parameter.ParameterName = parameterName;

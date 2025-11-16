@@ -40,7 +40,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       if (propertyPath.Identifier == "SubstitutedRole")
         return CreateControlForSubstitutedRole(propertyPath);
@@ -50,14 +50,14 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected virtual BocReferenceValue CreateBocReferenceValue (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       return new BocReferenceValue();
     }
 
     private IBusinessObjectBoundEditableWebControl CreateControlForSubstitutedRole (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       var control = CreateBocReferenceValue(propertyPath);
       control.PreRender += HandleSubstitutedRolePreRender;
@@ -67,7 +67,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     private void HandleSubstitutedRolePreRender (object? sender, EventArgs e)
     {
-      var substitutedRoleReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender!);
+      var substitutedRoleReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>(nameof(sender), sender!);
 
       Assertion.IsNotNull(substitutedRoleReferenceValue.DataSource, "BocReferenceValue{{{0}}}.DataSource != null", substitutedRoleReferenceValue.ID);
       Assertion.IsNotNull(substitutedRoleReferenceValue.DataSource.BusinessObject, "BocReferenceValue{{{0}}}.DataSource.BusinessObject != null", substitutedRoleReferenceValue.ID);

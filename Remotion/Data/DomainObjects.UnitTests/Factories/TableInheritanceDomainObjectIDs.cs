@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
@@ -27,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public TableInheritanceDomainObjectIDs (IMappingConfiguration mappingConfiguration)
     {
-      ArgumentUtility.CheckNotNull("mappingConfiguration", mappingConfiguration);
+      ArgumentNullException.ThrowIfNull(mappingConfiguration);
 
       _mappingConfiguration = mappingConfiguration;
     }

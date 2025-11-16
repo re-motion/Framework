@@ -26,7 +26,6 @@ using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.Metadata;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
@@ -152,12 +151,12 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void AddAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull("accessType", accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       if (FindPermission(accessType) != null)
       {
         throw new ArgumentException(
-            string.Format("The access type '{0}' has already been added to this access control entry.", accessType.Name), "accessType");
+            string.Format("The access type '{0}' has already been added to this access control entry.", accessType.Name), nameof(accessType));
       }
 
       var permission = Permission.NewObject();
@@ -168,13 +167,13 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void RemoveAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull("accessType", accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       var permission = FindPermission(accessType);
       if (permission == null)
       {
         throw new ArgumentException(
-            string.Format("The access type '{0}' is not associated with the access control entry.", accessType.Name), "accessType");
+            string.Format("The access type '{0}' is not associated with the access control entry.", accessType.Name), nameof(accessType));
       }
 
       permission.Delete();
@@ -182,7 +181,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void AllowAccess (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull("accessType", accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       var permission = GetPermission(accessType);
       permission.Allowed = true;
@@ -190,7 +189,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void DenyAccess (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull("accessType", accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       var permission = GetPermission(accessType);
       permission.Allowed = false;
@@ -198,7 +197,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void RemoveAccess (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull("accessType", accessType);
+      ArgumentNullException.ThrowIfNull(accessType);
 
       var permission = GetPermission(accessType);
       permission.Allowed = null;
@@ -206,7 +205,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public bool MatchesToken (SecurityToken token)
     {
-      ArgumentUtility.CheckNotNull("token", token);
+      ArgumentNullException.ThrowIfNull(token);
 
       return _matcher.MatchesToken(token);
     }
@@ -217,7 +216,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       if (permission == null)
       {
         throw new ArgumentException(
-            string.Format("The access type '{0}' is not assigned to this access control entry.", accessType.Name), "accessType");
+            string.Format("The access type '{0}' is not assigned to this access control entry.", accessType.Name), nameof(accessType));
       }
 
       return permission;

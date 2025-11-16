@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
-using System.Data.SqlClient;
+using System.Data.Common;
+using Microsoft.Data.SqlClient;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -43,9 +43,9 @@ namespace Remotion.SecurityManager.Persistence
         RdbmsProviderDefinition storageProviderDefinition,
         IRdbmsProviderCommandFactory commandFactory)
     {
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(commandFactory);
 
       return ObjectFactory.Create<SecurityManagerRdbmsProvider>(
           ParamList.Create(
@@ -53,7 +53,7 @@ namespace Remotion.SecurityManager.Persistence
               storageProviderDefinition.ConnectionString,
               persistenceExtension,
               commandFactory,
-              (Func<IDbConnection>)(() => new SqlConnection())));
+              (Func<DbConnection>)(() => new SqlConnection())));
     }
 
     protected override IReadOnlyStorageProvider CreateReadOnlyStorageProvider (
@@ -61,9 +61,9 @@ namespace Remotion.SecurityManager.Persistence
         RdbmsProviderDefinition storageProviderDefinition,
         IRdbmsProviderCommandFactory commandFactory)
     {
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(commandFactory);
 
       return ObjectFactory.Create<SecurityManagerRdbmsProvider>(
           ParamList.Create(
@@ -71,7 +71,7 @@ namespace Remotion.SecurityManager.Persistence
               storageProviderDefinition.ReadOnlyConnectionString,
               persistenceExtension,
               commandFactory,
-              (Func<IDbConnection>)(() => new SqlConnection())));
+              (Func<DbConnection>)(() => new SqlConnection())));
     }
   }
 }

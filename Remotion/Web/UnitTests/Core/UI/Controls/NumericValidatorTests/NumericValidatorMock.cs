@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
@@ -27,7 +26,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
 
     public NumericValidatorMock (Control namingContainer)
     {
-      ArgumentUtility.CheckNotNull("namingContainer", namingContainer);
+      ArgumentNullException.ThrowIfNull(namingContainer);
       _namingContainer = namingContainer;
     }
 

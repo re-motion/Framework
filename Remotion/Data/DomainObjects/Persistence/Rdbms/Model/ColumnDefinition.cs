@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
@@ -30,8 +29,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnDefinition (string name, IStorageTypeInformation storageTypeInfo, bool isPartOfPrimaryKey)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNull("storageTypeInfo", storageTypeInfo);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentNullException.ThrowIfNull(storageTypeInfo);
 
       _name = name;
       _storageTypeInfo = storageTypeInfo;

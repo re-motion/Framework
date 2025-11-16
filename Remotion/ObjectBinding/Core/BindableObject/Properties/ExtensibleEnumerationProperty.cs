@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.ExtensibleEnums;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject.Properties
 {
@@ -72,7 +71,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
       if (!_definition.TryGetValueInfoByID(identifier, out var extensibleEnumInfo))
       {
         var message = string.Format("The identifier '{0}' does not identify a defined value for type '{1}'.", identifier, _definition.GetEnumType());
-        throw new ArgumentException(message, "identifier");
+        throw new ArgumentException(message, nameof(identifier));
       }
 
       return CreateEnumerationValueInfo(extensibleEnumInfo, businessObject);
@@ -80,7 +79,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public EnumerationValueInfo CreateEnumerationValueInfo (IExtensibleEnumInfo extensibleEnumInfo, IBusinessObject? businessObject)
     {
-      ArgumentUtility.CheckNotNull("extensibleEnumInfo", extensibleEnumInfo);
+      ArgumentNullException.ThrowIfNull(extensibleEnumInfo);
 
       return new EnumerationValueInfo(
           extensibleEnumInfo.Value,

@@ -120,8 +120,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
 
       var validationResult = _validationRule.Validate(_classDefinition);
 
-      var expectedMessage = "The property type 'Object' is not supported by this storage provider. Message\r\n\r\n"
-        +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass\r\n"
+      var expectedMessage = $"The property type 'Object' is not supported by this storage provider. Message{Environment.NewLine}{Environment.NewLine}"
+        +$"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass{Environment.NewLine}"
         +"Property: PropertyWithTypeObjectWithStorageClassPersistent";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }

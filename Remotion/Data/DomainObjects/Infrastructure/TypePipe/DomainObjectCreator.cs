@@ -22,7 +22,6 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 {
@@ -36,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObjectCreator (IPipelineRegistry pipelineRegistry)
     {
-      ArgumentUtility.CheckNotNull("pipelineRegistry", pipelineRegistry);
+      ArgumentNullException.ThrowIfNull(pipelineRegistry);
 
       _pipelineRegistry = pipelineRegistry;
     }
@@ -53,8 +52,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObject CreateObjectReference (IObjectInitializationContext objectInitializationContext, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("objectInitializationContext", objectInitializationContext);
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectInitializationContext);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
 
       var objectID = objectInitializationContext.ObjectID;
       CheckDomainTypeAndClassDefinition(objectID.ClassDefinition.ClassType);
@@ -79,9 +78,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObject CreateNewObject (IObjectInitializationContext objectInitializationContext, ParamList constructorParameters, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("objectInitializationContext", objectInitializationContext);
-      ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentNullException.ThrowIfNull(objectInitializationContext);
+      ArgumentNullException.ThrowIfNull(constructorParameters);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
 
       var domainObjectType = objectInitializationContext.ObjectID.ClassDefinition.ClassType;
       CheckDomainTypeAndClassDefinition(domainObjectType);

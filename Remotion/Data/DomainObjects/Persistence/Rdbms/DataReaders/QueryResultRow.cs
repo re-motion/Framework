@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
@@ -29,19 +29,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
   /// </summary>
   public class QueryResultRow : IQueryResultRow
   {
-    private readonly IDataReader _dataReader;
+    private readonly DbDataReader _dataReader;
     private readonly IStorageTypeInformationProvider _storageTypeInformationProvider;
 
-    public QueryResultRow (IDataReader dataReader, IStorageTypeInformationProvider storageTypeInformationProvider)
+    public QueryResultRow (DbDataReader dataReader, IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentNullException.ThrowIfNull(dataReader);
+      ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
 
       _dataReader = dataReader;
       _storageTypeInformationProvider = storageTypeInformationProvider;
     }
 
-    public IDataReader DataReader
+    public DbDataReader DataReader
     {
       get { return _dataReader; }
     }
@@ -58,17 +58,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public object? GetRawValue (int position)
     {
-      // IDataReader.GetValue(ordinal) usually returns DBNull.Value for null values, but the implementation does return null for unsupported data types.
-      // There is no explicit documentation on IDataReader.GetValue(ordinal) returning only DBNull.Value instead of an actual null value.
-      // Also, when using IDbCommand.ExecuteScalar(), the API is defined as a nullable value, therefore it is more consistent to officially accept
-      // that IDataReader.GetValue(ordinal) could also return null values despite its contract.
+      // DbDataReader.GetValue(ordinal) usually returns DBNull.Value for null values, but the implementation does return null for unsupported data types.
+      // There is no explicit documentation on DbDataReader.GetValue(ordinal) returning only DBNull.Value instead of an actual null value.
+      // Also, when using DbCommand.ExecuteScalar(), the API is defined as a nullable value, therefore it is more consistent to officially accept
+      // that DbDataReader.GetValue(ordinal) could also return null values despite its contract.
 
       return _dataReader.GetValue(position);
     }
 
     public object? GetConvertedValue (int position, Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var storageType =  GetStorageType(type);
       object? convertedValue = storageType.Read(_dataReader, position);

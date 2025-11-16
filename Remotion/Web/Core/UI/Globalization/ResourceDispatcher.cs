@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -24,7 +25,6 @@ using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Globalization
 {
@@ -32,7 +32,7 @@ namespace Remotion.Web.UI.Globalization
 ///   Provides methods for dispatching the resources inside an IResourceManager container
 ///   to a control.
 /// </summary>
-/// <include file='..\..\doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Class/example' />
+/// <include file='../../Doc/include/ResourceDispatcher.xml' path='/ResourceDispatcher/Class/example' />
 public sealed class ResourceDispatcher
 {
   // types
@@ -49,7 +49,7 @@ public sealed class ResourceDispatcher
   /// <summary>
   ///   Dispatches resources.
   /// </summary>
-  /// <include file='..\..\doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/remarks' />
+  /// <include file='../../Doc/include/ResourceDispatcher.xml' path='/ResourceDispatcher/Dispatch/remarks' />
   /// <param name="control">
   ///   The control for which resources are to be dispatched. Must not be <see langname="null"/>.
   /// </param>
@@ -58,8 +58,8 @@ public sealed class ResourceDispatcher
   /// </param>  
   public static void Dispatch (Control control, IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull("control", control);
-    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+    ArgumentNullException.ThrowIfNull(control);
+    ArgumentNullException.ThrowIfNull(resourceManager);
 
     const string prefix = "auto:";
 
@@ -93,11 +93,11 @@ public sealed class ResourceDispatcher
   /// <summary>
   ///   Dispatches an IDictonary of elementID/IDictonary pairs to the specified control.
   /// </summary>
-  /// <include file='..\..\doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/*' />
+  /// <include file='../../Doc/include/ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchMain/*' />
   public static void Dispatch (Control control, IDictionary<string, IDictionary<string, WebString>> elements, string resourceSource)
   {
-    ArgumentUtility.CheckNotNull("control", control);
-    ArgumentUtility.CheckNotNull("elements", elements);
+    ArgumentNullException.ThrowIfNull(control);
+    ArgumentNullException.ThrowIfNull(elements);
 
     //  Dispatch the resources to the controls
     foreach (var elementsEntry in elements)
@@ -132,18 +132,18 @@ public sealed class ResourceDispatcher
   /// <summary>
   ///   Dispatches the resources passed in <paramref name="values"/> to the properties of <paramref name="obj"/>.
   /// </summary>
-  /// <include file='..\..\doc\include\ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/*' />
+  /// <include file='../../Doc/include/ResourceDispatcher.xml' path='/ResourceDispatcher/DispatchGeneric/*' />
   public static void DispatchGeneric (object obj, IDictionary<string, WebString> values)
   {
-    ArgumentUtility.CheckNotNull("obj", obj);
-    ArgumentUtility.CheckNotNull("values", values);
+    ArgumentNullException.ThrowIfNull(obj);
+    ArgumentNullException.ThrowIfNull(values);
 
     foreach (var entry in values)
     {
       var propertyName = entry.Key;
       var propertyValue = entry.Value;
 
-      PropertyInfo? property = obj.GetType().GetProperty(propertyName);
+      PropertyInfo? property = GetDispatchProperty(obj.GetType(), propertyName);
       if (property?.PropertyType == typeof(WebString))
       {
         property.SetValue(obj, propertyValue, Array.Empty<object>());
@@ -169,6 +169,64 @@ public sealed class ResourceDispatcher
     }
   }
 
+  private static PropertyInfo? GetDispatchProperty (Type type, string propertyName)
+  {
+    try
+    {
+      // Most of the time this should be enough and since it is faster than the alternative
+      // we do it first and catch the exception that leads to the slow path
+      return type.GetProperty(propertyName);
+    }
+    catch (AmbiguousMatchException)
+    {
+      var properties = type.GetProperties()
+          .Where(e => e.Name == propertyName)
+          .ToList();
+
+      // In theory this should not happen so if it does, we throw instead of returning
+      if (properties.Count <= 1)
+        throw;
+
+      // If we have multiple properties to choose from we choose `WebString`, `PlainTextString`
+      // and then `string` as fallback chain. But we also need to ensure that we don't have two
+      // properties of the same type or unsupported property types.
+      PropertyInfo? webStringProperty = null;
+      PropertyInfo? plainTextStringProperty = null;
+      PropertyInfo? stringProperty = null;
+      foreach (var propertyInfo in properties)
+      {
+        var propertyType = propertyInfo.PropertyType;
+        if (propertyType == typeof(WebString))
+        {
+          if (webStringProperty != null)
+            throw;
+
+          webStringProperty = propertyInfo;
+        }
+        else if (propertyType == typeof(PlainTextString))
+        {
+          if (plainTextStringProperty != null)
+            throw;
+
+          plainTextStringProperty = propertyInfo;
+        }
+        else if (propertyType == typeof(string))
+        {
+          if (stringProperty != null)
+            throw;
+
+          stringProperty = propertyInfo;
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      return webStringProperty ?? plainTextStringProperty ?? stringProperty;
+    }
+  }
+
   /// <summary>
   ///   Selects all resources matching the <c>prefix</c> into a HashTable.
   /// </summary>
@@ -183,7 +241,7 @@ public sealed class ResourceDispatcher
   /// </returns>
   private static IDictionary<string, IDictionary<string, WebString>> GetResources (IResourceManager resourceManager, string? prefix)
   {
-    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+    ArgumentNullException.ThrowIfNull(resourceManager);
 
     if (prefix == null)
       prefix = String.Empty;

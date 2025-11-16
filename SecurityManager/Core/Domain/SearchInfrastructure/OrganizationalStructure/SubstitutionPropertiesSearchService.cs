@@ -19,7 +19,6 @@ using System.Linq;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure
 {
@@ -49,7 +48,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
         TenantConstraint? tenantConstraint,
         DisplayNameConstraint? displayNameConstraint)
     {
-      ArgumentUtility.CheckNotNull("substitution", substitution);
+      ArgumentNullException.ThrowIfNull(substitution);
 
       if (substitution.SubstitutedUser == null)
         return Enumerable.Empty<IBusinessObject>().AsQueryable();

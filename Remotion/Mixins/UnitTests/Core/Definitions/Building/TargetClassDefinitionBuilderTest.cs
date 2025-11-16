@@ -212,8 +212,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
           () => _builder.Build(classContext),
           Throws.TypeOf<ConfigurationException>().With.Message.EqualTo(
               "The mixins applied to target class 'Remotion.Mixins.UnitTests.Core.TestDomain.NullTarget' cannot be ordered. "
-              + "The following group of mixins contains circular dependencies:\r\n"
-              + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin',\r\n"
+              + $"The following group of mixins contains circular dependencies:{Environment.NewLine}"
+              + $"'Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin',{Environment.NewLine}"
               + "'Remotion.Mixins.UnitTests.Core.TestDomain.NullMixin2'."));
     }
 

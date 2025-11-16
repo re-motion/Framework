@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -37,8 +36,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     private static string FormatMessage ([NotNull] string message, [NotNull] IReadOnlyCollection<string> unmatchedFiles)
     {
-      ArgumentUtility.CheckNotNull("message", message);
-      ArgumentUtility.CheckNotNull("unmatchedFiles", unmatchedFiles);
+      ArgumentNullException.ThrowIfNull(message);
+      ArgumentNullException.ThrowIfNull(unmatchedFiles);
 
       if (!unmatchedFiles.Any())
         return message;

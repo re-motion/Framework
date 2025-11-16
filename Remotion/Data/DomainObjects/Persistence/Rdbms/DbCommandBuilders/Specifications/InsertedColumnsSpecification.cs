@@ -17,11 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications
 {
@@ -35,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public InsertedColumnsSpecification (IEnumerable<ColumnValue> columnValues)
     {
-      ArgumentUtility.CheckNotNull("columnValues", columnValues);
+      ArgumentNullException.ThrowIfNull(columnValues);
 
       _columnValues = columnValues.ToArray();
     }
@@ -45,21 +44,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
       get { return Array.AsReadOnly(_columnValues); }
     }
 
-    public void AppendColumnNames (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
+    public void AppendColumnNames (StringBuilder statement, DbCommand dbCommand, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("dbCommand", dbCommand);
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(dbCommand);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       var columNames = string.Join(", ", _columnValues.Select(cv => sqlDialect.DelimitIdentifier(cv.Column.Name)));
       statement.Append(columNames);
     }
 
-    public void AppendColumnValues (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
+    public void AppendColumnValues (StringBuilder statement, DbCommand dbCommand, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("dbCommand", dbCommand);
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(dbCommand);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       var parameters = _columnValues.Select(
           cv =>

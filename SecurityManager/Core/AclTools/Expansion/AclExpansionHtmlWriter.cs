@@ -22,7 +22,6 @@ using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Globalization.AclTools.Expansion;
-using Remotion.Utilities;
 
 
 namespace Remotion.SecurityManager.AclTools.Expansion
@@ -59,7 +58,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public void WriteAclExpansion (List<AclExpansionEntry> aclExpansion)
     {
-      ArgumentUtility.CheckNotNull("aclExpansion", aclExpansion);
+      ArgumentNullException.ThrowIfNull(aclExpansion);
 
       var aclExpansionTree = new AclExpansionTree(aclExpansion);
 

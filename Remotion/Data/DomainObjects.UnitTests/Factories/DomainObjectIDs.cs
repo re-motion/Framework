@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
@@ -26,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public DomainObjectIDs (IMappingConfiguration mappingConfiguration)
     {
-      ArgumentUtility.CheckNotNull("mappingConfiguration", mappingConfiguration);
+      ArgumentNullException.ThrowIfNull(mappingConfiguration);
 
       _mappingConfiguration = mappingConfiguration;
     }

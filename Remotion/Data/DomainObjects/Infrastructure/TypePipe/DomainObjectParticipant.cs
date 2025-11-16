@@ -77,8 +77,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public DomainObjectParticipant (ITypeDefinitionProvider typeDefinitionProvider, IInterceptedPropertyFinder interceptedPropertyFinder)
     {
-      ArgumentUtility.CheckNotNull("typeDefinitionProvider", typeDefinitionProvider);
-      ArgumentUtility.CheckNotNull("interceptedPropertyFinder", interceptedPropertyFinder);
+      ArgumentNullException.ThrowIfNull(typeDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(interceptedPropertyFinder);
 
       _typeDefinitionProvider = typeDefinitionProvider;
       _interceptedPropertyFinder = interceptedPropertyFinder;
@@ -98,7 +98,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public void Participate (object id, IProxyTypeAssemblyContext proxyTypeAssemblyContext)
     {
-      ArgumentUtility.CheckNotNull("proxyTypeAssemblyContext", proxyTypeAssemblyContext);
+      ArgumentNullException.ThrowIfNull(proxyTypeAssemblyContext);
 
       if (!s_domainObjectBaseType.IsTypePipeAssignableFrom(proxyTypeAssemblyContext.RequestedType))
         return;
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public void HandleNonSubclassableType (Type nonSubclassableRequestedType)
     {
-      ArgumentUtility.CheckNotNull("nonSubclassableRequestedType", nonSubclassableRequestedType);
+      ArgumentNullException.ThrowIfNull(nonSubclassableRequestedType);
 
       if (!s_domainObjectBaseType.IsTypePipeAssignableFrom(nonSubclassableRequestedType))
         return;

@@ -17,7 +17,6 @@
 using System;
 using Remotion.Collections;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -116,7 +115,7 @@ public class WxeParameterDeclaration
   /// <param name="variables">The variable list to get the parameter value from.</param>
   public object? GetValue (NameObjectCollection variables)
   {
-    ArgumentUtility.CheckNotNull("variables", variables);
+    ArgumentNullException.ThrowIfNull(variables);
     return variables[_name];
   }
 

@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
@@ -35,8 +34,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
         [NotNull] IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu,
         [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
-      ArgumentUtility.CheckNotNull("fluentTabbedMenu", fluentTabbedMenu);
-      ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
+      ArgumentNullException.ThrowIfNull(fluentTabbedMenu);
+      ArgumentNullException.ThrowIfNull(fluentElement);
 
 
       _fluentTabbedMenu = fluentTabbedMenu;
@@ -72,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentNullException.ThrowIfNull(locator);
 
       return _fluentElement.ResolveDesktopCoordinates(locator);
     }

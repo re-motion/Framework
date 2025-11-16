@@ -89,13 +89,13 @@ namespace Remotion.ObjectBinding.BindableObject
         BindableObjectGlobalizationService bindableObjectGlobalizationService,
         IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
-      ArgumentUtility.CheckNotNull("defaultValueStrategy", defaultValueStrategy);
-      ArgumentUtility.CheckNotNull("bindablePropertyReadAccessStrategy", bindablePropertyReadAccessStrategy);
-      ArgumentUtility.CheckNotNull("bindablePropertyWriteAccessStrategy", bindablePropertyWriteAccessStrategy);
-      ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
-      ArgumentUtility.CheckNotNull("businessObjectPropertyConstraintProvider", businessObjectPropertyConstraintProvider);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(defaultValueStrategy);
+      ArgumentNullException.ThrowIfNull(bindablePropertyReadAccessStrategy);
+      ArgumentNullException.ThrowIfNull(bindablePropertyWriteAccessStrategy);
+      ArgumentNullException.ThrowIfNull(bindableObjectGlobalizationService);
+      ArgumentNullException.ThrowIfNull(businessObjectPropertyConstraintProvider);
 
       _propertyInfo = propertyInfo;
       _businessObjectProvider = businessObjectProvider;
@@ -166,14 +166,14 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected virtual PropertyBase GetMetadata (PropertyBase.Parameters parameters)
     {
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       return new NotSupportedProperty(parameters);
     }
 
     private Lazy<Type> GetConcreteType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return new Lazy<Type>(() => BindableObjectProvider.GetConcreteTypeForBindableObjectImplementation(type));
     }

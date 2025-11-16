@@ -19,15 +19,14 @@ using System.IO;
 using System.Threading;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Firefox;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
-using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories.Remote;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
 {
@@ -36,6 +35,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
   /// </summary>
   public class FirefoxConfiguration : BrowserConfigurationBase, IFirefoxConfiguration
   {
+    public static void ApplyDefaultWebTestFeatures (
+        WebTestFeatureCollection features,
+        IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
+
+      // Placeholder for future firefox specific feature additions
+    }
+
     private const string c_partialFileDownloadExtension = ".part";
 
     private static readonly Lazy<FirefoxExecutable> s_firefoxExecutable = new Lazy<FirefoxExecutable>(
@@ -63,7 +72,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
         [NotNull] FirefoxExecutable firefoxExecutable)
         : base(webTestSettings)
     {
-      ArgumentUtility.CheckNotNull("firefoxExecutable", firefoxExecutable);
+      ArgumentNullException.ThrowIfNull(firefoxExecutable);
 
       BrowserBinaryPath = firefoxExecutable.BrowserBinaryPath;
       DriverBinaryPath = firefoxExecutable.DriverBinaryPath;
@@ -79,6 +88,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
           downloadStartedGracePeriod,
           webTestSettings.CleanUpUnmatchedDownloadedFiles,
           webTestSettings.LoggerFactory);
+
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
 
     /// <inheritdoc />
@@ -91,12 +102,15 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     public override IBrowserFactory BrowserFactory => new FirefoxBrowserFactory(this);
 
     /// <inheritdoc />
-    public override IBrowserContentLocator Locator => new FirefoxBrowserContentLocator();
+    public override IBrowserContentLocator Locator => DefaultBrowserContentLocator.Instance;
 
     /// <inheritdoc />
     public override ScreenshotTooltipStyle TooltipStyle => ScreenshotTooltipStyle.Firefox;
 
     /// <inheritdoc />
+    /// <remarks>
+    /// Changes made here might also need to be made in <see cref="RemoteBrowserFactory"/>.<see cref="RemoteBrowserFactory.CreateFirefoxOptions"/>.
+    /// </remarks>
     public virtual FirefoxOptions CreateFirefoxOptions ()
     {
       const int useCustomDownloadDirectory = 2;
@@ -113,6 +127,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
              {
                  Profile = profile,
                  BinaryLocation = BrowserBinaryPath,
+                 UseWebSocketUrl = true
              };
 
       // Mirrors Chrome's startup behavior to fulfill some initial test expectations

@@ -19,7 +19,6 @@ using System.Drawing;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -44,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         int columnIndex,
         bool includeHeader)
     {
-      ArgumentUtility.CheckNotNull("fluentList", fluentList);
+      ArgumentNullException.ThrowIfNull(fluentList);
 
       _fluentList = fluentList;
       _columnIndex = columnIndex;
@@ -75,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentNullException.ThrowIfNull(locator);
 
       var window = locator.GetBrowserContentBounds(((IWrapsDriver)_fluentList.Target.List.Scope.Native).WrappedDriver);
       return ResolveInformation(CoordinateSystem.Desktop, window.Location);

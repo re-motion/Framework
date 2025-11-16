@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Globalization;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -48,14 +47,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     protected IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       return renderingContext.Control.GetValidationErrors();
     }
 
     protected string GetValidationErrorsID (BocRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       return renderingContext.Control.ClientID + "_ValidationErrors";
     }

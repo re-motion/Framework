@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -29,13 +28,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public FreshlyLoadedObjectData (DataContainer freshlyLoadedDataContainer)
     {
-      ArgumentUtility.CheckNotNull("freshlyLoadedDataContainer", freshlyLoadedDataContainer);
+      ArgumentNullException.ThrowIfNull(freshlyLoadedDataContainer);
 
       if (freshlyLoadedDataContainer.IsRegistered)
-        throw new ArgumentException("The DataContainer must not have been registered with a ClientTransaction.", "freshlyLoadedDataContainer");
+        throw new ArgumentException("The DataContainer must not have been registered with a ClientTransaction.", nameof(freshlyLoadedDataContainer));
 
       if (freshlyLoadedDataContainer.HasDomainObject)
-        throw new ArgumentException("The DataContainer must not have been registered with a DomainObject.", "freshlyLoadedDataContainer");
+        throw new ArgumentException("The DataContainer must not have been registered with a DomainObject.", nameof(freshlyLoadedDataContainer));
 
       _freshlyLoadedDataContainer = freshlyLoadedDataContainer;
     }
@@ -60,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void Accept (ILoadedObjectVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.VisitFreshlyLoadedObject(this);
     }
 

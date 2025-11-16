@@ -19,7 +19,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
@@ -47,7 +46,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected override Badge? GetBadge (IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentNullException.ThrowIfNull(businessObject);
 
       var classDefinition = businessObject as SecurableClassDefinition;
       if (classDefinition == null)

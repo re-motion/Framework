@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -30,18 +29,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public override IScriptElement GetCreateElement (SqlPrimaryXmlIndexDefinition indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
-      ArgumentUtility.CheckNotNull("ownerName", ownerName);
+      ArgumentNullException.ThrowIfNull(indexDefinition);
+      ArgumentNullException.ThrowIfNull(ownerName);
 
       return new ScriptStatement(
       string.Format(
-          "CREATE PRIMARY XML INDEX [{0}]\r\n"
+          "CREATE PRIMARY XML INDEX [{0}]{5}"
           + "  ON [{1}].[{2}] ([{3}]){4}",
           indexDefinition.IndexName,
           ownerName.SchemaName ?? DefaultSchema,
           ownerName.EntityName,
           indexDefinition.XmlColumn.Name,
-          GetCreateIndexOptions(GetCreateIndexOptionItems(indexDefinition))));
+          GetCreateIndexOptions(GetCreateIndexOptionItems(indexDefinition)),
+          Environment.NewLine));
     }
   }
 }

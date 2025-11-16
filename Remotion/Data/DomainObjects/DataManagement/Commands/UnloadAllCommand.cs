@@ -40,10 +40,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
         IInvalidDomainObjectManager invalidDomainObjectManager,
         IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointManager", relationEndPointManager);
-      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
-      ArgumentUtility.CheckNotNull("invalidDomainObjectManager", invalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentNullException.ThrowIfNull(relationEndPointManager);
+      ArgumentNullException.ThrowIfNull(dataContainerMap);
+      ArgumentNullException.ThrowIfNull(invalidDomainObjectManager);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
 
       _relationEndPointManager = relationEndPointManager;
       _dataContainerMap = dataContainerMap;

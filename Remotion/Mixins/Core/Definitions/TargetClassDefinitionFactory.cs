@@ -37,7 +37,7 @@ namespace Remotion.Mixins.Definitions
 
     public static TargetClassDefinition CreateAndValidate (ClassContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       s_logger.LogDebug("Creating a validated class definition for: {0}.", context);
 
@@ -51,7 +51,7 @@ namespace Remotion.Mixins.Definitions
 
     public static TargetClassDefinition CreateWithoutValidation (ClassContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       s_logger.LogDebug("Creating an unvalidated class definition for: {0}.", context);
 

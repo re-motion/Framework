@@ -19,7 +19,6 @@ using System.Configuration;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration.Legacy;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 
@@ -40,6 +39,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _verifyWebApplicationStartedTimeoutProperty;
     private readonly ConfigurationProperty _retryIntervalProperty;
     private readonly ConfigurationProperty _webApplicationRootProperty;
+    private readonly ConfigurationProperty _testSiteStartupCheckEnabledProperty;
+    private readonly ConfigurationProperty _testSiteStartupCheckUrlProperty;
     private readonly ConfigurationProperty _screenshotDirectoryProperty;
     private readonly ConfigurationProperty _logsDirectoryProperty;
     private readonly ConfigurationProperty _closeBrowserWindowsOnSetUpAndTearDownProperty;
@@ -49,6 +50,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _chrome;
     private readonly ConfigurationProperty _edge;
     private readonly ConfigurationProperty _testSiteLayoutProperty;
+    private readonly ConfigurationProperty _remoteDriverProperty;
     private readonly ConfigurationProperty _headless;
     private ILoggerFactory? _loggerFactory;
 
@@ -76,6 +78,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
           null,
           new StringValidator(minLength: 1),
           ConfigurationPropertyOptions.IsRequired);
+      _testSiteStartupCheckEnabledProperty = new ConfigurationProperty("testSiteStartupCheckEnabled", typeof(bool), true);
+      _testSiteStartupCheckUrlProperty = new ConfigurationProperty("testSiteStartupCheckUrl", typeof(string));
       _screenshotDirectoryProperty = new ConfigurationProperty("screenshotDirectory", typeof(string));
       _logsDirectoryProperty = new ConfigurationProperty("logsDirectory", typeof(string), ".");
       _closeBrowserWindowsOnSetUpAndTearDownProperty = new ConfigurationProperty("closeBrowserWindowsOnSetUpAndTearDown", typeof(bool), false);
@@ -83,6 +87,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _requestErrorDetectionStrategyProperty = new ConfigurationProperty("requestErrorDetectionStrategy", typeof(string), "None");
       _hostingProperty = new ConfigurationProperty("hosting", typeof(ProviderSettings));
       _testSiteLayoutProperty = new ConfigurationProperty("testSiteLayout", typeof(TestSiteLayoutConfigurationElement));
+      _remoteDriverProperty = new ConfigurationProperty("remoteDriver", typeof(RemoteDriverConfigurationElement));
       _chrome = new ConfigurationProperty("chrome", typeof(ChromiumConfigurationElement));
       _edge = new ConfigurationProperty("edge", typeof(ChromiumConfigurationElement));
       _headless = new ConfigurationProperty("headless", typeof(bool), false);
@@ -99,12 +104,15 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _verifyWebApplicationStartedTimeoutProperty,
                         _retryIntervalProperty,
                         _webApplicationRootProperty,
+                        _testSiteStartupCheckEnabledProperty,
+                        _testSiteStartupCheckUrlProperty,
                         _screenshotDirectoryProperty,
                         _logsDirectoryProperty,
                         _closeBrowserWindowsOnSetUpAndTearDownProperty,
                         _cleanUpUnmatchedDownloadedFiles,
                         _requestErrorDetectionStrategyProperty,
                         _hostingProperty,
+                        _remoteDriverProperty,
                         _testSiteLayoutProperty,
                         _chrome,
                         _edge,
@@ -191,6 +199,22 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     }
 
     /// <summary>
+    /// Determines if the test site startup check is enabled.
+    /// </summary>
+    public bool TestSiteStartupCheckEnabled
+    {
+      get { return (bool)this[_testSiteStartupCheckEnabledProperty]; }
+    }
+
+    /// <summary>
+    /// URL used by the test site startup check to verify that the test site is running.
+    /// </summary>
+    public string TestSiteStartupCheckUrl
+    {
+      get { return (string)this[_testSiteStartupCheckUrlProperty]; }
+    }
+
+    /// <summary>
     /// Absolute or relative path to the screenshot directory. The web testing framework automatically takes two screenshots (one of the whole desktop
     /// and one of the browser window) in case a web test failed.
     /// </summary>
@@ -274,6 +298,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     }
 
     /// <summary>
+    /// Contains remote driver settings.
+    /// </summary>
+    public RemoteDriverConfigurationElement RemoteDriver
+    {
+      get { return (RemoteDriverConfigurationElement)this[_remoteDriverProperty]; }
+    }
+
+    /// <summary>
     /// Run the web browser without a user interface (headless mode).
     /// </summary>
     public bool Headless
@@ -284,6 +316,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     IWebTestChromiumSettings IWebTestSettings.Chrome => Chrome;
 
     IWebTestChromiumSettings IWebTestSettings.Edge => Edge;
+
+    IWebTestRemoteDriverSettings IWebTestSettings.RemoteDriver => RemoteDriver;
 
     IWebTestHostingSettings IWebTestSettings.Hosting => new WebTestHostingAdapter(HostingProviderSettings);
 
@@ -297,7 +331,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public void SetLoggerFactory (ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _loggerFactory = loggerFactory;
     }

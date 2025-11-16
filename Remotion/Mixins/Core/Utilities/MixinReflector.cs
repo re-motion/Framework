@@ -32,7 +32,7 @@ namespace Remotion.Mixins.Utilities
 
     public static Type? GetMixinBaseType (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       Type currentType = mixinType;
 
@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Utilities
 
     public static PropertyInfo? GetTargetProperty (Type concreteMixinType)
     {
-      ArgumentUtility.CheckNotNull("concreteMixinType", concreteMixinType);
+      ArgumentNullException.ThrowIfNull(concreteMixinType);
 
       Type? mixinBaseType = GetMixinBaseType(concreteMixinType);
       if (mixinBaseType == null)
@@ -59,7 +59,7 @@ namespace Remotion.Mixins.Utilities
 
     public static PropertyInfo? GetNextProperty (Type concreteMixinType)
     {
-      ArgumentUtility.CheckNotNull("concreteMixinType", concreteMixinType);
+      ArgumentNullException.ThrowIfNull(concreteMixinType);
 
       Type? mixinBaseType = GetMixinBaseType(concreteMixinType);
       if (mixinBaseType == null)
@@ -70,12 +70,12 @@ namespace Remotion.Mixins.Utilities
 
     public static Type GetNextCallProxyType (object mixinTargetInstance)
     {
-      ArgumentUtility.CheckNotNull("mixinTargetInstance", mixinTargetInstance);
+      ArgumentNullException.ThrowIfNull(mixinTargetInstance);
       var castTarget = mixinTargetInstance as IMixinTarget;
       if (castTarget == null)
       {
         string message = string.Format("The given object of type {0} is not a mixin target.", mixinTargetInstance.GetType().GetFullNameSafe());
-        throw new ArgumentException(message, "mixinTargetInstance");
+        throw new ArgumentException(message, nameof(mixinTargetInstance));
       }
 
       Assertion.IsNotNull(castTarget.FirstNextCallProxy);
@@ -91,7 +91,7 @@ namespace Remotion.Mixins.Utilities
     /// <returns>An ordered array of mixin types that directly corresponds to the mixins held by instances of the mixed type.</returns>
     public static Type[]? GetOrderedMixinTypesFromConcreteType (Type concreteMixedType)
     {
-      ArgumentUtility.CheckNotNull("concreteMixedType", concreteMixedType);
+      ArgumentNullException.ThrowIfNull(concreteMixedType);
 
       var attribute = AttributeUtility.GetCustomAttribute<ConcreteMixedTypeAttribute>(concreteMixedType, true);
       if (attribute == null)

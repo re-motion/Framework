@@ -36,7 +36,7 @@ using ExecuteByRedirect_PreProcessingSubFunctionState =
 namespace Remotion.Web.ExecutionEngine
 {
   /// <summary> This step interrupts the server side execution to display a page to the user. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Class/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxePageStep.xml' path='WxePageStep/Class/*' />
   public class WxePageStep : WxeStep, IExecutionStateContext
   {
     private const int c_estimatedLargeObjectHeapThreshold = 85000;
@@ -47,7 +47,7 @@ namespace Remotion.Web.ExecutionEngine
 
     internal static bool EvaluateDirtyStateOfPage (IWxePage wxePage)
     {
-      ArgumentUtility.CheckNotNull("wxePage", wxePage);
+      ArgumentNullException.ThrowIfNull(wxePage);
 
       return wxePage.GetDirtyStates(PageDirtyStates).Intersect(PageDirtyStates, StringComparer.InvariantCultureIgnoreCase).Any();
     }
@@ -71,14 +71,14 @@ namespace Remotion.Web.ExecutionEngine
     private IUserControlExecutor _userControlExecutor = NullUserControlExecutor.Null;
 
     /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
     public WxePageStep (string page)
-      : this(new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty("page", page)))
+      : this(new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty(nameof(page), page)))
     {
     }
 
     /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="pageref"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxePageStep.xml' path='WxePageStep/Ctor/param[@name="pageref"]' />
     public WxePageStep (WxeVariableReference pageref)
         : this(new ResourceObjectWithVarRef(pageref))
     {
@@ -86,7 +86,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected WxePageStep (ResourceObjectBase page)
     {
-      ArgumentUtility.CheckNotNull("page", page);
+      ArgumentNullException.ThrowIfNull(page);
 
       _page = page;
       _pageToken = Guid.NewGuid().ToString();
@@ -99,7 +99,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets the currently executing <see cref="WxeStep"/>. </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/ExecutingStep/*' />
+    /// <include file='../Doc/include/ExecutionEngine/WxePageStep.xml' path='WxePageStep/ExecutingStep/*' />
     public override WxeStep ExecutingStep
     {
       get
@@ -115,10 +115,10 @@ namespace Remotion.Web.ExecutionEngine
     ///   Displays the <see cref="WxePageStep"/>'s page or the sub-function that has been invoked by the 
     ///   <see cref="ExecuteFunction(Infrastructure.WxePageStepExecutionStates.PreProcessingSubFunctionStateParameters,Infrastructure.WxeRepostOptions)"/> method.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Execute/*' />
+    /// <include file='../Doc/include/ExecutionEngine/WxePageStep.xml' path='WxePageStep/Execute/*' />
     public override void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (_wxeHandler != null)
       {
@@ -161,8 +161,8 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (PreProcessingSubFunctionStateParameters parameters, WxeRepostOptions repostOptions)
     {
-      ArgumentUtility.CheckNotNull("parameters", parameters);
-      ArgumentUtility.CheckNotNull("repostOptions", repostOptions);
+      ArgumentNullException.ThrowIfNull(parameters);
+      ArgumentNullException.ThrowIfNull(repostOptions);
 
       if (_executionState.IsExecuting)
         throw new InvalidOperationException("Cannot execute function while another function executes.");
@@ -177,8 +177,8 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunctionExternalByRedirect (PreProcessingSubFunctionStateParameters parameters, WxeReturnOptions returnOptions)
     {
-      ArgumentUtility.CheckNotNull("parameters", parameters);
-      ArgumentUtility.CheckNotNull("returnOptions", returnOptions);
+      ArgumentNullException.ThrowIfNull(parameters);
+      ArgumentNullException.ThrowIfNull(returnOptions);
 
       if (_executionState.IsExecuting)
         throw new InvalidOperationException("Cannot execute function while another function executes.");
@@ -193,9 +193,9 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull("userControl", userControl);
-      ArgumentUtility.CheckNotNull("subFunction", subFunction);
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentNullException.ThrowIfNull(userControl);
+      ArgumentNullException.ThrowIfNull(subFunction);
+      ArgumentNullException.ThrowIfNull(sender);
 
       IWxePage wxePage = userControl.WxePage!;
       _wxeHandler = wxePage.WxeHandler;
@@ -211,7 +211,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     /// <summary> Gets the token for this page step. </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/PageToken/*' />
+    /// <include file='../Doc/include/ExecutionEngine/WxePageStep.xml' path='WxePageStep/PageToken/*' />
     public string PageToken
     {
       get { return _pageToken; }
@@ -278,7 +278,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection? previousPostBackCollection)
     {
-      ArgumentUtility.CheckNotNull("returningFunction", returningFunction);
+      ArgumentNullException.ThrowIfNull(returningFunction);
 
       _returningFunction = returningFunction;
       _isReturningPostBack = isReturningPostBack;
@@ -381,14 +381,14 @@ namespace Remotion.Web.ExecutionEngine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetPageExecutor (IWxePageExecutor pageExecutor)
     {
-      ArgumentUtility.CheckNotNull("pageExecutor", pageExecutor);
+      ArgumentNullException.ThrowIfNull(pageExecutor);
       _pageExecutor = pageExecutor;
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetUserControlExecutor (IUserControlExecutor userControlExecutor)
     {
-      ArgumentUtility.CheckNotNull("userControlExecutor", userControlExecutor);
+      ArgumentNullException.ThrowIfNull(userControlExecutor);
       _userControlExecutor = userControlExecutor;
     }
 
@@ -409,7 +409,7 @@ namespace Remotion.Web.ExecutionEngine
 
     void IExecutionStateContext.SetExecutionState (IExecutionState executionState)
     {
-      ArgumentUtility.CheckNotNull("executionState", executionState);
+      ArgumentNullException.ThrowIfNull(executionState);
 
       _executionState = executionState;
     }

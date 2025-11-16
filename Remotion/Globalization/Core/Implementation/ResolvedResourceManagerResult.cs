@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
@@ -36,8 +35,8 @@ namespace Remotion.Globalization.Implementation
         [NotNull] IResourceManager definedResourceManager,
         [NotNull] IResourceManager inheritedResourceManger)
     {
-      ArgumentUtility.CheckNotNull("definedResourceManager", definedResourceManager);
-      ArgumentUtility.CheckNotNull("inheritedResourceManger", inheritedResourceManger);
+      ArgumentNullException.ThrowIfNull(definedResourceManager);
+      ArgumentNullException.ThrowIfNull(inheritedResourceManger);
 
       var combinedResourceManager = CombineResourceManagers(definedResourceManager, inheritedResourceManger);
       if (combinedResourceManager.IsNull)

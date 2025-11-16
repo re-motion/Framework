@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Utilities;
@@ -46,6 +45,7 @@ public class QueryDefinition
   private readonly string _id;
 
   private readonly string _statement;
+  private readonly QueryStatementType _statementType;
   private readonly QueryType _queryType;
   private readonly Type? _collectionType;
   private readonly StorageProviderDefinition _storageProviderDefinition;
@@ -69,6 +69,8 @@ public class QueryDefinition
   /// </param>
   /// <param name="queryType">
   /// One of the <see cref="QueryType"/> enumeration constants.</param>
+  /// <param name="statementType">
+  /// One of the <see cref="QueryStatementType"/> enumeration constants.</param>
   /// <param name="collectionType">If <paramref name="queryType"/> specifies a collection to be returned, <paramref name="collectionType"/> specifies the type of the collection.
   /// If <paramref name="queryType"/> is <see langword="null"/>, <see cref="DomainObjectCollection"/> is used.
   /// </param>
@@ -91,19 +93,20 @@ public class QueryDefinition
       StorageProviderDefinition storageProviderDefinition,
       string statement,
       QueryType queryType,
+      QueryStatementType statementType = QueryStatementType.Text,
       Type? collectionType = null,
       IReadOnlyDictionary<string, object>? metaData = null)
   {
-    ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
-    ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-    ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
-    ArgumentUtility.CheckValidEnumValue("queryType", queryType);
+    ArgumentException.ThrowIfNullOrEmpty(queryID);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+    ArgumentException.ThrowIfNullOrEmpty(statement);
+    ArgumentUtility.CheckValidEnumValue(nameof(queryType), queryType);
 
     if ((queryType is QueryType.ScalarReadOnly or QueryType.ScalarReadWrite) && collectionType != null)
-      throw new ArgumentException(string.Format("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");
+      throw new ArgumentException(string.Format("The scalar query '{0}' must not specify a collectionType.", queryID), nameof(collectionType));
 
     if ((queryType is QueryType.CustomReadOnly or QueryType.CustomReadWrite) && collectionType != null)
-      throw new ArgumentException(string.Format("The custom query '{0}' must not specify a collectionType.", queryID), "collectionType");
+      throw new ArgumentException(string.Format("The custom query '{0}' must not specify a collectionType.", queryID), nameof(collectionType));
 
     if ((queryType is QueryType.CollectionReadOnly or QueryType.CollectionReadWrite) && collectionType == null)
       collectionType = typeof(DomainObjectCollection);
@@ -113,13 +116,14 @@ public class QueryDefinition
         && !collectionType.IsSubclassOf(typeof(DomainObjectCollection)))
     {
       throw new ArgumentException(string.Format(
-          "The collectionType of query '{0}' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), "collectionType");
+          "The collectionType of query '{0}' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), nameof(collectionType));
     }
 
     _id = queryID;
     _storageProviderDefinition = storageProviderDefinition;
     _statement = statement;
     _queryType = queryType;
+    _statementType = statementType;
     _collectionType = collectionType;
     _metadata = metaData ?? s_emptyMetadata;
   }
@@ -158,6 +162,14 @@ public class QueryDefinition
   public QueryType QueryType
   {
     get { return _queryType; }
+  }
+
+  /// <summary>
+  /// Gets the <see cref="QueryStatementType"/> of this <b>QueryDefinition</b>.
+  /// </summary>
+  public QueryStatementType StatementType
+  {
+    get { return _statementType; }
   }
 
   /// <summary>

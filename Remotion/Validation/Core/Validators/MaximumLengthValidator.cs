@@ -20,7 +20,6 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -36,10 +35,10 @@ namespace Remotion.Validation.Validators
 
     public MaximumLengthValidator (int max, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
+      ArgumentNullException.ThrowIfNull(validationMessage);
 
       if (max <= 0)
-        throw new ArgumentOutOfRangeException("max", "Value must be greater than zero.");
+        throw new ArgumentOutOfRangeException(nameof(max), "Value must be greater than zero.");
 
       Max = max;
       ErrorMessage = $"The value must have at most {max} characters.";
@@ -48,7 +47,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

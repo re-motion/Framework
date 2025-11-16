@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Utilities;
 
@@ -23,7 +22,7 @@ internal static class CrossReferencerReflectionUtility
 {
   public static bool IsInfrastructureType (Type type)
   {
-    ArgumentUtility.CheckNotNull("type", type);
+    ArgumentNullException.ThrowIfNull(type);
 
     return type.Assembly == typeof(Mixin).Assembly;
   }

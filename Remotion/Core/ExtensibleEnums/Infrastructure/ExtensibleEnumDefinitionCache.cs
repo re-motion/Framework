@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ExtensibleEnums.Infrastructure
 {
@@ -34,7 +33,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     public ExtensibleEnumDefinitionCache (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull("valueDiscoveryService", valueDiscoveryService);
+      ArgumentNullException.ThrowIfNull(valueDiscoveryService);
 
       _valueDiscoveryService = valueDiscoveryService;
 
@@ -63,7 +62,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     /// <see cref="ExtensibleEnumInfo{T}"/>.</exception>
     public IExtensibleEnumDefinition GetDefinition (Type extensibleEnumType)
     {
-      ArgumentUtility.CheckNotNull("extensibleEnumType", extensibleEnumType);
+      ArgumentNullException.ThrowIfNull(extensibleEnumType);
 
       return _cache.GetOrAdd(extensibleEnumType, _createDefinitionFunc);
     }
@@ -78,7 +77,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
       catch (ArgumentException ex) // constraint violation
       {
         var message = string.Format("Type '{0}' is not an extensible enum type derived from ExtensibleEnum<T>.", extensibleEnumType);
-        throw new ArgumentException(message, "extensibleEnumType", ex);
+        throw new ArgumentException(message, nameof(extensibleEnumType), ex);
       }
       return (IExtensibleEnumDefinition)Activator.CreateInstance(definitionType, new[] { ValueDiscoveryService })!;
     }

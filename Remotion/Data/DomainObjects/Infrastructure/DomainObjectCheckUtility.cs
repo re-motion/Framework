@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [AssertionMethod]
     public static void EnsureNotInvalid ([NotNull] IDomainObject domainObject, [NotNull] ClientTransaction clientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(clientTransaction), clientTransaction);
 
       if (domainObject.TransactionContext[clientTransaction].State.IsInvalid)
         throw new ObjectInvalidException(domainObject.ID);
@@ -53,8 +53,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [AssertionMethod]
     public static void EnsureNotDeleted ([NotNull] IDomainObject domainObject, [NotNull] ClientTransaction clientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(clientTransaction), clientTransaction);
 
       if (domainObject.TransactionContext[clientTransaction].State.IsDeleted)
         throw new ObjectDeletedException(domainObject.ID);
@@ -73,8 +73,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [AssertionMethod]
     public static void CheckIfRightTransaction ([NotNull] IDomainObject domainObject, [NotNull] ClientTransaction clientTransaction)
     {
-      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
-      ArgumentUtility.DebugCheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.DebugCheckNotNull(nameof(domainObject), domainObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(clientTransaction), clientTransaction);
 
       if (clientTransaction.RootTransaction != domainObject.RootTransaction)
       {

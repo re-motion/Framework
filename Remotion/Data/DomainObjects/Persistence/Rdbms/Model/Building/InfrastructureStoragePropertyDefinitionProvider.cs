@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 {
@@ -36,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IStorageNameProvider storageNameProvider)
     {
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
+      ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
+      ArgumentNullException.ThrowIfNull(storageNameProvider);
 
       _idColumnDefinition = new ColumnDefinition(
           storageNameProvider.GetIDColumnName(),

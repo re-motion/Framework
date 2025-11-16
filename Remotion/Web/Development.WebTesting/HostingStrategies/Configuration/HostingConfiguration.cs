@@ -50,8 +50,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     public HostingConfiguration ([NotNull] IWebTestSettings webTestSettings, [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration)
     {
-      ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
-      ArgumentUtility.CheckNotNull("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
+      ArgumentNullException.ThrowIfNull(webTestSettings);
+      ArgumentNullException.ThrowIfNull(testSiteLayoutConfiguration);
 
       _loggerFactory = webTestSettings.LoggerFactory;
       _hostingSettings = webTestSettings.Hosting;
@@ -63,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
 
     public IHostingStrategy GetHostingStrategy ()
     {
-      if (string.IsNullOrEmpty(_hostingSettings.Type))
+      if (string.IsNullOrEmpty(_hostingSettings.Type) || _hostingSettings.Type == "None")
         return new NullHostingStrategy();
 
       var hostingStrategyTypeName = _hostingSettings.Type;

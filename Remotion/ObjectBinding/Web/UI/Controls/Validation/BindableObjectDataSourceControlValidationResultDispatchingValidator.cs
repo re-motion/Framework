@@ -18,7 +18,6 @@ using System;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
@@ -33,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull("validationResult", validationResult);
+      ArgumentNullException.ThrowIfNull(validationResult);
 
       var control = GetControlToValidate();
 

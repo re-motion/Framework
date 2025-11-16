@@ -38,9 +38,9 @@ namespace Remotion.Mixins.Definitions
 
     protected ClassDefinitionBase (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
       if (type.ContainsGenericParameters)
-        throw new ArgumentException(string.Format("The type {0} contains generic parameters, which is not allowed.", type), "type");
+        throw new ArgumentException(string.Format("The type {0} contains generic parameters, which is not allowed.", type), nameof(type));
       _type = type;
       _implementedInterfaces = new HashSet<Type>(_type.GetInterfaces());
     }
@@ -158,7 +158,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
 
       ChildSpecificAccept(visitor);
 
@@ -188,7 +188,7 @@ namespace Remotion.Mixins.Definitions
     public IEnumerable<MethodDefinition> GetProtectedOverriders ()
     {
       return from m in GetAllMethods()
-             where m.Base != null && m.MethodInfo.IsFamily || m.MethodInfo.IsFamilyOrAssembly
+             where m.Base != null && (m.MethodInfo.IsFamily || m.MethodInfo.IsFamilyOrAssembly)
              select m;
     }
 

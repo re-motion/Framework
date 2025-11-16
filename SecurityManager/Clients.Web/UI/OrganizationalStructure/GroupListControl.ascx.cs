@@ -26,7 +26,6 @@ using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Globalization;
 
@@ -91,7 +90,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override FormFunction<Group> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<Group>? editedObject)
     {
-      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
+      ArgumentNullException.ThrowIfNull(transactionMode);
 
       return new EditGroupFormFunction(transactionMode, editedObject);
     }

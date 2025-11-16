@@ -16,6 +16,7 @@
 //
 using System;
 using System.IO;
+using System.Linq;
 using Nuke.Common;
 using Remotion.BuildScript;
 using Remotion.BuildScript.Test;
@@ -34,7 +35,8 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
 
   private const string c_dockerHostName = "RemotionWebTestContainer";
   private const string c_dockerPortNumber = "60402";
-  private const string c_dockerWebApplicationRoot = $"http://{c_dockerHostName}.local:{c_dockerPortNumber}/";
+  private const string c_dockerWebApplicationRootLocalhost = $"http://localhost:{c_dockerPortNumber}/";
+  private const string c_dockerWebApplicationRootRemoteDriver = $"http://{c_dockerHostName}:{c_dockerPortNumber}/";
   private const bool c_dockerUseHttps = false;
   private const string c_dockerPullTimeout = "00:15:00";
   private const string c_dockerVerifyWebApplicationStartedTimeout = "00:01:30";
@@ -45,9 +47,20 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
 
   public void ConfigureTestParameters (TestParameterBuilder builder)
   {
-    builder.AddRequiredParameter(c_chromeVersionArchiveParameterName);
-    builder.AddRequiredParameter(c_edgeVersionArchiveParameterName);
-    builder.AddRequiredParameter(c_firefoxVersionArchiveParameterName);
+    // We need the archive parameters on Windows but not on Linux as we use
+    // docker images on Linux to host the browser
+    if (OperatingSystem.IsWindows())
+    {
+      builder.AddRequiredParameter(c_chromeVersionArchiveParameterName);
+      builder.AddRequiredParameter(c_edgeVersionArchiveParameterName);
+      builder.AddRequiredParameter(c_firefoxVersionArchiveParameterName);
+    }
+    else
+    {
+      builder.AddOptionalParameter(c_chromeVersionArchiveParameterName, "");
+      builder.AddOptionalParameter(c_edgeVersionArchiveParameterName, "");
+      builder.AddOptionalParameter(c_firefoxVersionArchiveParameterName, "");
+    }
   }
 
   public void ExecuteTests (TestExecutionContext context, Action<TestExecutionContext> next)
@@ -68,6 +81,9 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
       dockerImage = "";
       dockerIsolationMode = "";
     }
+
+    // On Linux we are going to use remote driver docker images
+    var useRemoteDriver = OperatingSystem.IsLinux();
 
     var chromeVersionArchive = context.GetTestParameter(c_chromeVersionArchiveParameterName);
     var edgeVersionArchive = context.GetTestParameter(c_edgeVersionArchiveParameterName);
@@ -101,6 +117,7 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
       Log.Information($" - Docker image: '{dockerImage}'");
       Log.Information($" - Docker isolation mode: '{dockerIsolationMode}'");
     }
+    Log.Information($" - Host remote driver: '{(useRemoteDriver ? "yes" : "no")}'");
 
     var appConfig = AppConfig.Read(configFile, ("rwt", "http://www.re-motion.org/WebTesting/Configuration/2.0"));
 
@@ -114,9 +131,13 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
     appConfig.SetAppSetting("EdgeVersionArchive", edgeVersionArchive);
     appConfig.SetAppSetting("FirefoxVersionArchive", firefoxVersionArchive);
 
+    var dockerNetworkResource = context.TestResources
+        .OfType<DockerNetworkResource>()
+        .SingleOrDefault();
+
     if (hostTestSitesInDocker)
     {
-      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting", "webApplicationRoot", c_dockerWebApplicationRoot);
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting", "webApplicationRoot", c_dockerWebApplicationRootLocalhost);
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting", "verifyWebApplicationStartedTimeout", c_dockerVerifyWebApplicationStartedTimeout);
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "name", "Docker");
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "type", "Docker");
@@ -127,6 +148,27 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "dockerPullTimeout", c_dockerPullTimeout);
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "hostname", c_dockerHostName);
       appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "useHttps", c_dockerUseHttps.ToString());
+
+      if (dockerNetworkResource != null)
+        appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:hosting", "dockerCustomArguments", $"--network {dockerNetworkResource.Network.Name}");
+    }
+
+    if (useRemoteDriver)
+    {
+      // When using remote driver, the browser is no longer on the host so localhost changed and the exposed ports don't work.
+      // As such, we use the hostname instead as that will resolve from the container.
+      // But then we also have to change the testsite startup check URL as the hostname won't resolve from the host on Linux, so we use the localhost URL there.
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting", "webApplicationRoot", c_dockerWebApplicationRootRemoteDriver);
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting", "testSiteStartupCheckUrl", c_dockerWebApplicationRootLocalhost);
+
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:remoteDriver", "enabled", "true");
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:remoteDriver", "url", "http://localhost:4444");
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:remoteDriver", "hostRemoteDriverInDocker", "true");
+
+      var networkAddition = dockerNetworkResource != null
+          ? $" --network {dockerNetworkResource.Network.Name}"
+          : "";
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:remoteDriver", "dockerCustomArguments", $"-p 4444:4444 -p 7900:7900 --shm-size=2g {networkAddition}");
     }
 
     appConfig.WriteToFile(configFile);

@@ -18,7 +18,6 @@ using System;
 using System.Web;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.Services;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -43,12 +42,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int columnIndex,
         int visibleColumnIndex)
     {
-      ArgumentUtility.CheckNotNull("httpContext", httpContext);
-      ArgumentUtility.CheckNotNull("writer", writer);
-      ArgumentUtility.CheckNotNull("control", control);
-      ArgumentUtility.CheckNotNull("businessObjectWebServiceContext", businessObjectWebServiceContext);
-      ArgumentUtility.CheckNotNull("columnDefinition", columnDefinition);
-      ArgumentUtility.CheckNotNull("columnIndexProvider", columnIndexProvider);
+      ArgumentNullException.ThrowIfNull(httpContext);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(control);
+      ArgumentNullException.ThrowIfNull(businessObjectWebServiceContext);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
+      ArgumentNullException.ThrowIfNull(columnIndexProvider);
 
       _httpContext = httpContext;
       _writer = writer;

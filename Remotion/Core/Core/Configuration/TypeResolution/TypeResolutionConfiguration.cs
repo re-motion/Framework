@@ -20,7 +20,6 @@ using System.Configuration;
 using Remotion.Configuration.TypeDiscovery;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeResolution;
-using Remotion.Utilities;
 
 namespace Remotion.Configuration.TypeResolution
 {
@@ -63,7 +62,7 @@ namespace Remotion.Configuration.TypeResolution
 
     public TypeResolutionConfiguration (ITypeResolutionService typeResolutionService)
     {
-      ArgumentUtility.CheckNotNull("typeResolutionService", typeResolutionService);
+      ArgumentNullException.ThrowIfNull(typeResolutionService);
 
       _typeResolutionService = typeResolutionService;
     }

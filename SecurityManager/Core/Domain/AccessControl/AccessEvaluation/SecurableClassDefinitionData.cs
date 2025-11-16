@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -34,7 +33,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         [CanBeNull] IDomainObjectHandle<StatelessAccessControlList>? statelessAccessControlList,
         IEnumerable<StatefulAccessControlListData> statefulAccessControlLists)
     {
-      ArgumentUtility.CheckNotNull("statefulAccessControlLists", statefulAccessControlLists);
+      ArgumentNullException.ThrowIfNull(statefulAccessControlLists);
 
       _baseClass = baseClass;
       _statelessAccessControlList = statelessAccessControlList;

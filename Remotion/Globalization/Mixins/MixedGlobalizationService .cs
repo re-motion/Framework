@@ -23,7 +23,6 @@ using Remotion.Globalization.Implementation;
 using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Mixins
 {
@@ -48,7 +47,7 @@ namespace Remotion.Globalization.Mixins
 
     public MixinGlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {
-      ArgumentUtility.CheckNotNull("resourceManagerResolver", resourceManagerResolver);
+      ArgumentNullException.ThrowIfNull(resourceManagerResolver);
 
       _resourceManagerResolver = resourceManagerResolver;
 
@@ -58,7 +57,7 @@ namespace Remotion.Globalization.Mixins
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentNullException.ThrowIfNull(typeInformation);
 
       var masterConfiguration = MixinConfiguration.GetMasterConfiguration();
 

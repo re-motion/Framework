@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
 {
@@ -44,7 +43,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
         BusinessObjectPropertyPath.UnreachableValueBehavior unreachableValueBehavior,
         BusinessObjectPropertyPath.ListValueBehavior listValueBehavior)
     {
-      ArgumentUtility.CheckNotNull("root", root);
+      ArgumentNullException.ThrowIfNull(root);
 
       var propertyEnumerator = GetResultPropertyEnumerator();
       var currentObject = root;

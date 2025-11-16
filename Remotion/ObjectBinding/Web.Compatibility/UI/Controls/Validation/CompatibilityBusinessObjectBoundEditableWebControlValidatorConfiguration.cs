@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
@@ -41,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 
     public bool AreOptionalValidatorsEnabled (IBusinessObjectBoundEditableWebControl control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(control);
 
       return true;
     }

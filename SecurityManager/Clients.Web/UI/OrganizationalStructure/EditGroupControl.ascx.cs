@@ -121,7 +121,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     private void GroupTypeField_SelectionChanged (object? sender, EventArgs e)
     {
-      var referenceValue = ArgumentUtility.CheckNotNullAndType<BocAutoCompleteReferenceValue>("sender", sender!);
+      var referenceValue = ArgumentUtility.CheckNotNullAndType<BocAutoCompleteReferenceValue>(nameof(sender), sender!);
 
       referenceValue.SaveValue(false);
       referenceValue.IsDirty = true;

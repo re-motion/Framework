@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Linq.SqlBackend.SqlGeneration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq
 {
@@ -32,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public ScalarResultRowAdapter (object? scalarValue, IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
 
       _scalarValue = scalarValue;
       _storageTypeInformationProvider = storageTypeInformationProvider;
@@ -51,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Linq
     [return: MaybeNull]
     public T GetValue<T> (ColumnID columnID)
     {
-      ArgumentUtility.CheckNotNull("columnID", columnID);
+      // ColumnID is value type
 
       if (columnID.Position != 0)
       {

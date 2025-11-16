@@ -16,20 +16,19 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
   /// <summary>
-  /// Reads data from an <see cref="IDataReader"/> and converts it into <see cref="DataContainer"/> instances.
+  /// Reads data from an <see cref="DbDataReader"/> and converts it into <see cref="DataContainer"/> instances.
   /// The command whose data is converted must return an ID, a timestamp (as defined by the given <see cref="IRdbmsStoragePropertyDefinition"/> 
   /// instances), and values for each persistent property of the <see cref="ClassDefinition"/> matching the <see cref="ObjectID"/> read from the 
-  /// <see cref="IDataReader"/>.
+  /// <see cref="DbDataReader"/>.
   /// </summary>
   public class DataContainerReader : IObjectReader<DataContainer?>
   {
@@ -46,11 +45,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         IRdbmsPersistenceModelProvider persistenceModelProvider,
         IDataContainerValidator dataContainerValidator)
     {
-      ArgumentUtility.CheckNotNull("idProperty", idProperty);
-      ArgumentUtility.CheckNotNull("timestampProperty", timestampProperty);
-      ArgumentUtility.CheckNotNull("ordinalProvider", ordinalProvider);
-      ArgumentUtility.CheckNotNull("persistenceModelProvider", persistenceModelProvider);
-      ArgumentUtility.CheckNotNull("dataContainerValidator", dataContainerValidator);
+      ArgumentNullException.ThrowIfNull(idProperty);
+      ArgumentNullException.ThrowIfNull(timestampProperty);
+      ArgumentNullException.ThrowIfNull(ordinalProvider);
+      ArgumentNullException.ThrowIfNull(persistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(dataContainerValidator);
 
       _idProperty = idProperty;
       _timestampProperty = timestampProperty;
@@ -84,9 +83,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _dataContainerValidator; }
     }
 
-    public virtual DataContainer? Read (IDataReader dataReader)
+    public virtual DataContainer? Read (DbDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       if (dataReader.Read())
         return CreateDataContainerFromReader(dataReader, new ColumnValueReader(dataReader, _ordinalProvider));
@@ -94,9 +93,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         return null;
     }
 
-    public virtual IEnumerable<DataContainer?> ReadSequence (IDataReader dataReader)
+    public virtual IEnumerable<DataContainer?> ReadSequence (DbDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       var columnValueReader = new ColumnValueReader(dataReader, _ordinalProvider);
       while (dataReader.Read())
@@ -105,9 +104,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       }
     }
 
-    protected virtual DataContainer? CreateDataContainerFromReader (IDataReader dataReader, ColumnValueReader columnValueReader)
+    protected virtual DataContainer? CreateDataContainerFromReader (DbDataReader dataReader, ColumnValueReader columnValueReader)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       var id = (ObjectID?)_idProperty.CombineValue(columnValueReader);
       if (id == null)

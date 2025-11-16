@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <param name="command">The command to be executed.</param>
     public static void NotifyAndPerform (this IDataManagementCommand command)
     {
-      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentNullException.ThrowIfNull(command);
 
       command.Begin();
       command.Perform();

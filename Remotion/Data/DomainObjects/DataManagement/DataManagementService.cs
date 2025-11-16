@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
@@ -37,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </returns>
     public static IDataManager GetDataManager (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
 
       return clientTransaction.DataManager;
     }

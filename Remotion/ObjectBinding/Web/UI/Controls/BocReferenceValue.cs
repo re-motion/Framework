@@ -42,7 +42,7 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or select references as the value of a property using a drop-down list. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
   // TODO: see "Doc\Bugs and ToDos.txt"
   [ValidationProperty("ValidationValue")]
   [DefaultEvent("SelectionChanged")]
@@ -152,7 +152,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       base.RegisterHtmlHeadContents(htmlHeadAppender);
 
@@ -167,7 +167,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocReferenceValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       Assertion.IsNotNull(Context, "Context must not be null.");
 
@@ -232,8 +232,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
 
@@ -303,7 +303,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -338,7 +338,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Loads the <see cref="BocReferenceValueBase.Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocReferenceValue.xml' path='BocReferenceValue/LoadValue/*' />
     public override void LoadValue (bool interim)
     {
       if (interim)
@@ -359,7 +359,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Populates the <see cref="BocReferenceValueBase.Value"/> with the unbound <paramref name="value"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (IBusinessObjectWithIdentity? value, bool interim)
     {
       LoadValueInternal(value, interim);
@@ -376,7 +376,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Saves the <see cref="BocReferenceValueBase.Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/SaveValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocReferenceValue.xml' path='BocReferenceValue/SaveValue/*' />
     public override bool SaveValue (bool interim)
     {
       if (interim)
@@ -424,7 +424,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void SetBusinessObjectList (IBusinessObjectWithIdentity[] businessObjects)
     {
-      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
+      ArgumentNullException.ThrowIfNull(businessObjects);
       RefreshBusinessObjectList(businessObjects);
     }
 
@@ -439,8 +439,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void SetBusinessObjectList (IList businessObjects)
     {
-      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
-      ArgumentUtility.CheckItemsNotNullAndType("businessObjects", businessObjects, typeof(IBusinessObjectWithIdentity));
+      ArgumentNullException.ThrowIfNull(businessObjects);
+      ArgumentUtility.CheckItemsNotNullAndType(nameof(businessObjects), businessObjects, typeof(IBusinessObjectWithIdentity));
       RefreshBusinessObjectList(businessObjects);
     }
 
@@ -506,7 +506,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
     protected virtual void RefreshBusinessObjectList (IList businessObjects)
     {
-      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
+      ArgumentNullException.ThrowIfNull(businessObjects);
 
       _isBusinessObjectListPopulated = true;
       _listItems.Clear();
@@ -655,7 +655,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       // PopulateDropDownList should be moved to the renderer, the BocReferenceValue should only provide a list of items, see also BocEnumValue.
 
-      ArgumentUtility.CheckNotNull("dropDownList", dropDownList);
+      ArgumentNullException.ThrowIfNull(dropDownList);
 
       EnsureBusinessObjectListPopulated();
 

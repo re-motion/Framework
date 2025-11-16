@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 
 // ReSharper disable once CheckNamespace (assembly should have a more general name like ".Remotion", however, we have not found a good name yet)
@@ -38,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 
     public ItemIDControlSelectionCommandBuilder ([NotNull] string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       _itemID = itemID;
     }
@@ -46,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new ItemIDControlSelectionCommand<TControlObject>(controlSelector, _itemID);
     }
@@ -54,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new ItemIDControlSelectionCommand<TControlObject>(controlSelector, _itemID);
     }
@@ -62,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new ItemIDControlSelectionCommand<TControlObject>(controlSelector, _itemID);
     }

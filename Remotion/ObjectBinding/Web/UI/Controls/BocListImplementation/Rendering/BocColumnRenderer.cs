@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -46,8 +45,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         SortingDirection sortingDirection,
         int orderIndex)
     {
-      ArgumentUtility.CheckNotNull("columnRenderer", columnRenderer);
-      ArgumentUtility.CheckNotNull("columnDefinition", columnDefinition);
+      ArgumentNullException.ThrowIfNull(columnRenderer);
+      ArgumentNullException.ThrowIfNull(columnDefinition);
 
       _columnRenderer = columnRenderer;
       _columnDefinition = columnDefinition;
@@ -101,8 +100,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderTitleCell (BocListRenderingContext renderingContext, string cellID)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNullOrEmpty("cellID", cellID);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentException.ThrowIfNullOrEmpty(cellID);
 
       var columnRenderingContext = CreateBocColumnRenderingContext(renderingContext);
 
@@ -117,7 +116,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public void RenderDataColumnDeclaration (BocListRenderingContext renderingContext, bool isTextXml)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       var columnRenderingContext = CreateBocColumnRenderingContext(renderingContext);
 
@@ -132,9 +131,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IReadOnlyList<bool> columnsWithValidationFailures,
         BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
-      ArgumentUtility.CheckNotNull("columnsWithValidationFailures", columnsWithValidationFailures);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(dataRowRenderEventArgs);
+      ArgumentNullException.ThrowIfNull(columnsWithValidationFailures);
       if (renderingContext.ColumnRenderers.Length != columnsWithValidationFailures.Count)
         throw new ArgumentException("The number of validation failures flags must match the number of column renderers.", nameof(columnsWithValidationFailures));
 

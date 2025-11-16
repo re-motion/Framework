@@ -34,7 +34,7 @@ namespace Remotion.Validation.Providers
 
     public ApiBasedValidationRuleCollectorProvider (IValidationRuleCollectorReflector validationRuleCollectorReflector)
     {
-      ArgumentUtility.CheckNotNull("validationRuleCollectorReflector", validationRuleCollectorReflector);
+      ArgumentNullException.ThrowIfNull(validationRuleCollectorReflector);
 
       _validationRuleCollectorReflector = validationRuleCollectorReflector;
     }
@@ -46,7 +46,7 @@ namespace Remotion.Validation.Providers
 
     public IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> GetValidationRuleCollectors (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentNullException.ThrowIfNull(types);
 
       var result = types
           .SelectMany(_validationRuleCollectorReflector.GetCollectorsForType)

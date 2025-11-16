@@ -38,8 +38,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public WrappingAccessorInterceptor (MethodInfo interceptedAccessorMethod, string propertyName)
     {
-      ArgumentUtility.CheckNotNull("interceptedAccessorMethod", interceptedAccessorMethod);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentNullException.ThrowIfNull(interceptedAccessorMethod);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       _interceptedAccessorMethod = interceptedAccessorMethod;
       _propertyName = propertyName;
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public void Intercept (MutableType proxyType)
     {
-      ArgumentUtility.CheckNotNull("proxyType", proxyType);
+      ArgumentNullException.ThrowIfNull(proxyType);
 
       proxyType.GetOrAddOverride(_interceptedAccessorMethod).SetBody(ctx => WrapBody(CreateBody(ctx)));
     }

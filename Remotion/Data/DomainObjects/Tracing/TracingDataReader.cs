@@ -15,187 +15,35 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
+using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
   /// <summary>
-  /// Provides a wrapper for implementations of <see cref="IDataReader"/>. The number of records read and the lifetime of the reader 
+  /// Provides a wrapper for implementations of <see cref="DbDataReader"/>. The number of records read and the lifetime of the reader 
   /// are traced using <see cref="IPersistenceExtension"/> passed during the instantiation.
   /// </summary>
-  public class TracingDataReader : IDataReader
+  public sealed class TracingDataReader : DbDataReader
   {
-    #region IDataRecord implementation
-
-    public string GetName (int i)
-    {
-      return _dataReader.GetName(i);
-    }
-
-    public string GetDataTypeName (int i)
-    {
-      return _dataReader.GetDataTypeName(i);
-    }
-
-    public Type GetFieldType (int i)
-    {
-      return _dataReader.GetFieldType(i);
-    }
-
-    public object GetValue (int i)
-    {
-      return _dataReader.GetValue(i);
-    }
-
-    public int GetValues (object[] values)
-    {
-      return _dataReader.GetValues(values);
-    }
-
-    public int GetOrdinal (string name)
-    {
-      return _dataReader.GetOrdinal(name);
-    }
-
-    public bool GetBoolean (int i)
-    {
-      return _dataReader.GetBoolean(i);
-    }
-
-    public byte GetByte (int i)
-    {
-      return _dataReader.GetByte(i);
-    }
-
-    public long GetBytes (int i, long fieldOffset, byte[]? buffer, int bufferoffset, int length)
-    {
-      return _dataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
-    }
-
-    public char GetChar (int i)
-    {
-      return _dataReader.GetChar(i);
-    }
-
-    public long GetChars (int i, long fieldoffset, char[]? buffer, int bufferoffset, int length)
-    {
-      return _dataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
-    }
-
-    public Guid GetGuid (int i)
-    {
-      return _dataReader.GetGuid(i);
-    }
-
-    public short GetInt16 (int i)
-    {
-      return _dataReader.GetInt16(i);
-    }
-
-    public int GetInt32 (int i)
-    {
-      return _dataReader.GetInt32(i);
-    }
-
-    public long GetInt64 (int i)
-    {
-      return _dataReader.GetInt64(i);
-    }
-
-    public float GetFloat (int i)
-    {
-      return _dataReader.GetFloat(i);
-    }
-
-    public double GetDouble (int i)
-    {
-      return _dataReader.GetDouble(i);
-    }
-
-    public string GetString (int i)
-    {
-      return _dataReader.GetString(i);
-    }
-
-    public decimal GetDecimal (int i)
-    {
-      return _dataReader.GetDecimal(i);
-    }
-
-    public DateTime GetDateTime (int i)
-    {
-      return _dataReader.GetDateTime(i);
-    }
-
-    public IDataReader GetData (int i)
-    {
-      return _dataReader.GetData(i);
-    }
-
-    public bool IsDBNull (int i)
-    {
-      return _dataReader.IsDBNull(i);
-    }
-
-    public int FieldCount
-    {
-      get { return _dataReader.FieldCount; }
-    }
-
-    public object this [int i]
-    {
-      get { return _dataReader[i]; }
-    }
-
-    public object this [string name]
-    {
-      get { return _dataReader[name]; }
-    }
-
-    #endregion
-
-    #region IDataReader implementation
-
-    public bool NextResult ()
-    {
-      return _dataReader.NextResult();
-    }
-
-    public DataTable? GetSchemaTable ()
-    {
-      return _dataReader.GetSchemaTable();
-    }
-
-    public int Depth
-    {
-      get { return _dataReader.Depth; }
-    }
-
-    public bool IsClosed
-    {
-      get { return _dataReader.IsClosed; }
-    }
-
-    public int RecordsAffected
-    {
-      get { return _dataReader.RecordsAffected; }
-    }
-
-    #endregion
-
-    private readonly IDataReader _dataReader;
+    private readonly DbDataReader _dataReader;
     private readonly IPersistenceExtension _persistenceExtension;
     private readonly Guid _connectionID;
     private readonly Guid _queryID;
     private readonly Stopwatch _stopwatch;
     private int _rowCount;
 
-    public TracingDataReader (IDataReader dataReader, IPersistenceExtension persistenceExtension, Guid connectionID, Guid queryID)
+    public TracingDataReader (DbDataReader dataReader, IPersistenceExtension persistenceExtension, Guid connectionID, Guid queryID)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
-      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentNullException.ThrowIfNull(dataReader);
+      ArgumentNullException.ThrowIfNull(persistenceExtension);
 
       _dataReader = dataReader;
       _persistenceExtension = persistenceExtension;
@@ -204,44 +52,237 @@ namespace Remotion.Data.DomainObjects.Tracing
       _stopwatch = Stopwatch.StartNew();
     }
 
-    public IDataReader WrappedInstance
+    public DbDataReader WrappedInstance => _dataReader;
+    public Guid ConnectionID => _connectionID;
+    public Guid QueryID => _queryID;
+    public IPersistenceExtension PersistenceExtension => _persistenceExtension;
+    public override int FieldCount => _dataReader.FieldCount;
+    public override bool HasRows => _dataReader.HasRows;
+    public override object this [int i] => _dataReader[i];
+    public override object this [string name] => _dataReader[name];
+    public override int Depth => _dataReader.Depth;
+    public override bool IsClosed => _dataReader.IsClosed;
+    public override int RecordsAffected => _dataReader.RecordsAffected;
+    public override int VisibleFieldCount => _dataReader.VisibleFieldCount;
+
+
+    public override string GetName (int i)
     {
-      get { return _dataReader; }
+      return _dataReader.GetName(i);
     }
 
-    public Guid ConnectionID
+    public override string GetDataTypeName (int i)
     {
-      get { return _connectionID; }
+      return _dataReader.GetDataTypeName(i);
     }
 
-    public Guid QueryID
+    public override IEnumerator GetEnumerator ()
     {
-      get { return _queryID; }
+      return _dataReader.GetEnumerator();
     }
 
-    public IPersistenceExtension PersistenceExtension
+    public override Type GetFieldType (int i)
     {
-      get { return _persistenceExtension; }
+      return _dataReader.GetFieldType(i);
     }
 
-    public void Dispose ()
+    public override object GetValue (int i)
     {
-      TraceQueryCompleted();
-      _dataReader.Dispose();
+      return _dataReader.GetValue(i);
     }
 
-    public void Close ()
+    public override int GetValues (object[] values)
+    {
+      return _dataReader.GetValues(values);
+    }
+
+    public override int GetOrdinal (string name)
+    {
+      return _dataReader.GetOrdinal(name);
+    }
+
+    public override bool GetBoolean (int i)
+    {
+      return _dataReader.GetBoolean(i);
+    }
+
+    public override byte GetByte (int i)
+    {
+      return _dataReader.GetByte(i);
+    }
+
+    public override long GetBytes (int i, long fieldOffset, byte[]? buffer, int bufferoffset, int length)
+    {
+      return _dataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
+    }
+
+    public override char GetChar (int i)
+    {
+      return _dataReader.GetChar(i);
+    }
+
+    public override long GetChars (int i, long fieldoffset, char[]? buffer, int bufferoffset, int length)
+    {
+      return _dataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
+    }
+
+    public override Guid GetGuid (int i)
+    {
+      return _dataReader.GetGuid(i);
+    }
+
+    public override short GetInt16 (int i)
+    {
+      return _dataReader.GetInt16(i);
+    }
+
+    public override int GetInt32 (int i)
+    {
+      return _dataReader.GetInt32(i);
+    }
+
+    public override long GetInt64 (int i)
+    {
+      return _dataReader.GetInt64(i);
+    }
+
+    public override float GetFloat (int i)
+    {
+      return _dataReader.GetFloat(i);
+    }
+
+    public override double GetDouble (int i)
+    {
+      return _dataReader.GetDouble(i);
+    }
+
+    public override string GetString (int i)
+    {
+      return _dataReader.GetString(i);
+    }
+
+    public override decimal GetDecimal (int i)
+    {
+      return _dataReader.GetDecimal(i);
+    }
+
+    public override DateTime GetDateTime (int i)
+    {
+      return _dataReader.GetDateTime(i);
+    }
+
+    public override bool IsDBNull (int i)
+    {
+      return _dataReader.IsDBNull(i);
+    }
+
+    public override Task<bool> IsDBNullAsync (int ordinal, CancellationToken cancellationToken)
+    {
+      return _dataReader.IsDBNullAsync(ordinal, cancellationToken);
+    }
+
+    public override bool NextResult ()
+    {
+      return _dataReader.NextResult();
+    }
+
+    public override Task<bool> NextResultAsync (CancellationToken cancellationToken)
+    {
+      return _dataReader.NextResultAsync(cancellationToken);
+    }
+
+    public override DataTable? GetSchemaTable ()
+    {
+      return _dataReader.GetSchemaTable();
+    }
+
+    public override Task<DataTable?> GetSchemaTableAsync (CancellationToken cancellationToken = default)
+    {
+      return _dataReader.GetSchemaTableAsync(cancellationToken);
+    }
+
+    public override Task<ReadOnlyCollection<DbColumn>> GetColumnSchemaAsync (CancellationToken cancellationToken = default)
+    {
+      return _dataReader.GetColumnSchemaAsync(cancellationToken);
+    }
+
+    public override void Close ()
     {
       TraceQueryCompleted();
       _dataReader.Close();
     }
 
-    public bool Read ()
+    public override Task CloseAsync ()
+    {
+      TraceQueryCompleted();
+      return _dataReader.CloseAsync();
+    }
+
+    public override bool Read ()
     {
       bool hasRecord = _dataReader.Read();
       if (hasRecord)
         _rowCount++;
       return hasRecord;
+    }
+
+    public override async Task<bool> ReadAsync (CancellationToken cancellationToken)
+    {
+      var hasRecord = await _dataReader.ReadAsync(cancellationToken);
+      if (hasRecord)
+        _rowCount++;
+      return hasRecord;
+    }
+
+    protected override DbDataReader GetDbDataReader (int i)
+    {
+      return _dataReader.GetData(i);
+    }
+
+    public override Type GetProviderSpecificFieldType (int ordinal)
+    {
+      return _dataReader.GetProviderSpecificFieldType(ordinal);
+    }
+
+    public override object GetProviderSpecificValue (int ordinal)
+    {
+      return _dataReader.GetProviderSpecificValue(ordinal);
+    }
+
+    public override int GetProviderSpecificValues (object[] values) => _dataReader.GetProviderSpecificValues(values);
+
+    public override Stream GetStream (int ordinal)
+    {
+      return _dataReader.GetStream(ordinal);
+    }
+
+    public override TextReader GetTextReader (int ordinal)
+    {
+      return _dataReader.GetTextReader(ordinal);
+    }
+
+    public override T GetFieldValue<T> (int ordinal)
+    {
+      return _dataReader.GetFieldValue<T>(ordinal);
+    }
+
+    public override Task<T> GetFieldValueAsync<T> (int ordinal, CancellationToken cancellationToken)
+    {
+      return _dataReader.GetFieldValueAsync<T>(ordinal, cancellationToken);
+    }
+
+    protected override void Dispose (bool disposing)
+    {
+      Assertion.DebugAssert(disposing, "Type is sealed without an implemented Finalizer. 'disposing' flag is always true");
+
+      TraceQueryCompleted();
+      _dataReader.Dispose();
+    }
+
+    public override ValueTask DisposeAsync ()
+    {
+      TraceQueryCompleted();
+      return _dataReader.DisposeAsync();
     }
 
     private void TraceQueryCompleted ()

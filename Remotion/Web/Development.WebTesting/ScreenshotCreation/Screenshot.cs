@@ -18,11 +18,10 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -37,121 +36,48 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public static Screenshot TakeBrowserScreenshot ([NotNull] IBrowserSession browserSession, [NotNull] IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("browserSession", browserSession);
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentNullException.ThrowIfNull(browserSession);
+      ArgumentNullException.ThrowIfNull(locator);
 
-      if (browserSession.Headless)
-        return CreateBrowserScreenshotBasedOnDriver(browserSession);
-      else
-        return CreateBrowserScreenshotBasedOnScreen(browserSession, locator);
-    }
-
-    /// <summary>
-    /// Takes a screenshot of all desktops.
-    /// </summary>
-    [NotNull]
-    public static Screenshot TakeDesktopScreenshot ()
-    {
-      return TakeDesktopScreenshot(Screen.AllScreens);
-    }
-
-    /// <summary>
-    /// Takes a screenshot of the specified <paramref name="screens"/>.
-    /// </summary>
-    /// <exception cref="ArgumentException"><paramref name="screens"/> has no elements.</exception>
-    [NotNull]
-    public static Screenshot TakeDesktopScreenshot ([NotNull] Screen[] screens)
-    {
-      ArgumentUtility.CheckNotNull("screens", screens);
-
-      if (screens.Length == 0)
-        throw new ArgumentException("At least one screen must be specified in order to take a screenshot.", "screens");
-
-      return CreateDesktopScreenshot(screens);
-    }
-
-    /// <summary>
-    /// Takes a screenshot of the primary screen.
-    /// </summary>
-    [NotNull]
-    public static Screenshot TakePrimaryDesktopScreenshot ()
-    {
-      return TakeDesktopScreenshot(new[] { Assertion.IsNotNull(Screen.PrimaryScreen, "Screen.PrimaryScreen may not be null when taking a screen shot.") });
-    }
-
-    [NotNull]
-    private static Screenshot CreateBrowserScreenshotBasedOnScreen (IBrowserSession browserSession, IBrowserContentLocator locator)
-    {
-      var browserBounds = locator.GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
-      var image = new Bitmap(browserBounds.Width, browserBounds.Height);
-      using (var graphics = Graphics.FromImage(image))
-      {
-        graphics.CopyFromScreen(browserBounds.Location, Point.Empty, browserBounds.Size);
-
-        graphics.Flush();
-      }
-
-      return new Screenshot(
-          image,
-          Size.Empty,
-          new[] { new Rectangle(Point.Empty, browserBounds.Size) },
-          CursorInformation.Capture(),
-          CoordinateSystem.Browser);
-    }
-
-    [NotNull]
-    private static Screenshot CreateBrowserScreenshotBasedOnDriver (IBrowserSession browserSession)
-    {
-      ArgumentUtility.CheckNotNull("browserSession", browserSession);
+      ArgumentNullException.ThrowIfNull(browserSession);
 
       var screenshot = ((ITakesScreenshot)browserSession.Driver.Native).GetScreenshot();
 
-      Bitmap image;
+      Image image;
       using (var memoryStream = new MemoryStream(screenshot.AsByteArray, false))
       {
-        // For some reasons GDI+ might throw an OutOfMemory exception when the image provided by the driver is used
-        // As such, we copy the image which is quite fast (~5ms) and prevents any issues down the line
-        var corruptedImage = (Bitmap)Image.FromStream(memoryStream);
-        image = new Bitmap(corruptedImage);
+        image = Image.FromStream(memoryStream);
       }
 
       return new Screenshot(
           image,
           Size.Empty,
           new[] { new Rectangle(Point.Empty, image.Size) },
-          CursorInformation.Empty,
+          EmptyCursorInformation.Instance,
           CoordinateSystem.Browser);
     }
 
+    /// <summary>
+    /// Takes a screenshot of all desktops.
+    /// </summary>
     [NotNull]
-    private static Screenshot CreateDesktopScreenshot (Screen[] screens)
+    [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
+    public static Screenshot TakeDesktopScreenshot ()
     {
-      var screenBounds = screens.Select(s => s.Bounds).ToArray();
-      var requiredBounds = screenBounds.Aggregate(Rectangle.Union);
-      var offset = new Size(-requiredBounds.X, -requiredBounds.Y);
-
-      var image = new Bitmap(requiredBounds.Width, requiredBounds.Height);
-      using (var graphics = Graphics.FromImage(image))
-      {
-        graphics.Clear(Color.Transparent);
-
-        foreach (var screen in screens)
-        {
-          graphics.CopyFromScreen(screen.Bounds.Location, screen.Bounds.Location + offset, screen.Bounds.Size);
-        }
-
-        graphics.Flush();
-      }
-
-      return new Screenshot(
-          image,
-          new Size(requiredBounds.X, requiredBounds.Y),
-          screenBounds,
-          CursorInformation.Capture(),
-          CoordinateSystem.Desktop);
+      throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
     }
 
-    private readonly CursorInformation _cursorInformation;
+    /// <summary>
+    /// Takes a screenshot of the primary screen.
+    /// </summary>
+    [NotNull]
+    [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
+    public static Screenshot TakePrimaryDesktopScreenshot ()
+    {
+      throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
+    }
+
+    private readonly ICursorInformation _cursorInformation;
     private readonly Size _desktopOffset;
     private readonly Image _image;
     private readonly Rectangle[] _screenshotBounds;
@@ -163,12 +89,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] Image image,
         Size desktopOffset,
         Rectangle[] screenshotBounds,
-        [NotNull] CursorInformation cursorInformation,
+        [NotNull] ICursorInformation cursorInformation,
         CoordinateSystem coordinateSystem)
     {
-      ArgumentUtility.CheckNotNull("image", image);
-      ArgumentUtility.CheckNotNull("screenshotBounds", screenshotBounds);
-      ArgumentUtility.CheckNotNull("cursorInformation", cursorInformation);
+      ArgumentNullException.ThrowIfNull(image);
+      ArgumentNullException.ThrowIfNull(screenshotBounds);
+      ArgumentNullException.ThrowIfNull(cursorInformation);
 
       _image = image;
       _desktopOffset = desktopOffset;
@@ -181,7 +107,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// The <see cref="CursorInformation"/> associated with the screenshot.
     /// </summary>
     [NotNull]
-    public CursorInformation CursorInformation
+    public ICursorInformation CursorInformation
     {
       get
       {

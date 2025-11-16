@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -30,35 +29,37 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public IScriptElement GetCreateElement (T entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
 
       var statements = new ScriptElementCollection();
       statements.AddElement(CreateBatchDelimiterStatement());
       statements.AddElement(
           new ScriptStatement(
               string.Format(
-                  "CREATE VIEW [{0}].[{1}] ({2})\r\n"
-                  + "  {3}AS\r\n{4}{5}",
+                  "CREATE VIEW [{0}].[{1}] ({2}){6}"
+                  + "  {3}AS{6}{4}{5}",
                   entityDefinition.ViewName.SchemaName ?? DefaultSchema,
                   entityDefinition.ViewName.EntityName,
                   GetColumnList(entityDefinition.GetAllColumns()),
                   UseSchemaBinding(entityDefinition) ? "WITH SCHEMABINDING " : string.Empty,
                   GetSelectStatements(entityDefinition),
-                  UseCheckOption(entityDefinition) ? "\r\n  WITH CHECK OPTION" : string.Empty)));
+                  UseCheckOption(entityDefinition) ? $"{Environment.NewLine}  WITH CHECK OPTION" : string.Empty,
+                  Environment.NewLine)));
       statements.AddElement(CreateBatchDelimiterStatement());
       return statements;
     }
 
     public virtual IScriptElement GetDropElement (T entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
 
       return new ScriptStatement(
         string.Format(
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = '{1}' AND TABLE_SCHEMA = '{0}')\r\n"
+          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = '{1}' AND TABLE_SCHEMA = '{0}'){2}"
           + "  DROP VIEW [{0}].[{1}]",
           entityDefinition.ViewName.SchemaName ?? DefaultSchema,
-          entityDefinition.ViewName.EntityName
+          entityDefinition.ViewName.EntityName,
+          Environment.NewLine
           ));
     }
 
@@ -67,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected virtual bool UseSchemaBinding (T entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
       return true;
     }
   }

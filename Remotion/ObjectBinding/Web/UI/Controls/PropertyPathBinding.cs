@@ -19,7 +19,6 @@ using System.ComponentModel;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -53,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public PropertyPathBinding (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       SetPropertyPath(propertyPath);
     }

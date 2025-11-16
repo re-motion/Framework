@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
@@ -32,8 +33,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     private ColumnDefinition _innerColumnDefinition;
     private SimpleStoragePropertyDefinition _storagePropertyDefinition;
 
-    private Mock<IDbCommand> _dbCommandStub;
-    private Mock<IDbDataParameter> _dbDataParameterStub;
+    private Mock<DbCommand> _dbCommandStub;
+    private Mock<DbParameter> _dbDataParameterStub;
 
     [SetUp]
     public void SetUp ()
@@ -42,9 +43,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       _innerColumnDefinition = ColumnDefinitionObjectMother.CreateColumn(storageTypeInformation: _storageTypeInformationStub.Object);
       _storagePropertyDefinition = new SimpleStoragePropertyDefinition(typeof(string), _innerColumnDefinition);
 
-      _dbCommandStub = new Mock<IDbCommand>();
-      _dbDataParameterStub = new Mock<IDbDataParameter>();
-      _dbCommandStub.Setup(stub => stub.CreateParameter()).Returns(_dbDataParameterStub.Object);
+      _dbCommandStub = new Mock<DbCommand>();
+      _dbDataParameterStub = new Mock<DbParameter>();
+      _dbCommandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(_dbDataParameterStub.Object);
     }
 
     [Test]

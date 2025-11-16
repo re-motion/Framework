@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
@@ -27,9 +26,9 @@ namespace Remotion.Security.Metadata
 
     public LocalizedName (string referencedObjectID, string comment, string text)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("referencedObjectID", referencedObjectID);
-      ArgumentUtility.CheckNotNullOrEmpty("comment", comment);
-      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentException.ThrowIfNullOrEmpty(referencedObjectID);
+      ArgumentException.ThrowIfNullOrEmpty(comment);
+      ArgumentNullException.ThrowIfNull(text);
 
       _referencedObjectID = referencedObjectID;
       _comment = comment;

@@ -20,7 +20,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
@@ -43,8 +42,8 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(control);
 
       htmlHeadAppender.RegisterWebClientScriptInclude();
       htmlHeadAppender.RegisterCommonStyleSheet();
@@ -59,7 +58,7 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
     public void Render (SingleViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       AddStandardAttributesToRender(renderingContext);
       if (string.IsNullOrEmpty(renderingContext.Control.CssClass) && string.IsNullOrEmpty(renderingContext.Control.Attributes["class"]))
@@ -85,7 +84,7 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
     protected virtual void RenderTopControls (SingleViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       Style style = renderingContext.Control.TopControlsStyle;
       PlaceHolder placeHolder = renderingContext.Control.TopControl;
@@ -95,7 +94,7 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
     protected virtual void RenderBottomControls (SingleViewRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       Style style = renderingContext.Control.BottomControlsStyle;
       PlaceHolder placeHolder = renderingContext.Control.BottomControl;

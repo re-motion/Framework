@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -34,8 +33,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public InterfaceImplementationMethodInformation (IMethodInformation implementationMethodInfo, IMethodInformation declarationMethodInfo)
     {
-      ArgumentUtility.CheckNotNull("implementationMethodInfo", implementationMethodInfo);
-      ArgumentUtility.CheckNotNull("declarationMethodInfo", declarationMethodInfo);
+      ArgumentNullException.ThrowIfNull(implementationMethodInfo);
+      ArgumentNullException.ThrowIfNull(declarationMethodInfo);
 
       _implementationMethodInfo = implementationMethodInfo;
       _declarationMethodInfo = declarationMethodInfo;
@@ -73,7 +72,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull("implementationType", implementationType);
+      ArgumentNullException.ThrowIfNull(implementationType);
 
       return _implementationMethodInfo.FindInterfaceImplementation(implementationType);
     }
@@ -90,7 +89,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public Delegate GetFastInvoker (Type delegateType)
     {
-      ArgumentUtility.CheckNotNull("delegateType", delegateType);
+      ArgumentNullException.ThrowIfNull(delegateType);
 
       return _declarationMethodInfo.GetFastInvoker(delegateType);
     }
@@ -117,7 +116,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public object? Invoke (object? instance, object?[]? parameters)
     {
-      ArgumentUtility.CheckNotNull("instance", instance!);
+      ArgumentNullException.ThrowIfNull(instance!);
 
       return _declarationMethodInfo.Invoke(instance, parameters);
     }

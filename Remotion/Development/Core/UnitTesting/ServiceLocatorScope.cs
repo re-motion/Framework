@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting
 {
@@ -29,7 +28,7 @@ namespace Remotion.Development.UnitTesting
   {
     private static DefaultServiceLocator CreateServiceLocator (IEnumerable<ServiceConfigurationEntry> configuration)
     {
-      ArgumentUtility.CheckNotNull("configuration", configuration);
+      ArgumentNullException.ThrowIfNull(configuration);
 
       var defaultServiceLocator = DefaultServiceLocator.Create();
       foreach (var stubbedRegistration in configuration)

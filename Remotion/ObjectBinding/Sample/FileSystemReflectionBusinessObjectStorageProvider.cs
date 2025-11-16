@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
 {
@@ -28,7 +27,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public FileSystemReflectionBusinessObjectStorageProvider (string rootPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("rootPath", rootPath);
+      ArgumentException.ThrowIfNullOrEmpty(rootPath);
 
       _rootPath = rootPath;
     }
@@ -36,7 +35,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public IReadOnlyCollection<Guid> GetObjectIDsForType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var typeDirectory = GetDirectoryForType(type);
 
@@ -62,7 +61,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetReadObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       try
       {
@@ -78,7 +77,7 @@ namespace Remotion.ObjectBinding.Sample
     /// <inheritdoc />
     public Stream GetWriteObjectStream (Type type, Guid id)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       Directory.CreateDirectory(GetDirectoryForType(type));
 

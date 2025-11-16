@@ -23,7 +23,6 @@ using System.Web.Caching;
 using System.Web.UI;
 using System.Web.UI.Adapters;
 using System.Web.UI.HtmlControls;
-using Remotion.Utilities;
 using Remotion.Web.UI;
 
 namespace Remotion.Web.Infrastructure
@@ -56,7 +55,7 @@ namespace Remotion.Web.Infrastructure
     private PageWrapper (Page page)
         : base(page)
     {
-      ArgumentUtility.CheckNotNull("page", page);
+      ArgumentNullException.ThrowIfNull(page);
       _page = page;
     }
 

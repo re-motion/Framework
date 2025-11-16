@@ -17,6 +17,7 @@
 using System;
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 
@@ -147,6 +148,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [PerformBrowserLogCheck(false)]
     public void PageObjectContext_CloneForFrame_CallsRequestErrorDetectionStrategyWithCorrectScope ()
     {
       var home = Start();

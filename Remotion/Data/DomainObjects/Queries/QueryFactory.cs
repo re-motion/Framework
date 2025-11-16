@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -26,7 +25,6 @@ using Remotion.Linq;
 using Remotion.Linq.EagerFetching;
 using Remotion.Linq.Parsing.Structure;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries
 {
@@ -97,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQueryable<T> CreateLinqQuery<T> (string id, IReadOnlyDictionary<string, object>? metadata = null)
         where T: DomainObject
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       metadata ??= s_emptyMetadata;
 
       var startingClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(T));
@@ -120,8 +118,8 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQueryable<T> CreateLinqQuery<T> (IQueryParser queryParser, IQueryExecutor executor)
         where T: DomainObject
     {
-      ArgumentUtility.CheckNotNull("executor", executor);
-      ArgumentUtility.CheckNotNull("queryParser", queryParser);
+      ArgumentNullException.ThrowIfNull(executor);
+      ArgumentNullException.ThrowIfNull(queryParser);
 
       return s_linqProviderComponentFactory.Value.CreateQueryable<T>(queryParser, executor);
     }
@@ -133,7 +131,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <returns>An implementation of <see cref="IQuery"/> corresponding to <paramref name="queryDefinition"/>.</returns>
     public static IQuery CreateQuery (QueryDefinition queryDefinition)
     {
-      ArgumentUtility.CheckNotNull("queryDefinition", queryDefinition);
+      ArgumentNullException.ThrowIfNull(queryDefinition);
       return CreateQuery(queryDefinition, new QueryParameterCollection());
     }
 
@@ -145,8 +143,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <returns>An implementation of <see cref="IQuery"/> corresponding to <paramref name="queryDefinition"/>.</returns>
     public static IQuery CreateQuery (QueryDefinition queryDefinition, QueryParameterCollection queryParameterCollection)
     {
-      ArgumentUtility.CheckNotNull("queryDefinition", queryDefinition);
-      ArgumentUtility.CheckNotNull("queryParameterCollection", queryParameterCollection);
+      ArgumentNullException.ThrowIfNull(queryDefinition);
+      ArgumentNullException.ThrowIfNull(queryParameterCollection);
 
       return new Query(queryDefinition, queryParameterCollection);
     }
@@ -173,8 +171,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </remarks>
     public static IQuery CreateQuery<T> (string id, IQueryable queryable)
     {
-      ArgumentUtility.CheckNotNull("queryable", queryable);
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentNullException.ThrowIfNull(queryable);
+      ArgumentException.ThrowIfNullOrEmpty(id);
 
       var provider = queryable.Provider as QueryProviderBase;
       var queryExecutor = provider != null ? provider.Executor as DomainObjectQueryExecutor : null;
@@ -187,7 +185,7 @@ namespace Remotion.Data.DomainObjects.Queries
             + "standard query methods on it.",
             queryable.GetType().Name,
             queryable.Provider.GetType().Name);
-        throw new ArgumentException(message, "queryable");
+        throw new ArgumentException(message, nameof(queryable));
       }
 
       var expression = queryable.Expression;
@@ -211,7 +209,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// held by the current <see cref="QueryConfiguration"/>.</returns>
     public static IQuery CreateQueryFromConfiguration (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       return CreateQueryFromConfiguration(id, new QueryParameterCollection());
     }
 
@@ -224,7 +222,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// held by the current <see cref="QueryConfiguration"/>.</returns>
     public static IQuery CreateQueryFromConfiguration (string id, QueryParameterCollection queryParameterCollection)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       var queryDefinition = SafeServiceLocator.Current.GetInstance<IQueryDefinitionRepository>().GetMandatory(id);
       return new Query(queryDefinition, queryParameterCollection);
     }
@@ -244,10 +242,10 @@ namespace Remotion.Data.DomainObjects.Queries
     public static IQuery CreateScalarQuery (
         string id, StorageProviderDefinition storageProviderDefinition, string statement, QueryParameterCollection queryParameterCollection, IReadOnlyDictionary<string, object>? metaData = null)
     {
-      ArgumentUtility.CheckNotNull("id", id);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("queryParameterCollection", queryParameterCollection);
+      ArgumentNullException.ThrowIfNull(id);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(queryParameterCollection);
 
       var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.ScalarReadOnly, metaData: metaData);
       return new Query(definition, queryParameterCollection);
@@ -275,13 +273,13 @@ namespace Remotion.Data.DomainObjects.Queries
         Type collectionType,
         IReadOnlyDictionary<string, object>? metaData = null)
     {
-      ArgumentUtility.CheckNotNull("id", id);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("queryParameterCollection", queryParameterCollection);
-      ArgumentUtility.CheckNotNull("collectionType", collectionType);
+      ArgumentNullException.ThrowIfNull(id);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(queryParameterCollection);
+      ArgumentNullException.ThrowIfNull(collectionType);
 
-      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.CollectionReadOnly, collectionType, metaData);
+      var definition = new QueryDefinition(id, storageProviderDefinition, statement, QueryType.CollectionReadOnly, collectionType: collectionType, metaData: metaData);
       return new Query(definition, queryParameterCollection);
     }
 

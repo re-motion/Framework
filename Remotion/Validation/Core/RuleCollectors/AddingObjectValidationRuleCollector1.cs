@@ -52,7 +52,7 @@ namespace Remotion.Validation.RuleCollectors
     public AddingObjectValidationRuleCollector (
        [NotNull]Type collectorType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("collectorType", collectorType, typeof(IValidationRuleCollector));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(collectorType), collectorType, typeof(IValidationRuleCollector));
 
       CollectorType = collectorType;
       ValidatedType = TypeAdapter.Create(typeof(TValidatedType));
@@ -61,7 +61,7 @@ namespace Remotion.Validation.RuleCollectors
 
     IValidationRule IAddingObjectValidationRuleCollector.CreateValidationRule (IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
 
       foreach (var tuple in _uninitializedValidationMessages)
       {
@@ -89,13 +89,13 @@ namespace Remotion.Validation.RuleCollectors
 
     public void SetCondition<TValidatedTypeForCondition> (Func<TValidatedTypeForCondition, bool> predicate)
     {
-      ArgumentUtility.CheckNotNull("predicate", predicate);
+      ArgumentNullException.ThrowIfNull(predicate);
 
       if (typeof(TValidatedTypeForCondition) != typeof(TValidatedType))
       {
         throw new ArgumentException(
             $"The type '{typeof(TValidatedTypeForCondition).GetFullNameSafe()}' of the predicate "
-            + $"does not match the type '{typeof(TValidatedType).GetFullNameSafe()}' of the validation rule.", "predicate");
+            + $"does not match the type '{typeof(TValidatedType).GetFullNameSafe()}' of the validation rule.", nameof(predicate));
       }
 
       Condition = (Func<TValidatedType, bool>)(object)predicate;
@@ -108,7 +108,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterValidator (Func<ObjectValidationRuleInitializationParameters, IObjectValidator> validatorFactory)
     {
-      ArgumentUtility.CheckNotNull("validatorFactory", validatorFactory);
+      ArgumentNullException.ThrowIfNull(validatorFactory);
 
       var deferredInitializationValidationMessage = new DeferredInitializationValidationMessage();
       var initializationParameters = new ObjectValidationRuleInitializationParameters(deferredInitializationValidationMessage);
@@ -122,7 +122,7 @@ namespace Remotion.Validation.RuleCollectors
 
     public void ApplyRemoveValidatorRegistrations (IObjectValidatorExtractor objectValidatorExtractor)
     {
-      ArgumentUtility.CheckNotNull("objectValidatorExtractor", objectValidatorExtractor);
+      ArgumentNullException.ThrowIfNull(objectValidatorExtractor);
 
       var validatorsToRemove = objectValidatorExtractor.ExtractObjectValidatorsToRemove(this).ToArray();
       CheckForNonRemovableObjectValidatorViolation(validatorsToRemove);

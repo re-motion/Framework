@@ -37,6 +37,15 @@
         </xs:element>
         <xs:element name="chrome" type="c:ChromiumConfigurationElement" minOccurs="0" maxOccurs="1" />
         <xs:element name="edge" type="c:ChromiumConfigurationElement" minOccurs="0" maxOccurs="1" />
+        <xs:element name="remoteDriver" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="enabled" type="xs:boolean" use="required" />
+            <xs:attribute name="url" type="c:RequiredStringType" use="required" />
+            <xs:attribute name="hostRemoteDriverInDocker" type="xs:boolean" default="false" />
+            <xs:attribute name="dockerImageName" type="c:RequiredStringType" />
+            <xs:attribute name="dockerCustomArguments" type="c:RequiredStringType" />
+          </xs:complexType>
+        </xs:element>
       </xs:all>
 
       <xs:attribute name="browser" type="c:BrowserType" use="required" />
@@ -98,6 +107,7 @@
           <xs:enumeration value="IisExpress" />
           <xs:enumeration value="Docker" />
           <xs:enumeration value="AspNetCore" />
+          <xs:enumeration value="None" />
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType>

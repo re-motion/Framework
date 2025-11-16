@@ -18,7 +18,6 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.UI.Controls
@@ -65,7 +64,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="eventArgument"> &lt;index&gt; </param>
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      ArgumentException.ThrowIfNullOrEmpty(eventArgument);
 
       //  First part: index
       int index;
@@ -126,7 +125,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Fires the <see cref="MenuBase.EventCommandClick"/> event. </summary>
     protected virtual void OnEventCommandClick (WebMenuItem item)
     {
-      ArgumentUtility.CheckNotNull("item", item);
+      ArgumentNullException.ThrowIfNull(item);
 
       if (item.Command != null)
         item.Command.OnClick();

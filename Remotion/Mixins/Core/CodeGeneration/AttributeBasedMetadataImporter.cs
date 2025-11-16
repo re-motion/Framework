@@ -38,7 +38,7 @@ namespace Remotion.Mixins.CodeGeneration
     [CanBeNull]
     public virtual ClassContext? GetMetadataForMixedType (Type concreteMixedType)
     {
-      ArgumentUtility.CheckNotNull("concreteMixedType", concreteMixedType);
+      ArgumentNullException.ThrowIfNull(concreteMixedType);
 
       var attribute =
           (ConcreteMixedTypeAttribute?)concreteMixedType.GetCustomAttributes(typeof(ConcreteMixedTypeAttribute), false).SingleOrDefault();
@@ -51,7 +51,7 @@ namespace Remotion.Mixins.CodeGeneration
     [CanBeNull]
     public virtual ConcreteMixinTypeIdentifier? GetIdentifierForMixinType (Type concreteMixinType)
     {
-      ArgumentUtility.CheckNotNull("concreteMixinType", concreteMixinType);
+      ArgumentNullException.ThrowIfNull(concreteMixinType);
 
       var attribute =
           (ConcreteMixinTypeAttribute?)concreteMixinType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false).SingleOrDefault();
@@ -63,7 +63,7 @@ namespace Remotion.Mixins.CodeGeneration
 
     public virtual Dictionary<MethodInfo, MethodInfo> GetMethodWrappersForMixinType (Type concreteMixinType)
     {
-      ArgumentUtility.CheckNotNull("concreteMixinType", concreteMixinType);
+      ArgumentNullException.ThrowIfNull(concreteMixinType);
       var wrappers = from potentialWrapper in concreteMixinType.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                      let wrappedMethod = GetWrappedMethod(potentialWrapper)
                      where wrappedMethod != null
@@ -104,7 +104,7 @@ namespace Remotion.Mixins.CodeGeneration
 
     public ConcreteMixinType? GetMetadataForMixinType (Type concreteMixinType)
     {
-      ArgumentUtility.CheckNotNull("concreteMixinType", concreteMixinType);
+      ArgumentNullException.ThrowIfNull(concreteMixinType);
 
       var identifier = GetIdentifierForMixinType(concreteMixinType);
       if (identifier == null)

@@ -86,7 +86,7 @@ public abstract class CommandLineArgument
 
   internal protected virtual void SetStringValue (string value)
   {
-    if (value == null) throw new ArgumentNullException("value");
+    ArgumentNullException.ThrowIfNull(value);
 
     _stringValue = value;
   }

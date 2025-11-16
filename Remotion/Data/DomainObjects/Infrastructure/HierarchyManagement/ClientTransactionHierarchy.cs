@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public ClientTransactionHierarchy (ClientTransaction rootTransaction)
     {
-      ArgumentUtility.CheckNotNull("rootTransaction", rootTransaction);
+      ArgumentNullException.ThrowIfNull(rootTransaction);
       _rootTransaction = rootTransaction;
       _leafTransaction = rootTransaction;
       _activeTransaction = rootTransaction;
@@ -59,10 +59,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public void AppendLeafTransaction (ClientTransaction leafTransaction)
     {
-      ArgumentUtility.CheckNotNull("leafTransaction", leafTransaction);
+      ArgumentNullException.ThrowIfNull(leafTransaction);
 
       if (leafTransaction.ParentTransaction != _leafTransaction)
-        throw new ArgumentException("The new LeafTransaction must have the previous LeafTransaction as its parent.", "leafTransaction");
+        throw new ArgumentException("The new LeafTransaction must have the previous LeafTransaction as its parent.", nameof(leafTransaction));
 
       _leafTransaction = leafTransaction;
       Assertion.IsTrue(_leafTransaction.RootTransaction == _rootTransaction);
@@ -81,10 +81,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public IDisposable ActivateTransaction (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
 
       if (clientTransaction.RootTransaction != _rootTransaction)
-        throw new ArgumentException("The activated transaction must be from this ClientTransactionHierarchy.", "clientTransaction");
+        throw new ArgumentException("The activated transaction must be from this ClientTransactionHierarchy.", nameof(clientTransaction));
 
       var previousActivatedTransaction = _activeTransaction;
       _activeTransaction = clientTransaction;
@@ -101,9 +101,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       public ActivationScope (
           ClientTransactionHierarchy hierarchy, ClientTransaction expectedActivatedTransaction, ClientTransaction previousActivatedTransaction)
       {
-        ArgumentUtility.CheckNotNull("hierarchy", hierarchy);
-        ArgumentUtility.CheckNotNull("expectedActivatedTransaction", expectedActivatedTransaction);
-        ArgumentUtility.CheckNotNull("previousActivatedTransaction", previousActivatedTransaction);
+        ArgumentNullException.ThrowIfNull(hierarchy);
+        ArgumentNullException.ThrowIfNull(expectedActivatedTransaction);
+        ArgumentNullException.ThrowIfNull(previousActivatedTransaction);
 
         _hierarchy = hierarchy;
         _expectedActivatedTransaction = expectedActivatedTransaction;

@@ -42,8 +42,8 @@ namespace Remotion.Web.ExecutionEngine.UrlMapping
 
     protected BaseDirectoryBasedUrlMappingFileFinder (IAppContextProvider appContextProvider, string urlMappingFile)
     {
-      ArgumentUtility.CheckNotNull(nameof(appContextProvider), appContextProvider);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(urlMappingFile), urlMappingFile);
+      ArgumentNullException.ThrowIfNull(appContextProvider);
+      ArgumentException.ThrowIfNullOrEmpty(urlMappingFile);
 
       _appContextProvider = appContextProvider;
       _urlMappingFile = urlMappingFile;

@@ -20,7 +20,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -31,15 +30,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   {
     public static RelationEndPointID Create (ObjectID? objectID, IRelationEndPointDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       return new RelationEndPointID(objectID, definition);
     }
 
     public static RelationEndPointID Create (ObjectID objectID, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
+      ArgumentNullException.ThrowIfNull(objectID);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       IRelationEndPointDefinition endPointDefinition;
       try
@@ -48,7 +47,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
       catch (MappingException ex)
       {
-        throw new ArgumentException(ex.Message, "propertyIdentifier", ex);
+        throw new ArgumentException(ex.Message, nameof(propertyIdentifier), ex);
       }
 
       return new RelationEndPointID(objectID, endPointDefinition);
@@ -56,9 +55,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public static RelationEndPointID Create (ObjectID objectID, Type declaringType, string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentNullException.ThrowIfNull(objectID);
+      ArgumentNullException.ThrowIfNull(declaringType);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
 
       return CreateViaPropertyAccessorData(
           objectID,
@@ -71,8 +70,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         Expression<Func<TDomainObject, TRelation>> propertyAccessExpression)
         where TDomainObject : DomainObject
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("propertyAccessExpression", propertyAccessExpression);
+      ArgumentNullException.ThrowIfNull(domainObject);
+      ArgumentNullException.ThrowIfNull(propertyAccessExpression);
 
       return CreateViaPropertyAccessorData(
           domainObject.ID,
@@ -82,7 +81,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public static RelationEndPointID CreateOpposite (IRelationEndPointDefinition sourceEndPointDefinition, ObjectID? oppositeObjectID)
     {
-      ArgumentUtility.CheckNotNull("sourceEndPointDefinition", sourceEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(sourceEndPointDefinition);
 
       var oppositeEndPointDefinition = sourceEndPointDefinition.GetOppositeEndPointDefinition();
       return Create(oppositeObjectID, oppositeEndPointDefinition);
@@ -114,7 +113,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public static IEnumerable<RelationEndPointID> GetAllRelationEndPointIDs (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       var endPointDefinitions = objectID.ClassDefinition.GetRelationEndPointDefinitions();
       return endPointDefinitions.Select(endPointDefinition => Create(objectID, endPointDefinition));

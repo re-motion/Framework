@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <inheritdoc />
     public bool Contains (string queryID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(queryID), queryID);
+      ArgumentException.ThrowIfNullOrEmpty(queryID);
 
       return _queryLookup.ContainsKey(queryID);
     }
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <inheritdoc />
     public QueryDefinition GetMandatory (string queryID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(queryID), queryID);
+      ArgumentException.ThrowIfNullOrEmpty(queryID);
 
       if (!_queryLookup.TryGetValue(queryID, out var queryDefinition))
         throw new QueryConfigurationException($"QueryDefinition '{queryID}' does not exist.");

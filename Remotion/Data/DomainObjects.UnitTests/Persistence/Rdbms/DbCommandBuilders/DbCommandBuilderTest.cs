@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 using Moq;
 using NUnit.Framework;
@@ -42,14 +42,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     public void AppendWhereClause ()
     {
       var statement = new StringBuilder();
-      var command = new Mock<IDbCommand>();
+      var command = new Mock<DbCommand>();
 
       var specificationMock = new Mock<IComparedColumnsSpecification>(MockBehavior.Strict);
       specificationMock.Setup(mock => mock.AddParameters(command.Object, _sqlDialectStub.Object)).Verifiable();
       specificationMock
           .Setup(mock => mock.AppendComparisons(statement, command.Object, _sqlDialectStub.Object))
           .Callback(
-              (StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect) =>
+              (StringBuilder statement, DbCommand command, ISqlDialect sqlDialect) =>
               {
                 Assert.That(statement.ToString(), Is.EqualTo(" WHERE "));
                 statement.Append("<conditions>");
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     public void AppendOrderByClause ()
     {
       var statement = new StringBuilder();
-      var command = new Mock<IDbCommand>();
+      var command = new Mock<DbCommand>();
 
       var specificationMock = new Mock<IOrderedColumnsSpecification>(MockBehavior.Strict);
       specificationMock.Setup(mock => mock.IsEmpty).Returns(false).Verifiable();

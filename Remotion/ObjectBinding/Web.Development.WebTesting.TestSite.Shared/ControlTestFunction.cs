@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Sample;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
@@ -39,7 +38,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
       get { return (string)Variables["UserControl"]; }
       set
       {
-        ArgumentUtility.CheckNotNullOrEmpty("UserControl", value);
+        ArgumentException.ThrowIfNullOrEmpty(value);
         Variables["UserControl"] = value;
       }
     }

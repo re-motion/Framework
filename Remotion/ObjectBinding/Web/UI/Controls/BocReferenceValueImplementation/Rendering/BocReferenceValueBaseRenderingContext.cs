@@ -19,7 +19,6 @@ using System.Web;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Services;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering
 {
@@ -38,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         [NotNull] BusinessObjectWebServiceContext businessObjectWebServiceContext)
         : base(httpContext, writer, control)
     {
-      ArgumentUtility.CheckNotNull("businessObjectWebServiceContext", businessObjectWebServiceContext);
+      ArgumentNullException.ThrowIfNull(businessObjectWebServiceContext);
 
       _businessObjectWebServiceContext = businessObjectWebServiceContext;
     }

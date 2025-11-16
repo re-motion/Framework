@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 {
@@ -27,14 +26,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
 
     public BocBooleanValueConstraintVisitor (BocBooleanValue control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(control);
 
       Control = control;
     }
 
     public void Visit (BusinessObjectPropertyValueRequiredConstraint constraint)
     {
-      ArgumentUtility.CheckNotNull("constraint", constraint);
+      ArgumentNullException.ThrowIfNull(constraint);
 
       ((IBusinessObjectBoundEditableWebControl)Control).RequiredByPropertyConstraint = constraint.IsRequired;
     }

@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 {
@@ -47,8 +46,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     public void Add (IRelationEndPointDefinition relationEndPointDefinition, IQuery fetchQuery)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("fetchQuery", fetchQuery);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(fetchQuery);
 
       if (_fetchQueries.ContainsKey(relationEndPointDefinition))
       {

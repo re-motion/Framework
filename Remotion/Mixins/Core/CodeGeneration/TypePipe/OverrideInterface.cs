@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -28,8 +27,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public OverrideInterface (Type type, Dictionary<MethodInfo, MethodInfo> interfaceMethodsByOverriddenMethods)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("interfaceMethodsByOverriddenMethods", interfaceMethodsByOverriddenMethods);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(interfaceMethodsByOverriddenMethods);
 
       _type = type;
       _interfaceMethodsByOverriddenMethods = interfaceMethodsByOverriddenMethods;

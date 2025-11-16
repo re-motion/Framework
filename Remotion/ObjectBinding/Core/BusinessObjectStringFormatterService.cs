@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.Text;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
@@ -102,8 +101,8 @@ namespace Remotion.ObjectBinding
     /// </exception>
     public string GetPropertyString (IBusinessObject businessObject, IBusinessObjectProperty property, string? format)
     {
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentNullException.ThrowIfNull(businessObject);
+      ArgumentNullException.ThrowIfNull(property);
 
       if (property.IsList)
       {

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands
 {
@@ -36,9 +35,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
         IRelationEndPointRegistrationAgent registrationAgent,
         RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull("virtualEndPoints", virtualEndPoints);
-      ArgumentUtility.CheckNotNull("registrationAgent", registrationAgent);
-      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
+      ArgumentNullException.ThrowIfNull(virtualEndPoints);
+      ArgumentNullException.ThrowIfNull(registrationAgent);
+      ArgumentNullException.ThrowIfNull(relationEndPointMap);
 
       _virtualEndPoints = virtualEndPoints.ToArray();
       _registrationAgent = registrationAgent;

@@ -110,6 +110,29 @@ class WxePage_Context
       // The lock remains alive until the page is reloaded using a GET-request or synchronous post-back.
       this.EstablishPageKeepAliveLock();
     }
+
+    if (!isAsynchronous)
+    {
+      // When child windows are closed they might trigger a postback/submit in the parent window
+      // Because the window is closing, any asynchronous work (e.g. submit) cannot be done in the child window
+      // or the action might not complete. This messaging setup allows child windows to send messages
+      // to the parent window just before they close, allowing the parent window to trigger the postback.
+      window.addEventListener("message", ev => {
+        // Ignore untrusted messages
+        if (ev.origin !== window.location.origin)
+          return;
+
+        const data = ev.data as {
+          type: "wxeDoPostBack" | "wxeDoSubmit";
+          args: string[]
+        };
+        if (data.type === "wxeDoPostBack") {
+          (window as any)["wxeDoPostBack"](...data.args);
+        } else if (data.type === "wxeDoSubmit") {
+          (window as any)["wxeDoSubmit"](...data.args);
+        }
+      });
+    }
   };
 
   // Handles the page loaded event.

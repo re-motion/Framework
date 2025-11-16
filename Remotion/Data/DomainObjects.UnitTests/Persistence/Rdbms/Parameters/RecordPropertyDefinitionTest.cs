@@ -39,7 +39,6 @@ public class RecordPropertyDefinitionTest
   [TestCase(42)]
   [TestCase(new byte[] { 1, 1, 2, 3, 5, 8, 13, 21 })]
   [TestCase(new char[] { 'c', 'h', 'a', 'r', 's' })]
-  [CLSCompliant(false)]
   public void Scalar_GetValue_ReturnsInput (object item)
   {
     var storagePropertyDefinition = SimpleStoragePropertyDefinitionObjectMother.CreateGuidStorageProperty("Test");

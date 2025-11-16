@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 {
@@ -27,7 +26,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public TenantConstraint (IDomainObjectHandle<Tenant> value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(value);
       _value = value;
     }
 

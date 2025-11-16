@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -118,21 +117,48 @@ namespace Remotion.Web.UnitTests.Core.Resources
     {
       using var folder = TempFolder.Create();
       folder.CreateFile("a.txt");
-      folder.CreateFile(@"Remotion.Web\b.txt");
-      folder.CreateFile(@"Remotion.Web\Html\file1.txt", "content", DateTime.FromFileTime(130000011111111111), DateTime.FromFileTime(130000022222222222));
-      folder.CreateFile(@"Remotion.Web\Html\sub\file2.txt", "abc", DateTime.FromFileTime(130000033333333333), DateTime.FromFileTime(130000044444444444));
-      folder.CreateFile(@"Remotion.Web\UI\c.txt");
-      folder.CreateFile(@"Remotion.Web\UI\sub\d.txt");
-      folder.CreateFile(@"Remotion.ObjectBinding.Web\Html\file3.txt", "defg", DateTime.FromFileTime(130000055555555555), DateTime.FromFileTime(130000066666666666));
-      folder.CreateFile(@"Remotion.ObjectBinding.Web\Html\a\b\c\d\file3.txt", "määääääähhh", DateTime.FromFileTime(130000077777777777), DateTime.FromFileTime(130000088888888888));
+      folder.CreateFile(Path.Combine("Remotion.Web", "b.txt"));
+      folder.CreateFile(
+          Path.Combine("Remotion.Web", "Html", "file1.txt"),
+          "content",
+          DateTime.FromFileTime(130000011111111111),
+          DateTime.FromFileTime(130000022222222222));
+      folder.CreateFile(
+          Path.Combine("Remotion.Web", "Html", "sub", "file2.txt"),
+          "abc",
+          DateTime.FromFileTime(130000033333333333),
+          DateTime.FromFileTime(130000044444444444));
+      folder.CreateFile(Path.Combine("Remotion.Web", "UI", "c.txt"));
+      folder.CreateFile(Path.Combine("Remotion.Web", "UI", "sub", "d.txt"));
+      folder.CreateFile(
+          Path.Combine("Remotion.ObjectBinding.Web", "Html", "file3.txt"),
+          "defg",
+          DateTime.FromFileTime(130000055555555555),
+          DateTime.FromFileTime(130000066666666666));
+      folder.CreateFile(
+          Path.Combine("Remotion.ObjectBinding.Web", "Html", "a", "b", "c", "d", "file3.txt"),
+          "määääääähhh",
+          DateTime.FromFileTime(130000077777777777),
+          DateTime.FromFileTime(130000088888888888));
 
       using var staticResourceCacheKeyProvider = new TestStaticResourceCacheKeyProvider(folder.FullName, new[] { ResourceType.Html });
 
-      var expectedCacheKey = CreateExpectedCacheKeyForEntries(
-          (@"Remotion.ObjectBinding.Web\Html\file3.txt", 4, 130000066666666666),
-          (@"Remotion.ObjectBinding.Web\Html\a\b\c\d\file3.txt", 18, 130000088888888888),
-          (@"Remotion.Web\Html\file1.txt", 7, 130000022222222222),
-          (@"Remotion.Web\Html\sub\file2.txt", 3, 130000044444444444));
+      var expectedCacheKeyEntries = new[]
+                                    {
+                                        (Path.Combine("Remotion.ObjectBinding.Web", "Html", "file3.txt"), 4L, 130000066666666666),
+                                        (Path.Combine("Remotion.ObjectBinding.Web", "Html", "a", "b", "c", "d", "file3.txt"), 18L, 130000088888888888),
+                                        (Path.Combine("Remotion.Web", "Html", "file1.txt"), 7L, 130000022222222222),
+                                        (Path.Combine("Remotion.Web", "Html", "sub", "file2.txt"), 3L, 130000044444444444)
+                                    };
+
+      if (!OperatingSystem.IsWindows())
+      {
+        // On Linux the order the files are listed is different so we need to reorder the entries
+        (expectedCacheKeyEntries[0], expectedCacheKeyEntries[2]) = (expectedCacheKeyEntries[2], expectedCacheKeyEntries[0]);
+        (expectedCacheKeyEntries[1], expectedCacheKeyEntries[3]) = (expectedCacheKeyEntries[3], expectedCacheKeyEntries[1]);
+      }
+
+      var expectedCacheKey = CreateExpectedCacheKeyForEntries(expectedCacheKeyEntries);
 
       var cacheKey = staticResourceCacheKeyProvider.GetStaticResourceCacheKey();
       Assert.That(cacheKey, Is.EqualTo(expectedCacheKey));
@@ -183,7 +209,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
           .Setup(_ => _.AppendResourceFolderDetails(It.IsAny<List<(string, long, long)>>(), folder.FullName, resourceTypes))
           .Callback(
               new Action<List<(string, long, long)>, string, IReadOnlyCollection<ResourceType>>(
-                  (entries, _, _) => { entries.Add(($"{folder.FullName}testFile.txt", 1, 3)); }));
+                  (entries, _, _) => { entries.Add((Path.Combine(folder.FullName, "testFile.txt"), 1, 3)); }));
 
       using var testStaticResourceCacheKeyProvider = new TestStaticResourceCacheKeyProvider(
           resourcesPhysicalPathLocatorMock.Object,
@@ -214,12 +240,12 @@ namespace Remotion.Web.UnitTests.Core.Resources
 
       Assert.That(testStaticResourceCacheKeyProvider.GetStaticResourceCacheKey(), Is.EqualTo(CreateExpectedCacheKeyForEntries()));
 
-      folder.CreateFile(@"Remotion.Web\Html\test.txt", "blabla", DateTime.FromFileTime(130000011111111111), DateTime.FromFileTime(130000022222222222));
+      folder.CreateFile(Path.Combine("Remotion.Web", "Html", "test.txt"), "blabla", DateTime.FromFileTime(130000011111111111), DateTime.FromFileTime(130000022222222222));
 
       WaitForCacheKeyChange(testStaticResourceCacheKeyProvider);
 
       var expectedCacheKey = CreateExpectedCacheKeyForEntries(
-          (@"Remotion.Web\Html\test.txt", 6, 130000022222222222));
+          (Path.Combine("Remotion.Web", "Html", "test.txt"), 6, 130000022222222222));
       Assert.That(testStaticResourceCacheKeyProvider.GetStaticResourceCacheKey(), Is.EqualTo(expectedCacheKey));
     }
 
@@ -271,7 +297,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
         if (!staticResourceCacheKeyProvider.HasCacheKey)
           return;
 
-        Thread.Sleep(20);
+        Thread.Sleep(50);
       }
 
       throw new InvalidOperationException($"Expected cache key to change but it did not change within the timeout.");

@@ -105,7 +105,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	        () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags>("arg", TestEnum.Value1),
 	        Throws.ArgumentException
 	            .With.ArgumentExceptionMessageEqualTo(
-	                "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
+	                "The value has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
 	                + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.", "arg"));
 	  }
 
@@ -156,7 +156,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	        () => ArgumentUtility.CheckValidEnumValueAndType<TestFlags>("arg", TestEnum.Value1),
 	        Throws.ArgumentException
 	            .With.ArgumentExceptionMessageEqualTo(
-	                "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
+	                "The value has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
 	                + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.", "arg"));
 	  }
 

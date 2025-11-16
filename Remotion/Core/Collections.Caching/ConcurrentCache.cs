@@ -134,7 +134,7 @@ namespace Remotion.Collections.Caching
 
     public ConcurrentCache ([JetBrains.Annotations.NotNull] IEqualityComparer<TKey> comparer)
     {
-      ArgumentUtility.CheckNotNull("comparer", comparer);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       _innerDictionary = new ConcurrentDictionary<TKey, SynchronizedValue>(comparer);
     }
@@ -150,7 +150,7 @@ namespace Remotion.Collections.Caching
     /// </returns>
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       return TryGetValueInternal(key, out value);
     }
@@ -165,8 +165,8 @@ namespace Remotion.Collections.Caching
     /// </returns>
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
-      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
+      ArgumentUtility.DebugCheckNotNull(nameof(valueFactory), valueFactory);
 
       // Implementation of ConcurrentDictionary.GetOrAdd(valueFactory) is already set up with TryGetValue() + GetOrAdd(value) if key-not-found.
       // By splitting the implementation to perform the calls to TryGetValue() and GetOrAdd(value) separately, 

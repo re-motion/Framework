@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Xml;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 {
@@ -29,8 +28,8 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
         PrefixNamespace[] configurationNamespaces)
         : base(document.NameTable)
     {
-      ArgumentUtility.CheckNotNull("document", document);
-      ArgumentUtility.CheckNotNull("configurationNamespaces", configurationNamespaces);
+      ArgumentNullException.ThrowIfNull(document);
+      ArgumentNullException.ThrowIfNull(configurationNamespaces);
 
       foreach (PrefixNamespace configurationNamespace in configurationNamespaces)
       {
@@ -51,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty("uri", uri);
+        ArgumentException.ThrowIfNullOrEmpty(uri);
 
         foreach (PrefixNamespace configurationNamespace in _configurationNamespaces)
         {
@@ -65,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 
     public string FormatXPath (string xPath, params string[] uris)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
+      ArgumentException.ThrowIfNullOrEmpty(xPath);
 
       string formattedXPath = xPath;
       for (int i = 0; i < uris.Length; i++)

@@ -56,10 +56,10 @@ namespace Remotion.Data.DomainObjects.Validation
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull("interfaceProperty", interfaceProperty);
-      ArgumentUtility.CheckNotNull("implementationProperty", implementationProperty);
-      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(interfaceProperty);
+      ArgumentNullException.ThrowIfNull(implementationProperty);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
 
       var interfacePropertyInformation = PropertyInfoAdapter.Create(interfaceProperty);
       var implementationPropertyInformation = PropertyInfoAdapter.Create(implementationProperty);
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Validation
                 "The property '{0}' was declared on type '{1}' but only interface declarations are supported when using mixin properties.",
                 interfacePropertyInformation.Name,
                 interfacePropertyInformation.DeclaringType.GetFullNameSafe()),
-            "interfaceProperty");
+            nameof(interfaceProperty));
       }
 
       if (!implementationPropertyInformation.IsOriginalDeclaration())
@@ -82,7 +82,7 @@ namespace Remotion.Data.DomainObjects.Validation
                 "The property '{0}' was used from the overridden declaration on type '{1}' but only original declarations are supported.",
                 implementationPropertyInformation.Name,
                 implementationPropertyInformation.DeclaringType!.GetFullNameSafe()),
-            "implementationProperty");
+            nameof(implementationProperty));
       }
 
       // TODO RM-5906: Replace with IPropertyInformation and propagate to call and callee-site
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public Func<object, object> GetValidatedPropertyFunc (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       // TODO RM-5906: Add cache, try to unify with ValidationAttributesBasedPropertyRuleReflector and AddingComponentPropertyRule
 
@@ -144,8 +144,8 @@ namespace Remotion.Data.DomainObjects.Validation
     [ReflectionAPI]
     private static bool UsePersistentProperty (DomainObject domainObject, PropertyInfo property)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentNullException.ThrowIfNull(domainObject);
+      ArgumentNullException.ThrowIfNull(property);
 
       if (!ReflectionUtility.IsRelationType(property.PropertyType))
         return true;

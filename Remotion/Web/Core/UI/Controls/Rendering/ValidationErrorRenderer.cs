@@ -20,7 +20,6 @@ using System.Linq;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 
 namespace Remotion.Web.UI.Controls.Rendering
@@ -42,7 +41,7 @@ namespace Remotion.Web.UI.Controls.Rendering
 
     public ValidationErrorRenderer ([NotNull] IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
 
       _renderingFeatures = renderingFeatures;
     }
@@ -52,9 +51,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentNullException.ThrowIfNull(attributeAccessor);
+      ArgumentException.ThrowIfNullOrEmpty(validationErrorID);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       if (!validationErrors.Any())
         return;
@@ -76,9 +75,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("attributeCollection", attributeCollection);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentNullException.ThrowIfNull(attributeCollection);
+      ArgumentException.ThrowIfNullOrEmpty(validationErrorID);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       if (!validationErrors.Any())
         return;
@@ -99,9 +98,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         string validationErrorID,
         IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentNullException.ThrowIfNull(htmlTextWriter);
+      ArgumentException.ThrowIfNullOrEmpty(validationErrorID);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       if (!validationErrors.Any())
         return;

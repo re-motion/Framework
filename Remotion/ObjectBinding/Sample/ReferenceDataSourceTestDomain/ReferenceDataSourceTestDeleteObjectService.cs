@@ -25,14 +25,14 @@ namespace Remotion.ObjectBinding.Sample.ReferenceDataSourceTestDomain
   {
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentNullException.ThrowIfNull(property);
       return typeof(ReferenceDataSourceTestDomainBase).IsAssignableFrom(property.PropertyType);
     }
 
     public void Delete (IBusinessObject referencingObject, IBusinessObjectReferenceProperty property, IBusinessObject value)
     {
-      ArgumentUtility.CheckNotNull("property", property);
-      ArgumentUtility.CheckNotNullAndType<ReferenceDataSourceTestDomainBase>("value", value);
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentUtility.CheckNotNullAndType<ReferenceDataSourceTestDomainBase>(nameof(value), value);
 
       // NOP
     }

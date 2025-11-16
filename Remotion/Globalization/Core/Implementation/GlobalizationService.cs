@@ -19,7 +19,6 @@ using System.Collections.Concurrent;
 using JetBrains.Annotations;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
@@ -39,7 +38,7 @@ namespace Remotion.Globalization.Implementation
 
     public GlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {
-      ArgumentUtility.CheckNotNull("resourceManagerResolver", resourceManagerResolver);
+      ArgumentNullException.ThrowIfNull(resourceManagerResolver);
 
       _resourceManagerResolver = resourceManagerResolver;
 
@@ -49,7 +48,7 @@ namespace Remotion.Globalization.Implementation
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentNullException.ThrowIfNull(typeInformation);
 
       return _resourceManagerCache.GetOrAdd(typeInformation, _getResourceManagerImplementationFunc);
     }

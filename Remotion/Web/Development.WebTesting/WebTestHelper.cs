@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
@@ -26,6 +25,7 @@ using OpenQA.Selenium.Support.UI;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies;
@@ -115,19 +115,19 @@ namespace Remotion.Web.Development.WebTesting
     private readonly IBrowserConfiguration _browserConfiguration;
     private readonly DriverConfiguration _driverConfiguration;
     private readonly ITestInfrastructureConfiguration _testInfrastructureConfiguration;
-    private readonly List<IBrowserSession> _browserSessions = new List<IBrowserSession>();
+    private readonly List<IBrowserSession> _browserSessions = new();
     private readonly IAccessibilityConfiguration _accessibilityConfiguration;
     private IBrowserSession? _mainBrowserSession;
 
     /// <summary>
     /// Name of the current web test.
     /// </summary>
-    private string? _testName;
+    private ITestContext? _testContext;
 
     [PublicAPI]
     protected WebTestHelper ([NotNull] WebTestConfigurationFactory webTestConfigurationFactory)
     {
-      ArgumentUtility.CheckNotNull("webTestConfigurationFactory", webTestConfigurationFactory);
+      ArgumentNullException.ThrowIfNull(webTestConfigurationFactory);
 
       _loggerFactory = webTestConfigurationFactory.LoggerFactory;
       _logger = _loggerFactory.CreateLogger<WebTestHelper>();
@@ -188,25 +188,30 @@ namespace Remotion.Web.Development.WebTesting
       _mainBrowserSession = CreateNewBrowserSession(windowSize, configurationOverride);
       _logger.LogInformation("Browser: {0}, version {1}", _mainBrowserSession.Driver.GetBrowserName(), _mainBrowserSession.Driver.GetBrowserVersion());
       _logger.LogInformation("WebDriver version: {0}", _mainBrowserSession.Driver.GetWebDriverVersion());
+    }
 
-      // Note: otherwise cursor could interfere with element hovering.
-      if (!_mainBrowserSession.Headless)
-        EnsureCursorIsOutsideBrowserWindow();
+    [Obsolete("Use OnSetUp(ITestContext) instead, using the implementation example given in the ITestContext documentation, or your own implementation. (Version: 8.0.0)", true)]
+    public void OnSetUp ([NotNull] string testName)
+    {
+      throw new NotSupportedException("Obsolete OnSetUp method.");
     }
 
     /// <summary>
     /// SetUp method for each web test.
     /// </summary>
-    /// <param name="testName">Name of the test being performed.</param>
-    public void OnSetUp ([NotNull] string testName)
+    /// <param name="testContext">An <see cref="ITestContext"/> object for the test being performed.</param>
+    public void OnSetUp ([NotNull] ITestContext testContext)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
+      ArgumentNullException.ThrowIfNull(testContext);
 
-      _testName = testName;
-      _logger.LogInformation("Executing test: {0}.", _testName);
+      _testContext = testContext;
+      _logger.LogInformation("Executing test: {0}.", _testContext.TestName);
 
       if (_mainBrowserSession != null)
+      {
+        _mainBrowserSession.ResetBrowserLogs();
         _logger.LogInformation("Current window title: {0}.", _mainBrowserSession.Window.Title);
+      }
     }
 
     /// <summary>
@@ -241,7 +246,7 @@ namespace Remotion.Web.Development.WebTesting
     public TPageObject CreateInitialPageObject<TPageObject> ([NotNull] IBrowserSession browser)
         where TPageObject : PageObject
     {
-      ArgumentUtility.CheckNotNull("browser", browser);
+      ArgumentNullException.ThrowIfNull(browser);
 
       return CreateInitialPageObject<TPageObject>(browser, _testInfrastructureConfiguration.RequestErrorDetectionStrategy);
     }
@@ -252,7 +257,7 @@ namespace Remotion.Web.Development.WebTesting
     public TPageObject CreateInitialPageObjectWithoutRequestErrorDetection<TPageObject> ([NotNull] IBrowserSession browser)
         where TPageObject : PageObject
     {
-      ArgumentUtility.CheckNotNull("browser", browser);
+      ArgumentNullException.ThrowIfNull(browser);
 
       return CreateInitialPageObject<TPageObject>(browser, new NullRequestErrorDetectionStrategy());
     }
@@ -290,27 +295,32 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// TearDown method for each web test.
     /// </summary>
-    /// <param name="hasSucceeded">Specifies whether the test has been successful.</param>
-    public void OnTearDown (bool hasSucceeded)
+    public void OnTearDown ()
     {
-      if (!hasSucceeded && ShouldTakeScreenshots())
+      Assertion.IsNotNull(_testContext, "'{0}' should be set by the test infrastructure calling '{1}'", nameof(_testContext), nameof(OnSetUp));
+
+      if (_testContext.IsSuccessful)
       {
-        Assertion.IsNotNull(_testName, "'{0}' should be set by the test infrastructure calling '{1}'", nameof(_testName), nameof(OnSetUp));
-        var screenshotRecorder = new TestExecutionScreenshotRecorder(_testInfrastructureConfiguration.ScreenshotDirectory, _loggerFactory);
-        screenshotRecorder.CaptureCursor();
-        if (_mainBrowserSession is { Headless: false })
-          screenshotRecorder.TakeDesktopScreenshot(_testName);
-        screenshotRecorder.TakeBrowserScreenshot(_testName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
+        foreach (var browserSession in _browserSessions)
+          BrowserLogUtility.IsBrowserLogOkay(browserSession, _browserConfiguration, _testContext);
       }
 
-      _logger.LogInformation("Finished test: {0} [has succeeded: {1}].", _testName, hasSucceeded);
+      if (!_testContext.IsSuccessful && ShouldTakeScreenshots())
+      {
+        var screenshotRecorder = new TestExecutionScreenshotRecorder(_testInfrastructureConfiguration.ScreenshotDirectory, _loggerFactory);
+        screenshotRecorder.CaptureCursor();
+        screenshotRecorder.TakeBrowserScreenshot(_testContext.TestName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
+      }
+
+      _logger.LogInformation("Finished test: {0} [has succeeded: {1}].", _testContext.TestName, _testContext.IsSuccessful);
 
       _browserConfiguration.DownloadHelper.DeleteFiles();
     }
 
+    [Obsolete("Taking desktop screenshots is no longer supported. See RM-9455. (Version 8.0.0)", error: true)]
     public ScreenshotBuilder CreateDesktopScreenshot ()
     {
-      return new ScreenshotBuilder(Screenshot.TakeDesktopScreenshot(), BrowserConfiguration.Locator, _loggerFactory);
+      throw new NotSupportedException("Taking desktop screenshots is no longer supported. See RM-9455.");
     }
 
     public ScreenshotBuilder CreateBrowserScreenshot (IBrowserSession? browserSession = null)
@@ -345,7 +355,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public void CheckPageForError ([NotNull] PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       context.RequestErrorDetectionStrategy.CheckPageForError(context.Scope);
     }
@@ -361,11 +371,6 @@ namespace Remotion.Web.Development.WebTesting
         return;
 
       ProcessUtils.KillAllProcessesWithName(browserProcessName, _logger);
-    }
-
-    private void EnsureCursorIsOutsideBrowserWindow ()
-    {
-      Cursor.Position = new Point(0, 0);
     }
 
     private DriverConfiguration MergeDriverConfiguration (DriverConfiguration configuration, DriverConfigurationOverride? configurationOverride)
@@ -387,7 +392,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>Initialized instance of AccessibilityAnalyzer</returns>
     public AccessibilityAnalyzer CreateAccessibilityAnalyzer ([NotNull] IBrowserSession browserSession)
     {
-      ArgumentUtility.CheckNotNull("browserSession", browserSession);
+      ArgumentNullException.ThrowIfNull(browserSession);
 
       return AccessibilityAnalyzer.CreateForWebDriver(
           (IWebDriver)browserSession.Driver.Native,

@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="name">The name. Must not be <see langword="null" /> or empty.</param>
     public DBColumnAttribute (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
       _name = name;
     }
 

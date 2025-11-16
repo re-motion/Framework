@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -109,7 +108,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem(itemID)";
 
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
@@ -127,7 +126,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithItemID";
 
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
@@ -161,7 +160,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithHtmlID";
 
-      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
+      ArgumentException.ThrowIfNullOrEmpty(htmlID);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
@@ -179,7 +178,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithDisplayText";
 
-      ArgumentUtility.CheckNotNullOrEmpty("displayText", displayText);
+      ArgumentException.ThrowIfNullOrEmpty(displayText);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);
@@ -199,7 +198,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     {
       const string operationName = "SelectItem.WithDisplayTextContains";
 
-      ArgumentUtility.CheckNotNullOrEmpty("containsDisplayText", containsDisplayText);
+      ArgumentException.ThrowIfNullOrEmpty(containsDisplayText);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: operationName);

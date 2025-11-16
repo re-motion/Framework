@@ -22,7 +22,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Security;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
@@ -36,7 +35,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.Web.UI.Controls
 {
   /// <summary> A <c>Button</c> using <c>&amp;</c> as access key prefix in <see cref="Button.Text"/>. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\WebButton.xml' path='WebButton/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/WebButton.xml' path='WebButton/Class/*' />
   [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
   public class WebButton
       :
@@ -123,7 +122,7 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      ArgumentUtility.CheckNotNull("postCollection", postCollection);
+      ArgumentNullException.ThrowIfNull(postCollection);
 
       string? eventTarget = postCollection[ControlHelper.PostEventSourceID];
       bool isScriptedPostBack = !string.IsNullOrEmpty(eventTarget);
@@ -204,14 +203,11 @@ namespace Remotion.Web.UI.Controls
 
         if (!string.IsNullOrEmpty(onClick))
           writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
-
-        writer.AddAttribute("onmousedown", "WebButton.MouseDown (this, '" + CssClassMouseDown + "');");
-        writer.AddAttribute("onmouseup", "WebButton.MouseUp (this, '" + CssClassMouseDown + "');");
-        writer.AddAttribute("onmouseout", "WebButton.MouseOut (this, '" + CssClassMouseDown + "');");
       }
 
 
       _options = base.GetPostBackOptions();
+      _options.ActionUrl = null!;
       _options.ClientSubmit = false;
       _options.PerformValidation = false;
       _options.AutoPostBack = false;
@@ -346,7 +342,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentNullException.ThrowIfNull(resourceManager);
 
       //  Dispatch simple properties
       string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
@@ -596,18 +592,6 @@ namespace Remotion.Web.UI.Controls
     public virtual string CssClassSupplemental
     {
       get { return CssClassDefinition.ButtonTypeSupplemental; }
-    }
-
-    /// <summary> Gets the CSS-Class applied when the section is empty. </summary>
-    /// <remarks> 
-    ///   <para> Class: <c>mouseDown</c>. </para>
-    ///   <para> 
-    ///     Applied in addition to the regular CSS-Class. Use <c>a.webButton.mouseDown</c>as a selector.
-    ///   </para>
-    /// </remarks>
-    protected virtual string CssClassMouseDown
-    {
-      get { return "mouseDown"; }
     }
 
     #endregion

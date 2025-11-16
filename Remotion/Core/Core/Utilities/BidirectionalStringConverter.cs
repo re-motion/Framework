@@ -101,7 +101,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
   public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
   {
-    ArgumentUtility.CheckNotNull("destinationType", destinationType);
+    ArgumentNullException.ThrowIfNull(destinationType);
 
     if (value == null)
       value = string.Empty;

@@ -22,7 +22,6 @@ using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Utilities;
 
 
 namespace Remotion.SecurityManager.AclTools.Expansion
@@ -63,7 +62,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     /// <param name="userRoleAclAceCombinationFinder"></param>
     public AclExpander (IUserRoleAclAceCombinationFinder userRoleAclAceCombinationFinder)
     {
-      ArgumentUtility.CheckNotNull("userRoleAclAceCombinationFinder", userRoleAclAceCombinationFinder);
+      ArgumentNullException.ThrowIfNull(userRoleAclAceCombinationFinder);
       _userRoleAclAceCombinationFinder = userRoleAclAceCombinationFinder;
     }
 

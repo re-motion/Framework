@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -45,12 +43,12 @@ namespace Remotion.SecurityManager.UnitTests
   {
     public static string TestDomainConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=RemotionSecurityManager"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("RemotionSecurityManager"); }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("master"); }
     }
 
     [OneTimeSetUp]

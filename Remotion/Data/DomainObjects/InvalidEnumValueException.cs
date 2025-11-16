@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -32,9 +31,9 @@ namespace Remotion.Data.DomainObjects
     public InvalidEnumValueException (string message, string propertyName, Type propertyType, object invalidValue)
         : base(message)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("message", message);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentException.ThrowIfNullOrEmpty(message);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
+      ArgumentNullException.ThrowIfNull(propertyType);
 
       _propertyName = propertyName;
       _underlyingPropertyType = propertyType;

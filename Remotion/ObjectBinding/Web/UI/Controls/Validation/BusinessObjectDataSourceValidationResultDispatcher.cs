@@ -4,7 +4,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
@@ -12,7 +11,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
   {
     public static void DispatchValidationResultForBoundControls (IBusinessObjectDataSourceControl dataSource, IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull("validationResult", validationResult);
+      ArgumentNullException.ThrowIfNull(validationResult);
 
       var allControlsInsideNamingContainer = EnumerableUtility.SelectRecursiveDepthFirst(
           dataSource.NamingContainer,

@@ -79,7 +79,7 @@ namespace Remotion.ExtensibleEnums
     /// for this <see cref="ExtensibleEnumDefinition{T}"/>.</param>
     public ExtensibleEnumDefinition (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull("valueDiscoveryService", valueDiscoveryService);
+      ArgumentNullException.ThrowIfNull(valueDiscoveryService);
 
       _valueDiscoveryService = valueDiscoveryService;
       _cache = new DoubleCheckedLockingContainer<CacheItem>(RetrieveValues);
@@ -94,14 +94,14 @@ namespace Remotion.ExtensibleEnums
     /// <inheritdoc />
     public bool IsDefined (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
       return _cache.Value.Dictionary.ContainsKey(id);
     }
 
     /// <inheritdoc />
     public bool IsDefined (IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(value);
       return value.GetEnumType() == GetEnumType() && IsDefined(value.ID);
     }
 
@@ -124,7 +124,7 @@ namespace Remotion.ExtensibleEnums
     /// <exception cref="KeyNotFoundException">No enum value with the given <paramref name="id"/> exists.</exception>
     public ExtensibleEnumInfo<T> GetValueInfoByID (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
 
       ExtensibleEnumInfo<T>? value;
       if (TryGetValueInfoByID(id, out value))
@@ -150,7 +150,7 @@ namespace Remotion.ExtensibleEnums
     /// </returns>
     public bool TryGetValueInfoByID (string id, [MaybeNullWhen(false)] out ExtensibleEnumInfo<T> value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
 
       return _cache.Value.Dictionary.TryGetValue(id, out value);
     }
@@ -158,7 +158,7 @@ namespace Remotion.ExtensibleEnums
     /// <inheritdoc />
     public object[] GetCustomAttributes (Type attributeType)
     {
-      ArgumentUtility.CheckNotNull("attributeType", attributeType);
+      ArgumentNullException.ThrowIfNull(attributeType);
 
       var extensionTypes = (from info in GetValueInfos()
                            select info.DefiningMethod.DeclaringType).Distinct();

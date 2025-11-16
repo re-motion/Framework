@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Utilities;
+using System;
 
 namespace Remotion.ObjectBinding.Sample
 {
@@ -24,7 +24,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory (string objectPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("objectPath", objectPath);
+      ArgumentException.ThrowIfNullOrEmpty(objectPath);
 
       _objectPath = objectPath;
     }

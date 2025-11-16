@@ -40,8 +40,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public AccessType[] GetAccessTypes (IDomainObjectHandle<AccessControlList> aclHandle, SecurityToken token)
     {
-      ArgumentUtility.CheckNotNull("aclHandle", aclHandle);
-      ArgumentUtility.CheckNotNull("token", token);
+      ArgumentNullException.ThrowIfNull(aclHandle);
+      ArgumentNullException.ThrowIfNull(token);
 
       using (SecurityFreeSection.Activate())
       {

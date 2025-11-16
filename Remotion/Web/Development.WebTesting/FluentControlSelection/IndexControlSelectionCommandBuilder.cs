@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Remotion.Utilities;
+using System;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 
 namespace Remotion.Web.Development.WebTesting.FluentControlSelection
@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new IndexControlSelectionCommand<TControlObject>(controlSelector, _oneBasedIndex);
     }
@@ -49,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new IndexControlSelectionCommand<TControlObject>(controlSelector, _oneBasedIndex);
     }
@@ -57,7 +57,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new IndexControlSelectionCommand<TControlObject>(controlSelector, _oneBasedIndex);
     }

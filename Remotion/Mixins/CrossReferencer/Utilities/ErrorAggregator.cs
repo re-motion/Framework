@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Utilities
 {
@@ -27,7 +26,7 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 
     public void AddException (TException exception)
     {
-      ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentNullException.ThrowIfNull(exception);
 
       _exceptionList.Add(exception);
     }

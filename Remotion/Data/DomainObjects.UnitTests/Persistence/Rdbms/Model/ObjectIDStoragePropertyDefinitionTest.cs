@@ -15,9 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -38,9 +39,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     private ObjectIDStoragePropertyDefinition _objectIDStoragePropertyDefinition;
 
     private Mock<IColumnValueProvider> _columnValueProviderStub;
-    private Mock<IDbDataParameter> _dbDataParameter1Stub;
-    private Mock<IDbDataParameter> _dbDataParameter2Stub;
-    private Mock<IDbCommand> _dbCommandStub;
+    private Mock<DbParameter> _dbDataParameter1Stub;
+    private Mock<DbParameter> _dbDataParameter2Stub;
+    private Mock<DbCommand> _dbCommandStub;
 
     public override void SetUp ()
     {
@@ -54,11 +55,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       _objectIDStoragePropertyDefinition = new ObjectIDStoragePropertyDefinition(_valuePropertyStub.Object, _classIDPropertyStub.Object);
 
       _columnValueProviderStub = new Mock<IColumnValueProvider>();
-      _dbCommandStub = new Mock<IDbCommand>();
-      _dbDataParameter1Stub = new Mock<IDbDataParameter>();
-      _dbDataParameter2Stub = new Mock<IDbDataParameter>();
-      _dbCommandStub.Setup(stub => stub.CreateParameter()).Returns(_dbDataParameter1Stub.Object);
-      _dbCommandStub.Setup(stub => stub.CreateParameter()).Returns(_dbDataParameter2Stub.Object);
+      _dbCommandStub = new Mock<DbCommand>();
+      _dbDataParameter1Stub = new Mock<DbParameter>();
+      _dbDataParameter2Stub = new Mock<DbParameter>();
+      _dbCommandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(_dbDataParameter1Stub.Object);
+      _dbCommandStub.Protected().Setup<DbParameter>("CreateDbParameter").Returns(_dbDataParameter2Stub.Object);
     }
 
     [Test]

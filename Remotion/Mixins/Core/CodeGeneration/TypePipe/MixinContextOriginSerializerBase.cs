@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Remotion.Mixins.Context.Serialization;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -49,7 +48,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_kind))]
     public void AddKind (string kind)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("kind", kind);
+      ArgumentException.ThrowIfNullOrEmpty(kind);
 
       _kind = kind;
     }
@@ -57,7 +56,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_assembly))]
     public void AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       _assembly = assembly;
     }
@@ -65,7 +64,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     [MemberNotNull(nameof(_locaction))]
     public void AddLocation (string location)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("location", location);
+      ArgumentException.ThrowIfNullOrEmpty(location);
 
       _locaction = location;
     }

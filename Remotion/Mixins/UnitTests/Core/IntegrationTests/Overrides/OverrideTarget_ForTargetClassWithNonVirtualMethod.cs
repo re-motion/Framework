@@ -18,11 +18,14 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
         Assert.That(
             () => ObjectFactory.Create<C>(),
             Throws.TypeOf<ValidationException>().With.Message.EqualTo(
-                "Some parts of the mixin configuration could not be validated.\r\n"
-                + "MethodDefinition 'Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C.M', 6 rules executed\r\n"
-                + "Context: Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C\r\n"
-                + "  failures - 1\r\n"
-                + "    An overridden method is not declared virtual. (Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual)\r\n"));
+                """
+                Some parts of the mixin configuration could not be validated.
+                MethodDefinition 'Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C.M', 6 rules executed
+                Context: Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C
+                  failures - 1
+                    An overridden method is not declared virtual. (Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual)
+
+                """.ReplaceLineEndings()));
       }
     }
 
@@ -37,11 +40,14 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
         Assert.That(
             () => ObjectFactory.Create<D>(),
             Throws.TypeOf<ValidationException>().With.Message.EqualTo(
-                "Some parts of the mixin configuration could not be validated.\r\n"
-                + "MethodDefinition 'Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C.M', 6 rules executed\r\n"
-                + "Context: Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+D\r\n"
-                + "  failures - 1\r\n"
-                + "    An overridden method is not declared virtual. (Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual)\r\n"));
+                """
+                Some parts of the mixin configuration could not be validated.
+                MethodDefinition 'Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C.M', 6 rules executed
+                Context: Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+D
+                  failures - 1
+                    An overridden method is not declared virtual. (Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual)
+
+                """.ReplaceLineEndings()));
       }
     }
 
@@ -57,11 +63,14 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
         Assert.That(
             () => ObjectFactory.Create<C_Shadow>(),
             Throws.TypeOf<ValidationException>().With.Message.EqualTo(
-                "Some parts of the mixin configuration could not be validated.\r\n"
-                + "MethodDefinition 'Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C.M', 6 rules executed\r\n"
-                + "Context: Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C\r\n"
-                + "  failures - 1\r\n"
-                + "    An overridden method is not declared virtual. (Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual)\r\n"));
+                """
+                Some parts of the mixin configuration could not be validated.
+                MethodDefinition 'Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C.M', 6 rules executed
+                Context: Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C
+                  failures - 1
+                    An overridden method is not declared virtual. (Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual)
+
+                """.ReplaceLineEndings()));
       }
     }
 
@@ -77,11 +86,14 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
         Assert.That(
             () => ObjectFactory.Create<D_Shadow>(),
             Throws.TypeOf<ValidationException>().With.Message.EqualTo(
-                "Some parts of the mixin configuration could not be validated.\r\n"
-                + "MethodDefinition 'Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C.M', 6 rules executed\r\n"
-                + "Context: Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+D\r\n"
-                + "  failures - 1\r\n"
-                + "    An overridden method is not declared virtual. (Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual)\r\n"));
+                """
+                Some parts of the mixin configuration could not be validated.
+                MethodDefinition 'Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+C.M', 6 rules executed
+                Context: Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides.OverrideTarget_ForTargetClassWithNonVirtualMethod+D
+                  failures - 1
+                    An overridden method is not declared virtual. (Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverriddenMethodMustBeVirtual)
+
+                """.ReplaceLineEndings()));
       }
     }
 

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute
 {
@@ -32,7 +31,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     public override void ExecuteSubFunction (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       Parameters.SubFunction.Execute(context);
       ExecutionStateContext.SetExecutionState(new PostProcessingSubFunctionState(ExecutionStateContext, Parameters));

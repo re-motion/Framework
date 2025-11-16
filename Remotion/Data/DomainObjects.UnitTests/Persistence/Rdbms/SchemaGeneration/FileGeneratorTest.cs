@@ -54,8 +54,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     [Test]
     public void WriteScriptsToDisk_IncludeStorageProviderNameIsTrue ()
     {
-      var setupFileName = @"TestOutputPath\SetupDB_SchemaGenerationFirstStorageProvider.sql";
-      var tearDownFileName = @"TestOutputPath\TearDownDB_SchemaGenerationFirstStorageProvider.sql";
+      var setupFileName = @"TestOutputPath/SetupDB_SchemaGenerationFirstStorageProvider.sql";
+      var tearDownFileName = @"TestOutputPath/TearDownDB_SchemaGenerationFirstStorageProvider.sql";
 
       _fileGenerator.WriteScriptsToDisk(_script, true);
 
@@ -68,8 +68,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     [Test]
     public void WriteScriptsToDisk_IncludeStorageProviderNameIsFalse ()
     {
-      var setupFileName = @"TestOutputPath\SetupDB.sql";
-      var tearDownFileName = @"TestOutputPath\TearDownDB.sql";
+      var setupFileName = @"TestOutputPath/SetupDB.sql";
+      var tearDownFileName = @"TestOutputPath/TearDownDB.sql";
 
       _fileGenerator.WriteScriptsToDisk(_script, false);
 

@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using System.Text;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
@@ -34,7 +33,7 @@ namespace Remotion.Validation.Implementation
 
     public DiagnosticInformationValidatorFormatterDecorator (IValidatorFormatter fallBackValidatorFormatter)
     {
-      ArgumentUtility.CheckNotNull("fallBackValidatorFormatter", fallBackValidatorFormatter);
+      ArgumentNullException.ThrowIfNull(fallBackValidatorFormatter);
 
       _fallBackValidatorFormatter = fallBackValidatorFormatter;
     }
@@ -46,8 +45,8 @@ namespace Remotion.Validation.Implementation
 
     public string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter)
     {
-      ArgumentUtility.CheckNotNull("validator", validator);
-      ArgumentUtility.CheckNotNull("typeNameFormatter", typeNameFormatter);
+      ArgumentNullException.ThrowIfNull(validator);
+      ArgumentNullException.ThrowIfNull(typeNameFormatter);
 
       var validatorType = validator.GetType();
       var typeName = typeNameFormatter(validatorType);

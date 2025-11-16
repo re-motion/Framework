@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjectEndPoints
 {
@@ -36,16 +35,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public void Synchronize (IRealObjectEndPoint endPoint, IVirtualEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       oppositeEndPoint.SynchronizeOppositeEndPoint(endPoint);
     }
 
     public IDataManagementCommand CreateDeleteCommand (IRealObjectEndPoint endPoint, Action oppositeObjectNullSetter)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeObjectNullSetter", oppositeObjectNullSetter);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(oppositeObjectNullSetter);
 
       throw new InvalidOperationException(
           string.Format(
@@ -59,8 +58,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, DomainObject? newRelatedObject, Action<DomainObject> oppositeObjectIDSetter)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("oppositeObjectIDSetter", oppositeObjectIDSetter);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(oppositeObjectIDSetter);
 
       throw new InvalidOperationException(
           string.Format(

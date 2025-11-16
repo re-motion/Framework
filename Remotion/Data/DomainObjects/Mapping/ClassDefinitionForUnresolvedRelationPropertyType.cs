@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
@@ -36,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Mapping
                     new PersistentMixinFinder(classType),
                     new ThrowingDomainObjectCreator())
     {
-        ArgumentUtility.CheckNotNull("relationProperty", relationProperty);
+        ArgumentNullException.ThrowIfNull(relationProperty);
 
         _relationProperty = relationProperty;
     }

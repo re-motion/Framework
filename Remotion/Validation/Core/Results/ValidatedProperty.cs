@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Results
 {
@@ -32,8 +32,8 @@ namespace Remotion.Validation.Results
 
     public ValidatedProperty (object @object, IPropertyInformation property, object? validatedPropertyValue = null)
     {
-      ArgumentUtility.CheckNotNull("object", @object);
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentNullException.ThrowIfNull(@object);
+      ArgumentNullException.ThrowIfNull(property);
 
       Object = @object;
       Property = property;

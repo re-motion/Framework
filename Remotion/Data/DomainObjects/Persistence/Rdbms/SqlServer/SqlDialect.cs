@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 {
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 
     public virtual string GetParameterName (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       if (name.StartsWith("@"))
         return name;
@@ -48,16 +48,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer
 
     public virtual string DelimitIdentifier (string identifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("identifier", identifier);
+      ArgumentException.ThrowIfNullOrEmpty(identifier);
 
       return "[" + identifier + "]";
     }
 
-    public IDbDataParameter CreateDataParameter (IDbCommand command, IStorageTypeInformation storageTypeInformation, string parameterName, object? value)
+    public DbParameter CreateDataParameter (DbCommand command, IStorageTypeInformation storageTypeInformation, string parameterName, object? value)
     {
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("storageTypeInformation", storageTypeInformation);
-      ArgumentUtility.CheckNotNullOrEmpty("parameterName", parameterName);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(storageTypeInformation);
+      ArgumentException.ThrowIfNullOrEmpty(parameterName);
 
       var convertedValue = storageTypeInformation.ConvertToStorageType(value);
 

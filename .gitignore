@@ -195,6 +195,9 @@ remotion.snk
 # Named
 GitExtensions.settings.backup
 
+# Nuke Build
+.nuke/temp/
+
 # re-motion
 Remotion/ObjectBinding/Web.Test/log-data/
 

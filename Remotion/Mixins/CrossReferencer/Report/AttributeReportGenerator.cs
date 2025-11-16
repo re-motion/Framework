@@ -41,11 +41,11 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IOutputFormatter outputFormatter
     )
     {
-      ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
-      ArgumentUtility.CheckNotNull("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
+      ArgumentNullException.ThrowIfNull(involvedTypes);
+      ArgumentNullException.ThrowIfNull(assemblyIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(involvedTypeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(attributeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(outputFormatter);
 
       _involvedTypes = involvedTypes;
       _assemblyIdentifierGenerator = assemblyIdentifierGenerator;

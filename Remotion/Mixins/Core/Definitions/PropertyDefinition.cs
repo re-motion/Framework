@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -70,7 +69,7 @@ namespace Remotion.Mixins.Definitions
             SetMethod.Base = _base == null ? null : _base.SetMethod;
         }
         else
-          throw new ArgumentException("Base must be PropertyDefinition or null.", "value");
+          throw new ArgumentException("Base must be PropertyDefinition or null.", nameof(value));
       }
     }
 
@@ -82,7 +81,7 @@ namespace Remotion.Mixins.Definitions
 
     internal override void AddOverride (MemberDefinitionBase member)
     {
-      ArgumentUtility.CheckNotNull("member", member);
+      ArgumentNullException.ThrowIfNull(member);
 
       var overrider = member as PropertyDefinition;
       if (overrider == null)
@@ -101,7 +100,7 @@ namespace Remotion.Mixins.Definitions
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
 
       if (GetMethod != null)

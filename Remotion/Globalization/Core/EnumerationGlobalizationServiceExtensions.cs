@@ -18,7 +18,6 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
@@ -47,8 +46,8 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(enumerationGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result))
         return result;
@@ -79,8 +78,8 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(enumerationGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result))
         return result;
@@ -102,8 +101,8 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(enumerationGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       return enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result);
     }

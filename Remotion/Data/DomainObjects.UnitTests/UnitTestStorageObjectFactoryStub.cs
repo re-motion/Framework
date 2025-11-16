@@ -40,22 +40,22 @@ public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
 {
   public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
   {
-    ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-    ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+    ArgumentNullException.ThrowIfNull(persistenceExtension);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
     var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
-        "storageProviderDefinition",
+        nameof(storageProviderDefinition),
         storageProviderDefinition);
     return new UnitTestStorageProviderStub();
   }
 
   public IReadOnlyStorageProvider CreateReadOnlyStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
   {
-    ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
-    ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+    ArgumentNullException.ThrowIfNull(persistenceExtension);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
     var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
-        "storageProviderDefinition",
+        nameof(storageProviderDefinition),
         storageProviderDefinition);
     return new UnitTestStorageProviderStub();
   }
@@ -63,7 +63,7 @@ public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
   public IPersistenceModelLoader CreatePersistenceModelLoader (
       StorageProviderDefinition storageProviderDefinition)
   {
-    ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinition);
 
     var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
     var dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();

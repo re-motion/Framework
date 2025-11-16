@@ -38,5 +38,10 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// Used with Kestrel-based hosting.
     /// </summary>
     string? ProcessPath { get; }
+
+    /// <summary>
+    /// Gets the arguments passed to the test site's executable.
+    /// </summary>
+    string? ProcessArguments { get; }
   }
 }

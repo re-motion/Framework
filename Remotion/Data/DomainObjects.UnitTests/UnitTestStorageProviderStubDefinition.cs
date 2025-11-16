@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -39,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public override bool IsIdentityTypeSupported (Type identityType)
     {
-      ArgumentUtility.CheckNotNull("identityType", identityType);
+      ArgumentNullException.ThrowIfNull(identityType);
 
       // UnitTestStorageProviderStubDefinition supports all identity types for testing purposes.
       return true;

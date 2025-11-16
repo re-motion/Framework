@@ -16,7 +16,6 @@
 //
 using System;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
 
@@ -32,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI
     /// </summary>
     public static void RegisterObjectBindingWebClientScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull(nameof(htmlHeadAppender), htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       htmlHeadAppender.RegisterWebClientScriptInclude();
 

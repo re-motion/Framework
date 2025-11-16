@@ -59,7 +59,7 @@ namespace Remotion.Reflection
 
     public static FuncInvoker<TMinimal> CreateInstance<TMinimal> (Type type)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(TMinimal));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(TMinimal));
       return new FuncInvoker<TMinimal>(new ConstructorLookupInfo(type).GetDelegate);
     }
 
@@ -70,7 +70,7 @@ namespace Remotion.Reflection
 
     public static FuncInvoker<TMinimal> CreateInstance<TMinimal> (Type type, BindingFlags bindingFlags)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(TMinimal));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(TMinimal));
       return new FuncInvoker<TMinimal>(new ConstructorLookupInfo(type, bindingFlags).GetDelegate);
     }
 
@@ -83,7 +83,7 @@ namespace Remotion.Reflection
     public static FuncInvoker<TMinimal> CreateInstance<TMinimal> (
         Type type, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(TMinimal));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(TMinimal));
       return new FuncInvoker<TMinimal>(new ConstructorLookupInfo(type, bindingFlags, binder, callingConvention, parameterModifiers).GetDelegate);
     }
   }

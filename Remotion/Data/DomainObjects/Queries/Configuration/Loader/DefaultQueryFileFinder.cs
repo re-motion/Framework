@@ -30,12 +30,12 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
   [ImplementationFor(typeof(IQueryFileFinder), Position = 0, RegistrationType = RegistrationType.Multiple)]
   public class DefaultQueryFileFinder : IQueryFileFinder
   {
-    private const string c_defaultConfigurationFile = "queries.xml";
+    private const string c_defaultConfigurationFile = "Queries.xml";
     private readonly string _queryFile;
 
     public DefaultQueryFileFinder (IAppContextProvider appContextProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(appContextProvider), appContextProvider);
+      ArgumentNullException.ThrowIfNull(appContextProvider);
 
       _queryFile = Path.Combine(appContextProvider.BaseDirectory, c_defaultConfigurationFile);
     }

@@ -32,6 +32,21 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Shared
       MyHtmlAnchor.ServerClick += ServerClick;
     }
 
+    protected override void OnPreRender (EventArgs e)
+    {
+      base.OnPreRender(e);
+      ClientScript.RegisterStartupScriptBlock(
+          this,
+          typeof(AnchorTest),
+          "AddOnClickEvent",
+          """
+          document.getElementById('body_MyHtmlAnchorWithJavaScriptLink')
+            .addEventListener('click', function(){
+              document.getElementById('TestOutputLabel').innerText = 'MyHtmlAnchorWithJavaScriptLink';
+            });
+          """);
+    }
+
     private void Command (object sender, CommandEventArgs e)
     {
       ((Layout)Master).SetTestOutput(((Control)sender).ID + "|" + e.CommandName);

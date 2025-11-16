@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
@@ -42,8 +41,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IBocListValidationSummaryRenderer validationSummaryRenderer)
         : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(infrastructureResourceUrlFactory), infrastructureResourceUrlFactory);
-      ArgumentUtility.CheckNotNull(nameof(validationSummaryRenderer), validationSummaryRenderer);
+      ArgumentNullException.ThrowIfNull(infrastructureResourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(validationSummaryRenderer);
 
       _infrastructureResourceUrlFactory = infrastructureResourceUrlFactory;
       _validationSummaryRenderer = validationSummaryRenderer;
@@ -66,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     protected override void RenderCellContents (BocColumnRenderingContext<BocValidationErrorIndicatorColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingContext), renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       var bocListValidationFailureRepository = renderingContext.Control.ValidationFailureRepository;
       var validationFailures = bocListValidationFailureRepository.GetUnhandledValidationFailuresForDataRowAndContainingDataCells(arguments.BusinessObject, false);

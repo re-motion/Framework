@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Utilities
 {
@@ -28,8 +27,8 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 
     public ReadonlyIdentifierGenerator (IIdentifierGenerator<T> identifierGenerator, string defaultValue)
     {
-      ArgumentUtility.CheckNotNull("identifierGenerator", identifierGenerator);
-      ArgumentUtility.CheckNotNull("defaultValue", defaultValue);
+      ArgumentNullException.ThrowIfNull(identifierGenerator);
+      ArgumentNullException.ThrowIfNull(defaultValue);
 
       _identifierGenerator = identifierGenerator;
       _defaultValue = defaultValue;

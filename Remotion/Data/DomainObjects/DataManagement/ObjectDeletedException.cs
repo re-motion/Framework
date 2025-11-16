@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
@@ -49,7 +48,7 @@ public class ObjectDeletedException : DomainObjectException
 
   public ObjectDeletedException (string message, ObjectID id) : base(message)
   {
-    ArgumentUtility.CheckNotNull("id", id);
+    ArgumentNullException.ThrowIfNull(id);
 
     _id = id;
   }

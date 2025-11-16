@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     public bool CanRead (IBusinessObject? businessObject, PropertyBase bindableProperty)
     {
       // businessObject can be null
-      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
+      ArgumentUtility.DebugCheckNotNull(nameof(bindableProperty), bindableProperty);
 
       var domainObject = businessObject as DomainObject;
       if (domainObject == null)
@@ -132,9 +132,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         Exception exception,
         [MaybeNullWhen(false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
-      ArgumentUtility.DebugCheckNotNull("businessObject", businessObject);
-      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
-      ArgumentUtility.DebugCheckNotNull("exception", exception);
+      ArgumentUtility.DebugCheckNotNull(nameof(businessObject), businessObject);
+      ArgumentUtility.DebugCheckNotNull(nameof(bindableProperty), bindableProperty);
+      ArgumentUtility.DebugCheckNotNull(nameof(exception), exception);
 
       var isPropertyAccessException = exception is ObjectInvalidException
                                       || exception is ObjectDeletedException
@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
       if (isPropertyAccessException && businessObject is DomainObject)
       {
-        ArgumentUtility.CheckNotNull("bindableProperty", bindableProperty);
+        ArgumentNullException.ThrowIfNull(bindableProperty);
 
         var message = string.Format(
             "An {0} occured while getting the value of property '{1}' for business object with ID '{2}'.",

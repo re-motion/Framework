@@ -20,23 +20,28 @@ using System.Collections.Immutable;
 using System.Linq;
 using Customizations;
 using JetBrains.Annotations;
+using NuGet.Versioning;
 using Nuke.Common;
 using Nuke.Common.IO;
+using Nuke.Common.ProjectModel;
 using Remotion.BuildScript;
 using Remotion.BuildScript.Components;
+using Remotion.BuildScript.GenerateSbom;
 using Remotion.BuildScript.Test;
 using Remotion.BuildScript.Test.Dimensions;
+using Remotion.BuildScript.TestPlan;
 using static Customizations.Browsers;
 using static Customizations.Databases;
 using static Remotion.BuildScript.Test.Dimensions.Configurations;
 using static Remotion.BuildScript.Test.Dimensions.ExecutionRuntimes;
 using static Customizations.EnforcedLocalMachineExecutionRuntimes;
+using static Remotion.BuildScript.Test.Dimensions.OperatingSystems;
 using static Remotion.BuildScript.Test.Dimensions.Platforms;
 using static Remotion.BuildScript.Test.Dimensions.TargetFrameworks;
 
 // ReSharper disable RedundantTypeArgumentsOfMethod
 
-class Build : RemotionBuild
+class Build : RemotionBuild, IDependDB, ITest
 {
   [Parameter(ValueProviderMember = nameof(SupportedTestBrowsers), Separator = "+")]
   public string[] TestBrowsers { get; set; } = [];
@@ -44,6 +49,9 @@ class Build : RemotionBuild
   [Parameter(ValueProviderMember = nameof(SupportedTestSqlServers), Separator = "+")]
   public string[] TestSqlServers { get; set; } = [];
 
+  [CanBeNull] private TestMatrix _databaseTestMatrix;
+  [CanBeNull] private TestMatrix _normalTestMatrix;
+  [CanBeNull] private TestMatrix _webTestingTestMatrix;
 
   public static int Main () => Execute<Build>();
 
@@ -56,27 +64,87 @@ class Build : RemotionBuild
         var packageJsonPath = ((IBaseBuild)this).Solution.Directory / "Remotion" / "Web" / "Dependencies.JavaScript" / "package.json";
         Assert.FileExists(packageJsonPath);
 
-        var outputFolder = ((IBaseBuild)this).OutputFolder / "Npm" / "remotion.dependencies" / "package.json";
-        var packageJsonContent = packageJsonPath.ReadAllText()
-                .Replace("$version$", ((IBuildMetadata)this).BuildMetadataPerConfiguration.First().Value.Version);
-        outputFolder.WriteAllText(packageJsonContent);
+        var outputPackageJson = ((IBaseBuild)this).OutputFolder / "Npm" / "remotion.dependencies" / "package.json";
+        AddVersionToPackageJson(packageJsonPath, outputPackageJson, ((IBuildMetadata)this).BuildMetadataPerConfiguration.First().Value.Version);
       });
+
+  [UsedImplicitly]
+  public Target PrepareDotnetSdkInTempDirectory => _ => _
+      .TryDependentFor<IGenerateSbom>()
+      .Executes(() =>
+      {
+        // We need to copy the global.json file to the TEMP directory to ensure the correct SDK is used.
+        var globalJsonFile = ((IBaseBuild)this).Solution.Directory / "global.json";
+
+        FileSystemTasks.CopyFile(
+            globalJsonFile,
+            TemporaryDirectory / "global.json");
+      });
+
+  public override ISbomGeneratorBuilder ConfigureSbomGenerationInfoBuilder (Solution solution)
+  {
+      var version = ((IBuildMetadata)this).GetBaseVersion();
+
+      var semanticVersion = SemanticVersion.Parse(version);
+      var shortenedVersion = $"{semanticVersion.Major}.{semanticVersion.Minor}.{semanticVersion.Patch}";
+
+      var blacklistedProjects = new[]
+                                {
+                                    "Web.Dependencies.Javascript",
+                                    "*.Analyzers*"
+                                    // We disregard test projects when generating the sbom already, so these are not required here.
+                                };
+
+      var packageJsonPath = solution.Directory / "Remotion" / "Web" / "Dependencies.JavaScript" / "package.json";
+      var packageJsonWithVersion = TemporaryDirectory / "sbom" / "package.json";
+
+      AddVersionToPackageJson(packageJsonPath, packageJsonWithVersion, shortenedVersion);
+
+      var outputFolderPath = ((IBaseBuild)this).OutputFolder / "SBOM";
+      outputFolderPath.CreateDirectory();
+
+      var outputSbomPath = outputFolderPath / "re-motion.sbom.json";
+
+      // We do not require github auth because we do not do enough requests for licenses and package infos
+      var builder = new SolutionSbomGeneratorBuilder(solution, semanticVersion.ToString(), TemporaryDirectory / "sbomGeneration", outputSbomPath, "", "")
+              .WithProjectsBlackListed(blacklistedProjects)
+              .WithPackageJsonFile(packageJsonWithVersion);
+
+      return builder;
+  }
 
   public override void ConfigureProjects (ProjectsBuilder projects)
   {
-    var normalTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
-        TestMatrices.Single(e => e.Name == "NormalTestMatrix"),
+    [CanBeNull]
+    static TestConfiguration CreateTestConfiguration (
+        [CanBeNull] TestMatrix testMatrix,
+        ITestExecutionRuntimeFactory testExecutionRuntimeFactory,
+        ImmutableArray<ITestExecutionWrapper> testExecutionWrappers)
+    {
+      return testMatrix != null
+          ? new TestConfiguration(testExecutionRuntimeFactory, testMatrix, testExecutionWrappers)
+          : null;
+    }
+
+    var testExecutionRuntimeFactory = new DefaultTestExecutionRuntimeFactory(new DockerNetworkDockerRunSettingsCustomizer());
+
+    // NOTE: Test matrices might be null if the CreateTestMatrix step was not called.
+    // This is intended behavior as we want to support partial builds.
+    // If there is no test matrix, the test configuration will be null as well.
+
+    var normalTestConfiguration = CreateTestConfiguration(
+        _normalTestMatrix,
+        testExecutionRuntimeFactory,
         ImmutableArray<ITestExecutionWrapper>.Empty);
 
-    var webTestingTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
-        TestMatrices.Single(e => e.Name == "WebTestingTestMatrix"),
+    var webTestingTestConfiguration = CreateTestConfiguration(
+        _webTestingTestMatrix,
+        testExecutionRuntimeFactory,
         [new WebTestingTestSetup()]);
 
-    var databaseTestConfiguration = new TestConfiguration(
-        DefaultTestExecutionRuntimeFactory.Instance,
-        TestMatrices.Single(e => e.Name == "DatabaseTestMatrix"),
+    var databaseTestConfiguration = CreateTestConfiguration(
+        _databaseTestMatrix,
+        testExecutionRuntimeFactory,
         [new DatabaseTestSetup()]);
 
     projects.AddUnitTestProject("SharedSource.UnitTests", normalTestConfiguration);
@@ -185,7 +253,6 @@ class Build : RemotionBuild
     projects.AddUnitTestProject("Web.Development.WebTesting.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Web.UnitTests", normalTestConfiguration);
     projects.AddUnitTestProject("Web.Development.WebTesting.IntegrationTests", webTestingTestConfiguration);
-    projects.AddUnitTestProject("Web.Development.WebTesting.IntegrationTests.RequireUI", webTestingTestConfiguration);
     projects.AddUnitTestProject("Web.IntegrationTests", webTestingTestConfiguration);
     projects.AddReleaseProject("Integration.Domain");
     projects.AddReleaseProject("Integration.Web");
@@ -197,11 +264,15 @@ class Build : RemotionBuild
     projects.AddUnitTestProject("SecurityManager.Core.UnitTests", databaseTestConfiguration);
   }
 
+  public static readonly DockerExecutionRuntimes Docker_Win_NET10_0 = new(nameof(Docker_Win_NET10_0));
+
   public override void ConfigureSupportedTestDimensions (SupportedTestDimensionsBuilder supportedTestDimensions)
   {
+    supportedTestDimensions.AddOperatingSystemsDimension();
+
     supportedTestDimensions.AddSupportedDimension<ExecutionRuntimes>(
-        LocalMachine, EnforcedLocalMachine(Docker_Win_NET8_0), Docker_Win_NET8_0);
-    supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET8_0_WINDOWS);
+        LocalMachine, EnforcedLocalMachine(Docker_Win_NET8_0), Docker_Win_NET8_0, EnforcedLocalMachine(Docker_Win_NET10_0), Docker_Win_NET10_0);
+    supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET8_0, NET10_0);
     supportedTestDimensions.AddSupportedDimension<Configurations>(Debug, Release);
     supportedTestDimensions.AddSupportedDimension<Platforms>(x64, x86);
 
@@ -216,6 +287,8 @@ class Build : RemotionBuild
   public override void ConfigureEnabledTestDimensions (EnabledTestDimensionsBuilder enabledTestDimensions)
   {
     base.ConfigureEnabledTestDimensions(enabledTestDimensions);
+
+    enabledTestDimensions.AddEnabledOperatingSystems();
 
     if (SupportedTestDimensions.IsSupported<Browsers>())
     {
@@ -244,42 +317,58 @@ class Build : RemotionBuild
 
   public override void ConfigureTestMatrix (TestMatricesBuilder builder)
   {
-    builder.AddTestMatrix(
+    _webTestingTestMatrix = builder.AddTestMatrix(
         "WebTestingTestMatrix",
         new TestDimension[,] // todo docker images need to be wired to the config file
         {
-            { Chrome, NET8_0_WINDOWS, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
-            { Firefox, NET8_0_WINDOWS, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
-            { Edge, NET8_0_WINDOWS, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET8_0) },
+            { AnyOs, Chrome, NET8_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Firefox, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Edge, NET8_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Chrome, NET10_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Firefox, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Edge, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
         },
         allowEmpty: true);
 
-    builder.AddTestMatrix(
+    _databaseTestMatrix = builder.AddTestMatrix(
         "DatabaseTestMatrix",
         new TestDimension[,]
         {
-            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2016, Debug, x64 },
-            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2016, Release, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2016, Debug, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2016, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2016, Debug, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2016, Release, x64 },
 
             // Local-->
-            { LocalMachine, NET8_0_WINDOWS, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Windows, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Linux, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x64 },
+            { Windows, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Linux, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x64 },
 
             // Exercise compatibility between installed .NET version, target framework and SQL Server
-            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2022, Release, x64 },
-            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2019, Release, x64 },
-            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2017, Release, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2022, Release, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2019, Release, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, SqlServer2017, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2022, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2019, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2017, Release, x64 },
         },
         allowEmpty: true);
 
-    builder.AddTestMatrix(
+    _normalTestMatrix = builder.AddTestMatrix(
         "NormalTestMatrix",
         new TestDimension[,]
         {
-            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, NoDB, Debug, x64 },
-            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, NoDB, Release, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, NoDB, Debug, x64 },
+            { AnyOs, Docker_Win_NET8_0, NET8_0, NoBrowser, NoDB, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, NoDB, Debug, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, NoDB, Release, x64 },
 
             //  Local-->
-            { LocalMachine, NET8_0_WINDOWS, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Windows, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Linux, LocalMachine, NET8_0, NoBrowser, SqlServerDefault, Debug, x64 },
+            { Windows, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Linux, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x64 },
         },
         allowEmpty: true);
   }
@@ -287,4 +376,28 @@ class Build : RemotionBuild
   protected IEnumerable<string> SupportedTestBrowsers => GetTestDimensionValueList<Browsers>();
 
   protected IEnumerable<string> SupportedTestSqlServers => GetTestDimensionValueList<Databases>();
+
+  public void ConfigureTestResources (ImmutableArray<ITestResourceFactory>.Builder testResources)
+  {
+    if (OperatingSystem.IsLinux())
+      testResources.Add(new DockerNetworkResourceFactory());
+
+    var testCases = InlineTestItemVisitor.CollectAll(TestItems).OfType<ITestCase>().ToArray();
+
+    var requiredDatabases = testCases
+        .Select(e => e.TestMatrixRow.GetDimension<Databases>())
+        .Distinct()
+        .Where(e => e != NoDB && e != SqlServerDefault)
+        .ToArray();
+
+    foreach (var requiredDatabase in requiredDatabases)
+      testResources.Add(new DatabaseTestResourceFactory(requiredDatabase));
+  }
+
+  private void AddVersionToPackageJson (AbsolutePath packageJsonPath, AbsolutePath duplicatedPackageJsonPath, string version)
+  {
+      var packageJsonContent = packageJsonPath.ReadAllText().Replace("$version$", version);
+
+      duplicatedPackageJsonPath.WriteAllText(packageJsonContent);
+  }
 }

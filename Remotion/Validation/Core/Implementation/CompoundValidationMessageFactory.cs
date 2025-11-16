@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
@@ -42,8 +41,8 @@ namespace Remotion.Validation.Implementation
 
     public ValidationMessage? CreateValidationMessageForPropertyValidator (IPropertyValidator validator, IPropertyInformation validatedProperty)
     {
-      ArgumentUtility.CheckNotNull("validator", validator);
-      ArgumentUtility.CheckNotNull("validatedProperty", validatedProperty);
+      ArgumentNullException.ThrowIfNull(validator);
+      ArgumentNullException.ThrowIfNull(validatedProperty);
 
       return ValidationMessageFactories
           .Select(f => f.CreateValidationMessageForPropertyValidator(validator, validatedProperty))
@@ -52,8 +51,8 @@ namespace Remotion.Validation.Implementation
 
     public ValidationMessage? CreateValidationMessageForObjectValidator (IObjectValidator validator, ITypeInformation validatedType)
     {
-      ArgumentUtility.CheckNotNull("validator", validator);
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentNullException.ThrowIfNull(validator);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       return ValidationMessageFactories
           .Select(f => f.CreateValidationMessageForObjectValidator(validator, validatedType))

@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     protected DataContainerEndPointsRegistrationAgentBase (
         IRelationEndPointFactory endPointFactory, IRelationEndPointRegistrationAgent registrationAgent)
     {
-      ArgumentUtility.CheckNotNull("endPointFactory", endPointFactory);
-      ArgumentUtility.CheckNotNull("registrationAgent", registrationAgent);
+      ArgumentNullException.ThrowIfNull(endPointFactory);
+      ArgumentNullException.ThrowIfNull(registrationAgent);
 
       _endPointFactory = endPointFactory;
       _registrationAgent = registrationAgent;
@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterEndPoints (DataContainer dataContainer, RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
-      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
+      ArgumentNullException.ThrowIfNull(dataContainer);
+      ArgumentNullException.ThrowIfNull(relationEndPointMap);
 
       foreach (var id in GetOwnedEndPointIDs(dataContainer))
       {
@@ -70,8 +70,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IDataManagementCommand CreateUnregisterEndPointsCommand (DataContainer dataContainer, RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
-      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
+      ArgumentNullException.ThrowIfNull(dataContainer);
+      ArgumentNullException.ThrowIfNull(relationEndPointMap);
 
       var loadedEndPoints = new List<IRelationEndPoint>();
       var problems = new List<string>();

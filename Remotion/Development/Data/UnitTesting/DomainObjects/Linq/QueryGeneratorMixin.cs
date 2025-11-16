@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Mixins;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Data.UnitTesting.DomainObjects.Linq
 {
@@ -46,7 +45,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Linq
 
     private void QueryConstructed (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentNullException.ThrowIfNull(query);
 
       Console.WriteLine(query.Statement);
       foreach (QueryParameter parameter in query.Parameters)

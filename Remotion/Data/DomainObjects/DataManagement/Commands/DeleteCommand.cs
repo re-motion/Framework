@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public DeleteCommand (ClientTransaction clientTransaction, DomainObject deletedObject, IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("deletedObject", deletedObject);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(deletedObject);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
 
       _clientTransaction = clientTransaction;
       _deletedObject = deletedObject;

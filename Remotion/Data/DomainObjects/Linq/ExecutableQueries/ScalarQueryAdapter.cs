@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 {
@@ -31,12 +30,12 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
     private readonly Func<object?, T> _resultConversion;
 
     public ScalarQueryAdapter (IQuery query, Func<object?, T> resultConversion)
-      : base(ArgumentUtility.CheckNotNull("query", query))
+      : base(query ?? throw new ArgumentNullException(nameof(query)))
     {
-      ArgumentUtility.CheckNotNull("resultConversion", resultConversion);
+      ArgumentNullException.ThrowIfNull(resultConversion);
 
       if (query.QueryType != QueryType.ScalarReadOnly)
-        throw new ArgumentException("Only readonly scalar queries can be used to load scalar results.", "query");
+        throw new ArgumentException("Only readonly scalar queries can be used to load scalar results.", nameof(query));
 
       _resultConversion = resultConversion;
     }
@@ -48,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 
     public override T Execute (IQueryManager queryManager)
     {
-      ArgumentUtility.CheckNotNull("queryManager", queryManager);
+      ArgumentNullException.ThrowIfNull(queryManager);
 
       var scalarValue = queryManager.GetScalar(this);
       return _resultConversion(scalarValue);

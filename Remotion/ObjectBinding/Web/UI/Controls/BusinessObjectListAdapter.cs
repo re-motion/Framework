@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -32,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public BusinessObjectListAdapter (IList list)
     {
-      ArgumentUtility.CheckNotNull("list", list);
+      ArgumentNullException.ThrowIfNull(list);
 
       _list = list;
     }

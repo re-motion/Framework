@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -48,7 +47,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="onClick">The javascript to be executed for the <c>OnClick</c> event on the client.</param>
     public HelpInfo (string navigateUrl, string? target, string? toolTip, string? onClick)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("navigateUrl", navigateUrl);
+      ArgumentException.ThrowIfNullOrEmpty(navigateUrl);
 
       NavigateUrl = navigateUrl;
       Target = target;

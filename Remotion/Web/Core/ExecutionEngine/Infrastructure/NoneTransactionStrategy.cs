@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
@@ -27,7 +26,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public NoneTransactionStrategy (TransactionStrategyBase outerTransactionStrategy)
     {
-      ArgumentUtility.CheckNotNull("outerTransactionStrategy", outerTransactionStrategy);
+      ArgumentNullException.ThrowIfNull(outerTransactionStrategy);
 
       _outerTransactionStrategy = outerTransactionStrategy;
     }
@@ -54,28 +53,28 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override IWxeFunctionExecutionListener CreateExecutionListener (IWxeFunctionExecutionListener innerListener)
     {
-      ArgumentUtility.CheckNotNull("innerListener", innerListener);
+      ArgumentNullException.ThrowIfNull(innerListener);
 
       return innerListener;
     }
 
     public override TransactionStrategyBase? CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
 
       return OuterTransactionStrategy.CreateChildTransactionStrategy(autoCommit, executionContext, wxeContext);
     }
 
     public override void UnregisterChildTransactionStrategy (TransactionStrategyBase childTransactionStrategy)
     {
-      ArgumentUtility.CheckNotNull("childTransactionStrategy", childTransactionStrategy);
+      ArgumentNullException.ThrowIfNull(childTransactionStrategy);
 
       OuterTransactionStrategy.UnregisterChildTransactionStrategy(childTransactionStrategy);
     }
 
     public override void EnsureCompatibility (IEnumerable objects)
     {
-      ArgumentUtility.CheckNotNull("objects", objects);
+      ArgumentNullException.ThrowIfNull(objects);
 
       OuterTransactionStrategy.EnsureCompatibility(objects);
     }
@@ -97,32 +96,32 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override void OnExecutionPlay (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(listener);
 
       listener.OnExecutionPlay(context);
     }
 
     public override void OnExecutionStop (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(listener);
 
       listener.OnExecutionStop(context);
     }
 
     public override void OnExecutionPause (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(listener);
 
       listener.OnExecutionPause(context);
     }
 
     public override void OnExecutionFail (WxeContext context, IWxeFunctionExecutionListener listener, Exception exception)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(listener);
 
       listener.OnExecutionFail(context, exception);
     }

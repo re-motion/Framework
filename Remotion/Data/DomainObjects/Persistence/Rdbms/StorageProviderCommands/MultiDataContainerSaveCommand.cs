@@ -16,18 +16,17 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
   /// <summary>
   /// The <see cref="MultiDataContainerSaveCommand"/> saves a sequence of <see cref="DataContainer"/> instances by executing the given
-  /// <see cref="IDbCommand"/> instances.
+  /// <see cref="DbCommand"/> instances.
   /// </summary>
   public class MultiDataContainerSaveCommand : IRdbmsProviderCommand
   {
@@ -35,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public MultiDataContainerSaveCommand (IEnumerable<Tuple<ObjectID, IDbCommandBuilder>> tuples)
     {
-      ArgumentUtility.CheckNotNull("tuples", tuples);
+      ArgumentNullException.ThrowIfNull(tuples);
 
       _tuples = tuples.ToArray();
     }
@@ -47,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public void Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
 
       foreach (var tuple in _tuples)
       {

@@ -20,8 +20,18 @@ using log4net.Config;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Logging.Log4Net;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
+
+[assembly: PerformBrowserLogCheck(true)]
+[assembly: BrowserLogMinimumLevel(OpenQA.Selenium.LogLevel.Warning)]
+[assembly: IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.FavIconNotFound)]
+[assembly: IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.FontNotUsed)]
+[assembly: IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.BeforeUnloadAlertBlocked)]
+[assembly: IgnoreBrowserLogMessage("https://assets.msn.com/.*")]
+[assembly: IgnoreBrowserLogMessage("https://ntp.msn.com/.*")]
+[assembly: IgnoreBrowserLogMessage("https://blogs.windows.com/.*")]
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {

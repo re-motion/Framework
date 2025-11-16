@@ -19,7 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Microsoft.SqlServer.Server;
+using Microsoft.Data.SqlClient.Server;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Development.NUnit.UnitTesting;

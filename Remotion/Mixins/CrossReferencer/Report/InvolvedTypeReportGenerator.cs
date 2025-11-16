@@ -19,7 +19,6 @@ using System.Reflection;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Utilities;
-using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
 
 namespace Remotion.Mixins.CrossReferencer.Report
@@ -48,13 +47,13 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Type> attributeIdentifierGenerator,
         IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
-      ArgumentUtility.CheckNotNull("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("memberIdentifierGenerator", memberIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("attributeIdentifierGenerator", attributeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
+      ArgumentNullException.ThrowIfNull(involvedTypes);
+      ArgumentNullException.ThrowIfNull(assemblyIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(involvedTypeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(memberIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(interfaceIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(attributeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(outputFormatter);
 
       _involvedTypes = involvedTypes;
       _assemblyIdentifierGenerator = assemblyIdentifierGenerator;
@@ -135,7 +134,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public string GetAlphabeticOrderingAttribute (InvolvedType involvedType)
     {
-      ArgumentUtility.CheckNotNull("involvedType", involvedType);
+      ArgumentNullException.ThrowIfNull(involvedType);
 
       foreach (var mixinDefinition in involvedType.TargetTypes.Values)
       {

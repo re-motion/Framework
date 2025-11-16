@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void InitializeScalarReadOnlyQueryWithCollectionType_ThrowsArgumentException ()
     {
       Assert.That(
-          () => new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.ScalarReadOnly, typeof(DomainObjectCollection)),
+          () => new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.ScalarReadOnly, QueryStatementType.Text, typeof(DomainObjectCollection)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("The scalar query 'QueryID' must not specify a collectionType.", "collectionType"));
     }
@@ -45,7 +45,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void InitializeScalarReadWriteQueryWithCollectionType_ThrowsArgumentException ()
     {
       Assert.That(
-          () => new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.ScalarReadWrite, typeof(DomainObjectCollection)),
+          () => new QueryDefinition(
+              "QueryID",
+              TestDomainStorageProviderDefinition,
+              "Statement",
+              QueryType.ScalarReadWrite,
+              QueryStatementType.Text,
+              typeof(DomainObjectCollection)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("The scalar query 'QueryID' must not specify a collectionType.", "collectionType"));
     }
@@ -54,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void InitializeCustomReadOnlyQueryWithCollectionType_ThrowsArgumentException ()
     {
       Assert.That(
-          () => new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.CustomReadOnly, typeof(DomainObjectCollection)),
+          () => new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.CustomReadOnly, QueryStatementType.Text, typeof(DomainObjectCollection)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("The custom query 'QueryID' must not specify a collectionType.", "collectionType"));
     }
@@ -63,7 +69,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void InitializeCustomReadWriteQueryWithCollectionType_ThrowsArgumentException ()
     {
       Assert.That(
-          () => new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.CustomReadWrite, typeof(DomainObjectCollection)),
+          () => new QueryDefinition(
+              "QueryID",
+              TestDomainStorageProviderDefinition,
+              "Statement",
+              QueryType.CustomReadWrite,
+              QueryStatementType.Text,
+              typeof(DomainObjectCollection)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo("The custom query 'QueryID' must not specify a collectionType.", "collectionType"));
     }
@@ -72,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void InitializeInvalidCollectionType_ThrowsArgumentException ()
     {
       Assert.That(
-          () => new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.CollectionReadOnly, this.GetType()),
+          () => new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.CollectionReadOnly, QueryStatementType.Text, this.GetType()),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The collectionType of query 'QueryID' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.",
@@ -83,7 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void InitializeWithDomainObjectCollectionType_ThrowsArgumentException ()
     {
       QueryDefinition definition =
-          new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.CollectionReadOnly, typeof(DomainObjectCollection));
+          new QueryDefinition("QueryID", TestDomainStorageProviderDefinition, "Statement", QueryType.CollectionReadOnly, QueryStatementType.Text, typeof(DomainObjectCollection));
 
       Assert.That(definition.CollectionType, Is.EqualTo(typeof(DomainObjectCollection)));
     }

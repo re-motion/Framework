@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -42,8 +41,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         [NotNull] IFluentScreenshotElement<TRow> fluentRow)
     {
-      ArgumentUtility.CheckNotNull("fluentList", fluentList);
-      ArgumentUtility.CheckNotNull("fluentRow", fluentRow);
+      ArgumentNullException.ThrowIfNull(fluentList);
+      ArgumentNullException.ThrowIfNull(fluentRow);
 
       _fluentList = fluentList;
       _fluentRow = fluentRow;
@@ -52,7 +51,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull("itemID", itemID);
+      ArgumentNullException.ThrowIfNull(itemID);
 
       return
           SelfResolvableFluentScreenshot.Create(
@@ -63,8 +62,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithIndex (int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull("oneBasedIndex", oneBasedIndex);
-
       return
           SelfResolvableFluentScreenshot.Create(
               new ScreenshotBocListCell<TList, TRow, TCell>(_fluentList, _fluentRow.Target.GetCell(oneBasedIndex).ForControlObjectScreenshot()),
@@ -74,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithTitle (string title)
     {
-      ArgumentUtility.CheckNotNull("title", title);
+      ArgumentNullException.ThrowIfNull(title);
 
       return
           SelfResolvableFluentScreenshot.Create(
@@ -85,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithTitleContains (string content)
     {
-      ArgumentUtility.CheckNotNull("content", content);
+      ArgumentNullException.ThrowIfNull(content);
 
       return
           SelfResolvableFluentScreenshot.Create(

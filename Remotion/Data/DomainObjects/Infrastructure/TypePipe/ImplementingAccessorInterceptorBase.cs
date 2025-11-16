@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
     protected ImplementingAccessorInterceptorBase (MethodInfo interceptedAccessorMethod, string propertyName, Type propertyType)
         : base(interceptedAccessorMethod, propertyName)
     {
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentNullException.ThrowIfNull(propertyType);
 
       _propertyName = propertyName;
       _propertyType = propertyType;

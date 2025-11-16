@@ -35,8 +35,8 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
     /// </summary>
     public static IStorageSettings CreateForSqlServer (string connectionString, string readOnlyConnectionString, Func<IStorageSettings, SqlStorageObjectFactory>? sqlStorageObjectFactoryFactory = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
-      ArgumentUtility.CheckNotNullOrEmpty("readOnlyConnectionString", readOnlyConnectionString);
+      ArgumentException.ThrowIfNullOrEmpty(connectionString);
+      ArgumentException.ThrowIfNullOrEmpty(readOnlyConnectionString);
 
       var fakeStorageObjectFactoryFactory = new FakeStorageObjectFactoryFactory();
       var fakeStorageSettingsFactory = new FakeStorageSettingsFactory();

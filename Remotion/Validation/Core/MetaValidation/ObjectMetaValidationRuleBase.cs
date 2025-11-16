@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.MetaValidation
@@ -33,7 +32,7 @@ namespace Remotion.Validation.MetaValidation
 
     IEnumerable<MetaValidationRuleValidationResult> IObjectMetaValidationRule.Validate (IEnumerable<IObjectValidator> validationRules)
     {
-      ArgumentUtility.CheckNotNull("validationRules", validationRules);
+      ArgumentNullException.ThrowIfNull(validationRules);
 
       return Validate(validationRules.OfType<TValidator>());
     }

@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
@@ -33,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     public ScreenshotBocAutoCompleteReferenceValueSelectList (
         [NotNull] IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull("fluentAutoComplete", fluentAutoComplete);
+      ArgumentNullException.ThrowIfNull(fluentAutoComplete);
 
       _fluentAutoComplete = fluentAutoComplete;
     }
@@ -57,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentNullException.ThrowIfNull(locator);
 
       return _fluentAutoComplete.GetSelectList().GetElement().ResolveDesktopCoordinates(locator);
     }

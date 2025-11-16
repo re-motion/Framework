@@ -386,8 +386,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
       var expectedMessage =
           "The relation property is defined as persistent but the referenced type "
           + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel' is non-persistent. "
-          + "Persistent relation properties may only reference persistent types.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          + $"Persistent relation properties may only reference persistent types.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
           + "Property: PersistentProperty1FakeProperty";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -416,8 +416,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
       var expectedMessage =
           "The relation property is defined as persistent but the referenced type "
           + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel' is non-persistent. "
-          + "Persistent relation properties may only reference persistent types.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          + $"Persistent relation properties may only reference persistent types.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
           + "Property: PersistentProperty1FakeProperty";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -446,8 +446,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
       var expectedMessage =
           "The relation property is defined as persistent but the referenced type "
           + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel' is non-persistent. "
-          + "Persistent relation properties may only reference persistent types.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          + $"Persistent relation properties may only reference persistent types.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
           + "Property: PersistentProperty1FakeProperty";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -476,8 +476,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
       var expectedMessage =
           "The relation property is defined as persistent but the referenced type "
           + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel' is non-persistent. "
-          + "Persistent relation properties may only reference persistent types.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          + $"Persistent relation properties may only reference persistent types.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
           + "Property: PersistentProperty1FakeProperty";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
@@ -502,8 +502,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.
       var expectedMessage =
           "The relation property is defined as persistent but the referenced type "
           + "'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderViewModel' is non-persistent. "
-          + "Persistent relation properties may only reference persistent types.\r\n\r\n"
-          + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order\r\n"
+          + $"Persistent relation properties may only reference persistent types.{Environment.NewLine}{Environment.NewLine}"
+          + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order{Environment.NewLine}"
           + "Property: PersistentProperty1FakeProperty";
       AssertMappingValidationResult(validationResult, false, expectedMessage);
     }

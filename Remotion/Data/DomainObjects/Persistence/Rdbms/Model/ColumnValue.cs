@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
@@ -29,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnValue (ColumnDefinition column, object? value)
     {
-      ArgumentUtility.CheckNotNull("column", column);
+      ArgumentNullException.ThrowIfNull(column);
 
       _column = column;
       _value = value;

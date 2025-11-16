@@ -15,23 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
-using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
-using Remotion.Data.DomainObjects.Validation;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.TestDomain;
 using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests
 {
@@ -42,13 +34,13 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
     {
       get
       {
-        return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain");
+        return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_RemotionDataDomainObjectsWebIntegrationTestDomain");
       }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("master"); }
     }
 
     [OneTimeSetUp]
@@ -75,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests
         var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions()).Single();
 
         var masterAgent = new DatabaseAgent(MasterConnectionString);
-        masterAgent.ExecuteBatchFile("Database\\CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
+        masterAgent.ExecuteBatchFile("Database/CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
 
         var databaseAgent = new DatabaseAgent(TestDomainConnectionString);
         databaseAgent.ExecuteBatchString(scripts.SetUpScript, true);

@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Rules
@@ -28,7 +27,7 @@ namespace Remotion.Validation.Rules
 
     public PropertyValidationRuleInitializationParameters ([NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentNullException.ThrowIfNull(validationMessage);
 
       ValidationMessage = validationMessage;
     }

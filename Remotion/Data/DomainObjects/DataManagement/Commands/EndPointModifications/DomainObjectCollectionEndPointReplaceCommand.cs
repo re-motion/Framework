@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
@@ -40,8 +39,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         IClientTransactionEventSink transactionEventSink)
       : base(
             modifiedEndPoint,
-            ArgumentUtility.CheckNotNull("replacedObject", replacedObject),
-            ArgumentUtility.CheckNotNull("replacementObject", replacementObject),
+            replacedObject ?? throw new ArgumentNullException(nameof(replacedObject)),
+            replacementObject ?? throw new ArgumentNullException(nameof(replacementObject)),
             transactionEventSink)
     {
       _index = index;

@@ -35,8 +35,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public InterfaceImplementationPropertyInformation (IPropertyInformation implementationPropertyInfo, IPropertyInformation declarationPropertyInfo)
     {
-      ArgumentUtility.CheckNotNull("implementationPropertyInfo", implementationPropertyInfo);
-      ArgumentUtility.CheckNotNull("declarationPropertyInfo", declarationPropertyInfo);
+      ArgumentNullException.ThrowIfNull(implementationPropertyInfo);
+      ArgumentNullException.ThrowIfNull(declarationPropertyInfo);
 
       _implementationPropertyInfo = implementationPropertyInfo;
       _declarationPropertyInfo = declarationPropertyInfo;
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull("implementationType", implementationType);
+      ArgumentNullException.ThrowIfNull(implementationType);
 
       return _implementationPropertyInfo.FindInterfaceImplementation(implementationType);
     }
@@ -121,7 +121,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public object? GetValue (object? instance, object?[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull("instance", instance!);
+      ArgumentNullException.ThrowIfNull(instance!);
 
       var getMethod = GetGetMethod(true);
 
@@ -133,7 +133,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public void SetValue (object? instance, object? value, object?[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull("instance", instance!);
+      ArgumentNullException.ThrowIfNull(instance!);
 
       var setMethod = GetSetMethod(true);
 

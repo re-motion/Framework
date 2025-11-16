@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -141,7 +142,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("MyHtmlAnchor"));
 
       var htmlAnchorWithJavaScriptLink = home.Anchors().GetByLocalID("MyHtmlAnchorWithJavaScriptLink");
-      home = htmlAnchorWithJavaScriptLink.Click().Expect<WxePageObject>();
+      home = htmlAnchorWithJavaScriptLink.Click(new WebTestActionOptions { CompletionDetectionStrategy = new NullCompletionDetectionStrategy() }).Expect<WxePageObject>();
       Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("MyHtmlAnchorWithJavaScriptLink"));
     }
 

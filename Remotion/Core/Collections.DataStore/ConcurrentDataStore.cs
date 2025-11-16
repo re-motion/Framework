@@ -147,7 +147,7 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentNullException.ThrowIfNull(key);
       return TryGetValueInternal(key, out _);
     }
 
@@ -160,14 +160,14 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentException">An item with an equal key already exists in the store.</exception>
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentNullException.ThrowIfNull(key);
       // value can be null
 
       if (!_innerDictionary.TryAdd(key, new SynchronizedValue { Boxed = new Boxed(value) }))
       {
         string message =
             string.Format("The store already contains an element with key '{0}'. (Old value: '{1}', new value: '{2}')", key, this[key], value);
-        throw new ArgumentException(message, "key");
+        throw new ArgumentException(message, nameof(key));
       }
     }
 
@@ -181,7 +181,7 @@ namespace Remotion.Collections.DataStore
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
     public bool Remove (TKey key)
     {
-      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentNullException.ThrowIfNull(key);
       if (TryGetValueInternal(key, out _))
         return _innerDictionary.TryRemove(key, out _);
 
@@ -195,7 +195,7 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        ArgumentUtility.CheckNotNull("key", key);
+        ArgumentNullException.ThrowIfNull(key);
         if (TryGetValueInternal(key, out var value))
           return value;
 
@@ -204,7 +204,7 @@ namespace Remotion.Collections.DataStore
       }
       set
       {
-        ArgumentUtility.CheckNotNull("key", key);
+        ArgumentNullException.ThrowIfNull(key);
         _innerDictionary[key] = new SynchronizedValue { Boxed = new Boxed(value) };
       }
     }
@@ -219,7 +219,7 @@ namespace Remotion.Collections.DataStore
     [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       TryGetValueInternal(key, out var value);
       return value;
@@ -236,7 +236,7 @@ namespace Remotion.Collections.DataStore
     /// </returns>
     public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
 
       return TryGetValueInternal(key, out value);
     }
@@ -251,8 +251,8 @@ namespace Remotion.Collections.DataStore
     /// </returns>
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull("key", key);
-      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(key), key);
+      ArgumentUtility.DebugCheckNotNull(nameof(valueFactory), valueFactory);
 
       // Implementation of ConcurrentDictionary.GetOrAdd(valueFactory) is already set up with TryGetValue() + GetOrAdd(value) if key-not-found.
       // By splitting the implementation to perform the calls to TryGetValue() and GetOrAdd(value) separately, 

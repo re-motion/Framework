@@ -29,7 +29,7 @@ namespace Remotion.Utilities
     {
       public static bool IsAbbreviatedTypeName (string typeName)
       {
-        ArgumentUtility.DebugCheckNotNull("typeName", typeName);
+        ArgumentUtility.DebugCheckNotNull(nameof(typeName), typeName);
 
         return typeName.Contains("::");
       }
@@ -98,7 +98,7 @@ namespace Remotion.Utilities
 
       public string ParseAbbreviatedTypeName (string abbreviatedTypeName)
       {
-        ArgumentUtility.DebugCheckNotNull("abbreviatedTypeName", abbreviatedTypeName);
+        ArgumentUtility.DebugCheckNotNull(nameof(abbreviatedTypeName), abbreviatedTypeName);
 
         string fullTypeName = abbreviatedTypeName;
         const string replace = @"${asm}.${type}${br}, ${asm}";

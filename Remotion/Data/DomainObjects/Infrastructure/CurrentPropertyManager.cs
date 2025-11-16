@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -90,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </exception>
     public static void PreparePropertyAccess (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       CurrentPropertyNames.Push(propertyName);
     }

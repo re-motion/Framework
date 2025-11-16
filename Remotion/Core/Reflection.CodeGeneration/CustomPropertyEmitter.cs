@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration
 {
@@ -49,10 +48,10 @@ namespace Remotion.Reflection.CodeGeneration
         Type[] indexParameters,
         PropertyAttributes attributes)
     {
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
-      ArgumentUtility.CheckNotNull("indexParameters", indexParameters);
+      ArgumentNullException.ThrowIfNull(declaringType);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentNullException.ThrowIfNull(propertyType);
+      ArgumentNullException.ThrowIfNull(indexParameters);
 
       _declaringType = declaringType;
       _name = name;
@@ -87,7 +86,7 @@ namespace Remotion.Reflection.CodeGeneration
           _propertyBuilder.SetGetMethod(_getMethod.MethodBuilder);
         }
         else
-          throw new ArgumentNullException("value", "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
+          throw new ArgumentNullException(nameof(value), "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
       }
     }
 
@@ -102,7 +101,7 @@ namespace Remotion.Reflection.CodeGeneration
           _propertyBuilder.SetSetMethod(_setMethod.MethodBuilder);
         }
         else
-          throw new ArgumentNullException("value", "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
+          throw new ArgumentNullException(nameof(value), "Due to limitations in Reflection.Emit, property accessors cannot be set to null.");
       }
     }
 
@@ -139,14 +138,14 @@ namespace Remotion.Reflection.CodeGeneration
 
     private static string MakeBackingFieldName (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       return "_fieldFor" + propertyName;
     }
 
     public CustomPropertyEmitter ImplementWithBackingField (FieldReference backingField)
     {
-      ArgumentUtility.CheckNotNull("backingField", backingField);
+      ArgumentNullException.ThrowIfNull(backingField);
       if (GetMethod != null)
         GetMethod.AddStatement(new ReturnStatement(backingField));
       if (SetMethod != null)
@@ -215,7 +214,7 @@ namespace Remotion.Reflection.CodeGeneration
 
     public void AddCustomAttribute (CustomAttributeBuilder customAttribute)
     {
-      ArgumentUtility.CheckNotNull("customAttribute", customAttribute);
+      ArgumentNullException.ThrowIfNull(customAttribute);
       _propertyBuilder.SetCustomAttribute(customAttribute);
     }
 

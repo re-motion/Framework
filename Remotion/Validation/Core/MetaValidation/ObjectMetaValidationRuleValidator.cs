@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.MetaValidation
@@ -32,14 +31,14 @@ namespace Remotion.Validation.MetaValidation
 
     public ObjectMetaValidationRuleValidator (IObjectMetaValidationRuleCollector[] objectMetaValidationRuleCollectors)
     {
-      ArgumentUtility.CheckNotNull("objectMetaValidationRuleCollectors", objectMetaValidationRuleCollectors);
+      ArgumentNullException.ThrowIfNull(objectMetaValidationRuleCollectors);
 
       _addedObjectMetaValidationRuleCollectors = objectMetaValidationRuleCollectors;
     }
 
     public IEnumerable<MetaValidationRuleValidationResult> Validate (IAddingObjectValidationRuleCollector[] addingObjectValidationRulesCollectors)
     {
-      ArgumentUtility.CheckNotNull("addingObjectValidationRulesCollectors", addingObjectValidationRulesCollectors);
+      ArgumentNullException.ThrowIfNull(addingObjectValidationRulesCollectors);
 
       var objectValidatorsByValidatedType = addingObjectValidationRulesCollectors.ToLookup(c => c.ValidatedType, c => c.Validators);
 

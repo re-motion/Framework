@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 {
@@ -39,14 +38,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public T Execute (IRdbmsProviderReadWriteCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
 
       return _value;
     }
 
     public T Execute (IRdbmsProviderReadOnlyCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentNullException.ThrowIfNull(executionContext);
 
       return _value;
     }

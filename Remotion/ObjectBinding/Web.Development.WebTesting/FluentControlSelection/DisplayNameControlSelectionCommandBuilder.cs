@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -40,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
 
     public DisplayNameControlSelectionCommandBuilder ([NotNull] string displayName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       _displayName = displayName;
     }
@@ -48,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new DisplayNameControlSelectionCommand<TControlObject>(controlSelector, _displayName);
     }
@@ -56,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new DisplayNameControlSelectionCommand<TControlObject>(controlSelector, _displayName);
     }
@@ -64,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new DisplayNameControlSelectionCommand<TControlObject>(controlSelector, _displayName);
     }

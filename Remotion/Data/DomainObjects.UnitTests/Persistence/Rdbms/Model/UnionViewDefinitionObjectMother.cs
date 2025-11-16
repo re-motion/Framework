@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     public static UnionViewDefinition Create (
         StorageProviderDefinition storageProviderDefinition, EntityNameDefinition viewName, params IRdbmsStorageEntityDefinition[] unionedEntities)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("unionedEntities", unionedEntities);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(unionedEntities), unionedEntities);
 
       return Create(
           storageProviderDefinition,

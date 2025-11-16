@@ -30,7 +30,7 @@
 <!--<body MS_POSITIONING="FlowLayout">-->
   </head>
 <body>
-<script language="javascript" type="text/javascript" >
+<script language="javascript" type="text/javascript" nonce="testsite">
 <!--
 /*  function Window_OnError(msg, url, linenumber)
     {
@@ -94,7 +94,7 @@ Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLi
 </tr>
 </table>
 </form>
-    <script language="javascript" type="text/javascript" >
+    <script language="javascript" type="text/javascript" nonce="testsite">
 <!--
     function Page_Abort ()
     {

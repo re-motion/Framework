@@ -19,7 +19,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Moq;
 using NUnit.Framework;
+using OpenQA.Selenium;
+using Remotion.Web.Development.WebTesting.BrowserLog;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
@@ -52,6 +57,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     private ProcessSnapshot _beforeTestProcessSnapshot;
+    private Mock<ITestContext> _testContext;
+    private Dictionary<string,object> _testContextProperties;
+
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
+    {
+      var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
+      //TODO: RM-9595 fix and reenable WebTestHelperTests for firefox
+      //WebTestHelperTests currently cause firefox with Bidi active to hang
+      if (webTestHelper.BrowserConfiguration.IsFirefox())
+      {
+        Assert.Ignore();
+      }
+    }
 
     [SetUp]
     public void SetUp ()
@@ -65,6 +84,80 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var afterTestsProcessSnapshot = ProcessSnapshot.CreateWithFilter(RelevantProcessFilter);
       var processesStillOpenSnapshot = _beforeTestProcessSnapshot.Difference(afterTestsProcessSnapshot);
       ProcessUtils.GracefulProcessShutdown(processesStillOpenSnapshot.Processes, TimeSpan.FromSeconds(10));
+      _testContext = null;
+    }
+
+    [Test]
+    public void WebTestHelper_OnTestSetUp_ResetsBrowserLog ()
+    {
+      var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
+      SetupWebTestHelper(webTestHelper);
+      if (webTestHelper.BrowserConfiguration.UseBidiLog())
+        webTestHelper.MainBrowserSession.Window.Visit(webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + "Empty.wxe");
+
+      webTestHelper.MainBrowserSession.ResetBrowserLogs();
+      var js = JavaScriptExecutor.GetJavaScriptExecutor(webTestHelper.MainBrowserSession);
+      js.ExecuteScript("console.error('any error message')");
+
+      IReadOnlyCollection<BrowserLogEntry> browserLogEntries = null;
+      var logger = webTestHelper.LoggerFactory.CreateLogger("BrowserLogEntryTest");
+      RetryUntilTimeout.Run(
+          logger,
+          () =>
+          {
+            browserLogEntries = webTestHelper.MainBrowserSession.GetBrowserLogs();
+            if (browserLogEntries.Count == 0)
+              throw new AssertionException("No browser logs found");
+          });
+
+      Assert.That(browserLogEntries.Count, Is.EqualTo(1));
+      Assert.That(browserLogEntries.Single().Message, Does.Contain("any error message"));
+
+      webTestHelper.OnSetUp(_testContext.Object);
+      browserLogEntries = webTestHelper.MainBrowserSession.GetBrowserLogs();
+      Assert.That(browserLogEntries, Is.Empty);
+    }
+
+    [Test]
+    public void WebTestHelper_OnTestTearDown_WhenBrowserLogEntriesExist_SetsFailure ()
+    {
+      var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
+      SetupWebTestHelper(webTestHelper);
+      if (webTestHelper.BrowserConfiguration.UseBidiLog())
+        webTestHelper.MainBrowserSession.Window.Visit(webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + "Empty.wxe");
+
+      var testContext = new Mock<ITestContext>();
+      testContext.Setup(_ => _.TestName).Returns("Test");
+      testContext.Setup(_ => _.IsSuccessful).Returns(true);
+      testContext.Setup(_ => _.Properties).Returns(
+          new Dictionary<string, object>
+          {
+              { PerformBrowserLogCheckAttribute.PropertyKey, true },
+              { BrowserLogMinimumLevelAttribute.PropertyKey, LogLevel.All },
+              { IgnoreBrowserLogMessageAttribute.PropertyKey, Array.Empty<Regex>() }
+          });
+
+      testContext.Setup(_ => _.SetFailure(It.IsAny<string>())).Verifiable();
+      webTestHelper.OnSetUp(testContext.Object);
+
+      var js = JavaScriptExecutor.GetJavaScriptExecutor(webTestHelper.MainBrowserSession);
+      js.ExecuteScript("console.error('any error message')");
+
+      IReadOnlyCollection<BrowserLogEntry> browserLogEntries;
+      var logger = webTestHelper.LoggerFactory.CreateLogger("BrowserLogEntryTest");
+      RetryUntilTimeout.Run(
+          logger,
+          () =>
+          {
+            browserLogEntries = webTestHelper.MainBrowserSession.GetBrowserLogs();
+            if (browserLogEntries.Count == 0)
+              throw new AssertionException("No browser logs found");
+          });
+
+      webTestHelper.OnTearDown();
+      testContext.Verify(
+          _ => _.SetFailure(It.IsRegex($"There are unexpected browser log entries at the end of the test:{Environment.NewLine}.*\"?any error message\"?")),
+          Times.Once());
     }
 
     [Test]
@@ -191,7 +284,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private void SetupWebTestHelper (WebTestHelper webTestHelper)
     {
       webTestHelper.OnFixtureSetUp();
-      webTestHelper.OnSetUp(GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
+
+      _testContextProperties = new Dictionary<string, object>();
+
+      _testContext = new Mock<ITestContext>();
+      _testContext.Setup(_ => _.TestName).Returns(GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
+      _testContext.Setup(_ => _.Properties).Returns(_testContextProperties);
+
+      webTestHelper.OnSetUp(_testContext.Object);
     }
 
     /// <summary>
@@ -203,7 +303,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var screenshotDirectory = webTestHelper.TestInfrastructureConfiguration.ScreenshotDirectory;
       var screenshotDirectoryBeforeShutdown = Directory.GetFiles(screenshotDirectory);
 
-      webTestHelper.OnTearDown(success);
+      _testContext.Setup(_=>_.IsSuccessful).Returns(success);
+      webTestHelper.OnTearDown();
 
       var screenshotsCreatedByWebTestHelperShutDown = Directory.GetFiles(screenshotDirectory).Except(screenshotDirectoryBeforeShutdown);
 

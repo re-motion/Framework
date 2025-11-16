@@ -66,7 +66,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A fluent interface object for configuring the given <paramref name="targetType"/>.</returns>
     public virtual ClassContextBuilder ForClass (Type targetType)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentNullException.ThrowIfNull(targetType);
       if (!_classContextBuilders.ContainsKey(targetType))
       {
         var builder = new ClassContextBuilder(this, targetType);
@@ -106,11 +106,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
         IEnumerable<Type> suppressedMixins,
         MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
-      ArgumentUtility.CheckNotNull("suppressedMixins", suppressedMixins);
-      ArgumentUtility.CheckNotNull("origin", origin);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(explicitDependencies);
+      ArgumentNullException.ThrowIfNull(suppressedMixins);
+      ArgumentNullException.ThrowIfNull(origin);
 
       MixinContextBuilder mixinContextBuilder = AddMixinToClass(targetType, mixinType, origin);
 
@@ -144,10 +144,10 @@ namespace Remotion.Mixins.Context.FluentBuilders
         IEnumerable<Type> explicitDependencies,
         IEnumerable<Type> suppressedMixins)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
-      ArgumentUtility.CheckNotNull("suppressedMixins", suppressedMixins);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(explicitDependencies);
+      ArgumentNullException.ThrowIfNull(suppressedMixins);
 
       var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
       return AddMixinToClass(mixinKind, targetType, mixinType, introducedMemberVisibility, explicitDependencies, suppressedMixins, origin);

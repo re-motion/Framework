@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>Returns the <see cref="BindableObjectProvider"/> for the <paramref name="type"/>.</returns>
     public static BindableObjectProvider GetProviderForBindableObjectType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var providerAttributeType = s_providerAttributeTypeCache.GetOrAdd(type, s_findProviderAttributeTypeFunc);
 
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// </remarks>
     public static bool IsBindableObjectImplementation (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (!IsSupportedAsBindableObjectImplementation(type))
         return false;
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     internal static Type GetConcreteTypeForBindableObjectImplementation (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var hasSupportForMixins = !type.IsSealed;
       if (hasSupportForMixins)
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.BindableObject
             "The type '{0}' does not have the '{1}' applied.",
             type.GetFullNameSafe(),
             typeof(BusinessObjectProviderAttribute).GetFullNameSafe());
-        throw new ArgumentException(message, "type");
+        throw new ArgumentException(message, nameof(type));
       }
 
       if (!TypeExtensions.CanAscribeTo(attribute.BusinessObjectProviderType, typeof(BindableObjectProvider)))
@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.BindableObject
             "The business object provider associated with the type '{0}' is not of type '{1}'.",
             type.GetFullNameSafe(),
             typeof(BindableObjectProvider).GetFullNameSafe());
-        throw new ArgumentException(message, "type");
+        throw new ArgumentException(message, nameof(type));
       }
 
       return attribute.GetType();
@@ -149,8 +149,8 @@ namespace Remotion.ObjectBinding.BindableObject
     public BindableObjectProvider (IMetadataFactory metadataFactory, IBusinessObjectServiceFactory serviceFactory)
         : base(serviceFactory)
     {
-      ArgumentUtility.CheckNotNull("metadataFactory", metadataFactory);
-      ArgumentUtility.CheckNotNull("serviceFactory", serviceFactory);
+      ArgumentNullException.ThrowIfNull(metadataFactory);
+      ArgumentNullException.ThrowIfNull(serviceFactory);
 
       _metadataFactory = metadataFactory;
 
@@ -183,7 +183,7 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <returns>Returns the <see cref="BindableObjectClass"/> for the <paramref name="type"/>.</returns>
     public BindableObjectClass GetBindableObjectClass (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _businessObjectClassStore.GetOrAdd(type, _createBindableObjectClassFunc);
     }
@@ -198,7 +198,7 @@ namespace Remotion.ObjectBinding.BindableObject
               string.Format(
                   "The type '{0}' is not a bindable object implementation. Open generic types are not supported.",
                   type.GetFullNameSafe()),
-              "type");
+              nameof(type));
         }
 
         throw new ArgumentException(
@@ -206,7 +206,7 @@ namespace Remotion.ObjectBinding.BindableObject
                 "The type '{0}' is not a bindable object implementation. It must either have a mixin derived from BindableObjectMixinBase<T> applied "
                 + "or implement the IBusinessObject interface and apply the BindableObjectBaseClassAttribute.",
                 type.GetFullNameSafe()),
-            "type");
+            nameof(type));
       }
 
       IClassReflector classReflector = _metadataFactory.CreateClassReflector(type, this);

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 {
@@ -40,10 +39,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     private readonly Exception _cleanupException;
 
     public ObjectCleanupException (string message, ObjectID objectID, Exception innerException, Exception cleanupException)
-        : base(message, ArgumentUtility.CheckNotNull("innerException", innerException))
+        : base(message, innerException ?? throw new ArgumentNullException(nameof(innerException)))
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
-      ArgumentUtility.CheckNotNull("cleanupException", cleanupException);
+      ArgumentNullException.ThrowIfNull(objectID);
+      ArgumentNullException.ThrowIfNull(cleanupException);
 
       _objectID = objectID;
       _cleanupException = cleanupException;

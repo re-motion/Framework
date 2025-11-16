@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Xml.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -26,7 +25,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public CompositeReportGenerator (params IReportGenerator[] reportGenerators)
     {
-      ArgumentUtility.CheckNotNull("reportGenerators", reportGenerators);
+      ArgumentNullException.ThrowIfNull(reportGenerators);
       _reportGenerators = reportGenerators;
     }
 

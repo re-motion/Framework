@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static ObjectID Parse (string objectIDString)
     {
-      ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
+      ArgumentNullException.ThrowIfNull(objectIDString);
       return ObjectIDStringSerializer.Instance.Parse(objectIDString);
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static bool TryParse (string objectIDString, [MaybeNullWhen(false)] out ObjectID result)
     {
-      ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
+      ArgumentNullException.ThrowIfNull(objectIDString);
       return ObjectIDStringSerializer.Instance.TryParse(objectIDString, out result);
     }
 
@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
     public ObjectID (string classID, object value)
-      : this(MappingConfiguration.Current.GetClassDefinition(ArgumentUtility.CheckNotNullOrEmpty("classID", classID)), value)
+      : this(MappingConfiguration.Current.GetClassDefinition(ArgumentUtility.CheckNotNullOrEmpty(nameof(classID), classID)), value)
     {
     }
 
@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
     public ObjectID (Type classType, object value)
-      : this(MappingConfiguration.Current.GetTypeDefinition(ArgumentUtility.CheckNotNull("classType", classType)), value)
+      : this(MappingConfiguration.Current.GetTypeDefinition(classType ?? throw new ArgumentNullException(nameof(classType))), value)
     {
     }
 
@@ -193,8 +193,8 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
     public ObjectID (ClassDefinition classDefinition, object value)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (classDefinition.IsAbstract)
       {
@@ -329,7 +329,7 @@ namespace Remotion.Data.DomainObjects
 
       var other = obj as ObjectID;
       if (other == null)
-        throw new ArgumentException("The argument must be of type ObjectID.", "obj");
+        throw new ArgumentException("The argument must be of type ObjectID.", nameof(obj));
 
       var leftValue = Value;
       var rightValue = other.Value;

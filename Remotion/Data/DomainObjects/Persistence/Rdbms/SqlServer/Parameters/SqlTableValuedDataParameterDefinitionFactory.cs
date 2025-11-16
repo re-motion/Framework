@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 
@@ -36,8 +35,8 @@ public class SqlTableValuedDataParameterDefinitionFactory : IDataParameterDefini
       IQueryParameterRecordDefinitionFinder queryParameterRecordDefinitionFinder,
       IDataParameterDefinitionFactory nextDataParameterDefinitionFactory)
   {
-    ArgumentUtility.CheckNotNull(nameof(queryParameterRecordDefinitionFinder), queryParameterRecordDefinitionFinder);
-    ArgumentUtility.CheckNotNull(nameof(nextDataParameterDefinitionFactory), nextDataParameterDefinitionFactory);
+    ArgumentNullException.ThrowIfNull(queryParameterRecordDefinitionFinder);
+    ArgumentNullException.ThrowIfNull(nextDataParameterDefinitionFactory);
 
     NextDataParameterDefinitionFactory = nextDataParameterDefinitionFactory;
     QueryParameterRecordDefinitionFinder = queryParameterRecordDefinitionFinder;
@@ -49,8 +48,8 @@ public class SqlTableValuedDataParameterDefinitionFactory : IDataParameterDefini
   /// </summary>
   public IDataParameterDefinition CreateDataParameterDefinition (QueryParameter queryParameter, IQuery query)
   {
-    ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
-    ArgumentUtility.CheckNotNull(nameof(query), query);
+    ArgumentNullException.ThrowIfNull(queryParameter);
+    ArgumentNullException.ThrowIfNull(query);
 
     var recordDefinition = QueryParameterRecordDefinitionFinder.GetRecordDefinition(queryParameter, query);
     if (recordDefinition != null)

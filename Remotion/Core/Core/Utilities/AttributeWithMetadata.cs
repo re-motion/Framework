@@ -25,16 +25,16 @@ namespace Remotion.Utilities
   {
     public static IEnumerable<AttributeWithMetadata> IncludeAll (IEnumerable<AttributeWithMetadata> source, Type attributeType)
     {
-      ArgumentUtility.CheckNotNull("source", source);
-      ArgumentUtility.CheckNotNull("attributeType", attributeType);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(attributeType);
 
       return source.Where(a => a.IsInstanceOfType(attributeType));
     }
 
     public static IEnumerable<AttributeWithMetadata> ExcludeAll (IEnumerable<AttributeWithMetadata> source, Type attributeType)
     {
-      ArgumentUtility.CheckNotNull("source", source);
-      ArgumentUtility.CheckNotNull("attributeType", attributeType);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(attributeType);
 
       return source.Where(a => !a.IsInstanceOfType(attributeType));
     }
@@ -43,8 +43,8 @@ namespace Remotion.Utilities
           IEnumerable<AttributeWithMetadata> source,
           IReadOnlyCollection<AttributeWithMetadata> suppressAttributes)
     {
-      ArgumentUtility.CheckNotNull("source", source);
-      ArgumentUtility.CheckNotNull("suppressAttributes", suppressAttributes);
+      ArgumentNullException.ThrowIfNull(source);
+      ArgumentNullException.ThrowIfNull(suppressAttributes);
 
       bool IsSuppressed (AttributeWithMetadata attribute)
       {
@@ -72,8 +72,8 @@ namespace Remotion.Utilities
 
     public AttributeWithMetadata (Type declaringType, Attribute attribute)
     {
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
-      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentNullException.ThrowIfNull(declaringType);
+      ArgumentNullException.ThrowIfNull(attribute);
 
       _declaringType = declaringType;
       _attribute = attribute;
@@ -91,7 +91,7 @@ namespace Remotion.Utilities
 
     public bool IsInstanceOfType (Type attributeType)
     {
-      ArgumentUtility.CheckNotNull("attributeType", attributeType);
+      ArgumentNullException.ThrowIfNull(attributeType);
 
       return attributeType.IsInstanceOfType(AttributeInstance);
     }

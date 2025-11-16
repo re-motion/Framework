@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
@@ -32,8 +31,8 @@ namespace Remotion.Globalization
     [NotNull]
     public static IResourceManager GetResourceManager ([NotNull] this IGlobalizationService globalizationService, [NotNull] Type type)
     {
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(globalizationService);
+      ArgumentNullException.ThrowIfNull(type);
 
       return globalizationService.GetResourceManager(TypeAdapter.Create(type));
     }

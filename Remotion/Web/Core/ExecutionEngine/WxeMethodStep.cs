@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -31,7 +30,7 @@ public delegate void WxeMethod ();
 public delegate void WxeMethodWithContext (WxeContext context);
 
 /// <summary> Performs a step implemented by an instance method of a <see cref="WxeFunction"/>. </summary>
-/// <include file='..\doc\include\ExecutionEngine\WxeMethodStep.xml' path='WxeMethodStep/Class/*' />
+/// <include file='../Doc/include/ExecutionEngine/WxeMethodStep.xml' path='WxeMethodStep/Class/*' />
 public class WxeMethodStep: WxeStep
 {
   private static WxeStepList GetTargetFromDelegate (Delegate method)
@@ -43,7 +42,7 @@ public class WxeMethodStep: WxeStep
           "The delegate's target must be a non-null WxeStepList, but it was '{0}'. When used within a WxeFunction, the delegate should be a method "
           + "of the surrounding WxeFunction, and it must not be a closure.",
           method.Target != null ? method.Target.GetType().ToString() : "null");
-      throw new ArgumentException(message, "method");
+      throw new ArgumentException(message, nameof(method));
     }
     else
       return target;
@@ -52,7 +51,7 @@ public class WxeMethodStep: WxeStep
   private static MethodInfo GetMethodFromDelegate (Delegate method)
   {
     if (method.GetInvocationList().Length != 1)
-      throw new ArgumentException("The delegate must contain a single method.", "method");
+      throw new ArgumentException("The delegate must contain a single method.", nameof(method));
     else
       return method.Method;
   }
@@ -69,11 +68,11 @@ public class WxeMethodStep: WxeStep
   private WxeMethodWithContext? _methodWithContext;
 
   /// <summary> Initalizes a new instance of the <b>WxeMethodStep</b> type. </summary>
-  /// <include file='..\doc\include\ExecutionEngine\WxeMethodStep.xml' path='WxeMethodStep/Ctor/*' />
+  /// <include file='../Doc/include/ExecutionEngine/WxeMethodStep.xml' path='WxeMethodStep/Ctor/*' />
   public WxeMethodStep (WxeStepList target, MethodInfo method)
   {
-    ArgumentUtility.CheckNotNull("target", target);
-    ArgumentUtility.CheckNotNull("method", method);
+    ArgumentNullException.ThrowIfNull(target);
+    ArgumentNullException.ThrowIfNull(method);
 
     Type targetType = target.GetType();
     Type declaringType = method.DeclaringType!; // TODO RM-8118: not null assertion
@@ -95,15 +94,15 @@ public class WxeMethodStep: WxeStep
 
   public WxeMethodStep (Action method)
       : this(
-          GetTargetFromDelegate(ArgumentUtility.CheckNotNull("method", method)),
-          GetMethodFromDelegate(ArgumentUtility.CheckNotNull("method", method)))
+          GetTargetFromDelegate(method ?? throw new ArgumentNullException(nameof(method))),
+          GetMethodFromDelegate(method ?? throw new ArgumentNullException(nameof(method))))
   {
   }
 
   public WxeMethodStep (Action<WxeContext> method)
       : this(
-          GetTargetFromDelegate(ArgumentUtility.CheckNotNull("method", method)),
-          GetMethodFromDelegate(ArgumentUtility.CheckNotNull("method", method)))
+          GetTargetFromDelegate(method ?? throw new ArgumentNullException(nameof(method))),
+          GetMethodFromDelegate(method ?? throw new ArgumentNullException(nameof(method))))
   {
   }
 

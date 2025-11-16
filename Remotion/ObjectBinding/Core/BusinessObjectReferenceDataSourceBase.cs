@@ -242,7 +242,7 @@ namespace Remotion.ObjectBinding
     /// <seealso cref="IBusinessObjectBoundControl.SupportsProperty">IBusinessObjectBoundControl.SupportsProperty</seealso>
     public bool SupportsProperty (IBusinessObjectProperty property)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentNullException.ThrowIfNull(property);
       return property is IBusinessObjectReferenceProperty;
     }
 

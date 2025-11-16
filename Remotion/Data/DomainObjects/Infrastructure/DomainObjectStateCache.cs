@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       public StateUpdateListener (DomainObjectStateCache cache)
       {
-        ArgumentUtility.CheckNotNull("cache", cache);
+        ArgumentNullException.ThrowIfNull(cache);
         _cache = cache;
       }
 
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </returns>
     public DomainObjectState GetState (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
 
       DomainObjectState state;
       if (_stateCache.TryGetValue(objectID, out state))

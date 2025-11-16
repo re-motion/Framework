@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications
@@ -28,11 +28,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
     /// <summary>
     /// Adds the parameters containing the comparison values to the given <paramref name="command"/>.
     /// </summary>
-    void AddParameters (IDbCommand command, ISqlDialect sqlDialect);
+    void AddParameters (DbCommand command, ISqlDialect sqlDialect);
 
     /// <summary>
     /// Appends the comparison expressions to the SQL <paramref name="statement"/>.
     /// </summary>
-    void AppendComparisons (StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect);
+    void AppendComparisons (StringBuilder statement, DbCommand command, ISqlDialect sqlDialect);
   }
 }

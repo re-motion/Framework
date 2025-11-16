@@ -30,7 +30,7 @@ namespace Remotion.Collections.DataStore
 
     public TimeSpanBasedExpirationPolicy (TimeSpan period, IUtcNowProvider utcNowProvider)
     {
-      ArgumentUtility.CheckNotNull("utcNowProvider", utcNowProvider);
+      ArgumentNullException.ThrowIfNull(utcNowProvider);
 
       _period = period;
       _utcNowProvider = utcNowProvider;
@@ -43,15 +43,14 @@ namespace Remotion.Collections.DataStore
 
     public DateTime GetExpirationInfo (TValue value)
     {
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(value);
 
       return _utcNowProvider.UtcNow + _period;
     }
 
     public bool IsExpired (TValue value, DateTime expirationInfo)
     {
-      ArgumentUtility.CheckNotNull("value", value);
-      ArgumentUtility.CheckNotNull("expirationInfo", expirationInfo);
+      ArgumentNullException.ThrowIfNull(value);
 
       return expirationInfo <= _utcNowProvider.UtcNow;
     }

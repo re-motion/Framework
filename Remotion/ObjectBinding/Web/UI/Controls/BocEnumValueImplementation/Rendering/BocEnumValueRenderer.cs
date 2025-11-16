@@ -23,7 +23,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
@@ -70,9 +69,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
         IValidationErrorRenderer validationErrorRenderer)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("internalControlMemberCaller", internalControlMemberCaller);
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
+      ArgumentNullException.ThrowIfNull(internalControlMemberCaller);
+      ArgumentNullException.ThrowIfNull(labelReferenceRenderer);
+      ArgumentNullException.ThrowIfNull(validationErrorRenderer);
 
       _internalControlMemberCaller = internalControlMemberCaller;
       _labelReferenceRenderer = labelReferenceRenderer;
@@ -87,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
@@ -107,8 +106,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
     /// </remarks>
     public void Render (BocEnumValueRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("renderingContext.Control.Page", renderingContext.Control.Page!);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext.Control.Page!);
 
       AddAttributesToRender(renderingContext);
       var tag = renderingContext.Control.ListControlStyle.ControlType == ListControlType.RadioButtonList

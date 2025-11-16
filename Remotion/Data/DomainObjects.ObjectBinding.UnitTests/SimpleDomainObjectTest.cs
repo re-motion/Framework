@@ -17,8 +17,6 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
-using Remotion.Development.NUnit.UnitTesting;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {

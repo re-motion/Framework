@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     internal static FluentScreenshotElement<IWebElement> GetElement (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
-      ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
+      ArgumentNullException.ThrowIfNull(fluentInformationPopup);
 
       if (!fluentInformationPopup.IsVisible())
         throw new InvalidOperationException("The popup is not visible.");
@@ -67,8 +67,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup,
         [NotNull] string message)
     {
-      ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
-      ArgumentUtility.CheckNotNull("message", message);
+      ArgumentNullException.ThrowIfNull(fluentInformationPopup);
+      ArgumentNullException.ThrowIfNull(message);
 
       JavaScriptExecutor.ExecuteVoidStatement(fluentInformationPopup.GetExecutor(), c_showScript, fluentInformationPopup.GetInputField(), message);
     }
@@ -79,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static void Hide (
           [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
-      ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
+      ArgumentNullException.ThrowIfNull(fluentInformationPopup);
 
       JavaScriptExecutor.ExecuteVoidStatement(fluentInformationPopup.GetExecutor(), c_hideScript, fluentInformationPopup.GetInputField());
     }
@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     {
       // TODO RM-8402: IsVisible() should be enhanced to wait until the popup is really visible
 
-      ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
+      ArgumentNullException.ThrowIfNull(fluentInformationPopup);
 
       return JavaScriptExecutor.ExecuteStatement<bool>(
           fluentInformationPopup.GetExecutor(),
@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup,
         int timeout = 3000)
     {
-      ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
+      ArgumentNullException.ThrowIfNull(fluentInformationPopup);
 
       var watch = new Stopwatch();
       watch.Start();

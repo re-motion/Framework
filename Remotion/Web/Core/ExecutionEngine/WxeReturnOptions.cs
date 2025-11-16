@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine
@@ -40,7 +39,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     public WxeReturnOptions (NameValueCollection callerUrlParameters)
-      : this(true, ArgumentUtility.CheckNotNull("callerUrlParameters", callerUrlParameters))
+      : this(true, callerUrlParameters ?? throw new ArgumentNullException(nameof(callerUrlParameters)))
     {
     }
 

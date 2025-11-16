@@ -15,7 +15,6 @@
 // // along with re-motion; if not, see http://www.gnu.org/licenses.
 // //
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -40,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocTitleCellRenderArguments (SortingDirection sortingDirection, int orderIndex, string cellID, bool isRowHeader)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("cellID", cellID);
+      ArgumentException.ThrowIfNullOrEmpty(cellID);
 
       SortingDirection = sortingDirection;
       OrderIndex = orderIndex;

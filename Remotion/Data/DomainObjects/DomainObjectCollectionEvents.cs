@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -42,7 +41,7 @@ public class DomainObjectCollectionChangeEventArgs : EventArgs
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
   public DomainObjectCollectionChangeEventArgs (DomainObject domainObject)
   {
-    ArgumentUtility.CheckNotNull("domainObject", domainObject);
+    ArgumentNullException.ThrowIfNull(domainObject);
     _domainObject = domainObject;
   }
 

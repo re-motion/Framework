@@ -24,7 +24,6 @@ using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.TypePipe.MutableReflection.Implementation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
@@ -35,8 +34,8 @@ namespace Remotion.Mixins.UnitTests.Core
   {
     public static TargetClassDefinition CreateTargetClassDefinition (Type classType, params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNull("classType", classType);
-      ArgumentUtility.CheckNotNull("mixinTypes", mixinTypes);
+      ArgumentNullException.ThrowIfNull(classType);
+      ArgumentNullException.ThrowIfNull(mixinTypes);
 
       var result = new TargetClassDefinition(ClassContextObjectMother.Create(classType, mixinTypes));
       foreach (var type in mixinTypes)
@@ -46,8 +45,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static MixinDefinition CreateMixinDefinition (TargetClassDefinition targetClassDefinition, Type mixinType, bool acceptsAlphabeticOrdering = true)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentNullException.ThrowIfNull(targetClassDefinition);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       var mixinDefinition = new MixinDefinition(MixinKind.Used, mixinType, targetClassDefinition, acceptsAlphabeticOrdering);
       PrivateInvoke.InvokeNonPublicMethod(targetClassDefinition.Mixins, "Add", mixinDefinition);
@@ -56,7 +55,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static MixinDefinition CreateMixinDefinition (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       var targetClassDefinition = CreateTargetClassDefinition(typeof(NullTarget));
       return CreateMixinDefinition(targetClassDefinition, mixinType);
@@ -64,7 +63,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static MixinDependencyDefinition CreateMixinDependencyDefinition (MixinDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       var mixinDependency = new MixinDependencyDefinition(new RequiredMixinTypeDefinition(definition.TargetClass, typeof(IBaseType2)), definition, null);
       PrivateInvoke.InvokeNonPublicMethod(definition.MixinDependencies, "Add", mixinDependency);
@@ -73,8 +72,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static MixinDependencyDefinition CreateMixinDependencyDefinition (MixinDefinition from, MixinDefinition to)
     {
-      ArgumentUtility.CheckNotNull("from", from);
-      ArgumentUtility.CheckNotNull("to", to);
+      ArgumentNullException.ThrowIfNull(from);
+      ArgumentNullException.ThrowIfNull(to);
 
       var mixinDependency = new MixinDependencyDefinition(new RequiredMixinTypeDefinition(from.TargetClass, to.Type), from, null);
       PrivateInvoke.InvokeNonPublicMethod(from.MixinDependencies, "Add", mixinDependency);
@@ -92,7 +91,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static NextCallDependencyDefinition CreateNextCallDependencyDefinition (MixinDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       var nextCallDependency = new NextCallDependencyDefinition(new RequiredNextCallTypeDefinition(definition.TargetClass, typeof(IBaseType2)), definition, null);
       PrivateInvoke.InvokeNonPublicMethod(definition.NextCallDependencies, "Add", nextCallDependency);
@@ -101,7 +100,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static TargetCallDependencyDefinition CreateTargetCallDependencyDefinition (MixinDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       var targetCallDependency = new TargetCallDependencyDefinition(new RequiredTargetCallTypeDefinition(definition.TargetClass, typeof(IBaseType2)), definition, null);
       PrivateInvoke.InvokeNonPublicMethod(definition.TargetCallDependencies, "Add", targetCallDependency);
@@ -110,8 +109,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static RequiredTargetCallTypeDefinition CreateRequiredTargetCallTypeDefinition (TargetClassDefinition definition, Type requiredType)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
-      ArgumentUtility.CheckNotNull("requiredType", requiredType);
+      ArgumentNullException.ThrowIfNull(definition);
+      ArgumentNullException.ThrowIfNull(requiredType);
 
       var requiredTargetCallType = new RequiredTargetCallTypeDefinition(definition, requiredType);
       PrivateInvoke.InvokeNonPublicMethod(definition.RequiredTargetCallTypes, "Add", requiredTargetCallType);
@@ -120,8 +119,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static RequiredNextCallTypeDefinition CreateRequiredNextCallTypeDefinition (TargetClassDefinition definition, Type requiredType)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
-      ArgumentUtility.CheckNotNull("requiredType", requiredType);
+      ArgumentNullException.ThrowIfNull(definition);
+      ArgumentNullException.ThrowIfNull(requiredType);
 
       var requiredNextCallType = new RequiredNextCallTypeDefinition(definition, requiredType);
       PrivateInvoke.InvokeNonPublicMethod(definition.RequiredNextCallTypes, "Add", requiredNextCallType);
@@ -130,8 +129,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static RequiredMixinTypeDefinition CreateRequiredMixinTypeDefinition (TargetClassDefinition definition, Type requiredType)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
-      ArgumentUtility.CheckNotNull("requiredType", requiredType);
+      ArgumentNullException.ThrowIfNull(definition);
+      ArgumentNullException.ThrowIfNull(requiredType);
 
       var requiredMixinType = new RequiredMixinTypeDefinition(definition, requiredType);
       PrivateInvoke.InvokeNonPublicMethod(definition.RequiredMixinTypes, "Add", requiredMixinType);
@@ -140,7 +139,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static SuppressedAttributeIntroductionDefinition CreateSuppressedAttributeIntroductionDefinition (MixinDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       var attributeDefinitionFake = CreateAttributeDefinition(definition);
       var suppressedAttributeIntroduction = new SuppressedAttributeIntroductionDefinition(
@@ -153,7 +152,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static NonAttributeIntroductionDefinition CreateNonAttributeIntroductionDefinition (MixinDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       var attributeDefinitionFake = CreateAttributeDefinition(definition);
       var nonAttributeIntroduction = new NonAttributeIntroductionDefinition(attributeDefinitionFake, true);
@@ -163,7 +162,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static AttributeIntroductionDefinition CreateAttributeIntroductionDefinition (MixinDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       var attributeDefinitionFake = CreateAttributeDefinition(definition);
       var attributeIntroduction = new AttributeIntroductionDefinition(new Mock<IAttributeIntroductionTarget>().Object, attributeDefinitionFake);
@@ -173,7 +172,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static AttributeDefinition CreateAttributeDefinition (IAttributableDefinition declaringDefinition)
     {
-      ArgumentUtility.CheckNotNull("declaringDefinition", declaringDefinition);
+      ArgumentNullException.ThrowIfNull(declaringDefinition);
 
       var attributeData = CustomAttributeData.GetCustomAttributes(typeof(BaseType1)).Single(a => a.Constructor.DeclaringType == typeof(BT1Attribute));
 
@@ -184,7 +183,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static NonInterfaceIntroductionDefinition CreateNonInterfaceIntroductionDefinition (MixinDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       var nonInterfaceIntroduction = new NonInterfaceIntroductionDefinition(typeof(IBT1Mixin1), definition, true);
       PrivateInvoke.InvokeNonPublicMethod(definition.NonInterfaceIntroductions, "Add", nonInterfaceIntroduction);
@@ -193,7 +192,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static InterfaceIntroductionDefinition CreateInterfaceIntroductionDefinition (MixinDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       var interfaceIntroduction = new InterfaceIntroductionDefinition(typeof(IBT1Mixin1), definition);
       PrivateInvoke.InvokeNonPublicMethod(definition.InterfaceIntroductions, "Add", interfaceIntroduction);
@@ -202,8 +201,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static MethodDefinition CreateMethodDefinition (ClassDefinitionBase declaringClass, MethodInfo methodInfo)
     {
-      ArgumentUtility.CheckNotNull("declaringClass", declaringClass);
-      ArgumentUtility.CheckNotNull("methodInfo", methodInfo);
+      ArgumentNullException.ThrowIfNull(declaringClass);
+      ArgumentNullException.ThrowIfNull(methodInfo);
 
       var methodDefinition = new MethodDefinition(methodInfo, declaringClass);
       PrivateInvoke.InvokeNonPublicMethod(declaringClass.Methods, "Add", methodDefinition);
@@ -212,8 +211,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static PropertyDefinition CreatePropertyDefinition (ClassDefinitionBase declaringClass, PropertyInfo propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("declaringClass", declaringClass);
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentNullException.ThrowIfNull(declaringClass);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       var getMethod = propertyInfo.CanRead ? new MethodDefinition(propertyInfo.GetGetMethod(true), declaringClass) : null;
       var setMethod = propertyInfo.CanWrite ? new MethodDefinition(propertyInfo.GetSetMethod(true), declaringClass) : null;
@@ -224,8 +223,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static EventDefinition CreateEventDefinition (ClassDefinitionBase declaringClass, EventInfo eventInfo)
     {
-      ArgumentUtility.CheckNotNull("declaringClass", declaringClass);
-      ArgumentUtility.CheckNotNull("eventInfo", eventInfo);
+      ArgumentNullException.ThrowIfNull(declaringClass);
+      ArgumentNullException.ThrowIfNull(eventInfo);
 
       var addMethod = eventInfo.GetAddMethod(true) != null ? new MethodDefinition(eventInfo.GetAddMethod(true), declaringClass) : null;
       var removeMethod = eventInfo.GetRemoveMethod(true) != null ? new MethodDefinition(eventInfo.GetRemoveMethod(true), declaringClass) : null;
@@ -236,8 +235,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static void DeclareOverride (MemberDefinitionBase memberOverride, MemberDefinitionBase overriddenMember)
     {
-      ArgumentUtility.CheckNotNull("memberOverride", memberOverride);
-      ArgumentUtility.CheckNotNull("overriddenMember", overriddenMember);
+      ArgumentNullException.ThrowIfNull(memberOverride);
+      ArgumentNullException.ThrowIfNull(overriddenMember);
 
       typeof(MemberDefinitionBase).GetProperty("BaseAsMember").SetValue(memberOverride, overriddenMember, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
       var overridesCollection = PrivateInvoke.GetNonPublicField(overriddenMember.Overrides, "_items");
@@ -246,7 +245,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static TargetClassDefinition GetActiveTargetClassDefinition (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext(type);
 
@@ -256,7 +255,7 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static TargetClassDefinition GetActiveTargetClassDefinition_Force (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       ClassContext classContext = MixinConfiguration.ActiveConfiguration.GetContext(type) ?? new ClassContext(type, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
       return GetTargetClassDefinition(classContext);
@@ -264,15 +263,15 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static TargetClassDefinition GetTargetClassDefinition (ClassContext classContext)
     {
-      ArgumentUtility.CheckNotNull("classContext", classContext);
+      ArgumentNullException.ThrowIfNull(classContext);
 
       return TargetClassDefinitionFactory.CreateAndValidate(classContext);
     }
 
     public static TargetClassDefinition GetTargetClassDefinition (Type targetClass, params Type[] mixins)
     {
-      ArgumentUtility.CheckNotNull("targetClass", targetClass);
-      ArgumentUtility.CheckNotNull("mixins", mixins);
+      ArgumentNullException.ThrowIfNull(targetClass);
+      ArgumentNullException.ThrowIfNull(mixins);
 
       var classContext = ClassContextObjectMother.Create(targetClass, mixins);
       return GetTargetClassDefinition(classContext);
@@ -280,8 +279,8 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static TargetClassDefinition BuildUnvalidatedDefinition (Type baseType, params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNull("baseType", baseType);
-      ArgumentUtility.CheckNotNull("mixinTypes", mixinTypes);
+      ArgumentNullException.ThrowIfNull(baseType);
+      ArgumentNullException.ThrowIfNull(mixinTypes);
 
       var context = ClassContextObjectMother.Create(baseType, mixinTypes);
       return TargetClassDefinitionFactory.CreateWithoutValidation(context);
@@ -289,9 +288,9 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static TargetClassDefinition BuildUnvalidatedDefinition (Type baseType, Type[] mixinTypes, Type[] composedInterfaces)
     {
-      ArgumentUtility.CheckNotNull("baseType", baseType);
-      ArgumentUtility.CheckNotNull("mixinTypes", mixinTypes);
-      ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces);
+      ArgumentNullException.ThrowIfNull(baseType);
+      ArgumentNullException.ThrowIfNull(mixinTypes);
+      ArgumentNullException.ThrowIfNull(composedInterfaces);
 
       var context = ClassContextObjectMother.Create(baseType, mixinTypes, composedInterfaces);
       return TargetClassDefinitionFactory.CreateWithoutValidation(context);

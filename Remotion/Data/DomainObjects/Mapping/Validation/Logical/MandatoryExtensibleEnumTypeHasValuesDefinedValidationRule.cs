@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ExtensibleEnums;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 {
@@ -33,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
           select Validate(propertyDefinition);
@@ -41,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     private MappingValidationResult Validate (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       var nativePropertyType = propertyDefinition.PropertyType;
 

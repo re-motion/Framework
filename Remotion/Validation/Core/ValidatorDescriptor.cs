@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 using Remotion.Validation.Rules;
 
 namespace Remotion.Validation
@@ -28,7 +27,7 @@ namespace Remotion.Validation
 
     public ValidatorDescriptor (IReadOnlyCollection<IValidationRule> validationRules)
     {
-      ArgumentUtility.CheckNotNull("validationRules", validationRules);
+      ArgumentNullException.ThrowIfNull(validationRules);
 
       ValidationRules = validationRules;
     }

@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 
 namespace Remotion.Web.Development.WebTesting
@@ -69,7 +68,7 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] ElementScope scope,
         [CanBeNull] IWebTestActionOptions? userDefinedWebTestActionOptions)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (userDefinedWebTestActionOptions == null) // prevent complicated null handling
         userDefinedWebTestActionOptions = new WebTestActionOptions();
@@ -96,8 +95,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected void ExecuteAction ([NotNull] WebTestAction action, [NotNull] IWebTestActionOptions actionOptions)
     {
-      ArgumentUtility.CheckNotNull("action", action);
-      ArgumentUtility.CheckNotNull("actionOptions", actionOptions);
+      ArgumentNullException.ThrowIfNull(action);
+      ArgumentNullException.ThrowIfNull(actionOptions);
 
       OnActionExecute(action, actionOptions);
 
@@ -109,8 +108,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     protected void OnActionExecute ([NotNull] WebTestAction action, [NotNull] IWebTestActionOptions actionOptions)
     {
-      ArgumentUtility.CheckNotNull("action", action);
-      ArgumentUtility.CheckNotNull("actionOptions", actionOptions);
+      ArgumentNullException.ThrowIfNull(action);
+      ArgumentNullException.ThrowIfNull(actionOptions);
 
       _actionExecuteEvent?.Invoke(action, actionOptions);
     }

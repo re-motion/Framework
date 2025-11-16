@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
@@ -27,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     public BocListRowMenu (IBocList owner, BocListRow row)
       :base(owner)
     {
-      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentNullException.ThrowIfNull(row);
       _row = row;
     }
 

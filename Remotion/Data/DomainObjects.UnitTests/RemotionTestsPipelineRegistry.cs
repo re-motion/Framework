@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
 using System.Collections.Generic;
 using Remotion.Reflection.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     public RemotionTestsPipelineRegistry (IPipelineRegistry _, IEnumerable<IParticipant> defaultPipelineParticipants)
-        : base(CreateDefaultPipeline(ArgumentUtility.CheckNotNull("defaultPipelineParticipants", defaultPipelineParticipants)))
+        : base(CreateDefaultPipeline(defaultPipelineParticipants ?? throw new ArgumentNullException(nameof(defaultPipelineParticipants))))
     {
       // Throw away the decorated pipeline registry instance since we want to override it entirely
     }

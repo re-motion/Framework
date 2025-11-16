@@ -81,13 +81,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           () => Provider.LoadDataContainers(new[] { id1, id2, id3 }).ToList(),
           Throws.InstanceOf<PersistenceException>()
               .With.Message.EqualTo(
-                  "The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:\r\n"
-                  + "Loaded DataContainer ID: Partner|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid, "
-                  + "expected ObjectID(s): Distributor|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid\r\n"
-                  + "Loaded DataContainer ID: Partner|b403e58e-9fa5-47ed-883c-73420d64deb3|System.Guid, "
-                  + "expected ObjectID(s): Distributor|b403e58e-9fa5-47ed-883c-73420d64deb3|System.Guid\r\n"
-                  + "Loaded DataContainer ID: Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid, "
-                  + "expected ObjectID(s): Distributor|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid"));
+                  """
+                  The ObjectID of one or more loaded DataContainers does not match the expected ObjectIDs:
+                  Loaded DataContainer ID: Partner|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid, expected ObjectID(s): Distributor|5587a9c0-be53-477d-8c0a-4803c7fae1a9|System.Guid
+                  Loaded DataContainer ID: Partner|b403e58e-9fa5-47ed-883c-73420d64deb3|System.Guid, expected ObjectID(s): Distributor|b403e58e-9fa5-47ed-883c-73420d64deb3|System.Guid
+                  Loaded DataContainer ID: Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid, expected ObjectID(s): Distributor|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid
+                  """.ReplaceLineEndings()));
     }
   }
 }

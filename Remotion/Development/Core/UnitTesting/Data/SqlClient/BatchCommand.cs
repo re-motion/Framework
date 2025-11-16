@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Text;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Data.SqlClient
 {
@@ -54,7 +53,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     public void AppendCommandBatchLine (string commandBatchLine)
     {
-      ArgumentUtility.CheckNotNull("commandBatchLine", commandBatchLine);
+      ArgumentNullException.ThrowIfNull(commandBatchLine);
 
       _content.AppendLine(commandBatchLine);
       _lineCount++;

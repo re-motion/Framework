@@ -45,7 +45,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     protected ExtensibleEnumValueDiscoveryService (ITypeDiscoveryService typeDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
+      ArgumentNullException.ThrowIfNull(typeDiscoveryService);
 
       _typeDiscoveryService = typeDiscoveryService;
     }
@@ -57,7 +57,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     public IEnumerable<ExtensibleEnumInfo<T>> GetValueInfos<T> (ExtensibleEnumDefinition<T> definition) where T: ExtensibleEnum<T>
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
 #if !FEATURE_GAC
       if (!_excludeGlobalTypes)
@@ -73,8 +73,8 @@ namespace Remotion.ExtensibleEnums.Infrastructure
         IEnumerable<Type> typeCandidates)
         where T : ExtensibleEnum<T>
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
-      ArgumentUtility.CheckNotNull("typeCandidates", typeCandidates);
+      ArgumentNullException.ThrowIfNull(definition);
+      ArgumentNullException.ThrowIfNull(typeCandidates);
 
       return from type in GetStaticTypes(typeCandidates)
              // optimization: only static types can have extension methods
@@ -85,8 +85,8 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     public IEnumerable<ExtensibleEnumInfo<T>> GetValueInfosForType<T> (ExtensibleEnumDefinition<T> definition, Type typeDeclaringMethods)
         where T : ExtensibleEnum<T>
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
-      ArgumentUtility.CheckNotNull("typeDeclaringMethods", typeDeclaringMethods);
+      ArgumentNullException.ThrowIfNull(definition);
+      ArgumentNullException.ThrowIfNull(typeDeclaringMethods);
 
       var methods = typeDeclaringMethods.GetMethods(BindingFlags.Static | BindingFlags.Public);
       var extensionMethods = GetValueExtensionMethods(typeof(T), methods);
@@ -100,15 +100,15 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     public IEnumerable<Type> GetStaticTypes (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentNullException.ThrowIfNull(types);
 
       return types.Where(t => t.IsAbstract && t.IsSealed && !t.IsGenericTypeDefinition);
     }
 
     public IEnumerable<MethodInfo> GetValueExtensionMethods (Type extensibleEnumType, IEnumerable<MethodInfo> methodCandidates)
     {
-      ArgumentUtility.CheckNotNull("extensibleEnumType", extensibleEnumType);
-      ArgumentUtility.CheckNotNull("methodCandidates", methodCandidates);
+      ArgumentNullException.ThrowIfNull(extensibleEnumType);
+      ArgumentNullException.ThrowIfNull(methodCandidates);
 
       var extensibleEnumValuesType = typeof(ExtensibleEnumDefinition<>).MakeGenericType(extensibleEnumType);
       return from m in methodCandidates

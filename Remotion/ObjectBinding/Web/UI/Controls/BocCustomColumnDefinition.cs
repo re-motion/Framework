@@ -189,7 +189,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
+      ArgumentNullException.ThrowIfNull(serviceLocator);
 
       return serviceLocator.GetInstance<IBocCustomColumnRenderer>();
     }
@@ -343,7 +343,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected void RegisterForSynchronousPostBack (BocListRow row, string eventArgument)
     {
-      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentNullException.ThrowIfNull(row);
 
       var preRenderArguments = _arguments as BocCustomCellPreRenderArguments;
       if (preRenderArguments == null)
@@ -490,7 +490,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [NotNull]
     protected virtual IComparer<BocListRow> CreateCellValueComparer (BocCustomCellArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("arguments", arguments);
+      ArgumentNullException.ThrowIfNull(arguments);
 
       return arguments.ColumnDefinition.GetPropertyPath().CreateComparer();
     }
@@ -504,7 +504,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [NotNull]
     protected virtual IValidationFailureMatcher GetValidationFailureMatcher (BocCustomCellArguments arguments)
     {
-      ArgumentUtility.CheckNotNull(nameof(arguments), arguments);
+      ArgumentNullException.ThrowIfNull(arguments);
 
       var propertyPath = arguments.ColumnDefinition.GetPropertyPath();
       return new BusinessObjectPropertyPathValidationFailureMatcher(propertyPath);

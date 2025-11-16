@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -32,7 +31,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public AccessControlListFinder (ISecurityContextRepository securityContextRepository)
     {
-      ArgumentUtility.CheckNotNull("securityContextRepository", securityContextRepository);
+      ArgumentNullException.ThrowIfNull(securityContextRepository);
 
       _securityContextRepository = securityContextRepository;
     }
@@ -45,7 +44,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     /// </exception>
     public IDomainObjectHandle<AccessControlList>? Find (ISecurityContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       // Status quo:
       // Don't match ACL if Context contains more properties then the Class

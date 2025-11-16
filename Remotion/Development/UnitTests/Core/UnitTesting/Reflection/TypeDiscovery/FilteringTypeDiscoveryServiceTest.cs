@@ -17,7 +17,7 @@
 using System;
 using System.ComponentModel.Design;
 using System.Drawing;
-using System.Drawing.Imaging;
+using System.Drawing.Configuration;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -34,7 +34,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var types = new[]
                   {
                       typeof(Color),
-                      typeof(Brush),
+                      typeof(Size),
                       typeof(DateTime)
                   };
 
@@ -52,7 +52,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
               new[]
               {
                 typeof(Color),
-                typeof(Brush)
+                typeof(Size)
               }));
     }
 
@@ -62,9 +62,9 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var types = new[]
                   {
                       typeof(Color),
-                      typeof(Brush),
+                      typeof(Size),
                       typeof(DateTime),
-                      typeof(ImageFlags)
+                      typeof(SystemDrawingSection)
                   };
 
       var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();
@@ -81,8 +81,8 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
               new[]
               {
                 typeof(Color),
-                typeof(Brush),
-                typeof(ImageFlags)
+                typeof(Size),
+                typeof(SystemDrawingSection)
               }));
     }
 
@@ -124,7 +124,7 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var types = new[]
                   {
                       typeof(Color),
-                      typeof(Brush),
+                      typeof(Size),
                       typeof(DateTime)
                   };
 
@@ -151,9 +151,9 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Reflection.TypeDiscove
       var types = new[]
                   {
                       typeof(Color),
-                      typeof(Brush),
+                      typeof(Size),
                       typeof(DateTime),
-                      typeof(ImageFlags)
+                      typeof(SystemDrawingSection)
                   };
 
       var decoratedTypeDiscoveryServiceMock = new Mock<ITypeDiscoveryService>();

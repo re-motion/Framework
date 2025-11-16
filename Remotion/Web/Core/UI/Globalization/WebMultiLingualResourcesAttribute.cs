@@ -19,7 +19,6 @@ using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 
 namespace Remotion.Web.UI.Globalization
@@ -131,7 +130,7 @@ namespace Remotion.Web.UI.Globalization
     public WebMultiLingualResourcesAttribute (string baseName)
         : base(baseName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("baseName", baseName);
+      ArgumentException.ThrowIfNullOrEmpty(baseName);
       Type? type = BuildManager.GetType(baseName, throwOnError: false, ignoreCase: false);
       if (type != null)
         SetResourceAssembly(type.Assembly);
@@ -140,7 +139,7 @@ namespace Remotion.Web.UI.Globalization
     public WebMultiLingualResourcesAttribute (Type resourceType)
         : base(resourceType.GetFullNameChecked())
     {
-      ArgumentUtility.CheckNotNull("resourceType", resourceType);
+      ArgumentNullException.ThrowIfNull(resourceType);
       SetResourceAssembly(resourceType.Assembly);
     }
 

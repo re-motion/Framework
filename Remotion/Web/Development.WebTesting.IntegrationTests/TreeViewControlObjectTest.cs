@@ -88,7 +88,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
               .With.Message.EqualTo(
                   AssertionExceptionUtility.CreateExpectationException(
                       Driver,
-                      "The checkbox could not be found: Unable to find xpath: ./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']").Message));
+                      "The checkbox could not be found: Unable to find xpath: "
+                      + "./tbody/tr/td[a[contains(@data-event-content-onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']"
+                      + " | ./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']").Message));
 
       rootNode.Scope.ElementFinder.Options.Timeout = backupTimeout;
 

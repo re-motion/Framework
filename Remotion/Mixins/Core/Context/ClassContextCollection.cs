@@ -39,7 +39,7 @@ namespace Remotion.Mixins.Context
 
     public ClassContextCollection (IEnumerable<ClassContext> classContexts)
     {
-      ArgumentUtility.CheckNotNull("classContexts", classContexts);
+      ArgumentNullException.ThrowIfNull(classContexts);
 
       _values = classContexts.ToDictionary(cc => cc.Type);
       _deriveInheritedContextFunc = DeriveInheritedContext;
@@ -67,19 +67,19 @@ namespace Remotion.Mixins.Context
 
     public void CopyTo (ClassContext[] array, int arrayIndex)
     {
-      ArgumentUtility.CheckNotNull("array", array);
+      ArgumentNullException.ThrowIfNull(array);
       ((ICollection)this).CopyTo(array, arrayIndex);
     }
 
     void ICollection.CopyTo (Array array, int index)
     {
-      ArgumentUtility.CheckNotNull("array", array);
+      ArgumentNullException.ThrowIfNull(array);
       ((ICollection)_values.Values).CopyTo(array, index);
     }
 
     public ClassContext? GetExact (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       ClassContext? result;
       _values.TryGetValue(type, out result);
@@ -89,7 +89,7 @@ namespace Remotion.Mixins.Context
 
     public ClassContext? GetWithInheritance (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var exactMatch = GetExact(type);
       if (exactMatch != null)
@@ -112,19 +112,19 @@ namespace Remotion.Mixins.Context
 
     public bool ContainsExact (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
       return GetExact(type) != null;
     }
 
     public bool ContainsWithInheritance (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
       return GetWithInheritance(type) != null;
     }
 
     public bool Contains (ClassContext item)
     {
-      ArgumentUtility.CheckNotNull("item", item);
+      ArgumentNullException.ThrowIfNull(item);
       return item.Equals(GetExact(item.Type));
     }
 

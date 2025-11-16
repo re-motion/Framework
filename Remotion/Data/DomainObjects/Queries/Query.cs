@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries
 {
@@ -51,8 +50,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </exception>
     public Query (QueryDefinition definition, QueryParameterCollection parameters)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentNullException.ThrowIfNull(definition);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       _definition = definition;
       _parameters = parameters;
@@ -103,6 +102,14 @@ namespace Remotion.Data.DomainObjects.Queries
     public QueryType QueryType
     {
       get { return _definition.QueryType; }
+    }
+
+    /// <summary>
+    /// Gets the <see cref="Configuration.QueryDefinition.StatementType"/> of the associated <see cref="Configuration.QueryDefinition"/>.
+    /// </summary>
+    public QueryStatementType StatementType
+    {
+      get { return _definition.StatementType; }
     }
 
     /// <summary>

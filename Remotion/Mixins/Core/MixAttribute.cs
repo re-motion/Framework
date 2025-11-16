@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -48,8 +47,11 @@ namespace Remotion.Mixins
     /// <param name="mixinType">The mixin type to be mixed with the target type.</param>
     public MixAttribute (Type targetType, Type mixinType)
     {
-      _targetType = ArgumentUtility.CheckNotNull("targetType", targetType);
-      _mixinType = ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(mixinType);
+
+      _targetType = targetType;
+      _mixinType = mixinType;
     }
 
     /// <summary>
@@ -103,8 +105,8 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Assembly attributeTarget)
     {
-      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
-      ArgumentUtility.CheckNotNull("attributeTarget", attributeTarget);
+      ArgumentNullException.ThrowIfNull(configurationBuilder);
+      ArgumentNullException.ThrowIfNull(attributeTarget);
 
       var origin = MixinContextOrigin.CreateForCustomAttribute(this, attributeTarget);
       Apply(configurationBuilder, MixinKind, TargetType, MixinType, origin);

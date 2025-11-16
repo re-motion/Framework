@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       public EndPointLoader (ILazyLoader lazyLoader)
       {
-        ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
+        ArgumentNullException.ThrowIfNull(lazyLoader);
         _lazyLoader = lazyLoader;
       }
 
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       public IVirtualObjectEndPointLoadState LoadEndPointAndGetNewState (IVirtualObjectEndPoint endPoint)
       {
-        var virtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint>("endPoint", endPoint);
+        var virtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint>(nameof(endPoint), endPoint);
         _lazyLoader.LoadLazyVirtualObjectEndPoint(virtualObjectEndPoint.ID);
         return virtualObjectEndPoint._loadState;
       }
@@ -69,16 +69,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IClientTransactionEventSink transactionEventSink,
         IVirtualObjectEndPointDataManagerFactory dataManagerFactory)
         : base(
-            ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction),
-            ArgumentUtility.CheckNotNull("id", id))
+            clientTransaction ?? throw new ArgumentNullException(nameof(clientTransaction)),
+            id ?? throw new ArgumentNullException(nameof(id)))
     {
-      ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
-      ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
+      ArgumentNullException.ThrowIfNull(lazyLoader);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
+      ArgumentNullException.ThrowIfNull(dataManagerFactory);
 
       if (!ID.Definition.IsVirtual)
-        throw new ArgumentException("End point ID must refer to a virtual end point.", "id");
+        throw new ArgumentException("End point ID must refer to a virtual end point.", nameof(id));
 
       _lazyLoader = lazyLoader;
       _endPointProvider = endPointProvider;
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       _loadState.SynchronizeOppositeEndPoint(this, oppositeEndPoint);
     }
@@ -199,25 +199,25 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       _loadState.RegisterOriginalOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       _loadState.UnregisterOriginalOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       _loadState.RegisterCurrentOppositeEndPoint(this, oppositeEndPoint);
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
       _loadState.UnregisterCurrentOppositeEndPoint(this, oppositeEndPoint);
     }
 
@@ -260,7 +260,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected override void SetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint)
     {
-      var sourceVirtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint>("sourceObjectEndPoint", sourceObjectEndPoint);
+      var sourceVirtualObjectEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualObjectEndPoint>(nameof(sourceObjectEndPoint), sourceObjectEndPoint);
       _loadState.SetDataFromSubTransaction(this, sourceVirtualObjectEndPoint._loadState);
     }
 

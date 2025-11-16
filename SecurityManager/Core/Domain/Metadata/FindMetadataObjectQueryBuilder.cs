@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
@@ -42,7 +41,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
         }
         catch (FormatException exception)
         {
-          throw new ArgumentException(string.Format("The metadata ID '{0}' is invalid.", metadataID), "metadataID", exception);
+          throw new ArgumentException(string.Format("The metadata ID '{0}' is invalid.", metadataID), nameof(metadataID), exception);
         }
       }
 
@@ -58,7 +57,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public IQueryable<MetadataObject> CreateQuery (string metadataReference)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("metadataReference", metadataReference);
+      ArgumentException.ThrowIfNullOrEmpty(metadataReference);
 
       MetadataID metadataID = MetadataID.Parse(metadataReference);
 

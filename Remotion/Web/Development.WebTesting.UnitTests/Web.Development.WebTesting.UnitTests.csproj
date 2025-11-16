@@ -15,6 +15,9 @@
     <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="SavedTestScreenshots\**\*.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

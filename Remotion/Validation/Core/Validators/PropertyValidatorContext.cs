@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Validators
 {
@@ -41,11 +40,11 @@ namespace Remotion.Validation.Validators
         [NotNull] IPropertyInformation property,
         [CanBeNull] object? propertyValue)
     {
-      ArgumentUtility.CheckNotNull("parentContext", parentContext);
-      ArgumentUtility.CheckNotNull("instance", instance);
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentNullException.ThrowIfNull(parentContext);
+      ArgumentNullException.ThrowIfNull(instance);
+      ArgumentNullException.ThrowIfNull(property);
       if (parentContext.InstanceToValidate != instance)
-        throw new ArgumentException("parentContext.Instance does not match instance parameter.", "instance");
+        throw new ArgumentException("parentContext.Instance does not match instance parameter.", nameof(instance));
 
       ParentContext = parentContext;
       Instance = instance;

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
@@ -37,9 +38,9 @@ public class SqlFulltextDataParameterDefinitionDecoratorTest
   [TestCaseSource(nameof(GetDummyValues))]
   public void MaxSize_AnsiString_SizeSetTo8000 (object value)
   {
-    var dbCommandStub = new Mock<IDbCommand>();
+    var dbCommandStub = new Mock<DbCommand>();
 
-    var dataParameterMock = new Mock<IDbDataParameter>();
+    var dataParameterMock = new Mock<DbParameter>();
     dataParameterMock.Setup(_ => _.Value).Returns(value);
     dataParameterMock.Setup(_ => _.DbType).Returns(DbType.AnsiString);
     dataParameterMock.SetupProperty(_ => _.Size);
@@ -62,9 +63,9 @@ public class SqlFulltextDataParameterDefinitionDecoratorTest
   [TestCaseSource(nameof(GetDummyValues))]
   public void MaxSize_String_SizeSetTo4000 (object value)
   {
-    var dbCommandStub = new Mock<IDbCommand>();
+    var dbCommandStub = new Mock<DbCommand>();
 
-    var dataParameterStub = new Mock<IDbDataParameter>();
+    var dataParameterStub = new Mock<DbParameter>();
     dataParameterStub.Setup(_ => _.Value).Returns(value);
     dataParameterStub.Setup(_ => _.DbType).Returns(DbType.String);
     dataParameterStub.SetupProperty(_ => _.ParameterName);
@@ -94,9 +95,9 @@ public class SqlFulltextDataParameterDefinitionDecoratorTest
   [TestCaseSource(nameof(GetValuesLength8001))]
   public void MaxSize_Over8000LengthAnsiString_SizeUnchanged (object value)
   {
-    var dbCommandStub = new Mock<IDbCommand>();
+    var dbCommandStub = new Mock<DbCommand>();
 
-    var dataParameterStub = new Mock<IDbDataParameter>();
+    var dataParameterStub = new Mock<DbParameter>();
     dataParameterStub.Setup(_ => _.Value).Returns(value);
     dataParameterStub.Setup(_ => _.DbType).Returns(DbType.AnsiString);
     dataParameterStub.SetupProperty(_ => _.Size);
@@ -125,9 +126,9 @@ public class SqlFulltextDataParameterDefinitionDecoratorTest
   [TestCaseSource(nameof(GetValuesLength4001))]
   public void MaxSize_Over4000LengthString_SizeUnchanged (object value)
   {
-    var dbCommandStub = new Mock<IDbCommand>();
+    var dbCommandStub = new Mock<DbCommand>();
 
-    var dataParameterStub = new Mock<IDbDataParameter>();
+    var dataParameterStub = new Mock<DbParameter>();
     dataParameterStub.Setup(_ => _.Value).Returns(value);
     dataParameterStub.Setup(_ => _.DbType).Returns(DbType.String);
     dataParameterStub.SetupProperty(_ => _.Size);
@@ -149,9 +150,9 @@ public class SqlFulltextDataParameterDefinitionDecoratorTest
   [Test]
   public void MaxSize_Binary_SizeUnchanged ()
   {
-    var dbCommandStub = new Mock<IDbCommand>();
+    var dbCommandStub = new Mock<DbCommand>();
 
-    var dataParameterStub = new Mock<IDbDataParameter>();
+    var dataParameterStub = new Mock<DbParameter>();
     var dummyValue = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
     dataParameterStub.Setup(_ => _.Value).Returns(dummyValue);
     dataParameterStub.Setup(_ => _.DbType).Returns(DbType.Binary);

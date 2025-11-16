@@ -41,7 +41,7 @@ namespace Remotion.Utilities
    public static bool IsDefined<T> (MemberInfo element, bool inherit)
        where T : class
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentNullException.ThrowIfNull(element);
       CheckAttributeType(typeof(T), "T");
 
       return IsDefined(element, typeof(T), inherit);
@@ -49,7 +49,7 @@ namespace Remotion.Utilities
 
     public static bool IsDefined (MemberInfo element, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentNullException.ThrowIfNull(element);
       CheckAttributeType(attributeType, "attributeType");
 
       return GetCustomAttributes(element, attributeType, inherit).Length > 0;
@@ -58,7 +58,7 @@ namespace Remotion.Utilities
     public static T? GetCustomAttribute<T> (MemberInfo element, bool inherit)
         where T: class
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentNullException.ThrowIfNull(element);
       CheckAttributeType(typeof(T), "T");
 
       return (T?)(object?)GetCustomAttribute(element, typeof(T), inherit);
@@ -66,7 +66,7 @@ namespace Remotion.Utilities
 
     public static Attribute? GetCustomAttribute (MemberInfo element, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentNullException.ThrowIfNull(element);
       CheckAttributeType(attributeType, "attributeType");
 
       object[] attributeArray = GetCustomAttributes(element, attributeType, inherit);
@@ -80,7 +80,7 @@ namespace Remotion.Utilities
     public static T[] GetCustomAttributes<T> (MemberInfo element, bool inherit)
         where T: class
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentNullException.ThrowIfNull(element);
       CheckAttributeType(typeof(T), "T");
 
       return (T[])GetCustomAttributes(element, typeof(T), inherit);
@@ -88,7 +88,7 @@ namespace Remotion.Utilities
 
     public static object[] GetCustomAttributes (MemberInfo element, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentNullException.ThrowIfNull(element);
       CheckAttributeType(attributeType, "attributeType");
 
       var elementAsType = element as Type;
@@ -108,7 +108,7 @@ namespace Remotion.Utilities
 
     public static object[] GetCustomAttributes (Type type, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
       CheckAttributeType(attributeType, "attributeType");
 
       var attributesWithRightType = GetCustomAttributesWithMetadata(type, attributeType, inherit);
@@ -123,7 +123,7 @@ namespace Remotion.Utilities
 
     public static IEnumerable<AttributeWithMetadata> GetCustomAttributesWithMetadata (Type type, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var attributeUsageAttributes = new Dictionary<Type, AttributeUsageAttribute>();
 
@@ -176,7 +176,7 @@ namespace Remotion.Utilities
 
     private static void CheckAttributeType (Type attributeType, string parameterName)
     {
-      ArgumentUtility.CheckNotNull("attributeType", attributeType);
+      ArgumentNullException.ThrowIfNull(attributeType);
 
       if (!typeof(Attribute).IsAssignableFrom(attributeType) && !attributeType.IsInterface)
       {

@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration.Loader
       var appContextProviderMock = new Mock<IAppContextProvider>();
       appContextProviderMock.SetupGet(e => e.BaseDirectory).Returns(_directory);
 
-      var queryFile = Path.Combine(_directory, "queries.xml");
+      var queryFile = Path.Combine(_directory, "Queries.xml");
       File.WriteAllText(queryFile, "test query file");
 
       var queryFileFinder = new DefaultQueryFileFinder(appContextProviderMock.Object);

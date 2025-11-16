@@ -15,13 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Transactions;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.Data.SqlClient;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -48,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     protected DatabaseTest (DatabaseAgent databaseAgent, string createTestDataFileName)
     {
-      ArgumentUtility.CheckNotNull("databaseAgent", databaseAgent);
-      ArgumentUtility.CheckNotNullOrEmpty("createTestDataFileName", createTestDataFileName);
+      ArgumentNullException.ThrowIfNull(databaseAgent);
+      ArgumentException.ThrowIfNullOrEmpty(createTestDataFileName);
 
       _databaseAgent = databaseAgent;
       _createTestDataFileName = createTestDataFileName;
@@ -89,35 +88,35 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static string TestDomainConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_TestDomain; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_TestDomain"); }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("master"); }
     }
 
     public static string SchemaGenerationConnectionString1
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain1; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_SchemaGenerationTestDomain1"); }
     }
 
     public static string SchemaGenerationConnectionString2
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain2; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_SchemaGenerationTestDomain2"); }
     }
 
     public static string SchemaGenerationConnectionString3
     {
-      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain3; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.GetConnectionStringForInitialCatalog("DBPrefix_SchemaGenerationTestDomain3"); }
     }
 
-    protected IDbCommand CreateCommand (string table, Guid id, IDbConnection connection)
+    protected DbCommand CreateCommand (string table, Guid id, DbConnection connection)
     {
-      IDbCommand command = connection.CreateCommand();
+      DbCommand command = connection.CreateCommand();
       command.CommandText = string.Format("SELECT * FROM [{0}] where ID = @id", table);
 
-      IDbDataParameter parameter = command.CreateParameter();
+      DbParameter parameter = command.CreateParameter();
       parameter.ParameterName = "@id";
       parameter.Value = id;
       command.Parameters.Add(parameter);

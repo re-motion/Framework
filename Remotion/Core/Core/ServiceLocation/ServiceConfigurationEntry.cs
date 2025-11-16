@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
 {
@@ -37,8 +36,8 @@ namespace Remotion.ServiceLocation
     /// <returns>A <see cref="ServiceConfigurationEntry"/> containing the data from the <paramref name="attributes"/>.</returns>
     public static ServiceConfigurationEntry CreateFromAttributes (Type serviceType, IEnumerable<Tuple<Type, ImplementationForAttribute>> attributes)
     {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull("attributes", attributes);
+      ArgumentNullException.ThrowIfNull(serviceType);
+      ArgumentNullException.ThrowIfNull(attributes);
 
       var attributesAndResolvedTypes =
           (from attribute in attributes
@@ -82,13 +81,13 @@ namespace Remotion.ServiceLocation
     /// <param name="implementationInfos">The service implementation information.</param>
     public ServiceConfigurationEntry (Type serviceType, IEnumerable<ServiceImplementationInfo> implementationInfos)
     {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull("implementationInfos", implementationInfos);
+      ArgumentNullException.ThrowIfNull(serviceType);
+      ArgumentNullException.ThrowIfNull(implementationInfos);
 
       _serviceType = serviceType;
       var checkedImplementationInfos =
           implementationInfos.ApplySideEffect(
-              info => CheckImplementationType(serviceType, info.ImplementationType, message => new ArgumentException(message, "implementationInfos")));
+              info => CheckImplementationType(serviceType, info.ImplementationType, message => new ArgumentException(message, nameof(implementationInfos))));
       _implementationInfos = Array.AsReadOnly(checkedImplementationInfos.ToArray());
     }
 

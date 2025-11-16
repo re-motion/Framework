@@ -57,7 +57,36 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AlwaysVisibility_WithoutFailures_ContainsNullColumnRenderer ()
+    public void CreateColumnRenderers_WithNotVisibleColumn_CreatesNullColumnRenderer ()
+    {
+      var notVisibleColumn = new StubColumnDefinition { IsVisible = false };
+      var firstColumn = new StubColumnDefinition();
+      var thirdColumn = new StubColumnDefinition();
+
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(firstColumn, notVisibleColumn, thirdColumn), _serviceLocator);
+
+      var bocColumnRenderers = builder.CreateColumnRenderers();
+
+      Assert.That(bocColumnRenderers.Length, Is.EqualTo(3));
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[1], "_columnRenderer"), Is.TypeOf(typeof(NullColumnRenderer)));
+      Assert.That(bocColumnRenderers[1].ColumnDefinition, Is.SameAs(notVisibleColumn));
+      Assert.That(bocColumnRenderers[1].ColumnIndex, Is.EqualTo(1));
+      Assert.That(bocColumnRenderers[1].VisibleColumnIndex, Is.EqualTo(-1));
+
+
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[0], "_columnRenderer"), Is.TypeOf(typeof(StubColumnRenderer)));
+      Assert.That(bocColumnRenderers[0].ColumnDefinition, Is.SameAs(firstColumn));
+      Assert.That(bocColumnRenderers[0].ColumnIndex, Is.EqualTo(0));
+      Assert.That(bocColumnRenderers[0].VisibleColumnIndex, Is.EqualTo(0));
+
+      Assert.That(PrivateInvoke.GetNonPublicField(bocColumnRenderers[2], "_columnRenderer"), Is.TypeOf(typeof(StubColumnRenderer)));
+      Assert.That(bocColumnRenderers[2].ColumnDefinition, Is.SameAs(thirdColumn));
+      Assert.That(bocColumnRenderers[2].ColumnIndex, Is.EqualTo(2));
+      Assert.That(bocColumnRenderers[2].VisibleColumnIndex, Is.EqualTo(1));
+    }
+
+    [Test]
+    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AlwaysVisibility_WithoutFailures_ContainsBocValidationErrorIndicatorColumnRenderer ()
     {
       var bocListStub = new Mock<IBocList>();
       bocListStub.Setup(_ => _.ValidationFailureRepository).Returns(new Mock<IBocListValidationFailureRepository>().Object);
@@ -252,7 +281,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
 
     [Test]
-    public void GetColumnRenderers_WithBocValidationErrorIndicatorColumnDefinition_AnyRowOrCellValidationFailureVisibility_WithRowOrCellFailures_ContainsValidationErrorColumnRenderer ()
+    public void GetColumnRenderers_WithValidationErrorIndicatorColumn_AnyRowOrCellValidationFailureVisibility_WithRowOrCellFailures_ContainsValidationErrorColumnRenderer ()
     {
       var validationRepositoryStub = new Mock<IBocListValidationFailureRepository>();
       validationRepositoryStub.Setup(_ => _.GetListFailureCount()).Returns(0);

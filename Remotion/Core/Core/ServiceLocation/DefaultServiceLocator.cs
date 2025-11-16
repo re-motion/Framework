@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
 {
@@ -70,8 +69,8 @@ namespace Remotion.ServiceLocation
 
     public DefaultServiceLocator (IServiceConfigurationDiscoveryService serviceConfigurationDiscoveryService, ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("serviceConfigurationDiscoveryService", serviceConfigurationDiscoveryService);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentNullException.ThrowIfNull(serviceConfigurationDiscoveryService);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _serviceConfigurationDiscoveryService = serviceConfigurationDiscoveryService;
 
@@ -92,7 +91,7 @@ namespace Remotion.ServiceLocation
     /// not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public object GetInstance (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
+      ArgumentNullException.ThrowIfNull(serviceType);
 
       var instance = GetInstanceOrNull(serviceType);
       if (instance == null)
@@ -113,7 +112,7 @@ namespace Remotion.ServiceLocation
     /// not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public object GetInstance (Type serviceType, string key)
     {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
+      ArgumentNullException.ThrowIfNull(serviceType);
 
       return GetInstance(serviceType);
     }
@@ -131,7 +130,7 @@ namespace Remotion.ServiceLocation
     /// implementation could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public IEnumerable<object> GetAllInstances (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
+      ArgumentNullException.ThrowIfNull(serviceType);
 
       return GetAllInstances(serviceType, false);
     }
@@ -192,7 +191,7 @@ namespace Remotion.ServiceLocation
     /// implementation could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     object? IServiceProvider.GetService (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
+      ArgumentNullException.ThrowIfNull(serviceType);
 
       return GetInstanceOrNull(serviceType);
     }

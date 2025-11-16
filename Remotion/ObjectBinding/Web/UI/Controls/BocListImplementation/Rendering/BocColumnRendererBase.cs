@@ -65,10 +65,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocListCssClassDefinition cssClasses,
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
     {
-      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
-      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
-      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
-      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
+      ArgumentNullException.ThrowIfNull(resourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
+      ArgumentNullException.ThrowIfNull(cssClasses);
+      ArgumentNullException.ThrowIfNull(fallbackNavigationUrlProvider);
 
       _resourceUrlFactory = resourceUrlFactory;
       _renderingFeatures = renderingFeatures;
@@ -109,10 +109,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     void IBocColumnRenderer.RenderTitleCell (BocColumnRenderingContext renderingContext, in BocTitleCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       if (arguments.CellID == null)
-        throw new ArgumentException("arguments.CellID is null", "arguments");
+        throw new ArgumentException("arguments.CellID is null", nameof(arguments));
 
       RenderTitleCell(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), arguments);
     }
@@ -141,10 +141,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     protected virtual void AddAttributesToRenderForTitleCell (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      // BocCellAttributeRenderingContext<T> is value type
 
       if (arguments.CellID == null)
-        throw new ArgumentException("arguments.CellID is null", "arguments");
+        throw new ArgumentException("arguments.CellID is null", nameof(arguments));
 
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Id, arguments.CellID);
 
@@ -188,7 +188,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     void IBocColumnRenderer.RenderDataColumnDeclaration (BocColumnRenderingContext renderingContext, bool isTextXml)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       RenderDataColumnDeclaration(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), isTextXml);
     }
@@ -342,7 +342,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         case SortingDirection.None:
           return null;
         default:
-          throw new ArgumentOutOfRangeException("sortingDirection");
+          throw new ArgumentOutOfRangeException(nameof(sortingDirection));
       }
     }
 
@@ -353,7 +353,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     void IBocColumnRenderer.RenderDataCell (BocColumnRenderingContext renderingContext, in BocDataCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       RenderDataCell(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), arguments);
     }
@@ -462,7 +462,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     protected virtual void AddAttributesToRenderForDataCell (BocCellAttributeRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      // BocCellAttributeRenderingContext<T> is value type
 
       string cssClassTableCell = CssClasses.DataCell;
 

@@ -17,7 +17,6 @@
 using System;
 using System.Web;
 using System.Web.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -33,9 +32,9 @@ namespace Remotion.Web.UI.Controls
 
     protected RenderingContext (HttpContextBase httpContext, HtmlTextWriter writer, TControl control)
     {
-      ArgumentUtility.CheckNotNull("httpContext", httpContext);
-      ArgumentUtility.CheckNotNull("writer", writer);
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(httpContext);
+      ArgumentNullException.ThrowIfNull(writer);
+      ArgumentNullException.ThrowIfNull(control);
 
       _httpContext = httpContext;
       _writer = writer;

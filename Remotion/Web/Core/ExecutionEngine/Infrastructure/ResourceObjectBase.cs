@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using Remotion.Collections;
-using Remotion.Utilities;
 using Remotion.Web.Resources;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
@@ -33,8 +32,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     protected ResourceObjectBase (IResourcePathBuilder resourcePathBuilder, Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("resourcePathBuilder", resourcePathBuilder);
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentNullException.ThrowIfNull(resourcePathBuilder);
+      ArgumentNullException.ThrowIfNull(assembly);
 
       _resourceRoot = resourcePathBuilder.BuildAbsolutePath(assembly);
     }

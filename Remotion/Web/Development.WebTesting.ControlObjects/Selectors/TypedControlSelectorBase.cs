@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -41,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <param name="controlType">The <see cref="DiagnosticMetadataAttributes.ControlType"/> identifying the <typeparamref name="TControlObject"/>.</param>
     protected TypedControlSelectorBase ([NotNull] string controlType)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("controlType", controlType);
+      ArgumentException.ThrowIfNullOrEmpty(controlType);
 
       _controlType = controlType;
     }
@@ -57,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject SelectFirst (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = FindScopeByFirstOccurence(context);
 
@@ -67,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = FindScopeByFirstOccurence(context);
 
@@ -80,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject SelectSingle (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = FindScopeByFirstOccurence(context);
 
@@ -92,7 +91,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = FindScopeByFirstOccurence(context);
 
@@ -105,7 +104,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = FindScopePerIndex(context, oneBasedIndex);
 
@@ -115,7 +114,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = FindScopePerIndex(context, oneBasedIndex);
 
@@ -128,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = FindScopePerIndex(context, oneBasedIndex);
 

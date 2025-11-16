@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
@@ -91,7 +90,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public bool Catch (Exception exception)
     {
-      ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentNullException.ThrowIfNull(exception);
 
       bool match = false;
       if (_catchExceptions && _catchExceptionTypes != null)

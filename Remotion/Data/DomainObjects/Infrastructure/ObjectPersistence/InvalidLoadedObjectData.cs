@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -28,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public InvalidLoadedObjectData (DomainObject invalidObjectReference)
     {
-      ArgumentUtility.CheckNotNull("invalidObjectReference", invalidObjectReference);
+      ArgumentNullException.ThrowIfNull(invalidObjectReference);
 
       _invalidObjectReference = invalidObjectReference;
     }
@@ -50,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void Accept (ILoadedObjectVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.VisitInvalidLoadedObject(this);
     }
 

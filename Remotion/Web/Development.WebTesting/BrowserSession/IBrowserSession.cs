@@ -39,14 +39,20 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     bool Headless { get; }
 
     /// <summary>
-    /// Returns the new browser log entries of the <see cref="IBrowserSession"/> since the last call of <see cref="GetBrowserLogs"/> or
-    /// the last refresh of the page, if no <see cref="GetBrowserLogs"/> call was made.
+    /// Gets the features associated with the browser session.
     /// </summary>
-    /// <remarks>
-    /// This method only works for Google Chrome v74 and higher and Microsoft Edge v76 and higher
-    /// while other browsers only return a single log entry informing that the feature is not available.
-    /// </remarks>
+    IReadOnlyWebTestFeatureCollection Features { get; }
+
+    /// <summary>
+    /// Returns the new browser log entries of the <see cref="IBrowserSession"/> since the last call of <see cref="GetBrowserLogs"/>, <see cref="ResetBrowserLogs"/>, or
+    /// the last refresh of the page, if no <see cref="GetBrowserLogs"/> or <see cref="ResetBrowserLogs"/> call was made.
+    /// </summary>
     IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ();
+
+    /// <summary>
+    /// Resets the <see cref="BrowserLogEntry"/> collection returned by <see cref="GetBrowserLogs"/>.
+    /// </summary>
+    void ResetBrowserLogs ();
 
     /// <inheritdoc cref="Coypu.BrowserSession.FindWindow"/>
     /// <remarks>

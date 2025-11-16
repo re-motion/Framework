@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Resources
 {
@@ -35,9 +34,9 @@ namespace Remotion.Web.Resources
 
     public ResourceUrlFactory (IResourcePathBuilder resourcePathBuilder, ICacheableResourcePathBuilder cacheableResourcePathBuilder, ResourceTheme resourceTheme)
     {
-      ArgumentUtility.CheckNotNull("resourcePathBuilder", resourcePathBuilder);
-      ArgumentUtility.CheckNotNull("cacheableResourcePathBuilder", cacheableResourcePathBuilder);
-      ArgumentUtility.CheckNotNull("resourceTheme", resourceTheme);
+      ArgumentNullException.ThrowIfNull(resourcePathBuilder);
+      ArgumentNullException.ThrowIfNull(cacheableResourcePathBuilder);
+      ArgumentNullException.ThrowIfNull(resourceTheme);
 
       _resourcePathBuilder = resourcePathBuilder;
       _cacheableResourcePathBuilder = cacheableResourcePathBuilder;
@@ -46,9 +45,9 @@ namespace Remotion.Web.Resources
 
     public IResourceUrl CreateResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull("definingType", definingType);
-      ArgumentUtility.CheckNotNull("resourceType", resourceType);
-      ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
+      ArgumentNullException.ThrowIfNull(definingType);
+      ArgumentNullException.ThrowIfNull(resourceType);
+      ArgumentException.ThrowIfNullOrEmpty(relativeUrl);
 
       return new ResourceUrl(
           GetResourcePathBuilderForResourceType(resourceType),
@@ -59,9 +58,9 @@ namespace Remotion.Web.Resources
 
     public IResourceUrl CreateThemedResourceUrl (Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull("definingType", definingType);
-      ArgumentUtility.CheckNotNull("resourceType", resourceType);
-      ArgumentUtility.CheckNotNullOrEmpty("relativeUrl", relativeUrl);
+      ArgumentNullException.ThrowIfNull(definingType);
+      ArgumentNullException.ThrowIfNull(resourceType);
+      ArgumentException.ThrowIfNullOrEmpty(relativeUrl);
 
       return new ThemedResourceUrl(
           GetResourcePathBuilderForResourceType(resourceType),

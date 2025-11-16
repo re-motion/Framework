@@ -22,7 +22,6 @@ using System.Runtime.ExceptionServices;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.PageObjects;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
@@ -180,9 +179,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// </summary>
     protected void PrepareTest ([NotNull] TestMethodAttribute attribute, [NotNull] WebTestHelper helper, [NotNull] string url)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
-      ArgumentUtility.CheckNotNull("helper", helper);
-      ArgumentUtility.CheckNotNull("url", url);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(helper);
+      ArgumentNullException.ThrowIfNull(url);
 
       helper.MainBrowserSession.Window.Visit(url);
       helper.AcceptPossibleModalDialog();
@@ -196,7 +195,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// </summary>
     protected virtual void RunTest ([NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentNullException.ThrowIfNull(method);
 
       try
       {
@@ -213,8 +212,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private TestCaseData CreateTestCaseData ([NotNull] TestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
-      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(method);
 
       return new TestCaseData(
           (TestSetupAction)((helper, url) =>

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
@@ -37,8 +36,8 @@ namespace Remotion.Security.Metadata
 
     public IReadOnlyList<Enum> GetRequiredMethodPermissions (Type type, IMethodInformation methodInformation)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("methodInformation", methodInformation);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(methodInformation);
 
       if (methodInformation.IsNull)
         return s_emptyPermissions;

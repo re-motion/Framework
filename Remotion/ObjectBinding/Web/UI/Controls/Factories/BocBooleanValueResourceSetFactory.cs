@@ -19,7 +19,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Globalization;
 
@@ -43,14 +42,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
 
     public BocBooleanValueResourceSetFactory (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
 
     public BocBooleanValueResourceSet CreateResourceSet (IBocBooleanValue control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(control);
 
       return control.CreateResourceSet() ?? CreateDefaultResourceSet(control);
     }

@@ -41,9 +41,9 @@ namespace Remotion.Reflection.CodeGeneration
 
     public CustomEventEmitter (CustomClassEmitter declaringType, string name, EventKind eventKind, Type eventType, EventAttributes attributes)
     {
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNull("eventType", eventType);
+      ArgumentNullException.ThrowIfNull(declaringType);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentNullException.ThrowIfNull(eventType);
 
       _declaringType = declaringType;
       _eventBuilder = declaringType.TypeBuilder.DefineEvent(name, attributes, eventType);
@@ -65,7 +65,7 @@ namespace Remotion.Reflection.CodeGeneration
       set
       {
         if (value == null)
-          throw new ArgumentNullException("value", "Event accessors cannot be set to null.");
+          throw new ArgumentNullException(nameof(value), "Event accessors cannot be set to null.");
 
         if (_addMethod != null)
           throw new InvalidOperationException("Add methods can only be assigned once.");
@@ -87,7 +87,7 @@ namespace Remotion.Reflection.CodeGeneration
       set
       {
         if (value == null)
-          throw new ArgumentNullException("value", "Event accessors cannot be set to null.");
+          throw new ArgumentNullException(nameof(value), "Event accessors cannot be set to null.");
 
         if (_removeMethod != null)
           throw new InvalidOperationException("Remove methods can only be assigned once.");

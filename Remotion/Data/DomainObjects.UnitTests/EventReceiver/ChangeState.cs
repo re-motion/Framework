@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -40,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public ChangeState (object sender, string message)
     {
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentNullException.ThrowIfNull(sender);
 
       _sender = sender;
       _message = message;
@@ -60,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public virtual void Check (ChangeState expectedState)
     {
-      ArgumentUtility.CheckNotNull("expectedState", expectedState);
+      ArgumentNullException.ThrowIfNull(expectedState);
 
       if (this.GetType() != expectedState.GetType())
       {

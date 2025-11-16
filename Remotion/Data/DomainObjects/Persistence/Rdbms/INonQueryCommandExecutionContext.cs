@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms;
 
 /// <summary>
 /// Represents the aspect of <see cref="IRdbmsProviderReadOnlyCommandExecutionContext"/> or <see cref="IRdbmsProviderReadWriteCommandExecutionContext"/> that enables the
-/// execution of an <see cref="IDbCommand"/> without a return value.
+/// execution of an <see cref="DbCommand"/> without a return value.
 /// </summary>
 public interface INonQueryCommandExecutionContext
 {
-  int ExecuteNonQuery (IDbCommand command);
+  int ExecuteNonQuery (DbCommand command);
 }

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 
 namespace Remotion.Web.UnitTests
@@ -26,7 +25,7 @@ namespace Remotion.Web.UnitTests
 
     public WxeDelegateStep (Action action)
     {
-      ArgumentUtility.CheckNotNull("action", action);
+      ArgumentNullException.ThrowIfNull(action);
       _action = action;
     }
 

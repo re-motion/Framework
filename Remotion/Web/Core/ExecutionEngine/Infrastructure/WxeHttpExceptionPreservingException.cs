@@ -17,7 +17,6 @@
 using System;
 using System.Web;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
@@ -26,7 +25,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     [CanBeNull]
     public static Exception? GetUnwrappedException ([NotNull] Exception exception)
     {
-      ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentNullException.ThrowIfNull(exception);
 
       var unwrappedException = exception;
       while (unwrappedException is HttpException || unwrappedException is WxeHttpExceptionPreservingException)
@@ -35,7 +34,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     }
 
     public WxeHttpExceptionPreservingException (HttpException exception)
-        : base(string.Format("{0} was thrown.", exception), ArgumentUtility.CheckNotNull("exception", exception))
+        : base(string.Format("{0} was thrown.", exception), exception ?? throw new ArgumentNullException(nameof(exception)))
     {
     }
 

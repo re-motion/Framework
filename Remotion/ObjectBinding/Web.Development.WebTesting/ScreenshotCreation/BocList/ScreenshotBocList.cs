@@ -18,7 +18,6 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -41,8 +40,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<TList> fluentList,
         [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
-      ArgumentUtility.CheckNotNull("fluentList", fluentList);
-      ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
+      ArgumentNullException.ThrowIfNull(fluentList);
+      ArgumentNullException.ThrowIfNull(fluentElement);
 
       _fluentList = fluentList;
       _fluentElement = fluentElement;
@@ -72,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentNullException.ThrowIfNull(locator);
 
       return _fluentElement.ResolveDesktopCoordinates(locator);
     }

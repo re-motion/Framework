@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Tools.Console;
-using Remotion.Utilities;
 using Remotion.Tools;
 
 namespace Remotion.Mixins.MixerTools
@@ -26,7 +25,7 @@ namespace Remotion.Mixins.MixerTools
     private readonly MixerParameters _parameters;
 
     public MixerRunner (MixerParameters parameters)
-        : base(ArgumentUtility.CheckNotNull("parameters", parameters).BaseDirectory, parameters.ConfigFile)
+        : base((parameters ?? throw new ArgumentNullException(nameof(parameters))).BaseDirectory, parameters.ConfigFile)
     {
       _parameters = parameters;
     }

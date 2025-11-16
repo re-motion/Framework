@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation
 {
@@ -63,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
 
     public ValidationFailureHandlingContext (IBocList bocList)
     {
-      ArgumentUtility.CheckNotNull("bocList", bocList);
+      ArgumentNullException.ThrowIfNull(bocList);
 
       BocList = bocList;
 
@@ -79,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
     /// </summary>
     public void AppendErrorMessages (StringBuilder stringBuilder)
     {
-      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
+      ArgumentNullException.ThrowIfNull(stringBuilder);
 
       if (stringBuilder.Length > 0 && !stringBuilder.ToString().EndsWith("\n"))
         stringBuilder.AppendLine();
@@ -93,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
     /// <param name="errorMessage">Must not be <see langword="null"/> or empty.</param>
     public void ReportErrorMessage (string errorMessage)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("errorMessage", errorMessage);
+      ArgumentException.ThrowIfNullOrEmpty(errorMessage);
 
       _errorMessages.Add(errorMessage);
     }

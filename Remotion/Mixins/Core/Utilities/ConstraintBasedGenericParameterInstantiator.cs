@@ -17,7 +17,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Utilities
 {
@@ -28,10 +27,10 @@ namespace Remotion.Mixins.Utilities
   {
     public Type Instantiate (Type typeParameter)
     {
-      ArgumentUtility.CheckNotNull("typeParameter", typeParameter);
+      ArgumentNullException.ThrowIfNull(typeParameter);
 
       if (!typeParameter.IsGenericParameter)
-        throw new ArgumentException("Type must be a generic parameter.", "typeParameter");
+        throw new ArgumentException("Type must be a generic parameter.", nameof(typeParameter));
 
       Type? candidate = InferFromGenericParameterConstraints(typeParameter);
 

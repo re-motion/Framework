@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public CompoundPersistenceExtension (IEnumerable<IPersistenceExtension> listeners)
     {
-      ArgumentUtility.CheckNotNull("listeners", listeners);
+      ArgumentNullException.ThrowIfNull(listeners);
 
       _listeners.AddRange(listeners);
     }
@@ -73,8 +72,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters)
     {
-      ArgumentUtility.CheckNotNull("commandText", commandText);
-      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentNullException.ThrowIfNull(commandText);
+      ArgumentNullException.ThrowIfNull(parameters);
 
       foreach (var listener in _listeners)
         listener.QueryExecuting(connectionID, queryID, commandText, parameters);

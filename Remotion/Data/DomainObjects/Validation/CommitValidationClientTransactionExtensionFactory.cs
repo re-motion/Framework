@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -33,14 +32,14 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public CommitValidationClientTransactionExtensionFactory (IPersistableDataValidator persistableDataValidator)
     {
-      ArgumentUtility.CheckNotNull("persistableDataValidator", persistableDataValidator);
+      ArgumentNullException.ThrowIfNull(persistableDataValidator);
 
       _persistableDataValidator = persistableDataValidator;
     }
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
 
       if (clientTransaction.RootTransaction == clientTransaction)
         yield return new CommitValidationClientTransactionExtension(_persistableDataValidator);

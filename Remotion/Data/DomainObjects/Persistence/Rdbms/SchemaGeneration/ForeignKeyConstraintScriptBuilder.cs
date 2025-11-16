@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
@@ -36,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
     public ForeignKeyConstraintScriptBuilder (
         IForeignKeyConstraintScriptElementFactory foreignKeyConstraintElementFactory, ICommentScriptElementFactory commentFactory)
     {
-      ArgumentUtility.CheckNotNull("foreignKeyConstraintElementFactory", foreignKeyConstraintElementFactory);
-      ArgumentUtility.CheckNotNull("commentFactory", commentFactory);
+      ArgumentNullException.ThrowIfNull(foreignKeyConstraintElementFactory);
+      ArgumentNullException.ThrowIfNull(commentFactory);
 
       _foreignKeyConstraintElementFactory = foreignKeyConstraintElementFactory;
       _commentFactory = commentFactory;
@@ -54,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
 
       InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           entityDefinition,

@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
@@ -39,8 +40,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     private Mock<IStorageTypeInformation> _storageTypeInformationMock2;
 
     private StringBuilder _statement;
-    private Mock<IDataParameterCollection> _parametersCollectionMock;
-    private Mock<IDbCommand> _commandStub;
+    private Mock<DbParameterCollection> _parametersCollectionMock;
+    private Mock<DbCommand> _commandStub;
     private Mock<ISqlDialect> _sqlDialectStub;
 
     [SetUp]
@@ -56,10 +57,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _statement = new StringBuilder();
 
-      _parametersCollectionMock = new Mock<IDataParameterCollection>(MockBehavior.Strict);
-      _commandStub = new Mock<IDbCommand>();
-      _commandStub.Setup(_ => _.Parameters).Returns(_parametersCollectionMock.Object);
-
+      _parametersCollectionMock = new Mock<DbParameterCollection>(MockBehavior.Strict);
+      _commandStub = new Mock<DbCommand>();
+      _commandStub.Protected().Setup<DbParameterCollection>("DbParameterCollection").Returns(_parametersCollectionMock.Object);
       _sqlDialectStub = new Mock<ISqlDialect>();
     }
 
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
     {
       var specification = new ComparedColumnsSpecification(new[] { new ColumnValue(_column1, _value1) });
 
-      var parameterStub = new Mock<IDbDataParameter>();
+      var parameterStub = new Mock<DbParameter>();
 
       _parametersCollectionMock.Setup(_ => _.Add(parameterStub.Object)).Returns(0).Verifiable();
 
@@ -106,8 +106,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
       var columnValue2 = new ColumnValue(_column2, _value2);
       var specification = new ComparedColumnsSpecification(new[] { columnValue1, columnValue2 });
 
-      var parameterStub1 = new Mock<IDbDataParameter>();
-      var parameterStub2 = new Mock<IDbDataParameter>();
+      var parameterStub1 = new Mock<DbParameter>();
+      var parameterStub2 = new Mock<DbParameter>();
 
       _parametersCollectionMock.Setup(_ => _.Add(parameterStub1.Object)).Returns(0).Verifiable();
       _parametersCollectionMock.Setup(_ => _.Add(parameterStub2.Object)).Returns(1).Verifiable();

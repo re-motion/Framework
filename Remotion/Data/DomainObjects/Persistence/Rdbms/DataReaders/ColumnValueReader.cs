@@ -15,31 +15,30 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
   /// <summary>
   /// Implements <see cref="IColumnValueProvider"/> by reading the values associated with a column (via a <see cref="IColumnOrdinalProvider"/>) from
-  /// an <see cref="IDataReader"/>.
+  /// an <see cref="DbDataReader"/>.
   /// </summary>
   public class ColumnValueReader : IColumnValueProvider
   {
-    private readonly IDataReader _dataReader;
+    private readonly DbDataReader _dataReader;
     private readonly IColumnOrdinalProvider _columnOrdinalProvider;
 
-    public ColumnValueReader (IDataReader dataReader, IColumnOrdinalProvider columnOrdinalProvider)
+    public ColumnValueReader (DbDataReader dataReader, IColumnOrdinalProvider columnOrdinalProvider)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
-      ArgumentUtility.CheckNotNull("columnOrdinalProvider", columnOrdinalProvider);
+      ArgumentNullException.ThrowIfNull(dataReader);
+      ArgumentNullException.ThrowIfNull(columnOrdinalProvider);
 
       _dataReader = dataReader;
       _columnOrdinalProvider = columnOrdinalProvider;
     }
 
-    public IDataReader DataReader
+    public DbDataReader DataReader
     {
       get { return _dataReader; }
     }

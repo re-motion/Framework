@@ -24,7 +24,6 @@ using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -235,7 +234,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     private void CheckEnumerationValueInfos (BooleanEnumerationValueInfo[] expected, IEnumerationValueInfo[] actual)
     {
-      ArgumentUtility.CheckNotNull("expected", expected);
+      ArgumentNullException.ThrowIfNull(expected);
 
       Assert.That(actual, Is.Not.Null);
       Assert.That(actual.Length, Is.EqualTo(expected.Length));
@@ -245,7 +244,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
 
     private void CheckEnumerationValueInfo (BooleanEnumerationValueInfo expected, IEnumerationValueInfo actual)
     {
-      ArgumentUtility.CheckNotNull("expected", expected);
+      ArgumentNullException.ThrowIfNull(expected);
 
       Assert.That(actual, Is.InstanceOf(expected.GetType()));
       Assert.That(actual.Value, Is.EqualTo(expected.Value));

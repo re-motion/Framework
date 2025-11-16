@@ -59,7 +59,7 @@ namespace Remotion.Web.Utilities
 
     public static bool IsNestedInUpdatePanel (Control child)
     {
-      ArgumentUtility.CheckNotNull("child", child);
+      ArgumentNullException.ThrowIfNull(child);
 
       var scriptManager = ScriptManager.GetCurrent(child.Page!);
       if (scriptManager == null)
@@ -124,10 +124,10 @@ namespace Remotion.Web.Utilities
     {
       TextBox? smallerField = smallerValidator.NamingContainer.FindControl(smallerValidator.ControlToValidate) as TextBox;
       if (smallerField == null)
-        throw new ArgumentException("ControlToValidate must be TextBox", "smallerValidator");
+        throw new ArgumentException("ControlToValidate must be TextBox", nameof(smallerValidator));
       TextBox? largerField = largerValidator.NamingContainer.FindControl(largerValidator.ControlToValidate) as TextBox;
       if (largerField == null)
-        throw new ArgumentException("ControlToValidate must be TextBox", "largerValidator");
+        throw new ArgumentException("ControlToValidate must be TextBox", nameof(largerValidator));
 
       if (smallerField.Text.Trim() == string.Empty || largerField.Text.Trim() == string.Empty)
         return true;
@@ -201,7 +201,7 @@ namespace Remotion.Web.Utilities
 
     public static Control? FindControl (Control namingContainer, string? controlID)
     {
-      ArgumentUtility.CheckNotNull("namingContainer", namingContainer);
+      ArgumentNullException.ThrowIfNull(namingContainer);
       if (string.IsNullOrEmpty(controlID))
         return null;
 
@@ -226,19 +226,19 @@ namespace Remotion.Web.Utilities
 
     public static bool IsResponseTextXml (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
       return context.Response.ContentType.Equals("TEXT/XML", StringComparison.OrdinalIgnoreCase);
     }
 
     public static bool IsResponseTextXHtml (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
       return context.Response.ContentType.Equals("TEXT/XHTML", StringComparison.OrdinalIgnoreCase);
     }
 
     public static bool IsXmlConformResponseTextRequired (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       XhtmlConformanceSection xhtmlConformanceSection = (XhtmlConformanceSection)WebConfigurationManager.GetSection("system.web/xhtmlConformance");
       Assertion.IsNotNull(xhtmlConformanceSection, "Config section 'system.web/xhtmlConformance' was not found.");

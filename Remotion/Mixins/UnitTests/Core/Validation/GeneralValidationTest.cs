@@ -280,20 +280,14 @@ namespace Remotion.Mixins.UnitTests.Core.Validation
       Assert.That(
           exception.Message,
           Is.EqualTo(
-              "Some parts of the mixin configuration could not be validated."
-              + Environment.NewLine
-              + "MethodDefinition 'Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain.AbstractMixinWithoutBase.AbstractMethod', 6 rules "
-              + "executed"
-              + Environment.NewLine
-              + "Context: Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain.AbstractMixinWithoutBase -> "
-              + "Remotion.Mixins.UnitTests.Core.TestDomain.ClassOverridingSingleMixinMethod"
-              + Environment.NewLine
-              + "  failures - 1"
-              + Environment.NewLine
-              + "    A target class overrides a method from one of its mixins, but the mixin is not derived from one of the Mixin<...> base classes. "
-              + "(Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase)"
-              + Environment.NewLine
-));
+              """
+              Some parts of the mixin configuration could not be validated.
+              MethodDefinition 'Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain.AbstractMixinWithoutBase.AbstractMethod', 6 rules executed
+              Context: Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain.AbstractMixinWithoutBase -> Remotion.Mixins.UnitTests.Core.TestDomain.ClassOverridingSingleMixinMethod
+                failures - 1
+                  A target class overrides a method from one of its mixins, but the mixin is not derived from one of the Mixin<...> base classes. (Remotion.Mixins.Validation.Rules.DefaultMethodRules.OverridingMixinMethodsOnlyPossibleWhenMixinDerivedFromMixinBase)
+
+              """.ReplaceLineEndings()));
     }
 
     [Test]

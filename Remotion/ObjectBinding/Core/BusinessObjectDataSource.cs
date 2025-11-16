@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
@@ -130,7 +129,7 @@ namespace Remotion.ObjectBinding
     /// </param>
     public void Register (IBusinessObjectBoundControl control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(control);
       if (!_boundControls.Contains(control))
         _boundControls.Add(control);
     }
@@ -143,7 +142,7 @@ namespace Remotion.ObjectBinding
     /// </param>
     public void Unregister (IBusinessObjectBoundControl control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(control);
       _boundControls.Remove(control);
     }
   }

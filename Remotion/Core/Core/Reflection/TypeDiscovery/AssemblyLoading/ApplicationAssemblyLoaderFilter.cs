@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 {
@@ -47,7 +46,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 
     private static string MakeMatchExpression (IEnumerable<string> assemblyMatchStrings)
     {
-      ArgumentUtility.CheckNotNull("assemblyMatchStrings", assemblyMatchStrings);
+      ArgumentNullException.ThrowIfNull(assemblyMatchStrings);
 
       return "^((" + string.Join(")|(", assemblyMatchStrings) + "))$";
     }
@@ -107,7 +106,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <param name="simpleNameRegularExpression">A regular expression matching the simple names of assemblies to be excluded.</param>
     public void AddIgnoredAssembly (string simpleNameRegularExpression)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("simpleNameRegularExpression", simpleNameRegularExpression);
+      ArgumentException.ThrowIfNullOrEmpty(simpleNameRegularExpression);
       lock (_assemblyNameFilterLock)
       {
         _nonApplicationAssemblyNames.Add(simpleNameRegularExpression);
@@ -128,7 +127,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <see cref="ShouldIncludeAssembly"/>.</remarks>
     public bool ShouldConsiderAssembly (AssemblyName assemblyName)
     {
-      ArgumentUtility.CheckNotNull("assemblyName", assemblyName);
+      ArgumentNullException.ThrowIfNull(assemblyName);
       return !GetAssemblyNameFilter().ShouldConsiderAssembly(assemblyName);
     }
 
@@ -144,7 +143,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// passed on to this step.</remarks>
     public bool ShouldIncludeAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentNullException.ThrowIfNull(assembly);
       return !assembly.IsDefined(typeof(NonApplicationAssemblyAttribute), false);
     }
 

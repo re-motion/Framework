@@ -17,7 +17,6 @@
 using System;
 using Remotion.Mixins;
 using Remotion.ObjectBinding;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding
 {
@@ -25,7 +24,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   {
     public static BindableDomainObjectImplementation Create (BindableDomainObject wrapper)
     {
-      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      ArgumentNullException.ThrowIfNull(wrapper);
       var impl = new BindableDomainObjectImplementation(wrapper);
       ((IInitializableMixin)impl).Initialize(wrapper, null);
       return impl;
@@ -35,7 +34,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     protected BindableDomainObjectImplementation (BindableDomainObject wrapper)
     {
-      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      ArgumentNullException.ThrowIfNull(wrapper);
       _wrapper = wrapper;
     }
 

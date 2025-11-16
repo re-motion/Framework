@@ -29,10 +29,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public AlreadyExistingLoadedObjectData (DataContainer existingDataContainer)
     {
-      ArgumentUtility.CheckNotNull("existingDataContainer", existingDataContainer);
+      ArgumentNullException.ThrowIfNull(existingDataContainer);
 
       if (!existingDataContainer.IsRegistered)
-        throw new ArgumentException("The DataContainer must have been registered with a ClientTransaction.", "existingDataContainer");
+        throw new ArgumentException("The DataContainer must have been registered with a ClientTransaction.", nameof(existingDataContainer));
 
       Assertion.IsTrue(existingDataContainer.HasDomainObject, "ClientTransaction only accepts DataContainers with DomainObjects.");
 
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void Accept (ILoadedObjectVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.VisitAlreadyExistingLoadedObject(this);
     }
 

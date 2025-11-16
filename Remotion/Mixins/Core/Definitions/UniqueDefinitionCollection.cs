@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -43,8 +42,8 @@ namespace Remotion.Mixins.Definitions
 
     protected override void CustomizedAdd (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull("key", key);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(key);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (ContainsKey(key))
       {
@@ -61,7 +60,7 @@ namespace Remotion.Mixins.Definitions
 
     public TValue this[TKey key]
     {
-      get { return ContainsKey(ArgumentUtility.CheckNotNull("key", key)) ? _items[key] : default(TValue)!; }
+      get { return ContainsKey(key ?? throw new ArgumentNullException(nameof(key))) ? _items[key] : default(TValue)!; }
     }
   }
 }

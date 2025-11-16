@@ -26,4 +26,4 @@ using Remotion.Globalization;
 [assembly: AvailableResourcesLanguages("")]
 
 [assembly: AssemblyCulture("")]
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]

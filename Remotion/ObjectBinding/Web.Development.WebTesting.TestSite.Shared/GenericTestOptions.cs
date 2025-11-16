@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
@@ -43,10 +42,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
         EnabledState enabledState = EnabledState.Enabled,
         ReadOnlyState readOnlyState = ReadOnlyState.Editable)
     {
-      ArgumentUtility.CheckNotNull("localID", localID);
-      ArgumentUtility.CheckNotNull("htmlID", htmlID);
-      ArgumentUtility.CheckNotNull("correctDomainProperty", correctDomainProperty);
-      ArgumentUtility.CheckNotNull("incorrectDomainProperty", incorrectDomainProperty);
+      ArgumentNullException.ThrowIfNull(localID);
+      ArgumentNullException.ThrowIfNull(htmlID);
+      ArgumentNullException.ThrowIfNull(correctDomainProperty);
+      ArgumentNullException.ThrowIfNull(incorrectDomainProperty);
 
       _localID = localID;
       _htmlID = htmlID;

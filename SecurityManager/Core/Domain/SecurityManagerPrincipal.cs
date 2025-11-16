@@ -60,7 +60,7 @@ namespace Remotion.SecurityManager.Domain
       get { return s_principal.Current; }
       set
       {
-        ArgumentUtility.CheckNotNull("value", value);
+        ArgumentNullException.ThrowIfNull(value);
         s_principal.SetCurrent(value);
       }
     }
@@ -93,13 +93,13 @@ namespace Remotion.SecurityManager.Domain
         [CanBeNull] IDomainObjectHandle<User>? substitutedUserHandle,
         [CanBeNull] IReadOnlyList<IDomainObjectHandle<Role>>? substitutedRoleHandles)
     {
-      ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
-      ArgumentUtility.CheckNotNull("userHandle", userHandle);
+      ArgumentNullException.ThrowIfNull(tenantHandle);
+      ArgumentNullException.ThrowIfNull(userHandle);
       if (substitutionHandle == null && (substitutedUserHandle != null || substitutedRoleHandles != null))
       {
         throw new ArgumentException(
             "When the 'substitutedUserHandle' or the 'substitutedRoleHandles' are set, the 'substitutionHandle' must also be specified.",
-            "substitutionHandle");
+            nameof(substitutionHandle));
       }
 
       _tenantHandle = tenantHandle;

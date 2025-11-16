@@ -22,6 +22,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Runtime.Versioning;
 using System.Text;
 using JetBrains.Annotations;
 using Microsoft.Win32;
@@ -49,6 +50,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     [NotNull]
     public FirefoxExecutable GetInstalledExecutable ()
     {
+      if (!OperatingSystem.IsWindows())
+        throw new InvalidOperationException("Cannot determine the location of Firefox.exe on non-Windows operating systems.");
+
       var browserPath = GetInstalledFirefoxPath();
       var driverPath = GetDriverPathAndDownloadIfMissing(browserPath);
 
@@ -58,6 +62,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     /// <summary>
     /// Retrieves the path of the installed Firefox version from the registry.
     /// </summary>
+    [SupportedOSPlatform("Windows")]
     private string GetInstalledFirefoxPath ()
     {
       var localMachine64BitViewKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);

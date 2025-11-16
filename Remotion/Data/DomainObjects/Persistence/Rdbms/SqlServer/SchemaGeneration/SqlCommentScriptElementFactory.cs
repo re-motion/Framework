@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -28,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public ScriptStatement GetCommentElement (string comment)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("comment", comment);
+      ArgumentException.ThrowIfNullOrEmpty(comment);
 
       return new ScriptStatement("-- " + comment);
     }

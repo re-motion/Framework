@@ -36,7 +36,7 @@ namespace Remotion.Mixins.Context
   {
     public static ClassContext Deserialize (IClassContextDeserializer deserializer)
     {
-      ArgumentUtility.CheckNotNull("deserializer", deserializer);
+      ArgumentNullException.ThrowIfNull(deserializer);
       return new ClassContext(
           deserializer.GetClassType(),
           deserializer.GetMixins(),
@@ -64,9 +64,9 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="type"/> parameter is <see langword="null"/>.</exception>
     public ClassContext (Type type, IEnumerable<MixinContext> mixins, IEnumerable<Type> composedInterfaces)
         : this(
-            ArgumentUtility.CheckNotNull("type", type),
-            new MixinContextCollection(ArgumentUtility.CheckNotNull("mixins", mixins)),
-            new HashSet<Type>(ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces)).AsReadOnly())
+            type ?? throw new ArgumentNullException(nameof(type)),
+            new MixinContextCollection(mixins ?? throw new ArgumentNullException(nameof(mixins))),
+            Remotion.Collections.CollectionExtensions.AsReadOnly(new HashSet<Type>(composedInterfaces ?? throw new ArgumentNullException(nameof(composedInterfaces)))))
     {
     }
 
@@ -209,7 +209,7 @@ namespace Remotion.Mixins.Context
     /// <exception cref="InvalidOperationException"><see cref="Type"/> is not a generic type definition.</exception>
     public ClassContext SpecializeWithTypeArguments (Type[] genericArguments)
     {
-      ArgumentUtility.CheckNotNull("genericArguments", genericArguments);
+      ArgumentNullException.ThrowIfNull(genericArguments);
 
       if (!Type.IsGenericTypeDefinition)
         throw new InvalidOperationException("This method is only allowed on generic type definitions.");
@@ -229,7 +229,7 @@ namespace Remotion.Mixins.Context
     /// </exception>
     public ClassContext InheritFrom (IEnumerable<ClassContext> baseContexts)
     {
-      ArgumentUtility.CheckNotNull("baseContexts", baseContexts);
+      ArgumentNullException.ThrowIfNull(baseContexts);
       return ClassContextDeriver.Instance.DeriveContext(this, baseContexts);
     }
 
@@ -264,7 +264,7 @@ namespace Remotion.Mixins.Context
     /// </exception>
     public ClassContext ApplyMixinDependencies (IEnumerable<MixinDependencySpecification> dependencySpecifications)
     {
-      ArgumentUtility.CheckNotNull("dependencySpecifications", dependencySpecifications);
+      ArgumentNullException.ThrowIfNull(dependencySpecifications);
 
       var newMixinContexts = _mixins.ToDictionary(mc => mc.MixinType);
       foreach (var dependencySpecification in dependencySpecifications)
@@ -281,7 +281,7 @@ namespace Remotion.Mixins.Context
 
     public void Serialize (IClassContextSerializer serializer)
     {
-      ArgumentUtility.CheckNotNull("serializer", serializer);
+      ArgumentNullException.ThrowIfNull(serializer);
 
       serializer.AddClassType(Type);
       serializer.AddMixins(Mixins);

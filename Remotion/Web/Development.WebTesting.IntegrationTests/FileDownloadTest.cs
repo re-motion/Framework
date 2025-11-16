@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
@@ -25,6 +26,7 @@ using Remotion.Web.Development.WebTesting.WebDriver;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [PerformBrowserLogCheck(false)]
   public class FileDownloadTest : IntegrationTest
   {
     private const string c_sampleZipFileName = "download_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.zip";

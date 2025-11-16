@@ -15,11 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 {
@@ -42,10 +41,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         ISqlDialect sqlDialect)
         : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("unionViewDefinition", unionViewDefinition);
-      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
-      ArgumentUtility.CheckNotNull("comparedColumns", comparedColumns);
-      ArgumentUtility.CheckNotNull("orderedColumns", orderedColumns);
+      ArgumentNullException.ThrowIfNull(unionViewDefinition);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
+      ArgumentNullException.ThrowIfNull(comparedColumns);
+      ArgumentNullException.ThrowIfNull(orderedColumns);
 
       _unionViewDefinition = unionViewDefinition;
       _selectedColumns = selectedColumns;
@@ -73,9 +72,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
       get { return _orderedColumns; }
     }
 
-    public override IDbCommand Create (IDbCommandFactory dbCommandFactory)
+    public override DbCommand Create (IDbCommandFactory dbCommandFactory)
     {
-      ArgumentUtility.CheckNotNull("dbCommandFactory", dbCommandFactory);
+      ArgumentNullException.ThrowIfNull(dbCommandFactory);
 
       var command = dbCommandFactory.CreateDbCommand();
 

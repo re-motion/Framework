@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
@@ -33,7 +32,7 @@ namespace Remotion.Validation.Implementation
 
     public CompoundValidatorBuilder (IEnumerable<IValidatorBuilder> builders)
     {
-      ArgumentUtility.CheckNotNull("builders", builders);
+      ArgumentNullException.ThrowIfNull(builders);
 
       _builders = builders.ToList().AsReadOnly();
     }
@@ -45,7 +44,7 @@ namespace Remotion.Validation.Implementation
 
     public IValidator BuildValidator (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       var validators = _builders.Select(b => b.BuildValidator(validatedType));
       return new CompoundValidator(validators, validatedType);

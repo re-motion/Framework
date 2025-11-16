@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting
 {
@@ -30,7 +29,7 @@ namespace Remotion.Development.UnitTesting
 
     public ChangedApplicationBaseDirectorySection (string baseDirectory)
     {
-      ArgumentUtility.CheckNotNull("baseDirectory", baseDirectory);
+      ArgumentNullException.ThrowIfNull(baseDirectory);
 
       _previousValue = AppDomain.CurrentDomain.GetData(c_appContextBaseDirectorySwitchName);
       AppDomain.CurrentDomain.SetData(c_appContextBaseDirectorySwitchName, baseDirectory);

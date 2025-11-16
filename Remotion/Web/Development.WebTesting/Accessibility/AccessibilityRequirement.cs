@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility
 {
@@ -38,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
 
     public AccessibilityRequirement (AccessibilityRequirementID id, string message, AccessibilityTestImpact impact)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("message", message);
+      ArgumentException.ThrowIfNullOrEmpty(message);
 
       ID = id;
       Message = message;

@@ -33,7 +33,7 @@ namespace Remotion.Validation.Implementation
 
     public ClassTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver resolver)
     {
-      ArgumentUtility.CheckNotNull("resolver", resolver);
+      ArgumentNullException.ThrowIfNull(resolver);
 
       _genericResolver = new GenericTypeAwareValidatedTypeResolverDecorator(new NullValidatedTypeResolver());
       _resolver = resolver;
@@ -46,7 +46,7 @@ namespace Remotion.Validation.Implementation
 
     public Type? GetValidatedType (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull("collectorType", collectorType);
+      ArgumentNullException.ThrowIfNull(collectorType);
 
       var attribute = AttributeUtility.GetCustomAttribute<ApplyWithClassAttribute>(collectorType, false);
       if (attribute == null)

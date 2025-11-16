@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -35,13 +34,13 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public CompoundDataContainerValidator (IEnumerable<IDataContainerValidator> validators)
     {
-      ArgumentUtility.CheckNotNull("validators", validators);
+      ArgumentNullException.ThrowIfNull(validators);
       _validators = validators.ToList().AsReadOnly();
     }
 
     public void Validate (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
 
       foreach (var validator in _validators)
         validator.Validate(dataContainer);

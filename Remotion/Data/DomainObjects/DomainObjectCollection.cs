@@ -24,7 +24,6 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Persistence;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -143,8 +142,8 @@ namespace Remotion.Data.DomainObjects
         Type? requiredItemType,
         IDomainObjectCollectionEventRaiser eventRaiser)
     {
-      ArgumentUtility.CheckNotNull("dataStore", dataStore);
-      ArgumentUtility.CheckNotNull("eventRaiser", eventRaiser);
+      ArgumentNullException.ThrowIfNull(dataStore);
+      ArgumentNullException.ThrowIfNull(eventRaiser);
 
       return new ModificationCheckingDomainObjectCollectionDataDecorator(requiredItemType, new EventRaisingDomainObjectCollectionDataDecorator(eventRaiser, dataStore));
     }
@@ -222,7 +221,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public DomainObjectCollection (IDomainObjectCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull("dataStrategy", dataStrategy);
+      ArgumentNullException.ThrowIfNull(dataStrategy);
 
       _dataStrategy = dataStrategy;
     }
@@ -322,7 +321,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public bool ContainsObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       var existingObject = _dataStrategy.GetObject(domainObject.ID);
       return existingObject != null && ReferenceEquals(existingObject, domainObject);
@@ -341,7 +340,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/></exception>
     public bool Contains (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentNullException.ThrowIfNull(id);
 
       return _dataStrategy.ContainsObjectID(id);
     }
@@ -432,7 +431,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public int Add (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
       this.CheckNotReadOnly("Cannot add an item to a read-only collection.");
 
       _dataStrategy.Insert(Count, domainObject);
@@ -459,7 +458,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public void AddRange (IEnumerable domainObjects)
     {
-      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
+      ArgumentNullException.ThrowIfNull(domainObjects);
       this.CheckNotReadOnly("Cannot add items to a read-only collection.");
 
       _dataStrategy.AddRangeAndCheckItems(domainObjects.Cast<DomainObject>(), RequiredItemType);
@@ -487,7 +486,7 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     public void Remove (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentNullException.ThrowIfNull(id);
       this.CheckNotReadOnly("Cannot remove an item from a read-only collection.");
 
       _dataStrategy.Remove(id);
@@ -513,7 +512,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public bool Remove (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
       this.CheckNotReadOnly("Cannot remove an item from a read-only collection.");
 
       return _dataStrategy.Remove(domainObject);
@@ -552,7 +551,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     public void Insert (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
       this.CheckNotReadOnly("Cannot insert an item into a read-only collection.");
 
       _dataStrategy.Insert(index, domainObject);
@@ -575,7 +574,7 @@ namespace Remotion.Data.DomainObjects
         + "implements a base class for indexed DomainObjectCollections. Don't use this API for any other use case. (1.13.130)")]
     protected void Sort (Comparison<DomainObject> comparison)
     {
-      ArgumentUtility.CheckNotNull("comparison", comparison);
+      ArgumentNullException.ThrowIfNull(comparison);
 
       _dataStrategy.Sort(comparison);
     }
@@ -738,7 +737,7 @@ namespace Remotion.Data.DomainObjects
 
     internal void CopyEventHandlersFrom (DomainObjectCollection source)
     {
-      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentNullException.ThrowIfNull(source);
 
       Adding += source.Adding;
       Added += source.Added;
@@ -751,7 +750,7 @@ namespace Remotion.Data.DomainObjects
     IDomainObjectCollectionData IAssociatableDomainObjectCollection.TransformToAssociated (
         RelationEndPointID endPointID, IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       var originalDataStrategy = _dataStrategy;
       _dataStrategy = associatedDomainObjectCollectionDataStrategyFactory.CreateDataStrategyForEndPoint(endPointID);

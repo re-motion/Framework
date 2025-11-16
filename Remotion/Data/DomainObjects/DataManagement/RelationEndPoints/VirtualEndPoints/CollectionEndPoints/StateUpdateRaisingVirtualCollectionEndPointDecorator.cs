@@ -54,8 +54,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public StateUpdateRaisingVirtualCollectionEndPointDecorator (IVirtualCollectionEndPoint innerEndPoint, IVirtualEndPointStateUpdateListener listener)
     {
-      ArgumentUtility.CheckNotNull("innerEndPoint", innerEndPoint);
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentNullException.ThrowIfNull(innerEndPoint);
+      ArgumentNullException.ThrowIfNull(listener);
 
       _innerEndPoint = innerEndPoint;
       _listener = listener;
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<StateUpdateRaisingVirtualCollectionEndPointDecorator>("source", source);
+      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<StateUpdateRaisingVirtualCollectionEndPointDecorator>(nameof(source), source);
       var hasChangedBefore = _innerEndPoint.HasChanged;
       try
       {

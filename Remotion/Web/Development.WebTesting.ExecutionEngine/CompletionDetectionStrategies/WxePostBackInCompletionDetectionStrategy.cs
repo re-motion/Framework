@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies
 {
@@ -32,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
 
     public WxePostBackInCompletionDetectionStrategy ([NotNull] PageObjectContext context, int expectedWxePostBackSequenceNumberIncrease, TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       _context = context;
       _expectedWxePostBackSequenceNumberIncrease = expectedWxePostBackSequenceNumberIncrease;
@@ -42,8 +41,8 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     /// <inheritdoc/>
     public object? PrepareWaitForCompletion (PageObjectContext context, ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(logger);
 
       return WxeCompletionDetectionHelpers.GetWxePostBackSequenceNumber(_context);
     }
@@ -51,9 +50,9 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     /// <inheritdoc/>
     public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("state", state!);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(state!);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var oldWxePostBackSequenceNumber = (int)state;
 

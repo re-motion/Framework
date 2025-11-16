@@ -57,7 +57,7 @@ namespace Remotion.ServiceLocation
 
     public DefaultServiceConfigurationDiscoveryService (ITypeDiscoveryService typeDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
+      ArgumentNullException.ThrowIfNull(typeDiscoveryService);
 
       _typeDiscoveryService = typeDiscoveryService;
     }
@@ -85,7 +85,7 @@ namespace Remotion.ServiceLocation
     /// Types without the attribute are ignored.</returns>
     public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Type> serviceTypes)
     {
-      ArgumentUtility.CheckNotNull("serviceTypes", serviceTypes);
+      ArgumentNullException.ThrowIfNull(serviceTypes);
 
       return serviceTypes.Select(GetDefaultConfiguration).Where(configuration => configuration.ImplementationInfos.Any());
     }
@@ -98,7 +98,7 @@ namespace Remotion.ServiceLocation
     /// Types without the attribute are ignored.</returns>
     public ServiceConfigurationEntry GetDefaultConfiguration (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
+      ArgumentNullException.ThrowIfNull(serviceType);
 
       try
       {
@@ -135,7 +135,7 @@ namespace Remotion.ServiceLocation
     /// Types without the attribute are ignored.</returns>
     public IEnumerable<ServiceConfigurationEntry> GetDefaultConfiguration (IEnumerable<Assembly> assemblies)
     {
-      ArgumentUtility.CheckNotNull("assemblies", assemblies);
+      ArgumentNullException.ThrowIfNull(assemblies);
 
       return assemblies.SelectMany(a => GetDefaultConfiguration(AssemblyTypeCache.GetTypes(a)));
     }

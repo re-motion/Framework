@@ -36,7 +36,7 @@ namespace Remotion.Security
 
     public InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (IObjectSecurityStrategy objectSecurityStrategy)
     {
-      ArgumentUtility.CheckNotNull("objectSecurityStrategy", objectSecurityStrategy);
+      ArgumentNullException.ThrowIfNull(objectSecurityStrategy);
 
       _objectSecurityStrategy = objectSecurityStrategy;
     }
@@ -46,9 +46,9 @@ namespace Remotion.Security
         ISecurityPrincipal principal,
         IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.DebugCheckNotNull("securityProvider", securityProvider);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
-      ArgumentUtility.DebugCheckNotNullOrEmpty("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNull(nameof(securityProvider), securityProvider);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(requiredAccessTypes), requiredAccessTypes);
 
       if (_isEvaluatingAccess)
       {

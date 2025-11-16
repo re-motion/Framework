@@ -41,8 +41,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurityTokenBuilder (ISecurityPrincipalRepository securityPrincipalRepository, ISecurityContextRepository securityContextRepository)
     {
-      ArgumentUtility.CheckNotNull("securityPrincipalRepository", securityPrincipalRepository);
-      ArgumentUtility.CheckNotNull("securityContextRepository", securityContextRepository);
+      ArgumentNullException.ThrowIfNull(securityPrincipalRepository);
+      ArgumentNullException.ThrowIfNull(securityContextRepository);
 
       _securityPrincipalRepository = securityPrincipalRepository;
       _securityContextRepository = securityContextRepository;
@@ -55,8 +55,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     /// </exception>
     public SecurityToken CreateToken (ISecurityPrincipal principal, ISecurityContext context)
     {
-      ArgumentUtility.CheckNotNull("principal", principal);
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(principal);
+      ArgumentNullException.ThrowIfNull(context);
 
         var principalUser = CreatePrincipal(principal);
         var owningTenant = GetTenant(context.OwnerTenant);

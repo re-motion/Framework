@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Utilities;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -47,7 +46,7 @@ namespace Remotion.Mixins.Definitions
     public TargetClassDefinition (ClassContext configurationContext)
         : base(configurationContext.Type)
     {
-      ArgumentUtility.CheckNotNull("configurationContext", configurationContext);
+      ArgumentNullException.ThrowIfNull(configurationContext);
 
       _receivedAttributes = new MultiDefinitionCollection<Type, AttributeIntroductionDefinition>(a => a.AttributeType);
 
@@ -117,7 +116,7 @@ namespace Remotion.Mixins.Definitions
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
 
       visitor.Visit(this);
 

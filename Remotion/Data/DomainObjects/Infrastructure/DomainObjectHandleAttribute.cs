@@ -29,16 +29,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     public Type GetReferencedType (Type handleType)
     {
-      ArgumentUtility.CheckNotNull("handleType", handleType);
+      ArgumentNullException.ThrowIfNull(handleType);
       if (!handleType.IsGenericType || handleType.GetGenericTypeDefinition() != typeof(IDomainObjectHandle<>))
-        throw new ArgumentException("The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", "handleType");
+        throw new ArgumentException("The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", nameof(handleType));
 
       return handleType.GetGenericArguments().Single();
     }
 
     public object GetReferencedInstance (object handleInstance)
     {
-      var typedHandleInstance = ArgumentUtility.CheckNotNullAndType<IDomainObjectHandle<DomainObject>>("handleInstance", handleInstance);
+      var typedHandleInstance = ArgumentUtility.CheckNotNullAndType<IDomainObjectHandle<DomainObject>>(nameof(handleInstance), handleInstance);
 
       return LifetimeService.GetObject(ClientTransactionScope.CurrentTransaction, typedHandleInstance.ObjectID, true);
     }

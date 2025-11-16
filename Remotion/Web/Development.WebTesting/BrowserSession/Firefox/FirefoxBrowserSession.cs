@@ -15,9 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession.Firefox
@@ -27,15 +24,21 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Firefox
   /// </summary>
   public class FirefoxBrowserSession : BrowserSessionBase<IFirefoxConfiguration>
   {
-    public FirefoxBrowserSession ([NotNull] Coypu.BrowserSession value, [NotNull] IFirefoxConfiguration browserConfiguration, int driverProcessId, bool headless)
-        : base(value, browserConfiguration, driverProcessId, headless)
+    public static void ApplyDefaultWebTestFeatures<T> (
+        WebTestFeatureCollection features,
+        T browserSession)
+    where T: IBrowserSession, IBidiConnectionProvider
     {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserSession);
+
+      features.Set<IBrowserLogProvider>(new BiDiBrowserLogProvider(browserSession));
     }
 
-    /// <inheritdoc />
-    public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
+    public FirefoxBrowserSession (Coypu.BrowserSession value, IFirefoxConfiguration browserConfiguration, int driverProcessId, bool headless)
+        : base(value, browserConfiguration, driverProcessId, headless)
     {
-      return new[] { new BrowserLogEntry(LogLevel.Info, "Firefox does not support getting browser logs.", DateTime.Now) };
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
   }
 }

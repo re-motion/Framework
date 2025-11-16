@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using System.Linq;
+using System.Threading;
 using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
@@ -34,6 +34,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.Utilities;
 
@@ -470,6 +471,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
       var row = bocList.GetRow(2);
       var dropDownMenu = row.GetDropDownMenu();
+
+      //TODO: RM-9425
+      dropDownMenu.Open();
+      Thread.Sleep(TimeSpan.FromSeconds(1));
+
       dropDownMenu.SelectItem("RowMenuItemCmd2");
 
       Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("JobList_Normal"));

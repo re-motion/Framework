@@ -101,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       if (state == "True")
         return true;
 
-      throw new ArgumentException("must be either 'True' or 'False'", "state");
+      throw new ArgumentException("must be either 'True' or 'False'", nameof(state));
     }
 
     private ElementScope GetScopeWithReferenceInformation ()

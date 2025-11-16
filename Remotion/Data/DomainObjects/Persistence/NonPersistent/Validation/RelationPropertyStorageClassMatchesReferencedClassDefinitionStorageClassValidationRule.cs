@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
 {
@@ -35,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return from IRelationEndPointDefinition endPointDefinition in classDefinition.MyRelationEndPointDefinitions
           select Validate(endPointDefinition);

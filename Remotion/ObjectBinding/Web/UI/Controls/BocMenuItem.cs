@@ -108,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnOwnerControlChanged ()
     {
       base.OnOwnerControlChanged();
-      ArgumentUtility.CheckNotNullAndType<IBocMenuItemContainer>("OwnerControl", OwnerControl!);
+      ArgumentUtility.CheckNotNullAndType<IBocMenuItemContainer>(nameof(OwnerControl), OwnerControl!);
     }
 
     protected IBocMenuItemContainer? BocMenuItemContainer

@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -36,8 +35,8 @@ namespace Remotion.Mixins.Definitions
 
     protected RequirementDefinitionBase (TargetClassDefinition targetClass, Type type)
     {
-      ArgumentUtility.CheckNotNull("targetClass", targetClass);
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(targetClass);
+      ArgumentNullException.ThrowIfNull(type);
 
       _targetClass = targetClass;
       _type = type;
@@ -85,7 +84,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       ConcreteAccept(visitor);
       _methods.Accept(visitor);
     }

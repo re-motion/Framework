@@ -18,7 +18,6 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 
@@ -42,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting
     internal ControlObjectContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope, [NotNull] ILoggerFactory loggerFactory)
         : base(scope, loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("pageObject", pageObject);
+      ArgumentNullException.ThrowIfNull(pageObject);
 
       _pageObject = pageObject;
     }
@@ -87,7 +86,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     public ControlObjectContext CloneForControl ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       try
       {
@@ -133,7 +132,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public PageObjectContext CloneForNewWindow ([NotNull] string windowLocator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("windowLocator", windowLocator);
+      ArgumentException.ThrowIfNullOrEmpty(windowLocator);
 
       // No error page detection. See remarks documentation on this method.
 
@@ -154,7 +153,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public PageObjectContext CloneForNewPopupWindow ([NotNull] string windowLocator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("windowLocator", windowLocator);
+      ArgumentException.ThrowIfNullOrEmpty(windowLocator);
 
       // No error page detection. See remarks documentation on this method.
 

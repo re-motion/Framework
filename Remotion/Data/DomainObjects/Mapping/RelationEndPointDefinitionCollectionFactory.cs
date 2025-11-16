@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
@@ -37,9 +36,9 @@ namespace Remotion.Data.DomainObjects.Mapping
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
-      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentNullException.ThrowIfNull(mappingObjectFactory);
+      ArgumentNullException.ThrowIfNull(nameResolver);
+      ArgumentNullException.ThrowIfNull(propertyMetadataProvider);
 
       _mappingObjectFactory = mappingObjectFactory;
       _nameResolver = nameResolver;
@@ -48,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       var endPoints = new RelationEndPointDefinitionCollection();
       foreach (var propertyInfo in GetRelationPropertyInfos(classDefinition))

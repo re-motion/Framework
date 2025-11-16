@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
@@ -32,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     public static FluentScreenshotElement<WebTabStripControlObject> GetWebTabStrip (
         [NotNull] this IFluentScreenshotElementWithCovariance<TabbedMultiViewControlObject> fluentTabbedMultiView)
     {
-      ArgumentUtility.CheckNotNull("fluentTabbedMultiView", fluentTabbedMultiView);
+      ArgumentNullException.ThrowIfNull(fluentTabbedMultiView);
 
       var element = fluentTabbedMultiView.Target.Scope.FindChild("TabStrip");
 

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence
 {
@@ -42,14 +41,14 @@ namespace Remotion.Data.DomainObjects.Persistence
     }
 
     public ConcurrencyViolationException (IEnumerable<ObjectID> ids, Exception? inner)
-        : this(BuildMessage(ArgumentUtility.CheckNotNull("ids", ids)), ids, inner)
+        : this(BuildMessage(ids ?? throw new ArgumentNullException(nameof(ids))), ids, inner)
     {
     }
 
     public ConcurrencyViolationException (string message, IEnumerable<ObjectID> ids, Exception? inner)
         : base(message, inner)
     {
-      ArgumentUtility.CheckNotNull("ids", ids);
+      ArgumentNullException.ThrowIfNull(ids);
       _ids = ids.ToArray();
     }
 

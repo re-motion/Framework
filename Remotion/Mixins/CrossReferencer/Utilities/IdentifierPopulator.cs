@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Utilities
 {
@@ -28,7 +27,7 @@ namespace Remotion.Mixins.CrossReferencer.Utilities
 
     public IdentifierPopulator (IEnumerable<T> items)
     {
-      ArgumentUtility.CheckNotNull("items", items);
+      ArgumentNullException.ThrowIfNull(items);
 
       foreach (var item in items)
         _identifierGenerator.GetIdentifier(item);

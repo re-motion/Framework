@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
@@ -44,7 +43,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     private WxeRepostOptions (Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentNullException.ThrowIfNull(sender);
 
       if (!usesEventTarget && !(sender is IPostBackEventHandler || sender is IPostBackDataHandler))
       {

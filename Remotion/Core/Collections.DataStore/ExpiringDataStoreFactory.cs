@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Collections.DataStore
 {
@@ -46,8 +45,8 @@ namespace Remotion.Collections.DataStore
         where TKey : notnull
         where TValue : notnull
     {
-      ArgumentUtility.CheckNotNull("policy", policy);
-      ArgumentUtility.CheckNotNull("comparer", comparer);
+      ArgumentNullException.ThrowIfNull(policy);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       return new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo>(policy, comparer);
     }
@@ -78,8 +77,8 @@ namespace Remotion.Collections.DataStore
         where TKey : notnull
         where TValue : notnull
     {
-      ArgumentUtility.CheckNotNull("policy", policy);
-      ArgumentUtility.CheckNotNull("comparer", comparer);
+      ArgumentNullException.ThrowIfNull(policy);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       return new LockingDataStoreDecorator<TKey, TValue>(new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo>(policy, comparer));
     }
@@ -110,8 +109,8 @@ namespace Remotion.Collections.DataStore
         where TKey : notnull
         where TValue: class?
     {
-      ArgumentUtility.CheckNotNull("policy", policy);
-      ArgumentUtility.CheckNotNull("comparer", comparer);
+      ArgumentNullException.ThrowIfNull(policy);
+      ArgumentNullException.ThrowIfNull(comparer);
 
       return new LazyLockingDataStoreAdapter<TKey, TValue>(
           new ExpiringDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo>(

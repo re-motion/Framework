@@ -18,7 +18,6 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebTestActions
 {
@@ -33,8 +32,8 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     public CustomAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] string name, [NotNull] Action<ElementScope> action, [NotNull] ILogger logger)
         : base(control, scope, logger)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNull("action", action);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentNullException.ThrowIfNull(action);
 
       _name = name;
       _action = action;
@@ -49,7 +48,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       _action(scope);
     }

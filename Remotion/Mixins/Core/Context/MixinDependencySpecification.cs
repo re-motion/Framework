@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
 {
@@ -30,8 +29,8 @@ namespace Remotion.Mixins.Context
 
     public MixinDependencySpecification (Type mixinType, IEnumerable<Type> dependencies)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull("dependencies", dependencies);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(dependencies);
 
       _mixinType = mixinType;
       _dependencies = dependencies;

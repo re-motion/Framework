@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.FunctionalProgramming;
 using Remotion.SecurityManager.Domain.Metadata;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
@@ -33,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public StateCombinationBuilder (SecurableClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       _classDefinition = classDefinition;
     }

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -29,29 +28,30 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected override string GetSelectStatements (EmptyViewDefinition emptyViewDefinition)
     {
-      ArgumentUtility.CheckNotNull("emptyViewDefinition", emptyViewDefinition);
+      ArgumentNullException.ThrowIfNull(emptyViewDefinition);
 
       return string.Format(
-            "  SELECT {0}\r\n"
+            "  SELECT {0}{1}"
           + "    WHERE 1 = 0",
-            GetNullColumnList(emptyViewDefinition.GetAllColumns()));
+            GetNullColumnList(emptyViewDefinition.GetAllColumns()),
+            Environment.NewLine);
     }
 
     protected override bool UseCheckOption (EmptyViewDefinition emptyViewDefinition)
     {
-      ArgumentUtility.CheckNotNull("emptyViewDefinition", emptyViewDefinition);
+      ArgumentNullException.ThrowIfNull(emptyViewDefinition);
       return false;
     }
 
     protected override bool UseSchemaBinding (EmptyViewDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
+      ArgumentNullException.ThrowIfNull(entityDefinition);
       return false;
     }
 
     private string GetNullColumnList (IEnumerable<ColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNull("columns", columns);
+      ArgumentNullException.ThrowIfNull(columns);
       return String.Join((string)", ", (IEnumerable<string>)columns.Select(cd => "CONVERT(" + cd.StorageTypeInfo.StorageTypeName + ",NULL) AS ["+ cd.Name + "]"));
     }
   }

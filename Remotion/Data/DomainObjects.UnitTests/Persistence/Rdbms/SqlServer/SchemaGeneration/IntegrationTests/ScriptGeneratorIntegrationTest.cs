@@ -79,8 +79,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var scripts = _standardScriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions())
           .Single(s => s.StorageProviderDefinition == SchemaGenerationFirstStorageProviderDefinition);
 
-      Assert.That(scripts.SetUpScript, Is.EqualTo(_firstStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
-      Assert.That(scripts.TearDownScript, Is.EqualTo(_firstStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
+      Assert.That(scripts.SetUpScript, Is.EqualTo(_firstStorageProviderSetupDBScript.ApplyDatabaseConfiguration().ReplaceLineEndings()));
+      Assert.That(scripts.TearDownScript, Is.EqualTo(_firstStorageProviderTearDownDBScript.ApplyDatabaseConfiguration().ReplaceLineEndings()));
     }
 
     [Test]
@@ -89,8 +89,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var scripts = _standardScriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions())
           .Single(s => s.StorageProviderDefinition == SchemaGenerationSecondStorageProviderDefinition);
 
-      Assert.That(scripts.SetUpScript, Is.EqualTo(_secondStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
-      Assert.That(scripts.TearDownScript, Is.EqualTo(_secondStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
+      Assert.That(scripts.SetUpScript, Is.EqualTo(_secondStorageProviderSetupDBScript.ApplyDatabaseConfiguration().ReplaceLineEndings()));
+      Assert.That(scripts.TearDownScript, Is.EqualTo(_secondStorageProviderTearDownDBScript.ApplyDatabaseConfiguration().ReplaceLineEndings()));
     }
 
     [Test]
@@ -99,8 +99,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var scripts = _extendedScriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions())
           .Single(s => s.StorageProviderDefinition == SchemaGenerationThirdStorageProviderDefinition);
 
-      Assert.That(scripts.SetUpScript, Is.EqualTo(_thirdStorageProviderSetupDBScript.ApplyDatabaseConfiguration()));
-      Assert.That(scripts.TearDownScript, Is.EqualTo(_thirdStorageProviderTearDownDBScript.ApplyDatabaseConfiguration()));
+      Assert.That(scripts.SetUpScript, Is.EqualTo(_thirdStorageProviderSetupDBScript.ApplyDatabaseConfiguration().ReplaceLineEndings()));
+      Assert.That(scripts.TearDownScript, Is.EqualTo(_thirdStorageProviderTearDownDBScript.ApplyDatabaseConfiguration().ReplaceLineEndings()));
     }
   }
 }

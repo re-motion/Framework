@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using JetBrains.Annotations;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
@@ -74,5 +75,17 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
 
     [BT1M1]
     public event EventHandler IntroducedEvent;
+
+    /// <summary>Required for testing mixin validation of non-overridden methods.</summary>
+    [UsedImplicitly]
+    protected internal void NonVirtualProtectedInternalMember ()
+    {
+    }
+
+    /// <summary>Required for testing mixin validation of non-overridden methods.</summary>
+    [UsedImplicitly]
+    protected void NonVirtualProtectedMember ()
+    {
+    }
   }
 }

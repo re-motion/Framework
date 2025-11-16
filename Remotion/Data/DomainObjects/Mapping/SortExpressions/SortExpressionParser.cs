@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     public SortExpressionParser (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       _classDefinition = classDefinition;
     }
 
     public SortExpressionDefinition? Parse (string sortExpression)
     {
-      ArgumentUtility.CheckNotNull("sortExpression", sortExpression);
+      ArgumentNullException.ThrowIfNull(sortExpression);
 
       try
       {

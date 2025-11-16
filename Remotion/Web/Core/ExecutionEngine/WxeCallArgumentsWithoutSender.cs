@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine
@@ -26,15 +25,15 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeCallArgumentsWithoutSender (WxePermaUrlOptions permaUrlOptions)
     {
-      ArgumentUtility.CheckNotNull("permaUrlOptions", permaUrlOptions);
+      ArgumentNullException.ThrowIfNull(permaUrlOptions);
 
       _permaUrlOptions = permaUrlOptions;
     }
 
     void IWxeCallArguments.Dispatch (IWxeExecutor executor, WxeFunction function)
     {
-      ArgumentUtility.CheckNotNull("executor", executor);
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentNullException.ThrowIfNull(executor);
+      ArgumentNullException.ThrowIfNull(function);
 
       executor.ExecuteFunction(function, null, new WxeCallOptions(_permaUrlOptions));
     }

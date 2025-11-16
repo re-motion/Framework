@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
@@ -36,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public VirtualObjectList (IVirtualCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull("dataStrategy", dataStrategy);
+      ArgumentNullException.ThrowIfNull(dataStrategy);
 
       _dataStrategy = dataStrategy;
     }
@@ -70,7 +69,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     void ICollection.CopyTo (Array array, int index)
     {
-      ArgumentUtility.CheckNotNull("array", array);
+      ArgumentNullException.ThrowIfNull(array);
 
       _dataStrategy.ToArray().CopyTo(array, index);
     }

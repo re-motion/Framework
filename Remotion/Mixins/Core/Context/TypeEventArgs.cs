@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
 {
@@ -25,7 +24,7 @@ namespace Remotion.Mixins.Context
 
     public TypeEventArgs (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
       _type = type;
     }
 

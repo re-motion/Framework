@@ -168,7 +168,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     internal BocReferenceValueBase ([NotNull] IWebServiceFactory webServiceFactory)
     {
-      ArgumentUtility.CheckNotNull("webServiceFactory", webServiceFactory);
+      ArgumentNullException.ThrowIfNull(webServiceFactory);
 
       _optionsMenu = new DropDownMenu(this);
 
@@ -252,7 +252,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     /// <summary> Gets or sets the current value. </summary>
-    /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValueBase/Value/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocReferenceValueBase.xml' path='BocReferenceValueBase/Value/*' />
     [Browsable(false)]
     public new IBusinessObjectWithIdentity? Value
     {
@@ -273,7 +273,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<IBusinessObjectWithIdentity>("value", value); }
+      set { Value = ArgumentUtility.CheckType<IBusinessObjectWithIdentity>(nameof(value), value); }
     }
 
     /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
@@ -425,7 +425,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     public override bool SupportsProperty (IBusinessObjectProperty property)
     {
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentNullException.ThrowIfNull(property);
       if (!base.SupportsProperty(property))
         return false;
       return ((IBusinessObjectReferenceProperty)property).ReferenceClass is IBusinessObjectClassWithIdentity;
@@ -439,12 +439,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       InitializeMenusItems();
     }
 
-    /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValue/InitializeMenusItems/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocReferenceValueBase.xml' path='BocReferenceValue/InitializeMenusItems/*' />
     protected virtual void InitializeMenusItems ()
     {
     }
 
-    /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValue/PreRenderMenuItems/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocReferenceValueBase.xml' path='BocReferenceValue/PreRenderMenuItems/*' />
     protected virtual void PreRenderMenuItems ()
     {
       if (_hiddenMenuItems == null)
@@ -574,7 +574,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed
     ///   between postbacks.
     /// </summary>
-    /// <include file='..\..\..\doc\include\UI\Controls\BocReferenceValueBase.xml' path='BocReferenceValueBase/LoadPostData/*' />
+    /// <include file='../../../Doc/include/UI/Controls/BocReferenceValueBase.xml' path='BocReferenceValueBase/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       string? newValue = PageUtility.GetPostBackCollectionItem(Page!, ValueContainingControlID);
@@ -677,7 +677,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
     void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentNullException.ThrowIfNull(values);
       Dispatch(values);
     }
 
@@ -784,8 +784,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
 
@@ -846,7 +846,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     /// </remarks>
     protected virtual string GetDisplayName (IBusinessObjectWithIdentity businessObject)
     {
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentNullException.ThrowIfNull(businessObject);
       return businessObject.GetAccessibleDisplayName();
     }
 

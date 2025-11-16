@@ -19,7 +19,6 @@ using JetBrains.Annotations;
 using Remotion.ExtensibleEnums;
 using Remotion.Globalization.Implementation;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.ExtensibleEnums
 {
@@ -48,8 +47,8 @@ namespace Remotion.Globalization.ExtensibleEnums
         [NotNull] this IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService,
         [NotNull] IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(extensibleEnumGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName(value, out var result))
         return result;
@@ -85,8 +84,8 @@ namespace Remotion.Globalization.ExtensibleEnums
         [NotNull] this IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService,
         [NotNull] IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(extensibleEnumGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       string? result;
       if (extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName(value, out result))
@@ -109,8 +108,8 @@ namespace Remotion.Globalization.ExtensibleEnums
         [NotNull] this IExtensibleEnumGlobalizationService extensibleEnumGlobalizationService,
         [NotNull] IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull("extensibleEnumGlobalizationService", extensibleEnumGlobalizationService);
-      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentNullException.ThrowIfNull(extensibleEnumGlobalizationService);
+      ArgumentNullException.ThrowIfNull(value);
 
       string? result;
       return extensibleEnumGlobalizationService.TryGetExtensibleEnumValueDisplayName(value, out result);

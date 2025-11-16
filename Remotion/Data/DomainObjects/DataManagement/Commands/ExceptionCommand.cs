@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public ExceptionCommand (Exception exception)
     {
-      ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentNullException.ThrowIfNull(exception);
       _exception = exception;
     }
 

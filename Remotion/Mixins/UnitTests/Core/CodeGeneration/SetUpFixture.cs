@@ -22,7 +22,6 @@ using Remotion.Mixins.CodeGeneration.TypePipe;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.TypePipe.Implementation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
@@ -64,7 +63,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     /// </summary>
     public static void AddSavedAssembly (string assemblyPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("assemblyPath", assemblyPath);
+      ArgumentException.ThrowIfNullOrEmpty(assemblyPath);
 #if FEATURE_ASSEMBLYBUILDER_SAVE
       s_assemblyTrackingCodeManager.AddSavedAssembly(assemblyPath);
 #endif

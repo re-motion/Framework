@@ -18,10 +18,8 @@ using System;
 using Coypu.Drivers;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
@@ -29,6 +27,7 @@ using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Remote;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -47,19 +46,19 @@ namespace Remotion.Web.Development.WebTesting
     /// Represents the latest tested version of Chrome, compatible with the framework.
     /// In order to achieve a stable testing environment, a standalone Chrome browser with a matching ChromeDriver version should be used.
     /// </summary>
-    protected const string LatestTestedChromeVersion = "121";
+    public const string LatestTestedChromeVersion = "121";
 
     /// <summary>
     /// Represents the latest version of Edge verified to be compatible with the framework.
     /// In order to achieve a stable testing environment, a standalone Edge browser with a matching MSEdgeDriver version should be used.
     /// </summary>
-    protected const string LatestTestedEdgeVersion = "119";
+    public const string LatestTestedEdgeVersion = "119";
 
     /// <summary>
     /// Represents the latest version of Firefox verified to be compatible with Selenium WebDriver.
     /// In order to achieve a stable testing environment a standalone Firefox with a matching GeckoDriver version should be used.
     /// </summary>
-    protected const string LatestTestedFirefoxVersion = "130";
+    public const string LatestTestedFirefoxVersion = "130";
 
     /// <summary>
     /// Gets the <see cref="ILoggerFactory"/> used by the web test infrastructure.
@@ -87,6 +86,8 @@ namespace Remotion.Web.Development.WebTesting
       var configSettings = WebTestSettings.Current;
 
       var configuredBrowser = Browser.Parse(configSettings.BrowserName);
+      if (configSettings.RemoteDriver.Enabled)
+        return new RemoteBrowserConfiguration(configSettings, configuredBrowser);
 
       if (configuredBrowser == Browser.Chrome)
         return CreateChromeConfiguration(configSettings);
@@ -144,7 +145,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>
     protected virtual IBrowserConfiguration CreateCustomBrowserConfiguration ([NotNull] IWebTestSettings configSettings)
     {
-      ArgumentUtility.CheckNotNull("configSettings", configSettings);
+      ArgumentNullException.ThrowIfNull(configSettings);
 
       throw new NotSupportedException(string.Format("Browser '{0}' is not supported by the '{1}'.", configSettings.BrowserName, GetType().Name));
     }
@@ -159,7 +160,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IChromeConfiguration CreateChromeConfiguration ([NotNull] IWebTestSettings configSettings)
     {
-      ArgumentUtility.CheckNotNull("configSettings", configSettings);
+      ArgumentNullException.ThrowIfNull(configSettings);
 
       return new ChromeConfiguration(configSettings);
     }
@@ -174,14 +175,14 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IEdgeConfiguration CreateEdgeConfiguration ([NotNull] IWebTestSettings configSettings)
     {
-      ArgumentUtility.CheckNotNull("configSettings", configSettings);
+      ArgumentNullException.ThrowIfNull(configSettings);
 
       return new EdgeConfiguration(configSettings);
     }
 
     protected virtual IFirefoxConfiguration CreateFirefoxConfiguration (IWebTestSettings configSettings)
     {
-      ArgumentUtility.CheckNotNull("configSettings", configSettings);
+      ArgumentNullException.ThrowIfNull(configSettings);
 
       return new FirefoxConfiguration(configSettings);
     }
@@ -195,7 +196,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IHostingConfiguration CreateHostingConfiguration ([NotNull] IWebTestSettings configSettings)
     {
-      ArgumentUtility.CheckNotNull("configSettings", configSettings);
+      ArgumentNullException.ThrowIfNull(configSettings);
 
       var testSiteLayoutConfiguration = CreateTestSiteLayoutConfiguration();
 

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public override MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
+      ArgumentNullException.ThrowIfNull(relationDefinition);
 
       var endPointDefinition1 = relationDefinition.EndPointDefinitions[0];
       var endPointDefinition2 = relationDefinition.EndPointDefinitions[1];

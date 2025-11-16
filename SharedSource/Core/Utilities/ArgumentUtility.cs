@@ -53,10 +53,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL), NoEnumeration, System.Diagnostics.CodeAnalysis.NotNull] T actualValue)
         where T : notnull
     {
-      // ReSharper disable CompareNonConstrainedGenericWithNull
-      if (actualValue == null)
-          // ReSharper restore CompareNonConstrainedGenericWithNull
-        throw new ArgumentNullException(argumentName);
+      ArgumentNullException.ThrowIfNull(actualValue, paramName: argumentName);
 
       return actualValue;
     }
@@ -68,7 +65,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] [NoEnumeration] T actualValue)
         where T : notnull
     {
-      CheckNotNull(argumentName, actualValue);
+      ArgumentNullException.ThrowIfNull(actualValue, paramName: argumentName);
     }
 
     [AssertionMethod]
@@ -83,7 +80,7 @@ namespace Remotion.Utilities
         throw new ArgumentNullException(argumentName);
 
       if (actualValue.Length == 0)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForString(argumentName);
 
       return actualValue;
     }
@@ -94,7 +91,7 @@ namespace Remotion.Utilities
         [InvokerParameterName] string argumentName,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] string actualValue)
     {
-      CheckNotNullOrEmpty(argumentName, actualValue);
+      ArgumentException.ThrowIfNullOrEmpty(actualValue, paramName: argumentName);
     }
 
     [AssertionMethod]
@@ -103,7 +100,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] T collection)
         where T: ICollection
     {
-      CheckNotNull(argumentName, collection);
+      ArgumentNullException.ThrowIfNull(collection, paramName: argumentName);
       CheckNotEmpty(argumentName, collection);
 
       return collection;
@@ -114,7 +111,7 @@ namespace Remotion.Utilities
         [InvokerParameterName] string argumentName,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] ICollection<T> collection)
     {
-      CheckNotNull(argumentName, collection);
+      ArgumentNullException.ThrowIfNull(collection, paramName: argumentName);
       CheckNotEmpty(argumentName, collection);
     }
 
@@ -123,7 +120,7 @@ namespace Remotion.Utilities
         [InvokerParameterName] string argumentName,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] IReadOnlyCollection<T> collection)
     {
-      CheckNotNull(argumentName, collection);
+      ArgumentNullException.ThrowIfNull(collection, paramName: argumentName);
       CheckNotEmpty(argumentName, collection);
     }
 
@@ -184,7 +181,7 @@ namespace Remotion.Utilities
 
     private static void CheckNotNullOrItemsNullImplementation (string argumentName, IEnumerable enumerable)
     {
-      CheckNotNull(argumentName, enumerable);
+      ArgumentNullException.ThrowIfNull(enumerable, paramName: argumentName);
 
       int i = 0;
       foreach (object item in enumerable)
@@ -233,7 +230,7 @@ namespace Remotion.Utilities
     public static string? CheckNotEmpty ([InvokerParameterName] string argumentName, string? actualValue)
     {
       if (actualValue != null && actualValue.Length == 0)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForString(argumentName);
 
       return actualValue;
     }
@@ -244,7 +241,7 @@ namespace Remotion.Utilities
         where T: ICollection?
     {
       if (collection != null && collection.Count == 0)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForCollection(argumentName);
 
       return collection;
     }
@@ -254,7 +251,7 @@ namespace Remotion.Utilities
     public static void CheckNotEmpty<T> ([InvokerParameterName] string argumentName, ICollection<T>? collection)
     {
       if (collection != null && collection.Count == 0)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForCollection(argumentName);
     }
 
     [AssertionMethod]
@@ -262,14 +259,14 @@ namespace Remotion.Utilities
     public static void CheckNotEmpty<T> ([InvokerParameterName] string argumentName, IReadOnlyCollection<T>? collection)
     {
       if (collection != null && collection.Count == 0)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForCollection(argumentName);
     }
 
     [AssertionMethod]
     public static Guid CheckNotEmpty ([InvokerParameterName] string argumentName, Guid actualValue)
     {
       if (actualValue == Guid.Empty)
-        throw CreateArgumentEmptyException(argumentName);
+        throw CreateArgumentEmptyExceptionForGuid(argumentName);
 
       return actualValue;
     }
@@ -279,8 +276,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] [NoEnumeration] object actualValue,
         Type expectedType)
     {
-      if (actualValue == null)
-        throw new ArgumentNullException(argumentName);
+      ArgumentNullException.ThrowIfNull(actualValue, paramName: argumentName);
 
       // ReSharper disable UseMethodIsInstanceOfType
       if (!expectedType.GetTypeInfo().IsAssignableFrom(actualValue.GetType().GetTypeInfo()))
@@ -311,8 +307,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] [NoEnumeration] [System.Diagnostics.CodeAnalysis.NotNull] object actualValue)
         where TExpected : notnull
     {
-      if (actualValue == null)
-        throw new ArgumentNullException(argumentName);
+      ArgumentNullException.ThrowIfNull(actualValue, paramName: argumentName);
 
       if (! (actualValue is TExpected))
         throw CreateArgumentTypeException(argumentName, actualValue.GetType(), typeof(TExpected));
@@ -391,8 +386,7 @@ namespace Remotion.Utilities
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] Type actualType,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] Type expectedType)
     {
-      if (actualType == null)
-        throw new ArgumentNullException(argumentName);
+      ArgumentNullException.ThrowIfNull(actualType, paramName: argumentName);
       return CheckTypeIsAssignableFrom(argumentName, actualType, expectedType);
     }
 
@@ -404,14 +398,13 @@ namespace Remotion.Utilities
         Type? actualType,
         [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] Type expectedType)
     {
-      CheckNotNull("expectedType", expectedType);
+      ArgumentNullException.ThrowIfNull(expectedType);
       if (actualType != null)
       {
         if (!expectedType.GetTypeInfo().IsAssignableFrom(actualType.GetTypeInfo()))
         {
           string message = string.Format(
-              "Parameter '{0}' is a '{2}', which cannot be assigned to type '{1}'.",
-              argumentName,
+              "The value is a '{1}', which cannot be assigned to type '{0}'.",
               expectedType,
               actualType);
           throw new ArgumentException(message, argumentName);
@@ -487,9 +480,27 @@ namespace Remotion.Utilities
     }
 
     [MustUseReturnValue]
+    public static ArgumentException CreateArgumentEmptyExceptionForString ([InvokerParameterName] string argumentName)
+    {
+      return new ArgumentException("The value cannot be an empty string.", argumentName);
+    }
+
+    [MustUseReturnValue]
+    public static ArgumentException CreateArgumentEmptyExceptionForCollection ([InvokerParameterName] string argumentName)
+    {
+      return new ArgumentException("The value cannot be an empty collection.", argumentName);
+    }
+
+    [MustUseReturnValue]
+    public static ArgumentException CreateArgumentEmptyExceptionForGuid ([InvokerParameterName] string argumentName)
+    {
+      return new ArgumentException("The value cannot be an empty GUID.", argumentName);
+    }
+
+    [MustUseReturnValue]
     public static ArgumentException CreateArgumentEmptyException ([InvokerParameterName] string argumentName)
     {
-      return new ArgumentException(string.Format("Parameter '{0}' cannot be empty.", argumentName), argumentName);
+      return new ArgumentException("The value cannot be empty.", argumentName);
     }
 
     [MustUseReturnValue]
@@ -498,12 +509,12 @@ namespace Remotion.Utilities
       string actualTypeName = actualType != null ? actualType.ToString() : "<null>";
       if (expectedType == null)
       {
-        return new ArgumentException(string.Format("Parameter '{0}' has unexpected type '{1}'.", argumentName, actualTypeName), argumentName);
+        return new ArgumentException(string.Format("The value has unexpected type '{0}'.", actualTypeName), argumentName);
       }
       else
       {
         return new ArgumentException(
-            string.Format("Parameter '{0}' has type '{2}' when type '{1}' was expected.", argumentName, expectedType, actualTypeName),
+            string.Format("The value has type '{1}' when type '{0}' was expected.", expectedType, actualTypeName),
             argumentName);
       }
     }
@@ -517,9 +528,8 @@ namespace Remotion.Utilities
     {
       return new ArgumentException(
           string.Format(
-              "Item {0} of parameter '{1}' has the type '{2}' instead of '{3}'.",
+              "Item {0} of the collection has type '{1}' instead of '{2}'.",
               index,
-              argumentName,
               actualType,
               expectedType),
           argumentName);
@@ -528,7 +538,7 @@ namespace Remotion.Utilities
     [MustUseReturnValue]
     public static ArgumentNullException CreateArgumentItemNullException ([InvokerParameterName] string argumentName, int index)
     {
-      return new ArgumentNullException(argumentName, string.Format("Item {0} of parameter '{1}' is null.", index, argumentName));
+      return new ArgumentNullException(argumentName, string.Format("Item {0} of the collection is null.", index));
     }
   }
 }

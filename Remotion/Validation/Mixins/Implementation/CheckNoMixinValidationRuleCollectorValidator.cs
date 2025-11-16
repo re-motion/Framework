@@ -17,7 +17,6 @@
 using System;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation.Mixins.Implementation
@@ -36,7 +35,7 @@ namespace Remotion.Validation.Mixins.Implementation
 
     public void CheckValid (IValidationRuleCollector collector)
     {
-      ArgumentUtility.CheckNotNull("collector", collector);
+      ArgumentNullException.ThrowIfNull(collector);
 
       if (Remotion.Mixins.Utilities.ReflectionUtility.IsMixinType(collector.ValidatedType))
       {

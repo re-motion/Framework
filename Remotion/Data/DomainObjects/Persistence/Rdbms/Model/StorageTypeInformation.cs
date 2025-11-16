@@ -18,21 +18,20 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
   /// <summary>
   /// The <see cref="StorageTypeInformation"/> provides information about the storage type of a value in a relational database.
-  /// In addition, it can create an unnamed <see cref="IDbDataParameter"/> for a value convertible to <see cref="StorageType"/> via 
-  /// <see cref="DotNetTypeConverter"/>, or read and convert a value from an <see cref="IDataReader"/>.
+  /// In addition, it can create an unnamed <see cref="DbParameter"/> for a value convertible to <see cref="StorageType"/> via 
+  /// <see cref="DotNetTypeConverter"/>, or read and convert a value from an <see cref="DbDataReader"/>.
   /// </summary>
   /// <remarks>
   /// The <see cref="DotNetTypeConverter"/> must be associated with the in-memory .NET type of the stored value. It is used to convert to the database
-  /// representation (represented by <see cref="StorageType"/>) when a <see cref="IDbDataParameter"/> is created, and it is used to convert
-  /// values back to the <see cref="DotNetType"/> when a value is read from an <see cref="IDataReader"/>.
+  /// representation (represented by <see cref="StorageType"/>) when a <see cref="DbParameter"/> is created, and it is used to convert
+  /// values back to the <see cref="DotNetType"/> when a value is read from an <see cref="DbDataReader"/>.
   /// </remarks>
   public class StorageTypeInformation : IStorageTypeInformation
   {
@@ -53,10 +52,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         Type dotNetType,
         TypeConverter dotNetTypeConverter)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("storageTypeName", storageTypeName);
-      ArgumentUtility.CheckNotNull("storageType", storageType);
-      ArgumentUtility.CheckNotNull("dotNetType", dotNetType);
-      ArgumentUtility.CheckNotNull("dotNetTypeConverter", dotNetTypeConverter);
+      ArgumentException.ThrowIfNullOrEmpty(storageTypeName);
+      ArgumentNullException.ThrowIfNull(storageType);
+      ArgumentNullException.ThrowIfNull(dotNetType);
+      ArgumentNullException.ThrowIfNull(dotNetTypeConverter);
 
       _storageType = storageType;
       _storageTypeName = storageTypeName;
@@ -119,14 +118,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       get { return _dotNetTypeConverter; }
     }
 
-    public object? Read (IDataReader dataReader, int ordinal)
+    public object? Read (DbDataReader dataReader, int ordinal)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
-      // IDataReader.GetValue(ordinal) usually returns DBNull.Value for null values, but the implementation does return null for unsupported data types.
-      // There is no explicit documentation on IDataReader.GetValue(ordinal) returning only DBNull.Value instead of an actual null value.
-      // Also, when using IDbCommand.ExecuteScalar(), the API is defined as a nullable value, therefore it is more consistent to officially accept
-      // that IDataReader.GetValue(ordinal) could also return null values despite its contract.
+      // DbDataReader.GetValue(ordinal) usually returns DBNull.Value for null values, but the implementation does return null for unsupported data types.
+      // There is no explicit documentation on DbDataReader.GetValue(ordinal) returning only DBNull.Value instead of an actual null value.
+      // Also, when using DbCommand.ExecuteScalar(), the API is defined as a nullable value, therefore it is more consistent to officially accept
+      // that DbDataReader.GetValue(ordinal) could also return null values despite its contract.
       object? value = dataReader.GetValue(ordinal);
       return ConvertFromStorageType(value);
     }
@@ -151,7 +150,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)
     {
-      ArgumentUtility.CheckNotNull("equivalentStorageTypes", equivalentStorageTypes);
+      ArgumentNullException.ThrowIfNull(equivalentStorageTypes);
       var castStorageTypes =
           equivalentStorageTypes.Select(
               equivalentInfo =>

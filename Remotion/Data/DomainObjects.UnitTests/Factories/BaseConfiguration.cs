@@ -24,7 +24,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
 using Remotion.Data.DomainObjects.Validation;
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
       var deferredStorageSettings = new DeferredStorageSettings(fakeStorageObjectFactoryFactory, fakeStorageSettingsFactoryResolver);
 
-      var sqlStorageObjectFactory = new SqlStorageObjectFactory(
+      var sqlStorageObjectFactory = new TestSqlStorageObjectFactory(
           deferredStorageSettings,
           SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
           SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());

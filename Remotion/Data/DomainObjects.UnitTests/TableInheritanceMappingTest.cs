@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -27,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 {
   public abstract class TableInheritanceMappingTest : DatabaseTest
   {
-    public const string CreateTestDataFileName = "Database\\DataDomainObjects_CreateTableInheritanceTestData.sql";
+    public const string CreateTestDataFileName = "Database/DataDomainObjects_CreateTableInheritanceTestData.sql";
     public const string TableInheritanceTestDomainProviderID = "TableInheritanceTestDomain";
 
     private ClientTransactionScope _transactionScope;

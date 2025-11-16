@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IRdbmsPersistenceModelProvider persistenceModelProvider,
         IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionProvider)
     {
-      ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
-      ArgumentUtility.CheckNotNull("persistenceModelProvider", persistenceModelProvider);
-      ArgumentUtility.CheckNotNull("infrastructureStoragePropertyDefinitionProvider", infrastructureStoragePropertyDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(storageNameProvider);
+      ArgumentNullException.ThrowIfNull(persistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(infrastructureStoragePropertyDefinitionProvider);
 
       _storageNameProvider = storageNameProvider;
       _persistenceModelProvider = persistenceModelProvider;

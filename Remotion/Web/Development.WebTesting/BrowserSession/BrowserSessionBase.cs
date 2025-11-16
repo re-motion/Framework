@@ -21,7 +21,8 @@ using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using Remotion.Utilities;
+using OpenQA.Selenium.BiDi;
+using OpenQA.Selenium.BiDi.BrowsingContext;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 
@@ -30,15 +31,30 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
   /// <summary>
   /// Wraps around <see cref="Coypu.BrowserSession"/> to handle browser specific routines.
   /// </summary>
-  public abstract class BrowserSessionBase<T> : IBrowserSession
+  public abstract class BrowserSessionBase<T> : IBrowserSession, IBidiConnectionProvider
       where T : IBrowserConfiguration
   {
+    public static void ApplyCommonWebTestFeatureDefaults (
+        WebTestFeatureCollection features,
+        IBrowserSession browserSession)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserSession);
+
+      // Placeholder for future feature additions for all browser session
+    }
+
     private readonly TimeSpan _browserProcessesShutdownTime = TimeSpan.FromSeconds(60);
+    private readonly TimeSpan _bidiTimeout = TimeSpan.FromSeconds(1);
 
     private readonly T _browserConfiguration;
     private readonly Coypu.BrowserSession _value;
     private readonly int _driverProcessID;
     private readonly bool _headless;
+    private readonly WebTestFeatureCollection _features;
+
+    private BiDi? _bidiConnection;
+    private Subscription? _promptSubscription;
     private bool _isDisposed;
 
     protected BrowserSessionBase (
@@ -47,20 +63,26 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
         int driverProcessId,
         bool headless)
     {
-      ArgumentUtility.CheckNotNull("value", value);
-      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
 
       if (driverProcessId < 0)
-        throw new ArgumentOutOfRangeException("driverProcessId", "Process id can not be smaller that zero.");
+        throw new ArgumentOutOfRangeException(nameof(driverProcessId), "Process id can not be smaller that zero.");
 
       _value = value;
       _browserConfiguration = browserConfiguration;
       _driverProcessID = driverProcessId;
       _headless = headless;
+
+      _features = new WebTestFeatureCollection(_browserConfiguration.Features);
+      ApplyCommonWebTestFeatureDefaults(FeaturesMutable, this);
     }
 
     /// <inheritdoc />
-    public abstract IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ();
+    public IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs () => Features.Get<IBrowserLogProvider>().GetBrowserLogs();
+
+    /// <inheritdoc />
+    public void ResetBrowserLogs () => Features.Get<IBrowserLogProvider>().ResetBrowserLogs();
 
     /// <summary>
     /// Returns the <see cref="IBrowserConfiguration"/> associated with the underlying <see cref="Coypu.BrowserSession"/>.
@@ -70,9 +92,32 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       get { return _browserConfiguration; }
     }
 
-    public void AcceptModalDialog (Options? options = null)
+    public TimeSpan DefaultBidiTimeout => _bidiTimeout;
+
+    /// <inheritdoc/>/>
+    public BiDi BiDiConnection => _bidiConnection
+                                  ?? throw new InvalidOperationException("Call 'OpenBidiConnection' before accessing 'BiDiConnection'.");
+
+    /// <inheritdoc/>
+    [System.Diagnostics.CodeAnalysis.MemberNotNull(nameof(_bidiConnection))]
+    public void OpenBidiConnection ()
     {
-      _value.AcceptModalDialog(options);
+      if (_bidiConnection != null)
+        return;
+
+      _bidiConnection = ((OpenQA.Selenium.WebDriver)Driver.Native).AsBiDiAsync().GetAwaiter().GetResult();
+
+      // TODO: RM-9596
+      // This should be moved into a scope based PromptHandler that can be used during a test to enable and disable handling of prompts similar to how it works for non bidi prompt handling.
+      // Accept all user prompts as they come up - IWebTestHelper.AcceptPossibleModalDialog() does not work with BiDi
+      // because the WebTest-Thread is not continued when a user prompt is shown.
+      _promptSubscription = _bidiConnection.BrowsingContext.OnUserPromptOpenedAsync(args =>
+              args.BiDi.BrowsingContext.HandleUserPromptAsync(args.Context, new HandleUserPromptOptions { Accept = true, Timeout = _bidiTimeout}).GetAwaiter().GetResult(),
+              new BrowsingContextsSubscriptionOptions(new SubscriptionOptions
+                                                      {
+                                                          Timeout = _bidiTimeout
+                                                      }))
+          .GetAwaiter().GetResult();
     }
 
     public IDriver Driver
@@ -90,9 +135,17 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       get { return _headless; }
     }
 
+    public IReadOnlyWebTestFeatureCollection Features => _features;
+
+    /// <summary>
+    /// Mutable features collection intended to allow mutation during the construction of the browser session.
+    /// Manipulating the collection after construction is not supported.
+    /// </summary>
+    protected WebTestFeatureCollection FeaturesMutable => _features;
+
     public BrowserWindow FindWindow (string locator, Options? options = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("locator", locator);
+      ArgumentException.ThrowIfNullOrEmpty(locator);
 
       return _value.FindWindow(locator, options);
     }
@@ -112,6 +165,26 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
         return;
 
       _isDisposed = true;
+      _features.Dispose();
+
+      try
+      {
+        _promptSubscription?.DisposeAsync().AsTask().GetAwaiter().GetResult();
+      }
+      catch (Exception)
+      {
+        //ignored
+      }
+
+      try
+      {
+        _bidiConnection?.DisposeAsync().AsTask().GetAwaiter().GetResult();
+      }
+      catch (Exception)
+      {
+        //ignored
+      }
+
 
       // Get processes for driver and main browser, as well as the sub processes of the browser
       var driverProcess = FindDriverProcess();

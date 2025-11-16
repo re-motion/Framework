@@ -17,7 +17,6 @@
 using System;
 using System.Linq.Expressions;
 using NUnit.Framework.Constraints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.UnitTesting
 {
@@ -25,12 +24,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.UnitTesting
   {
     public static ResolvableConstraintExpression Property<T> (this ConstraintExpression constraintExpression, Expression<Func<T, object>> propertyExpression)
     {
-      ArgumentUtility.CheckNotNull("constraintExpression", constraintExpression);
-      ArgumentUtility.CheckNotNull("propertyExpression", propertyExpression);
+      ArgumentNullException.ThrowIfNull(constraintExpression);
+      ArgumentNullException.ThrowIfNull(propertyExpression);
 
       var memberExpression = propertyExpression.Body as MemberExpression;
       if (memberExpression == null)
-        throw new ArgumentException("Expression must be a simple property access.", "propertyExpression");
+        throw new ArgumentException("Expression must be a simple property access.", nameof(propertyExpression));
 
       return constraintExpression.Property(memberExpression.Member.Name);
     }

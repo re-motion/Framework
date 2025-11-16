@@ -21,7 +21,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public StructuredTypeDefinitionFinderForCollectionOfScalars (ISingleScalarStructuredTypeDefinitionProvider singleScalarStructuredTypeProvider)
     {
-      ArgumentUtility.CheckNotNull(nameof(singleScalarStructuredTypeProvider), singleScalarStructuredTypeProvider);
+      ArgumentNullException.ThrowIfNull(singleScalarStructuredTypeProvider);
       SingleScalarStructuredTypeProvider = singleScalarStructuredTypeProvider;
     }
 
@@ -51,8 +50,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     /// supported by the <see cref="SingleScalarStructuredTypeProvider"/>.</exception>
     public IRdbmsStructuredTypeDefinition? GetTypeDefinition (QueryParameter queryParameter, IQuery query)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
-      ArgumentUtility.CheckNotNull(nameof(queryParameter), queryParameter);
+      ArgumentNullException.ThrowIfNull(queryParameter);
+      ArgumentNullException.ThrowIfNull(queryParameter);
 
       var (itemType, isDistinct) = GetCollectionInfo(queryParameter.Value);
       if (itemType != null)

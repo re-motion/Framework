@@ -22,7 +22,6 @@ using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq
 {
@@ -34,16 +33,22 @@ namespace Remotion.Data.DomainObjects.Linq
     private readonly ISqlPreparationStage _preparationStage;
     private readonly IMappingResolutionStage _resolutionStage;
     private readonly ISqlGenerationStage _generationStage;
+    private readonly int _tableValuedParameterThreshold;
 
-    public SqlQueryGenerator (ISqlPreparationStage preparationStage, IMappingResolutionStage resolutionStage, ISqlGenerationStage generationStage)
+    public SqlQueryGenerator (
+        ISqlPreparationStage preparationStage,
+        IMappingResolutionStage resolutionStage,
+        ISqlGenerationStage generationStage,
+        int tableValuedParameterThreshold)
     {
-      ArgumentUtility.CheckNotNull("preparationStage", preparationStage);
-      ArgumentUtility.CheckNotNull("resolutionStage", resolutionStage);
-      ArgumentUtility.CheckNotNull("generationStage", generationStage);
+      ArgumentNullException.ThrowIfNull(preparationStage);
+      ArgumentNullException.ThrowIfNull(resolutionStage);
+      ArgumentNullException.ThrowIfNull(generationStage);
 
       _preparationStage = preparationStage;
       _resolutionStage = resolutionStage;
       _generationStage = generationStage;
+      _tableValuedParameterThreshold = tableValuedParameterThreshold;
     }
 
     public ISqlPreparationStage PreparationStage
@@ -70,7 +75,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns>A <see cref="SqlCommandData"/> instance containing the SQL text, parameters, and an in-memory projection for the given query model.</returns>
     public virtual SqlQueryGeneratorResult CreateSqlQuery (QueryModel queryModel)
     {
-      ArgumentUtility.CheckNotNull("queryModel", queryModel);
+      ArgumentNullException.ThrowIfNull(queryModel);
 
       SqlStatement sqlStatement;
       try
@@ -122,7 +127,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns><see cref="SqlCommandData"/> which represents the sql query.</returns>
     protected virtual SqlCommandData CreateSqlCommand (SqlStatement sqlStatement)
     {
-      var commandBuilder = new TableValuedParameterSqlCommandBuilder();
+      var commandBuilder = new TableValuedParameterSqlCommandBuilder(_tableValuedParameterThreshold);
       _generationStage.GenerateTextForOuterSqlStatement(commandBuilder, sqlStatement);
       return commandBuilder.GetCommand();
     }

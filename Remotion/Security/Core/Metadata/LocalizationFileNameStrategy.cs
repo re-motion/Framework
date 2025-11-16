@@ -17,7 +17,6 @@
 using System;
 using System.Globalization;
 using System.IO;
-using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
@@ -26,14 +25,14 @@ namespace Remotion.Security.Metadata
 
     public string GetLocalizationFileName (string metadataFilename, CultureInfo culture)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("metadataFilename", metadataFilename);
-      ArgumentUtility.CheckNotNull("culture", culture);
+      ArgumentException.ThrowIfNullOrEmpty(metadataFilename);
+      ArgumentNullException.ThrowIfNull(culture);
 
       string baseFilename = Path.GetFileNameWithoutExtension(metadataFilename);
 
       string? basePath = Path.GetDirectoryName(metadataFilename);
       if (basePath == null)
-        throw new ArgumentException("The metadata filename must denote a path that is not a root directory.", "metadataFilename");
+        throw new ArgumentException("The metadata filename must denote a path that is not a root directory.", nameof(metadataFilename));
 
       string baseFilePath = Path.Combine(basePath, baseFilename);
 
@@ -45,13 +44,13 @@ namespace Remotion.Security.Metadata
 
     public string[] GetLocalizationFileNames (string metadataFilename)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("metadataFilename", metadataFilename);
+      ArgumentException.ThrowIfNullOrEmpty(metadataFilename);
 
       string baseFileName = Path.GetFileNameWithoutExtension(metadataFilename);
 
       string? basePath = Path.GetDirectoryName(metadataFilename);
       if (basePath == null)
-        throw new ArgumentException("The metadata filename must denote a path that is not a root directory.", "metadataFilename");
+        throw new ArgumentException("The metadata filename must denote a path that is not a root directory.", nameof(metadataFilename));
 
       string searchPattern = baseFileName + ".Localization.*xml";
 

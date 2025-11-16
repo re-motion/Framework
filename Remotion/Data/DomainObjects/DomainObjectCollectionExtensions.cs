@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -34,8 +33,8 @@ namespace Remotion.Data.DomainObjects
     /// <param name="message">The message the exception should have if one is thrown.</param>
     public static void CheckNotReadOnly (this DomainObjectCollection collection, string message)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
-      ArgumentUtility.CheckNotNullOrEmpty("message", message);
+      ArgumentNullException.ThrowIfNull(collection);
+      ArgumentException.ThrowIfNullOrEmpty(message);
 
       if (collection.IsReadOnly)
         throw new NotSupportedException(message);
@@ -61,8 +60,8 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static void UnionWith (this DomainObjectCollection collection, DomainObjectCollection sourceCollection)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
-      ArgumentUtility.CheckNotNull("sourceCollection", sourceCollection);
+      ArgumentNullException.ThrowIfNull(collection);
+      ArgumentNullException.ThrowIfNull(sourceCollection);
 
       collection.CheckNotReadOnly("A read-only collection cannot be combined with another collection.");
 
@@ -83,8 +82,8 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static IEnumerable<DomainObject> GetItemsExcept (this DomainObjectCollection collection, HashSet<DomainObject> exceptedDomainObjects)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
-      ArgumentUtility.CheckNotNull("exceptedDomainObjects", exceptedDomainObjects);
+      ArgumentNullException.ThrowIfNull(collection);
+      ArgumentNullException.ThrowIfNull(exceptedDomainObjects);
 
       return collection.Cast<DomainObject>().Where(domainObject => !exceptedDomainObjects.Contains(domainObject));
     }
@@ -98,8 +97,8 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true"/> if the collection contains the same items as the comparedCollection in the same order; otherwise, <see langword="false"/>.</returns>
     public static bool SequenceEqual (this DomainObjectCollection collection, IEnumerable<DomainObject> comparedSequence)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
-      ArgumentUtility.CheckNotNull("comparedSequence", comparedSequence);
+      ArgumentNullException.ThrowIfNull(collection);
+      ArgumentNullException.ThrowIfNull(comparedSequence);
 
       return collection.Cast<DomainObject>().SequenceEqual(comparedSequence);
     }
@@ -113,8 +112,8 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true"/> if the collection contains the same items as the set in any order; otherwise, <see langword="false"/>.</returns>
     public static bool SetEquals (this DomainObjectCollection collection, IEnumerable<DomainObject> comparedSet)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
-      ArgumentUtility.CheckNotNull("comparedSet", comparedSet);
+      ArgumentNullException.ThrowIfNull(collection);
+      ArgumentNullException.ThrowIfNull(comparedSet);
 
       var setOfComparedObjects = new HashSet<DomainObject>(); // this is used to get rid of all duplicates to get a correct result
       foreach (var domainObject in comparedSet)
@@ -139,7 +138,7 @@ namespace Remotion.Data.DomainObjects
     public static IList<T> AsList<T> (this DomainObjectCollection collection)
         where T : DomainObject
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       return new DomainObjectCollectionWrapper<T>(collection);
     }
@@ -152,7 +151,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>A <see cref="ReadOnlyCollection{T}"/> representing the data of the <see cref="DomainObjectCollection"/>.</returns>
     public static ReadOnlyCollection<DomainObject> AsReadOnlyCollection (this DomainObjectCollection collection)
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       var listAdapter = collection.AsList<DomainObject>();
       return new ReadOnlyCollection<DomainObject>(listAdapter);
@@ -166,7 +165,7 @@ namespace Remotion.Data.DomainObjects
     /// <returns>A <see cref="ReadOnlyCollection{T}"/> representing the data of the <see cref="ObjectList{T}"/>.</returns>
     public static ReadOnlyCollection<T> AsReadOnlyCollection<T> (this ObjectList<T> collection) where T: DomainObject
     {
-      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentNullException.ThrowIfNull(collection);
 
       var listAdapter = collection.AsList<T>();
       return new ReadOnlyCollection<T>(listAdapter);

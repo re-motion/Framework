@@ -18,7 +18,6 @@ using System;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -31,8 +30,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
         ErrorAggregator<ConfigurationException> configurationErrors,
         ErrorAggregator<ValidationException> validationErrors)
     {
-      ArgumentUtility.CheckNotNull("configurationErrors", configurationErrors);
-      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
+      ArgumentNullException.ThrowIfNull(configurationErrors);
+      ArgumentNullException.ThrowIfNull(validationErrors);
 
       _configurationErrors = configurationErrors;
       _validationErrors = validationErrors;

@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public CustomDataTypeStorageTypeInformationProviderDecorator (IStorageTypeInformationProvider innerStorageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull("innerStorageTypeInformationProvider", innerStorageTypeInformationProvider);
+      ArgumentNullException.ThrowIfNull(innerStorageTypeInformationProvider);
 
       _innerStorageTypeInformationProvider = innerStorageTypeInformationProvider;
     }

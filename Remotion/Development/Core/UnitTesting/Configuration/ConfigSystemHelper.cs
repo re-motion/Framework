@@ -19,7 +19,6 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Configuration.Internal;
 using Remotion.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Configuration
 {
@@ -56,16 +55,16 @@ namespace Remotion.Development.UnitTesting.Configuration
 
     public void SetUpConnectionString (string name, string connectionString, string providerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentException.ThrowIfNullOrEmpty(connectionString);
 
       _connectionStringsSection.ConnectionStrings.Add(new ConnectionStringSettings(name, connectionString, providerName));
     }
 
     public void SetUpAppSetting (string name, string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("key", key);
-      ArgumentUtility.CheckNotNull("name", name);
+      ArgumentException.ThrowIfNullOrEmpty(key);
+      ArgumentNullException.ThrowIfNull(name);
 
       _appSettings.Add(name, key);
     }

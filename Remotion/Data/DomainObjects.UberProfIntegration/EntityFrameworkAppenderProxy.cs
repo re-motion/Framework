@@ -17,7 +17,6 @@
 using System;
 using System.Data;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
 {
@@ -74,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
         Type entityFrameworkConfigurationType,
         Type entityFrameworkAppenderType)
     {
-      ArgumentUtility.CheckNotNull("name", name);
+      ArgumentNullException.ThrowIfNull(name);
 
       var configuration = Activator.CreateInstance(entityFrameworkConfigurationType);
       var initializeMethod = entityFrameworkProfilerType.GetMethod("Initialize", BindingFlags.Public | BindingFlags.Static)!;

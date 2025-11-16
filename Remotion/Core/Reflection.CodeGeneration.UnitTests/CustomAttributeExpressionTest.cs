@@ -56,8 +56,8 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
           () => new CustomAttributeExpression(new LocalReference(typeof(string)), typeof(SimpleAttribute), 0, true),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'attributeOwner' is a 'System.String', which cannot be assigned to type 'System.Reflection.ICustomAttributeProvider'.",
-                  "attributeOwner"));
+                  "The value is a 'System.String', which cannot be assigned to type 'System.Reflection.ICustomAttributeProvider'.",
+                  "attributeOwner.Type"));
     }
   }
 }

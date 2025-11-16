@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -27,7 +26,7 @@ namespace Remotion.Data.DomainObjects
 
     public ClassIDAttribute (string classID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
+      ArgumentException.ThrowIfNullOrEmpty(classID);
       _classID = classID;
     }
 

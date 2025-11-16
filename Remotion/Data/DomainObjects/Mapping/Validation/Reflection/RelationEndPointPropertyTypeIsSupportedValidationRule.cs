@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 {
@@ -24,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
+      ArgumentNullException.ThrowIfNull(relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
@@ -38,7 +37,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
 
       if (!relationEndPointDefinition.IsAnonymous
           && relationEndPointDefinition.PropertyInfo != null)

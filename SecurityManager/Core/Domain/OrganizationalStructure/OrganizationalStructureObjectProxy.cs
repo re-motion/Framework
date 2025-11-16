@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
@@ -33,9 +32,9 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected OrganizationalStructureObjectProxy (IDomainObjectHandle<T> handle, string uniqueIdentifier, string displayName)
     {
-      ArgumentUtility.CheckNotNull("handle", handle);
-      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
-      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
+      ArgumentNullException.ThrowIfNull(handle);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       _handle = handle;
       _uniqueIdentifier = uniqueIdentifier;

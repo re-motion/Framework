@@ -21,7 +21,6 @@ using Remotion.ObjectBinding.Web;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
@@ -41,7 +40,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public ReflectionBusinessObjectWebUIService (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+      ArgumentNullException.ThrowIfNull(resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
@@ -75,8 +74,8 @@ namespace Remotion.ObjectBinding.Sample
         IBusinessObjectProperty businessObjectProperty,
         IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull("control", control);
-      ArgumentUtility.CheckNotNull("businessObjectClass", businessObjectClass);
+      ArgumentNullException.ThrowIfNull(control);
+      ArgumentNullException.ThrowIfNull(businessObjectClass);
 
       return new ToolTipBasedHelpInfo("Help for " + (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"));
       //return new ToolTipBasedHelpInfo (string.Format (

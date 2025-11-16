@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding
 {
@@ -26,8 +25,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   {
     public IBusinessObjectWithIdentity? GetObject (BindableObjectClassWithIdentity classWithIdentity, string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNull("classWithIdentity", classWithIdentity);
-      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
+      ArgumentNullException.ThrowIfNull(classWithIdentity);
+      ArgumentException.ThrowIfNullOrEmpty(uniqueIdentifier);
 
       var clientTransaction = ClientTransaction.Current;
       if (clientTransaction == null)

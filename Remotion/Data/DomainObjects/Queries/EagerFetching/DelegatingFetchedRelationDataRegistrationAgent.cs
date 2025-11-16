@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         IFetchedRelationDataRegistrationAgent virtualObjectDataRegistrationAgent,
         IFetchedRelationDataRegistrationAgent collectionDataRegistrationAgent)
     {
-      ArgumentUtility.CheckNotNull("realObjectDataRegistrationAgent", realObjectDataRegistrationAgent);
-      ArgumentUtility.CheckNotNull("virtualObjectDataRegistrationAgent", virtualObjectDataRegistrationAgent);
-      ArgumentUtility.CheckNotNull("collectionDataRegistrationAgent", collectionDataRegistrationAgent);
+      ArgumentNullException.ThrowIfNull(realObjectDataRegistrationAgent);
+      ArgumentNullException.ThrowIfNull(virtualObjectDataRegistrationAgent);
+      ArgumentNullException.ThrowIfNull(collectionDataRegistrationAgent);
 
       _realObjectDataRegistrationAgent = realObjectDataRegistrationAgent;
       _virtualObjectDataRegistrationAgent = virtualObjectDataRegistrationAgent;
@@ -66,8 +66,8 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         ICollection<ILoadedObjectData> originatingObjects,
         ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("originatingObjects", originatingObjects);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentUtility.CheckNotNullOrEmpty(nameof(originatingObjects), originatingObjects);
 
       var specificAgent = GetSpecificAgent(relationEndPointDefinition);
       specificAgent.GroupAndRegisterRelatedObjects(relationEndPointDefinition, originatingObjects, relatedObjects);

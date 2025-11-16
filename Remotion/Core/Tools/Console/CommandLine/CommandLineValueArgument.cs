@@ -95,7 +95,8 @@ public class CommandLineInt32Argument: CommandLineValueArgument
 
   protected internal override void SetStringValue (string value)
   {
-    if (value == null) throw new ArgumentNullException("value");
+    ArgumentNullException.ThrowIfNull(value);
+
     string strValue = value.Trim();
     if (strValue.Length == 0)
     {

@@ -43,18 +43,18 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
       var message = contextStub.Object.Items[ControlHelper.AsyncPostBackErrorMessageKey];
       Assert.That(message, Does.StartWith(@"
 
-            <span><H1>"));
+            <span><H1>".ReplaceLineEndings("\r\n")));
       Assert.That(message, Does.Contain("[ApplicationException: The error]"));
 
       //The first value is the error page on a system without .Net 4.8 installed.
       //The second value is the error page on a system with .Net 4.8 installed.
       Assert.That(message, Does.EndWith(@"<br>
 
-    ").Or.EndsWith(@"<br>
+    ".ReplaceLineEndings("\r\n")).Or.EndsWith(@"<br>
 
             </font>
 
-    ")
+    ".ReplaceLineEndings("\r\n"))
     );
     }
 

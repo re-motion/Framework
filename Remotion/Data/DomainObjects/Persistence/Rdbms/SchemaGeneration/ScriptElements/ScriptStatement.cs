@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements
 {
@@ -29,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public ScriptStatement (string statement)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
+      ArgumentException.ThrowIfNullOrEmpty(statement);
 
       _statement = statement;
     }
@@ -41,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public void AppendToScript (List<ScriptStatement> script)
     {
-      ArgumentUtility.CheckNotNull("script", script);
+      ArgumentNullException.ThrowIfNull(script);
 
       script.Add(this);
     }

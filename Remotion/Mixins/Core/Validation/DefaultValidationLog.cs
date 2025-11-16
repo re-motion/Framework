@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Mixins.Definitions;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Validation
 {
@@ -30,14 +29,14 @@ namespace Remotion.Mixins.Validation
 
     public void ValidationStartsFor (IVisitableDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
       var validationResult = new ValidationResult(definition);
       _currentData.Push(validationResult);
     }
 
     public void ValidationEndsFor (IVisitableDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
       if (_currentData.Count == 0)
       {
         string message = string.Format("Validation of definition {0}/{1} cannot be ended, because it wasn't started.", definition.GetType().Name,
@@ -73,19 +72,19 @@ namespace Remotion.Mixins.Validation
 
     public void Succeed (IValidationRule rule)
     {
-      ArgumentUtility.CheckNotNull("rule", rule);
+      ArgumentNullException.ThrowIfNull(rule);
       GetCurrentResult().Successes.Add(new ValidationResultItem(rule.RuleName, rule.Message));
     }
 
     public void Warn (IValidationRule rule)
     {
-      ArgumentUtility.CheckNotNull("rule", rule);
+      ArgumentNullException.ThrowIfNull(rule);
       GetCurrentResult().Warnings.Add(new ValidationResultItem(rule.RuleName, rule.Message));
     }
 
     public void Fail (IValidationRule rule)
     {
-      ArgumentUtility.CheckNotNull("rule", rule);
+      ArgumentNullException.ThrowIfNull(rule);
       GetCurrentResult().Failures.Add(new ValidationResultItem(rule.RuleName, rule.Message));
     }
 

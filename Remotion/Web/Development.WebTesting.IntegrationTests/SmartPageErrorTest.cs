@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -24,6 +25,7 @@ using Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies;
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [PerformBrowserLogCheck(false)]
   public class SmartPageErrorTest : IntegrationTest
   {
     [Test]

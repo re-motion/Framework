@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationEndPointDefinition (PropertyDefinition propertyDefinition, bool isMandatory)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       if (!propertyDefinition.IsObjectID)
       {
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetRelationDefinition (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
+      ArgumentNullException.ThrowIfNull(relationDefinition);
 
       _relationDefinition = relationDefinition;
     }

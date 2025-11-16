@@ -17,7 +17,6 @@
 using System;
 using System.Linq.Expressions;
 using Remotion.Linq.SqlBackend.SqlGeneration;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq
 {
@@ -31,8 +30,8 @@ namespace Remotion.Data.DomainObjects.Linq
         Expression expression,
         SetOperationsMode setOperationsMode)
     {
-      ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
-      ArgumentUtility.CheckNotNull("expression", expression);
+      ArgumentNullException.ThrowIfNull(commandBuilder);
+      ArgumentNullException.ThrowIfNull(expression);
 
       ExtendedSqlGeneratingOuterSelectExpressionVisitor.GenerateSql(expression, commandBuilder, this, setOperationsMode);
     }

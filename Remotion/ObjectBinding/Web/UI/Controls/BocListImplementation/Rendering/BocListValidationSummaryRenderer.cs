@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 
+using System;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.Validation;
@@ -40,8 +41,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocListValidationSummaryRenderer (IRenderingFeatures renderingFeatures, BocListCssClassDefinition bocListCssClassDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(renderingFeatures), renderingFeatures);
-      ArgumentUtility.CheckNotNull(nameof(bocListCssClassDefinition), bocListCssClassDefinition);
+      ArgumentNullException.ThrowIfNull(renderingFeatures);
+      ArgumentNullException.ThrowIfNull(bocListCssClassDefinition);
 
       _renderingFeatures = renderingFeatures;
       _bocListCssClassDefinition = bocListCssClassDefinition;

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Tracing;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
 {
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
 
       if (clientTransaction.ParentTransaction == null)
         yield return new LinqToSqlExtension(clientTransaction.ID, LinqToSqlAppenderProxy.Instance);

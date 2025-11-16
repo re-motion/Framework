@@ -34,7 +34,7 @@ namespace Remotion.Reflection.TypeDiscovery
 
     public static BaseTypeCache Create (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentNullException.ThrowIfNull(types);
 
       s_logger.LogDebug("Beginning to build BaseTypeCache...");
       using (StopwatchScope.CreateScope(s_logger, LogLevel.Debug, string.Format("Built BaseTypeCache. Time taken: {{elapsed}}")))
@@ -102,7 +102,7 @@ namespace Remotion.Reflection.TypeDiscovery
               string.Format(
                   "Only non-generic types and open generic types may be used when creating a BaseTypeCache. Type '{0}' is a closed generic type.",
                   type.GetFullNameSafe()),
-              "types");
+              nameof(types));
         }
       }
 
@@ -128,7 +128,7 @@ namespace Remotion.Reflection.TypeDiscovery
 
     public ICollection GetTypes (Type baseType)
     {
-      ArgumentUtility.CheckNotNull("baseType", baseType);
+      ArgumentNullException.ThrowIfNull(baseType);
 
       if (baseType == typeof(object))
         return _classCache.Concat(_interfaceCache).Select(g => g.Key).ToArray();

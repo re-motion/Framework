@@ -30,14 +30,14 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
     [Test]
     public void GetFullScreenshotFilePath_ShouldReturnCorrectPath ()
     {
-      var randomPath = "C:\\temp";
+      var randomPath = OperatingSystem.IsWindows() ? "C:\\temp" : "/var/bla";
       var randomFilename = "IAmaFilename";
       var randomSuffix = "Browser";
       var randomExtension = "png";
 
       var fullScreenshotFilePath = CallGetFullScreenshotFilePath(randomPath, randomFilename, randomSuffix, randomExtension);
 
-      var expectedPath = string.Format("{0}\\{1}.{2}.{3}", randomPath, randomFilename, randomSuffix, randomExtension);
+      var expectedPath = $"{randomPath}{Path.DirectorySeparatorChar}{randomFilename}.{randomSuffix}.{randomExtension}";
 
       Assert.That(fullScreenshotFilePath, Is.EqualTo(expectedPath));
     }
@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
     [Test]
     public void GetFullScreenshotFilePath_ShouldReplaceInvalidFilenameChars ()
     {
-      var randomPath = "C:\\temp";
+      var randomPath = OperatingSystem.IsWindows() ? "C:\\temp" : "/var/bla";
       var randomFilename = Path.GetInvalidFileNameChars().Aggregate("", (current, invalidFileNameChar) => current + invalidFileNameChar);
 
       var randomSuffix = "Browser";
@@ -54,7 +54,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var fullScreenshotFilePath = CallGetFullScreenshotFilePath(randomPath, randomFilename, randomSuffix, randomExtension);
 
       var fileNameWithInvalidCharsReplaced = new String('_', randomFilename.Length);
-      var expectedPath = string.Format("{0}\\{1}.{2}.{3}", randomPath, fileNameWithInvalidCharsReplaced, randomSuffix, randomExtension);
+      var expectedPath = $"{randomPath}{Path.DirectorySeparatorChar}{fileNameWithInvalidCharsReplaced}.{randomSuffix}.{randomExtension}";
 
       Assert.That(fullScreenshotFilePath, Is.EqualTo(expectedPath));
     }
@@ -92,7 +92,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var fullScreenshotFilePath = CallGetFullScreenshotFilePath(largePath, randomFilename, randomSuffix, randomExtension);
 
       var reducedRandomFilename = "01234";
-      var expectedPath = string.Format("{0}\\{1}.{2}.{3}", largePath, reducedRandomFilename, randomSuffix, randomExtension);
+      var expectedPath = $"{largePath}{Path.DirectorySeparatorChar}{reducedRandomFilename}.{randomSuffix}.{randomExtension}";
 
       Assert.That(fullScreenshotFilePath.Length, Is.EqualTo(259));
       Assert.That(fullScreenshotFilePath, Is.EqualTo(expectedPath));
@@ -106,7 +106,7 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
       var largePath = new String('A', 259);
       var randomFilename = "IAmaFilename";
 
-      var fullFilePath = string.Format("{0}\\{1}.{2}.{3}", largePath, randomFilename, randomSuffix, randomExtension);
+      var fullFilePath = $"{largePath}{Path.DirectorySeparatorChar}{randomFilename}.{randomSuffix}.{randomExtension}";
 
       Assert.That(
           () => CallGetFullScreenshotFilePath(largePath, randomFilename, randomSuffix, randomExtension),

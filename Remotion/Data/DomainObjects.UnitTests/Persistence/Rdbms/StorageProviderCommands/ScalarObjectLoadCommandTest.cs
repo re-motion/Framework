@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
@@ -28,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
   public class ScalarValueLoadCommandTest
   {
     private Mock<IDbCommandBuilder> _dbCommandBuilderMock;
-    private Mock<IDbCommand> _dbCommandMock;
+    private Mock<DbCommand> _dbCommandMock;
     private ScalarValueLoadCommand _command;
     private object _fakeResult;
 
@@ -37,7 +38,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       _fakeResult = new object();
 
-      _dbCommandMock = new Mock<IDbCommand>(MockBehavior.Strict);
+      _dbCommandMock = new Mock<DbCommand>(MockBehavior.Strict);
+      _dbCommandMock.Protected().Setup("Dispose", [false]); // for Finalizer
       _dbCommandBuilderMock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
 
       _command = new ScalarValueLoadCommand(_dbCommandBuilderMock.Object);
@@ -57,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandBuilderMock.Setup(mock => mock.Create(executionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
 
-      _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       var result = _command.Execute(executionContextMock.Object);
 
@@ -75,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandBuilderMock.Setup(mock => mock.Create(executionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
 
-      _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       var result = _command.Execute(executionContextMock.Object);
 

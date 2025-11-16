@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 
@@ -35,8 +34,8 @@ namespace Remotion.Validation.Attributes.Validation
 
     protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull("property", property);
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
 
       NotEmptyOrWhitespaceValidator validator;
       if (string.IsNullOrEmpty(ErrorMessage))

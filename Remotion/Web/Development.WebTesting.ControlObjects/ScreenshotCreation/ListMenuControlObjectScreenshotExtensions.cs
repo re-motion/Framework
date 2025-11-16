@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
@@ -31,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotListMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<ListMenuControlObject> fluentListMenu)
     {
-      ArgumentUtility.CheckNotNull("fluentListMenu", fluentListMenu);
+      ArgumentNullException.ThrowIfNull(fluentListMenu);
 
       return new ScreenshotListMenuSelector(fluentListMenu.Target);
     }

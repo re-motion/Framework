@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries
 {
@@ -52,8 +51,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <param name="queryResult">The elements making up the query result. The <see cref="IEnumerable{T}"/> is enumerated exactly once by this class.</param>
     public QueryResult (IQuery query, T?[] queryResult)
     {
-      ArgumentUtility.CheckNotNull("query", query);
-      ArgumentUtility.CheckNotNull("queryResult", queryResult);
+      ArgumentNullException.ThrowIfNull(query);
+      ArgumentNullException.ThrowIfNull(queryResult);
 
       _query = query;
       _queryResult = queryResult;

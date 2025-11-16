@@ -54,9 +54,9 @@ namespace Remotion.Configuration
 
     protected string? GetAndRemoveNonEmptyStringAttribute (NameValueCollection config, string attribute, string providerName, bool required)
     {
-      ArgumentUtility.CheckNotNull("config", config);
-      ArgumentUtility.CheckNotNullOrEmpty("attribute", attribute);
-      ArgumentUtility.CheckNotNullOrEmpty("providerName", providerName);
+      ArgumentNullException.ThrowIfNull(config);
+      ArgumentException.ThrowIfNullOrEmpty(attribute);
+      ArgumentException.ThrowIfNullOrEmpty(providerName);
 
       string? value = config.Get(attribute);
       if ((value == null && required) || (value != null && value.Length == 0))

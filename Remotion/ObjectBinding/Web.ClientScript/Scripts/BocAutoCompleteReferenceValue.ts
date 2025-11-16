@@ -22,6 +22,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
   private _iconMarker: Nullable<HTMLElement>;
   private _icon: Nullable<HTMLImageElement>;
   private _iconBackUp: Nullable<HTMLImageElement>;
+  private _hasIconBackUp: Nullable<boolean>;
   private _selectListID: string;
   private _informationPopUpID: string;
   private _nullValueString: string;
@@ -89,6 +90,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     this._iconMarker = iconMarker;
     this._icon = icon;
     this._iconBackUp = icon;
+    this._hasIconBackUp = null;
     this._selectListID = baseID + '_Results';
     this._informationPopUpID = baseID + '_Information';
     this._isAutoPostBackEnabled = isAutoPostBackEnabled;
@@ -250,6 +252,10 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
           {
             this.UpdateIcon(actualItem.UniqueIdentifier, errorHandler);
             this._iconBackUp = this._icon;
+            if (this._iconMarker != null)
+            {
+              this._hasIconBackUp = this._iconMarker.classList.contains('hasIcon');
+            }
             hiddenField.dispatchEvent(new Event('change'));
           }
           else
@@ -277,7 +283,7 @@ class BocAutoCompleteReferenceValue //TODO RM-7715 - Make the TypeScript classes
     this._icon.replaceWith(this._iconBackUp);
     this._icon = this._iconBackUp;
 
-    if (this._iconMarker != null)
+    if (this._iconMarker != null && this._hasIconBackUp)
       this._iconMarker.classList.add('hasIcon');
   }
 

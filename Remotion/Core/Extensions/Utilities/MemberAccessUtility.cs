@@ -74,7 +74,7 @@ namespace Remotion.Utilities
         return member;
 
       if (throwExceptionIfNotFound)
-        throw new ArgumentException(String.Format("{0} is not an instance field or property of type {1}.", fieldOrPropertyName, type.GetFullNameSafe()), "fieldOrPropertyName");
+        throw new ArgumentException(String.Format("{0} is not an instance field or property of type {1}.", fieldOrPropertyName, type.GetFullNameSafe()), nameof(fieldOrPropertyName));
       return null;
     }
 
@@ -86,24 +86,22 @@ namespace Remotion.Utilities
 
     public static object? GetFieldOrPropertyValue (object obj, string fieldOrPropertyName, BindingFlags bindingFlags)
     {
-      ArgumentUtility.CheckNotNull("obj", obj);
+      ArgumentNullException.ThrowIfNull(obj);
       MemberInfo fieldOrProperty = GetFieldOrProperty(obj.GetType(), fieldOrPropertyName, bindingFlags, true)!;
       return GetFieldOrPropertyValue(obj, fieldOrProperty);
     }
 
     public static object? GetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty)
     {
-      if (obj == null)
-        throw new ArgumentNullException("obj");
-      if (fieldOrProperty == null)
-        throw new ArgumentNullException("fieldOrProperty");
+      ArgumentNullException.ThrowIfNull(obj);
+      ArgumentNullException.ThrowIfNull(fieldOrProperty);
 
       if (fieldOrProperty is FieldInfo)
         return ((FieldInfo)fieldOrProperty).GetValue(obj);
       else if (fieldOrProperty is PropertyInfo)
         return ((PropertyInfo)fieldOrProperty).GetValue(obj, new object[0]);
       else
-        throw new ArgumentException(String.Format("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType().GetFullNameSafe()), "fieldOrProperty");
+        throw new ArgumentException(String.Format("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType().GetFullNameSafe()), nameof(fieldOrProperty));
     }
 
 
@@ -114,24 +112,22 @@ namespace Remotion.Utilities
 
     public static void SetFieldOrPropertyValue (object obj, string fieldOrPropertyName, BindingFlags bindingFlags, object? value)
     {
-      ArgumentUtility.CheckNotNull("obj", obj);
+      ArgumentNullException.ThrowIfNull(obj);
       MemberInfo fieldOrProperty = GetFieldOrProperty(obj.GetType(), fieldOrPropertyName, bindingFlags, true)!;
       SetFieldOrPropertyValue(obj, fieldOrProperty, value);
     }
 
     public static void SetFieldOrPropertyValue (object obj, MemberInfo fieldOrProperty, object? value)
     {
-      if (obj == null)
-        throw new ArgumentNullException("obj");
-      if (fieldOrProperty == null)
-        throw new ArgumentNullException("fieldOrProperty");
+      ArgumentNullException.ThrowIfNull(obj);
+      ArgumentNullException.ThrowIfNull(fieldOrProperty);
 
       if (fieldOrProperty is FieldInfo)
         ((FieldInfo)fieldOrProperty).SetValue(obj, value);
       else if (fieldOrProperty is PropertyInfo)
         ((PropertyInfo)fieldOrProperty).SetValue(obj, value, new object[0]);
       else
-        throw new ArgumentException(String.Format("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType().GetFullNameSafe()), "fieldOrProperty");
+        throw new ArgumentException(String.Format("Argument must be either FieldInfo or PropertyInfo but is {0}.", fieldOrProperty.GetType().GetFullNameSafe()), nameof(fieldOrProperty));
     }
 
     public static Type GetFieldOrPropertyType (MemberInfo fieldOrProperty)
@@ -141,7 +137,7 @@ namespace Remotion.Utilities
       else if (fieldOrProperty is PropertyInfo)
         return ((PropertyInfo)fieldOrProperty).PropertyType;
       else
-        throw new ArgumentException("Argument must be FieldInfo or PropertyInfo.", "fieldOrProperty");
+        throw new ArgumentException("Argument must be FieldInfo or PropertyInfo.", nameof(fieldOrProperty));
     }
   }
 }

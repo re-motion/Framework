@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -33,7 +32,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public RelationEndPointMap (IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
 
       _transactionEventSink = transactionEventSink;
       _relationEndPoints = new Dictionary<RelationEndPointID, IRelationEndPoint>();
@@ -78,7 +77,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void AddEndPoint (IRelationEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
 
       _transactionEventSink.RaiseRelationEndPointMapRegisteringEvent(endPoint);
       var id = endPoint.ID;
@@ -95,12 +94,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RemoveEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       if (!_relationEndPoints.ContainsKey(endPointID))
       {
         var message = string.Format("End point '{0}' is not part of this map.", endPointID);
-        throw new ArgumentException(message, "endPointID");
+        throw new ArgumentException(message, nameof(endPointID));
       }
 
       _transactionEventSink.RaiseRelationEndPointMapUnregisteringEvent(endPointID);

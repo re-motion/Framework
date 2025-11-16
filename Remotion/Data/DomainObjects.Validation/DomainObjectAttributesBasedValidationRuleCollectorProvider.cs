@@ -52,8 +52,8 @@ namespace Remotion.Data.DomainObjects.Validation
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
       _validationMessageFactory = validationMessageFactory;
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     protected override ILookup<Type, IAttributesBasedValidationPropertyRuleReflector> CreatePropertyRuleReflectors (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentNullException.ThrowIfNull(types);
 
       return types
           .Where(type => !MixinTypeUtility.IsGeneratedConcreteMixedType(type))

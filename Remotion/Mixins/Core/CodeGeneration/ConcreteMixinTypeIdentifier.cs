@@ -41,7 +41,7 @@ namespace Remotion.Mixins.CodeGeneration
     /// <param name="deserializer">The deserializer to use.</param>
     public static ConcreteMixinTypeIdentifier Deserialize (IConcreteMixinTypeIdentifierDeserializer deserializer)
     {
-      ArgumentUtility.CheckNotNull("deserializer", deserializer);
+      ArgumentNullException.ThrowIfNull(deserializer);
 
       var mixinType = deserializer.GetMixinType();
       var externalOverriders = deserializer.GetOverriders();
@@ -63,9 +63,9 @@ namespace Remotion.Mixins.CodeGeneration
     /// <param name="overridden">Mixin methods that are overridden by the target class.</param>
     public ConcreteMixinTypeIdentifier (Type mixinType, HashSet<MethodInfo> overriders, HashSet<MethodInfo> overridden)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull("overriders", overriders);
-      ArgumentUtility.CheckNotNull("overridden", overridden);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      ArgumentNullException.ThrowIfNull(overriders);
+      ArgumentNullException.ThrowIfNull(overridden);
 
       _mixinType = mixinType;
       _overriders = overriders;
@@ -140,7 +140,7 @@ namespace Remotion.Mixins.CodeGeneration
     /// <param name="serializer">The serializer to use.</param>
     public void Serialize (IConcreteMixinTypeIdentifierSerializer serializer)
     {
-      ArgumentUtility.CheckNotNull("serializer", serializer);
+      ArgumentNullException.ThrowIfNull(serializer);
 
       serializer.AddMixinType(MixinType);
       serializer.AddOverriders(_overriders);

@@ -80,7 +80,7 @@ namespace Remotion.Utilities
     [CanBeNull]
     public static Type? GetType ([JetBrains.Annotations.NotNull]string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return TypeResolutionService.GetType(ParseAbbreviatedTypeName(name), false);
     }
@@ -103,7 +103,7 @@ namespace Remotion.Utilities
     [ContractAnnotation("throwOnError:true => notnull")]
     public static Type? GetType ([JetBrains.Annotations.NotNull]string name, bool throwOnError)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       return TypeResolutionService.GetType(ParseAbbreviatedTypeName(name), throwOnError);
     }
@@ -114,7 +114,7 @@ namespace Remotion.Utilities
     [JetBrains.Annotations.NotNull]
     public static string GetPartialAssemblyQualifiedName ([JetBrains.Annotations.NotNull]Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       // C# compiler 7.2 already provides caching for anonymous method.
       return s_partialAssemblyQualifiedNameCache.GetOrAdd(type, key => key.GetFullNameChecked() + ", " + key.Assembly.GetName().GetNameChecked());
@@ -126,7 +126,7 @@ namespace Remotion.Utilities
     [JetBrains.Annotations.NotNull]
     public static string GetAbbreviatedTypeName ([JetBrains.Annotations.NotNull]Type type, bool includeVersionAndCulture)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
       return s_abbreviationBuilder.BuildAbbreviatedTypeName(type, includeVersionAndCulture);
     }
 

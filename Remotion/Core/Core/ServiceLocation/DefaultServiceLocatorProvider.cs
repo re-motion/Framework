@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.ObjectModel;
-using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
 {
@@ -31,7 +30,7 @@ namespace Remotion.ServiceLocation
 
     public IServiceLocator GetServiceLocator (ReadOnlyCollection<ServiceConfigurationEntry> serviceConfigurationEntries)
     {
-      ArgumentUtility.CheckNotNull("serviceConfigurationEntries", serviceConfigurationEntries);
+      ArgumentNullException.ThrowIfNull(serviceConfigurationEntries);
 
       var defaultServiceLocator = DefaultServiceLocator.Create();
       foreach (var serviceConfigurationEntry in serviceConfigurationEntries)

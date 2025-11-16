@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using System.Web;
 using Remotion.Collections;
-using Remotion.Utilities;
 using Remotion.Web.Resources;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
@@ -29,14 +28,14 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public ResourceObject (string path)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("path", path);
+      ArgumentException.ThrowIfNullOrEmpty(path);
       _path = path;
     }
 
     public ResourceObject (IResourcePathBuilder resourcePathBuilder, Assembly assembly, string path)
         : base(resourcePathBuilder, assembly)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("path", path);
+      ArgumentException.ThrowIfNullOrEmpty(path);
       _path = path;
     }
 

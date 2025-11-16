@@ -62,7 +62,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Thrown if no mapping for the <paramref name="functionType"/> has been defined, and the 
     ///   <see cref="Remotion.Web.ExecutionEngine.WxeUrlSettings.DefaultWxeHandler"/> is not set.
     /// </exception>
-    /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters"]' />
     public static string GetPermanentUrl (HttpContextBase httpContext, Type functionType, NameValueCollection urlParameters)
     {
       var wxeUrlSettings = SafeServiceLocator.Current.GetInstance<WxeUrlSettings>();
@@ -73,15 +73,15 @@ namespace Remotion.Web.ExecutionEngine
     ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
     ///   and using the <paramref name="urlParameters"/>.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters" or @name="fallbackOnCurrentUrl" or @name="wxeUrlSettings"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters" or @name="fallbackOnCurrentUrl" or @name="wxeUrlSettings"]' />
     protected static string GetPermanentUrl (HttpContextBase httpContext, Type functionType, NameValueCollection urlParameters, bool fallbackOnCurrentUrl, WxeUrlSettings wxeUrlSettings)
     {
-      ArgumentUtility.CheckNotNull("httpContext", httpContext);
-      ArgumentUtility.CheckNotNull("functionType", functionType);
+      ArgumentNullException.ThrowIfNull(httpContext);
+      ArgumentNullException.ThrowIfNull(functionType);
       if (!typeof(WxeFunction).IsAssignableFrom(functionType))
-        throw new ArgumentException(string.Format("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
-      ArgumentUtility.CheckNotNull("urlParameters", urlParameters);
-      ArgumentUtility.CheckNotNull("wxeUrlSettings", wxeUrlSettings);
+        throw new ArgumentException(string.Format("The functionType '{0}' must be derived from WxeFunction.", functionType), nameof(functionType));
+      ArgumentNullException.ThrowIfNull(urlParameters);
+      ArgumentNullException.ThrowIfNull(wxeUrlSettings);
 
       NameValueCollection internalUrlParameters = NameValueCollectionUtility.Clone(urlParameters);
       UrlMapping.UrlMappingEntry? mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
@@ -135,7 +135,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> 
     ///   Executes a <see cref="WxeFunction"/> in the current window from any <see cref="Page"/> by using a redirect.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="urlParameters" or @name="returnToCaller"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="urlParameters" or @name="returnToCaller"]' />
     public static void ExecuteFunctionExternal (Page page, WxeFunction function, NameValueCollection urlParameters, bool returnToCaller)
     {
       ExecuteFunctionExternal(page, function, false, urlParameters, returnToCaller);
@@ -144,12 +144,12 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> 
     ///   Executes a <see cref="WxeFunction"/> in the current window from any <see cref="Page"/> by using a redirect.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="createPermaUrl" or @name="urlParameters" or @name="returnToCaller"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="createPermaUrl" or @name="urlParameters" or @name="returnToCaller"]' />
     public static void ExecuteFunctionExternal (
         Page page, WxeFunction function, bool createPermaUrl, NameValueCollection urlParameters, bool returnToCaller)
     {
-      ArgumentUtility.CheckNotNull("page", page);
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(function);
 
       string href = GetExternalFunctionUrl(function, createPermaUrl, urlParameters);
       if (returnToCaller)
@@ -161,7 +161,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Executes a <see cref="WxeFunction"/> in the specified window or frame from any <see cref="Page"/> 
     ///   by using java script.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="features" or @name="urlParameters"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="features" or @name="urlParameters"]' />
     public static void ExecuteFunctionExternal (Page page, WxeFunction function, string target, string features, NameValueCollection urlParameters)
     {
       ExecuteFunctionExternal(page, function, target, features, false, urlParameters);
@@ -171,13 +171,13 @@ namespace Remotion.Web.ExecutionEngine
     ///   Executes a <see cref="WxeFunction"/> in the specified window or frame from any <see cref="Page"/>  
     ///   by using java script.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="features" or @name="createPermaUrl" or @name="urlParameters"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="features" or @name="createPermaUrl" or @name="urlParameters"]' />
     public static void ExecuteFunctionExternal (
         Page page, WxeFunction function, string target, string features, bool createPermaUrl, NameValueCollection urlParameters)
     {
-      ArgumentUtility.CheckNotNull("page", page);
-      ArgumentUtility.CheckNotNull("function", function);
-      ArgumentUtility.CheckNotNullOrEmpty("target", target);
+      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(function);
+      ArgumentException.ThrowIfNullOrEmpty(target);
 
       string href = GetExternalFunctionUrl(function, createPermaUrl, urlParameters);
 
@@ -228,11 +228,11 @@ namespace Remotion.Web.ExecutionEngine
         WxeUrlSettings wxeUrlSettings,
         IWxeLifetimeManagementSettings wxeLifetimeManagementSettings)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("functionStateManager", functionStateManager);
-      ArgumentUtility.CheckNotNull("functionState", functionState);
-      ArgumentUtility.CheckNotNull("wxeUrlSettings", wxeUrlSettings);
-      ArgumentUtility.CheckNotNull("wxeLifetimeManagementSettings", wxeLifetimeManagementSettings);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(functionStateManager);
+      ArgumentNullException.ThrowIfNull(functionState);
+      ArgumentNullException.ThrowIfNull(wxeUrlSettings);
+      ArgumentNullException.ThrowIfNull(wxeLifetimeManagementSettings);
 
       _httpContext = context;
       _functionStateManager = functionStateManager;
@@ -334,14 +334,14 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="queryString"> An optional list of URL parameters to be appended to the <paramref name="path"/>. </param>
     private string GetResumePath (string path, string functionToken, NameValueCollection? queryString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("path", path);
-      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
+      ArgumentException.ThrowIfNullOrEmpty(path);
+      ArgumentException.ThrowIfNullOrEmpty(functionToken);
 
       if (!path.StartsWith("/"))
-        throw new ArgumentException("The path must be absolute", "path");
+        throw new ArgumentException("The path must be absolute", nameof(path));
 
       if (path.IndexOf("?", StringComparison.InvariantCultureIgnoreCase) != -1)
-        throw new ArgumentException("The path must be provided without a query string. Use the query string parameter instead.", "path");
+        throw new ArgumentException("The path must be provided without a query string. Use the query string parameter instead.", nameof(path));
 
       if (queryString == null)
         queryString = new NameValueCollection();
@@ -357,7 +357,7 @@ namespace Remotion.Web.ExecutionEngine
     ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
     ///   and using the <paramref name="urlParameters"/>.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="functionType" or @name="urlParameters"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="functionType" or @name="urlParameters"]' />
     public string GetPermanentUrl (Type functionType, NameValueCollection urlParameters)
     {
       return GetPermanentUrl(functionType, urlParameters, false);
@@ -367,17 +367,17 @@ namespace Remotion.Web.ExecutionEngine
     ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
     ///   and using the <paramref name="urlParameters"/>.
     /// </summary>
-    /// <include file='..\doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="functionType" or @name="urlParameters" or @name="useParentPermanentUrl"]' />
+    /// <include file='../Doc/include/ExecutionEngine/WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="functionType" or @name="urlParameters" or @name="useParentPermanentUrl"]' />
     public string GetPermanentUrl (Type functionType, NameValueCollection urlParameters, bool useParentPermanentUrl)
     {
-      ArgumentUtility.CheckNotNull("urlParameters", urlParameters);
+      ArgumentNullException.ThrowIfNull(urlParameters);
 
       string permanentUrl = GetPermanentUrl(_httpContext, functionType, urlParameters, true, _wxeUrlSettings);
 
       if (useParentPermanentUrl)
       {
         if (urlParameters[WxeHandler.Parameters.ReturnUrl] != null)
-          throw new ArgumentException("The 'urlParameters' collection must not contain a 'ReturnUrl' parameter when creating a parent permanent URL.", "urlParameters");
+          throw new ArgumentException("The 'urlParameters' collection must not contain a 'ReturnUrl' parameter when creating a parent permanent URL.", nameof(urlParameters));
 
         var maximumUrlLength = _wxeUrlSettings.MaximumUrlLength;
 
@@ -449,7 +449,7 @@ namespace Remotion.Web.ExecutionEngine
     private string? FormatParentPermanentUrl (StringCollection parentPermanentUrls, int count)
     {
       if (count > parentPermanentUrls.Count)
-        throw new ArgumentOutOfRangeException("count");
+        throw new ArgumentOutOfRangeException(nameof(count));
 
       string? parentPermanentUrl = null;
       for (int i = count - 1; i >= 0; i--)

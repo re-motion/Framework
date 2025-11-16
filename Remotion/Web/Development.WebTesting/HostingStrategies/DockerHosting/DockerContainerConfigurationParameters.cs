@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Utilities;
@@ -50,6 +51,11 @@ public class DockerContainerConfigurationParameters
   [NotNull]
   public IReadOnlyCollection<string> Mounts { get; }
 
+  /// <summary>
+  /// Custom docker arguments that are passed directly to the docker executable.
+  /// </summary>
+  public string? DockerCustomArguments { get; }
+
   public DockerContainerConfigurationParameters (
       string absoluteWebApplicationPath,
       int webApplicationPort,
@@ -57,12 +63,13 @@ public class DockerContainerConfigurationParameters
       string? dockerIsolationMode,
       string? hostname,
       bool is32BitProcess,
-      IReadOnlyCollection<string> mounts)
+      IReadOnlyCollection<string> mounts,
+      string? dockerCustomArguments)
   {
-    ArgumentUtility.CheckNotNullOrEmpty("absoluteWebApplicationPath", absoluteWebApplicationPath);
-    ArgumentUtility.CheckNotNullOrEmpty("dockerImageName", dockerImageName);
-    ArgumentUtility.CheckNotEmpty("hostname", hostname);
-    ArgumentUtility.CheckNotNull("mounts", mounts);
+    ArgumentException.ThrowIfNullOrEmpty(absoluteWebApplicationPath);
+    ArgumentException.ThrowIfNullOrEmpty(dockerImageName);
+    ArgumentUtility.CheckNotEmpty(nameof(hostname), hostname);
+    ArgumentNullException.ThrowIfNull(mounts);
 
     AbsoluteWebApplicationPath = absoluteWebApplicationPath;
     WebApplicationPort = webApplicationPort;
@@ -71,5 +78,6 @@ public class DockerContainerConfigurationParameters
     Hostname = hostname;
     Is32BitProcess = is32BitProcess;
     Mounts = mounts;
+    DockerCustomArguments = dockerCustomArguments;
   }
 }

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -37,14 +36,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public CompoundValidatorFactory (IEnumerable<IBocValidatorFactory<T>> innerFactories)
     {
-      ArgumentUtility.CheckNotNull("innerFactories", innerFactories);
+      ArgumentNullException.ThrowIfNull(innerFactories);
 
       _innerFactories = innerFactories.ToList().AsReadOnly();
     }
 
     public IEnumerable<BaseValidator> CreateValidators (T control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(control);
 
       return _innerFactories.SelectMany(i => i.CreateValidators(control, isReadOnly));
     }

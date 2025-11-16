@@ -17,7 +17,6 @@
 using System;
 using System.Runtime.ExceptionServices;
 using System.Text;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
 {
@@ -29,7 +28,7 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
   {
     public static string SerializeException (Exception exception)
     {
-      ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentNullException.ThrowIfNull(exception);
 
       var exceptionTypeName = exception.GetType().AssemblyQualifiedName!;
       var exceptionMessage = exception.Message;
@@ -44,7 +43,7 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner
 
     public static Exception DeserializeException (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
 
       var parts = value.Split(';');
       if (parts.Length != 3)

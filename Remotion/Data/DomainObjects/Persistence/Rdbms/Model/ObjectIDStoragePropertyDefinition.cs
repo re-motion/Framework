@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ObjectIDStoragePropertyDefinition (IRdbmsStoragePropertyDefinition valueProperty, IRdbmsStoragePropertyDefinition classIDProperty)
     {
-      ArgumentUtility.CheckNotNull("valueProperty", valueProperty);
-      ArgumentUtility.CheckNotNull("classIDProperty", classIDProperty);
+      ArgumentNullException.ThrowIfNull(valueProperty);
+      ArgumentNullException.ThrowIfNull(classIDProperty);
 
       _valueProperty = valueProperty;
       _classIDProperty = classIDProperty;
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValue (object? value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID>(nameof(value), value);
       if (objectID == null)
         return _valueProperty.SplitValue(null).Concat(_classIDProperty.SplitValue(null));
 
@@ -85,21 +85,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object? value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID>(nameof(value), value);
 
       return _valueProperty.SplitValueForComparison(GetValueOrNull(objectID));
     }
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentNullException.ThrowIfNull(values);
 
       return _valueProperty.SplitValuesForComparison(values.Select(v => GetValueOrNull((ObjectID?)v)));
     }
 
     public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
+      ArgumentNullException.ThrowIfNull(columnValueProvider);
 
       var value = _valueProperty.CombineValue(columnValueProvider);
       var classID = (string?)_classIDProperty.CombineValue(columnValueProvider);
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull("equivalentProperties", equivalentProperties);
+      ArgumentNullException.ThrowIfNull(equivalentProperties);
       var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this, property, "equivalentProperties")).ToArray();
 
@@ -143,9 +143,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         EntityNameDefinition referencedTableName,
         ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
     {
-      ArgumentUtility.CheckNotNull("nameProvider", nameProvider);
-      ArgumentUtility.CheckNotNull("referencedTableName", referencedTableName);
-      ArgumentUtility.CheckNotNull("referencedObjectIDProperty", referencedObjectIDProperty);
+      ArgumentNullException.ThrowIfNull(nameProvider);
+      ArgumentNullException.ThrowIfNull(referencedTableName);
+      ArgumentNullException.ThrowIfNull(referencedObjectIDProperty);
 
       var referencingColumns = GetColumnsForComparison();
       var referencedColumns = referencedObjectIDProperty.GetColumnsForComparison();

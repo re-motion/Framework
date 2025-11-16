@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -39,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
       return _clientTransactionExtensionFactories.SelectMany(f => f.CreateClientTransactionExtensions(clientTransaction));
     }
   }

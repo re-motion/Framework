@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
   {
     public CompoundQueryFileFinder (IEnumerable<IQueryFileFinder> queryFileFinders)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryFileFinders), queryFileFinders);
+      ArgumentNullException.ThrowIfNull(queryFileFinders);
 
       QueryFileFinders = queryFileFinders.ToList().AsReadOnly();
     }

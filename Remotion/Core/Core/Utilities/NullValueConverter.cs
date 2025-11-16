@@ -41,7 +41,7 @@ namespace Remotion.Utilities
 
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+      ArgumentNullException.ThrowIfNull(sourceType);
 
       return NullableTypeUtility.IsNullableType(sourceType);
     }

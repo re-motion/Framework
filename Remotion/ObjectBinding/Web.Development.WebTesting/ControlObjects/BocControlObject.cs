@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -61,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <exception cref="MissingHtmlException">Thrown if the validation errors cannot be found due to faulty markup or missing validator.</exception>
     protected IReadOnlyList<string> GetValidationErrors ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (IsReadOnly())
         throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
@@ -75,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <exception cref="MissingHtmlException">Thrown if the validation errors cannot be found due to faulty markup or missing validator.</exception>
     protected IReadOnlyList<string> GetValidationErrorsForReadOnly ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (!IsReadOnly())
         throw AssertionExceptionUtility.CreateControlNotReadOnlyException(Driver);

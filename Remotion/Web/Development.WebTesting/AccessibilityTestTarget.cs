@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -37,8 +36,8 @@ namespace Remotion.Web.Development.WebTesting
 
     public AccessibilityTestTarget ([NotNull] string xPath, [NotNull] string cssSelector)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("xPath", xPath);
-      ArgumentUtility.CheckNotNullOrEmpty("cssSelector", cssSelector);
+      ArgumentException.ThrowIfNullOrEmpty(xPath);
+      ArgumentException.ThrowIfNullOrEmpty(cssSelector);
 
       XPath = xPath;
       CssSelector = cssSelector;

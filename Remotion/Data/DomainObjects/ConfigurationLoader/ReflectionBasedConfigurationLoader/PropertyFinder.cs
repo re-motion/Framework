@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -43,9 +42,9 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
         : base(type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(sortExpressionDefinitionProvider);
 
       _classDefinition = classDefinition;
       _domainModelConstraintProvider = domainModelConstraintProvider;
@@ -54,7 +53,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     protected override bool FindPropertiesFilter (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       if (!base.FindPropertiesFilter(propertyInfo))
         return false;

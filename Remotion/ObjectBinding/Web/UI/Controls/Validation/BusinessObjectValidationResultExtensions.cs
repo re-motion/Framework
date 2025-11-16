@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
@@ -30,8 +29,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         [NotNull] IBusinessObjectBoundEditableWebControl control,
         bool markAsHandled = true)
     {
-      ArgumentUtility.CheckNotNull("validationResult", validationResult);
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(validationResult);
+      ArgumentNullException.ThrowIfNull(control);
 
       if (!control.HasValidBinding)
         return Enumerable.Empty<BusinessObjectValidationFailure>();

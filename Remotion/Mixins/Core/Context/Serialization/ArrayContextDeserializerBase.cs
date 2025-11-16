@@ -17,7 +17,6 @@
 using System;
 using System.Runtime.Serialization;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.Serialization
 {
@@ -30,10 +29,10 @@ namespace Remotion.Mixins.Context.Serialization
 
     protected ArrayContextDeserializerBase (object[] values, int expectedNumberOfValues)
     {
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentNullException.ThrowIfNull(values);
 
       if (values.Length != expectedNumberOfValues)
-        throw new ArgumentException(string.Format("Expected an array with {0} elements.", expectedNumberOfValues), "values");
+        throw new ArgumentException(string.Format("Expected an array with {0} elements.", expectedNumberOfValues), nameof(values));
 
       _values = values;
     }

@@ -32,14 +32,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public ClassDefinitionCollectionFactory (IMappingObjectFactory mappingObjectFactory)
     {
-      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
+      ArgumentNullException.ThrowIfNull(mappingObjectFactory);
 
       _mappingObjectFactory = mappingObjectFactory;
     }
 
     public ClassDefinition[] CreateClassDefinitionCollection (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentNullException.ThrowIfNull(types);
 
       var inheritanceHierarchyFilter = new InheritanceHierarchyFilter(types.ToArray());
       var leafTypes = inheritanceHierarchyFilter.GetLeafTypes();
@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public ClassDefinition GetClassDefinition (IDictionary<Type, ClassDefinition> classDefinitions, Type classType)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
-      ArgumentUtility.CheckNotNull("classType", classType);
+      ArgumentNullException.ThrowIfNull(classDefinitions);
+      ArgumentNullException.ThrowIfNull(classType);
 
       if (classDefinitions.ContainsKey(classType))
         return classDefinitions[classType];

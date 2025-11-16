@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Validators;
@@ -35,8 +34,8 @@ namespace Remotion.Validation.Merging
 
     public PropertyValidatorExtractor (IEnumerable<RemovingPropertyValidatorRegistration> removingPropertyValidatorRegistrations, ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
-      ArgumentUtility.CheckNotNull("logContext", logContext);
+      ArgumentNullException.ThrowIfNull(removingPropertyValidatorRegistrations);
+      ArgumentNullException.ThrowIfNull(logContext);
 
       _validatorTypesToRemove = removingPropertyValidatorRegistrations.ToLookup(r => r.ValidatorType);
       _logContext = logContext;
@@ -44,7 +43,7 @@ namespace Remotion.Validation.Merging
 
     public IEnumerable<IPropertyValidator> ExtractPropertyValidatorsToRemove (IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull("addingPropertyValidationRuleCollector", addingPropertyValidationRuleCollector);
+      ArgumentNullException.ThrowIfNull(addingPropertyValidationRuleCollector);
 
       foreach (var existingValidator in addingPropertyValidationRuleCollector.Validators)
       {

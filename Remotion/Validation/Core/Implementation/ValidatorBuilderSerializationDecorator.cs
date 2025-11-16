@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
@@ -31,7 +30,7 @@ namespace Remotion.Validation.Implementation
 
     public ValidatorBuilderSerializationDecorator (IValidatorBuilder validatorBuilder)
     {
-      ArgumentUtility.CheckNotNull("validatorBuilder", validatorBuilder);
+      ArgumentNullException.ThrowIfNull(validatorBuilder);
 
       _validatorBuilder = validatorBuilder;
     }
@@ -43,7 +42,7 @@ namespace Remotion.Validation.Implementation
 
     public IValidator BuildValidator (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       return _validatorBuilder.BuildValidator(validatedType);
     }

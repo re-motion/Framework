@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute
 {
@@ -34,7 +33,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
     //TODO: CleanUp duplication with other PostProcessSubFunction-implemenations
     public override void ExecuteSubFunction (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       // Correct the PostBack-Sequence number
       Parameters.PostBackCollection[WxePageInfo.PostBackSequenceNumberID] = context.PostBackID.ToString();

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -43,7 +42,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     /// </returns>
     public static SearchPathRootAssemblyFinder CreateForCurrentAppDomain (bool considerDynamicDirectory, IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNull("assemblyLoader", assemblyLoader);
+      ArgumentNullException.ThrowIfNull(assemblyLoader);
 
       string? relativeSearchPath = null;
       string? dynamicDirectory = null;
@@ -70,8 +69,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
         string? dynamicDirectory,
         IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("baseDirectory", baseDirectory);
-      ArgumentUtility.CheckNotNull("assemblyLoader", assemblyLoader);
+      ArgumentException.ThrowIfNullOrEmpty(baseDirectory);
+      ArgumentNullException.ThrowIfNull(assemblyLoader);
 
       _baseDirectory = baseDirectory;
       _relativeSearchPath = relativeSearchPath;

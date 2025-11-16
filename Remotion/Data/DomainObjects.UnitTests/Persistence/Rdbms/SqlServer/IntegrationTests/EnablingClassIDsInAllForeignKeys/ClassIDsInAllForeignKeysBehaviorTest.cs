@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       var script = scriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions()).Single();
 
-      const string expectedSetUpScriptFragment =
+      var expectedSetUpScriptFragment =
           @"CREATE TABLE [dbo].[ClassWithRelations]
 (
   [ID] uniqueidentifier NOT NULL,
@@ -92,7 +92,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   [RelationWithoutInheritanceHierarchyID] uniqueidentifier NULL,
   [RelationWithoutInheritanceHierarchyIDClassID] varchar (100) NULL,
   [RelationWithInheritanceHierarchyID] uniqueidentifier NULL,
-  [RelationWithInheritanceHierarchyIDClassID] varchar (100) NULL,";
+  [RelationWithInheritanceHierarchyIDClassID] varchar (100) NULL,".ReplaceLineEndings();
       Assert.That(script.SetUpScript, Does.Contain(expectedSetUpScriptFragment));
     }
   }

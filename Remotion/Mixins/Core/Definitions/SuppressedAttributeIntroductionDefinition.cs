@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Diagnostics;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -30,9 +29,9 @@ namespace Remotion.Mixins.Definitions
     public SuppressedAttributeIntroductionDefinition (IAttributeIntroductionTarget target, AttributeDefinition attribute,
         AttributeDefinition suppressor)
     {
-      ArgumentUtility.CheckNotNull("target", target);
-      ArgumentUtility.CheckNotNull("attribute", attribute);
-      ArgumentUtility.CheckNotNull("suppressor", suppressor);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(suppressor);
 
       _target = target;
       _attribute = attribute;
@@ -71,7 +70,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
     }
   }

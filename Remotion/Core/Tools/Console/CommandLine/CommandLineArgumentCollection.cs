@@ -72,9 +72,9 @@ public class CommandLineArgumentCollection: CollectionBase
   #region event handlers for type-checking
   protected override void OnInsert (int index, object? value)
   {
-    if (value == null) throw new ArgumentNullException("value");
+    ArgumentNullException.ThrowIfNull(value);
     CommandLineArgument? argument = value as CommandLineArgument;
-    if (argument == null) throw new ArgumentException(c_msgInvalidArgumentType, "value") ;
+    if (argument == null) throw new ArgumentException(c_msgInvalidArgumentType, nameof(value)) ;
 
     if (_parser != null)
       argument.AttachParser(_parser);
@@ -82,9 +82,9 @@ public class CommandLineArgumentCollection: CollectionBase
 
   protected override void OnRemove (int index, object? value)
   {
-    if (value == null) throw new ArgumentNullException("value");
+    ArgumentNullException.ThrowIfNull(value);
     CommandLineArgument? argument = value as CommandLineArgument;
-    if (argument == null) throw new ArgumentException(c_msgInvalidArgumentType, "value") ;
+    if (argument == null) throw new ArgumentException(c_msgInvalidArgumentType, nameof(value)) ;
 
     if (argument.Parser == _parser)
       argument.AttachParser(null);
@@ -92,11 +92,11 @@ public class CommandLineArgumentCollection: CollectionBase
 
   protected override void OnSet (int index, object? oldValue, object? newValue)
   {
-    if (newValue == null) throw new ArgumentNullException("value");
+    ArgumentNullException.ThrowIfNull(newValue);
     CommandLineArgument? newArgument = newValue as CommandLineArgument;
-    if (newArgument == null) throw new ArgumentException(c_msgInvalidArgumentType, "newValue") ;
+    if (newArgument == null) throw new ArgumentException(c_msgInvalidArgumentType, nameof(newValue)) ;
     CommandLineArgument? oldArgument = (CommandLineArgument?)oldValue;
-    if (oldArgument == null) throw new ArgumentException(c_msgInvalidArgumentType, "oldValue") ;
+    if (oldArgument == null) throw new ArgumentException(c_msgInvalidArgumentType, nameof(oldValue)) ;
 
     if (oldArgument.Parser == _parser)
       oldArgument.AttachParser(null);
@@ -107,7 +107,7 @@ public class CommandLineArgumentCollection: CollectionBase
   protected override void OnValidate (object value)
   {
     if (! (value is CommandLineArgument))
-      throw new ArgumentException(c_msgInvalidArgumentType, "value") ;
+      throw new ArgumentException(c_msgInvalidArgumentType, nameof(value)) ;
   }
   #endregion
 

@@ -36,15 +36,21 @@ namespace Remotion.Web.Development.WebTesting.Configuration
         };
 
     private readonly string _webApplicationRoot;
+    private readonly bool _testSiteStartupCheckEnabled;
+    private readonly string _testSiteStartupCheckUrl;
     private readonly string _screenshotDirectory;
     private readonly IRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
     private readonly bool _closeBrowserWindowsOnSetUpAndTearDown;
 
     public TestInfrastructureConfiguration ([NotNull] IWebTestSettings webTestSettings)
     {
-      ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
+      ArgumentNullException.ThrowIfNull(webTestSettings);
 
       _webApplicationRoot = webTestSettings.WebApplicationRoot;
+      _testSiteStartupCheckEnabled = webTestSettings.TestSiteStartupCheckEnabled;
+      _testSiteStartupCheckUrl = string.IsNullOrEmpty(webTestSettings.TestSiteStartupCheckUrl)
+          ? webTestSettings.WebApplicationRoot
+          : webTestSettings.TestSiteStartupCheckUrl;
       _screenshotDirectory = Path.GetFullPath(webTestSettings.ScreenshotDirectory);
 
       _closeBrowserWindowsOnSetUpAndTearDown = webTestSettings.CloseBrowserWindowsOnSetUpAndTearDown;
@@ -54,6 +60,16 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public string WebApplicationRoot
     {
       get { return _webApplicationRoot; }
+    }
+
+    public bool TestSiteStartupCheckEnabled
+    {
+      get { return _testSiteStartupCheckEnabled; }
+    }
+
+    public string TestSiteStartupCheckUrl
+    {
+      get { return _testSiteStartupCheckUrl; }
     }
 
     public string ScreenshotDirectory

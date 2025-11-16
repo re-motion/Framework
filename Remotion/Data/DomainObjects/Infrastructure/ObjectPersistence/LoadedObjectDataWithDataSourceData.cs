@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -31,14 +30,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public LoadedObjectDataWithDataSourceData (ILoadedObjectData loadedObjectData, DataContainer? dataSourceData)
     {
-      ArgumentUtility.CheckNotNull("loadedObjectData", loadedObjectData);
+      ArgumentNullException.ThrowIfNull(loadedObjectData);
 
       if (!loadedObjectData.IsNull && dataSourceData == null)
-        throw new ArgumentException("The dataSourceData parameter must not be null when loadedObjectData.IsNull is false.", "dataSourceData");
+        throw new ArgumentException("The dataSourceData parameter must not be null when loadedObjectData.IsNull is false.", nameof(dataSourceData));
       if (loadedObjectData.IsNull && dataSourceData != null)
-        throw new ArgumentException("The dataSourceData parameter must be null when loadedObjectData.IsNull is true.", "dataSourceData");
+        throw new ArgumentException("The dataSourceData parameter must be null when loadedObjectData.IsNull is true.", nameof(dataSourceData));
       if (!loadedObjectData.IsNull && loadedObjectData.ObjectID != dataSourceData!.ID)
-        throw new ArgumentException("The ID of the dataSourceData parameter does not match the loadedObjectData.", "dataSourceData");
+        throw new ArgumentException("The ID of the dataSourceData parameter does not match the loadedObjectData.", nameof(dataSourceData));
 
       _loadedObjectData = loadedObjectData;
       _dataSourceData = dataSourceData;

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Attributes
 {
@@ -33,7 +32,7 @@ namespace Remotion.Validation.Attributes
 
     public ApplyWithClassAttribute (Type classType)
     {
-      ArgumentUtility.CheckNotNull("classType", classType);
+      ArgumentNullException.ThrowIfNull(classType);
 
       _classType = classType;
     }

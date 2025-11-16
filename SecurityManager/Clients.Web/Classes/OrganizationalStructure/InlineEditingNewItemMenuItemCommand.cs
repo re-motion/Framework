@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     public InlineEditingNewItemMenuItemCommand (Func<TBusinessObject> newObjectFactory)
     {
-      ArgumentUtility.CheckNotNull("newObjectFactory", newObjectFactory);
+      ArgumentNullException.ThrowIfNull(newObjectFactory);
       _newObjectFactory = newObjectFactory;
       Show = CommandShow.EditMode;
     }

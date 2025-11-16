@@ -18,7 +18,6 @@ using System;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.DPExtensions
 {
@@ -33,8 +32,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public CastClassExpression (Type targetType, Expression right)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
-      ArgumentUtility.CheckNotNull("right", right);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(right);
 
       _targetType = targetType;
       _right = right;
@@ -42,8 +41,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull("member", member);
-      ArgumentUtility.CheckNotNull("gen", gen);
+      ArgumentNullException.ThrowIfNull(member);
+      ArgumentNullException.ThrowIfNull(gen);
 
       _right.Emit(member, gen);
       gen.Emit(OpCodes.Castclass, _targetType);

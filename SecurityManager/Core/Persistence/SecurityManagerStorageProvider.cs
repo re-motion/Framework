@@ -16,13 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.SecurityManager.Domain;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Persistence
 {
@@ -35,7 +34,7 @@ namespace Remotion.SecurityManager.Persistence
         string connectionString,
         IPersistenceExtension persistenceExtension,
         IRdbmsProviderCommandFactory commandFactory,
-        Func<IDbConnection> connectionFactory)
+        Func<DbConnection> connectionFactory)
         : base(
             definition,
             connectionString,
@@ -52,7 +51,7 @@ namespace Remotion.SecurityManager.Persistence
 
     public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       var dataContainersList = dataContainers;
       base.Save(dataContainersList);

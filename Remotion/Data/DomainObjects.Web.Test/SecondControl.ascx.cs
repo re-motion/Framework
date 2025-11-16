@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.Web.Test
   {
     public static ClassWithAllDataTypes Call (IWxePage page, WxeUserControl userControl, Control sender, ITransactionMode transactionMode, ClassWithAllDataTypes inParameter)
     {
-      ArgumentUtility.CheckNotNull("page", page);
-      ArgumentUtility.CheckNotNull("userControl", userControl);
-      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(userControl);
+      ArgumentNullException.ThrowIfNull(sender);
 
       if (page.IsReturningPostBack == false)
       {

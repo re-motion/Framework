@@ -31,15 +31,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public PropertySerializer (IColumnSerializer columnSerializer)
     {
-      ArgumentUtility.CheckNotNull("columnSerializer", columnSerializer);
+      ArgumentNullException.ThrowIfNull(columnSerializer);
 
       _columnSerializer = columnSerializer;
     }
 
     public XElement Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
-      ArgumentUtility.CheckNotNull("persistenceModelProvider", persistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
+      ArgumentNullException.ThrowIfNull(persistenceModelProvider);
 
       var propertyType = GetPropertyType(propertyDefinition);
 

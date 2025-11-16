@@ -20,7 +20,6 @@ using System.Linq;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Utilities;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -35,9 +34,9 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Type> involvedTypeIdentifierGenerator,
         IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
-      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
+      ArgumentNullException.ThrowIfNull(explicitDependencies);
+      ArgumentNullException.ThrowIfNull(involvedTypeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(outputFormatter);
 
       _explicitDependencies = explicitDependencies;
       _involvedTypeIdentifierGenerator = involvedTypeIdentifierGenerator;

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
@@ -35,9 +36,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     string DelimitIdentifier (string identifier);
 
     /// <summary>
-    /// Creates an <see cref="IDbDataParameter"/> for the given <paramref name="value"/>, <paramref name="parameterName"/>, <see cref="IStorageTypeInformation"/> and <see cref="IDbCommand"/>.
+    /// Creates an <see cref="DbParameter"/> for the given <paramref name="value"/>, <paramref name="parameterName"/>, <see cref="IStorageTypeInformation"/> and <see cref="DbCommand"/>.
     /// </summary>
-    /// <param name="command">The command to create the <see cref="IDbDataParameter"/> with.</param>
+    /// <param name="command">The command to create the <see cref="DbParameter"/> with.</param>
     /// <param name="storageTypeInformation">The <see cref="IStorageTypeInformation"/> for the column that matches the created parameter.</param>
     /// <param name="parameterName">The dialect-conforming name for the parameter; use <see cref="GetParameterName"/> to obtain a valid name.</param>
     /// <param name="value">The value to create the parameter for.</param>
@@ -49,10 +50,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     /// <para>
     /// The parameter's <see cref="IDataParameter.ParameterName"/> is set to <paramref name="parameterName"/> and ensured to conform to the
     /// <see cref="ISqlDialect"/>'s specifications.
-    /// The parameter is not added to the command's <see cref="IDbCommand.Parameters"/> collection.
+    /// The parameter is not added to the command's <see cref="DbCommand.Parameters"/> collection.
     /// </para>
     /// </remarks>
     /// <exception cref="NotSupportedException">The <paramref name="value"/> cannot be converted to the <see cref="IStorageTypeInformation.StorageType"/>.</exception>
-    IDbDataParameter CreateDataParameter (IDbCommand command, IStorageTypeInformation storageTypeInformation, string parameterName, object? value);
+    DbParameter CreateDataParameter (DbCommand command, IStorageTypeInformation storageTypeInformation, string parameterName, object? value);
   }
 }

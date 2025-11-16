@@ -49,10 +49,10 @@ namespace Remotion.SecurityManager.Persistence
         IUserNamesRevisionProvider userNamesRevisionProvider,
         IRdbmsProviderCommandFactory rdbmsProviderCommandFactory)
     {
-      ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
-      ArgumentUtility.CheckNotNull("userRevisionProvider", userRevisionProvider);
-      ArgumentUtility.CheckNotNull("userNamesRevisionProvider", userNamesRevisionProvider);
-      ArgumentUtility.CheckNotNull("rdbmsProviderCommandFactory", rdbmsProviderCommandFactory);
+      ArgumentNullException.ThrowIfNull(revisionProvider);
+      ArgumentNullException.ThrowIfNull(userRevisionProvider);
+      ArgumentNullException.ThrowIfNull(userNamesRevisionProvider);
+      ArgumentNullException.ThrowIfNull(rdbmsProviderCommandFactory);
 
       _revisionProvider = revisionProvider;
       _userRevisionProvider = userRevisionProvider;
@@ -68,8 +68,8 @@ namespace Remotion.SecurityManager.Persistence
 
     public virtual void Saved (IRdbmsProviderReadWriteCommandExecutionContext executionContext, IEnumerable<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull("executionContext", executionContext);
-      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
+      ArgumentNullException.ThrowIfNull(executionContext);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       var securityManagerDataContainers =
           dataContainers.Where(dataContainer => typeof(BaseSecurityManagerObject).IsAssignableFrom(dataContainer.DomainObjectType));
@@ -223,7 +223,7 @@ namespace Remotion.SecurityManager.Persistence
 
       throw new ArgumentException(
           string.Format("DataContainer type can only be User or Substitution but was '{0}'.", dataContainer.DomainObjectType),
-          "dataContainer");
+          nameof(dataContainer));
     }
 
     private TResult? GetValue<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)

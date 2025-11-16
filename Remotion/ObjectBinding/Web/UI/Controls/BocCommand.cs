@@ -20,7 +20,6 @@ using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.Security;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -182,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void ExecuteWxeFunction (IWxePage wxePage, IBusinessObject? businessObject)
     {
-      ArgumentUtility.CheckNotNull("wxePage", wxePage);
+      ArgumentNullException.ThrowIfNull(wxePage);
       if (! wxePage.IsReturningPostBack)
       {
         NameObjectCollection parameters = PrepareWxeFunctionParameters(businessObject);

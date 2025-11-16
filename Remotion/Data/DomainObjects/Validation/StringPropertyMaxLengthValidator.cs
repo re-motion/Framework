@@ -40,8 +40,8 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public void Validate (ClientTransaction clientTransaction, PersistableData data)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("data", data);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(data);
 
       if (data.DomainObjectState.IsDeleted)
         return;
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public void Validate (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
 
       foreach (var propertyDefinition in dataContainer.ID.ClassDefinition.GetPropertyDefinitions())
       {

@@ -17,7 +17,6 @@
 using System;
 using System.Collections;
 using System.Web.UI;
-using Remotion.Utilities;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls.ControlReplacing
@@ -33,7 +32,7 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
 
     public StateReplacingStrategy (string serializedState)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("serializedState", serializedState);
+      ArgumentException.ThrowIfNullOrEmpty(serializedState);
 
 #pragma warning disable CFW0001
       var formatter = new LosFormatter();
@@ -56,16 +55,16 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
 
     public void LoadControlState (ControlReplacer replacer, IInternalControlMemberCaller memberCaller)
     {
-      ArgumentUtility.CheckNotNull("replacer", replacer);
-      ArgumentUtility.CheckNotNull("memberCaller", memberCaller);
+      ArgumentNullException.ThrowIfNull(replacer);
+      ArgumentNullException.ThrowIfNull(memberCaller);
 
       memberCaller.SetChildControlState(replacer, _controlState);
     }
 
     public void LoadViewState (ControlReplacer replacer, IInternalControlMemberCaller memberCaller)
     {
-      ArgumentUtility.CheckNotNull("replacer", replacer);
-      ArgumentUtility.CheckNotNull("memberCaller", memberCaller);
+      ArgumentNullException.ThrowIfNull(replacer);
+      ArgumentNullException.ThrowIfNull(memberCaller);
 
       memberCaller.LoadViewStateRecursive(replacer, _viewState);
     }

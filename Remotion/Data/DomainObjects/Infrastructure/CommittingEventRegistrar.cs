@@ -16,8 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Collections;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -32,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public CommittingEventRegistrar (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
       _clientTransaction = clientTransaction;
     }
 
@@ -43,12 +41,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public IReadOnlyCollection<DomainObject> RegisteredObjects
     {
-      get { return _registeredObjects.AsReadOnly(); }
+      get { return Remotion.Collections.CollectionExtensions.AsReadOnly(_registeredObjects); }
     }
 
     public void RegisterForAdditionalCommittingEvents (params DomainObject[] domainObjects)
     {
-      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
+      ArgumentNullException.ThrowIfNull(domainObjects);
 
       foreach (var domainObject in domainObjects)
       {
@@ -64,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
               + "registered. Use RegisterForCommit to add an unchanged object to the commit set.",
               domainObject.ID,
               state);
-          throw new ArgumentException(message, "domainObjects");
+          throw new ArgumentException(message, nameof(domainObjects));
         }
       }
 

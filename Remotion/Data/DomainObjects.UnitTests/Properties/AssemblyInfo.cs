@@ -24,7 +24,7 @@ using System.Reflection;
 //
 
 [assembly: AssemblyCulture("")]
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 
 //
 // Version information for an assembly consists of the following four values:

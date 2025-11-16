@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 {
@@ -30,9 +29,9 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
 
     public WebTabRendererAdapterArrayBuilder (IWebTab[] webTabs, WebTabStyle tabStyle, WebTabStyle selectedTabStyle)
     {
-      ArgumentUtility.CheckNotNull("webTabs", webTabs);
-      ArgumentUtility.CheckNotNull("tabStyle", tabStyle);
-      ArgumentUtility.CheckNotNull("selectedTabStyle", selectedTabStyle);
+      ArgumentNullException.ThrowIfNull(webTabs);
+      ArgumentNullException.ThrowIfNull(tabStyle);
+      ArgumentNullException.ThrowIfNull(selectedTabStyle);
 
       _webTabs = webTabs;
       TabStyle = tabStyle;

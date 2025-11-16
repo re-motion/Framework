@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That(actual, Is.EqualTo("First\r\nSecond ... [3]"));
+      Assert.That(actual, Is.EqualTo($"First{Environment.NewLine}Second ... [3]"));
     }
 
     [Test]
@@ -99,7 +99,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That(actual, Is.EqualTo("First\r\nSecond\r\nThird"));
+      Assert.That(actual, Is.EqualTo($"First{Environment.NewLine}Second{Environment.NewLine}Third"));
     }
 
     [Test]
@@ -115,7 +115,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That(actual, Is.EqualTo("First\r\nSecond\r\nThird"));
+      Assert.That(actual, Is.EqualTo($"First{Environment.NewLine}Second{Environment.NewLine}Third"));
     }
 
     [Test]
@@ -158,7 +158,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That(actual, Is.EqualTo("First\r\nSecond ... [3]"));
+      Assert.That(actual, Is.EqualTo($"First{Environment.NewLine}Second ... [3]"));
     }
 
     [Test]
@@ -173,7 +173,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That(actual, Is.EqualTo("First\r\nSecond ... [3]"));
+      Assert.That(actual, Is.EqualTo($"First{Environment.NewLine}Second ... [3]"));
     }
 
     [Test]
@@ -188,7 +188,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
 
       _mockBusinessObject.Verify();
       _mockProperty.Verify();
-      Assert.That(actual, Is.EqualTo("First\r\nSecond ... [3]"));
+      Assert.That(actual, Is.EqualTo($"First{Environment.NewLine}Second ... [3]"));
     }
 
     [Test]

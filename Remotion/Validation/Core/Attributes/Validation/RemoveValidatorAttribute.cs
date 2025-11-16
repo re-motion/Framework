@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Attributes.Validation
 {
@@ -42,7 +41,7 @@ namespace Remotion.Validation.Attributes.Validation
     /// <param name="collectorTypeToRemoveFrom">Constraints the removal to validators introduced by the specified <see cref="Type"/>.</param>/>
     public RemoveValidatorAttribute (Type validatorType, Type? collectorTypeToRemoveFrom)
     {
-      ArgumentUtility.CheckNotNull("validatorType", validatorType);
+      ArgumentNullException.ThrowIfNull(validatorType);
 
       _validatorType = validatorType;
       _collectorTypeToRemoveFrom = collectorTypeToRemoveFrom;

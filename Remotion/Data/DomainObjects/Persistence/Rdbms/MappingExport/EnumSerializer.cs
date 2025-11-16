@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public void CollectPropertyType (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       var propertyType = propertyDefinition.PropertyType;
       if (NullableTypeUtility.IsNullableType(propertyType))

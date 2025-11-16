@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -40,14 +39,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void AddListener (IClientTransactionListener listener)
     {
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentNullException.ThrowIfNull(listener);
 
       _listeners.Add(listener);
     }
 
     public void RemoveListener (IClientTransactionListener listener)
     {
-      ArgumentUtility.CheckNotNull("listener", listener);
+      ArgumentNullException.ThrowIfNull(listener);
 
       _listeners.Remove(listener);
     }

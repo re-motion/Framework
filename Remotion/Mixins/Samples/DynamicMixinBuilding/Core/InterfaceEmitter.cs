@@ -31,7 +31,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
     }
 
     public InterfaceEmitter (ModuleScope scope, string typeName)
-        : base(CreateTypeBuilder(ArgumentUtility.CheckNotNull("scope", scope), ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName)))
+        : base(CreateTypeBuilder(scope ?? throw new ArgumentNullException(nameof(scope)), ArgumentUtility.CheckNotNullOrEmpty(nameof(typeName), typeName)))
     {
     }
 

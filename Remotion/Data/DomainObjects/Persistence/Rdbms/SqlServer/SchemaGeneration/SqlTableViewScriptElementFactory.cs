@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -27,13 +26,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected override string GetSelectStatements (TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
 
       return string.Format(
-          "  SELECT {0}\r\n    FROM [{1}].[{2}]",
+          "  SELECT {0}{3}    FROM [{1}].[{2}]",
           GetColumnList(tableDefinition.GetAllColumns()),
           tableDefinition.TableName.SchemaName ?? DefaultSchema,
-          tableDefinition.TableName.EntityName);
+          tableDefinition.TableName.EntityName,
+          Environment.NewLine);
     }
 
     protected override bool UseCheckOption (TableDefinition tableDefinition)

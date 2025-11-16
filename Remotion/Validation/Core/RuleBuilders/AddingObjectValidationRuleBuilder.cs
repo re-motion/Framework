@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Rules;
@@ -38,8 +37,8 @@ namespace Remotion.Validation.RuleBuilders
         IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector,
         IObjectMetaValidationRuleCollector objectMetaValidationRuleCollector)
     {
-      ArgumentUtility.CheckNotNull("addingObjectValidationRuleCollector", addingObjectValidationRuleCollector);
-      ArgumentUtility.CheckNotNull("objectMetaValidationRuleCollector", objectMetaValidationRuleCollector);
+      ArgumentNullException.ThrowIfNull(addingObjectValidationRuleCollector);
+      ArgumentNullException.ThrowIfNull(objectMetaValidationRuleCollector);
 
       _addingObjectValidationRuleCollector = addingObjectValidationRuleCollector;
       _objectMetaValidationRuleCollector = objectMetaValidationRuleCollector;
@@ -57,7 +56,7 @@ namespace Remotion.Validation.RuleBuilders
 
     public IAddingObjectValidationRuleBuilder<TValidatedType> SetCondition (Func<TValidatedType, bool> predicate)
     {
-      ArgumentUtility.CheckNotNull("predicate", predicate);
+      ArgumentNullException.ThrowIfNull(predicate);
 
       _addingObjectValidationRuleCollector.SetCondition(predicate);
       return this;
@@ -71,7 +70,7 @@ namespace Remotion.Validation.RuleBuilders
 
     public IAddingObjectValidationRuleBuilder<TValidatedType> AddMetaValidationRule (IObjectMetaValidationRule metaValidationRule)
     {
-      ArgumentUtility.CheckNotNull("metaValidationRule", metaValidationRule);
+      ArgumentNullException.ThrowIfNull(metaValidationRule);
 
       _objectMetaValidationRuleCollector.RegisterMetaValidationRule(metaValidationRule);
       return this;
@@ -80,7 +79,7 @@ namespace Remotion.Validation.RuleBuilders
     public IAddingObjectValidationRuleBuilder<TValidatedType> AddMetaValidationRule (
         Func<IEnumerable<IObjectValidator>, MetaValidationRuleValidationResult> rule)
     {
-      ArgumentUtility.CheckNotNull("rule", rule);
+      ArgumentNullException.ThrowIfNull(rule);
 
       var metaValidationRule = new DelegateObjectMetaValidationRule<IObjectValidator>(rule);
       _objectMetaValidationRuleCollector.RegisterMetaValidationRule(metaValidationRule);
@@ -91,7 +90,7 @@ namespace Remotion.Validation.RuleBuilders
         Expression<Func<IEnumerable<TValidator>, bool>> metaValidationRuleExpression)
         where TValidator: IObjectValidator
     {
-      ArgumentUtility.CheckNotNull("metaValidationRuleExpression", metaValidationRuleExpression);
+      ArgumentNullException.ThrowIfNull(metaValidationRuleExpression);
 
       var metaValidationRuleExecutor = metaValidationRuleExpression.Compile();
 
@@ -116,7 +115,7 @@ namespace Remotion.Validation.RuleBuilders
     public IAddingObjectValidationRuleBuilder<TValidatedType> SetValidator (
         Func<ObjectValidationRuleInitializationParameters, IObjectValidator> validatorFactory)
     {
-      ArgumentUtility.CheckNotNull("validatorFactory", validatorFactory);
+      ArgumentNullException.ThrowIfNull(validatorFactory);
 
       _addingObjectValidationRuleCollector.RegisterValidator(validatorFactory);
       return this;

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 {
@@ -31,22 +30,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   {
     public string GetControlRowID (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentNullException.ThrowIfNull(row);
 
       return EscapeUniqueIdentifier(((IBusinessObjectWithIdentity)row.BusinessObject).UniqueIdentifier);
     }
 
     public string GetItemRowID (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentNullException.ThrowIfNull(row);
 
       return FormatItemRowID(row.Index, ((IBusinessObjectWithIdentity)row.BusinessObject).UniqueIdentifier);
     }
 
     public BocListRow? GetRowFromItemRowID (IReadOnlyList<IBusinessObject> values, string rowID)
     {
-      ArgumentUtility.CheckNotNull("values", values);
-      ArgumentUtility.CheckNotNull("rowID", rowID);
+      ArgumentNullException.ThrowIfNull(values);
+      ArgumentNullException.ThrowIfNull(rowID);
 
       var tuple = ParseItemRowID(rowID);
       int rowIndex = tuple.Item1;

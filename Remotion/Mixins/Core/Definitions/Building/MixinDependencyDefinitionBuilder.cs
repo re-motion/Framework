@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions.Building
 {
@@ -28,41 +27,41 @@ namespace Remotion.Mixins.Definitions.Building
 
     public MixinDependencyDefinitionBuilder (MixinDefinition mixin)
     {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ArgumentNullException.ThrowIfNull(mixin);
       _mixin = mixin;
     }
 
     protected override RequirementDefinitionBase GetRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _mixin.TargetClass.RequiredMixinTypes[type];
     }
 
     protected override RequirementDefinitionBase CreateRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return new RequiredMixinTypeDefinition(_mixin.TargetClass, type);
     }
 
     protected override void AddRequirement (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentNullException.ThrowIfNull(requirement);
 
       _mixin.TargetClass.RequiredMixinTypes.Add((RequiredMixinTypeDefinition)requirement);
     }
 
     protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentNullException.ThrowIfNull(requirement);
 
       return new MixinDependencyDefinition((RequiredMixinTypeDefinition)requirement, _mixin, (MixinDependencyDefinition?)aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
     {
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentNullException.ThrowIfNull(dependency);
 
       if (!_mixin.MixinDependencies.ContainsKey(dependency.RequiredType.Type))
         _mixin.MixinDependencies.Add((MixinDependencyDefinition)dependency);

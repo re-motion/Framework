@@ -27,10 +27,10 @@ using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
-using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Factories.Remote;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 {
@@ -39,6 +39,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   /// </summary>
   public class ChromeConfiguration : BrowserConfigurationBase, IChromeConfiguration
   {
+    public static void ApplyDefaultWebTestFeatures (
+        WebTestFeatureCollection features,
+        IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
+
+      // Placeholder for future chrome specific feature additions
+    }
+
     private const string c_userDataFolderPrefix = "userdata";
     private const string c_partialFileDownloadExtension = ".crdownload";
 
@@ -56,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
     public override string BrowserExecutableName { get; } = "chrome";
     public override string WebDriverExecutableName { get; } = "chromedriver";
-    public override IBrowserContentLocator Locator { get; } = new ChromeBrowserContentLocator();
+    public override IBrowserContentLocator Locator { get; } = DefaultBrowserContentLocator.Instance;
     public override ScreenshotTooltipStyle TooltipStyle { get; } = ScreenshotTooltipStyle.Chrome;
     public override IDownloadHelper DownloadHelper { get; }
 
@@ -77,8 +87,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
         [NotNull] ChromeExecutable chromeExecutable)
         : base(webTestSettings)
     {
-      ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
-      ArgumentUtility.CheckNotNull("chromeExecutable", chromeExecutable);
+      ArgumentNullException.ThrowIfNull(webTestSettings);
+      ArgumentNullException.ThrowIfNull(chromeExecutable);
 
       BrowserBinaryPath = chromeExecutable.BrowserBinaryPath;
       DriverBinaryPath = chromeExecutable.DriverBinaryPath;
@@ -98,10 +108,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
           webTestSettings.LoggerFactory);
 
       DisableSecurityWarningsBehavior = webTestSettings.Chrome.DisableSecurityWarningsBehavior;
+
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
 
     public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory(this, LoggerFactory);
 
+    /// <inheritdoc />
+    /// <remarks>
+    /// Changes made here might also need to be made in <see cref="RemoteBrowserFactory"/>.<see cref="RemoteBrowserFactory.CreateChromeOptions"/>.
+    /// </remarks>
     public virtual ExtendedChromeOptions CreateChromeOptions ()
     {
       var userDirectory = CreateUnusedUserDirectoryPath();

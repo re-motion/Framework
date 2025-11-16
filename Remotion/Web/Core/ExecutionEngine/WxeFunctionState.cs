@@ -18,7 +18,6 @@ using System;
 using Microsoft.Extensions.Logging;
 using Remotion.Logging;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -48,7 +47,7 @@ namespace Remotion.Web.ExecutionEngine
     public WxeFunctionState (
         WxeFunction function, int lifetime, bool enableCleanUp)
     {
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentNullException.ThrowIfNull(function);
       _lifetime = lifetime;
       _functionToken = Guid.NewGuid().ToString();
       _function = function;

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 
@@ -37,7 +36,7 @@ namespace Remotion.Validation.Attributes.Validation
     /// <param name="value">The value the string property must not be equal to. Must not be <see langword="null" /> or empty.</param>
     public NotEqualValidationAttribute (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("value", value);
+      ArgumentException.ThrowIfNullOrEmpty(value);
 
       _value = value;
     }
@@ -49,8 +48,8 @@ namespace Remotion.Validation.Attributes.Validation
 
     protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull("property", property);
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
 
       NotEqualValidator validator;
       if (string.IsNullOrEmpty(ErrorMessage))

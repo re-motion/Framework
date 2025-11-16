@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
@@ -28,7 +27,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public virtual TransactionStrategyBase CreateTransactionStrategy (WxeFunction function, WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentNullException.ThrowIfNull(function);
 
       var outerTransactionStrategy = function.ParentFunction != null? function.ParentFunction.TransactionStrategy : NullTransactionStrategy.Null;
       return new NoneTransactionStrategy(outerTransactionStrategy);

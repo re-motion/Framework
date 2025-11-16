@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public RelationDefinition GetMetadata (IDictionary<Type, ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentNullException.ThrowIfNull(classDefinitions);
 
       var firstEndPoint = GetEndPointDefinition(ClassDefinition, PropertyInfo);
       var secondEndPoint = GetOppositeEndPointDefinition(classDefinitions);

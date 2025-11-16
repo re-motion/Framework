@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     /// </summary>
     public IStorageObjectFactory Create (Type storageObjectFactoryType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("storageObjectFactoryType", storageObjectFactoryType, typeof(IStorageObjectFactory));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(storageObjectFactoryType), storageObjectFactoryType, typeof(IStorageObjectFactory));
 
       try
       {

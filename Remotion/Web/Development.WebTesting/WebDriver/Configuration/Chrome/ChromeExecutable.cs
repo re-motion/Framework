@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 {
@@ -60,9 +59,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// <param name="userDirectory">Path to the desired Chrome user data directory</param>
     public ChromeExecutable ([NotNull] string browserBinaryPath, [NotNull] string driverBinaryPath, [NotNull] string userDirectory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("browserBinaryPath", browserBinaryPath);
-      ArgumentUtility.CheckNotNullOrEmpty("driverBinaryPath", driverBinaryPath);
-      ArgumentUtility.CheckNotNullOrEmpty("userDirectory", userDirectory);
+      ArgumentException.ThrowIfNullOrEmpty(browserBinaryPath);
+      ArgumentException.ThrowIfNullOrEmpty(driverBinaryPath);
+      ArgumentException.ThrowIfNullOrEmpty(userDirectory);
 
       BrowserBinaryPath = browserBinaryPath;
       DriverBinaryPath = driverBinaryPath;

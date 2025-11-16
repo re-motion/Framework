@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
           () => new DomainObjectCollection(new[] { _customer1 }, typeof(Order)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Item 0 of parameter 'domainObjects' has the type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' "
+                  "Item 0 of the collection has type 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer' "
                   + "instead of 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order'.", "domainObjects"));
     }
 
@@ -349,7 +349,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Assert.That(
           () => collection.AddRange(new[] { _customer1, null }),
           Throws.InstanceOf<ArgumentNullException>()
-              .With.ArgumentExceptionMessageEqualTo("Item 1 of parameter 'domainObjects' is null.", "domainObjects"));
+              .With.ArgumentExceptionMessageEqualTo("Item 1 of the collection is null.", "domainObjects"));
     }
 
     [Test]

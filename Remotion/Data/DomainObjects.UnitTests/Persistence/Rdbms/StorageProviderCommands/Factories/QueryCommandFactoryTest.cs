@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 using Remotion.Data.DomainObjects.Queries;
+using Remotion.Data.DomainObjects.Queries.Configuration;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands.Factories
 {
@@ -82,7 +83,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     }
 
     [Test]
-    public void CreateForDataContainerQuery ()
+    [TestCase(QueryStatementType.Text)]
+    [TestCase(QueryStatementType.StoredProcedure)]
+    public void CreateForDataContainerQuery (QueryStatementType statementType)
     {
       _dataParameterDefinitionFactoryStrictMock
           .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter1, _queryStub.Object))
@@ -99,8 +102,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var commandBuilderStub = new Mock<IDbCommandBuilder>();
       var expectedParametersWithType = GetExpectedParametersForQueryStub();
+      _queryStub.Setup(stub => stub.StatementType).Returns(statementType);
       _dbCommandBuilderFactoryStrictMock
-          .Setup(stub => stub.CreateForQuery("statement", expectedParametersWithType))
+          .Setup(stub => stub.CreateForQuery(statementType, "statement", expectedParametersWithType))
           .Returns(commandBuilderStub.Object)
           .Verifiable();
 
@@ -120,7 +124,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     }
 
     [Test]
-    public void CreateForCustomQuery ()
+    [TestCase(QueryStatementType.Text)]
+    [TestCase(QueryStatementType.StoredProcedure)]
+    public void CreateForCustomQuery (QueryStatementType statementType)
     {
       _dataParameterDefinitionFactoryStrictMock
           .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter1, _queryStub.Object))
@@ -139,12 +145,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var expectedParametersWithType = GetExpectedParametersForQueryStub();
       _dbCommandBuilderFactoryStrictMock
-          .Setup(stub => stub.CreateForQuery("statement", expectedParametersWithType))
+          .Setup(stub => stub.CreateForQuery(statementType, "statement", expectedParametersWithType))
           .Returns(commandBuilderStub.Object)
           .Verifiable();
 
       _objectReaderFactoryStrictMock.Setup(mock => mock.CreateResultRowReader()).Returns(_resultRowReaderStub.Object).Verifiable();
 
+      _queryStub.Setup(stub => stub.StatementType).Returns(statementType);
       var result = _factory.CreateForCustomQuery(_queryStub.Object);
 
       Assert.That(result, Is.TypeOf(typeof(MultiObjectLoadCommand<IQueryResultRow>)));
@@ -155,7 +162,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     }
 
     [Test]
-    public void CreateForScalarQuery ()
+    [TestCase(QueryStatementType.Text)]
+    [TestCase(QueryStatementType.StoredProcedure)]
+    public void CreateForScalarQuery (QueryStatementType statementType)
     {
       _dataParameterDefinitionFactoryStrictMock
           .Setup(mock => mock.CreateDataParameterDefinition(_queryParameter1, _queryStub.Object))
@@ -173,10 +182,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var commandBuilderStub = new Mock<IDbCommandBuilder>();
       var expectedParametersWithType = GetExpectedParametersForQueryStub();
       _dbCommandBuilderFactoryStrictMock
-          .Setup(stub => stub.CreateForQuery("statement", expectedParametersWithType))
+          .Setup(stub => stub.CreateForQuery(statementType, "statement", expectedParametersWithType))
           .Returns(commandBuilderStub.Object)
           .Verifiable();
 
+      _queryStub.Setup(stub => stub.StatementType).Returns(statementType);
       var result = _factory.CreateForScalarQuery(_queryStub.Object);
 
       _dataParameterDefinitionFactoryStrictMock.Verify();

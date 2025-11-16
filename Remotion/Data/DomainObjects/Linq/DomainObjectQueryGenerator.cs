@@ -99,10 +99,10 @@ namespace Remotion.Data.DomainObjects.Linq
         IStorageTypeInformationProvider storageTypeInformationProvider,
         IMappingConfiguration mappingConfiguration)
     {
-      ArgumentUtility.CheckNotNull("sqlQueryGenerator", sqlQueryGenerator);
-      ArgumentUtility.CheckNotNull("typeConversionProvider", typeConversionProvider);
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull("mappingConfiguration", mappingConfiguration);
+      ArgumentNullException.ThrowIfNull(sqlQueryGenerator);
+      ArgumentNullException.ThrowIfNull(typeConversionProvider);
+      ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
+      ArgumentNullException.ThrowIfNull(mappingConfiguration);
 
       _sqlQueryGenerator = sqlQueryGenerator;
       _typeConversionProvider = typeConversionProvider;
@@ -136,10 +136,10 @@ namespace Remotion.Data.DomainObjects.Linq
         QueryModel queryModel,
         IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("queryModel", queryModel);
-      ArgumentUtility.CheckNotNull("metadata", metadata);
+      ArgumentException.ThrowIfNullOrEmpty(id);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(queryModel);
+      ArgumentNullException.ThrowIfNull(metadata);
 
       var sqlQuery = _sqlQueryGenerator.CreateSqlQuery(queryModel);
       var sqlCommand = sqlQuery.SqlCommand;
@@ -157,11 +157,11 @@ namespace Remotion.Data.DomainObjects.Linq
         IEnumerable<FetchQueryModelBuilder> fetchQueryModelBuilders,
         IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("queryModel", queryModel);
-      ArgumentUtility.CheckNotNull("fetchQueryModelBuilders", fetchQueryModelBuilders);
-      ArgumentUtility.CheckNotNull("metadata", metadata);
+      ArgumentException.ThrowIfNullOrEmpty(id);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(queryModel);
+      ArgumentNullException.ThrowIfNull(fetchQueryModelBuilders);
+      ArgumentNullException.ThrowIfNull(metadata);
 
       var sqlQuery = _sqlQueryGenerator.CreateSqlQuery(queryModel);
       var command = sqlQuery.SqlCommand;
@@ -200,11 +200,11 @@ namespace Remotion.Data.DomainObjects.Linq
         Type? selectedEntityType,
         IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("commandParameters", commandParameters);
-      ArgumentUtility.CheckNotNull("metadata", metadata);
+      ArgumentException.ThrowIfNullOrEmpty(id);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(commandParameters);
+      ArgumentNullException.ThrowIfNull(metadata);
 
       var queryParameters = new QueryParameterCollection();
       foreach (var commandParameter in commandParameters)
@@ -215,7 +215,7 @@ namespace Remotion.Data.DomainObjects.Linq
         QueryType.ScalarReadOnly => QueryFactory.CreateScalarQuery(id, storageProviderDefinition, statement, queryParameters, metadata),
         QueryType.CollectionReadOnly => QueryFactory.CreateCollectionQuery(id, storageProviderDefinition, statement, queryParameters, GetCollectionType(selectedEntityType), metadata),
         QueryType.CustomReadOnly => QueryFactory.CreateCustomQuery(id, storageProviderDefinition, statement, queryParameters, metadata),
-        _ => throw new ArgumentException("The requested query type '{0}' cannot be used with LiNQ. Only read-only query types are supported.", "queryType")
+        _ => throw new ArgumentException("The requested query type '{0}' cannot be used with LiNQ. Only read-only query types are supported.", nameof(queryType))
       };
     }
 

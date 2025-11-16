@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.DPExtensions
 {
@@ -30,8 +29,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public TryFinallyStatement (IEnumerable<Statement> tryStatements, IEnumerable<Statement> finallyStatements)
     {
-      ArgumentUtility.CheckNotNull("tryStatements", tryStatements);
-      ArgumentUtility.CheckNotNull("finallyStatements", finallyStatements);
+      ArgumentNullException.ThrowIfNull(tryStatements);
+      ArgumentNullException.ThrowIfNull(finallyStatements);
 
       _tryStatements = tryStatements;
       _finallyStatements = finallyStatements;
@@ -39,8 +38,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      ArgumentUtility.CheckNotNull("member", member);
-      ArgumentUtility.CheckNotNull("gen", gen);
+      ArgumentNullException.ThrowIfNull(member);
+      ArgumentNullException.ThrowIfNull(gen);
 
       gen.BeginExceptionBlock();
 

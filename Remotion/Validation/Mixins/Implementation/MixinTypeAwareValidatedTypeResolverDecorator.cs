@@ -32,7 +32,7 @@ namespace Remotion.Validation.Mixins.Implementation
 
     public MixinTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver validatedTypeResolver)
     {
-      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
+      ArgumentNullException.ThrowIfNull(validatedTypeResolver);
 
       _validatedTypeResolver = validatedTypeResolver;
     }
@@ -44,7 +44,7 @@ namespace Remotion.Validation.Mixins.Implementation
 
     public Type? GetValidatedType (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull("collectorType", collectorType);
+      ArgumentNullException.ThrowIfNull(collectorType);
 
       if (collectorType.IsDefined(typeof(ApplyWithMixinAttribute), false))
         return AttributeUtility.GetCustomAttribute<ApplyWithMixinAttribute>(collectorType, false)!.MixinType;

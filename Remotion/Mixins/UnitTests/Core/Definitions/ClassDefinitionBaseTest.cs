@@ -256,7 +256,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
     }
 
     [Test]
-    public void GetProtectedOverriders_True ()
+    public void GetProtectedOverriders_WithOverriddenProtectedMethod_ReturnsProtectedMethod ()
     {
       var overrider1 = DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfoProtected);
       var overrider2 = DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfo1);
@@ -265,26 +265,50 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
 
       DefinitionObjectMother.DeclareOverride(overrider1, overridden1);
       DefinitionObjectMother.DeclareOverride(overrider2, overridden2);
+      Assert.That(_methodInfoProtected.IsFamily, Is.True);
 
       Assert.That(_classDefinition1.GetProtectedOverriders().ToArray(), Is.EqualTo(new[] { overrider1 }));
     }
 
     [Test]
-    public void GetProtectedOverriders_True_ProtectedInternal ()
+    public void GetProtectedOverriders_WithOverriddenProtectedInternalMethod_ReturnsProtectedInternalMethod ()
     {
       var overrider = DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfoProtectedInternal);
       var overridden = DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfo2);
       DefinitionObjectMother.DeclareOverride(overrider, overridden);
+      Assert.That(_methodInfoProtectedInternal.IsFamily, Is.False);
+      Assert.That(_methodInfoProtectedInternal.IsFamilyOrAssembly, Is.True);
 
       Assert.That(_classDefinition1.GetProtectedOverriders().ToArray(), Is.EqualTo(new[] { overrider }));
     }
 
     [Test]
-    public void GetProtectedOverriders_False ()
+    public void GetProtectedOverriders_WithOverriddenPublicMethod_ReturnsNone ()
     {
       var overrider = DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfo1);
       var overridden = DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfo2);
       DefinitionObjectMother.DeclareOverride(overrider, overridden);
+      Assert.That(_methodInfo1.IsPublic, Is.True);
+      Assert.That(_methodInfo2.IsPublic, Is.True);
+
+      Assert.That(_classDefinition1.GetProtectedOverriders().ToArray(), Is.Empty);
+    }
+
+    [Test]
+    public void GetProtectedOverriders_WithNotOverriddenProtectedMethod_ReturnsNone ()
+    {
+      DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfoProtected);
+      Assert.That(_methodInfoProtected.IsFamily, Is.True);
+
+      Assert.That(_classDefinition1.GetProtectedOverriders().ToArray(), Is.Empty);
+    }
+
+    [Test]
+    public void GetProtectedOverriders_WithNotOverriddenProtectedInternalMethod_ReturnsNone ()
+    {
+      DefinitionObjectMother.CreateMethodDefinition(_classDefinition1, _methodInfoProtectedInternal);
+      Assert.That(_methodInfoProtectedInternal.IsFamilyOrAssembly, Is.True);
+      Assert.That(_methodInfoProtectedInternal.IsFamily, Is.False);
 
       Assert.That(_classDefinition1.GetProtectedOverriders().ToArray(), Is.Empty);
     }

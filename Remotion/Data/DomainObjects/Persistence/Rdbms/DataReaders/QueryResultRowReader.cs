@@ -16,15 +16,14 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
   /// <summary>
-  /// Reads data from an <see cref="IDataReader"/> and converts it into <see cref="IQueryResultRow"/> instances.
+  /// Reads data from an <see cref="DbDataReader"/> and converts it into <see cref="IQueryResultRow"/> instances.
   /// </summary>
   public class QueryResultRowReader : IObjectReader<IQueryResultRow>
   {
@@ -32,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public QueryResultRowReader (IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
 
       _storageTypeInformationProvider = storageTypeInformationProvider;
     }
@@ -42,9 +41,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _storageTypeInformationProvider; }
     }
 
-    public IQueryResultRow? Read (IDataReader dataReader)
+    public IQueryResultRow? Read (DbDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       if (dataReader.Read())
         return CreateResultRowFromReader(dataReader);
@@ -52,17 +51,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         return null;
     }
 
-    public IEnumerable<IQueryResultRow> ReadSequence (IDataReader dataReader)
+    public IEnumerable<IQueryResultRow> ReadSequence (DbDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       while (dataReader.Read())
         yield return CreateResultRowFromReader(dataReader);
     }
 
-    protected virtual IQueryResultRow CreateResultRowFromReader (IDataReader dataReader)
+    protected virtual IQueryResultRow CreateResultRowFromReader (DbDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       return new QueryResultRow(dataReader, _storageTypeInformationProvider);
     }

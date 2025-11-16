@@ -16,7 +16,6 @@
 //
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Validation
 {
@@ -36,9 +35,9 @@ namespace Remotion.ObjectBinding.Validation
         IBusinessObject businessObject,
         IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull(nameof(propertyPath), propertyPath);
-      ArgumentUtility.CheckNotNull(nameof(businessObject), businessObject);
-      ArgumentUtility.CheckNotNull(nameof(validationResult), validationResult);
+      ArgumentNullException.ThrowIfNull(propertyPath);
+      ArgumentNullException.ThrowIfNull(businessObject);
+      ArgumentNullException.ThrowIfNull(validationResult);
 
       var result = propertyPath.GetResult(
           businessObject,

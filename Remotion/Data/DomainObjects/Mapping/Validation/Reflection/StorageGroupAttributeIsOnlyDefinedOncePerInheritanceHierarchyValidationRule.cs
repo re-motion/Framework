@@ -30,14 +30,14 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return Validate(classDefinition.ClassType);
     }
 
     private MappingValidationResult Validate (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (AttributeUtility.IsDefined(type, typeof(StorageGroupAttribute), false))
       {

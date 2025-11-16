@@ -32,9 +32,9 @@ namespace Remotion.Data.DomainObjects.Mapping
     public static T? ResolveDefinition<T> (IPropertyInformation propertyInformation, ClassDefinition classDefinition, Func<string, T?> definitionGetter)
         where T : class
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull("definitionGetter", definitionGetter);
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(propertyInformation);
+      ArgumentNullException.ThrowIfNull(definitionGetter);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       var matchingImplementations = GetMatchingDefinitions(propertyInformation, classDefinition, definitionGetter);
 

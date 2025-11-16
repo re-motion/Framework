@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Utilities;
 
@@ -30,7 +30,7 @@ public class SimpleDataParameterDefinition : IDataParameterDefinition
 
   public SimpleDataParameterDefinition (IStorageTypeInformation storageTypeInformation)
   {
-    ArgumentUtility.CheckNotNull(nameof(storageTypeInformation), storageTypeInformation);
+    ArgumentNullException.ThrowIfNull(storageTypeInformation);
 
     StorageTypeInformation = storageTypeInformation;
   }
@@ -42,11 +42,11 @@ public class SimpleDataParameterDefinition : IDataParameterDefinition
     return StorageTypeInformation.ConvertToStorageType(value);
   }
 
-  public IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue)
+  public DbParameter CreateDataParameter (DbCommand command, string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNull(nameof(command), command);
-    ArgumentUtility.CheckNotNullOrEmpty(nameof(parameterName), parameterName);
-    ArgumentUtility.CheckNotNull(nameof(parameterValue), parameterValue);
+    ArgumentNullException.ThrowIfNull(command);
+    ArgumentException.ThrowIfNullOrEmpty(parameterName);
+    ArgumentNullException.ThrowIfNull(parameterValue);
 
     var parameter = command.CreateParameter();
     parameter.ParameterName = parameterName;

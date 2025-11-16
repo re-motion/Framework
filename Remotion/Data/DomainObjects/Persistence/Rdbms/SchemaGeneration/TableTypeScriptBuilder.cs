@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 {
@@ -33,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public TableTypeScriptBuilder (IStructuredTypeScriptElementFactory elementFactory, ICommentScriptElementFactory commentFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(elementFactory), elementFactory);
+      ArgumentNullException.ThrowIfNull(elementFactory);
 
       ElementFactory = elementFactory;
       _createScriptElements = new ScriptElementCollection();
@@ -49,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddStructuredTypeDefinition (IRdbmsStructuredTypeDefinition typeDefinition)
     {
-      ArgumentUtility.CheckNotNull(nameof(typeDefinition), typeDefinition);
+      ArgumentNullException.ThrowIfNull(typeDefinition);
 
       InlineRdbmsStructuredTypeDefinitionVisitor.Visit(typeDefinition, (type, _) => AddTableTypeDefinition(type));
     }

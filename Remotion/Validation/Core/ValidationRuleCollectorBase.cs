@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.RuleBuilders;
 using Remotion.Validation.RuleCollectors;
 
@@ -78,7 +77,7 @@ namespace Remotion.Validation
     public IConditionalAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> AddRule<TProperty> (
         Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
-      ArgumentUtility.CheckNotNull("propertySelector", propertySelector);
+      ArgumentNullException.ThrowIfNull(propertySelector);
 
       var propertyRule = AddingPropertyValidationRuleCollector.Create(propertySelector, GetType());
       _addedPropertyRules.Add(propertyRule);
@@ -101,8 +100,8 @@ namespace Remotion.Validation
         IPropertyInformation propertyInfo,
         Func<object, object> propertyGetter)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("propertyGetter", propertyGetter);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyGetter);
 
       var collectorType = GetType();
 
@@ -126,7 +125,7 @@ namespace Remotion.Validation
     public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> RemoveRule<TProperty> (
         Expression<Func<TValidatedType, TProperty>> propertySelector)
     {
-      ArgumentUtility.CheckNotNull("propertySelector", propertySelector);
+      ArgumentNullException.ThrowIfNull(propertySelector);
 
       var propertyRule = RemovingPropertyValidationRuleCollector.Create(propertySelector, GetType());
       _removedPropertyRules.Add(propertyRule);
@@ -145,7 +144,7 @@ namespace Remotion.Validation
     public IRemovingPropertyValidationRuleBuilder<TValidatedType, TProperty> RemoveRule<TProperty> (
         IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentNullException.ThrowIfNull(propertyInformation);
 
       var propertyRule = new RemovingPropertyValidationRuleCollector(propertyInformation, GetType());
       _removedPropertyRules.Add(propertyRule);

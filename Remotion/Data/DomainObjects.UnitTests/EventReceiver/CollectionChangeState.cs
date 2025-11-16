@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -39,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     public CollectionChangeState (object sender, DomainObject domainObject, string message)
       : base(sender, message)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
 
       _domainObject = domainObject;
     }

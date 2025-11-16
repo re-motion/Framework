@@ -49,14 +49,14 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator instanceCreator)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(DomainObject));
-      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
-      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
-      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
-      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
-      ArgumentUtility.CheckNotNull("instanceCreator", instanceCreator);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(type), type, typeof(DomainObject));
+      ArgumentNullException.ThrowIfNull(mappingObjectFactory);
+      ArgumentNullException.ThrowIfNull(nameResolver);
+      ArgumentNullException.ThrowIfNull(classIDProvider);
+      ArgumentNullException.ThrowIfNull(propertyMetadataProvider);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
+      ArgumentNullException.ThrowIfNull(sortExpressionDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(instanceCreator);
 
       _type = type;
       _mappingObjectFactory = mappingObjectFactory;

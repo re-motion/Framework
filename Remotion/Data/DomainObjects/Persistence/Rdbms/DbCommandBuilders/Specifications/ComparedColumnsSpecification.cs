@@ -17,11 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications
 {
@@ -31,11 +30,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public ComparedColumnsSpecification (IEnumerable<ColumnValue> comparedColumnValues)
     {
-      ArgumentUtility.CheckNotNull("comparedColumnValues", comparedColumnValues);
+      ArgumentNullException.ThrowIfNull(comparedColumnValues);
       _comparedColumnValues = comparedColumnValues.ToArray();
 
       if (_comparedColumnValues.Length == 0)
-        throw new ArgumentException("The sequence of compared column values must contain at least one element.", "comparedColumnValues");
+        throw new ArgumentException("The sequence of compared column values must contain at least one element.", nameof(comparedColumnValues));
     }
 
     public ReadOnlyCollection<ColumnValue> ComparedColumnValues
@@ -43,10 +42,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
       get { return Array.AsReadOnly(_comparedColumnValues); }
     }
 
-    public void AddParameters (IDbCommand command, ISqlDialect sqlDialect)
+    public void AddParameters (DbCommand command, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       foreach (var comparedColumnValue in _comparedColumnValues)
       {
@@ -58,11 +57,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
     }
 
     public void AppendComparisons (
-        StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect)
+        StringBuilder statement, DbCommand command, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       bool first = true;
 

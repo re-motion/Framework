@@ -21,7 +21,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 {
@@ -31,90 +30,80 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
   public class DockerCommandLineClient : IDockerClient
   {
     private  readonly ILogger _logger;
-    private readonly string _dockerExeFullPath;
+    private readonly string _dockerExecutablePath;
     private readonly TimeSpan _pullTimeout;
     private readonly TimeSpan _commandTimeout = TimeSpan.FromSeconds(15);
 
     public DockerCommandLineClient (TimeSpan pullTimeout, ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _logger = loggerFactory.CreateLogger<DockerCommandLineClient>();
       _pullTimeout = pullTimeout;
-      _dockerExeFullPath = GetDockerExeFullPath();
+      _dockerExecutablePath = GetDockerExecutablePath();
     }
 
     /// <inheritdoc />
     public void Pull (string imageName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("imageName", imageName);
+      ArgumentException.ThrowIfNullOrEmpty(imageName);
 
       RunDockerCommand($"pull {imageName}", timeout: _pullTimeout);
     }
 
     /// <inheritdoc />
-    public string Run (
-        IDictionary<int, int> ports,
-        IDictionary<string, string> mounts,
-        IDictionary<string, string> environmentVariables,
-        string imageName,
-        string? isolationMode,
-        string? hostname,
-        bool remove,
-        string? entryPoint,
-        string? workingDirectory,
-        string? args)
+    public string Run (DockerRunSettings settings)
     {
-      ArgumentUtility.CheckNotNull("ports", ports);
-      ArgumentUtility.CheckNotNull("mounts", mounts);
-      ArgumentUtility.CheckNotNull("environmentVariables", environmentVariables);
-      ArgumentUtility.CheckNotNullOrEmpty("imageName", imageName);
-      ArgumentUtility.CheckNotEmpty("hostname", hostname);
-      ArgumentUtility.CheckNotEmpty("entryPoint", entryPoint);
-      ArgumentUtility.CheckNotEmpty("workingDirectory", workingDirectory);
-      ArgumentUtility.CheckNotEmpty("args", args);
+      ArgumentNullException.ThrowIfNull(settings);
 
       var commandBuilder = new StringBuilder()
           .Append("run").Append(' ')
           .Append("-d").Append(' ');
 
-      if (remove)
+      if (settings.Remove)
         commandBuilder.Append("--rm").Append(' ');
 
-      if (isolationMode != null)
-        commandBuilder.Append($@"--isolation=""{isolationMode}""").Append(' ');
+      if (settings.IsolationMode != null)
+        commandBuilder.Append($@"--isolation=""{settings.IsolationMode}""").Append(' ');
 
-      if (ports.Any())
+      if (settings.Ports.Any())
       {
-        var portFlags = string.Join(" ", ports.Select(kvp => $"-p {kvp.Key}:{kvp.Value}"));
+        var portFlags = string.Join(" ", settings.Ports.Select(kvp => $"-p {kvp.Key}:{kvp.Value}"));
         commandBuilder.Append(portFlags).Append(' ');
       }
 
-      if (mounts.Any())
+      if (settings.Mounts.Any())
       {
-        var mountFlags = string.Join(" ", mounts.Select(kvp => $@"-v ""{kvp.Key}"":""{kvp.Value.Trim('\\')}"""));
+        var mountFlags = string.Join(" ", settings.Mounts.Select(kvp => $@"-v ""{kvp.Key}"":""{kvp.Value.Trim('\\')}"""));
         commandBuilder.Append(mountFlags).Append(' ');
       }
 
-      if (environmentVariables.Any())
+      if (settings.EnvironmentVariables.Any())
       {
-        var environmentFlags = string.Join(" ", environmentVariables.Select(kvp => $@"-e ""{kvp.Key}""=""{kvp.Value}"""));
+        var environmentFlags = string.Join(" ", settings.EnvironmentVariables.Select(kvp => $@"-e ""{kvp.Key}""=""{kvp.Value}"""));
         commandBuilder.Append(environmentFlags).Append(' ');
       }
 
-      if (entryPoint != null)
-        commandBuilder.Append($@"--entrypoint=""{entryPoint}""").Append(' ');
+      if (settings.EntryPoint != null)
+        commandBuilder.Append($@"--entrypoint=""{settings.EntryPoint}""").Append(' ');
 
-      if (workingDirectory != null)
-        commandBuilder.Append($@"--workdir ""{workingDirectory.Trim('\\')}""").Append(' ');
+      if (settings.WorkingDirectory != null)
+        commandBuilder.Append($@"--workdir ""{settings.WorkingDirectory.Trim('\\')}""").Append(' ');
 
-      if (hostname != null)
-        commandBuilder.Append($@"--hostname ""{hostname}""").Append(' ');
+      if (settings.Hostname != null)
+        commandBuilder.Append($@"--hostname ""{settings.Hostname}""").Append(' ');
 
-      commandBuilder.Append(imageName).Append(' ');
+      if (settings.CustomArguments != null)
+      {
+        commandBuilder.Append(settings.CustomArguments);
+        if (settings.CustomArguments.Length > 0 && settings.CustomArguments[^1] != ' ')
+          commandBuilder.Append(' ');
+      }
 
-      if (args != null)
-        commandBuilder.Append(args);
+      commandBuilder.Append(settings.ImageName).Append(' ');
+
+      if (settings.Args != null)
+        commandBuilder.Append(settings.Args);
 
       var command = commandBuilder.ToString();
 
@@ -124,9 +113,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public bool ContainerExists (string containerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("containerName", containerName);
+      ArgumentException.ThrowIfNullOrEmpty(containerName);
 
-      using (var p = Process.Start(_dockerExeFullPath, $"inspect {containerName}"))
+      using (var p = Process.Start(_dockerExecutablePath, $"inspect {containerName}"))
       {
         p.WaitForExit((int)_commandTimeout.TotalMilliseconds);
 
@@ -137,7 +126,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public void Remove (string containerName, bool force = false)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("containerName", containerName);
+      ArgumentException.ThrowIfNullOrEmpty(containerName);
 
       var commandBuilder = new StringBuilder()
           .Append("rm").Append(' ');
@@ -155,7 +144,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
     /// <inheritdoc />
     public void Stop (string containerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("containerName", containerName);
+      ArgumentException.ThrowIfNullOrEmpty(containerName);
 
       var commandBuilder = new StringBuilder()
           .Append("stop").Append(' ')
@@ -174,17 +163,18 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
                       {
                           WindowStyle = ProcessWindowStyle.Hidden,
                           ErrorDialog = false,
-                          LoadUserProfile = true,
                           CreateNoWindow = false,
                           UseShellExecute = false,
                           RedirectStandardOutput = true,
                           RedirectStandardError = true
                       };
+      if (OperatingSystem.IsWindows())
+        startInfo.LoadUserProfile = true;
 
       if (!string.IsNullOrEmpty(workingDirectory))
         startInfo.WorkingDirectory = workingDirectory;
 
-      startInfo.FileName = _dockerExeFullPath;
+      startInfo.FileName = _dockerExecutablePath;
       startInfo.Arguments = dockerCommand;
 
       using (var dockerProcess = new Process { StartInfo = startInfo })
@@ -227,8 +217,12 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
       }
     }
 
-    private string GetDockerExeFullPath ()
+    private string GetDockerExecutablePath ()
     {
+      // On non-windows system we assume docker is part of the path
+      if (!OperatingSystem.IsWindows())
+        return "docker";
+
       var programFiles = Environment.GetEnvironmentVariable("ProgramW6432");
       if (string.IsNullOrEmpty(programFiles))
         programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);

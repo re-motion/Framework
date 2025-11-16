@@ -104,8 +104,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         Assert.That(
             result.GetErrorMessage(),
             Is.EqualTo(
-                "The access control entry is in an invalid state:\r\n"
-                + "  The TenantCondition property is set to SpecificTenant, but no SpecificTenant is assigned.\r\n"
+                $"The access control entry is in an invalid state:{Environment.NewLine}"
+                + $"  The TenantCondition property is set to SpecificTenant, but no SpecificTenant is assigned.{Environment.NewLine}"
                 + "  The GroupCondition property is set to SpecificGroup, but no SpecificGroup is assigned."));
       }
     }

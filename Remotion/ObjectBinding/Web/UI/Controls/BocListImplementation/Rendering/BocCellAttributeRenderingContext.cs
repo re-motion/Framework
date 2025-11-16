@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 
+using System;
 using System.Web;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.Services;
-using Remotion.Utilities;
 using Remotion.Web;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocCellAttributeRenderingContext (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       _renderingContext = renderingContext;
     }
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <inheritdoc cref="HtmlTextWriter.AddAttribute(string,string)" />
     public void AddAttributeToRender (string name, string? value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       _renderingContext.Writer.AddAttribute(name, value);
     }
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <inheritdoc cref="HtmlTextWriter.AddAttribute(string,string,bool)" />
     public void AddAttributeToRender (string name, string? value, bool fEncode)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       _renderingContext.Writer.AddAttribute(name, value, fEncode);
     }
@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <inheritdoc cref="HtmlTextWriter.AddAttribute(string,string)" />
     public void AddAttributeToRender (string name, PlainTextString value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       value.AddAttributeTo(_renderingContext.Writer, name);
     }
@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <inheritdoc cref="HtmlTextWriter.AddStyleAttribute(string,string)" />
     public void AddStyleAttributeToRender (string name, string? value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       _renderingContext.Writer.AddStyleAttribute(name, value);
     }

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -30,7 +29,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public RegularMixinInfo (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
 
       _mixinType = mixinType;
     }

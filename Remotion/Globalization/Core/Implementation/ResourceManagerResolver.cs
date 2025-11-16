@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization.Implementation
 {
@@ -37,7 +36,7 @@ namespace Remotion.Globalization.Implementation
 
     public ResourceManagerResolver (IResourceManagerFactory resourceManagerFactory)
     {
-      ArgumentUtility.CheckNotNull("resourceManagerFactory", resourceManagerFactory);
+      ArgumentNullException.ThrowIfNull(resourceManagerFactory);
 
       _resourceManagerFactory = resourceManagerFactory;
 
@@ -47,7 +46,7 @@ namespace Remotion.Globalization.Implementation
 
     public ResolvedResourceManagerResult Resolve (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return GetResolvedResourceManagerFromCache(type);
     }

@@ -37,7 +37,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a boolean value (true or false). </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocCheckBox.xml' path='BocCheckBox/Class/*' />
   [ValidationProperty("ValidationValue")]
   [DefaultEvent("SelectionChanged")]
   [ToolboxItemFilter("System.Web.UI")]
@@ -90,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       base.RegisterHtmlHeadContents(htmlHeadAppender);
 
@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -118,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocCheckBoxRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       Assertion.IsNotNull(Context, "Context must not be null.");
 
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
     ///   between postbacks.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadPostData/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocCheckBox.xml' path='BocCheckBox/LoadPostData/*' />
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       if (! _isActive)
@@ -200,8 +200,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
 

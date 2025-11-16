@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Web;
@@ -70,7 +71,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _postBackCollection = new NameValueCollection { { "Key", "Value" } };
       _wxeHandler = new WxeHandler();
 
-      UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_rootFunction.GetType(), "~/root.wxe"));
       UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(_subFunction.Object.GetType(), "~/sub.wxe"));
 

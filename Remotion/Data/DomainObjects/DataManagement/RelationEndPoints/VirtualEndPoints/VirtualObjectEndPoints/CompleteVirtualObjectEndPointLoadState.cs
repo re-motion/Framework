@@ -41,14 +41,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public override DomainObject? GetData (IVirtualObjectEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
 
       return DataManager.CurrentOppositeObject;
     }
 
     public override DomainObject? GetOriginalData (IVirtualObjectEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
 
       return DataManager.OriginalOppositeObject;
     }
@@ -57,16 +57,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IVirtualObjectEndPoint endPoint,
         IVirtualEndPointLoadState<IVirtualObjectEndPoint, DomainObject?, IVirtualObjectEndPointDataManager> sourceLoadState)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      var sourceCompleteLoadState = ArgumentUtility.CheckNotNullAndType<CompleteVirtualObjectEndPointLoadState>("sourceLoadState", sourceLoadState);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      var sourceCompleteLoadState = ArgumentUtility.CheckNotNullAndType<CompleteVirtualObjectEndPointLoadState>(nameof(sourceLoadState), sourceLoadState);
 
       DataManager.SetDataFromSubTransaction(sourceCompleteLoadState.DataManager, EndPointProvider);
     }
 
     public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject? item, Action<IVirtualObjectEndPointDataManager> stateSetter)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(stateSetter);
 
       var items = item == null ? Array.Empty<DomainObject>() : EnumerableUtility.Singleton(item);
       MarkDataComplete(endPoint, items, stateSetter);
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public override void SynchronizeOppositeEndPoint (IVirtualObjectEndPoint endPoint, IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       if (DataManager.OriginalOppositeEndPoint != null)
       {
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IDataManagementCommand CreateSetCommand (IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject? newRelatedObject)
     {
-      ArgumentUtility.CheckNotNull("virtualObjectEndPoint", virtualObjectEndPoint);
+      ArgumentNullException.ThrowIfNull(virtualObjectEndPoint);
 
       var oldRelatedObject = DataManager.CurrentOppositeObject;
       if (DataManager.OriginalItemWithoutEndPoint != null)
@@ -124,7 +124,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IDataManagementCommand CreateDeleteCommand (IVirtualObjectEndPoint virtualObjectEndPoint)
     {
-      ArgumentUtility.CheckNotNull("virtualObjectEndPoint", virtualObjectEndPoint);
+      ArgumentNullException.ThrowIfNull(virtualObjectEndPoint);
 
       if (UnsynchronizedOppositeEndPoints.Count != 0)
       {

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine
@@ -53,9 +52,9 @@ namespace Remotion.Web.ExecutionEngine
       if (this.IsExecutionStarted)
         throw new InvalidOperationException("Cannot encapsulate executing list.");
       if (innerList.Count > 0)
-        throw new ArgumentException("List must be empty.", "innerList");
+        throw new ArgumentException("List must be empty.", nameof(innerList));
       if (innerList.IsExecutionStarted)
-        throw new ArgumentException("Cannot encapsulate into executing list.", "innerList");
+        throw new ArgumentException("Cannot encapsulate into executing list.", nameof(innerList));
 
       innerList._steps = this._steps;
       foreach (WxeStep step in innerList._steps)
@@ -96,7 +95,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public void Add (WxeStep step)
     {
-      ArgumentUtility.CheckNotNull("step", step);
+      ArgumentNullException.ThrowIfNull(step);
 
       _steps.Add(step);
       step.SetParentStep(this);
@@ -104,15 +103,15 @@ namespace Remotion.Web.ExecutionEngine
 
     public void Add (WxeStepList target, MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull("target", target);
-      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(method);
 
       Add(new WxeMethodStep(target, method));
     }
 
     public void AddStepList (WxeStepList steps)
     {
-      ArgumentUtility.CheckNotNull("steps", steps);
+      ArgumentNullException.ThrowIfNull(steps);
 
       for (int i = 0; i < steps.Count; i++)
         Add(steps[i]);
@@ -121,8 +120,8 @@ namespace Remotion.Web.ExecutionEngine
     public void Insert (int index, WxeStep step)
     {
       if (_executingStep >= index)
-        throw new ArgumentException("Cannot insert step only after the last executed step.", "index");
-      ArgumentUtility.CheckNotNull("step", step);
+        throw new ArgumentException("Cannot insert step only after the last executed step.", nameof(index));
+      ArgumentNullException.ThrowIfNull(step);
 
       _steps.Insert(index, step);
       step.SetParentStep(this);

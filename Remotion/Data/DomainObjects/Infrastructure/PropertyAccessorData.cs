@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       // TODO RM-8246: possibly inline this method
 
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(propertyIdentifier);
 
       Tuple<PropertyDefinition?, IRelationEndPointDefinition?> propertyObjects = GetPropertyDefinitionObjects(classDefinition, propertyIdentifier);
       return GetPropertyKind(propertyObjects.Item2);
@@ -81,8 +81,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       // TODO RM-8246: possibly inline this method
 
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(propertyIdentifier);
 
       // TODO RM-8246: this is actually a discriminating union, solved via nullable values
       Tuple<PropertyDefinition?, IRelationEndPointDefinition?> definitionObjects =
@@ -105,8 +105,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       // TODO RM-8246: possibly inline this method
 
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("propertyIdentifier", propertyIdentifier);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(propertyIdentifier);
 
       PropertyDefinition? propertyDefinition = classDefinition.GetPropertyDefinition(propertyIdentifier);
       IRelationEndPointDefinition? relationEndPointDefinition = classDefinition.GetRelationEndPointDefinition(propertyIdentifier);
@@ -118,7 +118,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
             classDefinition.ClassType.GetFullNameSafe(),
             propertyIdentifier);
 
-        throw new ArgumentException(message, "propertyIdentifier");
+        throw new ArgumentException(message, nameof(propertyIdentifier));
       }
       else
         return new Tuple<PropertyDefinition?, IRelationEndPointDefinition?>(propertyDefinition, relationEndPointDefinition);
@@ -136,8 +136,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public PropertyAccessorData (ClassDefinition classDefinition, string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       _propertyIdentifier = propertyIdentifier;
       _classDefinition = classDefinition;

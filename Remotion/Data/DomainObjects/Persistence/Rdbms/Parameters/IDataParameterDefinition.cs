@@ -16,11 +16,12 @@
 //
 using System;
 using System.Data;
+using System.Data.Common;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 
 /// <summary>
-/// Defines how an <see cref="IDbDataParameter"/> is created from an <see cref="object"/> that serves as the <see cref="IDataParameter.Value"/>. 
+/// Defines how an <see cref="DbParameter"/> is created from an <see cref="object"/> that serves as the <see cref="IDataParameter.Value"/>. 
 /// </summary>
 public interface IDataParameterDefinition
 {
@@ -30,10 +31,10 @@ public interface IDataParameterDefinition
   object GetParameterValue (object? value);
 
   /// <summary>
-  /// Creates an <see cref="IDbDataParameter"/> with <paramref name="parameterValue"/> as the <see cref="IDataParameter.Value"/>.
+  /// Creates an <see cref="DbParameter"/> with <paramref name="parameterValue"/> as the <see cref="IDataParameter.Value"/>.
   /// </summary>
   /// <remarks>
   /// The <paramref name="parameterValue"/> is built from <see cref="GetParameterValue"/>.
   /// </remarks>
-  IDbDataParameter CreateDataParameter (IDbCommand command, string parameterName, object parameterValue);
+  DbParameter CreateDataParameter (DbCommand command, string parameterName, object parameterValue);
 }

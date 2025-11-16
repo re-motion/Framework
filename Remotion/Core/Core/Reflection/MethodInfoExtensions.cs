@@ -35,7 +35,7 @@ namespace Remotion.Reflection
     /// <exception cref="InvalidOperationException">No declaring type could be found.</exception>
     public static Type GetOriginalDeclaringType (this MethodInfo methodInfo)
     {
-      ArgumentUtility.CheckNotNull("methodInfo", methodInfo);
+      ArgumentNullException.ThrowIfNull(methodInfo);
 
       var declaringType = methodInfo.GetBaseDefinition().DeclaringType;
       if (declaringType == null)
@@ -55,7 +55,7 @@ namespace Remotion.Reflection
     /// </returns>
     public static PropertyInfo? FindDeclaringProperty (this MethodInfo methodInfo)
     {
-      ArgumentUtility.CheckNotNull("methodInfo", methodInfo);
+      ArgumentNullException.ThrowIfNull(methodInfo);
 
       // Note: We scan the hierarchy ourselves because private (eg., explicit) property implementations in base types are ignored by GetProperties
       // We use AreEqualMethodsWithoutReflectedType because our algorithm manually iterates over the base type hierarchy, so the accesor's

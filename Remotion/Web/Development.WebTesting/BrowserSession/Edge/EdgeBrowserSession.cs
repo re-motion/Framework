@@ -16,9 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
-using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 
@@ -29,6 +27,17 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Edge
   /// </summary>
   public class EdgeBrowserSession : BrowserSessionBase<IEdgeConfiguration>
   {
+    public static void ApplyDefaultWebTestFeatures<T> (
+        WebTestFeatureCollection features,
+        T browserSession)
+        where T: IBrowserSession, IBidiConnectionProvider
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserSession);
+
+      features.Set<IBrowserLogProvider>(new SeleniumBrowserLogProvider(browserSession.Driver));
+    }
+
     private readonly IReadOnlyCollection<IBrowserSessionCleanUpStrategy> _cleanUpStrategies;
 
     public EdgeBrowserSession (
@@ -39,15 +48,9 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Edge
         [CanBeNull] [ItemNotNull] IReadOnlyCollection<IBrowserSessionCleanUpStrategy>? cleanUpStrategies = null)
         : base(value, configuration, driverProcessID, headless)
     {
-      _cleanUpStrategies = cleanUpStrategies ?? new IBrowserSessionCleanUpStrategy[0];
-    }
+      _cleanUpStrategies = cleanUpStrategies ?? Array.Empty<IBrowserSessionCleanUpStrategy>();
 
-    /// <inheritdoc />
-    public override IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
-    {
-      return ((IWebDriver)Driver.Native).Manage().Logs.GetLog(LogType.Browser)
-          .Select(logEntry => new BrowserLogEntry(logEntry))
-          .ToArray();
+      ApplyDefaultWebTestFeatures(FeaturesMutable, this);
     }
 
     /// <inheritdoc />

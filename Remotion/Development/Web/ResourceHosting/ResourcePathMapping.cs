@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Web;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Web.ResourceHosting
 {
@@ -30,8 +29,8 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public ResourcePathMapping (string virtualPath, string relativeFileSystemPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
-      ArgumentUtility.CheckNotNullOrEmpty("relativeFileSystemPath", relativeFileSystemPath);
+      ArgumentException.ThrowIfNullOrEmpty(virtualPath);
+      ArgumentException.ThrowIfNullOrEmpty(relativeFileSystemPath);
 
       _virtualPath = VirtualPathUtility.AppendTrailingSlash(virtualPath);
       _relativeFileSystemPath = relativeFileSystemPath;

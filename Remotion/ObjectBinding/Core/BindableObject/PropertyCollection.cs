@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public PropertyCollection (IEnumerable<PropertyBase> properties)
     {
-      ArgumentUtility.CheckNotNull("properties", properties);
+      ArgumentNullException.ThrowIfNull(properties);
 
       foreach (var property in properties)
         _innerCollection.Add(property);

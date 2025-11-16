@@ -16,7 +16,6 @@
 //
 using System;
 using System.Web.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -32,8 +31,8 @@ namespace Remotion.Web.UI.Controls
 
     public FontPreloadLink (IResourceUrl resourceUrl, string type)
     {
-      ArgumentUtility.CheckNotNull("resourceUrl", resourceUrl);
-      ArgumentUtility.CheckNotNullOrEmpty("type", type);
+      ArgumentNullException.ThrowIfNull(resourceUrl);
+      ArgumentException.ThrowIfNullOrEmpty(type);
 
       _resourceUrl = resourceUrl;
       _type = type;
@@ -46,7 +45,7 @@ namespace Remotion.Web.UI.Controls
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       writer.WriteBeginTag(s_tagName);
       writer.WriteAttribute(s_hrefAttribute, _resourceUrl.GetUrl());

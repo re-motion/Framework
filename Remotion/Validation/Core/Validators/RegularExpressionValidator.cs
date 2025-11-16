@@ -21,7 +21,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -35,8 +34,8 @@ namespace Remotion.Validation.Validators
 
     public RegularExpressionValidator ([NotNull] Regex regex, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("regex", regex);
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentNullException.ThrowIfNull(regex);
+      ArgumentNullException.ThrowIfNull(validationMessage);
 
       Regex = regex;
       ErrorMessage = $"The value must be in the correct format ({regex}).";
@@ -45,7 +44,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

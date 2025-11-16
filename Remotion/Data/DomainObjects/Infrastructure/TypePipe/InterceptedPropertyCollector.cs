@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public InterceptedPropertyCollector (ClassDefinition classDefinition, ITypeConversionProvider typeConversionProvider)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("typeConversionProvider", typeConversionProvider);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(typeConversionProvider);
 
       _classDefinition = classDefinition;
       _typeConversionProvider = typeConversionProvider;

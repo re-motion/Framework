@@ -40,8 +40,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         ClassDefinition referencedClassDefinition,
         string? sortExpressionText)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("referencedClassDefinition", referencedClassDefinition);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+      ArgumentNullException.ThrowIfNull(referencedClassDefinition);
 
       if (sortExpressionText == null)
         return null;

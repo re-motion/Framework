@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
@@ -41,14 +40,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
             oppositeObjectSetter,
             transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
 
       if (modifiedEndPoint.Definition.GetOppositeEndPointDefinition().IsAnonymous)
       {
         var message = string.Format(
             "EndPoint '{0}' is from a unidirectional relation - use a ObjectEndPointSetUnidirectionalCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException(message, "modifiedEndPoint");
+        throw new ArgumentException(message, nameof(modifiedEndPoint));
       }
 
       if (modifiedEndPoint.Definition.GetOppositeEndPointDefinition().Cardinality == CardinalityType.One)
@@ -56,7 +55,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         var message = string.Format(
             "EndPoint '{0}' is from a 1:1 relation - use a ObjectEndPointSetOneOneCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException(message, "modifiedEndPoint");
+        throw new ArgumentException(message, nameof(modifiedEndPoint));
       }
 
       if (newRelatedObject == modifiedEndPoint.GetOppositeObject())
@@ -65,7 +64,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
             string.Format(
                 "New related object for EndPoint '{0}' is the same as its old value - use a ObjectEndPointSetSameCommand instead.",
                 modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException(message, "newRelatedObject");
+        throw new ArgumentException(message, nameof(newRelatedObject));
       }
 
       _endPointProvider = endPointProvider;

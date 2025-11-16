@@ -48,10 +48,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
             indexes,
             synonyms)
     {
-      ArgumentUtility.CheckNotNull("unionedEntities", unionedEntities);
+      ArgumentNullException.ThrowIfNull(unionedEntities);
 
       var unionedEntitiesList = unionedEntities.ToList().AsReadOnly();
-      ArgumentUtility.CheckNotEmpty("unionedEntities", unionedEntitiesList);
+      ArgumentUtility.CheckNotEmpty(nameof(unionedEntities), unionedEntitiesList);
 
       for (int i = 0; i < unionedEntitiesList.Count; ++i)
       {
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
                   "Item {0} is of type '{1}', but the unioned entities must either be a TableDefinitions or UnionViewDefinitions.",
                   i,
                   unionedEntity.GetType()),
-              "unionedEntities");
+              nameof(unionedEntities));
         }
       }
 
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnDefinition?[] CalculateFullColumnList (IEnumerable<ColumnDefinition> availableColumns)
     {
-      ArgumentUtility.CheckNotNull("availableColumns", availableColumns);
+      ArgumentNullException.ThrowIfNull(availableColumns);
 
       // Since validation hasn't run yet, we can't be sure that all column names are unique. Therefore, choose the first column with matching name.
       var availableColumnsAsDictionary = availableColumns.ToLookup(c => c.Name);
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public override void Accept (IRdbmsStorageEntityDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
 
       visitor.VisitUnionViewDefinition(this);
     }

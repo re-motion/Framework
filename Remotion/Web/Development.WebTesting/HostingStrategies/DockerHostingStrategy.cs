@@ -21,7 +21,6 @@ using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting;
@@ -37,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
 
     public DockerHostingStrategy (DockerContainerWrapperBase dockerContainerWrapper)
     {
-      ArgumentUtility.CheckNotNull("dockerContainerWrapper", dockerContainerWrapper);
+      ArgumentNullException.ThrowIfNull(dockerContainerWrapper);
       _dockerContainerWrapper = dockerContainerWrapper;
     }
 
@@ -53,14 +52,15 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
         [NotNull] IReadOnlyDictionary<string, string> properties,
         [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull(nameof(testSiteLayoutConfiguration), testSiteLayoutConfiguration);
-      ArgumentUtility.CheckNotNull(nameof(properties), properties);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentNullException.ThrowIfNull(testSiteLayoutConfiguration);
+      ArgumentNullException.ThrowIfNull(properties);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       var port = int.Parse(properties["port"]);
       var dockerImageName = properties["dockerImageName"];
       var dockerIsolationMode = properties["dockerIsolationMode"];
       var dockerPullTimeout = TimeSpan.Parse(properties["dockerPullTimeout"]);
+      var dockerCustomArguments = properties.GetValueOrDefault("dockerCustomArguments");
       var hostname = properties["hostname"];
       var innerType = properties.GetValueOrDefault("innerType");
 
@@ -92,7 +92,8 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
             dockerIsolationMode,
             hostname,
             is32BitProcess,
-            mounts);
+            mounts,
+            dockerCustomArguments);
 
         return new IisDockerContainerWrapper(docker, configurationParameters, loggerFactory);
       }
@@ -107,7 +108,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
             hostname,
             is32BitProcess,
             mounts,
-            testSiteLayoutConfiguration.ProcessPath);
+            dockerCustomArguments,
+            testSiteLayoutConfiguration.ProcessPath,
+            testSiteLayoutConfiguration.ProcessArguments);
 
         return new AspNetDockerContainerWrapper(docker, configurationParameters, loggerFactory);
       }

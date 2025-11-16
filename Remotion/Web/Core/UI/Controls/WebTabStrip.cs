@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -27,7 +26,6 @@ using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
@@ -72,7 +70,7 @@ namespace Remotion.Web.UI.Controls
 
     public WebTabStrip (WebTabCollection tabCollection)
     {
-      ArgumentUtility.CheckNotNull("tabCollection", tabCollection);
+      ArgumentNullException.ThrowIfNull(tabCollection);
       _tabs = tabCollection;
       _tabs.SetTabStrip(this);
       _tabStyle = new WebTabStyle();
@@ -117,7 +115,7 @@ namespace Remotion.Web.UI.Controls
       if (postCollection[ControlHelper.PostEventSourceID] == UniqueID)
       {
         _tabToBeSelected = postCollection[ControlHelper.PostEventArgumentID];
-        ArgumentUtility.CheckNotNullOrEmpty("postCollection[\"__EVENTARGUMENT\"]", _tabToBeSelected!);
+        ArgumentException.ThrowIfNullOrEmpty(_tabToBeSelected, paramName: "postCollection[\"__EVENTARGUMENT\"]");
         if (_tabToBeSelected != _selectedItemID)
           return true;
       }
@@ -153,7 +151,7 @@ namespace Remotion.Web.UI.Controls
 
     private void HandleClickEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
+      ArgumentException.ThrowIfNullOrEmpty(eventArgument);
       WebTab? tab = Tabs.Find(eventArgument);
       if (tab != null)
         OnClick(tab);
@@ -161,7 +159,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual void OnClick (WebTab tab)
     {
-      ArgumentUtility.CheckNotNull("tab", tab);
+      ArgumentNullException.ThrowIfNull(tab);
       tab.OnClick();
       WebTabClickEventHandler? handler = (WebTabClickEventHandler?)Events[s_clickEvent];
       if (handler != null)
@@ -232,7 +230,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -245,7 +243,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual WebTabStripRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var builder = new WebTabRendererAdapterArrayBuilder(GetVisibleTabs().ToArray(), TabStyle, SelectedTabStyle);
       builder.EnableSelectedTab = EnableSelectedTab;
@@ -278,7 +276,7 @@ namespace Remotion.Web.UI.Controls
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
     void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentNullException.ThrowIfNull(values);
       Dispatch(values);
     }
 
@@ -365,8 +363,8 @@ namespace Remotion.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       Tabs.LoadResources(resourceManager, globalizationService);
     }
@@ -399,7 +397,7 @@ namespace Remotion.Web.UI.Controls
 
     private void SetSelectedTab (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
       if (_selectedTab == null || _selectedTab.ItemID != itemID)
       {
         WebTab? tab = Tabs.Find(itemID);

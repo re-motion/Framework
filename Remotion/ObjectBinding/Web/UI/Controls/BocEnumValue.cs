@@ -40,7 +40,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit enumeration values. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/Class/*' />
   [ValidationProperty("Value")]
   [DefaultEvent("SelectionChanged")]
   [ToolboxItemFilter("System.Web.UI")]
@@ -114,7 +114,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -127,7 +127,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocEnumValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       Assertion.IsNotNull(Context, "Context must not be null.");
 
@@ -135,7 +135,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/LoadValue/*' />
     public override void LoadValue (bool interim)
     {
       if (interim)
@@ -158,27 +158,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> The enumeration value or <see langword="null"/>. </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
     public void LoadUnboundValue<TEnum> (TEnum? value, bool interim)
         where TEnum: struct
     {
-      ArgumentUtility.CheckType<Enum>("value", value);
+      ArgumentUtility.CheckType<Enum>(nameof(value), value);
       LoadValueInternal(value, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> The enumeration value. </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
     public void LoadUnboundValue<TEnum> (TEnum value, bool interim)
         where TEnum: struct
     {
-      ArgumentUtility.CheckType<Enum>("value", value);
+      ArgumentUtility.CheckType<Enum>(nameof(value), value);
       LoadValueInternal(value, interim);
     }
 
     /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/SaveValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/SaveValue/*' />
     public override bool SaveValue (bool interim)
     {
       if (interim)
@@ -292,11 +292,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public new IBusinessObjectEnumerationProperty? Property
     {
       get { return (IBusinessObjectEnumerationProperty?)base.Property; }
-      set { base.Property = ArgumentUtility.CheckType<IBusinessObjectEnumerationProperty>("value", value); }
+      set { base.Property = ArgumentUtility.CheckType<IBusinessObjectEnumerationProperty>(nameof(value), value); }
     }
 
     /// <summary> Gets or sets the current value. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/Value/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/Value/*' />
     [Browsable(false)]
     public new object? Value
     {
@@ -380,7 +380,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set
       {
         if (value == string.Empty)
-          throw new ArgumentException("Value must not be an empty string.", "value");
+          throw new ArgumentException("Value must not be an empty string.", nameof(value));
 
         if (_internalValue == value)
           return;
@@ -571,7 +571,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed
     ///   between postbacks.
     /// </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       string? newValue = StringUtility.EmptyToNull(PageUtility.GetPostBackCollectionItem(Page!, GetValueName()));
@@ -644,8 +644,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
 

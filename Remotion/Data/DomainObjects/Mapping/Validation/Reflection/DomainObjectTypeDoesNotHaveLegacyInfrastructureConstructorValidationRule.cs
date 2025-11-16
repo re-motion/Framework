@@ -17,7 +17,6 @@
 using System;
 using System.Reflection;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 {
@@ -33,14 +32,14 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return Validate(classDefinition.ClassType);
     }
 
     private MappingValidationResult Validate (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (!type.IsAbstract || (type.IsAbstract && Attribute.IsDefined(type, typeof(InstantiableAttribute), false)))
       {

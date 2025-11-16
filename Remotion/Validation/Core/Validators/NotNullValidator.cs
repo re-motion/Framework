@@ -20,7 +20,6 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -33,7 +32,7 @@ namespace Remotion.Validation.Validators
 
     public NotNullValidator ([NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentNullException.ThrowIfNull(validationMessage);
 
       ErrorMessage = "The value must not be null.";
       ValidationMessage = validationMessage;
@@ -41,7 +40,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

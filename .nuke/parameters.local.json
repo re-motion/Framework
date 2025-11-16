@@ -1,11 +1,12 @@
 {
   "$schema": "./build.schema.json",
-  "Solution": "Remotion.sln",
+  "DependDBProjectImportNotificationMailAddress": "nonexistent@nonexistent.nonexistent",
+  "VcsUrlTemplate": "https://raw.githubusercontent.com/re-motion/Framework/develop/{0}",
   "Target": [ "CIBuild" ],
   "TestConfigurations": [ "Debug"],
   "TestExecutionRuntimes": [ "LocalMachine" ],
   "TestPlatforms": [ "x86" ],
-  "TestTargetRuntimes": [ "NET8_0_WINDOWS" ],
+  "TestTargetRuntimes": [ "NET8_0", "NET10_0" ],
   "TestBrowsers": [ "NoBrowser" ],
   "TestSqlServers": [ "SqlServerDefault" ]
 }

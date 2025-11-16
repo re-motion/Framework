@@ -18,7 +18,6 @@ using System;
 using System.Collections.Concurrent;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
@@ -33,7 +32,7 @@ namespace Remotion.Validation.Implementation
 
     public GenericTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver validatedTypeResolver)
     {
-      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
+      ArgumentNullException.ThrowIfNull(validatedTypeResolver);
 
       _validatedTypeResolver = validatedTypeResolver;
     }
@@ -45,7 +44,7 @@ namespace Remotion.Validation.Implementation
 
     public Type? GetValidatedType (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull("collectorType", collectorType);
+      ArgumentNullException.ThrowIfNull(collectorType);
 
       var itemType = s_genericValidationRuleCollectorTypeCache.GetOrAdd(
               collectorType,

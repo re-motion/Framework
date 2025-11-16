@@ -132,7 +132,7 @@ namespace Remotion.Security.UnitTests
 
       Assert.That(
           () => _strategy.HasAccess(_securableType, _securityProviderMock.Object, _principalStub.Object, new AccessType[0]),
-          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("Parameter 'requiredAccessTypes' cannot be empty.", "requiredAccessTypes"));
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("The value cannot be an empty collection.", "requiredAccessTypes"));
     }
 
     [Test]

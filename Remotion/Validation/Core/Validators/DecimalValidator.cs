@@ -20,7 +20,6 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -79,13 +78,13 @@ namespace Remotion.Validation.Validators
 
     public DecimalValidator (int maxIntegerPlaces, int maxDecimalPlaces, bool ignoreTrailingZeros, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentNullException.ThrowIfNull(validationMessage);
 
       if (maxIntegerPlaces < 1)
-        throw new ArgumentOutOfRangeException("maxIntegerPlaces", maxIntegerPlaces, "Value must not be zero or negative.");
+        throw new ArgumentOutOfRangeException(nameof(maxIntegerPlaces), maxIntegerPlaces, "Value must not be zero or negative.");
 
       if (maxDecimalPlaces < 0)
-        throw new ArgumentOutOfRangeException("maxDecimalPlaces", maxDecimalPlaces, "Value must not be negative.");
+        throw new ArgumentOutOfRangeException(nameof(maxDecimalPlaces), maxDecimalPlaces, "Value must not be negative.");
 
       if ((maxIntegerPlaces + maxDecimalPlaces) > c_systemDecimalMaxPrecision)
       {
@@ -105,7 +104,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

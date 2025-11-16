@@ -42,10 +42,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         TargetClassDefinition targetClassDefinition,
         INextCallMethodGenerator nextCallMethodGenerator)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("constructor", constructor);
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull("nextCallMethodGenerator", nextCallMethodGenerator);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(constructor);
+      ArgumentNullException.ThrowIfNull(targetClassDefinition);
+      ArgumentNullException.ThrowIfNull(nextCallMethodGenerator);
 
       _type = type;
       _constructor = constructor;
@@ -60,8 +60,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public Expression CallConstructor (Expression target, Expression depth)
     {
-      ArgumentUtility.CheckNotNull("target", target);
-      ArgumentUtility.CheckNotNull("depth", depth);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(depth);
 
       return Expression.New(_constructor, target, depth);
     }

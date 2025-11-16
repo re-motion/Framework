@@ -33,7 +33,7 @@ namespace Remotion.Reflection
     /// <returns>A <see cref="PropertyInfo"/> object for the first implementation of this method.</returns>
     public static PropertyInfo GetBaseDefinition (this PropertyInfo propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       var declaringType = propertyInfo.DeclaringType;
       if (declaringType == null)
@@ -44,7 +44,7 @@ namespace Remotion.Reflection
       {
         throw new ArgumentException(
             String.Format("The property does not define any accessors.\r\n  Type: {0}, property: {1}", declaringType, propertyInfo.Name),
-            "propertyInfo");
+            nameof(propertyInfo));
       }
 
       var originalDeclaringType = GetOriginalDeclaringType(propertyInfo);
@@ -89,14 +89,14 @@ namespace Remotion.Reflection
     /// <returns>The <see cref="Type"/> where the property was declared for the first time.</returns>
     public static Type GetOriginalDeclaringType (this PropertyInfo propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       MethodInfo[] accessors = propertyInfo.GetAccessors(true);
       if (accessors.Length == 0)
       {
         throw new ArgumentException(
             String.Format("The property does not define any accessors.\r\n  Type: {0}, property: {1}", propertyInfo.DeclaringType, propertyInfo.Name),
-            "propertyInfo");
+            nameof(propertyInfo));
       }
 
       return accessors[0].GetOriginalDeclaringType();
@@ -112,7 +112,7 @@ namespace Remotion.Reflection
     /// </returns>
     public static bool IsOriginalDeclaration (this PropertyInfo propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       Type originalDeclaringType = GetOriginalDeclaringType(propertyInfo);
       return propertyInfo.DeclaringType == originalDeclaringType;
@@ -127,7 +127,7 @@ namespace Remotion.Reflection
     /// <returns>True, if the property is very likely an explicit interface implementation (at least in C# and VB.NET code); otherwise, false.</returns>
     public static bool GuessIsExplicitInterfaceProperty (this PropertyInfo info)
     {
-      ArgumentUtility.CheckNotNull("info", info);
+      ArgumentNullException.ThrowIfNull(info);
 
       return info.GetAccessors(true).Any(accessor => accessor.IsPrivate && accessor.IsVirtual && accessor.IsFinal);
     }

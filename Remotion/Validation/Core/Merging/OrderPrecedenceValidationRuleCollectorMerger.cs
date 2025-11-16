@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Rules;
@@ -40,8 +39,8 @@ namespace Remotion.Validation.Merging
         IPropertyValidatorExtractorFactory propertyValidatorExtractorFactory,
         IObjectValidatorExtractorFactory objectValidatorExtractorFactory)
     {
-      ArgumentUtility.CheckNotNull("propertyValidatorExtractorFactory", propertyValidatorExtractorFactory);
-      ArgumentUtility.CheckNotNull("objectValidatorExtractorFactory", objectValidatorExtractorFactory);
+      ArgumentNullException.ThrowIfNull(propertyValidatorExtractorFactory);
+      ArgumentNullException.ThrowIfNull(objectValidatorExtractorFactory);
 
       _propertyValidatorExtractorFactory = propertyValidatorExtractorFactory;
       _objectValidatorExtractorFactory = objectValidatorExtractorFactory;
@@ -58,10 +57,10 @@ namespace Remotion.Validation.Merging
         List<IAddingObjectValidationRuleCollector> collectedObjectValidationRules,
         ILogContext logContext)
     {
-      ArgumentUtility.CheckNotNull("collectorGroup", collectorGroup);
-      ArgumentUtility.CheckNotNull("collectedPropertyValidationRules", collectedPropertyValidationRules);
-      ArgumentUtility.CheckNotNull("collectedObjectValidationRules", collectedObjectValidationRules);
-      ArgumentUtility.CheckNotNull("logContext", logContext);
+      ArgumentNullException.ThrowIfNull(collectorGroup);
+      ArgumentNullException.ThrowIfNull(collectedPropertyValidationRules);
+      ArgumentNullException.ThrowIfNull(collectedObjectValidationRules);
+      ArgumentNullException.ThrowIfNull(logContext);
 
       var collectorInfos = collectorGroup.ToArray();
 

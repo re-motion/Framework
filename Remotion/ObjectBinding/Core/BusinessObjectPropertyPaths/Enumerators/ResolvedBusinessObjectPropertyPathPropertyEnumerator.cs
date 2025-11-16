@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 {
@@ -29,7 +28,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 
     public ResolvedBusinessObjectPropertyPathPropertyEnumerator (IBusinessObjectProperty[] properties)
     {
-      ArgumentUtility.CheckNotNull("properties", properties);
+      ArgumentNullException.ThrowIfNull(properties);
 
       _properties = properties;
     }
@@ -55,7 +54,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 
     public bool MoveNext (IBusinessObjectClass currentClass)
     {
-      ArgumentUtility.CheckNotNull("currentClass", currentClass);
+      ArgumentNullException.ThrowIfNull(currentClass);
 
       if (_index == _properties.Length)
         return false;

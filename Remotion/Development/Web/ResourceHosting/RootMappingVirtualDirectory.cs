@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
-using Remotion.Utilities;
 
 namespace Remotion.Development.Web.ResourceHosting
 {
@@ -39,10 +38,10 @@ namespace Remotion.Development.Web.ResourceHosting
         Func<string, ResourceVirtualDirectory> virtualDirectoryFactory)
         : base(virtualPath, directoryInfo)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
-      ArgumentUtility.CheckNotNull("mappings", mappings);
-      ArgumentUtility.CheckNotNull("directoryInfo", directoryInfo);
-      ArgumentUtility.CheckNotNull("virtualDirectoryFactory", virtualDirectoryFactory);
+      ArgumentException.ThrowIfNullOrEmpty(virtualPath);
+      ArgumentNullException.ThrowIfNull(mappings);
+      ArgumentNullException.ThrowIfNull(directoryInfo);
+      ArgumentNullException.ThrowIfNull(virtualDirectoryFactory);
 
       _mappings = mappings;
       _virtualDirectoryFactory = virtualDirectoryFactory;

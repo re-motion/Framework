@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
@@ -34,8 +33,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         [NotNull] string domainPropertyPath)
         where TCellControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("row", row);
-      ArgumentUtility.CheckNotNullOrEmpty("domainPropertyPath", domainPropertyPath);
+      ArgumentNullException.ThrowIfNull(row);
+      ArgumentException.ThrowIfNullOrEmpty(domainPropertyPath);
 
       return row.WithDomainPropertyPaths(domainPropertyPath);
     }

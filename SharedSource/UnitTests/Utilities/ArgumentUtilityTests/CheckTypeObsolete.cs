@@ -18,7 +18,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That(
           () => ArgumentUtility.CheckType("arg", 13, typeof(string)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type 'System.Int32' when type 'System.String' was expected.", "arg"));
+              .With.ArgumentExceptionMessageEqualTo("The value has type 'System.Int32' when type 'System.String' was expected.", "arg"));
     }
 
     [Test]
@@ -39,7 +39,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That(
           () => ArgumentUtility.CheckType("arg", (object?)null, typeof(int)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type '<null>' when type 'System.Int32' was expected.", "arg"));
+              .With.ArgumentExceptionMessageEqualTo("The value has type '<null>' when type 'System.Int32' was expected.", "arg"));
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
       Assert.That(
           () => ArgumentUtility.CheckType("arg", (object)DateTime.MinValue, typeof(int)),
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'arg' has type 'System.DateTime' when type 'System.Int32' was expected.", "arg"));
+              .With.ArgumentExceptionMessageEqualTo("The value has type 'System.DateTime' when type 'System.Int32' was expected.", "arg"));
     }
 
     [Test]

@@ -22,7 +22,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
-using Remotion.Utilities;
 using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Globalization;
@@ -174,7 +173,7 @@ public class SmartLabel: WebControl, IControl
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+    ArgumentNullException.ThrowIfNull(resourceManager);
 
     string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
     if (!string.IsNullOrEmpty(key))

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Castle.DynamicProxy;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 {
@@ -34,22 +33,22 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 
     public DynamicMixinBuilder (Type targetType)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentNullException.ThrowIfNull(targetType);
       _targetType = targetType;
     }
 
     public Type BuildMixinType (MethodInvocationHandler methodInvocationHandler)
     {
-      ArgumentUtility.CheckNotNull("methodInvocationHandler", methodInvocationHandler);
+      ArgumentNullException.ThrowIfNull(methodInvocationHandler);
       return new DynamicMixinTypeGenerator(Scope, _targetType, _methodsToOverride, methodInvocationHandler).BuildType();
     }
 
     public void OverrideMethod (MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentNullException.ThrowIfNull(method);
 
       if (method.DeclaringType != _targetType)
-        throw new ArgumentException("The declaring type of the method must be the target type.", "method");
+        throw new ArgumentException("The declaring type of the method must be the target type.", nameof(method));
 
       _methodsToOverride.Add(method);
     }

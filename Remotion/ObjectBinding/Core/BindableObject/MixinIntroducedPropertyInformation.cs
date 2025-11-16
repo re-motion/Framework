@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -38,7 +37,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public MixinIntroducedPropertyInformation (InterfaceImplementationPropertyInformation interfaceImplementationPropertyInfo)
     {
-      ArgumentUtility.CheckNotNull("interfaceImplementationPropertyInfo", interfaceImplementationPropertyInfo);
+      ArgumentNullException.ThrowIfNull(interfaceImplementationPropertyInfo);
 
       _interfaceImplementationPropertyInfo = interfaceImplementationPropertyInfo;
     }
@@ -85,7 +84,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull("implementationType", implementationType);
+      ArgumentNullException.ThrowIfNull(implementationType);
 
       return _interfaceImplementationPropertyInfo.FindInterfaceImplementation(implementationType);
     }
@@ -117,14 +116,14 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public object? GetValue (object? instance, object?[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull("instance", instance!);
+      ArgumentNullException.ThrowIfNull(instance!);
 
       return _interfaceImplementationPropertyInfo.GetValue(instance, indexParameters);
     }
 
     public void SetValue (object? instance, object? value, object?[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull("instance", instance!);
+      ArgumentNullException.ThrowIfNull(instance!);
 
       _interfaceImplementationPropertyInfo.SetValue(instance, value, indexParameters);
     }

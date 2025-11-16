@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Linq;
 using Remotion.Linq.EagerFetching;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Linq
 {
@@ -38,10 +37,10 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public DomainObjectQueryExecutor (StorageProviderDefinition storageProviderDefinition, IDomainObjectQueryGenerator queryGenerator, string id, IReadOnlyDictionary<string, object> metadata)
     {
-      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull("queryGenerator", queryGenerator);
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNull("metadata", metadata);
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(queryGenerator);
+      ArgumentException.ThrowIfNullOrEmpty(id);
+      ArgumentNullException.ThrowIfNull(metadata);
 
       _storageProviderDefinition = storageProviderDefinition;
       _queryGenerator = queryGenerator;
@@ -74,7 +73,7 @@ namespace Remotion.Data.DomainObjects.Linq
     [return: MaybeNull]
     public T ExecuteScalar<T> (QueryModel queryModel)
     {
-      ArgumentUtility.CheckNotNull("queryModel", queryModel);
+      ArgumentNullException.ThrowIfNull(queryModel);
 
       if (ClientTransaction.Current == null)
         throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
@@ -101,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Linq
     [return: MaybeNull]
     public T ExecuteSingle<T> (QueryModel queryModel, bool returnDefaultWhenEmpty)
     {
-      ArgumentUtility.CheckNotNull("queryModel", queryModel);
+      ArgumentNullException.ThrowIfNull(queryModel);
 
       if (ClientTransaction.Current == null)
         throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
@@ -124,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// </returns>
     public IEnumerable<T> ExecuteCollection<T> (QueryModel queryModel)
     {
-      ArgumentUtility.CheckNotNull("queryModel", queryModel);
+      ArgumentNullException.ThrowIfNull(queryModel);
 
       if (ClientTransaction.Current == null)
         throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");

@@ -21,7 +21,6 @@ using System.Reflection;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Formatting;
 using Remotion.Mixins.CrossReferencer.Utilities;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -42,12 +41,12 @@ namespace Remotion.Mixins.CrossReferencer.Report
         IIdentifierGenerator<Type> interfaceIdentifierGenerator,
         IOutputFormatter outputFormatter)
     {
-      ArgumentUtility.CheckNotNull("involvedTypes", involvedTypes);
-      ArgumentUtility.CheckNotNull("assemblyIdentifierGenerator", assemblyIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("involvedTypeIdentifierGenerator", involvedTypeIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("memberIdentifierGenerator", memberIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
-      ArgumentUtility.CheckNotNull("outputFormatter", outputFormatter);
+      ArgumentNullException.ThrowIfNull(involvedTypes);
+      ArgumentNullException.ThrowIfNull(assemblyIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(involvedTypeIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(memberIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(interfaceIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(outputFormatter);
 
       _involvedTypes = involvedTypes;
       _assemblyIdentifierGenerator = assemblyIdentifierGenerator;

@@ -46,8 +46,8 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
         IBusinessObjectReferenceProperty property,
         ISearchAvailableObjectsArguments? searchArguments)
     {
-      var referencingSecurityManagerObject = ArgumentUtility.CheckType<TReferencingObject>("referencingObject", referencingObject);
-      ArgumentUtility.CheckNotNull("property", property);
+      var referencingSecurityManagerObject = ArgumentUtility.CheckType<TReferencingObject>(nameof(referencingObject), referencingObject);
+      ArgumentNullException.ThrowIfNull(property);
 
       var queryFactory = GetQueryFactory(property);
 
@@ -80,7 +80,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
         return new SecurityManagerSearchArguments(new TenantConstraint(tenantHandle), null, null);
       }
 
-      return ArgumentUtility.CheckType<SecurityManagerSearchArguments>("searchArguments", searchArguments);
+      return ArgumentUtility.CheckType<SecurityManagerSearchArguments>(nameof(searchArguments), searchArguments);
     }
   }
 }

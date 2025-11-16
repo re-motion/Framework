@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public BocListCellControlObject GetCell (string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnItemID", columnItemID);
+      ArgumentException.ThrowIfNullOrEmpty(columnItemID);
 
       return GetCell().WithColumnItemID(columnItemID);
     }
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithColumnItemID (string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnItemID", columnItemID);
+      ArgumentException.ThrowIfNullOrEmpty(columnItemID);
 
       return _impl.GetCellWithColumnItemID<BocListCellControlObject>(columnItemID);
     }
@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithColumnTitle (string columnTitle)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnTitle", columnTitle);
+      ArgumentException.ThrowIfNullOrEmpty(columnTitle);
 
       return _impl.GetCellWithColumnTitle<BocListCellControlObject>(columnTitle);
     }
@@ -133,7 +133,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     BocListCellControlObject IFluentControlObjectWithCells<BocListCellControlObject>.WithColumnTitleContains (string columnTitleContains)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnTitleContains", columnTitleContains);
+      ArgumentException.ThrowIfNullOrEmpty(columnTitleContains);
 
       return _impl.GetCellWithColumnTitleContains<BocListCellControlObject>(columnTitleContains);
     }
@@ -141,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc />
     BocListCellControlObject IFluentBocListRowControlObject<BocListCellControlObject>.WithDomainPropertyPaths (string[] domainPropertyPaths)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(domainPropertyPaths), domainPropertyPaths);
 
       return _impl.GetCellWithColumnDomainPropertyPaths<BocListCellControlObject>(domainPropertyPaths);
     }

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
@@ -27,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     public static T Create<T> (this IStorageObjectFactoryFactory storageObjectFactoryFactory)
         where T : IStorageObjectFactory
     {
-      ArgumentUtility.CheckNotNull("storageObjectFactoryFactory", storageObjectFactoryFactory);
+      ArgumentNullException.ThrowIfNull(storageObjectFactoryFactory);
 
       return (T)storageObjectFactoryFactory.Create(typeof(T));
     }

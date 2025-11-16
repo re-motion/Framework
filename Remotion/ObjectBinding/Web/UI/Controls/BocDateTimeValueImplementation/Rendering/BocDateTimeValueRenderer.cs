@@ -23,7 +23,6 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Globalization;
@@ -76,10 +75,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
         Func<TextBox> timeTextBoxFactory)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
-      ArgumentUtility.CheckNotNull("dateTextBoxFactory", dateTextBoxFactory);
-      ArgumentUtility.CheckNotNull("timeTextBoxFactory", timeTextBoxFactory);
+      ArgumentNullException.ThrowIfNull(labelReferenceRenderer);
+      ArgumentNullException.ThrowIfNull(validationErrorRenderer);
+      ArgumentNullException.ThrowIfNull(dateTextBoxFactory);
+      ArgumentNullException.ThrowIfNull(timeTextBoxFactory);
 
       _labelReferenceRenderer = labelReferenceRenderer;
       _validationErrorRenderer = validationErrorRenderer;
@@ -90,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
@@ -101,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
 
     public void Render (BocDateTimeValueRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       AddAttributesToRender(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebTestActions;
@@ -52,7 +51,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentNullException.ThrowIfNull(text);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -69,8 +68,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// </remarks>
     public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("text", text);
-      ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
+      ArgumentNullException.ThrowIfNull(text);
+      ArgumentNullException.ThrowIfNull(finishInputWith);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Tools.Console
 {
@@ -36,7 +35,7 @@ namespace Remotion.Tools.Console
 
       public ColorScope (IConsoleManager consoleManager, ConsoleColor? foregroundColor, ConsoleColor? backgroundColor)
       {
-        ArgumentUtility.CheckNotNull("consoleManager", consoleManager);
+        ArgumentNullException.ThrowIfNull(consoleManager);
 
         _consoleManager = consoleManager;
         if (foregroundColor != null)

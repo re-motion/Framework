@@ -176,7 +176,7 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
           () => TypeExtensions.GetAscribedGenericArguments(typeof(TypeWithBaseInterface), typeof(IGenericInterface<>)),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.TypeWithBaseInterface' "
+                  "The value has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.TypeWithBaseInterface' "
                   + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.IGenericInterface`1[T]' was expected.",
                   "type"));
     }

@@ -216,7 +216,7 @@ namespace Remotion.ObjectBinding.Sample
       {
         if (value != null)
         {
-          ArgumentUtility.CheckNotNullOrItemsNull("value", value);
+          ArgumentUtility.CheckNotNullOrItemsNull(nameof(value), value);
           _jobIDs = new Guid[value.Length];
           for (int i = 0; i < value.Length; i++)
             _jobIDs[i] = value[i].ID;

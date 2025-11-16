@@ -61,28 +61,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public int GetColumnIndexForItemID (string columnItemID)
       {
-        ArgumentUtility.CheckNotNullOrEmpty("columnItemID", columnItemID);
+        ArgumentException.ThrowIfNullOrEmpty(columnItemID);
 
         return _bocList.GetColumnByItemID(columnItemID).Index;
       }
 
       public int GetColumnIndexForTitle (string columnTitle)
       {
-        ArgumentUtility.CheckNotNullOrEmpty("columnTitle", columnTitle);
+        ArgumentException.ThrowIfNullOrEmpty(columnTitle);
 
         return _bocList.GetColumnByTitle(columnTitle).Index;
       }
 
       public int GetColumnIndexForTitleContains (string columnTitleContains)
       {
-        ArgumentUtility.CheckNotNullOrEmpty("columnTitleContains", columnTitleContains);
+        ArgumentException.ThrowIfNullOrEmpty(columnTitleContains);
 
         return _bocList.GetColumnByTitleContains(columnTitleContains).Index;
       }
 
       public int GetColumnIndexForDomainPropertyPaths (string[] domainPropertyPaths)
       {
-        ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
+        ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(domainPropertyPaths), domainPropertyPaths);
 
         return _bocList.GetColumnByDomainPropertyPaths(domainPropertyPaths).Index;
       }
@@ -352,7 +352,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     TRowControlObject IFluentControlObjectWithRows<TRowControlObject>.WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+      ArgumentException.ThrowIfNullOrEmpty(itemID);
 
       var cssSelector = string.Format(
           ".bocListTable .bocListTableBody .bocListDataRow[{0}={1}]",
@@ -396,7 +396,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByItemID ([NotNull] string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnItemID", columnItemID);
+      ArgumentException.ThrowIfNullOrEmpty(columnItemID);
 
       return GetColumnDefinitions().Single(cd => cd.ItemID == columnItemID);
     }
@@ -414,7 +414,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByTitle ([NotNull] string columnTitle)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnTitle", columnTitle);
+      ArgumentException.ThrowIfNullOrEmpty(columnTitle);
 
       return GetColumnDefinitions().Single(cd => cd.Title == columnTitle);
     }
@@ -424,14 +424,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByTitleContains ([NotNull] string columnTitleContains)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("columnTitleContains", columnTitleContains);
+      ArgumentException.ThrowIfNullOrEmpty(columnTitleContains);
 
       return GetColumnDefinitions().Where(cd => cd.Title != null).Single(cd => cd.Title.Contains(columnTitleContains));
     }
 
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByDomainPropertyPaths ([NotNull] string[] domainPropertyPaths)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(domainPropertyPaths), domainPropertyPaths);
 
       return GetColumnDefinitions()
           .Where(column => column.HasDomainPropertyPaths)

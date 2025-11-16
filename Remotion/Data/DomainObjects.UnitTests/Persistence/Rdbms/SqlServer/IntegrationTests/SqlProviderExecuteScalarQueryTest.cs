@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
@@ -54,7 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public void ParameterWithTextReplacement ()
     {
       var query = QueryFactory.CreateQuery(Queries.GetMandatory("OrderNoSumForMultipleCustomers"));
-      query.Parameters.Add("{companyNames}", "'Kunde 1', 'Kunde 3'", QueryParameterType.Text);
+      query.Parameters.Add("@companyNames", "'Kunde 1', 'Kunde 3'", QueryParameterType.Text);
 
       Assert.That(Provider.ExecuteScalarQuery(query), Is.EqualTo(6));
     }

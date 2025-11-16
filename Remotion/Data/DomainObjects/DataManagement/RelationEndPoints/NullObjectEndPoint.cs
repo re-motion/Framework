@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
@@ -36,8 +35,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public NullObjectEndPoint (ClientTransaction clientTransaction, IRelationEndPointDefinition definition)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(definition);
 
       _clientTransaction = clientTransaction;
       _definition = definition;

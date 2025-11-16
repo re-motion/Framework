@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Collections;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Cloning
 
     public CloneContext (DomainObjectCloner cloner)
     {
-      ArgumentUtility.CheckNotNull("cloner", cloner);
+      ArgumentNullException.ThrowIfNull(cloner);
       _cloner = cloner;
 
       // Optimized for memory allocations

@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility
 {
@@ -32,8 +31,8 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public static AccessibilityResult Analyze ([NotNull] this ControlObject controlObject, [NotNull] AccessibilityAnalyzer analyzer)
     {
-      ArgumentUtility.CheckNotNull("controlObject", controlObject);
-      ArgumentUtility.CheckNotNull("analyzer", analyzer);
+      ArgumentNullException.ThrowIfNull(controlObject);
+      ArgumentNullException.ThrowIfNull(analyzer);
 
       return analyzer.Analyze($"#{controlObject.GetHtmlID()}");
     }

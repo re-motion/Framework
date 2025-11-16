@@ -40,8 +40,8 @@ namespace Remotion.Security
         [NotNull] ISecurityContextFactory securityContextFactory,
         [NotNull] InvalidationToken invalidationToken)
     {
-      ArgumentUtility.CheckNotNull("securityContextFactory", securityContextFactory);
-      ArgumentUtility.CheckNotNull("invalidationToken", invalidationToken);
+      ArgumentNullException.ThrowIfNull(securityContextFactory);
+      ArgumentNullException.ThrowIfNull(invalidationToken);
 
       return new ObjectSecurityStrategy(securityContextFactory, CacheFactory.Create<ISecurityPrincipal, AccessType[]>(invalidationToken));
     }
@@ -53,8 +53,8 @@ namespace Remotion.Security
         [NotNull] ISecurityContextFactory securityContextFactory,
         [NotNull] ICache<ISecurityPrincipal, AccessType[]> cache)
     {
-      ArgumentUtility.CheckNotNull("securityContextFactory", securityContextFactory);
-      ArgumentUtility.CheckNotNull("cache", cache);
+      ArgumentNullException.ThrowIfNull(securityContextFactory);
+      ArgumentNullException.ThrowIfNull(cache);
 
       return new ObjectSecurityStrategy(securityContextFactory, cache);
     }
@@ -64,8 +64,8 @@ namespace Remotion.Security
 
     private ObjectSecurityStrategy (ISecurityContextFactory securityContextFactory, ICache<ISecurityPrincipal, AccessType[]> cache)
     {
-      ArgumentUtility.DebugCheckNotNull("securityContextFactory", securityContextFactory);
-      ArgumentUtility.DebugCheckNotNull("cache", cache);
+      ArgumentUtility.DebugCheckNotNull(nameof(securityContextFactory), securityContextFactory);
+      ArgumentUtility.DebugCheckNotNull(nameof(cache), cache);
 
       _securityContextFactory = securityContextFactory;
       _cache = cache;
@@ -73,12 +73,12 @@ namespace Remotion.Security
 
     public bool HasAccess (ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.DebugCheckNotNull("securityProvider", securityProvider);
-      ArgumentUtility.DebugCheckNotNull("principal", principal);
-      ArgumentUtility.CheckNotNull("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNull(nameof(securityProvider), securityProvider);
+      ArgumentUtility.DebugCheckNotNull(nameof(principal), principal);
+      ArgumentNullException.ThrowIfNull(requiredAccessTypes);
       // Performance critical argument check. Can be refactored to ArgumentUtility.CheckNotNullOrEmpty once typed collection checks are supported.
       if (requiredAccessTypes.Count == 0)
-        throw ArgumentUtility.CreateArgumentEmptyException("requiredAccessTypes");
+        throw ArgumentUtility.CreateArgumentEmptyExceptionForCollection(nameof(requiredAccessTypes));
 
       var actualAccessTypes = GetAccessTypesFromCache(securityProvider, principal);
       return requiredAccessTypes.IsSubsetOf(actualAccessTypes);
@@ -101,7 +101,7 @@ namespace Remotion.Security
     private AccessType[] GetAccessTypes (ISecurityProvider securityProvider, ISecurityPrincipal principal)
     {
       // Explicit null-check since the public method does not perform this check in release-code
-      ArgumentUtility.CheckNotNull("securityProvider", securityProvider);
+      ArgumentNullException.ThrowIfNull(securityProvider);
 
       var context = CreateSecurityContext();
 

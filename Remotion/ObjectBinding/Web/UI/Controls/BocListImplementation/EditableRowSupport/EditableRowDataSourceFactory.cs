@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
 {
@@ -37,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     public virtual IBusinessObjectReferenceDataSource Create (IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentNullException.ThrowIfNull(businessObject);
 
       BusinessObjectReferenceDataSource dataSource = new BusinessObjectReferenceDataSource();
       dataSource.BusinessObject = businessObject;

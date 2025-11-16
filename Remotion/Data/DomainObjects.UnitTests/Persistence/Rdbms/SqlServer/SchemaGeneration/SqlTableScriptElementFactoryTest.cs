@@ -84,13 +84,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_tableDefinitionWithoutPrimaryKeyConstraint);
 
       var expectedResult =
-          "CREATE TABLE [SchemaName].[EntityName]\r\n"
-          + "(\r\n"
-          + "  [ID] uniqueidentifier NOT NULL,\r\n"
-          + "  [ClassID] varchar(100) NULL,\r\n"
-          + "  [Timestamp] datetime2 NULL,\r\n"
-          + "  [Column1] varchar(100) NOT NULL\r\n"
-          + ")";
+          """
+          CREATE TABLE [SchemaName].[EntityName]
+          (
+            [ID] uniqueidentifier NOT NULL,
+            [ClassID] varchar(100) NULL,
+            [Timestamp] datetime2 NULL,
+            [Column1] varchar(100) NOT NULL
+          )
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
@@ -102,15 +104,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_tableDefinitionWithClusteredPrimaryKeyConstraint);
 
       var expectedResult =
-          "CREATE TABLE [SchemaName].[EntityName]\r\n"
-          + "(\r\n"
-          + "  [ID] uniqueidentifier NOT NULL,\r\n"
-          + "  [ClassID] varchar(100) NULL,\r\n"
-          + "  [Timestamp] datetime2 NULL,\r\n"
-          + "  [Column1] varchar(100) NOT NULL,\r\n"
-          + "  [Column2] bit NULL,\r\n"
-          + "  CONSTRAINT [PKName] PRIMARY KEY CLUSTERED ([Column1])\r\n"
-          + ")";
+          """
+          CREATE TABLE [SchemaName].[EntityName]
+          (
+            [ID] uniqueidentifier NOT NULL,
+            [ClassID] varchar(100) NULL,
+            [Timestamp] datetime2 NULL,
+            [Column1] varchar(100) NOT NULL,
+            [Column2] bit NULL,
+            CONSTRAINT [PKName] PRIMARY KEY CLUSTERED ([Column1])
+          )
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
@@ -122,15 +126,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetCreateElement(_tableDefinitionWithNonClusteredPrimaryKeyConstraint);
 
       var expectedResult =
-          "CREATE TABLE [dbo].[EntityName]\r\n"
-          + "(\r\n"
-          + "  [ID] uniqueidentifier NOT NULL,\r\n"
-          + "  [ClassID] varchar(100) NULL,\r\n"
-          + "  [Timestamp] datetime2 NULL,\r\n"
-          + "  [Column1] varchar(100) NOT NULL,\r\n"
-          + "  [Column2] bit NULL,\r\n"
-          + "  CONSTRAINT [PKName] PRIMARY KEY NONCLUSTERED ([Column1], [Column2])\r\n"
-          + ")";
+          """
+          CREATE TABLE [dbo].[EntityName]
+          (
+            [ID] uniqueidentifier NOT NULL,
+            [ClassID] varchar(100) NULL,
+            [Timestamp] datetime2 NULL,
+            [Column1] varchar(100) NOT NULL,
+            [Column2] bit NULL,
+            CONSTRAINT [PKName] PRIMARY KEY NONCLUSTERED ([Column1], [Column2])
+          )
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
@@ -142,8 +148,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_tableDefinitionWithClusteredPrimaryKeyConstraint);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EntityName' AND TABLE_SCHEMA = 'SchemaName')\r\n"
-          + "  DROP TABLE [SchemaName].[EntityName]";
+          """
+          IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EntityName' AND TABLE_SCHEMA = 'SchemaName')
+            DROP TABLE [SchemaName].[EntityName]
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
@@ -155,8 +163,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_tableDefinitionWithNonClusteredPrimaryKeyConstraint);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EntityName' AND TABLE_SCHEMA = 'dbo')\r\n"
-          + "  DROP TABLE [dbo].[EntityName]";
+          """
+          IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EntityName' AND TABLE_SCHEMA = 'dbo')
+            DROP TABLE [dbo].[EntityName]
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));

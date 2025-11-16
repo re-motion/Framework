@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -64,7 +63,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     protected override ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (IsPostBackLink(scope))
         return ((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy;
@@ -76,7 +75,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     {
       const string doPostBackWithOptionsScript = "DoPostBackWithOptions";
 
-      return scope["onclick"] != null && scope["onclick"].Contains(doPostBackWithOptionsScript);
+      return (scope["onclick"] != null && scope["onclick"].Contains(doPostBackWithOptionsScript))
+          || (scope["data-event-content-onclick"] != null && scope["data-event-content-onclick"].Contains(doPostBackWithOptionsScript));
     }
   }
 }

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Validation.RuleCollectors;
 using Remotion.Validation.Validators;
 
@@ -31,8 +30,8 @@ namespace Remotion.Validation.Implementation
 
     public PropertyValidatorLogContextInfo (IPropertyValidator removedValidator, RemovingPropertyValidatorRegistration[] removingPropertyValidatorRegistrations)
     {
-      ArgumentUtility.CheckNotNull("removedValidator", removedValidator);
-      ArgumentUtility.CheckNotNull("removingPropertyValidatorRegistrations", removingPropertyValidatorRegistrations);
+      ArgumentNullException.ThrowIfNull(removedValidator);
+      ArgumentNullException.ThrowIfNull(removingPropertyValidatorRegistrations);
 
       _removedValidator = removedValidator;
       _removingPropertyValidatorRegistrations = removingPropertyValidatorRegistrations;

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Implementation
@@ -32,8 +31,8 @@ namespace Remotion.Validation.Implementation
 
     public CompoundValidator (IEnumerable<IValidator> validators, Type typeToValidate)
     {
-      ArgumentUtility.CheckNotNull("validators", validators);
-      ArgumentUtility.CheckNotNull("typeToValidate", typeToValidate);
+      ArgumentNullException.ThrowIfNull(validators);
+      ArgumentNullException.ThrowIfNull(typeToValidate);
 
       _validators = validators.ToList().AsReadOnly();
       _typeToValidate = typeToValidate;
@@ -46,14 +45,14 @@ namespace Remotion.Validation.Implementation
 
     public ValidationResult Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull("instance", instance);
+      ArgumentNullException.ThrowIfNull(instance);
 
       return Validate(new ValidationContext(instance));
     }
 
     public ValidationResult Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var failures = _validators.SelectMany(v => v.Validate(context).Errors).ToArray();
       return new ValidationResult(failures);
@@ -66,14 +65,14 @@ namespace Remotion.Validation.Implementation
 
     public bool CanValidateInstancesOfType (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _validators.All(v => v.CanValidateInstancesOfType(type));
     }
 
     ValidationResult IValidator.Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull("instance", instance);
+      ArgumentNullException.ThrowIfNull(instance);
 
       if (!CanValidateInstancesOfType(instance.GetType()))
       {

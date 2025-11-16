@@ -22,7 +22,6 @@ using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Security;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
@@ -41,7 +40,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static ObjectList<AbstractRoleDefinition> Find (IEnumerable<EnumWrapper> abstractRoles)
     {
-      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
+      ArgumentNullException.ThrowIfNull(abstractRoles);
 
       var abstractRoleNames = (from abstractRole in abstractRoles select abstractRole.Name).ToArray();
 
@@ -68,7 +67,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     protected AbstractRoleDefinition (Guid metadataItemID, string name, int value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentException.ThrowIfNullOrEmpty(name);
 
       MetadataItemID = metadataItemID;
       Name = name;

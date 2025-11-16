@@ -267,7 +267,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void EditAccessControlListControl_Delete (object? sender, EventArgs e)
     {
-      var accessControlListControl = ArgumentUtility.CheckNotNullAndType<EditAccessControlListControlBase>("sender", sender!);
+      var accessControlListControl = ArgumentUtility.CheckNotNullAndType<EditAccessControlListControlBase>(nameof(sender), sender!);
 
       PrepareValidation();
       bool isValid = ValidateAccessControlLists(accessControlListControl);

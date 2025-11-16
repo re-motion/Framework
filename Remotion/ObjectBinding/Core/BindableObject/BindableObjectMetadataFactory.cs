@@ -19,7 +19,6 @@ using Remotion.Mixins;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
 {
@@ -43,22 +42,22 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public BindableObjectMetadataFactory (BindableObjectGlobalizationService bindableObjectGlobalizationService)
     {
-      ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
+      ArgumentNullException.ThrowIfNull(bindableObjectGlobalizationService);
 
       _bindableObjectGlobalizationService = bindableObjectGlobalizationService;
     }
 
     public virtual IClassReflector CreateClassReflector (Type targetType, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull("targetType", targetType);
-      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
 
       return new ClassReflector(targetType, businessObjectProvider, this, _bindableObjectGlobalizationService);
     }
 
     public virtual IPropertyFinder CreatePropertyFinder (Type concreteType)
     {
-      ArgumentUtility.CheckNotNull("concreteType", concreteType);
+      ArgumentNullException.ThrowIfNull(concreteType);
 
       return new ReflectionBasedPropertyFinder(concreteType);
     }
@@ -66,9 +65,9 @@ namespace Remotion.ObjectBinding.BindableObject
     public virtual PropertyReflector CreatePropertyReflector (
         Type concreteType, IPropertyInformation propertyInfo, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull("concreteType", concreteType);
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
+      ArgumentNullException.ThrowIfNull(concreteType);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+      ArgumentNullException.ThrowIfNull(businessObjectProvider);
 
       return PropertyReflector.Create(propertyInfo, businessObjectProvider);
     }

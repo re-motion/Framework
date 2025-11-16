@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
     public PostActionDisposableDecorator (IDisposable inner, Action postDisposeAction)
     {
-      ArgumentUtility.CheckNotNull("inner", inner);
+      ArgumentNullException.ThrowIfNull(inner);
 
       _inner = inner;
       _postDisposeAction = postDisposeAction;

@@ -31,6 +31,9 @@
     <PackageTags>re-motion</PackageTags>
     <PackageTags Condition="'$(ProductType)' == 'SecurityManager'">$(PackageTags) SecurityManager</PackageTags>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+    <!-- This is needed for the Sbom generation, as we need to have all required DLLs in the bin folder to analyze
+     which dependencies we actually need. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -39,6 +42,11 @@
   </PropertyGroup>
 
   <Import Project="$(ProjectTypePropsFile)" Condition="'$(ProjectTypePropsFile)' != '' AND Exists('$(ProjectTypePropsFile)')" />
+
+  <PropertyGroup>
+    <DisabledVulnerabilityWarnings Condition="'$(DisabledVulnerabilityWarnings)' == ''">NU1901;NU1902;NU1903;NU1904</DisabledVulnerabilityWarnings>
+    <NoWarn>$(NoWarn);$(DisabledVulnerabilityWarnings)</NoWarn>
+  </PropertyGroup>
 
   <PropertyGroup>
     <ProjectFeaturesRoot>$(MSBuildThisFileDirectory)ProjectFeatures\</ProjectFeaturesRoot>

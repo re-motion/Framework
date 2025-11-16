@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
@@ -29,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public CompoundPersistenceExtensionFactory (IEnumerable<IPersistenceExtensionFactory> persistenceExtensionFactories)
     {
-      ArgumentUtility.CheckNotNull("persistenceExtensionFactories", persistenceExtensionFactories);
+      ArgumentNullException.ThrowIfNull(persistenceExtensionFactories);
 
       _persistenceExtensionFactories = persistenceExtensionFactories.ToList().AsReadOnly();
     }

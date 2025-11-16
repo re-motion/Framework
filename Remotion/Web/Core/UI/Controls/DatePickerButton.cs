@@ -18,7 +18,6 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
@@ -58,7 +57,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -76,7 +75,7 @@ namespace Remotion.Web.UI.Controls
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       var renderer = CreateRenderer();
       renderer.RegisterHtmlHeadContents(htmlHeadAppender);
@@ -89,7 +88,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual DatePickerButtonRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       return new DatePickerButtonRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: not null assertions
     }

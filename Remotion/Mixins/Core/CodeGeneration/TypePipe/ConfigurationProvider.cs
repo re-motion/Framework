@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -41,7 +40,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public TargetClassDefinition? GetTargetClassDefinition (Type requestedType)
     {
-      ArgumentUtility.CheckNotNull("requestedType", requestedType);
+      ArgumentNullException.ThrowIfNull(requestedType);
 
       var classContext = MixinConfiguration.ActiveConfiguration.GetContext(requestedType);
       return GetTargetClassDefinition(classContext);
@@ -49,8 +48,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public IEnumerable<Type> GetInterfacesToImplement (TargetClassDefinition targetClassDefinition, IEnumerable<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
+      ArgumentNullException.ThrowIfNull(targetClassDefinition);
+      ArgumentNullException.ThrowIfNull(mixinInfos);
 
       var implementedInterfaceFinder = new ImplementedInterfaceFinder(
           targetClassDefinition.ImplementedInterfaces,

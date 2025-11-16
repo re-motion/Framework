@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -36,7 +35,7 @@ namespace Remotion.Data.DomainObjects
     public PropertyChangeEventArgs (PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
         : base(oldValue, newValue)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
       _propertyDefinition = propertyDefinition;
     }
 

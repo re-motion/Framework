@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -31,8 +30,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     public bool HasDataChanged (IDomainObjectCollectionData currentData, IDomainObjectCollectionData originalData)
     {
-      ArgumentUtility.CheckNotNull("currentData", currentData);
-      ArgumentUtility.CheckNotNull("originalData", originalData);
+      ArgumentNullException.ThrowIfNull(currentData);
+      ArgumentNullException.ThrowIfNull(originalData);
 
       return !originalData.SequenceEqual(currentData);
     }

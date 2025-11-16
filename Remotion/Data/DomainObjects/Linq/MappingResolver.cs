@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public MappingResolver (IStorageSpecificExpressionResolver storageSpecificExpressionResolver)
     {
-      ArgumentUtility.CheckNotNull("storageSpecificExpressionResolver", storageSpecificExpressionResolver);
+      ArgumentNullException.ThrowIfNull(storageSpecificExpressionResolver);
 
       _storageSpecificExpressionResolver = storageSpecificExpressionResolver;
     }
@@ -58,8 +58,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public IResolvedTableInfo ResolveTableInfo (UnresolvedTableInfo tableInfo, UniqueIdentifierGenerator generator)
     {
-      ArgumentUtility.CheckNotNull("tableInfo", tableInfo);
-      ArgumentUtility.CheckNotNull("generator", generator);
+      ArgumentNullException.ThrowIfNull(tableInfo);
+      ArgumentNullException.ThrowIfNull(generator);
 
       var classDefinition = GetClassDefinition(tableInfo.ItemType);
       return _storageSpecificExpressionResolver.ResolveTable(classDefinition, generator.GetUniqueIdentifier("t"));
@@ -67,8 +67,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public ResolvedJoinInfo ResolveJoinInfo (UnresolvedJoinInfo joinInfo, UniqueIdentifierGenerator generator)
     {
-      ArgumentUtility.CheckNotNull("joinInfo", joinInfo);
-      ArgumentUtility.CheckNotNull("generator", generator);
+      ArgumentNullException.ThrowIfNull(joinInfo);
+      ArgumentNullException.ThrowIfNull(generator);
 
       var leftEndPointDefinition = GetEndPointDefinition(joinInfo.OriginatingEntity, joinInfo.MemberInfo);
 
@@ -81,8 +81,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public SqlEntityDefinitionExpression ResolveSimpleTableInfo (IResolvedTableInfo tableInfo, UniqueIdentifierGenerator generator)
     {
-      ArgumentUtility.CheckNotNull("tableInfo", tableInfo);
-      ArgumentUtility.CheckNotNull("generator", generator);
+      ArgumentNullException.ThrowIfNull(tableInfo);
+      ArgumentNullException.ThrowIfNull(generator);
 
       var classDefinition = GetClassDefinition(tableInfo.ItemType);
       return _storageSpecificExpressionResolver.ResolveEntity(classDefinition, tableInfo.TableAlias);
@@ -90,8 +90,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public Expression ResolveMemberExpression (SqlEntityExpression originatingEntity, MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull("originatingEntity", originatingEntity);
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentNullException.ThrowIfNull(originatingEntity);
+      ArgumentNullException.ThrowIfNull(memberInfo);
 
       var property = GetMemberAsProperty(originatingEntity, memberInfo);
       var entityClassDefinition = GetClassDefinition(originatingEntity.Type);
@@ -117,8 +117,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public Expression ResolveMemberExpression (SqlColumnExpression sqlColumnExpression, MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull("sqlColumnExpression", sqlColumnExpression);
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentNullException.ThrowIfNull(sqlColumnExpression);
+      ArgumentNullException.ThrowIfNull(memberInfo);
 
       throw new UnmappedItemException(
           string.Format("The member '{0}.{1}' does not identify a mapped property.", memberInfo.ReflectedType!.Name, memberInfo.Name));
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public Expression ResolveConstantExpression (ConstantExpression constantExpression)
     {
-      ArgumentUtility.CheckNotNull("constantExpression", constantExpression);
+      ArgumentNullException.ThrowIfNull(constantExpression);
 
       var domainObject = constantExpression.Value as DomainObject;
       if (domainObject != null)
@@ -140,8 +140,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public Expression ResolveTypeCheck (Expression checkedExpression, Type desiredType)
     {
-      ArgumentUtility.CheckNotNull("checkedExpression", checkedExpression);
-      ArgumentUtility.CheckNotNull("desiredType", desiredType);
+      ArgumentNullException.ThrowIfNull(checkedExpression);
+      ArgumentNullException.ThrowIfNull(desiredType);
 
       if (desiredType.IsAssignableFrom(checkedExpression.Type))
       {
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public Expression? TryResolveOptimizedIdentity (SqlEntityRefMemberExpression entityRefMemberExpression)
     {
-      ArgumentUtility.CheckNotNull("entityRefMemberExpression", entityRefMemberExpression);
+      ArgumentNullException.ThrowIfNull(entityRefMemberExpression);
 
       var endPointDefinition = GetEndPointDefinition(entityRefMemberExpression.OriginatingEntity, entityRefMemberExpression.MemberInfo);
       var foreignKeyEndPoint = endPointDefinition as RelationEndPointDefinition;
@@ -185,8 +185,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public Expression? TryResolveOptimizedMemberExpression (SqlEntityRefMemberExpression entityRefMemberExpression, MemberInfo memberInfo)
     {
-      ArgumentUtility.CheckNotNull("entityRefMemberExpression", entityRefMemberExpression);
-      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentNullException.ThrowIfNull(entityRefMemberExpression);
+      ArgumentNullException.ThrowIfNull(memberInfo);
 
       if (memberInfo.DeclaringType != typeof(DomainObject) || memberInfo.Name != "ID")
         return null;

@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
 {
@@ -28,7 +27,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public InvolvedType GetOrCreateValue (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (!_involvedTypes.ContainsKey(type))
         _involvedTypes.Add(type, new InvolvedType(type));

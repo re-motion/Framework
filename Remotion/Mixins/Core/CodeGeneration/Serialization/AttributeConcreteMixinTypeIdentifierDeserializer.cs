@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.Serialization
 {
@@ -32,7 +31,7 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
     public AttributeConcreteMixinTypeIdentifierDeserializer (object[] values)
     {
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentNullException.ThrowIfNull(values);
       _values = values;
     }
 

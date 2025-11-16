@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ObjectBinding.BindableObject;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
@@ -24,9 +23,9 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   {
     public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property)
     {
-      ArgumentUtility.CheckNotNull("value", value);
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
-      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(businessObject);
+      ArgumentNullException.ThrowIfNull(property);
 
       return (int)value.Value % 2 == 1;
     }

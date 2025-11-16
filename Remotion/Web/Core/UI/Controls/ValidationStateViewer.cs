@@ -21,7 +21,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Globalization;
@@ -88,7 +87,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <param name="parent"> Parent element of the FormGridManager objects. </param>
   private void PopulateFormGridManagerList (Control parent)
   {
-    ArgumentUtility.CheckNotNull("parent", parent);
+    ArgumentNullException.ThrowIfNull(parent);
 
     //  Add all FormGridManager instances
     for (int i = 0; i < parent.Controls.Count; i++)
@@ -119,7 +118,7 @@ public class ValidationStateViewer : WebControl, IControl
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+    ArgumentNullException.ThrowIfNull(resourceManager);
 
     string? key = ResourceManagerUtility.GetGlobalResourceKey(NoticeText.GetValue());
     if (!string.IsNullOrEmpty(key))

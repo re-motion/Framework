@@ -18,13 +18,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Compilation;
+using Remotion.Web.ContentSecurityPolicy;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.SmartPageImplementation;
 using Remotion.Web.Utilities;
 
@@ -34,7 +36,7 @@ namespace Remotion.Web.UI
 ///   <b>SmartPage</b> is the default implementation of the <see cref="ISmartPage"/> interface. Use this type
 ///   a base class for pages that should supress multiple postbacks, require smart navigation, or have a dirty-state.
 /// </summary>
-/// <include file='..\doc\include\UI\SmartPage.xml' path='SmartPage/Class/*' />
+/// <include file='../Doc/include/UI/SmartPage.xml' path='SmartPage/Class/*' />
 [FileLevelControlBuilder(typeof(CodeProcessingPageControlBuilder))]
 public class SmartPage : Page, ISmartPage, ISmartNavigablePage
 {
@@ -96,7 +98,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <summary> 
   ///   Registers Java Script functions to be executed when the respective <paramref name="pageEvent"/> is raised.
   /// </summary>
-  /// <include file='..\doc\include\UI\SmartPage.xml' path='SmartPage/RegisterClientSidePageEventHandler/*' />
+  /// <include file='../Doc/include/UI/SmartPage.xml' path='SmartPage/RegisterClientSidePageEventHandler/*' />
   public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
   {
     _smartPageInfo.RegisterClientSidePageEventHandler(pageEvent, key, function);
@@ -240,6 +242,11 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private bool? _enableSmartScrolling;
   private bool? _enableSmartFocusing;
   private readonly SmartPageClientScriptManager _clientScriptManager;
+  private bool? _enableCsp;
+  private bool? _enableCspReportOnly;
+  private readonly INonceGenerator _nonceGenerator;
+  private string? _cspNonceValue;
+  private bool _isHtmlWriterCreated;
 
   public SmartPage ()
   {
@@ -247,6 +254,35 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     _validatableControlInitializer = new ValidatableControlInitializer(this);
     _postLoadInvoker = new PostLoadInvoker(this);
     _clientScriptManager = new SmartPageClientScriptManager(base.ClientScript);
+    _nonceGenerator = new NonceGenerator();
+  }
+
+  protected override void Render (HtmlTextWriter writer)
+  {
+    if (IsCspEnabled)
+      Response.Headers.Add("Content-Security-Policy", GetCspHeader().ToString());
+    if (IsCspReportOnlyEnabled)
+      Response.Headers.Add("Content-Security-Policy-Report-Only", GetCspReportOnlyHeader().ToString());
+
+    base.Render(writer);
+  }
+
+  protected override HtmlTextWriter CreateHtmlTextWriter (TextWriter writer)
+  {
+    _isHtmlWriterCreated = true;
+
+    if (!IsCspEnabled && !IsCspReportOnlyEnabled)
+      return base.CreateHtmlTextWriter(writer);
+
+    _cspNonceValue ??= _nonceGenerator.GenerateAlphaNumericNonce();
+
+    return new CspEnabledHtmlTextWriter(
+        this,
+        writer,
+        _nonceGenerator,
+        _cspNonceValue,
+        SafeServiceLocator.Current.GetInstance<IRenderingFeatures>(),
+        SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>());
   }
 
   protected override NameValueCollection? DeterminePostBackMode ()
@@ -319,6 +355,30 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   public virtual IEnumerable<string> GetDirtyStates (IReadOnlyCollection<string>? requestedStates)
   {
     return _smartPageInfo.GetDirtyStates(requestedStates);
+  }
+
+  /// <summary>
+  /// Returns the Content-Security-Policy header value that should be used if <see cref="EnableCsp"/> is set.
+  /// </summary>
+  protected virtual CspHeader GetCspHeader ()
+  {
+    var header = SafeServiceLocator.Current.GetInstance<ICspDefaultsProvider>().GetDefaultCspHeaderForPage(this);
+    if (_cspNonceValue != null)
+      header = header.AddDirectiveValue(CspDirectives.ScriptSrc, $"'nonce-{_cspNonceValue}'");
+
+    return header;
+  }
+
+  /// <summary>
+  /// Returns the Content-Security-Policy-Report-Only header value that should be used if <see cref="EnableCspReportOnly"/> is set.
+  /// </summary>
+  protected virtual CspHeader GetCspReportOnlyHeader ()
+  {
+    var header = SafeServiceLocator.Current.GetInstance<ICspDefaultsProvider>().GetDefaultCspReportOnlyHeaderForPage(this);
+    if (_cspNonceValue != null)
+      header = header.AddDirectiveValue(CspDirectives.ScriptSrc, $"'nonce-{_cspNonceValue}'");
+
+    return header;
   }
 
   /// <summary> Gets or sets a flag describing whether the page is dirty. </summary>
@@ -542,7 +602,6 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     get { return _enableSmartFocusing; }
     set { _enableSmartFocusing = value; }
   }
-
   /// <summary> Gets the evaluated value for the <see cref="EnableSmartFocusing"/> property. </summary>
   /// <value> 
   ///   <see langword="false"/> if <see cref="EnableSmartFocusing"/> is <see langword="false"/>.
@@ -561,8 +620,87 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     get { return IsSmartFocusingEnabled; }
   }
 
+  /// <summary>
+  /// Gets or sets the flag that determines whether a Content-Security-Policy header is set.
+  /// The value of the header is determined by <see cref="GetCspHeader"/>.
+  /// </summary>
+  /// <remarks>
+  /// This property cannot be set after <see cref="CreateHtmlTextWriter"/> was called at least once.
+  /// The last chance to set this property is usually in OnPreRender.
+  /// </remarks>
+  [Description("The flag that determines whether a Content-Security-Policy header is set.")]
+  [Category("Behavior")]
+  [DefaultValue(null)]
+  public bool? EnableCsp
+  {
+    get { return _enableCsp; }
+    set
+    {
+      if (_isHtmlWriterCreated)
+        throw new InvalidOperationException($"{nameof(EnableCsp)} cannot be set after an HtmlTextWriter was already created.");
+
+      _enableCsp = value;
+    }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="EnableCsp"/> property. </summary>
+  /// <value>
+  ///   If <see cref="EnableCsp"/> has a value, it is used.
+  ///   Otherwise, the default is computed using <see cref="ICspDefaultsProvider"/>.<see cref="ICspDefaultsProvider.GetDefaultIsCspEnabledForPage"/>.
+  /// </value>
+  protected virtual bool IsCspEnabled
+  {
+    get
+    {
+      return _enableCsp ?? CspDefaultsProvider.GetDefaultIsCspEnabledForPage(this);
+    }
+  }
+
+  /// <summary>
+  /// Gets or sets the flag that determines whether a Content-Security-Policy-Report-Only header is set.
+  /// The value of the header is determined by <see cref="GetCspReportOnlyHeader"/>.
+  /// </summary>
+  /// <remarks>
+  /// This property cannot be set after <see cref="CreateHtmlTextWriter"/> was called at least once.
+  /// The last chance to set this property is usually in OnPreRender.
+  /// </remarks>
+  [Description("The flag that determines whether a Content-Security-Policy-Report-Only header is set.")]
+  [Category("Behavior")]
+  [DefaultValue(null)]
+  public bool? EnableCspReportOnly
+  {
+    get { return _enableCspReportOnly; }
+    set
+    {
+      if (_isHtmlWriterCreated)
+        throw new InvalidOperationException($"{nameof(EnableCspReportOnly)} cannot be set after an HtmlTextWriter was already created.");
+
+      _enableCspReportOnly = value;
+    }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="EnableCspReportOnly"/> property. </summary>
+  /// <value>
+  ///   If <see cref="EnableCspReportOnly"/> has a value, it is used.
+  ///   Otherwise, the default is computed using <see cref="ICspDefaultsProvider"/>.<see cref="ICspDefaultsProvider.GetDefaultIsCspReportOnlyEnabledForPage"/>.
+  /// </value>
+  protected virtual bool IsCspReportOnlyEnabled
+  {
+    get
+    {
+      return _enableCspReportOnly ?? CspDefaultsProvider.GetDefaultIsCspReportOnlyEnabledForPage(this);
+    }
+  }
+
   protected override void OnInit (EventArgs e)
   {
+    if (AsyncMode)
+    {
+      throw new InvalidOperationException(
+          "SmartPage does not support Async=\"true\" or manually setting AsyncMode=true."
+          + " Please remove the property assignment in the ASPX markup or the code-behind.");
+    }
+
     base.OnInit(e);
     RegisterRequiresControlState(this);
   }
@@ -587,12 +725,38 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     MemberCaller.SaveAllState(this);
   }
 
+  protected override void OnPreRenderComplete (EventArgs e)
+  {
+    var scriptManager = (ScriptManager?)ScriptManager.GetCurrent(this);
+    if (scriptManager != null && !scriptManager.IsInAsyncPostBack && _cspNonceValue != null)
+    {
+      var createScriptElementOverrideScript =
+          $$"""
+            (function() {
+              const oldCreateScriptElement = Sys._ScriptLoader.prototype._createScriptElement;
+              Sys._ScriptLoader.prototype._createScriptElement = function() {
+                const scriptElement = oldCreateScriptElement(...arguments);
+                scriptElement.nonce = '{{_cspNonceValue}}';
+                return scriptElement;
+              }
+            })();
+            """;
+      ClientScript.RegisterStartupScriptBlock(
+          this,
+          typeof(SmartPage),
+          "smartPageCreateScriptElementOverride",
+          createScriptElementOverrideScript);
+    }
+
+    base.OnPreRenderComplete(e);
+  }
+
   /// <summary>
   /// Use <see cref="ProcessRequestImplementation"/> instead.
   /// </summary>
   public sealed override void ProcessRequest (HttpContext httpContext)
   {
-    ArgumentUtility.CheckNotNull("httpContext", httpContext);
+    ArgumentNullException.ThrowIfNull(httpContext);
     _httpContext = new HttpContextWrapper(httpContext);
     ProcessRequestImplementation(httpContext);
   }
@@ -600,13 +764,18 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   /// <inheritdoc cref="Page.ProcessRequest"/>
   protected virtual void ProcessRequestImplementation (HttpContext httpContext)
   {
-    ArgumentUtility.CheckNotNull("httpContext", httpContext);
+    ArgumentNullException.ThrowIfNull(httpContext);
     base.ProcessRequest(httpContext);
   }
 
   protected virtual IServiceLocator ServiceLocator
   {
     get { return SafeServiceLocator.Current; }
+  }
+
+  private ICspDefaultsProvider CspDefaultsProvider
+  {
+    get { return ServiceLocator.GetInstance<ICspDefaultsProvider>(); }
   }
 
   private IInternalControlMemberCaller MemberCaller

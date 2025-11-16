@@ -26,8 +26,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public ChildTransactionExecutionListener (ChildTransactionStrategy transactionStrategy, IWxeFunctionExecutionListener innerListener)
     {
-      ArgumentUtility.CheckNotNull("transactionStrategy", transactionStrategy);
-      ArgumentUtility.CheckNotNull("innerListener", innerListener);
+      ArgumentNullException.ThrowIfNull(transactionStrategy);
+      ArgumentNullException.ThrowIfNull(innerListener);
 
       _transactionStrategy = transactionStrategy;
       _innerListener = innerListener;
@@ -50,7 +50,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void OnExecutionPlay (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
       //_transactionStrategy.State == Started
       Assertion.IsNotNull(_transactionStrategy.Scope);
       _innerListener.OnExecutionPlay(context);
@@ -58,7 +58,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void OnExecutionStop (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
       //_transactionStrategy.State == Playing
       Assertion.IsNotNull(_transactionStrategy.Scope);
       _transactionStrategy.OnExecutionStop(context, _innerListener);
@@ -66,7 +66,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void OnExecutionPause (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
       //_transactionStrategy.State == Playing
       Assertion.IsNotNull(_transactionStrategy.Scope);
       _innerListener.OnExecutionPause(context);
@@ -74,7 +74,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void OnExecutionFail (WxeContext context, Exception exception)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
       //_transactionStrategy.State == Started
       Assertion.IsNotNull(_transactionStrategy.Scope);
       _transactionStrategy.OnExecutionFail(context, _innerListener, exception);

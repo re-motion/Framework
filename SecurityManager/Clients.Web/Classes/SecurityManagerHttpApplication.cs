@@ -45,12 +45,16 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
         Assertion.IsNotNull(_securityManagerPrincipalFactory, "_securityManagerPrincipalFactory != null after HttpApplication.Init()");
         return _securityManagerPrincipalFactory;
       }
-      set { _securityManagerPrincipalFactory = ArgumentUtility.CheckNotNull("value", value); }
+      set
+      {
+        ArgumentNullException.ThrowIfNull(value);
+        _securityManagerPrincipalFactory = value;
+      }
     }
 
     public void SetCurrentPrincipal (ISecurityManagerPrincipal securityManagerPrincipal)
     {
-      ArgumentUtility.CheckNotNull("securityManagerPrincipal", securityManagerPrincipal);
+      ArgumentNullException.ThrowIfNull(securityManagerPrincipal);
 
       SecurityManagerPrincipal.Current = securityManagerPrincipal;
       SavePrincipalToSession(securityManagerPrincipal);
@@ -63,7 +67,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected void SavePrincipalToSession (ISecurityManagerPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull("principal", principal);
+      ArgumentNullException.ThrowIfNull(principal);
 
       Session[s_principalKey] = principal;
     }

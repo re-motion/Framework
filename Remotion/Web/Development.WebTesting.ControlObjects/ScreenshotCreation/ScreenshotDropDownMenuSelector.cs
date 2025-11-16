@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent.Selectors;
@@ -38,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
     public ScreenshotDropDownMenuSelector ([NotNull] DropDownMenuControlObject dropDownMenu)
     {
-      ArgumentUtility.CheckNotNull("dropDownMenu", dropDownMenu);
+      ArgumentNullException.ThrowIfNull(dropDownMenu);
 
       _dropDownMenu = dropDownMenu;
     }
@@ -46,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithHtmlID (string htmlID)
     {
-      ArgumentUtility.CheckNotNull("htmlID", htmlID);
+      ArgumentNullException.ThrowIfNull(htmlID);
 
       var scope = GetDropDownScope();
       var item = scope.FindId(htmlID);
@@ -57,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull("itemID", itemID);
+      ArgumentNullException.ThrowIfNull(itemID);
 
       var scope = GetDropDownScope();
       var item = scope.FindTagWithAttribute("li.DropDownMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
@@ -77,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       var scope = GetDropDownScope();
       var item = scope.FindTagWithAttribute("li.DropDownMenuItem", DiagnosticMetadataAttributes.Content, displayText);
@@ -88,7 +87,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayTextContains (string displayText)
     {
-      ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       var scope = GetDropDownScope();
       var item = scope.FindTagWithAttributeUsingOperator(

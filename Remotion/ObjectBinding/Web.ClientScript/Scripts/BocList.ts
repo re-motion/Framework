@@ -620,8 +620,31 @@ class BocList
     fakeTable.setAttribute('cellSpacing', '0');
     fakeTable.style.width = '100%';
 
-    const realTableHead = table.querySelector(':scope > thead')!;
+    const realTableHead = table.querySelector<HTMLElement>(':scope > thead')!;
     const fakeTableHead = realTableHead.cloneNode(true) as HTMLElement;
+
+    // The event handlers on the th elements won't get copied so we need to manually copy them
+    // The order between the two should be identical because we cloned the parent node
+    const realElementsWithEvents = [...realTableHead.querySelectorAll<HTMLAnchorElement>("*[data-inline-event-target]")];
+    const fakeElementsWithEvents = [...fakeTableHead.querySelectorAll<HTMLAnchorElement>("*[data-inline-event-target]")];
+    for (let i = 0; i < realElementsWithEvents.length; i++)
+    {
+      const realElementWithEvents = realElementsWithEvents[i];
+      const fakeElementWithEvents = fakeElementsWithEvents[i];
+      for (const key in realElementWithEvents)
+      {
+        if (key.startsWith("on"))
+        {
+          const value = realElementWithEvents[key as keyof HTMLAnchorElement];
+          if (typeof value === "function")
+          {
+            (fakeElementWithEvents as any)[key] = value;
+          }
+        }
+      }
+      fakeElementsWithEvents[i].onclick = realElementsWithEvents[i].onclick;
+    }
+
     realTableHead.setAttribute('aria-hidden', 'true')
     realTableHead.setAttribute('role', 'none')
     realTableHead.querySelectorAll('*[role]').forEach(element =>
@@ -720,10 +743,34 @@ class BocList
     scrollableContainer.dataset.bocListPreviousScrollLeft = scrollLeft.toString();
 
     if (hasScrollMoveFromColumnHeader)
+    {
       scrollableContainer.scrollLeft = scrollLeft;
 
+      // Giving a too high value of scroll left will reset it to the maximum in chrome and firefox.
+      // This creates jitter, as the value changes compared to the saved one, triggering a resize in the next iteration.
+      // Thus, we need to re-set the saved value if it can't be set to our desired value to not create jitter.
+      if (scrollableContainer.scrollLeft !== scrollLeft)
+      {
+        scrollLeft = scrollableContainer.scrollLeft;
+        fakeTableHeadContainer.scrollLeft = scrollLeft;
+        scrollableContainer.dataset.bocListPreviousScrollLeft = scrollLeft.toString();
+      }
+    }
+
     if (hasScrollMoveFromScrollbar)
+    {
       fakeTableHeadContainer.scrollLeft = scrollLeft;
+
+      // Giving a too high value of scroll left will reset it to the maximum in chrome and firefox.
+      // This creates jitter, as the value changes compared to the saved one, triggering a resize in the next iteration.
+      // Thus, we need to re-set the saved value if it can't be set to our desired value to not create jitter.
+      if (fakeTableHeadContainer.scrollLeft !== scrollLeft)
+      {
+        scrollLeft = fakeTableHeadContainer.scrollLeft;
+        scrollableContainer.scrollLeft = scrollLeft;
+        scrollableContainer.dataset.bocListPreviousScrollLeft = scrollLeft.toString();
+      }
+    }
   }
 
   public static InitializeNavigationBlock (pageNumberFieldOrSelector: CssSelectorOrElement<HTMLInputElement>, pageIndexFieldOrSelector: CssSelectorOrElement<HTMLInputElement>): void

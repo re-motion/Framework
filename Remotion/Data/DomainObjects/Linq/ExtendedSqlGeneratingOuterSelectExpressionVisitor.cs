@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Linq
         ISqlGenerationStage stage,
         SetOperationsMode setOperationsMode)
     {
-      ArgumentUtility.CheckNotNull("expression", expression);
-      ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
-      ArgumentUtility.CheckNotNull("stage", stage);
+      ArgumentNullException.ThrowIfNull(expression);
+      ArgumentNullException.ThrowIfNull(commandBuilder);
+      ArgumentNullException.ThrowIfNull(stage);
 
       EnsureNoCollectionExpression(expression);
 

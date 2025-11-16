@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentNullException">The <paramref name="domainObject"/> parameter is <see langword="null"/>.</exception>
     public PropertyIndexer (IDomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentNullException.ThrowIfNull(domainObject);
       _domainObject = domainObject;
     }
 
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get
       {
         // Overloaded member checks the arguments
-        ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
+        ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(propertyName), propertyName);
 
         return this[propertyName, ClientTransaction];
       }
@@ -88,8 +88,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get
       {
         // Overloaded member checks the arguments
-        ArgumentUtility.DebugCheckNotNull("domainObjectType", domainObjectType);
-        ArgumentUtility.DebugCheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+        ArgumentUtility.DebugCheckNotNull(nameof(domainObjectType), domainObjectType);
+        ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
         return this[domainObjectType, shortPropertyName, ClientTransaction];
       }
@@ -110,9 +110,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get
       {
         // PropertyAccessorDataCache checks the argument
-        ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
+        ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(propertyName), propertyName);
         // GetPropertyAccessor checks the argument
-        ArgumentUtility.DebugCheckNotNull("transaction", transaction);
+        ArgumentUtility.DebugCheckNotNull(nameof(transaction), transaction);
 
         var data = PropertyAccessorDataCache.GetMandatoryPropertyAccessorData(propertyName);
         return GetPropertyAccessor(transaction, data);
@@ -135,11 +135,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get
       {
         // PropertyAccessorDataCache checks the argument
-        ArgumentUtility.DebugCheckNotNull("domainObjectType", domainObjectType);
+        ArgumentUtility.DebugCheckNotNull(nameof(domainObjectType), domainObjectType);
         // PropertyAccessorDataCache checks the argument
-        ArgumentUtility.DebugCheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+        ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
         // GetPropertyAccessor checks the argument
-        ArgumentUtility.DebugCheckNotNull("transaction", transaction);
+        ArgumentUtility.DebugCheckNotNull(nameof(transaction), transaction);
 
         var data = PropertyAccessorDataCache.GetMandatoryPropertyAccessorData(domainObjectType, shortPropertyName);
         return GetPropertyAccessor(transaction, data);
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [NotNull]
     public IEnumerable<PropertyAccessor> AsEnumerable ([NotNull] ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull("transaction", transaction);
+      ArgumentNullException.ThrowIfNull(transaction);
       DomainObjectCheckUtility.CheckIfRightTransaction(_domainObject, transaction);
 
       foreach (PropertyDefinition propertyDefinition in ClassDefinition.GetPropertyDefinitions())
@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </returns>
     public bool Contains ([NotNull] string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       return PropertyAccessorDataCache.GetPropertyAccessorData(propertyIdentifier) != null;
     }
@@ -220,8 +220,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </returns>
     public bool Contains ([NotNull] Type domainObjectType, [NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentNullException.ThrowIfNull(domainObjectType);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
 
       return PropertyAccessorDataCache.GetPropertyAccessorData(domainObjectType, shortPropertyName) != null;
     }
@@ -237,8 +237,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="ArgumentException">No matching property could be found.</exception>
     public PropertyAccessor Find ([NotNull] Type typeToStartSearch, [NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull("typeToStartSearch", typeToStartSearch);
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentNullException.ThrowIfNull(typeToStartSearch);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
 
       var propertyAccessorData = PropertyAccessorDataCache.FindPropertyAccessorData(typeToStartSearch, shortPropertyName);
 
@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
             "The domain object type '{0}' does not have or inherit a mapping property with the short name '{1}'.",
             typeToStartSearch.GetFullNameSafe(),
             shortPropertyName);
-        throw new ArgumentException(message, "shortPropertyName");
+        throw new ArgumentException(message, nameof(shortPropertyName));
       }
 
       return GetPropertyAccessor(ClientTransaction, propertyAccessorData);
@@ -272,7 +272,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public PropertyAccessor Find<TDomainObject> ([CanBeNull] TDomainObject thisDomainObject, [NotNull] string shortPropertyName)
         where TDomainObject : DomainObject
     {
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
       return Find(typeof(TDomainObject), shortPropertyName);
     }
 
@@ -292,7 +292,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     [NotNull]
     public PropertyAccessor Find ([NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
       return Find(ClassDefinition.ClassType, shortPropertyName);
     }
 

@@ -32,7 +32,7 @@ namespace Remotion.Tools
 
     protected CustomAppContextRunnerBase (string baseDirectory, string? configFile)
     {
-      ArgumentUtility.CheckNotNull("baseDirectory", baseDirectory);
+      ArgumentNullException.ThrowIfNull(baseDirectory);
 
       _baseDirectory = baseDirectory;
       _configFile = configFile;

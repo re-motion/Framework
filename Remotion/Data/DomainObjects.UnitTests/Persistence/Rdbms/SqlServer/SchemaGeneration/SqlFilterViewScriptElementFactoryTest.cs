@@ -77,12 +77,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
-          "CREATE VIEW [SchemaName].[FilterView1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
-         +"  WITH SCHEMABINDING AS\r\n"
-         + "  SELECT [ID], [ClassID], [Timestamp], [Column1]\r\n"
-         +"    FROM [SchemaName].[TableName1]\r\n"
-         +"    WHERE [ClassID] IN ('ClassID1')\r\n"
-         +"  WITH CHECK OPTION";
+          """
+          CREATE VIEW [SchemaName].[FilterView1] ([ID], [ClassID], [Timestamp], [Column1])
+            WITH SCHEMABINDING AS
+            SELECT [ID], [ClassID], [Timestamp], [Column1]
+              FROM [SchemaName].[TableName1]
+              WHERE [ClassID] IN ('ClassID1')
+            WITH CHECK OPTION
+          """.ReplaceLineEndings();
       Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -100,12 +102,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
       Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
-          "CREATE VIEW [dbo].[FilterView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])\r\n"
-          +"  AS\r\n"
-          + "  SELECT [ID], [ClassID], [Timestamp], [Column1], [Column2]\r\n"
-          +"    FROM [dbo].[TableName2]\r\n"
-          +"    WHERE [ClassID] IN ('ClassID1', 'ClassID2')\r\n"
-          +"  WITH CHECK OPTION";
+          """
+          CREATE VIEW [dbo].[FilterView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])
+            AS
+            SELECT [ID], [ClassID], [Timestamp], [Column1], [Column2]
+              FROM [dbo].[TableName2]
+              WHERE [ClassID] IN ('ClassID1', 'ClassID2')
+            WITH CHECK OPTION
+          """.ReplaceLineEndings();
       Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
@@ -115,8 +119,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_filterViewDefinitionWithCustomSchema);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FilterView1' AND TABLE_SCHEMA = 'SchemaName')\r\n"
-          + "  DROP VIEW [SchemaName].[FilterView1]";
+          """
+          IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FilterView1' AND TABLE_SCHEMA = 'SchemaName')
+            DROP VIEW [SchemaName].[FilterView1]
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
@@ -128,8 +134,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       var result = _factory.GetDropElement(_filterViewDefinitionWithDefaultSchema);
 
       var expectedResult =
-          "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FilterView2' AND TABLE_SCHEMA = 'dbo')\r\n"
-          + "  DROP VIEW [dbo].[FilterView2]";
+          """
+          IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FilterView2' AND TABLE_SCHEMA = 'dbo')
+            DROP VIEW [dbo].[FilterView2]
+          """.ReplaceLineEndings();
 
       Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
       Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));

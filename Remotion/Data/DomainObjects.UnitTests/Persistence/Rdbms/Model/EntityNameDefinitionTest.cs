@@ -51,10 +51,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     {
       Assert.That(
           () => new EntityNameDefinition("", "entity"),
-          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo("Parameter 'schemaName' cannot be empty.", "schemaName"));
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo("The value cannot be an empty string.", "schemaName"));
       Assert.That(
           () => new EntityNameDefinition("schema", ""),
-          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo("Parameter 'entityName' cannot be empty.", "entityName"));
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo("The value cannot be an empty string.", "entityName"));
     }
 
     [Test]

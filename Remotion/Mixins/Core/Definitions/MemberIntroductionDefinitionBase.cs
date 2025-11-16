@@ -17,7 +17,6 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -33,9 +32,9 @@ namespace Remotion.Mixins.Definitions
     protected MemberIntroductionDefinitionBase (
         InterfaceIntroductionDefinition declaringInterface, TMemberInfo interfaceMember, TMemberDefinition implementingMember, MemberVisibility visibility)
     {
-      ArgumentUtility.CheckNotNull("interfaceMember", interfaceMember);
-      ArgumentUtility.CheckNotNull("declaringInterface", declaringInterface);
-      ArgumentUtility.CheckNotNull("implementingMember", implementingMember);
+      ArgumentNullException.ThrowIfNull(interfaceMember);
+      ArgumentNullException.ThrowIfNull(declaringInterface);
+      ArgumentNullException.ThrowIfNull(implementingMember);
 
       _declaringInterface = declaringInterface;
       _implementingMember = implementingMember;

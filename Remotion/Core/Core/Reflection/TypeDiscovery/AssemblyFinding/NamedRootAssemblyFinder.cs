@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -32,8 +31,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 
     public NamedRootAssemblyFinder (IEnumerable<AssemblyNameSpecification> specifications, IAssemblyLoader assemblyLoader)
     {
-      ArgumentUtility.CheckNotNull("specifications", specifications);
-      ArgumentUtility.CheckNotNull("assemblyLoader", assemblyLoader);
+      ArgumentNullException.ThrowIfNull(specifications);
+      ArgumentNullException.ThrowIfNull(assemblyLoader);
 
       _specifications = specifications.ToList().AsReadOnly();
       _assemblyLoader = assemblyLoader;

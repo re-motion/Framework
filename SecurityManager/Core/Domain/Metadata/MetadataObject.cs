@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
 using Remotion.ObjectBinding;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.Metadata
 {
@@ -33,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public static MetadataObject? Find (string metadataID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("metadataID", metadataID);
+      ArgumentException.ThrowIfNullOrEmpty(metadataID);
 
       FindMetadataObjectQueryBuilder queryBuilder = new FindMetadataObjectQueryBuilder();
 
@@ -81,14 +80,14 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public LocalizedName? GetLocalizedName (Culture culture)
     {
-      ArgumentUtility.CheckNotNull("culture", culture);
+      ArgumentNullException.ThrowIfNull(culture);
 
       return GetLocalizedName(culture.CultureName);
     }
 
     public LocalizedName? GetLocalizedName (string cultureName)
     {
-      ArgumentUtility.CheckNotNull("cultureName", cultureName);
+      ArgumentNullException.ThrowIfNull(cultureName);
 
       foreach (LocalizedName localizedName in LocalizedNames)
       {

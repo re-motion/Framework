@@ -27,7 +27,6 @@ using Remotion.Mixins.Validation;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer
 {
@@ -57,7 +56,7 @@ namespace Remotion.Mixins.CrossReferencer
 
     public static (XDocument ResultDocument, (Assembly, ReflectionTypeLoadException)[] FailedAssemblies) GetAssemblyInformation (Assembly[] assemblies, bool generateFullReport)
     {
-      ArgumentUtility.CheckNotNull("assemblies", assemblies);
+      ArgumentNullException.ThrowIfNull(assemblies);
 
       BootstrapServiceConfiguration.SetLoggerFactory(NullLoggerFactory.Instance);
 

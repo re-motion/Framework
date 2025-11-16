@@ -47,7 +47,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       var document = _htmlHelper.GetResultDocument();
       var element = _htmlHelper.GetAssertedChildElement(document, "style", 0);
       _htmlHelper.AssertAttribute(element, "type", "text/css");
-      _htmlHelper.AssertTextNode(element, "First\r\n\tSecond", 0);
+      _htmlHelper.AssertTextNode(element, $"First{Environment.NewLine}\tSecond", 0);
     }
   }
 }

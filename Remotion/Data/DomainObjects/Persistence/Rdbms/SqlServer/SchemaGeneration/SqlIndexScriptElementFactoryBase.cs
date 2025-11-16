@@ -20,7 +20,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -35,17 +34,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public virtual IScriptElement GetDropElement (T indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
-      ArgumentUtility.CheckNotNull("ownerName", ownerName);
+      ArgumentNullException.ThrowIfNull(indexDefinition);
+      ArgumentNullException.ThrowIfNull(ownerName);
 
       return new ScriptStatement(
           string.Format(
               "IF EXISTS (SELECT * FROM sys.objects so JOIN sysindexes si ON so.[object_id] = si.[id] "
-              + "WHERE so.[name] = '{0}' AND schema_name (so.schema_id)='{1}' AND si.[name] = '{2}')\r\n"
+              + "WHERE so.[name] = '{0}' AND schema_name (so.schema_id)='{1}' AND si.[name] = '{2}'){3}"
               + "  DROP INDEX [{2}] ON [{1}].[{0}]",
               ownerName.EntityName,
               ownerName.SchemaName ?? DefaultSchema,
-              indexDefinition.IndexName));
+              indexDefinition.IndexName,
+              Environment.NewLine));
     }
 
     protected string GetIndexedColumnNames (IEnumerable<SqlIndexedColumnDefinition> indexedColumnDefinitions)
@@ -56,18 +56,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected virtual string GetCreateIndexOptions (IEnumerable<string> optionItems)
     {
-      ArgumentUtility.CheckNotNull("optionItems", optionItems);
+      ArgumentNullException.ThrowIfNull(optionItems);
 
       var filteredItems = optionItems.Except(new[] { string.Empty, null }).ToList();
       if (filteredItems.Any())
-        return "\r\n  WITH (" + string.Join(", ", filteredItems) + ")";
+        return $"{Environment.NewLine}  WITH ({string.Join(", ", filteredItems)})";
       else
         return string.Empty;
     }
 
     protected virtual IEnumerable<string> GetCreateIndexOptionItems (T indexDefinition)
     {
-      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
+      ArgumentNullException.ThrowIfNull(indexDefinition);
 
       yield return GetIndexOption("PAD_INDEX", indexDefinition.PadIndex);
       yield return GetIndexOption("FILLFACTOR", indexDefinition.FillFactor);
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetIndexOption (string optionName , bool? optionValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("optionName", optionName);
+      ArgumentException.ThrowIfNullOrEmpty(optionName);
 
       if (optionValue.HasValue)
         return string.Format("{0} = {1}", optionName, optionValue.Value ? "ON" : "OFF");
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     protected string GetIndexOption (string optionName , int? optionValue)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("optionName", optionName);
+      ArgumentException.ThrowIfNullOrEmpty(optionName);
 
       if (optionValue.HasValue)
         return string.Format("{0} = {1}", optionName, optionValue.Value);

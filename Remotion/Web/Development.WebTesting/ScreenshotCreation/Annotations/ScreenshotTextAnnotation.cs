@@ -17,7 +17,7 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
-using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -49,10 +49,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         float? maxWidth,
         float? maxHeight)
     {
-      ArgumentUtility.CheckNotNull("content", content);
-      ArgumentUtility.CheckNotNull("font", font);
-      ArgumentUtility.CheckNotNull("foregroundBrush", foregroundBrush);
-      ArgumentUtility.CheckNotNull("stringFormat", stringFormat);
+      ArgumentNullException.ThrowIfNull(content);
+      ArgumentNullException.ThrowIfNull(font);
+      ArgumentNullException.ThrowIfNull(foregroundBrush);
+      ArgumentNullException.ThrowIfNull(stringFormat);
 
       _content = content;
       _font = font;
@@ -144,12 +144,12 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
-      ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
+      ArgumentNullException.ThrowIfNull(canvas);
+      ArgumentNullException.ThrowIfNull(resolvedScreenshotElement);
 
-      var size = graphics.MeasureString(_content, _font, new SizeF(_maxWidth, _maxHeight));
+      var size = _font.MeasureString(_content, new SizeF(_maxWidth, _maxHeight));
       var position = PositionAndApplyPadding(resolvedScreenshotElement.ElementBounds, size.Width, size.Height);
       var layout = new Rectangle(
           (int)Math.Round(position.X),
@@ -158,9 +158,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
           (int)Math.Round(size.Height) + 1);
 
       if (_backgroundBrush != null)
-        graphics.FillRectangle(_backgroundBrush, layout);
+        canvas.FillRectangle(_backgroundBrush, layout);
 
-      graphics.DrawString(_content, _font, _foregroundBrush, layout, _stringFormat);
+      canvas.DrawString(
+          _content,
+          _font,
+          _foregroundBrush,
+          layout,
+          _stringFormat);
     }
 
     /// <summary>

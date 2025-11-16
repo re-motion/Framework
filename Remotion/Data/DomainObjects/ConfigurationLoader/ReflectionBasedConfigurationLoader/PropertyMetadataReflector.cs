@@ -19,7 +19,6 @@ using System.Collections.Concurrent;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -35,7 +34,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public StorageClass? GetStorageClass (IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentNullException.ThrowIfNull(propertyInformation);
 
       // C# compiler 7.2 already provides caching for anonymous method.
       return _storageClassCache.GetOrAdd(propertyInformation, key => key.GetCustomAttribute<StorageClassAttribute>(true)?.StorageClass);

@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -47,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentNullException.ThrowIfNull(text);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -63,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public UnspecifiedPageObject FillWith ([NotNull] string[] lines, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("lines", lines);
+      ArgumentNullException.ThrowIfNull(lines);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -77,8 +76,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("text", text);
-      ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
+      ArgumentNullException.ThrowIfNull(text);
+      ArgumentNullException.ThrowIfNull(finishInputWith);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
@@ -100,7 +99,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         FinishInputWithAction finishInputWith,
         IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull("lines", lines);
+      ArgumentNullException.ThrowIfNull(lines);
 
       if (IsDisabled())
         throw AssertionExceptionUtility.CreateControlDisabledException(Driver);

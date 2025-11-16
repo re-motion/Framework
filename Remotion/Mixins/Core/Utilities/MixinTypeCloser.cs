@@ -30,17 +30,17 @@ namespace Remotion.Mixins.Utilities
 
     public MixinTypeCloser (Type targetClass)
     {
-      ArgumentUtility.CheckNotNull("targetClass", targetClass);
+      ArgumentNullException.ThrowIfNull(targetClass);
 
       if (targetClass.ContainsGenericParameters)
-        throw new ArgumentException("The target class must not contain generic parameters.", "targetClass");
+        throw new ArgumentException("The target class must not contain generic parameters.", nameof(targetClass));
 
       _targetClass = targetClass;
     }
 
     public Type GetClosedMixinType (Type configuredMixinType)
     {
-      ArgumentUtility.CheckNotNull("configuredMixinType", configuredMixinType);
+      ArgumentNullException.ThrowIfNull(configuredMixinType);
 
       if (configuredMixinType.ContainsGenericParameters)
       {

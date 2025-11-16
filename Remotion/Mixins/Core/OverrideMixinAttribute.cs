@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -56,7 +55,8 @@ namespace Remotion.Mixins
     /// open type (with unbound generic parameters) even if the configuration contains a closed type (with bound parameters).</param>
     public OverrideMixinAttribute (Type mixinType)
     {
-      _mixinType = ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      _mixinType = mixinType;
     }
 
     public Type? MixinType

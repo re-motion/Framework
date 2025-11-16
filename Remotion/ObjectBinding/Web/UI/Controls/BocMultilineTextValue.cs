@@ -36,7 +36,7 @@ using Remotion.Web.UI.Globalization;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or edit a list of strings. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocMultilineTextValue.xml' path='BocMultilineTextValue/Class/*' />
   [ValidationProperty("Text")]
   [DefaultEvent("TextChanged")]
   [ToolboxItemFilter("System.Web.UI")]
@@ -88,7 +88,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadValue/*' />
     public override void LoadValue (bool interim)
     {
       if (interim)
@@ -111,7 +111,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> The <see cref="String"/> <see cref="Array"/> to load or <see langword="null"/>. </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
-    /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadUnboundValue/*' />
     public void LoadUnboundValue (string[]? value, bool interim)
     {
       LoadValueInternal(value, interim);
@@ -128,7 +128,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/SaveValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocMultilineTextValue.xml' path='BocMultilineTextValue/SaveValue/*' />
     public override bool SaveValue (bool interim)
     {
       if (interim)
@@ -156,7 +156,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var renderer = CreateRenderer();
       renderer.Render(CreateRenderingContext(writer));
@@ -169,7 +169,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocMultilineTextValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       Assertion.IsNotNull(Context, "Context must not be null.");
 
@@ -285,7 +285,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override sealed object? ValueImplementation
     {
       get { return Value; }
-      set { Value = ArgumentUtility.CheckType<string[]>("value", value); }
+      set { Value = ArgumentUtility.CheckType<string[]>(nameof(value), value); }
     }
 
     /// <summary>Gets a flag indicating whether the <see cref="BocMultilineTextValue"/> contains a value. </summary>
@@ -329,8 +329,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       base.LoadResources(resourceManager, globalizationService);
 

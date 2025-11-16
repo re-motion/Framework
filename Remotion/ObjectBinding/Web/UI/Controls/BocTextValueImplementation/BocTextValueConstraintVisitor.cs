@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 {
@@ -28,21 +27,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 
     public BocTextValueConstraintVisitor (BocTextValue control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(control);
 
       Control = control;
     }
 
     public void Visit (BusinessObjectPropertyValueRequiredConstraint constraint)
     {
-      ArgumentUtility.CheckNotNull("constraint", constraint);
+      ArgumentNullException.ThrowIfNull(constraint);
 
       ((IBusinessObjectBoundEditableWebControl)Control).RequiredByPropertyConstraint = constraint.IsRequired;
     }
 
     public void Visit (BusinessObjectPropertyValueLengthConstraint constraint)
     {
-      ArgumentUtility.CheckNotNull("constraint", constraint);
+      ArgumentNullException.ThrowIfNull(constraint);
 
       Control.TextBoxStyle.MaxLengthByPropertyConstraint = constraint.MaxLength;
     }

@@ -18,7 +18,6 @@ using System;
 using System.CodeDom;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Compilation
 {
@@ -37,10 +36,10 @@ namespace Remotion.Web.Compilation
         CodeMemberMethod buildMethod,
         CodeMemberMethod dataBindingMethod)
     {
-      ArgumentUtility.CheckNotNull("codeCompileUnit", codeCompileUnit);
-      ArgumentUtility.CheckNotNull("baseType", baseType);
-      ArgumentUtility.CheckNotNull("derivedType", derivedType);
-      ArgumentUtility.CheckNotNull("buildMethod", buildMethod);
+      ArgumentNullException.ThrowIfNull(codeCompileUnit);
+      ArgumentNullException.ThrowIfNull(baseType);
+      ArgumentNullException.ThrowIfNull(derivedType);
+      ArgumentNullException.ThrowIfNull(buildMethod);
 
       var processor = SafeServiceLocator.Current.GetInstance<IControlBuilderCodeProcessor>();
       processor.ProcessGeneratedCode(

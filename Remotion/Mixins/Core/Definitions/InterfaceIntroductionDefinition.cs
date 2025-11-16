@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
@@ -34,8 +33,8 @@ namespace Remotion.Mixins.Definitions
 
     public InterfaceIntroductionDefinition (Type type, MixinDefinition implementer)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("implementer", implementer);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(implementer);
 
       InterfaceType = type;
       Implementer = implementer;
@@ -86,7 +85,7 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ArgumentNullException.ThrowIfNull(visitor);
       visitor.Visit(this);
       _introducedMethods.Accept(visitor);
       _introducedProperties.Accept(visitor);

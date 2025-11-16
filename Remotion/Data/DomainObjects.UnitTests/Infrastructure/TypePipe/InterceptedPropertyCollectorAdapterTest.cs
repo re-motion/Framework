@@ -124,8 +124,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
     private void CheckAbsence (IEnumerable<IAccessorInterceptor> accessorInterceptors, params MethodInfo[] expectedAbsentInterceptedAccessors)
     {
-      ArgumentUtility.CheckNotNull("accessorInterceptors", accessorInterceptors);
-      ArgumentUtility.CheckNotNull("expectedAbsentInterceptedAccessors", expectedAbsentInterceptedAccessors);
+      ArgumentNullException.ThrowIfNull(accessorInterceptors);
+      ArgumentNullException.ThrowIfNull(expectedAbsentInterceptedAccessors);
 
       var actualInterceptedAccessors = accessorInterceptors.Select(GetInterceptedAccessorMethod);
       Assert.That(actualInterceptedAccessors.Intersect(expectedAbsentInterceptedAccessors), Is.Empty);
@@ -133,8 +133,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 
     private void CheckContains (IEnumerable<IAccessorInterceptor> accessorInterceptors, params MethodInfo[] expectedInterceptedAccessors)
     {
-      ArgumentUtility.CheckNotNull("accessorInterceptors", accessorInterceptors);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("expectedInterceptedAccessors", expectedInterceptedAccessors);
+      ArgumentNullException.ThrowIfNull(accessorInterceptors);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(expectedInterceptedAccessors), expectedInterceptedAccessors);
 
       var actualInterceptedAccessors = accessorInterceptors.Select(GetInterceptedAccessorMethod);
       Assert.That(expectedInterceptedAccessors, Is.SubsetOf(actualInterceptedAccessors));

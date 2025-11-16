@@ -16,7 +16,6 @@
 //
 using System;
 using Remotion.Globalization;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Globalization
 {
@@ -36,8 +35,8 @@ namespace Remotion.Web.Globalization
     /// </returns>
     public static WebString GetWebString (this IResourceManager resourceManager, string id, WebStringType webStringType)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(id);
 
       var resourceString = resourceManager.GetString(id);
 
@@ -55,8 +54,8 @@ namespace Remotion.Web.Globalization
     /// </returns>
     public static WebString? GetWebStringOrDefault (this IResourceManager resourceManager, string id, WebStringType webStringType)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(id);
 
       var resourceString = resourceManager.GetStringOrDefault(id);
 
@@ -78,8 +77,8 @@ namespace Remotion.Web.Globalization
     /// </returns>
     public static WebString GetWebString (this IResourceManager resourceManager, Enum enumValue, WebStringType webStringType)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(enumValue);
 
       var resourceString = resourceManager.GetString(enumValue);
 
@@ -98,8 +97,8 @@ namespace Remotion.Web.Globalization
     /// </returns>
     public static WebString? GetWebStringOrDefault (this IResourceManager resourceManager, Enum enumValue, WebStringType webStringType)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("enumValue", enumValue);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(enumValue);
 
       var resourceString = resourceManager.GetStringOrDefault(enumValue);
 

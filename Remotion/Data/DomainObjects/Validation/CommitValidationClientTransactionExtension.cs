@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -45,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Validation
     protected CommitValidationClientTransactionExtension (IPersistableDataValidator validator, string key)
         : base(key)
     {
-      ArgumentUtility.CheckNotNull("validator", validator);
+      ArgumentNullException.ThrowIfNull(validator);
 
       _validator = validator;
     }
@@ -57,8 +56,8 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public override void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("committedData", committedData);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(committedData);
 
       foreach (var item in committedData)
         _validator.Validate(clientTransaction, item);

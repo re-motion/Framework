@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications
 {
@@ -41,11 +40,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
         : base(
             modifiedEndPoint,
             null,
-            ArgumentUtility.CheckNotNull("addedObject", addedObject),
+            addedObject ?? throw new ArgumentNullException(nameof(addedObject)),
             transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("collectionData", collectionData);
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentNullException.ThrowIfNull(collectionData);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
 
       _index = collectionData.Count;
       _modifiedCollectionData = collectionData;

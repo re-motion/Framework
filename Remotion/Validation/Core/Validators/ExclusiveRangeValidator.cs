@@ -21,7 +21,6 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -42,15 +41,15 @@ namespace Remotion.Validation.Validators
         [NotNull] ValidationMessage validationMessage,
         [CanBeNull] IComparer? comparer = null)
     {
-      ArgumentUtility.CheckNotNull("from", from);
-      ArgumentUtility.CheckNotNull("to", to);
-      ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
+      ArgumentNullException.ThrowIfNull(from);
+      ArgumentNullException.ThrowIfNull(to);
+      ArgumentNullException.ThrowIfNull(validationMessage);
 
       if (from.GetType() != to.GetType())
-        throw new ArgumentException("'from' must have the same type as 'to'.", "to");
+        throw new ArgumentException("'from' must have the same type as 'to'.", nameof(to));
 
       if (to.CompareTo(from) < 0)
-        throw new ArgumentOutOfRangeException("to", "'to' should be larger than 'from'.");
+        throw new ArgumentOutOfRangeException(nameof(to), "'to' should be larger than 'from'.");
 
       To = to;
       From = from;
@@ -61,7 +60,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

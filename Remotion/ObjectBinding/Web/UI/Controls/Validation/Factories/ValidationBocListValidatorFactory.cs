@@ -21,7 +21,6 @@ using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 {
@@ -41,7 +40,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories
 
     public IEnumerable<BaseValidator> CreateValidators (IBocList control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(control);
 
       if (isReadOnly)
         yield break;

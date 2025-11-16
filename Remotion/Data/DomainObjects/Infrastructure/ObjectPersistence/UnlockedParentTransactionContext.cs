@@ -17,7 +17,6 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -38,9 +37,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         IInvalidDomainObjectManager parentInvalidDomainObjectManager,
         IDisposable scope)
     {
-      ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction);
-      ArgumentUtility.CheckNotNull("parentInvalidDomainObjectManager", parentInvalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(parentTransaction);
+      ArgumentNullException.ThrowIfNull(parentInvalidDomainObjectManager);
+      ArgumentNullException.ThrowIfNull(scope);
 
       _parentTransaction = parentTransaction;
       _parentInvalidDomainObjectManager = parentInvalidDomainObjectManager;
@@ -59,7 +58,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void MarkNotInvalid (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentNullException.ThrowIfNull(objectID);
       CheckDisposed();
 
       _parentInvalidDomainObjectManager.MarkNotInvalid(objectID);
@@ -67,7 +66,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void RegisterDataContainer (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
       CheckDisposed();
 
       _parentTransaction.DataManager.RegisterDataContainer(dataContainer);
@@ -75,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void Discard (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
       CheckDisposed();
 
       _parentTransaction.DataManager.Discard(dataContainer);

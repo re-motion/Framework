@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 
 namespace Remotion.Validation
@@ -32,7 +31,7 @@ namespace Remotion.Validation
     public static IValidator<TValidatedType> BuildValidator<TValidatedType> (this IValidatorBuilder builder)
         where TValidatedType : notnull
     {
-      ArgumentUtility.CheckNotNull("builder", builder);
+      ArgumentNullException.ThrowIfNull(builder);
 
       var validator = builder.BuildValidator(typeof(TValidatedType));
       return new TypedValidatorDecorator<TValidatedType>(validator);

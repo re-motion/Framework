@@ -17,7 +17,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -27,7 +26,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public RecursiveExceptionReportGenerator (Exception exception)
     {
-      ArgumentUtility.CheckNotNull("exception", exception);
+      ArgumentNullException.ThrowIfNull(exception);
 
       _exception = exception;
     }

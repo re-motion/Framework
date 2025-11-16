@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.WebTestActions;
@@ -53,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     protected override ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentNullException.ThrowIfNull(scope);
 
       if (IsPostBackLink(scope))
         return ((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy;
@@ -71,12 +70,16 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
 
       return scope["href"].Contains(doPostBackScript) ||
              scope["href"].Contains(doPostBackWithOptionsScript) ||
-             (TargetsCurrentPage(scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains(doPostBackScript));
+             (TargetsCurrentPage(scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains(doPostBackScript))
+             || (scope["data-event-content-href"]?.Contains(doPostBackScript) ?? false)
+             || (scope["data-event-content-href"]?.Contains(doPostBackWithOptionsScript) ?? false)
+             || (TargetsCurrentPage(scope["href"]) && (scope["data-event-content-onclick"]?.Contains(doPostBackScript) ?? false));
     }
 
     private bool IsSimpleJavaScriptLink (ElementScope scope)
     {
-      return TargetsCurrentPage(scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains("javascript:");
+      return (TargetsCurrentPage(scope["href"]) && scope["onclick"] != null && scope["onclick"].Contains("javascript:"))
+             || (TargetsCurrentPage(scope["href"]) && scope["data-event-content-onclick"] != null && scope["data-event-content-onclick"].Contains("javascript:"));
     }
 
     private bool TargetsCurrentPage (string href)

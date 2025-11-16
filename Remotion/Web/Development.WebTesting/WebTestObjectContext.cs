@@ -18,7 +18,6 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 
 namespace Remotion.Web.Development.WebTesting
@@ -41,8 +40,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </exception>
     protected WebTestObjectContext ([NotNull] ElementScope scope, ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _scope = scope;
       _loggerFactory = loggerFactory;

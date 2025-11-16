@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public UpdatedColumnsSpecification (IEnumerable<ColumnValue> columnValues)
     {
-      ArgumentUtility.CheckNotNull("columnValues", columnValues);
+      ArgumentNullException.ThrowIfNull(columnValues);
 
       var columnValuesArray = columnValues.ToArray();
-      ArgumentUtility.CheckNotEmpty("columnValues", columnValuesArray);
+      ArgumentUtility.CheckNotEmpty(nameof(columnValues), columnValuesArray);
 
       _columnValues = columnValuesArray;
     }
@@ -47,11 +47,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
       get { return Array.AsReadOnly(_columnValues); }
     }
 
-    public void AppendColumnValueAssignments (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect)
+    public void AppendColumnValueAssignments (StringBuilder statement, DbCommand dbCommand, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("dbCommand", dbCommand);
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(dbCommand);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       var columnsWithParameters = _columnValues.Select(
           cv =>

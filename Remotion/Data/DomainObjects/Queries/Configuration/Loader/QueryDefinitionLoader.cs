@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 {
@@ -35,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration.Loader
 
     public QueryDefinitionLoader (IQueryFileFinder queryFileFinder, IStorageSettings storageSettings)
     {
-      ArgumentUtility.CheckNotNull(nameof(queryFileFinder), queryFileFinder);
-      ArgumentUtility.CheckNotNull("queryFileFinder", queryFileFinder);
+      ArgumentNullException.ThrowIfNull(queryFileFinder);
+      ArgumentNullException.ThrowIfNull(queryFileFinder);
 
       _queryFileFinder = queryFileFinder;
       _storageSettings = storageSettings;

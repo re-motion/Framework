@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using System.Web.UI;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.HtmlHeadContentsImplementation;
 using Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering;
@@ -38,7 +37,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var htmlHeadAppender = HtmlHeadAppender.Current;
       var htmlHeadElements = htmlHeadAppender.GetHtmlHeadElements().ToArray();
@@ -52,7 +51,7 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual HtmlHeadContentsRenderingContext CreateRenderingContext (HtmlTextWriter writer, HtmlHeadElement[] htmlHeadElements)
     {
-      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentNullException.ThrowIfNull(writer);
 
       var renderingContext = new HtmlHeadContentsRenderingContext(Page!.Context!, writer, this, htmlHeadElements); // TODO RM-8118: not null assertion
       return renderingContext;

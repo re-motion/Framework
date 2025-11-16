@@ -22,7 +22,6 @@ using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
@@ -35,8 +34,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         [CanBeNull] User? owningUser,
         [NotNull] IEnumerable<IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles)
     {
-      ArgumentUtility.CheckNotNull("principal", principal);
-      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
+      ArgumentNullException.ThrowIfNull(principal);
+      ArgumentNullException.ThrowIfNull(abstractRoles);
 
       return new SecurityToken(
           principal,
@@ -59,8 +58,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
         [CanBeNull] IDomainObjectHandle<User>? owningUser,
         [NotNull] IEnumerable<IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles)
     {
-      ArgumentUtility.CheckNotNull("principal", principal);
-      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
+      ArgumentNullException.ThrowIfNull(principal);
+      ArgumentNullException.ThrowIfNull(abstractRoles);
 
       _principal = principal;
       _owningTenant = owningTenant;

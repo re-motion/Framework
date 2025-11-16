@@ -18,7 +18,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
@@ -98,7 +97,7 @@ namespace Remotion.Globalization
     [MemberNotNull(nameof(_baseName))]
     protected void SetBaseName (string baseName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("baseName", baseName);
+      ArgumentException.ThrowIfNullOrEmpty(baseName);
       _baseName = baseName;
     }
 
@@ -109,7 +108,7 @@ namespace Remotion.Globalization
 
     protected void SetResourceAssembly (Assembly resourceAssembly)
     {
-      ArgumentUtility.CheckNotNull("resourceAssembly", resourceAssembly);
+      ArgumentNullException.ThrowIfNull(resourceAssembly);
       _resourceAssembly = resourceAssembly;
     }
 

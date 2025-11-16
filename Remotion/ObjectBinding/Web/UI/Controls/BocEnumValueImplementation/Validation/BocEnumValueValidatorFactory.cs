@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validation
 {
@@ -38,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Vali
 
     public IEnumerable<BaseValidator> CreateValidators (IBocEnumValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(control);
 
       if (isReadOnly)
         yield break;

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 {
@@ -31,14 +30,14 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return Validate(classDefinition.ClassType);
     }
 
     private MappingValidationResult Validate (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       if (type.IsGenericType)// && !ReflectionUtility.IsDomainObjectBase(type))
       {

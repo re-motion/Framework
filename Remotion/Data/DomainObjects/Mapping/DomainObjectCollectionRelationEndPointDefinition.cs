@@ -43,10 +43,10 @@ namespace Remotion.Data.DomainObjects.Mapping
         Lazy<SortExpressionDefinition?> sortExpression,
         IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull("sortExpression", sortExpression);
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
+      ArgumentNullException.ThrowIfNull(sortExpression);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       _classDefinition = classDefinition;
       _isMandatory = isMandatory;
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetRelationDefinition (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
+      ArgumentNullException.ThrowIfNull(relationDefinition);
       _relationDefinition = relationDefinition;
     }
 

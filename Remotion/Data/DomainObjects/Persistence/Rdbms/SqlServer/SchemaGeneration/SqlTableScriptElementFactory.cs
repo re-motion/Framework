@@ -19,7 +19,6 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -30,29 +29,31 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public IScriptElement GetCreateElement (TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
 
-      var columnDeclarationList = string.Join(",\r\n", tableDefinition.GetAllColumns().Select(GetColumnDeclaration));
+      var columnDeclarationList = string.Join("," + Environment.NewLine, tableDefinition.GetAllColumns().Select(GetColumnDeclaration));
       var primaryKeyConstraintString = GetPrimaryKeyDeclaration(tableDefinition);
       return
           new ScriptStatement(
               string.Format(
-                  "CREATE TABLE [{0}].[{1}]\r\n(\r\n{2}{3}\r\n)",
+                  "CREATE TABLE [{0}].[{1}]{4}({4}{2}{3}{4})",
                   tableDefinition.TableName.SchemaName ?? DefaultSchema,
                   tableDefinition.TableName.EntityName,
                   columnDeclarationList,
-                  primaryKeyConstraintString));
+                  primaryKeyConstraintString,
+                  Environment.NewLine));
     }
 
     public IScriptElement GetDropElement (TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
 
       return new ScriptStatement(
-        string.Format("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{1}' AND TABLE_SCHEMA = '{0}')\r\n"
+        string.Format("IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{1}' AND TABLE_SCHEMA = '{0}'){2}"
                          + "  DROP TABLE [{0}].[{1}]",
                   tableDefinition.TableName.SchemaName ?? DefaultSchema,
-                  tableDefinition.TableName.EntityName));
+                  tableDefinition.TableName.EntityName,
+                  Environment.NewLine));
     }
 
     private string GetColumnDeclaration (ColumnDefinition column)
@@ -67,10 +68,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
         return string.Empty;
 
       return string.Format(
-          ",\r\n  CONSTRAINT [{0}] PRIMARY KEY {1} ({2})",
+          ",{3}  CONSTRAINT [{0}] PRIMARY KEY {1} ({2})",
           primaryKeyConstraint.ConstraintName,
           primaryKeyConstraint.IsClustered ? "CLUSTERED" : "NONCLUSTERED",
-          GetColumnList(primaryKeyConstraint.Columns));
+          GetColumnList(primaryKeyConstraint.Columns),
+          Environment.NewLine);
     }
   }
 }

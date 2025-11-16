@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
 using System.Web.UI;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
@@ -37,7 +38,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       _testHelper = new CommandTestHelper();
       HttpContextHelper.SetCurrent(_testHelper.HttpContext);
 
-      UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(@"Res\UrlMapping.xml"));
+      UrlMappingConfiguration.SetCurrent(UrlMappingConfigurationUtility.CreateUrlMappingConfiguration(Path.Combine("Res", "UrlMapping.xml")));
     }
 
     [Test]

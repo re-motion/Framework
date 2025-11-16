@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 
 namespace Remotion.Web.Development.WebTesting.FluentControlSelection
@@ -37,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 
     public TitleControlSelectionCommandBuilder ([NotNull] string title)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("title", title);
+      ArgumentException.ThrowIfNullOrEmpty(title);
 
       _title = title;
     }
@@ -45,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new TitleControlSelectionCommand<TControlObject>(controlSelector, _title);
     }
@@ -53,7 +52,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new TitleControlSelectionCommand<TControlObject>(controlSelector, _title);
     }
@@ -61,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentNullException.ThrowIfNull(controlSelector);
 
       return new TitleControlSelectionCommand<TControlObject>(controlSelector, _title);
     }

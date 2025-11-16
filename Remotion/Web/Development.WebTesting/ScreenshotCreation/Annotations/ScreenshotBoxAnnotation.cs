@@ -15,9 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using JetBrains.Annotations;
-using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 {
@@ -32,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
     public ScreenshotBoxAnnotation ([NotNull] Pen pen, WebPadding padding, [CanBeNull] Brush? backgroundBrush)
     {
-      ArgumentUtility.CheckNotNull("pen", pen);
+      ArgumentNullException.ThrowIfNull(pen);
 
       _pen = pen;
       _padding = padding;
@@ -67,17 +66,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     }
 
     /// <inheritdoc />
-    public void Draw (Graphics graphics, ResolvedScreenshotElement resolvedScreenshotElement)
+    public void Draw (Canvas canvas, ResolvedScreenshotElement resolvedScreenshotElement)
     {
-      ArgumentUtility.CheckNotNull("graphics", graphics);
-      ArgumentUtility.CheckNotNull("resolvedScreenshotElement", resolvedScreenshotElement);
+      ArgumentNullException.ThrowIfNull(canvas);
+      ArgumentNullException.ThrowIfNull(resolvedScreenshotElement);
 
       // Calculate the bound of the annotation with padding
       var annotationBounds = _padding.Apply(resolvedScreenshotElement.ElementBounds);
 
       // Draw the background if there is one
       if (_backgroundBrush != null)
-        graphics.FillRectangle(_backgroundBrush, annotationBounds);
+        canvas.FillRectangle(_backgroundBrush, annotationBounds);
 
       // Apply the padding for the border
       var border = (int)Math.Floor(_pen.Width);
@@ -87,17 +86,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
 
       // Draw the border by drawing 5 lines. GDI+ is somehow
       // unable to draw rectangles in certain situations
-      graphics.DrawLines(
-          _pen,
-          new[]
-          {
-              borderBounds.Location,
-              borderBounds.Location + new Size(borderBounds.Width, 0),
-              borderBounds.Location + borderBounds.Size,
-              borderBounds.Location + new Size(0, borderBounds.Height),
-              borderBounds.Location,
-              borderBounds.Location + new Size(borderBounds.Width, 0)
-          });
+      canvas.DrawRectangle(_pen, borderBounds);
     }
   }
 }

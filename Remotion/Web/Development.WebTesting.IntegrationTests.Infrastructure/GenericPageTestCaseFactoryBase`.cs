@@ -20,7 +20,6 @@ using System.Reflection;
 using System.Text.Json;
 using JetBrains.Annotations;
 using NUnit.Framework;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 {
@@ -52,9 +51,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     protected void PrepareTest ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] WebTestHelper helper, [NotNull] string control)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
-      ArgumentUtility.CheckNotNull("helper", helper);
-      ArgumentUtility.CheckNotNullOrEmpty("control", control);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(helper);
+      ArgumentException.ThrowIfNullOrEmpty(control);
 
       var url = string.Concat(
           helper.TestInfrastructureConfiguration.WebApplicationRoot,
@@ -111,8 +110,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private TestCaseData CreateTestCaseData ([NotNull] GenericPageTestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull("attribute", attribute);
-      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentNullException.ThrowIfNull(attribute);
+      ArgumentNullException.ThrowIfNull(method);
 
       return new TestCaseData(
           (GenericTestSetupAction)((helper, control) =>

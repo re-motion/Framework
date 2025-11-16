@@ -72,12 +72,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validationRule.Validate(classDefinition).Where(r=>!r.IsValid).ToArray();
 
       var expectedMessage1 =
-        "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
-        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.DerivedClassWithMappingAttribute\r\n"
+        $"The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.{Environment.NewLine}{Environment.NewLine}"
+        + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.DerivedClassWithMappingAttribute{Environment.NewLine}"
         + "Property: Property1";
       var expectedMessage2 =
-        "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
-        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.DerivedClassWithMappingAttribute\r\n"
+        $"The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.{Environment.NewLine}{Environment.NewLine}"
+        + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.DerivedClassWithMappingAttribute{Environment.NewLine}"
         + "Property: Property3";
       Assert.That(validationResult.Length, Is.EqualTo(2));
       AssertMappingValidationResult(validationResult[0], false, expectedMessage1);
@@ -93,12 +93,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validationRule.Validate(classDefinition).Where(r => !r.IsValid).ToArray();
 
       var expectedMessage1 =
-        "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
-        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.InheritanceRootDerivedMappingAttributesClass\r\n"
+        $"The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.{Environment.NewLine}{Environment.NewLine}"
+        + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.InheritanceRootDerivedMappingAttributesClass{Environment.NewLine}"
         + "Property: Property1";
       var expectedMessage2 =
-        "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
-        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.InheritanceRootDerivedMappingAttributesClass\r\n"
+        $"The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.{Environment.NewLine}{Environment.NewLine}"
+        + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.InheritanceRootDerivedMappingAttributesClass{Environment.NewLine}"
         + "Property: Property3";
       Assert.That(validationResult.Length, Is.EqualTo(2));
       AssertMappingValidationResult(validationResult[0], false, expectedMessage1);
@@ -114,12 +114,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validationRule.Validate(classDefinition).ToArray();
 
       var expectedMessage1 =
-        "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
-        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.InheritanceRootDerivedMappingAttributesClass\r\n"
+        $"The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.{Environment.NewLine}{Environment.NewLine}"
+        + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.InheritanceRootDerivedMappingAttributesClass{Environment.NewLine}"
         + "Property: Property1";
       var expectedMessage2 =
-        "The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.\r\n\r\n"
-        + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.InheritanceRootDerivedMappingAttributesClass\r\n"
+        $"The 'StorageClassNoneAttribute' is a mapping attribute and may only be applied at the property's base definition.{Environment.NewLine}{Environment.NewLine}"
+        + $"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule.InheritanceRootDerivedMappingAttributesClass{Environment.NewLine}"
         + "Property: Property3";
       Assert.That(validationResult.Length, Is.EqualTo(2));
       AssertMappingValidationResult(validationResult[0], false, expectedMessage1);

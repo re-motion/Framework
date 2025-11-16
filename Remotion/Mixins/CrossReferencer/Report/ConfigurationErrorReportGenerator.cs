@@ -18,7 +18,6 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Utilities;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -28,7 +27,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public ConfigurationErrorReportGenerator (ErrorAggregator<ConfigurationException> errorAggregator)
     {
-      ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
+      ArgumentNullException.ThrowIfNull(errorAggregator);
 
       _errorAggregator = errorAggregator;
     }

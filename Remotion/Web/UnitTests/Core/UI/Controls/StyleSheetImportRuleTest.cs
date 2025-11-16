@@ -42,7 +42,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       javaScriptInclude.Render(_htmlHelper.Writer);
 
-      Assert.That(_htmlHelper.GetDocumentText(), Is.EqualTo("@import url(\"myStylesheetUrl.js\");\r\n"));
+      Assert.That(_htmlHelper.GetDocumentText(), Is.EqualTo($"@import url(\"myStylesheetUrl.js\");{Environment.NewLine}"));
     }
   }
 }

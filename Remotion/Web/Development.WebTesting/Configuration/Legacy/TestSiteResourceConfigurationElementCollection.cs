@@ -16,7 +16,6 @@
 //
 using System;
 using System.Configuration;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
 {
@@ -41,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration.Legacy
     /// <inheritdoc />
     protected override object GetElementKey (ConfigurationElement element)
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentNullException.ThrowIfNull(element);
 
       return ((TestSiteResourceConfigurationElement)element).Path;
     }

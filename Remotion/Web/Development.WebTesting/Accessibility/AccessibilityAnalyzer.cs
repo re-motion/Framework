@@ -48,12 +48,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("webDriver", webDriver);
-      ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
-      ArgumentUtility.CheckNotNull("configuration", configuration);
-      ArgumentUtility.CheckNotNull("sourceProvider", sourceProvider);
-      ArgumentUtility.CheckNotNull("mapper", mapper);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(webDriver);
+      ArgumentNullException.ThrowIfNull(axeResultParser);
+      ArgumentNullException.ThrowIfNull(configuration);
+      ArgumentNullException.ThrowIfNull(sourceProvider);
+      ArgumentNullException.ThrowIfNull(mapper);
+      ArgumentNullException.ThrowIfNull(logger);
 
       return new AccessibilityAnalyzer(webDriver, (IJavaScriptExecutor)webDriver, axeResultParser, configuration, sourceProvider, mapper, logger);
     }
@@ -74,12 +74,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("remoteWebDriver", remoteWebDriver);
-      ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
-      ArgumentUtility.CheckNotNull("configuration", configuration);
-      ArgumentUtility.CheckNotNull("sourceProvider", sourceProvider);
-      ArgumentUtility.CheckNotNull("mapper", mapper);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(remoteWebDriver);
+      ArgumentNullException.ThrowIfNull(axeResultParser);
+      ArgumentNullException.ThrowIfNull(configuration);
+      ArgumentNullException.ThrowIfNull(sourceProvider);
+      ArgumentNullException.ThrowIfNull(mapper);
+      ArgumentNullException.ThrowIfNull(logger);
 
       return new AccessibilityAnalyzer(remoteWebDriver, remoteWebDriver, axeResultParser, configuration, sourceProvider, mapper, logger);
     }
@@ -113,12 +113,12 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
         [NotNull] IAccessibilityResultMapper mapper,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("webDriver", webDriver);
-      ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
-      ArgumentUtility.CheckNotNull("configuration", configuration);
-      ArgumentUtility.CheckNotNull("axeSourceProvider", axeSourceProvider);
-      ArgumentUtility.CheckNotNull("mapper", mapper);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(webDriver);
+      ArgumentNullException.ThrowIfNull(axeResultParser);
+      ArgumentNullException.ThrowIfNull(configuration);
+      ArgumentNullException.ThrowIfNull(axeSourceProvider);
+      ArgumentNullException.ThrowIfNull(mapper);
+      ArgumentNullException.ThrowIfNull(logger);
 
       WebDriver = webDriver;
       JsExecutor = jsExecutor;
@@ -137,7 +137,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <param name="element"><see cref="ControlObject"/> to ignore.</param>
     public void IgnoreControlObject ([NotNull] ControlObject element)
     {
-      ArgumentUtility.CheckNotNull("element", element);
+      ArgumentNullException.ThrowIfNull(element);
 
       IgnoreCssSelector($"#{element.GetHtmlID()}");
     }
@@ -149,7 +149,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <param name="cssSelector">CSS selector of the <see cref="ControlObject"/>.</param>
     public void IgnoreCssSelector ([NotNull] string cssSelector)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("cssSelector", cssSelector);
+      ArgumentException.ThrowIfNullOrEmpty(cssSelector);
 
       ExcludedElements.Add(cssSelector);
     }
@@ -174,7 +174,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([NotNull] ControlObject controlObject, [CanBeNull] TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull("controlObject", controlObject);
+      ArgumentNullException.ThrowIfNull(controlObject);
 
       return Analyze($"#{controlObject.GetHtmlID()}", timeout);
     }
@@ -190,7 +190,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([NotNull] string cssSelector, [CanBeNull] TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("cssSelector", cssSelector);
+      ArgumentException.ThrowIfNullOrEmpty(cssSelector);
 
       return GetAccessibilityResult(cssSelector, timeout ?? s_defaultMaximumTimeToWaitForFrame);
     }
@@ -209,7 +209,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     [NotNull]
     public AccessibilityResult Analyze ([CanBeNull] TimeSpan? timeout = null)
     {
-      var outerFrame = (string)JsExecutor.ExecuteScript("return self.name;");
+      var outerFrame = (string?)JsExecutor.ExecuteScript("return self.name;");
+      Assertion.IsNotNull(outerFrame, "Failed to retrieve the current frame's name.");
+
       if (outerFrame != "")
         WebDriver.SwitchTo().DefaultContent();
 
@@ -234,11 +236,10 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
 
       var axeRunFunctionCall = BuildAxeRunFunctionCall(cssSelector);
 
-      string result;
+      string? result;
       using (new PerformanceTimer(Logger, "Accessibility analysis has been performed."))
       {
-        result = (string)JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
-
+        result = (string?)JsExecutor.ExecuteAsyncScript(axeRunFunctionCall);
         if (result == null)
           throw new InvalidOperationException("Could not obtain accessibility analysis result.");
       }
@@ -250,7 +251,10 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
 
     private bool AxeIsInjected ()
     {
-      return (bool)JsExecutor.ExecuteScript("return (typeof axe !== 'undefined')");
+      var result = (bool?)JsExecutor.ExecuteScript("return (typeof axe !== 'undefined')");
+      Assertion.IsNotNull(result, "Failed to determine if aXe library is injected.");
+
+      return result.Value;
     }
 
     /// <summary>

@@ -21,7 +21,6 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
@@ -43,7 +42,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       htmlHeadAppender.RegisterCommonStyleSheet();
 
@@ -54,7 +53,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
     public void Render (TabbedMenuRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       AddAttributesToRender(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Table);
@@ -102,7 +101,7 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation.Rendering
 
     protected void AddAttributesToRender (TabbedMenuRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       AddStandardAttributesToRender(renderingContext);
 

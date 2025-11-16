@@ -20,7 +20,6 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
@@ -40,10 +39,10 @@ namespace Remotion.Validation.Validators
 
     public ExactLengthValidator (int length, [NotNull] ValidationMessage validationMessage)
     {
-      ArgumentUtility.CheckNotNull(nameof(validationMessage), validationMessage);
+      ArgumentNullException.ThrowIfNull(validationMessage);
 
       if (length <= 0)
-        throw new ArgumentOutOfRangeException("length", "Value must be be greater than zero.");
+        throw new ArgumentOutOfRangeException(nameof(length), "Value must be be greater than zero.");
 
       Length = length;
       ErrorMessage = $"The value must have exactly {length} characters.";
@@ -52,7 +51,7 @@ namespace Remotion.Validation.Validators
 
     public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (IsValid(context))
         return Enumerable.Empty<ValidationFailure>();

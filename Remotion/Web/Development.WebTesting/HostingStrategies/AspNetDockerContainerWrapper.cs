@@ -11,9 +11,10 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies;
 /// <summary>
 /// Represents an ASP.NET Core Docker container and manages its lifecycle.
 /// </summary>
-public class AspNetDockerContainerWrapper : DockerContainerWrapperBase
+public class AspNetDockerContainerWrapper : WebApplicationDockerContainerWrapperBase
 {
   private readonly string _processPath;
+  private readonly string? _processArguments;
 
   public AspNetDockerContainerWrapper (IDockerClient docker, AspNetDockerContainerConfigurationParameters configurationParameters, ILoggerFactory loggerFactory)
       : base(docker, configurationParameters, loggerFactory)
@@ -25,16 +26,17 @@ public class AspNetDockerContainerWrapper : DockerContainerWrapperBase
     }
 
     _processPath = configurationParameters.ProcessPath;
+    _processArguments = configurationParameters.ProcessArguments;
   }
 
   protected override string GetEntryPoint ()
   {
-    return Path.GetFullPath(Path.Combine(ConfigurationParameters.AbsoluteWebApplicationPath, _processPath));
+    return _processPath;
   }
 
   protected override string? GetArguments ()
   {
-    return null;
+    return _processArguments;
   }
 
   protected override string? GetWorkingDirectory ()

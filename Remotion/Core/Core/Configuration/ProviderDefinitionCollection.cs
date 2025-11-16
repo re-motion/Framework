@@ -48,7 +48,7 @@ namespace Remotion.Configuration
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     public void Add (T provider)
     {
-      base.Add(ArgumentUtility.CheckType<ProviderBase>("provider", provider));
+      base.Add(ArgumentUtility.CheckType<ProviderBase>(nameof(provider), provider));
     }
 
     /// <summary>Adds a provider to the collection.</summary>
@@ -62,7 +62,7 @@ namespace Remotion.Configuration
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     public override void Add (ProviderBase provider)
     {
-      ArgumentUtility.CheckType<T>("provider", provider);
+      ArgumentUtility.CheckType<T>(nameof(provider), provider);
       base.Add(provider);
     }
 

@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -29,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     public void RenderTitlesRow (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "titleStub");
       renderingContext.Writer.RenderBeginTag("tr");
       renderingContext.Writer.RenderEndTag();
@@ -37,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     public void RenderEmptyListDataRow (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "emptyStub");
       renderingContext.Writer.RenderBeginTag("tr");
       renderingContext.Writer.RenderEndTag();
@@ -45,8 +44,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     public void RenderDataRow (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, in BocRowRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("rowRenderingContext", rowRenderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(rowRenderingContext);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "dataStub");
       renderingContext.Writer.RenderBeginTag("tr");
       renderingContext.Writer.RenderEndTag();

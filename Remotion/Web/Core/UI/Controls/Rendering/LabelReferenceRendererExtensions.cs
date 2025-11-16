@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.Rendering
 {
@@ -32,9 +31,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         [NotNull] IReadOnlyCollection<string> labelIDs
         )
     {
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
+      ArgumentNullException.ThrowIfNull(labelReferenceRenderer);
+      ArgumentNullException.ThrowIfNull(attributeAccessor);
+      ArgumentNullException.ThrowIfNull(labelIDs);
 
       labelReferenceRenderer.SetLabelsReferenceOnControl(attributeAccessor, labelIDs, s_emptyAccessibilityAnnotationIDs);
     }
@@ -45,9 +44,9 @@ namespace Remotion.Web.UI.Controls.Rendering
         [NotNull] IReadOnlyCollection<string> labelIDs
         )
     {
-      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
+      ArgumentNullException.ThrowIfNull(labelReferenceRenderer);
+      ArgumentNullException.ThrowIfNull(htmlTextWriter);
+      ArgumentNullException.ThrowIfNull(labelIDs);
 
       labelReferenceRenderer.AddLabelsReference(htmlTextWriter, labelIDs, s_emptyAccessibilityAnnotationIDs);
     }

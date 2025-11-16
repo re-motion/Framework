@@ -19,7 +19,6 @@ using System.CodeDom;
 using System.Web.Compilation;
 using System.Web.UI;
 using Remotion.Globalization;
-using Remotion.Utilities;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI.Globalization;
 
@@ -39,8 +38,8 @@ namespace Remotion.Web.Compilation
 
     public static string GetStringForResourceID (Control parent, string resourceID)
     {
-      ArgumentUtility.CheckNotNull("parent", parent);
-      ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
+      ArgumentNullException.ThrowIfNull(parent);
+      ArgumentException.ThrowIfNullOrEmpty(resourceID);
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager(parent, true);
 
@@ -49,8 +48,8 @@ namespace Remotion.Web.Compilation
 
     public static WebString GetWebStringForResourceID (Control parent, string resourceID)
     {
-      ArgumentUtility.CheckNotNull("parent", parent);
-      ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
+      ArgumentNullException.ThrowIfNull(parent);
+      ArgumentException.ThrowIfNullOrEmpty(resourceID);
 
       var resourceIDAsWebString = (WebString?)s_webStringConverter.ConvertFromString(resourceID) ?? WebString.Empty;
 
@@ -61,8 +60,8 @@ namespace Remotion.Web.Compilation
 
     public static PlainTextString GetPlainTextStringForResourceID (Control parent, string resourceID)
     {
-      ArgumentUtility.CheckNotNull("parent", parent);
-      ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
+      ArgumentNullException.ThrowIfNull(parent);
+      ArgumentException.ThrowIfNullOrEmpty(resourceID);
 
       IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager(parent, true);
 

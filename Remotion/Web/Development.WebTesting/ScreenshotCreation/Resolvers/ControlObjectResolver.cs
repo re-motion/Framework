@@ -16,7 +16,6 @@
 // 
 using System;
 using OpenQA.Selenium;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 {
@@ -37,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates (ControlObject target)
     {
-      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentNullException.ThrowIfNull(target);
 
       return WebElementResolver.Instance.ResolveBrowserCoordinates((IWebElement)target.Scope.Native);
     }
@@ -45,8 +44,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (ControlObject target, IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("target", target);
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(locator);
 
       return WebElementResolver.Instance.ResolveDesktopCoordinates((IWebElement)target.Scope.Native, locator);
     }

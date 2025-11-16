@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 {
@@ -37,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     public PropertyChangeState (object sender, PropertyDefinition propertyDefinition, object oldValue, object newValue, string message = null)
       : base(sender, message)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       _propertyDefinition = propertyDefinition;
       _oldValue = oldValue;

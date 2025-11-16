@@ -18,7 +18,6 @@ using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 {
@@ -31,8 +30,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public void Export (Stream outputStream, TransportItem[] transportedObjects)
     {
-      ArgumentUtility.CheckNotNull("outputStream", outputStream);
-      ArgumentUtility.CheckNotNull("transportedObjects", transportedObjects);
+      ArgumentNullException.ThrowIfNull(outputStream);
+      ArgumentNullException.ThrowIfNull(transportedObjects);
 
       var formatter = new XmlSerializer(typeof(XmlTransportItem[]));
       PerformSerialization(XmlTransportItem.Wrap(transportedObjects), outputStream, formatter);
@@ -40,9 +39,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     protected virtual void PerformSerialization (XmlTransportItem[] transportedObjects, Stream dataStream, XmlSerializer formatter)
     {
-      ArgumentUtility.CheckNotNull("transportedObjects", transportedObjects);
-      ArgumentUtility.CheckNotNull("dataStream", dataStream);
-      ArgumentUtility.CheckNotNull("formatter", formatter);
+      ArgumentNullException.ThrowIfNull(transportedObjects);
+      ArgumentNullException.ThrowIfNull(dataStream);
+      ArgumentNullException.ThrowIfNull(formatter);
 
       var xmlWriterSettings = new XmlWriterSettings() { Indent = true };
       using (XmlWriter xmlWriter = XmlWriter.Create(dataStream, xmlWriterSettings))

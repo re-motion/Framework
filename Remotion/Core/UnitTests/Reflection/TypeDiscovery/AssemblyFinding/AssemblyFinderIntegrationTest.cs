@@ -36,7 +36,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
   {
     private delegate void CrossAppDomainDelegate ();
 
-    private const string c_testAssemblySourceDirectoryRoot = @"Reflection\TypeDiscovery\TestAssemblies";
+    private const string c_testAssemblySourceDirectoryRoot = @"Reflection/TypeDiscovery/TestAssemblies";
     private AssemblyCompilerBuildOutputManager _baseDirectoryBuildOutputManager;
     private AssemblyCompilerBuildOutputManager _dynamicDirectoryBuildOutputManager;
     private AssemblyCompilerBuildOutputManager _searchPathForDllsBuildOutputManager;
@@ -82,9 +82,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
           _searchPathForExesBuildOutputManager.Compile("MarkedExeAssemblyInRelativeSearchPath.exe");
 
       _markedAssemblyInSearchPathWithNameMismatchPath =
-          _searchPathForDllsBuildOutputManager.Compile("MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll");
+          _searchPathForDllsBuildOutputManager.Compile("MarkedAssemblyWithOtherFileNameInRelativeSearchPath.dll");
       _markedAssemblyInSearchPathWithNameMismatchPath = _searchPathForDllsBuildOutputManager.RenameGeneratedAssembly(
-          "MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll", "_MarkedAssemblyWithOtherFilenameInRelativeSearchPath.dll");
+          "MarkedAssemblyWithOtherFileNameInRelativeSearchPath.dll", "_MarkedAssemblyWithOtherFileNameInRelativeSearchPath.dll");
 
       _markedAssemblyInDynamicDirectoryPath = _dynamicDirectoryBuildOutputManager.Compile("MarkedAssemblyInDynamicDirectory.dll");
       _markedExeAssemblyInDynamicDirectoryPath = _dynamicDirectoryBuildOutputManager.Compile(
@@ -280,7 +280,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     private static Assembly CompileTestAssemblyInMemory (string assemblyName, params string[] referencedAssemblies)
     {
       AssemblyCompiler assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler(
-          c_testAssemblySourceDirectoryRoot + "\\" + assemblyName,
+          c_testAssemblySourceDirectoryRoot + "/" + assemblyName,
           ArrayUtility.Combine(new[] { typeof(MarkerAttribute).Module.Name },
           referencedAssemblies));
       assemblyCompiler.Compile();

@@ -36,8 +36,8 @@ namespace Remotion.Data.DomainObjects
 
     public DomainObjectGraphTraverser (DomainObject rootObject, IGraphTraversalStrategy strategy)
     {
-      ArgumentUtility.CheckNotNull("rootObject", rootObject);
-      ArgumentUtility.CheckNotNull("strategy", strategy);
+      ArgumentNullException.ThrowIfNull(rootObject);
+      ArgumentNullException.ThrowIfNull(strategy);
 
       _rootObject = rootObject;
       _strategy = strategy;

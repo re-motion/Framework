@@ -21,7 +21,6 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -31,7 +30,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
 
   /// <summary> This control can be used to render text without any escaping applied. </summary>
-  /// <include file='..\..\doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/Class/*' />
+  /// <include file='../../Doc/include/UI/Controls/BocLiteral.xml' path='BocLiteral/Class/*' />
   [ToolboxItemFilter("System.Web.UI")]
   public class BocLiteral : Control, IBusinessObjectBoundWebControl
   {
@@ -213,7 +212,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-    /// <include file='..\..\doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/LoadValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocLiteral.xml' path='BocLiteral/LoadValue/*' />
     public virtual void LoadValue (bool interim)
     {
       if (Property == null)
@@ -233,7 +232,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> A <see cref="String"/> to load or <see langword="null"/>. </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
-    /// <include file='..\..\doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/LoadUnboundValue/*' />
+    /// <include file='../../Doc/include/UI/Controls/BocLiteral.xml' path='BocLiteral/LoadUnboundValue/*' />
     public void LoadUnboundValue (string? value, bool interim)
     {
       LoadValueInternal(value, interim);
@@ -324,7 +323,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     void ISmartControl.AssignLabels (IEnumerable<string> labelIDs)
     {
-      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
+      ArgumentNullException.ThrowIfNull(labelIDs);
 
       //BocLiteral does not have a root element that could be labeled.
     }

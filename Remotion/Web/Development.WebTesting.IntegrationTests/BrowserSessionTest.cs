@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using Remotion.Web.Development.WebTesting.BrowserLog;
+using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.Utilities;
@@ -49,6 +52,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [PerformBrowserLogCheck(false)]
     public void ChromeDriver_SupportsBrowserLogs ()
     {
       if (!Helper.BrowserConfiguration.IsChrome())
@@ -58,6 +62,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [PerformBrowserLogCheck(false)]
     public void MSEdgeDriver_SupportsBrowserLogs ()
     {
       if (!Helper.BrowserConfiguration.IsEdge())
@@ -67,20 +72,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void GeckoDriver_DoesNotSupportBrowserLogs ()
+    [PerformBrowserLogCheck(false)]
+    public void GeckoDriver_SupportsBrowserLogs ()
     {
       if (!Helper.BrowserConfiguration.IsFirefox())
         Assert.Ignore("Tests if GeckoDriver behaves as expected and hence, only concerns Firefox");
 
-      var home = Start();
-
-      var js = JavaScriptExecutor.GetJavaScriptExecutor(home.Context.Browser);
-      js.ExecuteScript($"console.error('Error')");
-      js.ExecuteScript($"console.warn('Warning')");
-
-      var logs = ((IWebDriver)home.Context.Browser.Driver.Native).Manage().Logs.GetLog(LogType.Browser);
-
-      Assert.That(logs, Is.Empty);
+      TestDriverSupportsBrowserLogs();
     }
 
     private void TestDriverSupportsBrowserLogs ()
@@ -94,10 +92,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       js.ExecuteScript($"console.error('{errorMessage}')");
       js.ExecuteScript($"console.warn('{warningMessage}')");
 
-      var logs = home.Context.Browser.GetBrowserLogs();
+      IReadOnlyCollection<BrowserLogEntry> browserLogEntries = null;
+      var logger = Helper.LoggerFactory.CreateLogger("BrowserLogEntryTest");
+      RetryUntilTimeout.Run(
+          logger,
+          () =>
+          {
+            browserLogEntries = home.Context.Browser.GetBrowserLogs();
+            if (browserLogEntries.Count == 0)
+              throw new AssertionException("No browser logs found");
+          });
 
-      Assert.That(logs.Count(l => l.Message.Contains(errorMessage)), Is.EqualTo(1));
-      Assert.That(logs.Count(l => l.Message.Contains(warningMessage)), Is.EqualTo(1));
+      Assert.That(browserLogEntries.Count(l => l.Message.Contains(errorMessage)), Is.EqualTo(1));
+      Assert.That(browserLogEntries.Count(l => l.Message.Contains(warningMessage)), Is.EqualTo(1));
+
+      // Getting the browser logs is idempotent - getting them again without any action in between should yield the same result
+      Assert.That(browserLogEntries, Is.EquivalentTo(home.Context.Browser.GetBrowserLogs()));
     }
 
     private WxePageObject Start ()

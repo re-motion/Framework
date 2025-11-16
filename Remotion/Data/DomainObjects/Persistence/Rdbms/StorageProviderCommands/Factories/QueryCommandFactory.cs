@@ -23,7 +23,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Queries;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories
 {
@@ -43,10 +42,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory,
         IDataParameterDefinitionFactory dataParameterDefinitionFactory)
     {
-      ArgumentUtility.CheckNotNull("objectReaderFactory", objectReaderFactory);
-      ArgumentUtility.CheckNotNull("dbCommandBuilderFactory", dbCommandBuilderFactory);
-      ArgumentUtility.CheckNotNull("dataStoragePropertyDefinitionFactory", dataStoragePropertyDefinitionFactory);
-      ArgumentUtility.CheckNotNull("dataParameterDefinitionFactory", dataParameterDefinitionFactory);
+      ArgumentNullException.ThrowIfNull(objectReaderFactory);
+      ArgumentNullException.ThrowIfNull(dbCommandBuilderFactory);
+      ArgumentNullException.ThrowIfNull(dataStoragePropertyDefinitionFactory);
+      ArgumentNullException.ThrowIfNull(dataParameterDefinitionFactory);
 
       _objectReaderFactory = objectReaderFactory;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
@@ -71,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<DataContainer?>> CreateForDataContainerQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentNullException.ThrowIfNull(query);
 
       var dbCommandBuilder = CreateDbCommandBuilder(query);
       var dataContainerReader = _objectReaderFactory.CreateDataContainerReader();
@@ -80,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     public virtual IRdbmsProviderCommandWithReadOnlySupport<IEnumerable<IQueryResultRow>> CreateForCustomQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentNullException.ThrowIfNull(query);
 
       var dbCommandBuilder = CreateDbCommandBuilder(query);
       var resultRowReader = _objectReaderFactory.CreateResultRowReader();
@@ -90,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     public virtual IRdbmsProviderCommandWithReadOnlySupport<object?> CreateForScalarQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentNullException.ThrowIfNull(query);
 
       var dbCommandBuilder = CreateDbCommandBuilder(query);
       return new ScalarValueLoadCommand(dbCommandBuilder);
@@ -98,8 +97,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     protected virtual QueryParameterWithDataParameterDefinition GetQueryParameterWithDataParameterDefinition (QueryParameter parameter, IQuery query)
     {
-      ArgumentUtility.CheckNotNull("parameter", parameter);
-      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentNullException.ThrowIfNull(parameter);
+      ArgumentNullException.ThrowIfNull(query);
 
       var dataParameterDefinition = _dataParameterDefinitionFactory.CreateDataParameterDefinition(parameter, query);
       return new QueryParameterWithDataParameterDefinition(parameter, dataParameterDefinition);
@@ -113,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
           .Select(queryParameter => GetQueryParameterWithDataParameterDefinition(queryParameter, query))
           .ToList();
 
-      return _dbCommandBuilderFactory.CreateForQuery(query.Statement, queryParametersWithType);
+      return _dbCommandBuilderFactory.CreateForQuery(query.StatementType, query.Statement, queryParametersWithType);
     }
   }
 }

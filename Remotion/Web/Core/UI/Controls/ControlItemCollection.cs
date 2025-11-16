@@ -19,7 +19,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using System.Web.UI;
 using Microsoft.Extensions.Logging;
 using Remotion.Globalization;
@@ -57,14 +56,14 @@ namespace Remotion.Web.UI.Controls
     /// </param>
     public ControlItemCollection (IControl? ownerControl, Type[] supportedTypes)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull("supportedTypes", supportedTypes);
+      ArgumentUtility.CheckNotNullOrItemsNull(nameof(supportedTypes), supportedTypes);
       for (int i = 0; i < supportedTypes.Length; i++)
       {
         Type type = supportedTypes[i];
         if (!typeof(IControlItem).IsAssignableFrom(type))
         {
           throw new ArgumentException(
-              string.Format("Type '{0}' at index {1} does not implement interface 'IControlItem'.", type.GetFullNameSafe(), i), "supportedTypes");
+              string.Format("Type '{0}' at index {1} does not implement interface 'IControlItem'.", type.GetFullNameSafe(), i), nameof(supportedTypes));
         }
       }
 
@@ -103,12 +102,12 @@ namespace Remotion.Web.UI.Controls
 
     protected virtual void ValidateNewValue ([NotNull]object? value)
     {
-      IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem>("value", value!);
+      IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem>(nameof(value), value!);
 
       if (! IsSupportedType(controlItem))
-        throw ArgumentUtility.CreateArgumentTypeException("value", controlItem.GetType(), null);
+        throw ArgumentUtility.CreateArgumentTypeException(nameof(value), controlItem.GetType(), null);
       if (Find(controlItem.ItemID) != null)
-        throw new ArgumentException(string.Format("The collection already contains an item with ItemID '{0}'.", controlItem.ItemID), "value");
+        throw new ArgumentException(string.Format("The collection already contains an item with ItemID '{0}'.", controlItem.ItemID), nameof(value));
     }
 
     protected override void OnInsert (int index, object? value)
@@ -122,7 +121,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnInsertComplete (int index, object? value)
     {
-      ArgumentUtility.CheckNotNull("value", value!);
+      ArgumentNullException.ThrowIfNull(value!);
 
       base.OnInsertComplete(index, value);
       _isChanged |= _isEditing;
@@ -140,8 +139,8 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnSetComplete (int index, object? oldValue, object? newValue)
     {
-      ArgumentUtility.CheckNotNull("oldValue", oldValue!);
-      ArgumentUtility.CheckNotNull("newValue", newValue!);
+      ArgumentNullException.ThrowIfNull(oldValue!);
+      ArgumentNullException.ThrowIfNull(newValue!);
 
       base.OnSetComplete(index, oldValue, newValue);
       _isChanged |= _isEditing;
@@ -151,7 +150,7 @@ namespace Remotion.Web.UI.Controls
 
     protected override void OnRemoveComplete (int index, object? value)
     {
-      ArgumentUtility.CheckNotNull("value", value!);
+      ArgumentNullException.ThrowIfNull(value!);
 
       base.OnRemoveComplete(index, value);
       _isChanged |= _isEditing;
@@ -171,8 +170,8 @@ namespace Remotion.Web.UI.Controls
 
     protected void AddRange (IList values)
     {
-      ArgumentUtility.CheckNotNull("values", values);
-      ArgumentUtility.CheckItemsNotNullAndType("values", values, typeof(IControlItem));
+      ArgumentNullException.ThrowIfNull(values);
+      ArgumentUtility.CheckItemsNotNullAndType(nameof(values), values, typeof(IControlItem));
 
       BeginEdit();
       for (int i = 0; i < values.Count; i++)
@@ -238,7 +237,7 @@ namespace Remotion.Web.UI.Controls
     /// </exception>
     public IControlItem FindMandatory (string id)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentException.ThrowIfNullOrEmpty(id);
 
       var item = Find(id);
       if (item == null)
@@ -318,8 +317,8 @@ namespace Remotion.Web.UI.Controls
 
     public void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentNullException.ThrowIfNull(resourceManager);
+      ArgumentNullException.ThrowIfNull(globalizationService);
 
       for (int i = 0; i < InnerList.Count; i++)
       {

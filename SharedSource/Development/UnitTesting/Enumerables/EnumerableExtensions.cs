@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 #nullable enable
 // ReSharper disable once CheckNamespace
@@ -22,7 +21,7 @@ namespace Remotion.Development.UnitTesting.Enumerables
     /// <returns>An instance of <see cref="OneTimeEnumerable{T}"/> decorating the <paramref name="source"/>.</returns>
     public static OneTimeEnumerable<T> AsOneTime<T> (this IEnumerable<T> source)
     {
-      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentNullException.ThrowIfNull(source);
 
       return new OneTimeEnumerable<T>(source);
     }
@@ -35,7 +34,7 @@ namespace Remotion.Development.UnitTesting.Enumerables
     /// <returns>An array containing all values computed by <paramref name="source"/>.</returns>
     public static T[] ForceEnumeration<T> (this IEnumerable<T> source)
     {
-      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentNullException.ThrowIfNull(source);
 
       return source.ToArray();
     }

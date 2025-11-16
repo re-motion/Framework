@@ -838,7 +838,7 @@ namespace Remotion.Reflection.UnitTests
       Assert.That(
           () => TypeAdapter.Create(type).GetAscribedGenericArgumentsFor(TypeAdapter.Create(typeof(string))),
           Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo(
-              "Parameter 'type' has type 'System.Collections.Generic.List`1[System.Int32]' "
+              "The value has type 'System.Collections.Generic.List`1[System.Int32]' "
               + "when type 'System.String' was expected.", "type"));
     }
 
@@ -859,7 +859,7 @@ namespace Remotion.Reflection.UnitTests
       Assert.That(
           () => TypeAdapter.Create(currentType).GetAscribedGenericArgumentsFor(otherType.Object),
           Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo(
-              "Parameter 'c' has type '" + otherType.Object.GetType().FullName + "' when type 'Remotion.Reflection.TypeAdapter' was expected.",
+              "The value has type '" + otherType.Object.GetType().FullName + "' when type 'Remotion.Reflection.TypeAdapter' was expected.",
               "c"));
     }
 

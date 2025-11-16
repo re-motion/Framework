@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Utilities;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -32,8 +31,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
         InvolvedType involvedType,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull("involvedType", involvedType);
-      ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(involvedType);
+      ArgumentNullException.ThrowIfNull(interfaceIdentifierGenerator);
 
       _involvedType = involvedType;
       _interfaceIdentifierGenerator = interfaceIdentifierGenerator;

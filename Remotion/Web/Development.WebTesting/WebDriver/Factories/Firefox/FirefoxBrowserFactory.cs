@@ -20,7 +20,6 @@ using Coypu;
 using Coypu.Drivers;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Firefox;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.BrowserSession.Firefox;
 using Remotion.Web.Development.WebTesting.Configuration;
@@ -37,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox
 
     public FirefoxBrowserFactory ([NotNull] IFirefoxConfiguration firefoxConfiguration)
     {
-      ArgumentUtility.CheckNotNull("firefoxConfiguration", firefoxConfiguration);
+      ArgumentNullException.ThrowIfNull(firefoxConfiguration);
 
       _firefoxConfiguration = firefoxConfiguration;
     }
@@ -45,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox
     /// <inheritdoc />
     public IBrowserSession CreateBrowser (DriverConfiguration driverConfiguration)
     {
-      ArgumentUtility.CheckNotNull("driverConfiguration", driverConfiguration);
+      ArgumentNullException.ThrowIfNull(driverConfiguration);
 
       var sessionConfiguration = CreateSessionConfiguration(driverConfiguration);
       var commandTimeout = driverConfiguration.CommandTimeout;

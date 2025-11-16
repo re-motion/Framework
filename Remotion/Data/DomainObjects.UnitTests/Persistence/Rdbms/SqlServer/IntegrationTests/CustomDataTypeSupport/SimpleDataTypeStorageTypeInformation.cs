@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport
 {
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         bool isStorageTypeNullable,
         int? storageTypeLength)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("storageTypeName", storageTypeName);
+      ArgumentException.ThrowIfNullOrEmpty(storageTypeName);
 
       _storageTypeName = storageTypeName;
       _storageDbType = storageDbType;
@@ -75,9 +75,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       get { return typeof(string); }
     }
 
-    public IDbDataParameter CreateDataParameter (IDbCommand command, object value)
+    public DbParameter CreateDataParameter (DbCommand command, object value)
     {
-      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentNullException.ThrowIfNull(command);
 
       var convertedValue = ConvertToStorageType(value);
 
@@ -96,9 +96,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       return parameter;
     }
 
-    public object Read (IDataReader dataReader, int ordinal)
+    public object Read (DbDataReader dataReader, int ordinal)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       var value = dataReader[ordinal];
       return ConvertFromStorageType(value);
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)
     {
-      ArgumentUtility.CheckNotNull("equivalentStorageTypes", equivalentStorageTypes);
+      ArgumentNullException.ThrowIfNull(equivalentStorageTypes);
       var castStorageTypes =
           equivalentStorageTypes.Select(
               equivalentInfo =>

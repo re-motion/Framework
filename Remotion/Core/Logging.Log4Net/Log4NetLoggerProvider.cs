@@ -25,8 +25,7 @@ public class Log4NetLoggerProvider : Microsoft.Extensions.Logging.ILoggerProvide
 {
   public Microsoft.Extensions.Logging.ILogger CreateLogger (string categoryName)
   {
-    if (categoryName == null)
-      throw new ArgumentNullException(nameof(categoryName));
+    ArgumentNullException.ThrowIfNull(categoryName);
 
     return new Log4NetLogger(log4net.LogManager.GetLogger(categoryName).Logger);
   }

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
 {
@@ -38,7 +37,7 @@ namespace Remotion.ServiceLocation
     /// <param name="serviceType">The type representing the concrete implementation for the service type.</param>
     public ImplementationForAttribute (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull("serviceType", serviceType);
+      ArgumentNullException.ThrowIfNull(serviceType);
 
       _serviceType = serviceType;
       Lifetime = LifetimeKind.InstancePerDependency;

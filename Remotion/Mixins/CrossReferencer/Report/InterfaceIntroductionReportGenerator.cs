@@ -19,7 +19,6 @@ using System.Linq;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Definitions;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -33,8 +32,8 @@ namespace Remotion.Mixins.CrossReferencer.Report
         UniqueDefinitionCollection<Type, InterfaceIntroductionDefinition> interfaceIntroductionDefinitions,
         IIdentifierGenerator<Type> interfaceIdentifierGenerator)
     {
-      ArgumentUtility.CheckNotNull("interfaceIntroductionDefinitions", interfaceIntroductionDefinitions);
-      ArgumentUtility.CheckNotNull("interfaceIdentifierGenerator", interfaceIdentifierGenerator);
+      ArgumentNullException.ThrowIfNull(interfaceIntroductionDefinitions);
+      ArgumentNullException.ThrowIfNull(interfaceIdentifierGenerator);
 
       _interfaceIntroductionDefinitions = interfaceIntroductionDefinitions;
       _interfaceIdentifierGenerator = interfaceIdentifierGenerator;

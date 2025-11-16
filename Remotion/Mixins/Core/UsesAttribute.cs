@@ -17,7 +17,6 @@
 using System;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins
 {
@@ -50,7 +49,8 @@ namespace Remotion.Mixins
     /// <param name="mixinType">The mixin type the class depends on.</param>
     public UsesAttribute (Type mixinType)
     {
-      _mixinType = ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentNullException.ThrowIfNull(mixinType);
+      _mixinType = mixinType;
     }
 
     /// <summary>
@@ -69,8 +69,8 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Type attributeTarget)
     {
-      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
-      ArgumentUtility.CheckNotNull("attributeTarget", attributeTarget);
+      ArgumentNullException.ThrowIfNull(configurationBuilder);
+      ArgumentNullException.ThrowIfNull(attributeTarget);
 
       var origin = MixinContextOrigin.CreateForCustomAttribute(this, attributeTarget);
       Apply(configurationBuilder, MixinKind.Used, attributeTarget, MixinType, origin);

@@ -21,7 +21,6 @@ using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
@@ -70,8 +69,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         ILoggerFactory loggerFactory)
         : base(downloadStartedTimeout, downloadUpdatedTimeout)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("downloadDirectory", downloadDirectory);
-      ArgumentUtility.CheckNotNullOrEmpty("partialFileExtension", partialFileExtension);
+      ArgumentException.ThrowIfNullOrEmpty(downloadDirectory);
+      ArgumentException.ThrowIfNullOrEmpty(partialFileExtension);
 
       _logger = loggerFactory.CreateLogger<DefaultDownloadHelper>();
       DownloadDirectory = downloadDirectory;
@@ -85,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
         TimeSpan downloadStartedTimeout,
         TimeSpan downloadUpdatedTimeout)
     {
-      ArgumentUtility.CheckNotNull("downloadedFileFinder", downloadedFileFinder);
+      ArgumentNullException.ThrowIfNull(downloadedFileFinder);
 
       EnsureDownloadDirectoryExists(DownloadDirectory);
 
@@ -119,7 +118,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     protected override DownloadedFileFinder CreateDownloadedFileFinderForExpectedFileName (string fileName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("fileName", fileName);
+      ArgumentException.ThrowIfNullOrEmpty(fileName);
 
       return new DownloadedFileFinder(
           DownloadDirectory,
@@ -166,7 +165,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default
 
     private void CleanUpUnmatchedDownloadedFiles ([NotNull] IEnumerable<string> unmatchedFiles)
     {
-      ArgumentUtility.CheckNotNull("unmatchedFiles", unmatchedFiles);
+      ArgumentNullException.ThrowIfNull(unmatchedFiles);
 
       foreach (var file in unmatchedFiles)
       {

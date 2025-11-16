@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
   {
     public static bool IsTypeSupported (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentNullException.ThrowIfNull(propertyType);
 
       return propertyType.IsValueType
           || ReflectionUtility.IsStringPropertyValueType(propertyType)
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </exception>
     public PropertyValue (PropertyDefinition definition, object? value)
     {
-      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentNullException.ThrowIfNull(definition);
 
       if (!IsTypeSupported(definition.PropertyType))
       {
@@ -167,14 +167,14 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void SetDataFromSubTransaction (PropertyValue source)
     {
-      ArgumentUtility.CheckNotNull("source", source);
+      ArgumentNullException.ThrowIfNull(source);
 
       if (source._definition != _definition)
       {
         var message = string.Format(
             "Cannot set this property's value from '{0}'; the properties do not have the same property definition.",
             source._definition);
-        throw new ArgumentException(message, "source");
+        throw new ArgumentException(message, nameof(source));
       }
 
       _value = source._value;

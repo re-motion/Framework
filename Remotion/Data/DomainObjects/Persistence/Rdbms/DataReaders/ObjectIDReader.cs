@@ -16,14 +16,13 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 {
   /// <summary>
-  /// Reads data from an <see cref="IDataReader"/> and converts it into <see cref="ObjectID"/> instances.
+  /// Reads data from an <see cref="DbDataReader"/> and converts it into <see cref="ObjectID"/> instances.
   /// The command whose data is converted must return an ID (as defined by the given <see cref="IRdbmsStoragePropertyDefinition"/>).
   /// </summary>
   public class ObjectIDReader : IObjectReader<ObjectID?>
@@ -33,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public ObjectIDReader (IRdbmsStoragePropertyDefinition idProperty, IColumnOrdinalProvider columnOrdinalProvider)
     {
-      ArgumentUtility.CheckNotNull("idProperty", idProperty);
-      ArgumentUtility.CheckNotNull("columnOrdinalProvider", columnOrdinalProvider);
+      ArgumentNullException.ThrowIfNull(idProperty);
+      ArgumentNullException.ThrowIfNull(columnOrdinalProvider);
 
       _idProperty = idProperty;
       _columnOrdinalProvider = columnOrdinalProvider;
@@ -50,9 +49,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _columnOrdinalProvider; }
     }
 
-    public ObjectID? Read (IDataReader dataReader)
+    public ObjectID? Read (DbDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       if (dataReader.Read())
         return (ObjectID?)_idProperty.CombineValue(new ColumnValueReader(dataReader, _columnOrdinalProvider));
@@ -60,9 +59,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
         return null;
     }
 
-    public IEnumerable<ObjectID?> ReadSequence (IDataReader dataReader)
+    public IEnumerable<ObjectID?> ReadSequence (DbDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentNullException.ThrowIfNull(dataReader);
 
       var columnValueReader = new ColumnValueReader(dataReader, _columnOrdinalProvider);
 

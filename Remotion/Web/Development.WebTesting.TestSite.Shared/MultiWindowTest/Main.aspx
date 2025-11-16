@@ -20,7 +20,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head runat="server">
     <title>MyMain</title>
-    <script type="text/javascript">
+    <script type="text/javascript" nonce="testsite">
       function ReloadFrame()
       {
         window.frames['frame'].location = 'Frame.wxe?AlwaysRefreshMain=False';

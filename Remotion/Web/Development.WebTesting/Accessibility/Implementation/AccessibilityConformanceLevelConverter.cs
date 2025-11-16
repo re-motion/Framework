@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
 {
@@ -50,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// </summary>
     public static AccessibilityConformanceLevel ConvertToEnum ([NotNull] string conformanceLevelAsString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("conformanceLevelAsString", conformanceLevelAsString);
+      ArgumentException.ThrowIfNullOrEmpty(conformanceLevelAsString);
 
       if (!s_stringToEnum.TryGetValue(conformanceLevelAsString, out var conformanceLevel))
         throw new InvalidOperationException($"The conformance level '{conformanceLevelAsString}' is not supported.");
@@ -71,7 +70,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// </summary>
     public static bool IsValid ([NotNull] string conformanceLevelAsString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("conformanceLevelAsString", conformanceLevelAsString);
+      ArgumentException.ThrowIfNullOrEmpty(conformanceLevelAsString);
 
       return s_stringToEnum.ContainsKey(conformanceLevelAsString);
     }

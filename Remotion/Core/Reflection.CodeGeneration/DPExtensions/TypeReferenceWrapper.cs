@@ -17,7 +17,6 @@
 using System;
 using System.Reflection.Emit;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.DPExtensions
 {
@@ -29,8 +28,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     public TypeReferenceWrapper (Reference referenceToWrap, Type referenceType)
       : base(referenceToWrap.OwnerReference, referenceType)
     {
-      ArgumentUtility.CheckNotNull("referenceToWrap", referenceToWrap);
-      ArgumentUtility.CheckNotNull("referenceType", referenceType);
+      ArgumentNullException.ThrowIfNull(referenceToWrap);
+      ArgumentNullException.ThrowIfNull(referenceType);
 
       _referenceToWrap = referenceToWrap;
       _referenceType = referenceType;

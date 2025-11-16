@@ -16,7 +16,6 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.ObjectBinding.UnitTests
 {

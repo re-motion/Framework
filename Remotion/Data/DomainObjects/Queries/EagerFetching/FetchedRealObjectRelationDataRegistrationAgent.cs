@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 {
@@ -37,15 +36,15 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
         ICollection<ILoadedObjectData> originatingObjects,
         ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull("originatingObjects", originatingObjects);
-      ArgumentUtility.CheckNotNull("relatedObjects", relatedObjects);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(originatingObjects);
+      ArgumentNullException.ThrowIfNull(relatedObjects);
 
       if (relationEndPointDefinition.IsVirtual)
       {
         throw new ArgumentException(
             "Only non-virtual object-valued relation end-points can be handled by this registration agent.",
-            "relationEndPointDefinition");
+            nameof(relationEndPointDefinition));
       }
 
       // Real end-point data is automatically registered when the DataContainer is registered, so we don't have anything to do here, apart from

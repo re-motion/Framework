@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
 {
@@ -27,7 +26,7 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyFinding
     public FilePatternSpecification (string filePattern, FilePatternSpecificationKind kind)
         : this()
     {
-      ArgumentUtility.CheckNotNullOrEmpty("filePattern", filePattern);
+      ArgumentException.ThrowIfNullOrEmpty(filePattern);
 
       FilePattern = filePattern;
       Kind = kind;

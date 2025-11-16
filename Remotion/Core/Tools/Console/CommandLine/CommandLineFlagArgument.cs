@@ -50,7 +50,7 @@ public class CommandLineFlagArgument: CommandLineArgument
 
   protected internal override void SetStringValue (string value)
   {
-    if (value == null) throw new ArgumentNullException("value");
+    ArgumentNullException.ThrowIfNull(value);
 
     switch (value)
     {

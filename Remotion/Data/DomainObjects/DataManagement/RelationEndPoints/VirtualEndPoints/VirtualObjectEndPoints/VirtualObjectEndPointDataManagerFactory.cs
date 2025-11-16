@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
 {
@@ -26,7 +25,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   {
     public IVirtualObjectEndPointDataManager CreateEndPointDataManager (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
       return new VirtualObjectEndPointDataManager(endPointID);
     }
   }

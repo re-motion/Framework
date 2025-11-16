@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 
@@ -35,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageControlObject SelectFirst (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindCss(c_imgTag);
       return CreateControlObject(context, scope);
@@ -44,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindCss(c_imgTag);
 
@@ -57,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageControlObject SelectSingle (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindCss(c_imgTag);
       scope.EnsureSingle();
@@ -67,7 +66,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var scope = context.Scope.FindCss(c_imgTag);
 
@@ -80,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var xPathSelector = string.Format("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
       var scope = context.Scope.FindXPath(xPathSelector);
@@ -90,7 +89,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public ImageControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var xPathSelector = string.Format("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
       var scope = context.Scope.FindXPath(xPathSelector);
@@ -104,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       var xPathSelector = string.Format("(.//{0})[{1}]", c_imgTag, oneBasedIndex);
       var scope = context.Scope.FindXPath(xPathSelector);
@@ -117,8 +116,8 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
+      ArgumentNullException.ThrowIfNull(controlSelectionContext);
+      ArgumentNullException.ThrowIfNull(newControlObjectContext);
 
       return new ImageControlObject(newControlObjectContext);
     }

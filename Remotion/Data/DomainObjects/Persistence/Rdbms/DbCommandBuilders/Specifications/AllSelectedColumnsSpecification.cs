@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications
 {
@@ -36,15 +35,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AppendProjection (StringBuilder stringBuilder, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentNullException.ThrowIfNull(stringBuilder);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       stringBuilder.Append("*");
     }
 
     public ISelectedColumnsSpecification Union (IEnumerable<ColumnDefinition> additionalColumns)
     {
-      ArgumentUtility.CheckNotNull("additionalColumns", additionalColumns);
+      ArgumentNullException.ThrowIfNull(additionalColumns);
 
       return this;
     }

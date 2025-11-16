@@ -19,7 +19,6 @@ using System.Collections;
 using System.ComponentModel.Design;
 using System.Linq;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
 {
@@ -29,7 +28,7 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
 
     public FixedTypeDiscoveryService (params Type[] types)
     {
-      ArgumentUtility.CheckNotNull("types", types);
+      ArgumentNullException.ThrowIfNull(types);
       _types = types;
     }
 

@@ -18,7 +18,6 @@ using System;
 using System.Globalization;
 using System.Resources;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
@@ -60,8 +59,8 @@ namespace Remotion.Globalization
     /// </param>
     public MultiLingualNameAttribute ([NotNull] string localizedName, [NotNull] string culture)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("localizedName", localizedName);
-      ArgumentUtility.CheckNotNull("culture", culture);
+      ArgumentException.ThrowIfNullOrEmpty(localizedName);
+      ArgumentNullException.ThrowIfNull(culture);
 
       _localizedName = localizedName;
       _culture = CultureInfo.GetCultureInfo(culture);

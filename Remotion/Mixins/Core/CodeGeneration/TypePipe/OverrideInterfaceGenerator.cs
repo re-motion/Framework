@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Remotion.TypePipe.MutableReflection;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CodeGeneration.TypePipe
 {
@@ -26,8 +25,8 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     public static OverrideInterfaceGenerator CreateNestedGenerator (MutableType outerType, string typeName)
     {
-      ArgumentUtility.CheckNotNull("outerType", outerType);
-      ArgumentUtility.CheckNotNullOrEmpty("typeName", typeName);
+      ArgumentNullException.ThrowIfNull(outerType);
+      ArgumentException.ThrowIfNullOrEmpty(typeName);
 
       var interfaceType = outerType.AddNestedType(typeName, TypeAttributes.Interface | TypeAttributes.NestedPublic | TypeAttributes.Abstract, null);
       return new OverrideInterfaceGenerator(interfaceType);
@@ -39,7 +38,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     private OverrideInterfaceGenerator (MutableType interfaceType)
     {
-      ArgumentUtility.CheckNotNull("interfaceType", interfaceType);
+      ArgumentNullException.ThrowIfNull(interfaceType);
 
       _interfaceType = interfaceType;
     }
@@ -56,7 +55,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public MethodInfo AddOverriddenMethod (MethodInfo overriddenMethod)
     {
-      ArgumentUtility.CheckNotNull("overriddenMethod", overriddenMethod);
+      ArgumentNullException.ThrowIfNull(overriddenMethod);
 
       var name = overriddenMethod.Name;
       var attributes = MethodAttributes.Public | MethodAttributes.Abstract | MethodAttributes.Virtual;

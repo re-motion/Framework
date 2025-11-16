@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
@@ -33,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
     public LoadedObjectDataRegistrationListener (
         IClientTransactionEventSink eventSink, ITransactionHierarchyManager hierarchyManager)
     {
-      ArgumentUtility.CheckNotNull("eventSink", eventSink);
-      ArgumentUtility.CheckNotNull("hierarchyManager", hierarchyManager);
+      ArgumentNullException.ThrowIfNull(eventSink);
+      ArgumentNullException.ThrowIfNull(hierarchyManager);
 
       _eventSink = eventSink;
       _hierarchyManager = hierarchyManager;
@@ -52,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void OnBeforeObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs)
     {
-      ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
+      ArgumentNullException.ThrowIfNull(loadedObjectIDs);
 
       // The ObjectsLoadingEvent is allowed to cancel; therefore, we execute it before indicating that we're starting to register objects.
       // _eventSink.RaiseObjectsLoadingEvent (loadedObjectIDs);
@@ -71,8 +70,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<DomainObject> actuallyLoadedDomainObjects)
     {
-      ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
-      ArgumentUtility.CheckNotNull("actuallyLoadedDomainObjects", actuallyLoadedDomainObjects);
+      ArgumentNullException.ThrowIfNull(loadedObjectIDs);
+      ArgumentNullException.ThrowIfNull(actuallyLoadedDomainObjects);
 
       try
       {
@@ -87,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void OnObjectsNotFound (IReadOnlyList<ObjectID> notFoundObjectIDs)
     {
-      ArgumentUtility.CheckNotNull("notFoundObjectIDs", notFoundObjectIDs);
+      ArgumentNullException.ThrowIfNull(notFoundObjectIDs);
 
       _eventSink.RaiseObjectsNotFoundEvent(notFoundObjectIDs);
     }

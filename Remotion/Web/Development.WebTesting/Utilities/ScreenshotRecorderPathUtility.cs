@@ -17,7 +17,6 @@
 using System;
 using System.IO;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -37,10 +36,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </exception>
     public static string GetFullScreenshotFilePath ([NotNull] string screenshotDirectory, [NotNull] string baseFileName, [NotNull] string suffix, [NotNull] string extension)
     {
-      ArgumentUtility.CheckNotNull("screenshotDirectory", screenshotDirectory);
-      ArgumentUtility.CheckNotNull("baseFileName", baseFileName);
-      ArgumentUtility.CheckNotNull("suffix", suffix);
-      ArgumentUtility.CheckNotNull("extension", extension);
+      ArgumentNullException.ThrowIfNull(screenshotDirectory);
+      ArgumentNullException.ThrowIfNull(baseFileName);
+      ArgumentNullException.ThrowIfNull(suffix);
+      ArgumentNullException.ThrowIfNull(extension);
 
       var sanitizedBaseFileName = SanitizeFileName(baseFileName);
       var filePath = GetFullScreenshotFilePathInternal(screenshotDirectory, sanitizedBaseFileName, suffix, extension);

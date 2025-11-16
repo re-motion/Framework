@@ -17,7 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 
 namespace Remotion.Development.UnitTests.Core.UnitTesting.Data.SqlClient
@@ -25,16 +27,17 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Data.SqlClient
   [TestFixture]
   public class DatabaseAgentTest
   {
-    private Mock<IDbCommand> _commandMock;
-    private Mock<IDbConnection> _connectionStub;
+    private Mock<DbCommand> _commandMock;
+    private Mock<DbConnection> _connectionStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _connectionStub = new Mock<IDbConnection>();
-      _commandMock = new Mock<IDbCommand>(MockBehavior.Strict);
+      _connectionStub = new Mock<DbConnection>();
+      _commandMock = new Mock<DbCommand>(MockBehavior.Strict);
+      _commandMock.Protected().Setup("Dispose", [false]); // for Finalizer
 
-      _connectionStub.Setup(_ => _.CreateCommand()).Returns(_commandMock.Object);
+      _connectionStub.Protected().Setup<DbCommand>("CreateDbCommand").Returns(_commandMock.Object);
     }
 
     [Test]
@@ -144,14 +147,14 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Data.SqlClient
       Assert.That(result, Is.EqualTo(30));
     }
 
-    private void SetupCommandExpectations (VerifiableSequence sequence, string commandText, IDbTransaction transaction, Action actualCommandExpectation)
+    private void SetupCommandExpectations (VerifiableSequence sequence, string commandText, DbTransaction transaction, Action actualCommandExpectation)
     {
       _commandMock.SetupSet(_ => _.CommandType = CommandType.Text).Verifiable();
       _commandMock.SetupSet(_ => _.CommandText = commandText).Verifiable();
       _commandMock.SetupSet(_ => _.Transaction = transaction).Verifiable();
 
       actualCommandExpectation();
-      _commandMock.InVerifiableSequence(sequence).Setup(_ => _.Dispose()).Verifiable();
+      _commandMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
     }
   }
 }

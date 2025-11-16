@@ -133,8 +133,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </exception>
     public static bool? IsSynchronized (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       CheckNotUnidirectional(endPointID, "endPointID");
 
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static void Synchronize (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      ArgumentNullException.ThrowIfNull(endPointID);
 
       CheckNotUnidirectional(endPointID, "endPointID");
 

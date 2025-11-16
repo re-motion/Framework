@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.RuleCollectors;
 
@@ -42,7 +41,7 @@ namespace Remotion.Validation.Merging
 
     public ValidationCollectorMergeResult Merge (IEnumerable<IEnumerable<ValidationRuleCollectorInfo>> validationCollectorInfos)
     {
-      ArgumentUtility.CheckNotNull("validationCollectorInfos", validationCollectorInfos);
+      ArgumentNullException.ThrowIfNull(validationCollectorInfos);
 
       var logContext = CreateNewLogContext();
       var collectedPropertyValidationRules = new List<IAddingPropertyValidationRuleCollector>();

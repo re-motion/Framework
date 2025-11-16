@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -27,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     public BocListRowRenderingContext (BocListRow row, int sortedIndex, bool isSelected)
     {
-      ArgumentUtility.CheckNotNull("row", row);
+      ArgumentNullException.ThrowIfNull(row);
 
       _row = row;
       _sortedIndex = sortedIndex;

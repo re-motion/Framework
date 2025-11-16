@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent.Selectors;
@@ -38,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
     public ScreenshotListMenuSelector ([NotNull] ListMenuControlObject listMenu)
     {
-      ArgumentUtility.CheckNotNull("listMenu", listMenu);
+      ArgumentNullException.ThrowIfNull(listMenu);
 
       _listMenu = listMenu;
     }
@@ -46,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithHtmlID (string htmlID)
     {
-      ArgumentUtility.CheckNotNull("htmlID", htmlID);
+      ArgumentNullException.ThrowIfNull(htmlID);
 
       return _listMenu.Scope.FindId(htmlID).ForElementScopeScreenshot();
     }
@@ -54,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull("itemID", itemID);
+      ArgumentNullException.ThrowIfNull(itemID);
 
       var item = _listMenu.Scope.FindTagWithAttribute("span.listMenuItem", DiagnosticMetadataAttributes.ItemID, itemID);
 
@@ -72,7 +71,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       var item = _listMenu.Scope.FindTagWithAttribute(
           "span.listMenuItem",
@@ -85,7 +84,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayTextContains (string displayText)
     {
-      ArgumentUtility.CheckNotNull("displayText", displayText);
+      ArgumentNullException.ThrowIfNull(displayText);
 
       var item = _listMenu.Scope.FindTagWithAttributeUsingOperator(
           "span.listMenuItem",

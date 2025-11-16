@@ -32,53 +32,53 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public RelationEndPointID CreateRelationEndPointID (PropertyAccessor propertyAccessor)
     {
-      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      // PropertyAccessor is value type
       return RelatedObjectPropertyAccessorStrategy.Instance.CreateRelationEndPointID(propertyAccessor);
     }
 
     public Type GetPropertyType (PropertyDefinition? propertyDefinition, IRelationEndPointDefinition? relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition!);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition!);
       return RelatedObjectPropertyAccessorStrategy.Instance.GetPropertyType(propertyDefinition, relationEndPointDefinition);
     }
 
     public bool HasChanged (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull("transaction", transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
 
       return RelatedObjectPropertyAccessorStrategy.Instance.HasChanged(propertyAccessor, transaction);
     }
 
     public bool HasBeenTouched (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull("transaction", transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
 
       return RelatedObjectPropertyAccessorStrategy.Instance.HasBeenTouched(propertyAccessor, transaction);
     }
 
     public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull("transaction", transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
 
       return false;
     }
 
     public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull("transaction", transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
 
       return transaction.GetRelatedObjects(CreateRelationEndPointID(propertyAccessor));
     }
 
     public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object? value)
     {
-      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull("transaction", transaction);
-      var newCollection = ArgumentUtility.CheckNotNullAndType<DomainObjectCollection>("value", value!);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
+      var newCollection = ArgumentUtility.CheckNotNullAndType<DomainObjectCollection>(nameof(value), value!);
 
       DomainObjectCheckUtility.EnsureNotDeleted(propertyAccessor.DomainObject, transaction);
 
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       var endPoint = (IDomainObjectCollectionEndPoint)transaction.DataManager.GetRelationEndPointWithLazyLoad(id);
 
       if (newCollection.AssociatedEndPointID != null && newCollection.AssociatedEndPointID != endPoint.ID)
-        throw new ArgumentException("The given collection is already associated with an end point.", "value");
+        throw new ArgumentException("The given collection is already associated with an end point.", nameof(value));
 
       if (newCollection.RequiredItemType != endPoint.Collection.RequiredItemType
           && !newCollection.IsReadOnly
@@ -111,8 +111,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull("transaction", transaction);
+      // PropertyAccessor is value type
+      ArgumentNullException.ThrowIfNull(transaction);
 
       return transaction.GetOriginalRelatedObjects(CreateRelationEndPointID(propertyAccessor));
     }

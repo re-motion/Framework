@@ -58,7 +58,7 @@ namespace Remotion.ServiceLocation
     /// <inheritdoc/>
     public void Register (ServiceConfigurationEntry serviceConfigurationEntry)
     {
-      ArgumentUtility.CheckNotNull("serviceConfigurationEntry", serviceConfigurationEntry);
+      ArgumentNullException.ThrowIfNull(serviceConfigurationEntry);
 
       var registration = CreateRegistration(serviceConfigurationEntry);
       if (!_dataStore.TryAdd(serviceConfigurationEntry.ServiceType, registration))

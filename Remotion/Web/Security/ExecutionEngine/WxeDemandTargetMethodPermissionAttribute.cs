@@ -33,7 +33,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     public WxeDemandTargetMethodPermissionAttribute (object methodNameEnum)
       : base(MethodType.Instance)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodNameEnum", methodNameEnum);
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>(nameof(methodNameEnum), methodNameEnum);
       Type enumType = enumValue.GetType();
 
       CheckDeclaringTypeOfMethodNameEnum(enumValue);
@@ -45,8 +45,8 @@ namespace Remotion.Web.Security.ExecutionEngine
     public WxeDemandTargetMethodPermissionAttribute (object methodNameEnum, Type securableClass)
       : base(MethodType.Instance)
     {
-      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>("methodNameEnum", methodNameEnum);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum>(nameof(methodNameEnum), methodNameEnum);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(securableClass), securableClass, typeof(ISecurableObject));
 
       CheckDeclaringTypeOfMethodNameEnum(enumValue, securableClass);
 
@@ -57,7 +57,7 @@ namespace Remotion.Web.Security.ExecutionEngine
     public WxeDemandTargetMethodPermissionAttribute (string methodName)
       : base(MethodType.Instance)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
 
       MethodName = methodName;
     }
@@ -65,8 +65,8 @@ namespace Remotion.Web.Security.ExecutionEngine
     public WxeDemandTargetMethodPermissionAttribute (string methodName, Type securableClass)
       : base(MethodType.Instance)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("methodName", methodName);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("securableClass", securableClass, typeof(ISecurableObject));
+      ArgumentException.ThrowIfNullOrEmpty(methodName);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(securableClass), securableClass, typeof(ISecurableObject));
 
       MethodName = methodName;
       SecurableClass = securableClass;

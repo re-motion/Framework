@@ -42,7 +42,7 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeTemplateControlInfo (IWxeTemplateControl control)
     {
-      ArgumentUtility.CheckNotNullAndType<TemplateControl>("control", control);
+      ArgumentUtility.CheckNotNullAndType<TemplateControl>(nameof(control), control);
 
       _control = control;
     }
@@ -51,7 +51,7 @@ namespace Remotion.Web.ExecutionEngine
     [MemberNotNull(nameof(_currentPageFunction))]
     public virtual void Initialize (HttpContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       if (_control is Page)
       {
@@ -148,7 +148,7 @@ namespace Remotion.Web.ExecutionEngine
     /// </param>
     protected IResourceManager GetResourceManager (Type localResourcesType)
     {
-      ArgumentUtility.CheckNotNull("localResourcesType", localResourcesType);
+      ArgumentNullException.ThrowIfNull(localResourcesType);
 
       //  Provider has already been identified.
       if (_cachedResourceManager != null)

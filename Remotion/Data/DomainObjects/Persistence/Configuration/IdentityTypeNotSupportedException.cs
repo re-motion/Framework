@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Configuration
 {
@@ -40,8 +39,8 @@ public class IdentityTypeNotSupportedException : StorageProviderConfigurationExc
 
   public IdentityTypeNotSupportedException (string message, Type storageProviderDefinitionType, Type invalidIdentityType) : base(message)
   {
-    ArgumentUtility.CheckNotNull("storageProviderDefinitionType", storageProviderDefinitionType);
-    ArgumentUtility.CheckNotNull("invalidIdentityType", invalidIdentityType);
+    ArgumentNullException.ThrowIfNull(storageProviderDefinitionType);
+    ArgumentNullException.ThrowIfNull(invalidIdentityType);
 
     _storageProviderDefinitionType = storageProviderDefinitionType;
     _invalidIdentityType = invalidIdentityType;

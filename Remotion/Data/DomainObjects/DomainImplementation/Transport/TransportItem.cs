@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 {
@@ -37,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <returns>A <see cref="TransportItem"/> holding the same data as <paramref name="container"/>.</returns>
     public static TransportItem PackageDataContainer (DataContainer container)
     {
-      ArgumentUtility.CheckNotNull("container", container);
+      ArgumentNullException.ThrowIfNull(container);
 
       TransportItem item = new TransportItem(container.ID);
       foreach (var propertyDefinition in container.ClassDefinition.GetPropertyDefinitions())
@@ -53,7 +52,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <returns>A stream of <see cref="TransportItem"/> instances holding the same data as <paramref name="containers"/>.</returns>
     public static IEnumerable<TransportItem> PackageDataContainers (IEnumerable<DataContainer> containers)
     {
-      ArgumentUtility.CheckNotNull("containers", containers);
+      ArgumentNullException.ThrowIfNull(containers);
 
       foreach (DataContainer container in containers)
         yield return PackageDataContainer(container);
@@ -68,15 +67,15 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <param name="id">The id of the <see cref="DomainObject"/> represented by this item.</param>
     public TransportItem (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentNullException.ThrowIfNull(id);
       _id = id;
       _properties = new Dictionary<string, object?>();
     }
 
     internal TransportItem (ObjectID id, Dictionary<string, object?> properties)
     {
-      ArgumentUtility.CheckNotNull("id", id);
-      ArgumentUtility.CheckNotNull("properties", properties);
+      ArgumentNullException.ThrowIfNull(id);
+      ArgumentNullException.ThrowIfNull(properties);
 
       _id = id;
       _properties = properties;

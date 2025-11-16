@@ -69,7 +69,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       }
       protected set
       {
-        ArgumentUtility.CheckTypeIsAssignableFrom("SecurableClass", value, typeof(ISecurableObject));
+        ArgumentUtility.CheckTypeIsAssignableFrom(nameof(value), value, typeof(ISecurableObject));
         _securableClass = value;
       }
     }
@@ -88,12 +88,12 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     protected void CheckDeclaringTypeOfMethodNameEnum (Enum methodNameEnum)
     {
-      ArgumentUtility.CheckNotNull("methodNameEnum", methodNameEnum);
+      ArgumentNullException.ThrowIfNull(methodNameEnum);
 
       Type enumType = methodNameEnum.GetType();
 
       if (enumType.DeclaringType == null)
-        throw new ArgumentException(string.Format("Enumerated type '{0}' is not declared as a nested type.", enumType.GetFullNameSafe()), "methodNameEnum");
+        throw new ArgumentException(string.Format("Enumerated type '{0}' is not declared as a nested type.", enumType.GetFullNameSafe()), nameof(methodNameEnum));
 
       if (!typeof(ISecurableObject).IsAssignableFrom(enumType.DeclaringType))
       {
@@ -101,7 +101,7 @@ namespace Remotion.Web.Security.ExecutionEngine
                 "The declaring type of enumerated type '{0}' does not implement interface '{1}'.",
                 enumType.GetFullNameSafe(),
                 typeof(ISecurableObject).GetFullNameSafe()),
-            "methodNameEnum");
+            nameof(methodNameEnum));
       }
     }
 
@@ -114,7 +114,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       {
         throw new ArgumentException(
             string.Format("Type '{0}' cannot be assigned to the declaring type of enumerated type '{1}'.", securableClass, enumType),
-            "securableClass");
+            nameof(securableClass));
       }
     }
   }

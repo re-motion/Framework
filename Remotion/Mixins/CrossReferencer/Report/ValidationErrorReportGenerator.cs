@@ -18,7 +18,6 @@ using System;
 using System.Xml.Linq;
 using Remotion.Mixins.CrossReferencer.Utilities;
 using Remotion.Mixins.Validation;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.CrossReferencer.Report
 {
@@ -28,7 +27,7 @@ namespace Remotion.Mixins.CrossReferencer.Report
 
     public ValidationErrorReportGenerator (ErrorAggregator<ValidationException> errorAggregator)
     {
-      ArgumentUtility.CheckNotNull("errorAggregator", errorAggregator);
+      ArgumentNullException.ThrowIfNull(errorAggregator);
 
       _errorAggregator = errorAggregator;
     }

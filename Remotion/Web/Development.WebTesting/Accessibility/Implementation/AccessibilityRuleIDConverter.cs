@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
 {
@@ -147,7 +146,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility.Implementation
     /// </summary>
     public static AccessibilityRuleID ConvertToEnum ([NotNull] string ruleIDAsString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("ruleIDAsString", ruleIDAsString);
+      ArgumentException.ThrowIfNullOrEmpty(ruleIDAsString);
 
       if (!s_stringToEnum.TryGetValue(ruleIDAsString, out var ruleID))
         return AccessibilityRuleID.Unknown;

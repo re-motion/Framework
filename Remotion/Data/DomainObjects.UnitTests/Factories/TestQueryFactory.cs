@@ -31,6 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
           QueryType.CollectionReadOnly,
+          QueryStatementType.Text,
           typeof(OrderCollection));
     }
 
@@ -41,6 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Order].* from [Order] inner join [Company] where [Company].[ID] = @customerID order by [OrderNo] asc;",
           QueryType.CollectionReadOnly,
+          QueryStatementType.Text,
           typeof(ObjectList<Order>));
     }
 
@@ -51,6 +53,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;",
           QueryType.CollectionReadOnly,
+          QueryStatementType.Text,
           typeof(DomainObjectCollection));
     }
 
@@ -79,6 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select [Company].* from [Company] where [CustomerType] = @customerType order by [Name] asc;",
           QueryType.CollectionReadWrite,
+          QueryStatementType.Text,
           typeof(DomainObjectCollection));
     }
 
@@ -98,6 +102,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
           "select 0;",
           QueryType.ScalarReadWrite);
+    }
+
+    public static QueryDefinition CreateTestStoredProcedureQuery (IStorageSettings storageSettings)
+    {
+      return new QueryDefinition(
+          "TestStoredProcedureQuery",
+          storageSettings.GetStorageProviderDefinition(DatabaseTest.c_testDomainProviderID),
+          "rpf_testSPQuery",
+          QueryType.CollectionReadOnly,
+          QueryStatementType.StoredProcedure,
+          typeof(OrderCollection));
     }
 
     public static QueryResult<DomainObject> CreateTestQueryResult (IStorageSettings storageSettings)

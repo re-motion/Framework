@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using Coypu;
-using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 
@@ -36,8 +35,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public DropDownMenuControlObject SelectPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
 
@@ -47,8 +46,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public DropDownMenuControlObject? SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
 
@@ -61,8 +60,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(textContent);
 
       var scope = FindScopePerTextContent(context, textContent);
 
@@ -74,8 +73,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
+      ArgumentNullException.ThrowIfNull(controlSelectionContext);
+      ArgumentNullException.ThrowIfNull(newControlObjectContext);
 
       return new DropDownMenuControlObject(newControlObjectContext);
     }

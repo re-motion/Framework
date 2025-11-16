@@ -150,7 +150,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocDateTimeValue.IsDirty = false;
       Assert.That(() => { ((IBusinessObjectBoundControl)_bocDateTimeValue).Value = dateOnly;},
           Throws.ArgumentException
-              .With.ArgumentExceptionMessageEqualTo("Parameter 'value' has type 'System.DateOnly' when type 'System.Nullable`1[System.DateTime]' was expected.", "value"));
+              .With.ArgumentExceptionMessageEqualTo("The value has type 'System.DateOnly' when type 'System.Nullable`1[System.DateTime]' was expected.", "value"));
     }
 
     [Test]

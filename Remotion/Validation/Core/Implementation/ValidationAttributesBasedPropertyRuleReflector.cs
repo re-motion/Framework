@@ -20,7 +20,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 using Remotion.Validation.Attributes.MetaValidation;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.MetaValidation;
@@ -40,8 +39,8 @@ namespace Remotion.Validation.Implementation
 
     public ValidationAttributesBasedPropertyRuleReflector (PropertyInfo property, IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull("property", property);
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
 
       // TODO RM-5906: Replace with IPropertyInformation and propagate to call and callee-site
       _propertyInfo = property;
@@ -56,7 +55,7 @@ namespace Remotion.Validation.Implementation
 
     public Func<object, object> GetValidatedPropertyFunc (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       // TODO RM-5906: Replace with IPropertyInformation.GetGetMethod().GetFastInvoker.
       // TODO RM-5906: Add cache, try to unify with AddingComponentPropertyRule and DomainObjectAttributesBasedValidationPropertyRuleReflector

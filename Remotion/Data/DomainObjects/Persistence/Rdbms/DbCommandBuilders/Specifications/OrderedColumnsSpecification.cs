@@ -21,7 +21,6 @@ using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications
 {
@@ -39,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public OrderedColumnsSpecification (IEnumerable<OrderedColumn> columns)
     {
-      ArgumentUtility.CheckNotNull("columns", columns);
+      ArgumentNullException.ThrowIfNull(columns);
 
       _columns = columns.ToArray();
     }
@@ -56,8 +55,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public void AppendOrderings (StringBuilder stringBuilder, ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentNullException.ThrowIfNull(stringBuilder);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       stringBuilder.Append(
           string.Join(", ", _columns.Select(orderedColumn =>
@@ -66,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
 
     public ISelectedColumnsSpecification UnionWithSelectedColumns (ISelectedColumnsSpecification selectedColumns)
     {
-      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
 
       if (!_columns.Any())
         return selectedColumns;

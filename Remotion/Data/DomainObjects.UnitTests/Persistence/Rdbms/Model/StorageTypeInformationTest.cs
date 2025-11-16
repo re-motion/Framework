@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Globalization;
 using Moq;
 using NUnit.Framework;
@@ -117,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Read ()
     {
-      var dataReaderMock = new Mock<IDataReader>(MockBehavior.Strict);
+      var dataReaderMock = new Mock<DbDataReader>(MockBehavior.Strict);
       dataReaderMock.Setup(mock => mock.GetValue(17)).Returns("value").Verifiable();
 
       _typeConverterStub.Setup(stub => stub.ConvertFrom(null, CultureInfo.CurrentCulture, "value")).Returns("converted value");
@@ -131,7 +132,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Read_DBNull ()
     {
-      var dataReaderMock = new Mock<IDataReader>(MockBehavior.Strict);
+      var dataReaderMock = new Mock<DbDataReader>(MockBehavior.Strict);
       dataReaderMock.Setup(mock => mock.GetValue(17)).Returns(DBNull.Value).Verifiable();
 
       _typeConverterStub.Setup(stub => stub.ConvertFrom(null, CultureInfo.CurrentCulture, null)).Returns("converted null value");
@@ -145,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Read_Null ()
     {
-      var dataReaderMock = new Mock<IDataReader>(MockBehavior.Strict);
+      var dataReaderMock = new Mock<DbDataReader>(MockBehavior.Strict);
       dataReaderMock.Setup(mock => mock.GetValue(17)).Returns((object)null).Verifiable();
 
       _typeConverterStub.Setup(stub => stub.ConvertFrom(null, CultureInfo.CurrentCulture, null)).Returns("converted null value");
@@ -305,12 +306,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         get { throw new NotImplementedException(); }
       }
 
-      public IDbDataParameter CreateDataParameter (IDbCommand command, object value)
+      public DbParameter CreateDataParameter (DbCommand command, object value)
       {
         throw new NotImplementedException();
       }
 
-      public object Read (IDataReader dataReader, int ordinal)
+      public object Read (DbDataReader dataReader, int ordinal)
       {
         throw new NotImplementedException();
       }

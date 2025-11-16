@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Remotion.Reflection;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping
 {
@@ -33,9 +32,9 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public InvalidPropertyInformation (ITypeInformation declaringType, string name, Type propertyType)
     {
-      ArgumentUtility.CheckNotNull("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-      ArgumentUtility.CheckNotNull("propertyType", propertyType);
+      ArgumentNullException.ThrowIfNull(declaringType);
+      ArgumentException.ThrowIfNullOrEmpty(name);
+      ArgumentNullException.ThrowIfNull(propertyType);
 
       _declaringType = declaringType;
       _name = name;

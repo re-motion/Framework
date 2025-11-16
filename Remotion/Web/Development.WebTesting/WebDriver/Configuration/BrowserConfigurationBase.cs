@@ -17,7 +17,6 @@
 using System;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
@@ -32,29 +31,37 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
   /// </summary>
   public abstract class BrowserConfigurationBase : IBrowserConfiguration
   {
+    public static void ApplyCommonWebTestFeatureDefaults (
+        WebTestFeatureCollection features,
+        IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentNullException.ThrowIfNull(features);
+      ArgumentNullException.ThrowIfNull(browserConfiguration);
+
+      features.Set(new BrowserAnnotateHelper(browserConfiguration));
+      features.Set(new BrowserHelper(browserConfiguration));
+      features.Set(new LocatorHelper(browserConfiguration));
+    }
+
     private readonly ILoggerFactory _loggerFactory;
     private readonly string _browserName;
     private readonly TimeSpan _searchTimeout;
     private readonly TimeSpan _retryInterval;
     private readonly string _logsDirectory;
-    private readonly BrowserAnnotateHelper _browserAnnotateHelper;
-    private readonly BrowserHelper _browserHelper;
-    private readonly LocatorHelper _locatorHelper;
-    private readonly MouseHelper _mouseHelper;
+
+    private readonly WebTestFeatureCollection _features = new WebTestFeatureCollection();
 
     protected BrowserConfigurationBase ([NotNull] IWebTestSettings webTestSettings)
     {
-      ArgumentUtility.CheckNotNull("webTestSettings", webTestSettings);
+      ArgumentNullException.ThrowIfNull(webTestSettings);
 
       _loggerFactory = webTestSettings.LoggerFactory;
       _browserName = webTestSettings.BrowserName;
       _searchTimeout = webTestSettings.SearchTimeout;
       _retryInterval = webTestSettings.RetryInterval;
       _logsDirectory = webTestSettings.LogsDirectory;
-      _browserAnnotateHelper = new BrowserAnnotateHelper(this);
-      _browserHelper = new BrowserHelper(this);
-      _locatorHelper = new LocatorHelper(this);
-      _mouseHelper = new MouseHelper(this);
+
+      ApplyCommonWebTestFeatureDefaults(FeaturesMutable, this);
     }
 
     public abstract string BrowserExecutableName { get; }
@@ -66,33 +73,27 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
       get { return _loggerFactory; }
     }
 
-    public BrowserAnnotateHelper BrowserAnnotateHelper
-    {
-      get { return _browserAnnotateHelper; }
-    }
+    public BrowserAnnotateHelper BrowserAnnotateHelper => Features.Get<BrowserAnnotateHelper>();
 
     public abstract IBrowserFactory BrowserFactory { get; }
 
-    public BrowserHelper BrowserHelper
-    {
-      get { return _browserHelper; }
-    }
+    public BrowserHelper BrowserHelper => Features.Get<BrowserHelper>();
 
     public abstract IDownloadHelper DownloadHelper { get; }
 
-    public LocatorHelper LocatorHelper
-    {
-      get { return _locatorHelper; }
-    }
-
-    public MouseHelper MouseHelper
-    {
-      get { return _mouseHelper; }
-    }
+    public LocatorHelper LocatorHelper => Features.Get<LocatorHelper>();
 
     public abstract IBrowserContentLocator Locator { get; }
 
     public abstract ScreenshotTooltipStyle TooltipStyle { get; }
+
+    public IReadOnlyWebTestFeatureCollection Features => _features;
+
+    /// <summary>
+    /// Mutable features collection intended to allow mutation during the construction of the browser configuration.
+    /// Manipulating the collection after construction is not supported.
+    /// </summary>
+    protected WebTestFeatureCollection FeaturesMutable => _features;
 
     public string BrowserName
     {

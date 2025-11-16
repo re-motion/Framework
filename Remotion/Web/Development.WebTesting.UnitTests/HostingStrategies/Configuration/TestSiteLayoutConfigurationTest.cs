@@ -28,49 +28,105 @@ namespace Remotion.Web.Development.WebTesting.UnitTests.HostingStrategies.Config
   public class TestSiteLayoutConfigurationTest
   {
     [Test]
-    public void CreateFromWebTestConfigurationSection_WithRelativePaths ()
+    public void CreateFromWebTestConfigurationSection_WithToolPaths ()
     {
       var currentBasePath = AppContext.BaseDirectory;
+
+      var relativeRootPath = OperatingSystem.IsWindows() ? @".\Some\Path" : "./Some/Path";
+      var relativeResourcePath = OperatingSystem.IsWindows() ? @".\Some\Resource" : "./Some/Resource";
+      var binaryPath = "dotnet";
+      var processArguments = "my arguments";
 
       var webTestSettingsStub = new Mock<IWebTestSettings>();
       webTestSettingsStub
           .Setup(m => m.TestSiteLayout.RootPath)
-          .Returns(@".\Some\Path");
+          .Returns(relativeRootPath);
       webTestSettingsStub
           .Setup(m => m.TestSiteLayout.Resources)
-          .Returns(new List<string>() { @".\Some\Resource" });
+          .Returns(new List<string>() { relativeResourcePath });
       webTestSettingsStub
           .Setup(m => m.TestSiteLayout.ProcessPath)
-          .Returns(@".\BinFolder\Executable.exe");
+          .Returns(binaryPath);
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessArguments)
+          .Returns(processArguments);
 
       var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
 
-      Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(Path.Combine(currentBasePath, @"Some\Path")));
+      Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(Path.Combine(currentBasePath, "Some", "Path")));
       Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(1));
-      Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(Path.Combine(currentBasePath, @"Some\Path\Some\Resource")));
-      Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo(Path.Combine(currentBasePath, @"Some\Path\BinFolder\Executable.exe")));
+      Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(Path.Combine(currentBasePath, "Some", "Path", "Some", "Resource")));
+      Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo("dotnet"));
+      Assert.That(testSiteLayoutConfiguration.ProcessArguments, Is.EqualTo(processArguments));
+    }
+
+    [Test]
+    public void CreateFromWebTestConfigurationSection_WithRelativePaths ()
+    {
+      var currentBasePath = AppContext.BaseDirectory;
+
+      var relativeRootPath = OperatingSystem.IsWindows() ? @".\Some\Path" : "./Some/Path";
+      var relativeResourcePath = OperatingSystem.IsWindows() ? @".\Some\Resource" : "./Some/Resource";
+      var binaryPath = OperatingSystem.IsWindows() ? @".\BinFolder\Executable.exe" : "./BinFolder/Executable.exe";
+      var processArguments = "my arguments";
+
+      var webTestSettingsStub = new Mock<IWebTestSettings>();
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.RootPath)
+          .Returns(relativeRootPath);
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.Resources)
+          .Returns(new List<string>() { relativeResourcePath });
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessPath)
+          .Returns(binaryPath);
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessArguments)
+          .Returns(processArguments);
+
+      var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
+
+      Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(Path.Combine(currentBasePath, "Some", "Path")));
+      Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(1));
+      Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(Path.Combine(currentBasePath, "Some", "Path", "Some", "Resource")));
+      Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo(Path.Combine(currentBasePath, "Some", "Path", "BinFolder", "Executable.exe")));
+      Assert.That(testSiteLayoutConfiguration.ProcessArguments, Is.EqualTo(processArguments));
     }
 
     [Test]
     public void CreateFromWebTestConfigurationSection_WithAbsolutePaths ()
     {
+      var somePath = OperatingSystem.IsWindows() ? @"C:\Some\" : "/var/some/";
+      var someRelativePath = OperatingSystem.IsWindows() ? @"Some\Other\" : "some/other/";
+      var binPath = OperatingSystem.IsWindows() ? @"C:\BinFolder" : "/bin/";
+
+      var rootPath = Path.Combine(somePath, "Path");
+      var resourcePathAbsolute = Path.Combine(somePath, "Resource");
+      var resourcePathRelative = Path.Combine(someRelativePath, "Resource");
+      var processPath = Path.Combine(binPath, "Executable.exe");
+      var processArguments = "my arguments";
+
       var webTestSettingsStub = new Mock<IWebTestSettings>();
       webTestSettingsStub
           .Setup(m => m.TestSiteLayout.RootPath)
-          .Returns(@"C:\Some\Path");
+          .Returns(rootPath);
       webTestSettingsStub
           .Setup(m => m.TestSiteLayout.Resources)
-          .Returns(new List<string>() { @"C:\Some\Resource", @"Some\Other\Resource" });
+          .Returns(new List<string>() { resourcePathAbsolute, resourcePathRelative });
       webTestSettingsStub
           .Setup(m => m.TestSiteLayout.ProcessPath)
-          .Returns(@"C:\BinFolder\Executable.exe");
+          .Returns(processPath);
+      webTestSettingsStub
+          .Setup(m => m.TestSiteLayout.ProcessArguments)
+          .Returns(processArguments);
       var testSiteLayoutConfiguration = new TestSiteLayoutConfiguration(webTestSettingsStub.Object);
 
-      Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(@"C:\Some\Path"));
+      Assert.That(testSiteLayoutConfiguration.RootPath, Is.EqualTo(rootPath));
       Assert.That(testSiteLayoutConfiguration.Resources.Count, Is.EqualTo(2));
-      Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(@"C:\Some\Resource"));
-      Assert.That(testSiteLayoutConfiguration.Resources[1].Path, Is.EqualTo(@"C:\Some\Path\Some\Other\Resource"));
-      Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo(@"C:\BinFolder\Executable.exe"));
+      Assert.That(testSiteLayoutConfiguration.Resources[0].Path, Is.EqualTo(resourcePathAbsolute));
+      Assert.That(testSiteLayoutConfiguration.Resources[1].Path, Is.EqualTo(Path.Combine(rootPath, resourcePathRelative)));
+      Assert.That(testSiteLayoutConfiguration.ProcessPath, Is.EqualTo(processPath));
+      Assert.That(testSiteLayoutConfiguration.ProcessArguments, Is.EqualTo(processArguments));
     }
   }
 }

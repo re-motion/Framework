@@ -16,7 +16,6 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
 {
@@ -30,7 +29,7 @@ namespace Remotion.Validation.Implementation
 
     public RemovingValidatorRegistration ([NotNull] Type validatorType, [CanBeNull] Type? collectorTypeToRemoveFrom)
     {
-      ArgumentUtility.CheckNotNull("validatorType", validatorType);
+      ArgumentNullException.ThrowIfNull(validatorType);
 
       _validatorType = validatorType;
       _collectorTypeToRemoveFrom = collectorTypeToRemoveFrom;

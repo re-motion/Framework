@@ -44,8 +44,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDisplayNameControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       return fluentControlSelector.GetControl(new DisplayNameControlSelectionCommandBuilder<TControlSelector, TControlObject>(displayName));
     }
@@ -64,8 +64,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDisplayNameControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       return fluentControlSelector.GetControlOrNull(new DisplayNameControlSelectionCommandBuilder<TControlSelector, TControlObject>(displayName));
     }
@@ -83,8 +83,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDisplayNameControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(displayName);
 
       return fluentControlSelector.HasControl(new DisplayNameControlSelectionCommandBuilder<TControlSelector, TControlObject>(displayName));
     }
@@ -105,9 +105,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDomainPropertyControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
-      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(domainProperty);
+      ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       return fluentControlSelector.GetControl(
           new DomainPropertyControlSelectionCommandBuilder<TControlSelector, TControlObject>(domainProperty, domainClass));
@@ -128,9 +128,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDomainPropertyControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
-      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(domainProperty);
+      ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       return fluentControlSelector.GetControlOrNull(
           new DomainPropertyControlSelectionCommandBuilder<TControlSelector, TControlObject>(domainProperty, domainClass));
@@ -150,9 +150,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
         where TControlSelector : IDomainPropertyControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
-      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
+      ArgumentNullException.ThrowIfNull(fluentControlSelector);
+      ArgumentException.ThrowIfNullOrEmpty(domainProperty);
+      ArgumentUtility.CheckNotEmpty(nameof(domainClass), domainClass);
 
       return fluentControlSelector.HasControl(
           new DomainPropertyControlSelectionCommandBuilder<TControlSelector, TControlObject>(domainProperty, domainClass));

@@ -17,7 +17,6 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
 namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.FluentScreenshots.Extensions
@@ -32,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.FluentScree
     /// </summary>
     public static void Open ([NotNull] this IFluentScreenshotElementWithCovariance<DropDownListControlObject> fluentDropDownList)
     {
-      ArgumentUtility.CheckNotNull("fluentDropDownList", fluentDropDownList);
+      ArgumentNullException.ThrowIfNull(fluentDropDownList);
 
       fluentDropDownList.Target.Scope.Click(Options.NoWait);
     }

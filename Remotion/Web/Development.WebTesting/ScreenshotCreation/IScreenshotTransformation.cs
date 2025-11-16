@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Drawing;
 using JetBrains.Annotations;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
   /// <summary>
   /// Represents a transformation that is applied to an annotation after resolving and before drawing.
   /// In comparison to building a custom resolver a <see cref="IScreenshotTransformation{T}"/> has the 
-  /// ability to change the <see cref="Graphics"/> object used to draw or change the <see cref="ResolvedScreenshotElement"/>
+  /// ability to change the <see cref="Canvas"/> object used to draw or change the <see cref="ResolvedScreenshotElement"/>
   /// that will be used to draw the annotation. For a full list of what is available see <see cref="ScreenshotTransformationContext{T}"/>.
   /// </summary>
   public interface IScreenshotTransformation<T>
@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// Reverts any changes made during <see cref="BeginApply"/> that should not be persistent.
     /// </summary>
     /// <example>
-    /// Changing the clipping area of the <see cref="Graphics"/> object in <see cref="BeginApply"/> should be undone in <see cref="EndApply"/>.
+    /// Changing the clipping area of the <see cref="Canvas"/> object in <see cref="BeginApply"/> should be undone in <see cref="EndApply"/>.
     /// </example>
     void EndApply ([NotNull] ScreenshotTransformationContext<T> context);
   }

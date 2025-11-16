@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.FunctionalProgramming;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
 {
@@ -35,7 +34,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         IVirtualObjectEndPointDataManagerFactory dataManagerFactory)
         : base(endPointLoader)
     {
-      ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
+      ArgumentNullException.ThrowIfNull(dataManagerFactory);
       _dataManagerFactory = dataManagerFactory;
     }
 
@@ -46,15 +45,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void EnsureDataComplete (IVirtualObjectEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
 
       EndPointLoader.LoadEndPointAndGetNewState(endPoint);
     }
 
     public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject? item, Action<IVirtualObjectEndPointDataManager> stateSetter)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
+      ArgumentNullException.ThrowIfNull(endPoint);
+      ArgumentNullException.ThrowIfNull(stateSetter);
 
       var items = item == null ? Array.Empty<DomainObject>() : EnumerableUtility.Singleton(item);
       MarkDataComplete(endPoint, items, stateSetter);
@@ -63,7 +62,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public IDataManagementCommand CreateSetCommand (
         IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject? newRelatedObject)
     {
-      ArgumentUtility.CheckNotNull("virtualObjectEndPoint", virtualObjectEndPoint);
+      ArgumentNullException.ThrowIfNull(virtualObjectEndPoint);
 
       var completeState = EndPointLoader.LoadEndPointAndGetNewState(virtualObjectEndPoint);
       return completeState.CreateSetCommand(virtualObjectEndPoint, newRelatedObject);
@@ -71,7 +70,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public IDataManagementCommand CreateDeleteCommand (IVirtualObjectEndPoint virtualObjectEndPoint)
     {
-      ArgumentUtility.CheckNotNull("virtualObjectEndPoint", virtualObjectEndPoint);
+      ArgumentNullException.ThrowIfNull(virtualObjectEndPoint);
 
       var completeState = EndPointLoader.LoadEndPointAndGetNewState(virtualObjectEndPoint);
       return completeState.CreateDeleteCommand(virtualObjectEndPoint);
@@ -79,7 +78,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     protected override IVirtualObjectEndPointDataManager CreateEndPointDataManager (IVirtualObjectEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentNullException.ThrowIfNull(endPoint);
       return _dataManagerFactory.CreateEndPointDataManager(endPoint.ID);
     }
   }

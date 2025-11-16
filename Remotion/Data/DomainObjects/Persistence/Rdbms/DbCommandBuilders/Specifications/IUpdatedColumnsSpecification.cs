@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications
@@ -25,6 +25,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specif
   /// </summary>
   public interface IUpdatedColumnsSpecification
   {
-    void AppendColumnValueAssignments (StringBuilder statement, IDbCommand dbCommand, ISqlDialect sqlDialect);
+    void AppendColumnValueAssignments (StringBuilder statement, DbCommand dbCommand, ISqlDialect sqlDialect);
   }
 }

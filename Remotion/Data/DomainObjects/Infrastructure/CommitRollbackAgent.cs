@@ -21,7 +21,6 @@ using System.Linq;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
@@ -40,10 +39,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public CommitRollbackAgent (
         ClientTransaction clientTransaction, IClientTransactionEventSink eventSink, IPersistenceStrategy persistenceStrategy, IDataManager dataManager)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("eventSink", eventSink);
-      ArgumentUtility.CheckNotNull("persistenceStrategy", persistenceStrategy);
-      ArgumentUtility.CheckNotNull("dataManager", dataManager);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(eventSink);
+      ArgumentNullException.ThrowIfNull(persistenceStrategy);
+      ArgumentNullException.ThrowIfNull(dataManager);
 
       _clientTransaction = clientTransaction;
       _eventSink = eventSink;
@@ -73,7 +72,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public bool HasData (Predicate<DomainObjectState> predicate)
     {
-      ArgumentUtility.CheckNotNull("predicate", predicate);
+      ArgumentNullException.ThrowIfNull(predicate);
 
       return _dataManager.GetLoadedDataByObjectState(predicate).Any();
     }

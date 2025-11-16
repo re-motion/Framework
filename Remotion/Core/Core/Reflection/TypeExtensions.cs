@@ -34,8 +34,8 @@ namespace Remotion.Reflection
     /// </returns>
     public static bool CanAscribeTo (this Type type, Type ascribeeType)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("ascribeeType", ascribeeType);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(ascribeeType);
 
       if (!ascribeeType.IsInterface)
         return CanAscribeInternal(type, ascribeeType);
@@ -63,15 +63,15 @@ namespace Remotion.Reflection
     /// </exception>
     public static IReadOnlyList<Type> GetAscribedGenericArguments (this Type type, Type ascribeeType)
     {
-      ArgumentUtility.CheckNotNull("type", type);
-      ArgumentUtility.CheckNotNull("ascribeeType", ascribeeType);
+      ArgumentNullException.ThrowIfNull(type);
+      ArgumentNullException.ThrowIfNull(ascribeeType);
 
       if (!ascribeeType.IsGenericType)
       {
         if (ascribeeType.IsAssignableFrom(type))
           return Type.EmptyTypes;
         else
-          throw ArgumentUtility.CreateArgumentTypeException("type", type, ascribeeType);
+          throw ArgumentUtility.CreateArgumentTypeException(nameof(type), type, ascribeeType);
       }
       else if (ascribeeType.IsInterface)
         return GetAscribedGenericInterfaceArgumentsInternal(type, ascribeeType);
@@ -125,7 +125,7 @@ namespace Remotion.Reflection
       }
 
       if (conreteSpecialization == null)
-        throw ArgumentUtility.CreateArgumentTypeException("type", type, ascribeeType);
+        throw ArgumentUtility.CreateArgumentTypeException(nameof(type), type, ascribeeType);
 
       Assertion.IsTrue(conreteSpecialization.GetGenericTypeDefinition() == ascribeeType.GetGenericTypeDefinition());
       return Array.AsReadOnly(conreteSpecialization.GetGenericArguments());
@@ -146,7 +146,7 @@ namespace Remotion.Reflection
       if (currentType != null)
         return Array.AsReadOnly(currentType.GetGenericArguments());
       else
-        throw ArgumentUtility.CreateArgumentTypeException("type", type, ascribeeType);
+        throw ArgumentUtility.CreateArgumentTypeException(nameof(type), type, ascribeeType);
     }
 
     private static bool CanDirectlyAscribeToGenericTypeInternal (Type type, Type ascribeeType, Type ascribeeGenericTypeDefinition)

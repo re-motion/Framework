@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Specialized;
-using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 {
@@ -31,8 +30,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     public ExecutionStateParameters (WxeFunction subFunction, NameValueCollection postBackCollection)
     {
-      ArgumentUtility.CheckNotNull("subFunction", subFunction);
-      ArgumentUtility.CheckNotNull("postBackCollection", postBackCollection);
+      ArgumentNullException.ThrowIfNull(subFunction);
+      ArgumentNullException.ThrowIfNull(postBackCollection);
 
       _subFunction = subFunction;
       _postBackCollection = postBackCollection;

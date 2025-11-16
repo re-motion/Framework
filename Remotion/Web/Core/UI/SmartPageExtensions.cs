@@ -16,7 +16,6 @@
 //
 using System;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Web.UI
 {
@@ -32,7 +31,7 @@ namespace Remotion.Web.UI
     /// <returns><see langword="true" /> if <see cref="ISmartPage"/>.<see cref="ISmartPage.GetDirtyStates"/> returns items, otherwise <see langword="false" />.</returns>
     public static bool EvaluateDirtyState (this ISmartPage smartPage)
     {
-      ArgumentUtility.CheckNotNull("smartPage", smartPage);
+      ArgumentNullException.ThrowIfNull(smartPage);
 
       return smartPage.GetDirtyStates().Any();
     }

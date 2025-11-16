@@ -15,11 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
+using System.Data.Common;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 {
@@ -29,12 +28,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected DbCommandBuilder (ISqlDialect sqlDialect)
     {
-      ArgumentUtility.CheckNotNull("sqlDialect", sqlDialect);
+      ArgumentNullException.ThrowIfNull(sqlDialect);
 
       _sqlDialect = sqlDialect;
     }
 
-    public abstract IDbCommand Create (IDbCommandFactory dbCommandFactory);
+    public abstract DbCommand Create (IDbCommandFactory dbCommandFactory);
 
     public ISqlDialect SqlDialect
     {
@@ -43,12 +42,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected virtual void AppendSelectClause (
         StringBuilder statement,
-        IDbCommand command,
+        DbCommand command,
         ISelectedColumnsSpecification selectedColumns)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("selectedColumns", selectedColumns);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(selectedColumns);
 
       statement.Append("SELECT ");
       selectedColumns.AppendProjection(statement, SqlDialect);
@@ -56,12 +55,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected virtual void AppendFromClause (
         StringBuilder statement,
-        IDbCommand command,
+        DbCommand command,
         TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
 
       statement.Append(" FROM ");
       AppendTableName(statement, command, tableDefinition);
@@ -69,12 +68,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected void AppendTableName (
         StringBuilder statement,
-        IDbCommand command,
+        DbCommand command,
         TableDefinition tableDefinition)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
 
       if (tableDefinition.TableName.SchemaName != null)
       {
@@ -86,12 +85,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected virtual void AppendWhereClause (
         StringBuilder statement,
-        IDbCommand command,
+        DbCommand command,
         IComparedColumnsSpecification comparedColumns)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("comparedColumns", comparedColumns);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(comparedColumns);
 
       statement.Append(" WHERE ");
       comparedColumns.AddParameters(command, SqlDialect);
@@ -100,12 +99,12 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     protected virtual void AppendOrderByClause (
         StringBuilder statement,
-        IDbCommand command,
+        DbCommand command,
         IOrderedColumnsSpecification orderedColumnsSpecification)
     {
-      ArgumentUtility.CheckNotNull("statement", statement);
-      ArgumentUtility.CheckNotNull("command", command);
-      ArgumentUtility.CheckNotNull("orderedColumnsSpecification", orderedColumnsSpecification);
+      ArgumentNullException.ThrowIfNull(statement);
+      ArgumentNullException.ThrowIfNull(command);
+      ArgumentNullException.ThrowIfNull(orderedColumnsSpecification);
 
       if (!orderedColumnsSpecification.IsEmpty)
       {

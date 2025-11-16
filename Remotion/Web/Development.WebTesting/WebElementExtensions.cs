@@ -18,7 +18,6 @@ using OpenQA.Selenium;
 using System;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Support.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -35,8 +34,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="timeout">A maximum timeout until the IFrame must be visible.</param>
     public static void WaitUntilFrameIsVisible ([NotNull] this IWebElement frame, [NotNull] string elementCssSelector, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull("frame", frame);
-      ArgumentUtility.CheckNotNull("elementCssSelector", elementCssSelector);
+      ArgumentNullException.ThrowIfNull(frame);
+      ArgumentNullException.ThrowIfNull(elementCssSelector);
 
       var webDriver = ((IWrapsDriver)frame).WrappedDriver;
       var webDriverWait = new WebDriverWait(webDriver, timeout)
@@ -61,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="timeout">A maximum timeout until the IFrame must be visible.</param>
     public static void WaitUntilFrameIsVisible ([NotNull] this IWebElement frame, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull("frame", frame);
+      ArgumentNullException.ThrowIfNull(frame);
 
       // a body is always present in an IFrame
       WaitUntilFrameIsVisible(frame, "body", timeout);

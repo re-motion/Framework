@@ -105,7 +105,7 @@ namespace Remotion.Web.UI.Controls
     public NumericValidationDataType DataType
     {
       get { return _dataType; }
-      set { _dataType = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<NumericValidationDataType>("value", value); }
+      set { _dataType = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<NumericValidationDataType>(nameof(value), value); }
     }
 
     /// <summary> Gets or sets a value that determines whether negative values are allowed. </summary>

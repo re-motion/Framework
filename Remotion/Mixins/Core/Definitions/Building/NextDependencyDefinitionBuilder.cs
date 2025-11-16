@@ -30,20 +30,20 @@ namespace Remotion.Mixins.Definitions.Building
 
     public NextCallDependencyDefinitionBuilder (MixinDefinition mixin)
     {
-      ArgumentUtility.CheckNotNull("mixin", mixin);
+      ArgumentNullException.ThrowIfNull(mixin);
       _mixin = mixin;
     }
 
     protected override RequirementDefinitionBase GetRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       return _mixin.TargetClass.RequiredNextCallTypes[type];
     }
 
     protected override RequirementDefinitionBase CreateRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       Assertion.IsTrue(type != typeof(object), "This method will not be called for typeof (object).");
 
@@ -59,21 +59,21 @@ namespace Remotion.Mixins.Definitions.Building
 
     protected override void AddRequirement (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentNullException.ThrowIfNull(requirement);
 
       _mixin.TargetClass.RequiredNextCallTypes.Add((RequiredNextCallTypeDefinition)requirement);
     }
 
     protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
-      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentNullException.ThrowIfNull(requirement);
 
       return new NextCallDependencyDefinition((RequiredNextCallTypeDefinition)requirement, _mixin, (NextCallDependencyDefinition?)aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
     {
-      ArgumentUtility.CheckNotNull("dependency", dependency);
+      ArgumentNullException.ThrowIfNull(dependency);
       if (!_mixin.NextCallDependencies.ContainsKey(dependency.RequiredType.Type))
         _mixin.NextCallDependencies.Add((NextCallDependencyDefinition)dependency);
     }

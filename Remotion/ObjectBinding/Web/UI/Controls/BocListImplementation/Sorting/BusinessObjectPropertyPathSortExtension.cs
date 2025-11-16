@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
 {
@@ -35,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
     [NotNull]
     public static IComparer<BocListRow> CreateComparer ([NotNull] this IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
+      ArgumentNullException.ThrowIfNull(propertyPath);
 
       return new BusinessObjectPropertyPathBasedComparer(propertyPath);
     }

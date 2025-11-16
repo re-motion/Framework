@@ -18,7 +18,6 @@ using System;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths.Results;
-using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding
 {
@@ -103,8 +102,8 @@ namespace Remotion.ObjectBinding
 
       public Formatter (IBusinessObject obj, IBusinessObjectPropertyPath path)
       {
-        ArgumentUtility.CheckNotNull("obj", obj);
-        ArgumentUtility.CheckNotNull("path", path);
+        ArgumentNullException.ThrowIfNull(obj);
+        ArgumentNullException.ThrowIfNull(path);
 
         _object = obj;
         _path = path;

@@ -17,7 +17,6 @@
 using System;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -35,7 +34,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public bool IsNullable (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       var attribute = propertyInfo.GetCustomAttribute<INullablePropertyAttribute>(true);
       return attribute == null || attribute.IsNullable;
@@ -43,7 +42,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public int? GetMaxLength (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentNullException.ThrowIfNull(propertyInfo);
 
       var attribute = propertyInfo.GetCustomAttribute<ILengthConstrainedPropertyAttribute>(true);
       return attribute != null ? attribute.MaximumLength : null;

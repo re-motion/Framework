@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -36,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Validation
     public PropertyValueNotSetException (DomainObject? domainObject, string propertyName, string message, Exception? inner)
         : base(message, inner)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentException.ThrowIfNullOrEmpty(propertyName);
 
       _domainObject = domainObject;
       _propertyName = propertyName;

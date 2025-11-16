@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data;
-using System.Data.SqlClient;
+using System.Data.Common;
+using Microsoft.Data.SqlClient;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -38,8 +38,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain
 
     public void SetupDB ()
     {
-      IDbConnection connection = GetConnection();
-      IDbTransaction transaction = connection.BeginTransaction();
+      DbConnection connection = GetConnection();
+      DbTransaction transaction = connection.BeginTransaction();
 
       try
       {
@@ -58,7 +58,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       transaction.Commit();
     }
 
-    private void ExecuteSql (string sql, IDbConnection connection, IDbTransaction transaction)
+    private void ExecuteSql (string sql, DbConnection connection, DbTransaction transaction)
     {
       string[] sqlScriptParts = Regex.Split(sql, @"^[ \t]*GO[ \t]*(\r\n)?", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
@@ -66,7 +66,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       {
         if (sqlScriptPart.Replace("\r", "").Replace("\n", "").Replace("\t", "").Trim() != string.Empty)
         {
-          using (IDbCommand command = connection.CreateCommand())
+          using (DbCommand command = connection.CreateCommand())
           {
             command.Transaction = transaction;
             command.CommandText = sqlScriptPart;
@@ -85,12 +85,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       }
     }
 
-    private IDbConnection GetConnection ()
+    private DbConnection GetConnection ()
     {
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
       var providerDefinition = (RdbmsProviderDefinition)storageSettings.GetDefaultStorageProviderDefinition();
       Assertion.IsNotNull(providerDefinition, "IStorageSettings.GetDefaultStorageProviderDefinition() != null");
-      IDbConnection connection = new SqlConnection(providerDefinition.ConnectionString);
+      DbConnection connection = new SqlConnection(providerDefinition.ConnectionString);
       connection.Open();
 
       return connection;

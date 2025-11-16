@@ -21,7 +21,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories
 {
@@ -39,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider,
         ITableDefinitionFinder tableDefinitionFinder)
     {
-      ArgumentUtility.CheckNotNull("dbCommandBuilderFactory", dbCommandBuilderFactory);
-      ArgumentUtility.CheckNotNull("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
-      ArgumentUtility.CheckNotNull("tableDefinitionFinder", tableDefinitionFinder);
+      ArgumentNullException.ThrowIfNull(dbCommandBuilderFactory);
+      ArgumentNullException.ThrowIfNull(rdbmsPersistenceModelProvider);
+      ArgumentNullException.ThrowIfNull(tableDefinitionFinder);
 
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
@@ -65,7 +64,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     public virtual IRdbmsProviderCommand CreateForSave (IEnumerable<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
+      ArgumentNullException.ThrowIfNull(dataContainers);
 
       return new MultiDataContainerSaveCommand(CreateDbCommandsForSave(dataContainers));
     }

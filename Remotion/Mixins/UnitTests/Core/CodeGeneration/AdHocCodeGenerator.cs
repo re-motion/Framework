@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 
     public AdHocCodeGenerator (string assemblyDirectory, string assemblyName = "AdHocCodeGenerator")
     {
-      ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
+      ArgumentException.ThrowIfNullOrEmpty(assemblyName);
 
       _filename = assemblyName + ".dll";
       _assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);

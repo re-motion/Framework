@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public SerializedObjectIDStoragePropertyDefinition (IRdbmsStoragePropertyDefinition serializedIDProperty)
     {
-      ArgumentUtility.CheckNotNull("serializedIDProperty", serializedIDProperty);
+      ArgumentNullException.ThrowIfNull(serializedIDProperty);
 
       _serializedIDProperty = serializedIDProperty;
     }
@@ -62,28 +62,28 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IEnumerable<ColumnValue> SplitValue (object? value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID>(nameof(value), value);
 
       return _serializedIDProperty.SplitValue(GetStringOrNull(objectID));
     }
 
     public IEnumerable<ColumnValue> SplitValueForComparison (object? value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
+      var objectID = ArgumentUtility.CheckType<ObjectID>(nameof(value), value);
 
       return _serializedIDProperty.SplitValueForComparison(GetStringOrNull(objectID));
     }
 
     public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
-      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentNullException.ThrowIfNull(values);
 
       return _serializedIDProperty.SplitValuesForComparison(values.Select(v => (object?)GetStringOrNull((ObjectID?)v)));
     }
 
     public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
+      ArgumentNullException.ThrowIfNull(columnValueProvider);
 
       var value = _serializedIDProperty.CombineValue(columnValueProvider);
       if (value == null)
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull("equivalentProperties", equivalentProperties);
+      ArgumentNullException.ThrowIfNull(equivalentProperties);
       var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,
@@ -110,9 +110,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         EntityNameDefinition referencedTableName,
         ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
     {
-      ArgumentUtility.CheckNotNull("nameProvider", nameProvider);
-      ArgumentUtility.CheckNotNull("referencedTableName", referencedTableName);
-      ArgumentUtility.CheckNotNull("referencedObjectIDProperty", referencedObjectIDProperty);
+      ArgumentNullException.ThrowIfNull(nameProvider);
+      ArgumentNullException.ThrowIfNull(referencedTableName);
+      ArgumentNullException.ThrowIfNull(referencedObjectIDProperty);
 
       throw new NotSupportedException("String-serialized ObjectID values cannot be used as foreign keys.");
     }

@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   {
     public string GetClassID (Type type)
     {
-      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentNullException.ThrowIfNull(type);
 
       var attribute = AttributeUtility.GetCustomAttribute<ClassIDAttribute>(type, false);
       return attribute != null ? attribute.ClassID : type.Name;

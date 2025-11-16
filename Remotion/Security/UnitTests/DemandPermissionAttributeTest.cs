@@ -49,7 +49,7 @@ namespace Remotion.Security.UnitTests
           () => new DemandPermissionAttribute(new SimpleType()),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "Item 0 of parameter 'accessTypes' has the type 'Remotion.Security.UnitTests.SampleDomain.SimpleType' instead of 'System.Enum'.",
+                  "Item 0 of the collection has type 'Remotion.Security.UnitTests.SampleDomain.SimpleType' instead of 'System.Enum'.",
                   "accessTypes"));
     }
 

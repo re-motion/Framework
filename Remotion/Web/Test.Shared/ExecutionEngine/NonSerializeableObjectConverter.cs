@@ -47,7 +47,7 @@ namespace Remotion.Web.Test.Shared.ExecutionEngine
 
     public override object ConvertTo (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
     {
-      NonSerializeableObject obj = ArgumentUtility.CheckNotNullAndType<NonSerializeableObject>("value", value);
+      NonSerializeableObject obj = ArgumentUtility.CheckNotNullAndType<NonSerializeableObject>(nameof(value), value);
       if (destinationType == typeof(string))
       {
         return obj.Value;

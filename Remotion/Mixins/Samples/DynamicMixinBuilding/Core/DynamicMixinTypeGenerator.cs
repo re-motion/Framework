@@ -22,7 +22,6 @@ using Castle.DynamicProxy;
 using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Remotion.Reflection.CodeGeneration;
 using Remotion.Reflection.CodeGeneration.DPExtensions;
-using Remotion.Utilities;
 
 namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 {
@@ -39,10 +38,10 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 
     public DynamicMixinTypeGenerator (ModuleScope scope, Type targetType, IReadOnlyCollection<MethodInfo> methodsToOverride, MethodInvocationHandler invocationHandler)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("targetType", targetType);
-      ArgumentUtility.CheckNotNull("methodsToOverride", methodsToOverride);
-      ArgumentUtility.CheckNotNull("invocationHandler", invocationHandler);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(targetType);
+      ArgumentNullException.ThrowIfNull(methodsToOverride);
+      ArgumentNullException.ThrowIfNull(invocationHandler);
 
       if (targetType.ContainsGenericParameters)
         throw new NotSupportedException("Open generic target types are not supported by this type generator.");

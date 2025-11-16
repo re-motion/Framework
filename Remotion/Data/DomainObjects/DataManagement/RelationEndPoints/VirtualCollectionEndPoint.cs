@@ -58,19 +58,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink,
         IVirtualCollectionEndPointDataManagerFactory dataManagerFactory)
-        : base(ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction), ArgumentUtility.CheckNotNull("id", id))
+        : base(
+            clientTransaction ?? throw new ArgumentNullException(nameof(clientTransaction)),
+            id ?? throw new ArgumentNullException(nameof(id)))
     {
-      ArgumentUtility.CheckNotNull("collectionManager", collectionManager);
-      ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
-      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
-      ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
+      ArgumentNullException.ThrowIfNull(collectionManager);
+      ArgumentNullException.ThrowIfNull(lazyLoader);
+      ArgumentNullException.ThrowIfNull(endPointProvider);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
+      ArgumentNullException.ThrowIfNull(dataManagerFactory);
 
       if (id.Definition.Cardinality != CardinalityType.Many)
-        throw new ArgumentException("End point ID must refer to an end point with cardinality 'Many'.", "id");
+        throw new ArgumentException("End point ID must refer to an end point with cardinality 'Many'.", nameof(id));
 
       if (id.Definition.IsAnonymous)
-        throw new ArgumentException("End point ID must not refer to an anonymous end point.", "id");
+        throw new ArgumentException("End point ID must not refer to an anonymous end point.", nameof(id));
 
       Assertion.IsTrue(ID.Definition.IsVirtual);
 
@@ -176,7 +178,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void MarkDataComplete (DomainObject[] items)
     {
-      ArgumentUtility.CheckNotNull("items", items);
+      ArgumentNullException.ThrowIfNull(items);
 
       if (_dataManager != null)
         throw new InvalidOperationException("The data is already complete.");
@@ -250,7 +252,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       if (_dataManager != null)
       {
@@ -262,7 +264,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       if (s_logger.IsEnabled(LogLevel.Information))
       {
@@ -276,12 +278,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
     }
 
     public override bool? IsSynchronized
@@ -308,7 +310,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void SynchronizeOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
+      ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       Assertion.IsNotNull(_dataManager, "Cannot synchronize an opposite end-point with a virtual end-point in incomplete state.");
 
@@ -321,7 +323,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
+      ArgumentNullException.ThrowIfNull(removedRelatedObject);
 
       IVirtualCollectionData virtualCollectionData;
       if (_dataManager == null)
@@ -365,7 +367,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public virtual IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull("addedRelatedObject", addedRelatedObject);
+      ArgumentNullException.ThrowIfNull(addedRelatedObject);
 
       IVirtualCollectionData virtualCollectionData;
       if (_dataManager == null)
@@ -406,13 +408,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public override void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualCollectionEndPoint>("source", source);
+      var sourceCollectionEndPoint = ArgumentUtility.CheckNotNullAndType<VirtualCollectionEndPoint>(nameof(source), source);
       if (Definition != sourceCollectionEndPoint.Definition)
       {
         var message = string.Format(
             "Cannot set this end point's value from '{0}'; the end points do not have the same end point definition.",
             source.ID);
-        throw new ArgumentException(message, "source");
+        throw new ArgumentException(message, nameof(source));
       }
 
       if (_dataManager != null)

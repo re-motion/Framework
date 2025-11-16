@@ -58,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// and <see cref="CssClassDisabled"/> if appropriate.</remarks>
     protected void AddAttributesToRender (RenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       OverrideCssClass(renderingContext, out var backUpCssClass, out var backUpAttributeCssClass);
 
@@ -109,7 +109,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>True if the control is bound to a business object, false otherwise.</returns>
     protected virtual bool IsBoundToBusinessObject (TControl control)
     {
-      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentNullException.ThrowIfNull(control);
 
       return control.Property != null && control.DataSource != null
              && (control.DataSource.BusinessObject != null || control.DataSource.BusinessObjectClass != null);

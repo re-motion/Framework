@@ -20,7 +20,6 @@ using System.Linq;
 using System.Text;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Merging;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.Providers;
@@ -51,13 +50,13 @@ namespace Remotion.Validation.Implementation
         IMemberInformationNameResolver memberInformationNameResolver,
         IValidationRuleCollectorValidator collectorValidator)
     {
-      ArgumentUtility.CheckNotNull("validationRuleCollectorProvider", validationRuleCollectorProvider);
-      ArgumentUtility.CheckNotNull("validationRuleCollectorMerger", validationRuleCollectorMerger);
-      ArgumentUtility.CheckNotNull("propertyMetaValidationRuleValidatorFactory", propertyMetaValidationRuleValidatorFactory);
-      ArgumentUtility.CheckNotNull("objectMetaValidationRuleValidatorFactory", objectMetaValidationRuleValidatorFactory);
-      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
-      ArgumentUtility.CheckNotNull("memberInformationNameResolver", memberInformationNameResolver);
-      ArgumentUtility.CheckNotNull("collectorValidator", collectorValidator);
+      ArgumentNullException.ThrowIfNull(validationRuleCollectorProvider);
+      ArgumentNullException.ThrowIfNull(validationRuleCollectorMerger);
+      ArgumentNullException.ThrowIfNull(propertyMetaValidationRuleValidatorFactory);
+      ArgumentNullException.ThrowIfNull(objectMetaValidationRuleValidatorFactory);
+      ArgumentNullException.ThrowIfNull(validationMessageFactory);
+      ArgumentNullException.ThrowIfNull(memberInformationNameResolver);
+      ArgumentNullException.ThrowIfNull(collectorValidator);
 
       ValidationRuleCollectorProvider = validationRuleCollectorProvider;
       ValidationRuleCollectorMerger = validationRuleCollectorMerger;
@@ -71,7 +70,7 @@ namespace Remotion.Validation.Implementation
 
     public IValidator BuildValidator (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull("validatedType", validatedType);
+      ArgumentNullException.ThrowIfNull(validatedType);
 
       var allCollectors = ValidationRuleCollectorProvider.GetValidationRuleCollectors(new[] { validatedType }).Select(c => c.ToArray()).ToArray();
       ValidateCollectors(allCollectors.SelectMany(c => c));

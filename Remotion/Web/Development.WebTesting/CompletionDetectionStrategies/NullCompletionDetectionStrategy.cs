@@ -16,7 +16,6 @@
 // 
 using System;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
 {
@@ -28,8 +27,8 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     /// <inheritdoc/>
     public object? PrepareWaitForCompletion (PageObjectContext context, ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(logger);
 
       return null;
     }
@@ -37,8 +36,8 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     /// <inheritdoc/>
     public void WaitForCompletion (PageObjectContext context, object? state, ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentNullException.ThrowIfNull(logger);
     }
   }
 }

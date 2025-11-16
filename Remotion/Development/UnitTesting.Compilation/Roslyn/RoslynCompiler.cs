@@ -35,11 +35,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromDom(CompilerParameters options, CodeCompileUnit compilationUnit) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (compilationUnit == null) {
-                throw new ArgumentNullException("compilationUnit");
+                throw new ArgumentNullException(nameof(compilationUnit));
             }
 
             return CompileAssemblyFromDomBatch(options, new CodeCompileUnit[] { compilationUnit });
@@ -47,11 +47,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromDomBatch(CompilerParameters options, CodeCompileUnit[] compilationUnits) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (compilationUnits == null) {
-                throw new ArgumentNullException("compilationUnits");
+                throw new ArgumentNullException(nameof(compilationUnits));
             }
 
             try {
@@ -70,11 +70,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromFile(CompilerParameters options, string fileName) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (fileName == null) {
-                throw new ArgumentNullException("fileName");
+                throw new ArgumentNullException(nameof(fileName));
             }
 
             return CompileAssemblyFromFileBatch(options, new string[] { fileName });
@@ -82,11 +82,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromFileBatch(CompilerParameters options, string[] fileNames) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (fileNames == null) {
-                throw new ArgumentNullException("fileNames");
+                throw new ArgumentNullException(nameof(fileNames));
             }
 
             try {
@@ -105,11 +105,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromSource(CompilerParameters options, string source) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (source == null) {
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
             }
 
             return CompileAssemblyFromSourceBatch(options, new string[] { source });
@@ -117,11 +117,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         public CompilerResults CompileAssemblyFromSourceBatch(CompilerParameters options, string[] sources) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (sources == null) {
-                throw new ArgumentNullException("sources");
+                throw new ArgumentNullException(nameof(sources));
             }
 
             try {
@@ -184,11 +184,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         private CompilerResults FromSourceBatch(CompilerParameters options, string[] sources) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (sources == null) {
-                throw new ArgumentNullException("sources");
+                throw new ArgumentNullException(nameof(sources));
             }
 
             var filenames = new string[sources.Length];
@@ -217,11 +217,11 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
 
         private CompilerResults FromFileBatch(CompilerParameters options, string[] fileNames) {
             if (options == null) {
-                throw new ArgumentNullException("options");
+                throw new ArgumentNullException(nameof(options));
             }
 
             if (fileNames == null) {
-                throw new ArgumentNullException("fileNames");
+                throw new ArgumentNullException(nameof(fileNames));
             }
 
 
@@ -350,7 +350,6 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
         private void Compile(CompilerParameters options, string compilerFullPath, string arguments,
                               ref string outputFile, ref int nativeReturnValue) {
             string errorFile = null;
-            string cmdLine = "\"" + compilerFullPath + "\" " + arguments;
             outputFile = options.TempFiles.AddExtension("out");
 
             bool profilingSettingIsUpdated = false;
@@ -365,9 +364,9 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
                 }
             }
 
-            nativeReturnValue = Executor.ExecWaitWithCapture(
-                options.UserToken,
-                cmdLine,
+            nativeReturnValue = ExecuteCommand(
+                compilerFullPath,
+                arguments,
                 Environment.CurrentDirectory,
                 options.TempFiles,
                 ref outputFile,
@@ -377,6 +376,70 @@ namespace Remotion.Development.UnitTesting.Compilation.Roslyn {
                 Environment.SetEnvironmentVariable(CLR_PROFILING_SETTING, originalClrProfilingSetting, EnvironmentVariableTarget.Process);
             }
         }
+
+        // Adapted version of Executor.ExecWaitWithCapture that works in Linux.
+        private static int ExecuteCommand(
+            string fileName,
+            string args,
+            string currentDir,
+            TempFileCollection tempFiles,
+            ref string outputName,
+            ref string errorName)
+        {
+            if (string.IsNullOrEmpty(outputName))
+              outputName = tempFiles.AddExtension("out");
+
+            if (string.IsNullOrEmpty(errorName))
+              errorName = tempFiles.AddExtension("err");
+
+            using (var outputWriter = new StreamWriter(CreateInheritedFile(outputName), Encoding.UTF8))
+            using (var errorWriter = new StreamWriter(CreateInheritedFile(errorName), Encoding.UTF8))
+            {
+                // Output the command line...
+                outputWriter.Write(currentDir);
+                outputWriter.Write("> ");
+                outputWriter.Write(fileName);
+                outputWriter.Write(" ");
+                outputWriter.WriteLine(args);
+                outputWriter.WriteLine();
+                outputWriter.WriteLine();
+
+                var psi = new ProcessStartInfo
+                          {
+                                  FileName = "dotnet",
+                                  Arguments = $"exec \"{fileName}\" {args}",
+                                  WorkingDirectory = currentDir,
+                                  RedirectStandardOutput = true,
+                                  RedirectStandardError = true
+                          };
+
+                using (var p = Process.Start(psi))
+                {
+                    p.OutputDataReceived += (s, e) =>
+                    {
+                        if (e.Data != null)
+                          outputWriter.WriteLine(e.Data);
+                    };
+                    p.ErrorDataReceived += (s, e) =>
+                    {
+                        if (e.Data != null)
+                          errorWriter.WriteLine(e.Data);
+                    };
+
+                    p.BeginOutputReadLine();
+                    p.BeginErrorReadLine();
+
+                    if (!p.WaitForExit(600_000))
+                      throw new ExternalException($"External command failed with exit code {p.ExitCode}: '{fileName} {args}'", 0x102);
+
+                    p.WaitForExit();
+
+                    return p.ExitCode;
+                }
+            }
+        }
+
+        private static FileStream CreateInheritedFile (string file) => new(file, FileMode.CreateNew, FileAccess.Write, FileShare.Read | FileShare.Inheritable);
 
         private string GetResponseFileCmdArgs(CompilerParameters options, string cmdArgs) {
 

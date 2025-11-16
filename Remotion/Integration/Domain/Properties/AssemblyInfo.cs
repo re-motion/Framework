@@ -24,7 +24,7 @@ using Remotion.Validation.Globalization;
 using Remotion.Validation.Mixins;
 
 [assembly: AssemblyCulture("")]
-[assembly: CLSCompliant(true)]
+[assembly: CLSCompliant(false)]
 [assembly: EnsureGlobalizationSupportForMixins]
 [assembly: EnsureValidationSupportForDomainObjects]
 [assembly: EnsureValidationSupportForMixins]

@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     protected RelationEndPoint (ClientTransaction clientTransaction, RelationEndPointID id)
     {
-      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentNullException.ThrowIfNull(clientTransaction);
+      ArgumentNullException.ThrowIfNull(id);
 
       if (id.Definition.IsAnonymous)
-        throw new ArgumentException("End point ID must not refer to an anonymous end point.", "id");
+        throw new ArgumentException("End point ID must not refer to an anonymous end point.", nameof(id));
 
       _clientTransaction = clientTransaction;
       _id = id;

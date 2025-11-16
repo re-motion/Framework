@@ -18,7 +18,6 @@ using System;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -35,64 +34,64 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public IScriptElement GetCreateElement (TableDefinition tableDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull("synonymName", synonymName);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymCreateScriptStatement(tableDefinition.TableName, synonymName);
     }
 
     public IScriptElement GetDropElement (TableDefinition tableDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull("synonymName", synonymName);
+      ArgumentNullException.ThrowIfNull(tableDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymDropScriptStatement(synonymName);
     }
 
     public IScriptElement GetCreateElement (UnionViewDefinition unionViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull("unionViewDefinition", unionViewDefinition);
-      ArgumentUtility.CheckNotNull("synonymName", synonymName);
+      ArgumentNullException.ThrowIfNull(unionViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymCreateScriptStatement(unionViewDefinition.ViewName, synonymName);
     }
 
     public IScriptElement GetDropElement (UnionViewDefinition unionViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull("unionViewDefinition", unionViewDefinition);
-      ArgumentUtility.CheckNotNull("synonymName", synonymName);
+      ArgumentNullException.ThrowIfNull(unionViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymDropScriptStatement(synonymName);
     }
 
     public IScriptElement GetCreateElement (FilterViewDefinition filterViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull("filterViewDefinition", filterViewDefinition);
-      ArgumentUtility.CheckNotNull("synonymName", synonymName);
+      ArgumentNullException.ThrowIfNull(filterViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymCreateScriptStatement(filterViewDefinition.ViewName, synonymName);
     }
 
     public IScriptElement GetDropElement (FilterViewDefinition filterViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull("filterViewDefinition", filterViewDefinition);
-      ArgumentUtility.CheckNotNull("synonymName", synonymName);
+      ArgumentNullException.ThrowIfNull(filterViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymDropScriptStatement(synonymName);
     }
 
     public IScriptElement GetCreateElement (EmptyViewDefinition emptyViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull("emptyViewDefinition", emptyViewDefinition);
-      ArgumentUtility.CheckNotNull("synonymName", synonymName);
+      ArgumentNullException.ThrowIfNull(emptyViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymCreateScriptStatement(emptyViewDefinition.ViewName, synonymName);
     }
 
     public IScriptElement GetDropElement (EmptyViewDefinition emptyViewDefinition, EntityNameDefinition synonymName)
     {
-      ArgumentUtility.CheckNotNull("emptyViewDefinition", emptyViewDefinition);
-      ArgumentUtility.CheckNotNull("synonymName", synonymName);
+      ArgumentNullException.ThrowIfNull(emptyViewDefinition);
+      ArgumentNullException.ThrowIfNull(synonymName);
 
       return GetSynonymDropScriptStatement(synonymName);
     }
@@ -112,10 +111,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
     {
       return new ScriptStatement(
           string.Format(
-              "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = '{0}' AND SCHEMA_NAME(schema_id) = '{1}')\r\n"
+              "IF EXISTS (SELECT * FROM sys.synonyms WHERE name = '{0}' AND SCHEMA_NAME(schema_id) = '{1}'){2}"
               + "  DROP SYNONYM [{0}].[{1}]",
               synonymName.SchemaName ?? DefaultSchema,
-              synonymName.EntityName));
+              synonymName.EntityName,
+              Environment.NewLine));
     }
   }
 }

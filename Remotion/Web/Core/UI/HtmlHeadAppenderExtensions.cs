@@ -17,7 +17,6 @@
 using System;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 
@@ -33,7 +32,7 @@ namespace Remotion.Web.UI
     /// </summary>
     public static void RegisterWebClientScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       const string scriptKey = "Remotion.Web.ClientScript";
       if (htmlHeadAppender.IsRegistered(scriptKey))
@@ -49,7 +48,7 @@ namespace Remotion.Web.UI
     [Obsolete("Please use RegisterWebClientScript instead. (Version 6.0.0)")]
     public static void RegisterUtilitiesJavaScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       RegisterWebClientScriptInclude(htmlHeadAppender);
     }
@@ -60,7 +59,7 @@ namespace Remotion.Web.UI
     [Obsolete("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)", true)]
     public static void RegisterJQueryIFrameShimJavaScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       throw new NotSupportedException("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)");
     }
@@ -70,7 +69,7 @@ namespace Remotion.Web.UI
     /// </summary>
     public static void RegisterPageStylesheetLink (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentNullException.ThrowIfNull(htmlHeadAppender);
 
       string key = typeof(HtmlHeadContents).GetFullNameChecked() + "_Style";
       var url = InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, "Style.css");

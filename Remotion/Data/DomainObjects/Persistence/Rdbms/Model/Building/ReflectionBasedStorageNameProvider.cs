@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public EntityNameDefinition? GetTableName (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       var tableAttribute = AttributeUtility.GetCustomAttribute<DBTableAttribute>(classDefinition.ClassType, false);
       if (tableAttribute == null)
@@ -58,14 +58,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public EntityNameDefinition GetViewName (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       return new EntityNameDefinition(null, classDefinition.ID + "View");
     }
 
     public string GetColumnName (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentNullException.ThrowIfNull(propertyDefinition);
 
       var name = GetColumnNameFromAttribute(propertyDefinition);
       if (name != null)
@@ -85,14 +85,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public string GetRelationClassIDColumnName (RelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentNullException.ThrowIfNull(relationEndPointDefinition);
 
       return GetRelationColumnName(relationEndPointDefinition) + "ClassID";
     }
 
     public string GetPrimaryKeyConstraintName (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       var entityNameDefinition = GetTableName(classDefinition);
       if (entityNameDefinition == null)
@@ -108,8 +108,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public string GetForeignKeyConstraintName (ClassDefinition classDefinition, IEnumerable<ColumnDefinition> foreignKeyColumns)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull("foreignKeyColumns", foreignKeyColumns);
+      ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(foreignKeyColumns);
 
       var entityNameDefinition = GetTableName(classDefinition);
       if (entityNameDefinition == null)

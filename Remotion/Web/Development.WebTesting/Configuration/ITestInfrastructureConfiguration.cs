@@ -31,6 +31,16 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     string WebApplicationRoot { [NotNull] get; }
 
     /// <summary>
+    /// Determines if the test site startup check is enabled.
+    /// </summary>
+    bool TestSiteStartupCheckEnabled { get; }
+
+    /// <summary>
+    /// URL used by the test site startup check to verify that the test site is running.
+    /// </summary>
+    string TestSiteStartupCheckUrl { get; }
+
+    /// <summary>
     /// Absolute or relative path to the screenshot directory. The web testing framework automatically takes two screenshots (one of the whole desktop
     /// and one of the browser window) in case a web test failed.
     /// </summary>

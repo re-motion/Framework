@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTests
 {
@@ -34,8 +33,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
         User substitutedUser = null,
         Role[] substitutedRoles = null)
     {
-      ArgumentUtility.CheckNotNull("tenant", tenant);
-      ArgumentUtility.CheckNotNull("user", user);
+      ArgumentNullException.ThrowIfNull(tenant);
+      ArgumentNullException.ThrowIfNull(user);
 
       return new SecurityManagerPrincipal(
           tenant.GetHandle(),

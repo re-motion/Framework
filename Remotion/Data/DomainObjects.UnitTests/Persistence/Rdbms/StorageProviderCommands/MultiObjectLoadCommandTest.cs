@@ -17,8 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
@@ -31,12 +33,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
   public class MultiObjectLoadCommandTest
   {
 
-    private Mock<IDataReader> _dataReaderMock;
+    private Mock<DbDataReader> _dataReaderMock;
     private Mock<IRdbmsProviderReadWriteCommandExecutionContext> _readWriteExecutionContextStub;
     private Mock<IRdbmsProviderReadOnlyCommandExecutionContext> _readOnlyExecutionContextStub;
 
-    private Mock<IDbCommand> _dbCommandMock1;
-    private Mock<IDbCommand> _dbCommandMock2;
+    private Mock<DbCommand> _dbCommandMock1;
+    private Mock<DbCommand> _dbCommandMock2;
     private Mock<IDbCommandBuilder> _dbCommandBuilderMock1;
     private Mock<IDbCommandBuilder> _dbCommandBuilderMock2;
 
@@ -49,12 +51,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     [SetUp]
     public void SetUp ()
     {
-      _dataReaderMock = new Mock<IDataReader>(MockBehavior.Strict);
+      _dataReaderMock = new Mock<DbDataReader>(MockBehavior.Strict);
       _readWriteExecutionContextStub = new Mock<IRdbmsProviderReadWriteCommandExecutionContext>();
       _readOnlyExecutionContextStub = new Mock<IRdbmsProviderReadOnlyCommandExecutionContext>();
 
-      _dbCommandMock1 = new Mock<IDbCommand>(MockBehavior.Strict);
-      _dbCommandMock2 = new Mock<IDbCommand>(MockBehavior.Strict);
+      _dbCommandMock1 = new Mock<DbCommand>(MockBehavior.Strict);
+      _dbCommandMock1.Protected().Setup("Dispose", [false]); // for Finalizer
+      _dbCommandMock2 = new Mock<DbCommand>(MockBehavior.Strict);
+      _dbCommandMock2.Protected().Setup("Dispose", [false]); // for Finalizer
       _dbCommandBuilderMock1 = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
       _dbCommandBuilderMock2 = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
 
@@ -90,8 +94,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       _readWriteExecutionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
       _dbCommandBuilderMock1.Setup(mock => mock.Create(_readWriteExecutionContextStub.Object)).Returns(_dbCommandMock1.Object).Verifiable();
-      _dbCommandMock1.Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock1.Protected().Setup("Dispose", [true]).Verifiable();
+      _dataReaderMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       var command = new MultiObjectLoadCommand<object>(new[] { Tuple.Create(_dbCommandBuilderMock1.Object, _objectReaderStub1.Object) });
 
@@ -113,9 +117,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _readWriteExecutionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock2.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
       _dbCommandBuilderMock1.Setup(mock => mock.Create(_readWriteExecutionContextStub.Object)).Returns(_dbCommandMock1.Object).Verifiable();
       _dbCommandBuilderMock2.Setup(mock => mock.Create(_readWriteExecutionContextStub.Object)).Returns(_dbCommandMock2.Object).Verifiable();
-      _dbCommandMock1.Setup(mock => mock.Dispose()).Verifiable();
-      _dbCommandMock2.Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock1.Protected().Setup("Dispose", [true]).Verifiable();
+      _dbCommandMock2.Protected().Setup("Dispose", [true]).Verifiable();
+      _dataReaderMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       _objectReaderStub1.Setup(stub => stub.ReadSequence(_dataReaderMock.Object)).Returns(new[] { _fakeResult1 });
       _objectReaderStub2.Setup(stub => stub.ReadSequence(_dataReaderMock.Object)).Returns(new[] { _fakeResult2 });
@@ -129,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var result = command.Execute(_readWriteExecutionContextStub.Object).ToArray();
 
-      _dataReaderMock.Verify(mock => mock.Dispose(), Times.Exactly(2));
+      _dataReaderMock.Protected().Verify("Dispose", Times.Exactly(2), [true]);
       _dbCommandMock1.Verify();
       _dbCommandMock2.Verify();
       _dbCommandBuilderMock1.Verify();
@@ -164,8 +168,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       enumerableStub.Setup(stub => stub.GetEnumerator()).Returns(enumeratorMock.Object);
       enumeratorMock.InVerifiableSequence(sequence).Setup(mock => mock.MoveNext()).Returns(false).Verifiable();
       enumeratorMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _dbCommandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _dataReaderMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
+      _dbCommandMock1.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
       var command = new MultiObjectLoadCommand<object>(new[] { Tuple.Create(_dbCommandBuilderMock1.Object, _objectReaderStub1.Object) });
 
       var result = command.Execute(_readWriteExecutionContextStub.Object);
@@ -185,8 +189,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       _readOnlyExecutionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
       _dbCommandBuilderMock1.Setup(mock => mock.Create(_readOnlyExecutionContextStub.Object)).Returns(_dbCommandMock1.Object).Verifiable();
-      _dbCommandMock1.Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock1.Protected().Setup("Dispose", [true]).Verifiable();
+      _dataReaderMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       var command = new MultiObjectLoadCommand<object>(new[] { Tuple.Create(_dbCommandBuilderMock1.Object, _objectReaderStub1.Object) });
 
@@ -208,9 +212,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _readOnlyExecutionContextStub.Setup(stub => stub.ExecuteReader(_dbCommandMock2.Object, CommandBehavior.SingleResult)).Returns(_dataReaderMock.Object);
       _dbCommandBuilderMock1.Setup(mock => mock.Create(_readOnlyExecutionContextStub.Object)).Returns(_dbCommandMock1.Object).Verifiable();
       _dbCommandBuilderMock2.Setup(mock => mock.Create(_readOnlyExecutionContextStub.Object)).Returns(_dbCommandMock2.Object).Verifiable();
-      _dbCommandMock1.Setup(mock => mock.Dispose()).Verifiable();
-      _dbCommandMock2.Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock1.Protected().Setup("Dispose", [true]).Verifiable();
+      _dbCommandMock2.Protected().Setup("Dispose", [true]).Verifiable();
+      _dataReaderMock.Protected().Setup("Dispose", [true]).Verifiable();
 
       _objectReaderStub1.Setup(stub => stub.ReadSequence(_dataReaderMock.Object)).Returns(new[] { _fakeResult1 });
       _objectReaderStub2.Setup(stub => stub.ReadSequence(_dataReaderMock.Object)).Returns(new[] { _fakeResult2 });
@@ -224,7 +228,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       var result = command.Execute(_readOnlyExecutionContextStub.Object).ToArray();
 
-      _dataReaderMock.Verify(mock => mock.Dispose(), Times.Exactly(2));
+      _dataReaderMock.Protected().Verify("Dispose", Times.Exactly(2), [true]);
       _dbCommandMock1.Verify();
       _dbCommandMock2.Verify();
       _dbCommandBuilderMock1.Verify();
@@ -259,8 +263,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       enumerableStub.Setup(stub => stub.GetEnumerator()).Returns(enumeratorMock.Object);
       enumeratorMock.InVerifiableSequence(sequence).Setup(mock => mock.MoveNext()).Returns(false).Verifiable();
       enumeratorMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _dbCommandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _dataReaderMock.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
+      _dbCommandMock1.InVerifiableSequence(sequence).Protected().Setup("Dispose", [true]).Verifiable();
       var command = new MultiObjectLoadCommand<object>(new[] { Tuple.Create(_dbCommandBuilderMock1.Object, _objectReaderStub1.Object) });
 
       var result = command.Execute(_readOnlyExecutionContextStub.Object);

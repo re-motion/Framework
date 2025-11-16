@@ -19,7 +19,6 @@ using System;
 using Coypu;
 using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
-using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 
@@ -35,7 +34,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public ScreenshotBocDateTimeValuePicker (
         [NotNull] IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentNullException.ThrowIfNull(fluentDateTimeValue);
 
       _fluentDateTimeValue = fluentDateTimeValue;
     }
@@ -59,7 +58,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull("locator", locator);
+      ArgumentNullException.ThrowIfNull(locator);
 
       return ((IFluentScreenshotElement<ElementScope>)_fluentDateTimeValue.GetDatePicker().GetElement()).ResolveDesktopCoordinates(locator);
     }

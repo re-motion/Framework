@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     /// </summary>
     public static int GetWxePostBackSequenceNumber ([NotNull] PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return int.Parse(context.Scope.FindId(c_dmaWxePostBackSequenceNumberFieldId).Value);
     }
@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     /// </summary>
     public static string GetWxeFunctionToken ([NotNull] PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return context.Scope.FindId(c_wxeFunctionToken).Value;
     }
@@ -60,8 +60,8 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         int expectedWxePostBackSequenceNumber,
         TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull("logger", logger);
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(logger);
+      ArgumentNullException.ThrowIfNull(context);
 
       int newWxePostBackSequenceNumber;
       var options = timeout.HasValue ? new Options { Timeout = timeout.Value } : null;
@@ -109,8 +109,8 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         int expectedWxePostBackSequenceNumberIncrease,
         TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull("logger", logger);
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(logger);
+      ArgumentNullException.ThrowIfNull(context);
 
       var expectedWxePostBackSequenceNumber = oldWxePostBackSequenceNumber + expectedWxePostBackSequenceNumberIncrease;
 
@@ -128,9 +128,9 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
         [NotNull] string oldWxeFunctionToken,
         TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull("logger", logger);
-      ArgumentUtility.CheckNotNull("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty("oldWxeFunctionToken", oldWxeFunctionToken);
+      ArgumentNullException.ThrowIfNull(logger);
+      ArgumentNullException.ThrowIfNull(context);
+      ArgumentException.ThrowIfNullOrEmpty(oldWxeFunctionToken);
 
       logger.LogDebug("State: previous WXE-FT: {0}.", oldWxeFunctionToken);
       var options = timeout.HasValue ? new Options { Timeout = timeout.Value } : null;
@@ -178,7 +178,7 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
     {
       // Note: do not use page.GetTitle() instead, it may be specifically overloaded for a certain type of page which is not yet fully loaded!
 
-      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentNullException.ThrowIfNull(context);
 
       return context.Scope.FindCss("title").InnerHTML.Trim();
     }

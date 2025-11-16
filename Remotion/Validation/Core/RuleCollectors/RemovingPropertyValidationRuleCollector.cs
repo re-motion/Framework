@@ -44,8 +44,8 @@ namespace Remotion.Validation.RuleCollectors
 
     public RemovingPropertyValidationRuleCollector (IPropertyInformation property, Type collectorType)
     {
-      ArgumentUtility.CheckNotNull("property", property);
-      ArgumentUtility.CheckNotNull("collectorType", collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
+      ArgumentNullException.ThrowIfNull(property);
+      ArgumentNullException.ThrowIfNull(collectorType); // TODO RM-5906: Add type check for IComponentValidationCollector
 
       Property = property;
       CollectorType = collectorType;
@@ -59,8 +59,8 @@ namespace Remotion.Validation.RuleCollectors
 
     public void RegisterValidator (Type validatorType, Type? collectorTypeToRemoveFrom, Func<IPropertyValidator, bool>? validatorPredicate)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("validatorType", validatorType, typeof(IPropertyValidator));
-      ArgumentUtility.CheckTypeIsAssignableFrom("collectorTypeToRemoveFrom", collectorTypeToRemoveFrom, typeof(IValidationRuleCollector));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(validatorType), validatorType, typeof(IPropertyValidator));
+      ArgumentUtility.CheckTypeIsAssignableFrom(nameof(collectorTypeToRemoveFrom), collectorTypeToRemoveFrom, typeof(IValidationRuleCollector));
 
       _registeredValidators.Add(new RemovingPropertyValidatorRegistration(validatorType, collectorTypeToRemoveFrom, validatorPredicate, this));
     }

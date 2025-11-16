@@ -16,11 +16,10 @@
 // 
 using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.ScreenshotCreation.Drawing;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 {
@@ -61,9 +60,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
     public ScreenshotBuilder ([NotNull] Screenshot screenshot, [NotNull] IBrowserContentLocator locator, [NotNull] ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("screenshot", screenshot);
-      ArgumentUtility.CheckNotNull("locator", locator);
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentNullException.ThrowIfNull(screenshot);
+      ArgumentNullException.ThrowIfNull(locator);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _logger = loggerFactory.CreateLogger<ScreenshotBuilder>();
 
@@ -81,7 +80,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     [NotNull]
     public ScreenshotBuilder Annotate ([NotNull] IScreenshotAnnotation annotation)
     {
-      ArgumentUtility.CheckNotNull("annotation", annotation);
+      ArgumentNullException.ThrowIfNull(annotation);
 
       AnnotationLayer.Annotate(annotation);
 
@@ -100,9 +99,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("target", target);
-      ArgumentUtility.CheckNotNull("resolver", resolver);
-      ArgumentUtility.CheckNotNull("annotation", annotation);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(resolver);
+      ArgumentNullException.ThrowIfNull(annotation);
 
       AnnotationLayer.Annotate(target, resolver, annotation, transformation, minimumElementVisibility);
 
@@ -121,9 +120,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
         [CanBeNull] ElementVisibility? minimumElementVisibility = null)
         where T : notnull
     {
-      ArgumentUtility.CheckNotNull("target", target);
-      ArgumentUtility.CheckNotNull("resolver", resolver);
-      ArgumentUtility.CheckNotNull("cropping", cropping);
+      ArgumentNullException.ThrowIfNull(target);
+      ArgumentNullException.ThrowIfNull(resolver);
+      ArgumentNullException.ThrowIfNull(cropping);
 
       BaseLayer.Crop(target, resolver, cropping, transformation, minimumElementVisibility);
       AnnotationLayer.Crop(target, resolver, cropping, transformation, minimumElementVisibility);
@@ -136,7 +135,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     public void Save ([NotNull] string path, bool @override = false)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("path", path);
+      ArgumentException.ThrowIfNullOrEmpty(path);
 
       var isFileExisting = File.Exists(path);
 
@@ -152,14 +151,14 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
 
       using (var annotationImage = AnnotationLayer.CloneImage())
       using (var outputImage = BaseLayer.CloneImage())
-      using (var outputGraphics = Graphics.FromImage(outputImage))
+      using (var outputCanvas = Canvas.FromImage(outputImage))
       {
-        outputGraphics.DrawImage(annotationImage, Point.Empty);
+        outputCanvas.DrawImage(annotationImage, Point.Empty);
 
         if (DrawMouseCursor && Screenshot.CursorInformation.IsVisible)
-          Screenshot.CursorInformation.Draw(outputGraphics);
+          Screenshot.CursorInformation.Draw(outputCanvas);
 
-        outputImage.Save(path, ImageFormat.Png);
+        outputImage.Save(path);
       }
     }
 

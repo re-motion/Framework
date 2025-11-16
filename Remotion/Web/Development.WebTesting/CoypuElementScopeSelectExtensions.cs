@@ -48,8 +48,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <returns>The text of the currently selected option.</returns>
     public static OptionDefinition GetSelectedOption ([NotNull] this ElementScope scope, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var selectedOptions = scope.FindAllCss("option[selected]").ToList();
 
@@ -65,7 +65,10 @@ namespace Remotion.Web.Development.WebTesting
 
             var select = new SelectElement(webElement);
             var selectedOption = select.SelectedOption;
-            return new OptionDefinition(selectedOption.GetAttribute("value"), -1, selectedOption.Text, selectedOption.Selected);
+            var itemID = selectedOption.GetAttribute("value");
+            Assertion.IsNotNull(itemID, "Failed to retrieve the 'value' attribute from the selected option.");
+
+            return new OptionDefinition(itemID, -1, selectedOption.Text, selectedOption.Selected);
           });
     }
 
@@ -80,8 +83,8 @@ namespace Remotion.Web.Development.WebTesting
     /// </param>
     public static void SelectOptionByIndex ([NotNull] this ElementScope scope, int oneBasedIndex, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var targetOption = scope.FindXPath(string.Format("({0})[{1}]", s_html.Child("option"), oneBasedIndex));
       targetOption.Click();
@@ -98,9 +101,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </param>
     public static void SelectOptionByDisplayText ([NotNull] this ElementScope scope, [NotNull] string displayText, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("displayText", displayText);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(displayText);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var targetOption = scope.FindXPath(s_html.Child("option") + XPath.Where(s_xpath.IsText(displayText, Options.Exact)));
       targetOption.Click();
@@ -117,9 +120,9 @@ namespace Remotion.Web.Development.WebTesting
     /// </param>
     public static void SelectOptionByValue ([NotNull] this ElementScope scope, [NotNull] string value, [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNull("value", value);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentNullException.ThrowIfNull(value);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var targetOption = scope.FindXPath(s_html.Child("option") + XPath.Where(s_xpath.Is("@value", value, Options.Exact)));
       targetOption.Click();
@@ -142,10 +145,10 @@ namespace Remotion.Web.Development.WebTesting
         [NotNull] string diagnosticMetadataAttributeValue,
         [NotNull] ILogger logger)
     {
-      ArgumentUtility.CheckNotNull("scope", scope);
-      ArgumentUtility.CheckNotNullOrEmpty("diagnosticMetadataAttributeName", diagnosticMetadataAttributeName);
-      ArgumentUtility.CheckNotNullOrEmpty("diagnosticMetadataAttributeValue", diagnosticMetadataAttributeValue);
-      ArgumentUtility.CheckNotNull("logger", logger);
+      ArgumentNullException.ThrowIfNull(scope);
+      ArgumentException.ThrowIfNullOrEmpty(diagnosticMetadataAttributeName);
+      ArgumentException.ThrowIfNullOrEmpty(diagnosticMetadataAttributeValue);
+      ArgumentNullException.ThrowIfNull(logger);
 
       var targetOption =
           scope.FindXPath(

@@ -43,8 +43,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     protected void RenderCellIcon (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(businessObject);
 
       IconInfo? icon = BusinessObjectBoundWebControl.GetIcon(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
 
@@ -60,8 +60,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IBusinessObject businessObject,
         int originalRowIndex)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentNullException.ThrowIfNull(renderingContext);
+      ArgumentNullException.ThrowIfNull(businessObject);
 
       BocListItemCommand? command = renderingContext.ColumnDefinition.Command;
       if (command == null)
@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     protected void RenderEndTagDataCellCommand (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentNullException.ThrowIfNull(renderingContext);
 
       Assertion.IsNotNull(renderingContext.ColumnDefinition.Command, "renderingContext.ColumnDefinition.Command must not be null.");
 

@@ -42,7 +42,7 @@ namespace Remotion.Reflection
         Type definingType, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
         : base(".ctor", bindingFlags, binder, callingConvention, parameterModifiers)
     {
-      ArgumentUtility.CheckNotNull("definingType", definingType);
+      ArgumentNullException.ThrowIfNull(definingType);
 
       _definingType = definingType;
     }
@@ -54,7 +54,7 @@ namespace Remotion.Reflection
 
     public virtual Delegate GetDelegate (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       CheckNotAbstract();
 
@@ -75,8 +75,8 @@ namespace Remotion.Reflection
 
     public object? DynamicInvoke (Type[] parameterTypes, object[] parameterValues)
     {
-      ArgumentUtility.CheckNotNull("parameterTypes", parameterTypes);
-      ArgumentUtility.CheckNotNull("parameterValues", parameterValues);
+      ArgumentNullException.ThrowIfNull(parameterTypes);
+      ArgumentNullException.ThrowIfNull(parameterValues);
 
       CheckNotAbstract();
 
@@ -91,14 +91,14 @@ namespace Remotion.Reflection
 
     protected virtual object GetCacheKey (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       return new Tuple<Type, Type>(_definingType, delegateType);
     }
 
     protected virtual Delegate CreateDelegate (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom(nameof(delegateType), delegateType, typeof(Delegate));
 
       var delegateSignature = GetSignature(delegateType);
       var parameterTypes = delegateSignature.Item1;

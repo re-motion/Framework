@@ -17,7 +17,6 @@
 using System;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
 namespace Remotion.Web.ExecutionEngine
@@ -28,7 +27,7 @@ namespace Remotion.Web.ExecutionEngine
 
     protected WxeCallOptionsBase ([NotNull] WxePermaUrlOptions permaUrlOptions)
     {
-      ArgumentUtility.CheckNotNull("permaUrlOptions", permaUrlOptions);
+      ArgumentNullException.ThrowIfNull(permaUrlOptions);
 
       _permaUrlOptions = permaUrlOptions;
     }

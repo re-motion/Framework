@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Logging;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
 {
@@ -65,6 +64,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     public required string WebApplicationRoot { get; init; }
 
     /// <inheritdoc />
+    public bool TestSiteStartupCheckEnabled { get; init; } = true;
+
+    /// <inheritdoc />
+    public string TestSiteStartupCheckUrl { get; init; } = "";
+
+    /// <inheritdoc />
     public string ScreenshotDirectory { get; init; } = "";
 
     /// <inheritdoc />
@@ -98,6 +103,12 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     IWebTestHostingSettings IWebTestSettings.Hosting => Hosting;
 
     [Required]
+    public RemoteDriverSettingsDto RemoteDriver { get; init; } = new();
+
+    /// <inheritdoc />
+    IWebTestRemoteDriverSettings IWebTestSettings.RemoteDriver => RemoteDriver;
+
+    [Required]
     public required WebTestTestSiteLayoutDto TestSiteLayout { get; init; }
 
     /// <inheritdoc />
@@ -111,7 +122,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration.IConfiguration
     /// </summary>
     public void SetLoggerFactory (ILoggerFactory loggerFactory)
     {
-      ArgumentUtility.CheckNotNull("loggerFactory", loggerFactory);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _loggerFactory = loggerFactory;
     }

@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public PropertyAccessorDataCache (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinition);
 
       _classDefinition = classDefinition;
       _cachedAccessorData = new Lazy<IReadOnlyDictionary<string, PropertyAccessorData>>(
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     [CanBeNull]
     public PropertyAccessorData? GetPropertyAccessorData ([NotNull] string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
+      ArgumentException.ThrowIfNullOrEmpty(propertyIdentifier);
 
       _cachedAccessorData.Value.TryGetValue(propertyIdentifier, out var result);
       return result;
@@ -65,8 +65,8 @@ namespace Remotion.Data.DomainObjects.Mapping
     [CanBeNull]
     public PropertyAccessorData? GetPropertyAccessorData ([NotNull] Type domainObjectType, [NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentNullException.ThrowIfNull(domainObjectType);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
 
       string propertyIdentifier = GetIdentifierFromTypeAndShortName(domainObjectType, shortPropertyName);
       return GetPropertyAccessorData(propertyIdentifier);
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         [NotNull] Expression<Func<TDomainObject, TResult>> propertyAccessExpression)
         where TDomainObject : IDomainObject
     {
-      ArgumentUtility.CheckNotNull("propertyAccessExpression", propertyAccessExpression);
+      ArgumentNullException.ThrowIfNull(propertyAccessExpression);
 
       PropertyInfo propertyInfo;
       try
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       }
       catch (ArgumentException ex)
       {
-        throw new ArgumentException("The expression must identify a property.", "propertyAccessExpression", ex);
+        throw new ArgumentException("The expression must identify a property.", nameof(propertyAccessExpression), ex);
       }
 
       return ResolvePropertyAccessorData(PropertyInfoAdapter.Create(propertyInfo));
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     [CanBeNull]
     public PropertyAccessorData? ResolvePropertyAccessorData ([NotNull] IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentNullException.ThrowIfNull(propertyInformation);
 
       return _cachedAccessorDataByMember.GetOrAdd(propertyInformation, _resolvePropertyAccessorDataWithoutCacheFunc);
     }
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     public PropertyAccessorData GetMandatoryPropertyAccessorData ([NotNull] string propertyName)
     {
       // GetPropertyAccessorData already performs the null check
-      ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(propertyName), propertyName);
 
       var data = GetPropertyAccessorData(propertyName);
       if (data == null)
@@ -127,8 +127,8 @@ namespace Remotion.Data.DomainObjects.Mapping
     [NotNull]
     public PropertyAccessorData GetMandatoryPropertyAccessorData ([NotNull] Type domainObjectType, [NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
-      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentNullException.ThrowIfNull(domainObjectType);
+      ArgumentException.ThrowIfNullOrEmpty(shortPropertyName);
 
       var propertyName = GetIdentifierFromTypeAndShortName(domainObjectType, shortPropertyName);
       return GetMandatoryPropertyAccessorData(propertyName);
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.Mapping
         where TDomainObject : IDomainObject
     {
       //ResolvePropertyAccessorData already performs the null check
-      ArgumentUtility.DebugCheckNotNull("propertyAccessExpression", propertyAccessExpression);
+      ArgumentUtility.DebugCheckNotNull(nameof(propertyAccessExpression), propertyAccessExpression);
 
       var data = ResolvePropertyAccessorData(propertyAccessExpression);
       if (data == null)
@@ -158,9 +158,9 @@ namespace Remotion.Data.DomainObjects.Mapping
     [CanBeNull]
     public PropertyAccessorData? FindPropertyAccessorData ([NotNull] Type typeToStartSearch, [NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull("typeToStartSearch", typeToStartSearch);
+      ArgumentNullException.ThrowIfNull(typeToStartSearch);
       // The first loop already checks the shortPropertyName argument.
-      ArgumentUtility.DebugCheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
+      ArgumentUtility.DebugCheckNotNullOrEmpty(nameof(shortPropertyName), shortPropertyName);
 
       Type? currentType = typeToStartSearch;
       PropertyAccessorData? propertyAccessorData = null;

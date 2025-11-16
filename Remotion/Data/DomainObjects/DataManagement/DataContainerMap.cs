@@ -18,7 +18,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
 {
@@ -34,7 +33,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public DataContainerMap (IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentNullException.ThrowIfNull(transactionEventSink);
 
       _transactionEventSink = transactionEventSink;
       _dataContainers = new DataContainerCollection();
@@ -69,20 +68,20 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void Register (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentNullException.ThrowIfNull(dataContainer);
       _transactionEventSink.RaiseDataContainerMapRegisteringEvent(dataContainer);
       _dataContainers.Add(dataContainer);
     }
 
     public void Remove (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentNullException.ThrowIfNull(id);
 
       var dataContainer = this[id];
       if (dataContainer == null)
       {
         var message = string.Format("Data container '{0}' is not part of this map.", id);
-        throw new ArgumentException(message, "id");
+        throw new ArgumentException(message, nameof(id));
       }
 
       _transactionEventSink.RaiseDataContainerMapUnregisteringEvent(dataContainer);

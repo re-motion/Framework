@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements
 {
@@ -30,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public BatchDelimiterStatement (string delimiter)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("delimiter", delimiter);
+      ArgumentException.ThrowIfNullOrEmpty(delimiter);
 
       _delimiter = delimiter;
     }
@@ -42,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptE
 
     public void AppendToScript (List<ScriptStatement> script)
     {
-      ArgumentUtility.CheckNotNull("script", script);
+      ArgumentNullException.ThrowIfNull(script);
 
       var lastStatement = script.LastOrDefault();
       if (lastStatement != null && lastStatement.Statement != _delimiter)
