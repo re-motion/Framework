@@ -282,6 +282,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
               "let element = document.getElementById('CurrentPageControl_UniqueID');element.value = {0};element.dispatchEvent(new Event('change'));return false;",
               pageIndex));
       Html.AssertAttribute(link, "href", "fakeFallbackUrl");
+      Html.AssertAttribute(link, "role", "button");
+      Html.AssertAttribute(link, "onkeyup", "if (event.keyCode === 32) { event.target.click(); }");
 
       var icon = Html.GetAssertedChildElement(link, "img", 0);
       Html.AssertAttribute(icon, "src", string.Format("/sprite.svg#Move{0}", command), HtmlHelperBase.AttributeValueCompareMode.Contains);
@@ -292,6 +294,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(link, "id", List.Object.ClientID + "_Navigation_" + command);
       Html.AssertNoAttribute(link, "onclick");
       Html.AssertNoAttribute(link, "href");
+      Html.AssertNoAttribute(link, "role");
+      Html.AssertNoAttribute(link, "onkeyup");
 
       var icon = Html.GetAssertedChildElement(link, "img", 0);
       Html.AssertAttribute(icon, "src", string.Format("/sprite.svg#Move{0}Inactive", command), HtmlHelperBase.AttributeValueCompareMode.Contains);

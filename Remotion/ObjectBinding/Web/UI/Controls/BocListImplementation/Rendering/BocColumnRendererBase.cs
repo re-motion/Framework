@@ -259,6 +259,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEvent);
 
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, "button");
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.OnKeyUp, "if (event.keyCode === 32) { event.target.click(); }");
 
           renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
         }
