@@ -23,6 +23,7 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Globalization;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -284,6 +285,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
             currentPageControlClientID,
             pageIndex);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEvent);
+
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, "button");
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.OnKeyUp, "if (event.keyCode === 32) { event.target.click(); }");
 
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());
 
