@@ -51,12 +51,12 @@
   </ItemGroup>
   <Target Name="CopySystemConfigurationConfigurationManager" AfterTargets="ResolveAssemblyReferences" Condition="'$(PkgSystem_Configuration_ConfigurationManager)' != ''">
     <ItemGroup>
-      <ReferenceCopyLocalPaths Include="$(PkgSystem_Configuration_ConfigurationManager)/lib/net8.0/System.Configuration.ConfigurationManager.dll"/>
+      <ReferenceCopyLocalPaths Include="$(PkgSystem_Configuration_ConfigurationManager)/lib/net10.0/System.Configuration.ConfigurationManager.dll"/>
     </ItemGroup>
   </Target>
   <Target Name="CopySystemCodeDom" AfterTargets="ResolveAssemblyReferences" Condition="'$(PkgSystem_CodeDom)' != ''">
     <ItemGroup>
-      <ReferenceCopyLocalPaths Include="$(PkgSystem_CodeDom)/lib/net8.0/System.CodeDom.dll"/>
+      <ReferenceCopyLocalPaths Include="$(PkgSystem_CodeDom)/lib/net10.0/System.CodeDom.dll"/>
     </ItemGroup>
   </Target>
   <!-- END: ensure that required DLLs available in output directory for IsolatedCodeRunner to work correctly. -->
