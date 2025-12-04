@@ -49,5 +49,7 @@ namespace Remotion.Web.UI
     public const string Role = "role";
     public const string Tabindex = "tabindex";
     public const string Title = "title";
+
+    public const string OnKeyUp = "onkeyup";
   }
 }
