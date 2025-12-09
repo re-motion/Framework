@@ -16,6 +16,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.UI;
 using Moq;
 using NUnit.Framework;
@@ -62,6 +63,19 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               "TEST-NONCE",
               _renderingFeaturesStub.Object,
               _fallbackNavigationUrlProviderStub.Object);
+    }
+
+    [Test]
+    public void CloneWithTextWriter ()
+    {
+      var stringWriter = new StringWriter();
+      var clonedWriter = _writer.CloneWithTextWriter(stringWriter);
+
+      _writer.Write("original");
+      clonedWriter.Write("cloned");
+
+      Assert.That(clonedWriter, Is.Not.SameAs(_writer));
+      Assert.That(stringWriter.ToString(), Is.EqualTo("cloned"));
     }
 
     [Test]

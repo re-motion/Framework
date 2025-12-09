@@ -189,6 +189,22 @@ namespace Remotion.Web.ContentSecurityPolicy
       _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
+    /// <summary>
+    /// Clones the <see cref="CspEnabledHtmlTextWriter"/>, using the specified <paramref name="textWriter"/> as new output.
+    /// </summary>
+    public CspEnabledHtmlTextWriter CloneWithTextWriter (TextWriter textWriter)
+    {
+      ArgumentNullException.ThrowIfNull(textWriter);
+
+      return new CspEnabledHtmlTextWriter(
+          _page,
+          textWriter,
+          _nonceGenerator,
+          _requestNonce,
+          _renderingFeatures,
+          _fallbackNavigationUrlProvider);
+    }
+
     protected override HtmlTextWriter CreateUpdatePanelHtmlTextWriter (TextWriter textWriter)
     {
       return new CspEnabledHtmlTextWriter(
