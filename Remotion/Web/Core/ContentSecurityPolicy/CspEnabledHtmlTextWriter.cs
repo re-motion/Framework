@@ -43,8 +43,8 @@ namespace Remotion.Web.ContentSecurityPolicy
       {
         return Type switch
         {
-            RegisteredEventType.InlineEventAttribute => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').{EventType} = function (event){{{EventValue}}};",
-            RegisteredEventType.EventListener => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').addEventListener('{EventType}', function (event){{{EventValue}}});",
+            RegisteredEventType.InlineEventAttribute => $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]'); if (target) {{ target.{EventType} = function (event){{{EventValue}}}; }} }})();",
+            RegisteredEventType.EventListener => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]')?.addEventListener('{EventType}', function (event){{{EventValue}}});",
             _ => throw new InvalidOperationException($"Unsupported registered event type '{Type}'.")
         };
       }
