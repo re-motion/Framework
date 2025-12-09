@@ -43,8 +43,8 @@ namespace Remotion.Web.ContentSecurityPolicy
       {
         return Type switch
         {
-            RegisteredEventType.InlineEventAttribute => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').{EventType} = function (event){{{EventValue}}};",
-            RegisteredEventType.EventListener => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').addEventListener('{EventType}', function (event){{{EventValue}}});",
+            RegisteredEventType.InlineEventAttribute => $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]'); if (target) {{ target.{EventType} = function (event){{{EventValue}}}; }} }})();",
+            RegisteredEventType.EventListener => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]')?.addEventListener('{EventType}', function (event){{{EventValue}}});",
             _ => throw new InvalidOperationException($"Unsupported registered event type '{Type}'.")
         };
       }
@@ -187,6 +187,22 @@ namespace Remotion.Web.ContentSecurityPolicy
       _requestNonce = requestNonce;
       _renderingFeatures = renderingFeatures;
       _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
+    }
+
+    /// <summary>
+    /// Clones the <see cref="CspEnabledHtmlTextWriter"/>, using the specified <paramref name="textWriter"/> as new output.
+    /// </summary>
+    public CspEnabledHtmlTextWriter CloneWithTextWriter (TextWriter textWriter)
+    {
+      ArgumentNullException.ThrowIfNull(textWriter);
+
+      return new CspEnabledHtmlTextWriter(
+          _page,
+          textWriter,
+          _nonceGenerator,
+          _requestNonce,
+          _renderingFeatures,
+          _fallbackNavigationUrlProvider);
     }
 
     protected override HtmlTextWriter CreateUpdatePanelHtmlTextWriter (TextWriter textWriter)

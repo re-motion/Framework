@@ -16,6 +16,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.UI;
 using Moq;
 using NUnit.Framework;
@@ -62,6 +63,19 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               "TEST-NONCE",
               _renderingFeaturesStub.Object,
               _fallbackNavigationUrlProviderStub.Object);
+    }
+
+    [Test]
+    public void CloneWithTextWriter ()
+    {
+      var stringWriter = new StringWriter();
+      var clonedWriter = _writer.CloneWithTextWriter(stringWriter);
+
+      _writer.Write("original");
+      clonedWriter.Write("cloned");
+
+      Assert.That(clonedWriter, Is.Not.SameAs(_writer));
+      Assert.That(stringWriter.ToString(), Is.EqualTo("cloned"));
     }
 
     [Test]
@@ -179,7 +193,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               $"eventTargetID-onclick",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{console.info('test');}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{console.info('test');}}; }} }})();"),
           Times.Once);
       _clientScriptStub.VerifyNoOtherCalls();
 
@@ -246,7 +260,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
                       _pageStub.Object,
                       typeof(CspEnabledHtmlTextWriter),
                       $"eventTargetID-{value}",
-                      $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').{value} = function (event){{console.info('test');}};"),
+                      $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.{value} = function (event){{console.info('test');}}; }} }})();"),
               Times.Once);
       _clientScriptStub.VerifyNoOtherCalls();
 
@@ -316,7 +330,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onclick",
-              "document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){console.info('test1');};"),
+              ";(function() { const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) { target.onclick = function (event){console.info('test1');}; } })();"),
           Times.Once);
 
       _clientScriptStub.Verify(
@@ -324,7 +338,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onchange",
-              "document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onchange = function (event){console.info('test2');};"),
+              ";(function() { const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) { target.onchange = function (event){console.info('test2');}; } })();"),
           Times.Once);
 
       _clientScriptStub.VerifyNoOtherCalls();
@@ -374,7 +388,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID1-onclick",
-              "document.querySelector('[data-inline-event-target=\"eventTargetID1\"]').onclick = function (event){console.info('test1');};"),
+              ";(function() { const target = document.querySelector('[data-inline-event-target=\"eventTargetID1\"]'); if (target) { target.onclick = function (event){console.info('test1');}; } })();"),
           Times.Once);
 
       _clientScriptStub.Verify(
@@ -389,7 +403,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID2-onchange",
-              "document.querySelector('[data-inline-event-target=\"eventTargetID2\"]').onchange = function (event){console.info('test2');};"),
+              ";(function() { const target = document.querySelector('[data-inline-event-target=\"eventTargetID2\"]'); if (target) { target.onchange = function (event){console.info('test2');}; } })();"),
           Times.Once);
 
       _clientScriptStub.VerifyNoOtherCalls();
@@ -444,7 +458,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onclick",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{console.info('test');}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{console.info('test');}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.VerifyNoOtherCalls();
@@ -473,7 +487,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onclick",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{console.info('test');}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{console.info('test');}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.VerifyNoOtherCalls();
@@ -502,7 +516,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onclick",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{console.info('test');}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{console.info('test');}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.VerifyNoOtherCalls();
@@ -537,7 +551,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-href",
               """
-                document.querySelector('[data-inline-event-target="eventTargetID"]').addEventListener('click', function (event){let __defaultPrevented = event.defaultPrevented;
+                document.querySelector('[data-inline-event-target="eventTargetID"]')?.addEventListener('click', function (event){let __defaultPrevented = event.defaultPrevented;
 
                 event.preventDefault();
                 event.preventDefault = () => {
@@ -583,7 +597,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onclick",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{{expected}}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{{expected}}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.VerifyNoOtherCalls();
@@ -655,7 +669,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onclick",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{test}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{test}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.VerifyNoOtherCalls();
@@ -679,7 +693,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onclick",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{test}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{test}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.VerifyNoOtherCalls();
@@ -703,7 +717,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onclick",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{test}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{test}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.Verify(
@@ -711,7 +725,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onload",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onload = function (event){{test2}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onload = function (event){{test2}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.VerifyNoOtherCalls();
@@ -736,7 +750,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onclick",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onclick = function (event){{test}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{test}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.Verify(
@@ -744,7 +758,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               _pageStub.Object,
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-onload",
-              $"document.querySelector('[data-inline-event-target=\"eventTargetID\"]').onload = function (event){{test2}};"),
+              $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onload = function (event){{test2}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.VerifyNoOtherCalls();
@@ -822,7 +836,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               typeof(CspEnabledHtmlTextWriter),
               "eventTargetID-href",
               """
-                document.querySelector('[data-inline-event-target="eventTargetID"]').addEventListener('click', function (event){let __defaultPrevented = event.defaultPrevented;
+                document.querySelector('[data-inline-event-target="eventTargetID"]')?.addEventListener('click', function (event){let __defaultPrevented = event.defaultPrevented;
 
                 event.preventDefault();
                 event.preventDefault = () => {
