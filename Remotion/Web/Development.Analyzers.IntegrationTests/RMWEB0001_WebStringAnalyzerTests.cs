@@ -170,21 +170,13 @@ public class A
   }
 }";
 
-#if NET10_0_OR_GREATER
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 76)
           .WithMessage(
               "'string.Join(string?, params System.ReadOnlySpan<object?>)' should not be used with a 'Remotion.Web.WebString' argument, "
               + "encode the Remotion.Web.WebString instances first");
       var parseOptions = new CSharpParseOptions(LanguageVersion.Preview);
-#else
-      var diagnostic = Verifier.Diagnostic()
-          .WithSpan(8, 12, 8, 76)
-          .WithMessage(
-              "'string.Join(string?, params object?[])' should not be used with a 'Remotion.Web.WebString' argument, "
-              + "encode the Remotion.Web.WebString instances first");
-      var parseOptions = new CSharpParseOptions(LanguageVersion.CSharp12);
-#endif
+
       await Verifier.VerifyAnalyzerAsync(input, parseOptions, diagnostic);
     }
 
@@ -224,21 +216,13 @@ public class A
   }
 }";
 
-#if NET10_0_OR_GREATER
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 88)
           .WithMessage(
               "'string.Join(string?, params System.ReadOnlySpan<object?>)' should not be used with a 'Remotion.Web.PlainTextString' argument, "
               + "encode the Remotion.Web.PlainTextString instances first");
       var parseOptions = new CSharpParseOptions(LanguageVersion.Preview);
-#else
-      var diagnostic = Verifier.Diagnostic()
-          .WithSpan(8, 12, 8, 88)
-          .WithMessage(
-              "'string.Join(string?, params object?[])' should not be used with a 'Remotion.Web.PlainTextString' argument, "
-              + "encode the Remotion.Web.PlainTextString instances first");
-      var parseOptions = new CSharpParseOptions(LanguageVersion.CSharp12);
-#endif
+
       await Verifier.VerifyAnalyzerAsync(input, parseOptions, diagnostic);
     }
 
@@ -300,21 +284,13 @@ public class A
   }
 }";
 
-#if NET10_0_OR_GREATER
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 107)
           .WithMessage(
               "'string.Format(string, params System.ReadOnlySpan<object?>)' should not be used with a 'Remotion.Web.WebString' argument, "
               + "encode the Remotion.Web.WebString instances first");
       var parseOptions = new CSharpParseOptions(LanguageVersion.Preview);
-#else
-      var diagnostic = Verifier.Diagnostic()
-          .WithSpan(8, 12, 8, 107)
-          .WithMessage(
-              "'string.Format(string, params object?[])' should not be used with a 'Remotion.Web.WebString' argument, "
-              + "encode the Remotion.Web.WebString instances first");
-      var parseOptions = new CSharpParseOptions(LanguageVersion.CSharp12);
-#endif
+
       await Verifier.VerifyAnalyzerAsync(input, parseOptions, diagnostic);
     }
 
@@ -354,21 +330,13 @@ public class A
   }
 }";
 
-#if NET10_0_OR_GREATER
       var diagnostic = Verifier.Diagnostic()
           .WithSpan(8, 12, 8, 137)
           .WithMessage(
               "'string.Format(string, params System.ReadOnlySpan<object?>)' should not be used with a 'Remotion.Web.PlainTextString' argument, "
               + "encode the Remotion.Web.PlainTextString instances first");
       var parseOptions = new CSharpParseOptions(LanguageVersion.Preview);
-#else
-      var diagnostic = Verifier.Diagnostic()
-          .WithSpan(8, 12, 8, 137)
-          .WithMessage(
-              "'string.Format(string, params object?[])' should not be used with a 'Remotion.Web.PlainTextString' argument, "
-              + "encode the Remotion.Web.PlainTextString instances first");
-      var parseOptions = new CSharpParseOptions(LanguageVersion.CSharp12);
-#endif
+
       await Verifier.VerifyAnalyzerAsync(input, parseOptions, diagnostic);
     }
 
