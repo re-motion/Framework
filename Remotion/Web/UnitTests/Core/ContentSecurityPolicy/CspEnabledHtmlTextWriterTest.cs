@@ -21,6 +21,7 @@ using System.Web.UI;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.NUnit.UnitTesting;
+using Remotion.Development.UnitTesting;
 using Remotion.Web.UnitTests.Core.UI.Controls;
 using Remotion.Web.ContentSecurityPolicy;
 using Remotion.Web.UI;
@@ -34,8 +35,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
   {
     private HtmlHelper _htmlHelper;
     private CspEnabledHtmlTextWriter _writer;
-    private Mock<ISmartPageClientScriptManager> _clientScriptStub;
-    private Mock<ISmartPage> _pageStub;
+    private Mock<ICspClientScriptManager> _clientScriptStub;
     private Mock<INonceGenerator> _randomNumberGeneratorStub;
     private Mock<IRenderingFeatures> _renderingFeaturesStub;
     private Mock<IFallbackNavigationUrlProvider> _fallbackNavigationUrlProviderStub;
@@ -43,26 +43,37 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
     [SetUp]
     public void SetUp ()
     {
-       _pageStub = new Mock<ISmartPage>(MockBehavior.Strict);
-      _clientScriptStub = new Mock<ISmartPageClientScriptManager>();
+      _clientScriptStub = new Mock<ICspClientScriptManager>();
       _randomNumberGeneratorStub = new Mock<INonceGenerator>(MockBehavior.Strict);
       _renderingFeaturesStub = new Mock<IRenderingFeatures>(MockBehavior.Strict);
       _renderingFeaturesStub.Setup(_ => _.EnableDiagnosticMetadata).Returns(false);
 
       _fallbackNavigationUrlProviderStub = new Mock<IFallbackNavigationUrlProvider>(MockBehavior.Strict);
 
-      _pageStub
-          .Setup(s => s.ClientScript)
-          .Returns(_clientScriptStub.Object);
-
       _htmlHelper = new HtmlHelper();
       _writer = new CspEnabledHtmlTextWriter(
-              _pageStub.Object,
+              _clientScriptStub.Object,
               _htmlHelper.Writer,
               _randomNumberGeneratorStub.Object,
               "TEST-NONCE",
               _renderingFeaturesStub.Object,
               _fallbackNavigationUrlProviderStub.Object);
+    }
+
+    [Test]
+    public void Create_WithSmartPage_UsesAdapter ()
+    {
+      var writer = new CspEnabledHtmlTextWriter(
+          Mock.Of<ISmartPage>(),
+          _htmlHelper.Writer,
+          _randomNumberGeneratorStub.Object,
+          "TEST-NONCE",
+          _renderingFeaturesStub.Object,
+          _fallbackNavigationUrlProviderStub.Object);
+
+      Assert.That(
+          PrivateInvoke.GetNonPublicField(writer, "_scriptManager"),
+          Is.TypeOf<SmartPageCspClientScriptManagerAdapter>());
     }
 
     [Test]
@@ -189,9 +200,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               $"eventTargetID-onclick",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{console.info('test');}}; }} }})();"),
           Times.Once);
@@ -223,9 +232,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertNoAttribute(element, "data-inline-event-target");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               It.IsAny<string>(),
               It.IsAny<string>()),
           Times.Never);
@@ -256,9 +263,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
 
       _clientScriptStub.Verify(
-              m => m.RegisterStartupScriptBlock(
-                      _pageStub.Object,
-                      typeof(CspEnabledHtmlTextWriter),
+              m => m.RegisterScript(
                       $"eventTargetID-{value}",
                       $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.{value} = function (event){{console.info('test');}}; }} }})();"),
               Times.Once);
@@ -278,9 +283,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       Assert.That(document, Is.EqualTo("<button onclick></button>"));
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               It.IsAny<string>(),
               It.IsAny<string>()),
           Times.Never);
@@ -299,9 +302,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertNoAttribute(element, "data-inline-event-target");
 
       _clientScriptStub.Verify(
-              m => m.RegisterStartupScriptBlock(
-                      _pageStub.Object,
-                      typeof(CspEnabledHtmlTextWriter),
+              m => m.RegisterScript(
                       It.IsAny<string>(),
                       It.IsAny<string>()),
               Times.Never);
@@ -326,17 +327,13 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onclick",
               ";(function() { const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) { target.onclick = function (event){console.info('test1');}; } })();"),
           Times.Once);
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onchange",
               ";(function() { const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) { target.onchange = function (event){console.info('test2');}; } })();"),
           Times.Once);
@@ -377,31 +374,23 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertAttribute(element2, "data-inline-event-target", "eventTargetID2");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID1-onclick",
               It.IsAny<string>()),
           Times.Once);
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID1-onclick",
               ";(function() { const target = document.querySelector('[data-inline-event-target=\"eventTargetID1\"]'); if (target) { target.onclick = function (event){console.info('test1');}; } })();"),
           Times.Once);
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID2-onchange",
               It.IsAny<string>()),
           Times.Once);
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID2-onchange",
               ";(function() { const target = document.querySelector('[data-inline-event-target=\"eventTargetID2\"]'); if (target) { target.onchange = function (event){console.info('test2');}; } })();"),
           Times.Once);
@@ -454,9 +443,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onclick",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{console.info('test');}}; }} }})();"),
           Times.Once);
@@ -483,9 +470,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onclick",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{console.info('test');}}; }} }})();"),
           Times.Once);
@@ -512,9 +497,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onclick",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{console.info('test');}}; }} }})();"),
           Times.Once);
@@ -546,9 +529,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _writer.RenderBeginTag("div");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-href",
               """
                 document.querySelector('[data-inline-event-target="eventTargetID"]')?.addEventListener('click', function (event){let __defaultPrevented = event.defaultPrevented;
@@ -593,9 +574,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onclick",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{{expected}}}; }} }})();"),
           Times.Once);
@@ -665,9 +644,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _writer.WriteAttribute("onclick", "test");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onclick",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{test}}; }} }})();"),
           Times.Once);
@@ -689,9 +666,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _writer.WriteAttribute("onclick", " javascript:test");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onclick",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{test}}; }} }})();"),
           Times.Once);
@@ -713,17 +688,13 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _writer.WriteAttribute("onload", "test2");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onclick",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{test}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onload",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onload = function (event){{test2}}; }} }})();"),
           Times.Once);
@@ -746,17 +717,13 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _writer.WriteAttribute("onload", "test2");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onclick",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onclick = function (event){{test}}; }} }})();"),
           Times.Once);
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-onload",
               $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"eventTargetID\"]'); if (target) {{ target.onload = function (event){{test2}}; }} }})();"),
           Times.Once);
@@ -831,9 +798,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       _writer.Write("/>");
 
       _clientScriptStub.Verify(
-          m => m.RegisterStartupScriptBlock(
-              _pageStub.Object,
-              typeof(CspEnabledHtmlTextWriter),
+          m => m.RegisterScript(
               "eventTargetID-href",
               """
                 document.querySelector('[data-inline-event-target="eventTargetID"]')?.addEventListener('click', function (event){let __defaultPrevented = event.defaultPrevented;
