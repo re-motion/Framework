@@ -160,7 +160,7 @@ namespace Remotion.Web.ContentSecurityPolicy
 
     private readonly List<RegisteredEvent> _registeredEvents = new();
     private readonly INonceGenerator _nonceGenerator;
-    private readonly ISmartPage _page;
+    private readonly ICspClientScriptManager _scriptManager;
     private readonly string _requestNonce;
     private readonly IRenderingFeatures _renderingFeatures;
     private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
@@ -174,15 +174,26 @@ namespace Remotion.Web.ContentSecurityPolicy
         string requestNonce,
         IRenderingFeatures renderingFeatures,
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        : this(new SmartPageCspClientScriptManagerAdapter(page), writer, nonceGenerator, requestNonce, renderingFeatures, fallbackNavigationUrlProvider)
+    {
+    }
+
+    public CspEnabledHtmlTextWriter (
+        ICspClientScriptManager scriptManager,
+        TextWriter writer,
+        INonceGenerator nonceGenerator,
+        string requestNonce,
+        IRenderingFeatures renderingFeatures,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(writer)
     {
-      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(scriptManager);
       ArgumentNullException.ThrowIfNull(writer);
       ArgumentNullException.ThrowIfNull(nonceGenerator);
       ArgumentException.ThrowIfNullOrEmpty(requestNonce);
       ArgumentNullException.ThrowIfNull(renderingFeatures);
 
-      _page = page;
+      _scriptManager = scriptManager;
       _nonceGenerator = nonceGenerator;
       _requestNonce = requestNonce;
       _renderingFeatures = renderingFeatures;
@@ -197,7 +208,7 @@ namespace Remotion.Web.ContentSecurityPolicy
       ArgumentNullException.ThrowIfNull(textWriter);
 
       return new CspEnabledHtmlTextWriter(
-          _page,
+          _scriptManager,
           textWriter,
           _nonceGenerator,
           _requestNonce,
@@ -208,7 +219,7 @@ namespace Remotion.Web.ContentSecurityPolicy
     protected override HtmlTextWriter CreateUpdatePanelHtmlTextWriter (TextWriter textWriter)
     {
       return new CspEnabledHtmlTextWriter(
-          _page,
+          _scriptManager,
           textWriter,
           _nonceGenerator,
           _requestNonce,
@@ -231,7 +242,7 @@ namespace Remotion.Web.ContentSecurityPolicy
         foreach (var registeredEvent in _registeredEvents)
         {
           var script = registeredEvent.GetScript(eventTargetID);
-          _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), $"{eventTargetID}-{registeredEvent.Key}", script);
+          _scriptManager.RegisterScript($"{eventTargetID}-{registeredEvent.Key}", script);
           if (_renderingFeatures.EnableDiagnosticMetadata)
             base.AddAttribute("data-event-content-" + registeredEvent.Key, registeredEvent.OriginalValue);
         }
@@ -316,7 +327,7 @@ namespace Remotion.Web.ContentSecurityPolicy
         }
 
         var script = registeredEvent.GetScript(eventTargetID);
-        _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), $"{eventTargetID}-{registeredEvent.Key}", script);
+        _scriptManager.RegisterScript($"{eventTargetID}-{registeredEvent.Key}", script);
         if (_renderingFeatures.EnableDiagnosticMetadata)
           base.WriteAttribute("data-event-content-" + registeredEvent.Key, registeredEvent.OriginalValue);
       }
