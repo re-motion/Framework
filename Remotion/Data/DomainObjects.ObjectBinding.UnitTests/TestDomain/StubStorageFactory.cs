@@ -91,6 +91,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
       throw new NotImplementedException();
     }
 
+    public ITableManipulationRecordDefinitionProvider CreateTableManipulationRecordDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition)
+    {
+      throw new NotImplementedException();
+    }
+
     public IScriptBuilder CreateSchemaScriptBuilder (RdbmsProviderDefinition storageProviderDefinition)
     {
       throw new NotImplementedException();

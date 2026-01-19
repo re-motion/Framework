@@ -299,6 +299,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       return CreateSingleScalarStructuredTypeDefinitionProvider(storageTypeInformationProvider);
     }
 
+    public ITableManipulationRecordDefinitionProvider CreateTableManipulationRecordDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition)
+    {
+      ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+
+      var storageTypeInformationProvider = CreateStorageTypeInformationProvider(storageProviderDefinition);
+      var infrastructureStoragePropertyDefinitionProvider = CreateInfrastructureStoragePropertyDefinitionProvider(storageProviderDefinition);
+      var rdbmsPersistenceModelProvider = CreateRdbmsPersistenceModelProvider(storageProviderDefinition);
+      return CreateTableManipulationRecordDefinitionProvider(storageTypeInformationProvider, infrastructureStoragePropertyDefinitionProvider, rdbmsPersistenceModelProvider);
+    }
+
     public IDataParameterDefinitionFactory CreateDataParameterDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition)
     {
       ArgumentNullException.ThrowIfNull(storageProviderDefinition);
@@ -693,6 +703,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
 
       return new SingleScalarSqlTableTypeDefinitionProvider(storageTypeInformationProvider);
+    }
+
+    protected virtual ITableManipulationRecordDefinitionProvider CreateTableManipulationRecordDefinitionProvider (
+        IStorageTypeInformationProvider storageTypeInformationProvider,
+        IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionProvider,
+        IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider)
+    {
+      ArgumentNullException.ThrowIfNull(storageTypeInformationProvider);
+      ArgumentNullException.ThrowIfNull(infrastructureStoragePropertyDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(rdbmsPersistenceModelProvider);
+
+      return new TableManipulationRecordDefinitionProvider(
+          storageTypeInformationProvider,
+          infrastructureStoragePropertyDefinitionProvider,
+          rdbmsPersistenceModelProvider);
     }
 
     protected virtual IValueStoragePropertyDefinitionFactory CreateValueStoragePropertyDefinitionFactory (
