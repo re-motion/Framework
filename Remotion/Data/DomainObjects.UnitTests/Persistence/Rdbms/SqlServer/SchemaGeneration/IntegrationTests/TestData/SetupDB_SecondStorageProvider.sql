@@ -1,4 +1,4 @@
-USE DBPrefix_SchemaGenerationTestDomain2
+USE SchemaGenerationTestDomain2
 -- Create all tables
 CREATE TABLE [dbo].[Official]
 (
@@ -164,5 +164,38 @@ CREATE TYPE [dbo].[TVP_Guid_Distinct] AS TABLE
 (
   [Value] uniqueidentifier NULL
   UNIQUE CLUSTERED ([Value])
+)
+GO
+CREATE TYPE [dbo].[TVP_AllTables_Delete] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Official_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [ResponsibleForOrderPriority] int NOT NULL,
+  [ResponsibleForCustomerType] int NOT NULL,
+  [Speciality] nvarchar (255) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_AllTables_Lock] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [Timestamp] rowversion NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Official_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL,
+  [ResponsibleForOrderPriority] int NOT NULL,
+  [ResponsibleForCustomerType] int NOT NULL,
+  [Speciality] nvarchar (255) NULL,
+  [Speciality__IsSet] bit NOT NULL
 )
 GO

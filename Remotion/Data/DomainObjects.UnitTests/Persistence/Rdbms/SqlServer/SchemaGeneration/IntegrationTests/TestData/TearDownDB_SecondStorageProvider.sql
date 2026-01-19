@@ -1,4 +1,4 @@
-USE DBPrefix_SchemaGenerationTestDomain2
+USE SchemaGenerationTestDomain2
 -- Drop all structured types
 DROP TYPE IF EXISTS [dbo].[TVP_String]
 DROP TYPE IF EXISTS [dbo].[TVP_Binary]
@@ -25,6 +25,10 @@ DROP TYPE IF EXISTS [dbo].[TVP_Date]
 DROP TYPE IF EXISTS [dbo].[TVP_Date_Distinct]
 DROP TYPE IF EXISTS [dbo].[TVP_Guid]
 DROP TYPE IF EXISTS [dbo].[TVP_Guid_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_AllTables_Delete]
+DROP TYPE IF EXISTS [dbo].[TVP_Official_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_AllTables_Lock]
+DROP TYPE IF EXISTS [dbo].[TVP_Official_Update]
 -- Drop all synonyms
 -- Drop all indexes
 -- Drop all views

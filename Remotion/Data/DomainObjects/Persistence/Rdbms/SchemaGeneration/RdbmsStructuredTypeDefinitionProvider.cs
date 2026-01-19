@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
@@ -34,17 +35,55 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
     /// Gets all <see cref="IRdbmsStructuredTypeDefinition"/>s for which to generate CREATE TYPE and DROP TYPE scripts.
     /// </summary>
     /// <param name="storageProviderDefinition">The storage provider for which to generate scripts.</param>
+    /// <param name="classDefinitions">The class definition that should be considered for script generation.</param>
     /// <remarks>
     /// In order to influence the returned collection, override or mix the <see cref="IRdbmsStorageObjectFactory.CreateSingleScalarStructuredTypeDefinitionProvider"/> method
     /// on the <paramref name="storageProviderDefinition"/>'s <see cref="RdbmsProviderDefinition.Factory"/>. 
     /// </remarks>
-    public IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (RdbmsProviderDefinition storageProviderDefinition)
+    public IReadOnlyCollection<IRdbmsStructuredTypeDefinition> GetTypeDefinitions (RdbmsProviderDefinition storageProviderDefinition, IEnumerable<ClassDefinition> classDefinitions)
     {
       ArgumentNullException.ThrowIfNull(storageProviderDefinition);
+      ArgumentNullException.ThrowIfNull(classDefinitions);
 
       var factory = storageProviderDefinition.Factory;
       var simpleStructuredTypeDefinitionRepository = factory.CreateSingleScalarStructuredTypeDefinitionProvider(storageProviderDefinition);
-      return simpleStructuredTypeDefinitionRepository.GetAllStructuredTypeDefinitions().ToArray();
+      var simpleScalarStructuredTypes = simpleStructuredTypeDefinitionRepository.GetAllStructuredTypeDefinitions();
+
+      var rdbmsPersistenceModelProvider = factory.CreateRdbmsPersistenceModelProvider(storageProviderDefinition);
+      var tableManipulationRecordDefinitionProvider = factory.CreateTableManipulationRecordDefinitionProvider(storageProviderDefinition);
+      var tableManipulationStructuredTypes = CollectStructuredTypeDefinitions(
+              tableManipulationRecordDefinitionProvider,
+              rdbmsPersistenceModelProvider,
+              classDefinitions)
+          .Distinct();
+
+      return simpleScalarStructuredTypes
+          .Concat(tableManipulationStructuredTypes)
+          .ToArray();
+    }
+
+    private static IEnumerable<IRdbmsStructuredTypeDefinition> CollectStructuredTypeDefinitions (
+        ITableManipulationRecordDefinitionProvider tableManipulationRecordDefinitionProvider,
+        IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider,
+        IEnumerable<ClassDefinition> classDefinitions)
+    {
+      foreach (var classDefinition in classDefinitions)
+      {
+        var rdbmsStorageEntityDefinition = rdbmsPersistenceModelProvider.GetEntityDefinition(classDefinition);
+        var tableDefinition = InlineRdbmsStorageEntityDefinitionVisitor.Visit<TableDefinition?>(
+            rdbmsStorageEntityDefinition,
+            (table, continuation) => table,
+            (filterView, continuation) => continuation(filterView.BaseEntity),
+            (unionView, continuation) => null,
+            (emptyView, continuation) => null);
+        if (tableDefinition == null)
+          continue;
+
+        yield return tableManipulationRecordDefinitionProvider.GetDeleteRecordDefinition(classDefinition).StructuredTypeDefinition;
+        yield return tableManipulationRecordDefinitionProvider.GetInsertRecordDefinition(classDefinition).StructuredTypeDefinition;
+        yield return tableManipulationRecordDefinitionProvider.GetLockRecordDefinition(classDefinition).StructuredTypeDefinition;
+        yield return tableManipulationRecordDefinitionProvider.GetUpdateRecordDefinition(classDefinition).StructuredTypeDefinition;
+      }
     }
   }
 }
