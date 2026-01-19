@@ -177,4 +177,9 @@ public class StorageObjectFactoryStub: IRdbmsStorageObjectFactory
   {
     throw new System.NotImplementedException();
   }
+
+  public ITableManipulationRecordDefinitionProvider CreateTableManipulationRecordDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition)
+  {
+    throw new System.NotImplementedException();
+  }
 }
