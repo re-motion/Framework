@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Web.UI;
+using JetBrains.Annotations;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.Infrastructure
@@ -421,7 +422,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="script">The client script literal to register. 
     /// </param>
     [Obsolete("Use RegisterClientScriptBlock (IControl, Type, string, string) for compatibility with UpdatePanel.")]
-    void RegisterClientScriptBlock (Type type, string key, string script);
+    void RegisterClientScriptBlock (Type type, string key, [LanguageInjection(InjectedLanguage.JAVASCRIPT)] string script);
 
     /// <summary>
     /// Registers the client script with the <see cref="T:System.Web.UI.Page"/> object using a type, key, script literal, and Boolean value indicating whether to add script tags.
@@ -433,7 +434,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><exception cref="T:System.ArgumentNullException">The client script block type is null.
     /// </exception>
     [Obsolete("Use RegisterClientScriptBlock (IControl, Type, string, string) for compatibility with UpdatePanel.")]
-    void RegisterClientScriptBlock (Type type, string key, string script, bool addScriptTags);
+    void RegisterClientScriptBlock (Type type, string key, [LanguageInjection(InjectedLanguage.JAVASCRIPT)] string script, bool addScriptTags);
 
     /// <summary>
     ///   Used to register a client script script to be rendered  at the beginning of the HTML page.
@@ -453,7 +454,7 @@ namespace Remotion.Web.Infrastructure
     ///   The client script that will be registered. Must not be <see langword="null"/> or empty. 
     /// </param>
     /// <seealso cref="ScriptManager.RegisterClientScriptBlock(System.Web.UI.Control,System.Type,string,string,bool)"/>
-    void RegisterClientScriptBlock (IControl control, Type type, string key, string script);
+    void RegisterClientScriptBlock (IControl control, Type type, string key, [LanguageInjection(InjectedLanguage.JAVASCRIPT)] string script);
 
 
     /// <summary>
@@ -521,7 +522,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><exception cref="T:System.ArgumentNullException"><paramref name="type"/> is null.
     /// </exception>
     [Obsolete("Use RegisterOnSubmitStatement (IControl, Type, string, string) for compatibility with UpdatePanel.")]
-    void RegisterOnSubmitStatement (Type type, string key, string script);
+    void RegisterOnSubmitStatement (Type type, string key, [LanguageInjection(InjectedLanguage.JAVASCRIPT)] string script);
 
     /// <summary>
     /// Registers an OnSubmit statement with the <see cref="T:System.Web.UI.Page"/> object using a type, a key, and a script literal.
@@ -531,7 +532,7 @@ namespace Remotion.Web.Infrastructure
     /// <param name="type">The type of the OnSubmit statement to register.</param>
     /// <param name="key">The key of the OnSubmit statement to register.</param>
     /// <param name="script">The script literal of the OnSubmit statement to register.</param>
-    void RegisterOnSubmitStatement (IControl control, Type type, string key, string script);
+    void RegisterOnSubmitStatement (IControl control, Type type, string key, [LanguageInjection(InjectedLanguage.JAVASCRIPT)] string script);
 
 
     /// <summary>
@@ -542,7 +543,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="script">The startup script literal to register. 
     /// </param>
     [Obsolete("Use RegisterStartupScriptBlock (IControl, Type, string, string, bool) for compatibility with UpdatePanel.")]
-    void RegisterStartupScript (Type type, string key, string script);
+    void RegisterStartupScript (Type type, string key, [LanguageInjection(InjectedLanguage.JAVASCRIPT)] string script);
 
     /// <summary>
     /// Registers the startup script with the <see cref="T:System.Web.UI.Page"/> object using a type, a key, a script literal,
@@ -555,7 +556,7 @@ namespace Remotion.Web.Infrastructure
     /// </param><exception cref="T:System.ArgumentNullException"><paramref name="type"/> is null.
     /// </exception>
     [Obsolete("Use RegisterStartupScriptBlock (IControl, Type, string, string, bool) for compatibility with UpdatePanel.")]
-    void RegisterStartupScript (Type type, string key, string script, bool addScriptTags);
+    void RegisterStartupScript (Type type, string key, [LanguageInjection(InjectedLanguage.JAVASCRIPT)] string script, bool addScriptTags);
 
     /// <summary>
     /// Registers a startup script block for a control that is inside an <see cref="UpdatePanel"/> by using the <see cref="ScriptManager"/> control, 
@@ -567,6 +568,6 @@ namespace Remotion.Web.Infrastructure
     /// <param name="key">The key of the startup script to register.</param>
     /// <param name="script">The startup script literal to register.</param>
     /// <seealso cref="ScriptManager.RegisterStartupScript(System.Web.UI.Control,System.Type,string,string,bool)"/>
-    void RegisterStartupScriptBlock (IControl control, Type type, string key, string script);
+    void RegisterStartupScriptBlock (IControl control, Type type, string key, [LanguageInjection(InjectedLanguage.JAVASCRIPT)] string script);
   }
 }
