@@ -310,6 +310,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool? _readOnly;
     private bool? _autoPostBack;
     private bool? _checkClientSideMaxLength;
+    private bool? _checkMaxLengthOnPaste;
 
     public virtual void ApplyStyle (TextBox textBox)
     {
@@ -342,6 +343,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         this._readOnly = ts._readOnly;
         this._autoPostBack = ts._autoPostBack;
         this._checkClientSideMaxLength = ts._checkClientSideMaxLength;
+        this._checkMaxLengthOnPaste = ts._checkMaxLengthOnPaste;
       }
     }
 
@@ -403,7 +405,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     [Description(
-        "Whether the text in the control can exceed its max length during input. If true, MaxLength is only used for validation after the input is completed."
+        "Whether the text in the control can exceed its max length during input. If false, MaxLength is only used for validation after the input is completed."
         )]
     [Category("Behavior")]
     [DefaultValue(typeof(bool?), "")]
@@ -412,6 +414,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _checkClientSideMaxLength; }
       set { _checkClientSideMaxLength = value; }
+    }
+
+    [Description(
+        "Whether the text in the control can exceed its max length after a paste operation. If false or CheckClientSideMaxLength is false, the MaxLength is only used for validation after the input is completed."
+        )]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
+    public bool? CheckMaxLengthOnPaste
+    {
+      get { return _checkMaxLengthOnPaste; }
+      set { _checkMaxLengthOnPaste = value; }
     }
 
     public int? GetMaxLength ()
