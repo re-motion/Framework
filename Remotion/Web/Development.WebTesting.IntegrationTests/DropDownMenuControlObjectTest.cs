@@ -245,6 +245,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [Category("LongRunning")]
     [IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.LoadResourceCausedInternalServerErrorTemplate, [@"DropDownMenuWebService\.asmx/GetMenuItemStatusWithError"])]
     public void TestDropDownMenuControlObject_OpenDropDownMenuWithError_FailsWithException ()
     {
