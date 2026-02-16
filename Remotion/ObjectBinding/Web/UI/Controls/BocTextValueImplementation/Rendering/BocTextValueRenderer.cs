@@ -72,6 +72,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       var textBox = base.GetTextBox(renderingContext);
       if (renderingContext.Control.TextBoxStyle.TextMode == BocTextBoxMode.PasswordRenderMasked)
         textBox.Attributes.Add("value", textBox.Text);
+
+      var maxLength = renderingContext.Control.TextBoxStyle.GetMaxLength();
+      if (maxLength != null && renderingContext.Control.TextBoxStyle.CheckMaxLengthOnPaste != false)
+      {
+        var resourceManager = GetResourceManager(renderingContext);
+        var message = resourceManager.GetString(BocTextValue.ResourceIdentifier.TextOverflowOnPasteValidationMessage);
+        textBox.Attributes.Add("onpaste", $"return TextBox.OnPaste (this, {maxLength.Value}, '{string.Format(message, maxLength)}')");
+      }
+
       return textBox;
     }
 
@@ -99,6 +108,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     public override string GetCssClassBase (IBocTextValue control)
     {
       return "bocTextValue";
+    }
+
+    protected virtual IResourceManager GetResourceManager (BocRenderingContext<IBocTextValue> renderingContext)
+    {
+      return renderingContext.Control.GetResourceManager();
     }
   }
 }
