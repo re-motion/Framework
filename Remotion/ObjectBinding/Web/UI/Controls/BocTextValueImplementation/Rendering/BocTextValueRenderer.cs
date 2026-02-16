@@ -73,8 +73,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       if (renderingContext.Control.TextBoxStyle.TextMode == BocTextBoxMode.PasswordRenderMasked)
         textBox.Attributes.Add("value", textBox.Text);
 
+      var isEditable = !renderingContext.Control.IsReadOnly && renderingContext.Control.Enabled;
       var maxLength = renderingContext.Control.TextBoxStyle.GetMaxLength();
-      if (maxLength != null && renderingContext.Control.TextBoxStyle.CheckMaxLengthOnPaste != false)
+      if (isEditable
+          && maxLength != null
+          && renderingContext.Control.TextBoxStyle.CheckMaxLengthOnPaste != false
+          && renderingContext.Control.TextBoxStyle.CheckClientSideMaxLength != false)
       {
         var resourceManager = GetResourceManager(renderingContext);
         var message = resourceManager.GetString(BocTextValue.ResourceIdentifier.TextOverflowOnPasteValidationMessage);
