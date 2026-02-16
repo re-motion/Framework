@@ -16,6 +16,8 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Reflection;
+using System.Threading;
 using System.Web.UI.WebControls;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -432,7 +434,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   public class TextBoxStyle : SingleRowTextBoxStyle
   {
-    private static readonly string s_scriptFileKey = typeof(TextBoxStyle).GetFullNameChecked() + "_Script";
+    private static readonly Lazy<bool> s_targetsAtLeastFramework472 = new(
+        () =>
+        {
+          var type = Assertion.IsNotNull(typeof(TextBox).Assembly.GetType("System.Web.Util.BinaryCompatibility"), "System.Web.Util.BinaryCompatibility");
+          var current = Assertion.IsNotNull(type.InvokeMember("Current", BindingFlags.Static | BindingFlags.Public | BindingFlags.GetField, null, null, null), "BinaryCompatibility.Current");
+          return (bool?)type.InvokeMember("TargetsAtLeastFramework472", BindingFlags.GetProperty, null, current, null) == true;
+        },
+        LazyThreadSafetyMode.ExecutionAndPublication);
 
     private int? _rows;
     private PlainTextString _placeholder;
@@ -469,12 +478,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!string.IsNullOrEmpty(_autoComplete))
         textBox.Attributes.Add("autocomplete", _autoComplete);
 
-      var maxLength = GetMaxLength();
-
-      if (_textMode == BocTextBoxMode.MultiLine
-          && maxLength != null
-          && CheckClientSideMaxLength != false)
-        textBox.Attributes.Add("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + maxLength.Value + ");");
+      if (_textMode == BocTextBoxMode.MultiLine && textBox.MaxLength > 0 && s_targetsAtLeastFramework472.Value == false)
+      {
+        // ASP.NET WebForms only renders maxlength attribute when the TargetFramework-check evaluates >= 4.7.2.
+        // This check is not enabled in unit tests
+        textBox.Attributes.Add("maxlength", textBox.MaxLength.ToString());
+      }
 
       textBox.TextMode = GetSystemWebTextMode();
     }
