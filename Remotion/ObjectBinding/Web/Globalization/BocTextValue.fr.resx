@@ -141,4 +141,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.InvalidCharactersForMultiLineErrorMessage" xml:space="preserve">
     <value>La valeur contient des caractères non pris en charge: «{0}» (numéro de ligne: {2}, position de la ligne: {1}).</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.TextOverflowOnPasteValidationMessage" xml:space="preserve">
+    <value>Le texte collé a été tronqué à la longueur maximale de {0} caractères.</value>
+  </data>
 </root>

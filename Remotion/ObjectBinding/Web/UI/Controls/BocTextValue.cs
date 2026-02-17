@@ -76,7 +76,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       /// <summary> The validation error message displayed when the singleline text contains invalid characters. </summary>
       InvalidCharactersForSingleLineErrorMessage,
       /// <summary> The validation error message displayed when the multiline text contains invalid characters. </summary>
-      InvalidCharactersForMultiLineErrorMessage
+      InvalidCharactersForMultiLineErrorMessage,
+      /// <summary> The validation error message displayed when the pasted text exceeds the maximum length. </summary>
+      TextOverflowOnPasteValidationMessage
     }
 
     // fields

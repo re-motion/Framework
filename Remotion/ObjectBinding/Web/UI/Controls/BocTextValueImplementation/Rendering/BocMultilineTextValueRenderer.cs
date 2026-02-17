@@ -78,7 +78,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
 
     protected sealed override TextBox GetTextBox (BocRenderingContext<IBocMultilineTextValue> renderingContext)
     {
-      return base.GetTextBox(renderingContext);
+      var textBox = base.GetTextBox(renderingContext);
+      var isEditable = !renderingContext.Control.IsReadOnly && renderingContext.Control.Enabled;
+      var maxLength = renderingContext.Control.TextBoxStyle.GetMaxLength();
+
+      if (isEditable
+          && maxLength != null
+          && renderingContext.Control.TextBoxStyle.CheckMaxLengthOnPaste != false
+          && renderingContext.Control.TextBoxStyle.CheckClientSideMaxLength != false)
+      {
+        var resourceManager = GetResourceManager(renderingContext);
+        var message = resourceManager.GetString(BocMultilineTextValue.ResourceIdentifier.TextOverflowOnPasteValidationMessage);
+        textBox.Attributes.Add("onpaste", $"return TextBox.OnPaste (this, {maxLength.Value}, '{string.Format(message, maxLength)}')");
+      }
+
+      return textBox;
+    }
+
+    protected virtual IResourceManager GetResourceManager (BocRenderingContext<IBocMultilineTextValue> renderingContext)
+    {
+      return renderingContext.Control.GetResourceManager();
     }
   }
 }

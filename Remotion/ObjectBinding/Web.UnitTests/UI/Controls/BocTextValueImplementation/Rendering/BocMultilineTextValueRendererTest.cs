@@ -23,6 +23,7 @@ using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
@@ -37,12 +38,22 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
   [TestFixture]
   public class BocMultilineTextValueRendererTest : BocTextValueRendererTestBase<IBocMultilineTextValue>
   {
+    private enum MaxLengthExpectation
+    {
+      NoMaxLengthSet,
+      MaxLengthSetWithoutPasteValidation,
+      MaxLengthSetWithoutClientSideValidation,
+      MaxLengthSetAndPasteValidation
+    }
+
     private const string c_textValueID = "MyTextValue_Boc_Textbox";
     private const string c_labelID = "Label";
+    private const int c_maxLengthValue = 117;
 
     private static readonly PlainTextString c_validationErrors = PlainTextString.CreateFromText("ValidationError");
 
     private BocMultilineTextValueRenderer _renderer;
+    private IResourceManager _resourceManager;
 
     [SetUp]
     public void SetUp ()
@@ -68,6 +79,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       pageStub.Setup(stub => stub.WrappedInstance).Returns(new PageMock());
       TextValue.Setup(stub => stub.Page).Returns(pageStub.Object);
 
+      _resourceManager = GlobalizationService.GetResourceManager(typeof(BocMultilineTextValue.ResourceIdentifier));
+      TextValue.Setup(stub => stub.GetResourceManager()).Returns(_resourceManager);
+
       _renderer = new BocMultilineTextValueRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
@@ -92,6 +106,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     public void RenderMultiLineEditableWithStyle ()
     {
       RenderMultiLineEditable(false, true, false, false, false);
+    }
+
+    [Test]
+    public void RenderMultiLineEditableWithMaxLengthAndPasteValidation ()
+    {
+      RenderMultiLineEditable(false, false, false, false, false, maxLengthExpectation: MaxLengthExpectation.MaxLengthSetAndPasteValidation);
+    }
+
+    [Test]
+    public void RenderMultiLineEditableWithMaxLengthSetWithoutClientSideValidation ()
+    {
+      RenderMultiLineEditable(false, false, false, false, false, maxLengthExpectation: MaxLengthExpectation.MaxLengthSetWithoutClientSideValidation);
+    }
+
+    [Test]
+    public void RenderMultiLineEditableWithMaxLengthSetWithoutPasteValidation ()
+    {
+      RenderMultiLineEditable(false, false, false, false, false, maxLengthExpectation: MaxLengthExpectation.MaxLengthSetWithoutPasteValidation);
     }
 
     [Test]
@@ -227,12 +259,32 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
         bool inStandardProperties,
         bool autoPostBack,
         PlainTextString? placeholder = null,
-        string autoComplete = null)
+        string autoComplete = null,
+        MaxLengthExpectation maxLengthExpectation = MaxLengthExpectation.NoMaxLengthSet)
     {
       SetStyle(withStyle, withCssClass, inStandardProperties, autoPostBack);
       if (placeholder.HasValue)
         TextValue.Object.TextBoxStyle.Placeholder = placeholder.Value;
       TextValue.Object.TextBoxStyle.AutoComplete = autoComplete;
+      switch (maxLengthExpectation)
+      {
+        case MaxLengthExpectation.NoMaxLengthSet:
+          TextValue.Object.TextBoxStyle.MaxLength = null;
+          break;
+        case MaxLengthExpectation.MaxLengthSetWithoutPasteValidation:
+          TextValue.Object.TextBoxStyle.MaxLength = c_maxLengthValue;
+          TextValue.Object.TextBoxStyle.CheckMaxLengthOnPaste = false;
+          break;
+        case MaxLengthExpectation.MaxLengthSetWithoutClientSideValidation:
+          TextValue.Object.TextBoxStyle.MaxLength = c_maxLengthValue;
+          TextValue.Object.TextBoxStyle.CheckClientSideMaxLength = false;
+          break;
+        case MaxLengthExpectation.MaxLengthSetAndPasteValidation:
+          TextValue.Object.TextBoxStyle.MaxLength = c_maxLengthValue;
+          break;
+        default:
+          throw new ArgumentOutOfRangeException(nameof(maxLengthExpectation), maxLengthExpectation, null);
+      }
 
       TextValue.Setup(mock => mock.Enabled).Returns(!isDisabled);
 
@@ -261,6 +313,26 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(textarea, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
       if (TextValue.Object.TextBoxStyle.AutoPostBack == true)
         Html.AssertAttribute(textarea, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_textValueID));
+      switch (maxLengthExpectation)
+      {
+        case MaxLengthExpectation.NoMaxLengthSet:
+          Html.AssertNoAttribute(textarea, "maxlength");
+          break;
+        case MaxLengthExpectation.MaxLengthSetWithoutPasteValidation:
+          Html.AssertAttribute(textarea, "maxlength", c_maxLengthValue.ToString());
+          Html.AssertNoAttribute(textarea, "onpaste");
+          break;
+        case MaxLengthExpectation.MaxLengthSetWithoutClientSideValidation:
+          Html.AssertNoAttribute(textarea, "maxlength");
+          Html.AssertNoAttribute(textarea, "onpaste");
+          break;
+        case MaxLengthExpectation.MaxLengthSetAndPasteValidation:
+          Html.AssertAttribute(textarea, "maxlength", c_maxLengthValue.ToString());
+          Html.AssertAttribute(textarea, "onpaste", "return TextBox.OnPaste (this, 117, 'The pasted text was truncated at the maximum length of 117 characters.')");
+          break;
+        default:
+          throw new ArgumentOutOfRangeException(nameof(maxLengthExpectation), maxLengthExpectation, null);
+      }
       CheckTextAreaStyle(textarea, false, withStyle);
       Html.AssertTextNode(textarea, TextValue.Object.Text, 0);
       Html.AssertChildElementCount(textarea, 0);
@@ -288,6 +360,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
       TextValue.Setup(mock => mock.IsReadOnly).Returns(true);
       TextValue.Setup(mock => mock.Enabled).Returns(true);
+      TextValue.Object.TextBoxStyle.MaxLength = c_maxLengthValue;
 
       _renderer.Render(new BocMultilineTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
@@ -319,6 +392,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
         Html.AssertAttribute(textarea, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_textValueID));
       CheckTextAreaStyle(textarea, false, withStyle);
       Html.AssertNoAttribute(textarea, "disabled");
+      Html.AssertNoAttribute(textarea, "placeholder");
       Html.AssertAttribute(textarea, "class", CssClassDefinition.ScreenReaderText);
       Html.AssertTextNode(textarea, TextValue.Object.Text, 0);
       Html.AssertChildElementCount(textarea, 0);
