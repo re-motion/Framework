@@ -52,8 +52,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       {
         using (var command = tuple.Item2.Create(executionContext))
         {
-          if (command == null)
-            continue;
 
           int recordsAffected;
           try
