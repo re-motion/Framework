@@ -32,12 +32,12 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands.Factories
 {
   [TestFixture]
-  public class SaveCommandFactoryTest : StandardMappingTest
+  public class IndividualSaveCommandFactoryTest : StandardMappingTest
   {
     private Mock<IDbCommandBuilderFactory> _dbCommandBuilderFactoryStrictMock;
     private RdbmsPersistenceModelProvider _rdbmsPersistenceModelProvider;
     private Mock<ITableDefinitionFinder> _tableDefinitionFinderStrictMock;
-    private SaveCommandFactory _factory;
+    private IndividualSaveCommandFactory _factory;
     private TableDefinition _tableDefinition1;
 
     public override void SetUp ()
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
       _tableDefinitionFinderStrictMock = new Mock<ITableDefinitionFinder>(MockBehavior.Strict);
 
-      _factory = new SaveCommandFactory(
+      _factory = new IndividualSaveCommandFactory(
           _dbCommandBuilderFactoryStrictMock.Object,
           _rdbmsPersistenceModelProvider,
           _tableDefinitionFinderStrictMock.Object);

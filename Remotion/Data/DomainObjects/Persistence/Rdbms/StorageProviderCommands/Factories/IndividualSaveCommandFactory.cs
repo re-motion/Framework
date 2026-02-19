@@ -25,15 +25,15 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories
 {
   /// <summary>
-  /// The <see cref="SaveCommandFactory"/> is responsible to reate save commands for a relational database.
+  /// The <see cref="IndividualSaveCommandFactory"/> is responsible to create per object save commands for a relational database.
   /// </summary>
-  public class SaveCommandFactory
+  public class IndividualSaveCommandFactory : ISaveCommandFactory
   {
     private readonly IDbCommandBuilderFactory _dbCommandBuilderFactory;
     private readonly IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProvider;
     private readonly ITableDefinitionFinder _tableDefinitionFinder;
 
-    public SaveCommandFactory (
+    public IndividualSaveCommandFactory (
         IDbCommandBuilderFactory dbCommandBuilderFactory,
         IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider,
         ITableDefinitionFinder tableDefinitionFinder)

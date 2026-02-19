@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     private readonly LookupCommandFactory _lookupCommandFactory;
     private readonly RelationLookupCommandFactory _relationLookupCommandFactory;
-    private readonly SaveCommandFactory _saveCommandFactory;
+    private readonly ISaveCommandFactory _saveCommandFactory;
     private readonly QueryCommandFactory _queryCommandFactory;
     private readonly IDataParameterDefinitionFactory _dataParameterDefinitionFactory;
 
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       get { return _relationLookupCommandFactory; }
     }
 
-    public SaveCommandFactory SaveCommandFactory
+    public ISaveCommandFactory SaveCommandFactory
     {
       get { return _saveCommandFactory; }
     }
@@ -196,9 +196,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       return new RelationLookupCommandFactory(this, _dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _objectReaderFactory);
     }
 
-    protected virtual SaveCommandFactory CreateSaveCommandFactory ()
+    protected virtual ISaveCommandFactory CreateSaveCommandFactory ()
     {
-      return new SaveCommandFactory(_dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _tableDefinitionFinder);
+      return new IndividualSaveCommandFactory(_dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _tableDefinitionFinder);
     }
 
     protected virtual QueryCommandFactory CreateQueryCommandFactory ()
