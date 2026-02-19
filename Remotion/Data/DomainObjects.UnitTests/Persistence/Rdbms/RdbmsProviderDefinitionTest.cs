@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
@@ -38,7 +39,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       _sqlStorageObjectFactory = new SqlStorageObjectFactory(
           StorageSettings,
           SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>());
       _definition = new RdbmsProviderDefinition("StorageProviderID", _sqlStorageObjectFactory, "ConnectionString", "ReadOnlyConnectionString");
     }
 

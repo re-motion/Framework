@@ -17,6 +17,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
@@ -126,7 +127,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
       _sqlStorageObjectFactory = new SqlStorageObjectFactory(
           _storageSettings,
           SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>());
     }
 
     [Test]

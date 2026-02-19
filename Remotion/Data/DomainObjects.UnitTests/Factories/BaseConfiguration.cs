@@ -20,6 +20,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
@@ -125,7 +126,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       var sqlStorageObjectFactory = new TestSqlStorageObjectFactory(
           deferredStorageSettings,
           SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>());
 
       var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
 

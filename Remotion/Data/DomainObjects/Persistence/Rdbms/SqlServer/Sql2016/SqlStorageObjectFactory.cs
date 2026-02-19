@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -56,16 +57,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
     public IStorageSettings StorageSettings { get; }
     public ITypeConversionProvider TypeConversionProvider { get; }
     public IDataContainerValidator DataContainerValidator { get; }
+    public IDomainModelConstraintProvider DomainModelConstraintProvider { get; }
 
-    public SqlStorageObjectFactory (IStorageSettings storageSettings, ITypeConversionProvider typeConversionProvider, IDataContainerValidator dataContainerValidator)
+    public SqlStorageObjectFactory (IStorageSettings storageSettings, ITypeConversionProvider typeConversionProvider, IDataContainerValidator dataContainerValidator, IDomainModelConstraintProvider domainModelConstraintProvider)
     {
       ArgumentNullException.ThrowIfNull(storageSettings);
       ArgumentNullException.ThrowIfNull(typeConversionProvider);
       ArgumentNullException.ThrowIfNull(dataContainerValidator);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
 
       StorageSettings = storageSettings;
       TypeConversionProvider = typeConversionProvider;
       DataContainerValidator = dataContainerValidator;
+      DomainModelConstraintProvider = domainModelConstraintProvider;
     }
 
     public IStorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
@@ -763,7 +767,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
       return new ForeignKeyConstraintDefinitionFactory(
           storageNameProvider,
           persistenceModelProvider,
-          infrastructureStoragePropertyDefinitionProvider);
+          infrastructureStoragePropertyDefinitionProvider,
+          DomainModelConstraintProvider);
     }
   }
 }

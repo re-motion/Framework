@@ -47,5 +47,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       var attribute = propertyInfo.GetCustomAttribute<ILengthConstrainedPropertyAttribute>(true);
       return attribute != null ? attribute.MaximumLength : null;
     }
+
+    public bool IsForeignKeyConstraintSuppressed (IPropertyInformation propertyInfo)
+    {
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+
+      var suppressForeignKeyConstraint = propertyInfo.GetCustomAttribute<ISuppressForeignKeyConstraintAttribute>(true);
+      return suppressForeignKeyConstraint?.IsForeignKeyConstraintSuppressed == true;
+    }
   }
 }

@@ -29,6 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private Mock<IPropertyInformation> _propertyInformationStub;
     private Mock<INullablePropertyAttribute> _nullablePropertyAttributeStub;
     private Mock<ILengthConstrainedPropertyAttribute> _lengthConstraintPropertyAttributeStub;
+    private Mock<ISuppressForeignKeyConstraintAttribute> _suppressForeignKeyConstraintAttributeStub;
 
     [SetUp]
     public void SetUp ()
@@ -37,6 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _propertyInformationStub = new Mock<IPropertyInformation>();
       _nullablePropertyAttributeStub = new Mock<INullablePropertyAttribute>();
       _lengthConstraintPropertyAttributeStub = new Mock<ILengthConstrainedPropertyAttribute>();
+      _suppressForeignKeyConstraintAttributeStub = new Mock<ISuppressForeignKeyConstraintAttribute>();
     }
 
     [Test]
@@ -90,6 +92,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var result = _domainModelConstraintProvider.GetMaxLength(_propertyInformationStub.Object);
 
       Assert.That(result, Is.EqualTo(100));
+    }
+
+    [Test]
+    public void IsForeignKeyConstraintSuppressed_ForeignKeyIsSuppressedFromAttribute_ReturnsTrue ()
+    {
+      _suppressForeignKeyConstraintAttributeStub.Setup(stub => stub.IsForeignKeyConstraintSuppressed).Returns(true);
+      _propertyInformationStub.Setup(stub => stub.GetCustomAttribute<ISuppressForeignKeyConstraintAttribute>(true)).Returns(_suppressForeignKeyConstraintAttributeStub.Object);
+
+      var result = _domainModelConstraintProvider.IsForeignKeyConstraintSuppressed(_propertyInformationStub.Object);
+
+      Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void IsForeignKeyConstraintSuppressed_ForeignKeyIsNotSuppressedFromAttribute_ReturnsFalse ()
+    {
+      _suppressForeignKeyConstraintAttributeStub.Setup(stub => stub.IsForeignKeyConstraintSuppressed).Returns(false);
+      _propertyInformationStub.Setup(stub => stub.GetCustomAttribute<ISuppressForeignKeyConstraintAttribute>(true)).Returns(_suppressForeignKeyConstraintAttributeStub.Object);
+
+      var result = _domainModelConstraintProvider.IsForeignKeyConstraintSuppressed(_propertyInformationStub.Object);
+
+      Assert.That(result, Is.False);
+    }
+
+    [Test]
+    public void IsForeignKeyConstraintSuppressed_NoAttribute_ReturnsFalse ()
+    {
+      _propertyInformationStub.Setup(stub => stub.GetCustomAttribute<ISuppressForeignKeyConstraintAttribute>(true)).Returns((ISuppressForeignKeyConstraintAttribute)null);
+
+      var result = _domainModelConstraintProvider.IsForeignKeyConstraintSuppressed(_propertyInformationStub.Object);
+
+      Assert.That(result, Is.False);
     }
 
   }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
@@ -67,9 +68,10 @@ public class UnitTestStorageObjectFactoryStub : IRdbmsStorageObjectFactory
 
     var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
     var dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
+    var domainModelConstraintProvider = SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>();
     var storageSettings = new StorageSettings(storageProviderDefinition, new[] { storageProviderDefinition });
 
-    var storageObjectFactory = new SqlStorageObjectFactory(storageSettings, typeConversionProvider, dataContainerValidator);
+    var storageObjectFactory = new SqlStorageObjectFactory(storageSettings, typeConversionProvider, dataContainerValidator, domainModelConstraintProvider);
     return storageObjectFactory.CreatePersistenceModelLoader(storageProviderDefinition);
   }
 

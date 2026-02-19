@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
@@ -26,8 +27,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 {
   public class ExtendedStorageObjectFactory : SqlStorageObjectFactory
   {
-    public ExtendedStorageObjectFactory (IStorageSettings storageSettings, ITypeConversionProvider typeConversionProvider, IDataContainerValidator dataContainerValidator)
-        : base(storageSettings, typeConversionProvider, dataContainerValidator)
+    public ExtendedStorageObjectFactory (IStorageSettings storageSettings, ITypeConversionProvider typeConversionProvider, IDataContainerValidator dataContainerValidator, IDomainModelConstraintProvider domainModelConstraintProvider)
+        : base(storageSettings, typeConversionProvider, dataContainerValidator, domainModelConstraintProvider)
     {
     }
     protected override IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (

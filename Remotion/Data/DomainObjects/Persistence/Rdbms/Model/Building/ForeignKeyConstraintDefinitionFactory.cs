@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
@@ -32,19 +33,23 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     private readonly IRdbmsPersistenceModelProvider _persistenceModelProvider;
     private readonly IStorageNameProvider _storageNameProvider;
     private readonly IInfrastructureStoragePropertyDefinitionProvider _infrastructureStoragePropertyDefinitionProvider;
+    private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
 
     public ForeignKeyConstraintDefinitionFactory (
         IStorageNameProvider storageNameProvider,
         IRdbmsPersistenceModelProvider persistenceModelProvider,
-        IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionProvider)
+        IInfrastructureStoragePropertyDefinitionProvider infrastructureStoragePropertyDefinitionProvider,
+        IDomainModelConstraintProvider domainModelConstraintProvider)
     {
       ArgumentNullException.ThrowIfNull(storageNameProvider);
       ArgumentNullException.ThrowIfNull(persistenceModelProvider);
       ArgumentNullException.ThrowIfNull(infrastructureStoragePropertyDefinitionProvider);
+      ArgumentNullException.ThrowIfNull(domainModelConstraintProvider);
 
       _storageNameProvider = storageNameProvider;
       _persistenceModelProvider = persistenceModelProvider;
       _infrastructureStoragePropertyDefinitionProvider = infrastructureStoragePropertyDefinitionProvider;
+      _domainModelConstraintProvider = domainModelConstraintProvider;
     }
 
     public IRdbmsPersistenceModelProvider PersistenceModelProvider
@@ -76,9 +81,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
                   Assertion.IsNotNull(endPointDefinition.PropertyName, "endPointDefinition.PropertyName != null when endPointDefinition.IsVirtual == false"))
               .GetOppositeClassDefinition()
           let propertyDefinition = ((RelationEndPointDefinition)endPointDefinition).PropertyDefinition
-          where propertyDefinition.StorageClass == StorageClass.Persistent
-          let referencingStorageProperty =
-              (IObjectIDStoragePropertyDefinition)_persistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition)
+          where propertyDefinition.StorageClass == StorageClass.Persistent && !_domainModelConstraintProvider.IsForeignKeyConstraintSuppressed(propertyDefinition.PropertyInfo)
+          let referencingStorageProperty = (IObjectIDStoragePropertyDefinition)_persistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition)
           where referencingStorageProperty.CanCreateForeignKeyConstraint
           let referencedTableName = FindTableName(referencedClassDefinition)
           where referencedTableName != null

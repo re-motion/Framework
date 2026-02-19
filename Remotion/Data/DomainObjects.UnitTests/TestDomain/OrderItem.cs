@@ -61,6 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     [DBBidirectionalRelation("OrderItems")]
     [Mandatory]
+    [SuppressForeignKeyConstraint]
     public abstract Order Order { get; set; }
 
     [StorageClassNone]

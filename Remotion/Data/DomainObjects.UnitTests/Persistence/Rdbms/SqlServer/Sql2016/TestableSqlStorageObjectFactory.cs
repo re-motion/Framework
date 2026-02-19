@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -60,7 +61,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
         IndexScriptBuilder indexBuilder,
         SynonymScriptBuilder synonymBuilder,
         TableTypeScriptBuilder tableTypeScriptBuilder)
-        : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>())
+        : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+            SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>())
     {
       _indexBuilder = indexBuilder;
       _constraintBuilder = constraintBuilder;
@@ -83,7 +85,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
         ISqlQueryGenerator sqlQueryGenerator,
         IForeignKeyConstraintDefinitionFactory foreignKeyConstraintDefinitionFactoryFactory,
         IStoragePropertyDefinitionResolver storagePropertyDefinitionResolver)
-        : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>())
+        : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+            SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>())
     {
       _infrastructureStoragePropertyDefinitionProvider = infrastructureStoragePropertyDefinitionProvider;
       _storageNameProvider = storageNameProvider;
@@ -99,7 +102,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     }
 
     public TestableSqlStorageObjectFactory (IStorageSettings storageSettings, IStorageProviderSerializer storageProviderSerializer, IEnumSerializer enumSerializer)
-        : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>())
+        : base(storageSettings, SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(), SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+            SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>())
     {
       _storageProviderSerializer = storageProviderSerializer;
       _enumSerializer = enumSerializer;
