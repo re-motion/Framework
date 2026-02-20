@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
@@ -45,6 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     private readonly ISaveCommandFactory _saveCommandFactory;
     private readonly QueryCommandFactory _queryCommandFactory;
     private readonly IDataParameterDefinitionFactory _dataParameterDefinitionFactory;
+    private readonly ITableManipulationRecordDefinitionProvider _tableManipulationRecordDefinitionProvider;
 
     public RdbmsProviderCommandFactory (
         RdbmsProviderDefinition storageProviderDefinition,
@@ -53,7 +55,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         IObjectReaderFactory objectReaderFactory,
         ITableDefinitionFinder tableDefinitionFinder,
         IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory,
-        IDataParameterDefinitionFactory dataParameterDefinitionFactory)
+        IDataParameterDefinitionFactory dataParameterDefinitionFactory,
+        ITableManipulationRecordDefinitionProvider tableManipulationRecordDefinitionProvider)
     {
       ArgumentNullException.ThrowIfNull(storageProviderDefinition);
       ArgumentNullException.ThrowIfNull(dbCommandBuilderFactory);
@@ -62,6 +65,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       ArgumentNullException.ThrowIfNull(tableDefinitionFinder);
       ArgumentNullException.ThrowIfNull(dataStoragePropertyDefinitionFactory);
       ArgumentNullException.ThrowIfNull(dataParameterDefinitionFactory);
+      ArgumentNullException.ThrowIfNull(tableManipulationRecordDefinitionProvider);
 
       _storageProviderDefinition = storageProviderDefinition;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
@@ -70,8 +74,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       _tableDefinitionFinder = tableDefinitionFinder;
       _dataStoragePropertyDefinitionFactory = dataStoragePropertyDefinitionFactory;
       _dataParameterDefinitionFactory = dataParameterDefinitionFactory;
+      _tableManipulationRecordDefinitionProvider = tableManipulationRecordDefinitionProvider;
 
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+      // ReSharper disable DoNotCallOverridableMethodsInConstructor
       _lookupCommandFactory = CreateLookupCommandFactory();
       _relationLookupCommandFactory = CreateRelationLookupCommandFactory();
       _saveCommandFactory = CreateSaveCommandFactory();
@@ -198,7 +203,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     protected virtual ISaveCommandFactory CreateSaveCommandFactory ()
     {
-      return new IndividualSaveCommandFactory(_dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _tableDefinitionFinder);
+      return new BatchedSaveCommandFactory(_dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _tableDefinitionFinder, _tableManipulationRecordDefinitionProvider);
     }
 
     protected virtual QueryCommandFactory CreateQueryCommandFactory ()

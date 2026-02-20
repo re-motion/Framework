@@ -20,6 +20,7 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
@@ -65,6 +66,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var dataParameterDefinitionFactoryChain =
           new ObjectIDDataParameterDefinitionFactory(storageProviderDefinition, storageTypeInformationProvider, storageSettings,
           new SimpleDataParameterDefinitionFactory(storageTypeInformationProvider));
+
+      var tableManipulationRecordDefinitionProvider = new TableManipulationRecordDefinitionProvider(
+        storageTypeInformationProvider,
+        infrastructureStoragePropertyDefinitionProvider,
+        rdbmsPersistenceModelProvider);
+
       var commandFactory = new RdbmsProviderCommandFactory(
           storageProviderDefinition,
           dbCommandBuilderFactory,
@@ -72,7 +79,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           objectReaderFactory,
           new TableDefinitionFinder(rdbmsPersistenceModelProvider),
           dataStoragePropertyDefinitionFactory,
-          dataParameterDefinitionFactoryChain);
+          dataParameterDefinitionFactoryChain,
+          tableManipulationRecordDefinitionProvider);
 
       if (ctorCall == null)
         ctorCall = (def, ext, factory) => new RdbmsProvider(def, def.ConnectionString, ext, factory, () => new SqlConnection());

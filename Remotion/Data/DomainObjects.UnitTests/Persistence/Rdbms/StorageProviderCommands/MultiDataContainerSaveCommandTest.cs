@@ -65,6 +65,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     }
 
     [Test]
+    public void Execute_NullCommand ()
+    {
+      var command = new MultiDataContainerSaveCommand(new[] { _tuple1 });
+
+      _dbCommandBuilderMock1.Setup(mock => mock.Create(_rdbmsExecutionContextStrictMock.Object)).Returns((DbCommand)null).Verifiable();
+
+      command.Execute(_rdbmsExecutionContextStrictMock.Object);
+
+      _dbCommandBuilderMock1.Verify();
+      _dbCommandBuilderMock2.Verify();
+      _dbCommandMock1.Verify();
+      _dbCommandMock2.Verify();
+      _rdbmsExecutionContextStrictMock.Verify();
+    }
+
+    [Test]
     public void Execute_NoAffectedRecords ()
     {
       var command = new MultiDataContainerSaveCommand(new[] { _tuple1 });
