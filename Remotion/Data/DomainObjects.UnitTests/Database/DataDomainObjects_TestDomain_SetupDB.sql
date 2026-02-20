@@ -648,8 +648,6 @@ ALTER TABLE [dbo].[Location] ADD
   CONSTRAINT [FK_Location_ClientID] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID])
 ALTER TABLE [dbo].[Order] ADD
   CONSTRAINT [FK_Order_CustomerID] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Company] ([ID])
-ALTER TABLE [dbo].[OrderItem] ADD
-  CONSTRAINT [FK_OrderItem_OrderID] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])
 ALTER TABLE [dbo].[OrderTicket] ADD
   CONSTRAINT [FK_OrderTicket_OrderID] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])
 ALTER TABLE [dbo].[Person] ADD

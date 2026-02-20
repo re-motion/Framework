@@ -364,8 +364,6 @@ IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_ob
   ALTER TABLE [dbo].[Location] DROP CONSTRAINT FK_Location_ClientID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Order_CustomerID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Order')
   ALTER TABLE [dbo].[Order] DROP CONSTRAINT FK_Order_CustomerID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_OrderItem_OrderID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'OrderItem')
-  ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT FK_OrderItem_OrderID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_OrderTicket_OrderID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'OrderTicket')
   ALTER TABLE [dbo].[OrderTicket] DROP CONSTRAINT FK_OrderTicket_OrderID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Person_AssociatedCustomerCompanyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Person')

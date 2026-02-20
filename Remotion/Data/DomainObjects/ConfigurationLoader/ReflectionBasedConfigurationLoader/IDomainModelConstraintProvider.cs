@@ -27,5 +27,6 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   {
     bool IsNullable (IPropertyInformation propertyInfo);
     int? GetMaxLength (IPropertyInformation propertyInfo);
+    bool IsForeignKeyConstraintSuppressed (IPropertyInformation propertyInfo);
   }
 }

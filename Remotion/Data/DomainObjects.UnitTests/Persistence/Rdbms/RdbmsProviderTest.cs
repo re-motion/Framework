@@ -23,6 +23,7 @@ using System.Linq;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
@@ -658,7 +659,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var sqlStorageObjectFactory = new SqlStorageObjectFactory(
           StorageSettings,
           SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>());
 
       var providerWithDifferentID = new RdbmsProvider(
           new RdbmsProviderDefinition("Test", sqlStorageObjectFactory, TestDomainConnectionString, TestDomainConnectionString),

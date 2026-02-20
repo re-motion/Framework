@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Reflection;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -69,7 +70,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       var sqlStorageObjectFactory = new SqlStorageObjectFactory(
           deferredStorageSettings,
           SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>());
 
       var defaultStorageProviderDefinition = new RdbmsProviderDefinition(
           DatabaseTest.SchemaGenerationFirstStorageProviderID,
