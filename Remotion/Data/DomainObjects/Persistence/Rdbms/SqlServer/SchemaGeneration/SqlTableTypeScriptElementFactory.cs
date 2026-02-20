@@ -85,7 +85,13 @@ public class SqlTableTypeScriptElementFactory : SqlElementFactoryBase, IStructur
 
   private string GetColumnDeclaration (ColumnDefinition column)
   {
-    return $"[{column.Name}] {column.StorageTypeInfo.StorageTypeName} {(column.StorageTypeInfo.IsStorageTypeNullable ? "NULL" : "NOT NULL")}";
+    // Columns of type rowversion cannot be set directly not even in table types which are used for table valued parameters.
+    // Therefore, we need to use varbinary instead of rowversion.
+    var storageTypeName = column.StorageTypeInfo.StorageTypeName == "rowversion"
+        ? $"varbinary({column.StorageTypeInfo.StorageTypeLength ?? 8})"
+        : column.StorageTypeInfo.StorageTypeName;
+
+    return $"[{column.Name}] {storageTypeName} {(column.StorageTypeInfo.IsStorageTypeNullable ? "NULL" : "NOT NULL")}";
   }
 
   private IReadOnlyList<string> GetTableConstraintDeclarations (TableTypeDefinition tableTypeDefinition)

@@ -607,3 +607,9 @@ CREATE TYPE [dbo].[TVP_Guid_Distinct] AS TABLE
   UNIQUE CLUSTERED ([Value])
 )
 GO
+CREATE TYPE [dbo].[TVP_AllTables_Lock] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [Timestamp] varbinary(8) NOT NULL
+)
+GO

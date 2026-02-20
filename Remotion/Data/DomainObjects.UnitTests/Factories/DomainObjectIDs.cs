@@ -639,6 +639,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       get { return CreateObjectID("Official", 2); }
     }
 
+    public ObjectID Official3
+    {
+      get { return CreateObjectID("Official", new Guid("86D83CB8-B5E5-42BF-A1B3-F7C470F3DDD3")); }
+    }
+
     #endregion
 
     #region Client

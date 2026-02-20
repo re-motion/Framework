@@ -266,7 +266,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       SetPropertyValue(deletedDataContainer, typeof(Employee), "Supervisor", null);
       deletedDataContainer.Delete();
 
+      var expectedTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Lock", new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
+      expectedTvpValue.AddRecord([changedDataContainer.ID.Value, changedDataContainer.Timestamp]);
+      expectedTvpValue.AddRecord([deletedDataContainer.ID.Value, deletedDataContainer.Timestamp]);
+      expectedTvpValue.AddRecord([markedAsChangedDataContainer.ID.Value, markedAsChangedDataContainer.Timestamp]);
+
       var sequence = new VerifiableSequence();
+      _testHelper.ExpectExecuteReader(
+          sequence,
+          expectedCommandBehavior:CommandBehavior.Default,
+          "DECLARE @TransactionIsolationLevel int;\r\nDECLARE @IsReadCommittedSnapshotOn bit;\r\nSET @TransactionIsolationLevel = (SELECT [transaction_isolation_level] FROM [sys].[dm_exec_sessions] WHERE [session_id] = @@SPID);\r\nSET @IsReadCommittedSnapshotOn = (SELECT [is_read_committed_snapshot_on] FROM [sys].[databases] WHERE [database_id] = DB_ID());\r\nIF (@TransactionIsolationLevel = 2 AND @IsReadCommittedSnapshotOn = 1)\r\nBEGIN\r\nSELECT [P].[ID], [P].[Timestamp] FROM [Employee] [T] WITH(ROWLOCK, XLOCK, READPAST)\r\nRIGHT JOIN @TVP_Lock_Employee [P] ON [P].[ID] = [T].[ID] AND [P].[Timestamp] = [T].[Timestamp]\r\nWHERE [T].[ID] IS NULL;\r\nEND\r\nELSE\r\nBEGIN\r\nSELECT [P].[ID], [P].[Timestamp] FROM [Employee] [T] WITH(ROWLOCK, XLOCK)\r\nRIGHT JOIN @TVP_Lock_Employee [P] ON [P].[ID] = [T].[ID] AND [P].[Timestamp] = [T].[Timestamp]\r\nWHERE [T].[ID] IS NULL;\r\nEND",
+          Tuple.Create("@TVP_Lock_Employee", DbType.Object, (object)expectedTvpValue));
+
       _testHelper.ExpectExecuteNonQuery(
           sequence,
           "INSERT INTO [Employee] ([ID], [ClassID], [Name]) VALUES (@ID, @ClassID, @Name);",

@@ -31,26 +31,40 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
   /// </summary>
   private record TvpColumnMetadata (IRdbmsStoragePropertyDefinition Property, RecordPropertyDefinitionFactory RecordPropertyDefinitionFactory)
   {
+    /// <summary>
+    /// Creates a <see cref="TvpColumnMetadata"/> for an ObjectID property and reads the whole object ID.
+    /// </summary>
     public static TvpColumnMetadata CreateForIDColumn (TableDefinition tableDefinition)
     {
       ArgumentNullException.ThrowIfNull(tableDefinition);
 
-      return CreateForIDColumn(tableDefinition.ObjectIDProperty);
+      return new TvpColumnMetadata(
+           tableDefinition.ObjectIDProperty,
+           static (property, _) =>
+           {
+             return new RecordPropertyDefinition(
+                 "ID", // Note: Name here is cosmetic and not used anywhere
+                 property,
+                 o => ((ITableManipulationDataContainerAccessor)o).GetID());
+           });
     }
 
-    public static TvpColumnMetadata CreateForIDColumn (IRdbmsStoragePropertyDefinition property)
+    /// <summary>
+    /// Creates a <see cref="TvpColumnMetadata"/> for an ObjectID property and only retrieves the value part of it.
+    /// </summary>
+    public static TvpColumnMetadata CreateForIDValueColumn (IRdbmsStoragePropertyDefinition property)
     {
       ArgumentNullException.ThrowIfNull(property);
 
       return new TvpColumnMetadata(
-          property,
-          static (property, _) =>
-          {
-            return new RecordPropertyDefinition(
-                "ID", // Note: Name here is cosmetic and not used anywhere
-                property,
-                o => ((ITableManipulationDataContainerAccessor)o).GetID());
-          });
+            property,
+            static (property, _) =>
+            {
+              return new RecordPropertyDefinition(
+                  "ID", // Note: Name here is cosmetic and not used anywhere
+                  property,
+                  o => ((ITableManipulationDataContainerAccessor)o).GetID().Value);
+            });
     }
 
     public static TvpColumnMetadata CreateForTimestampColumn (IRdbmsStoragePropertyDefinition property)
@@ -280,7 +294,7 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
   {
     ImmutableArray<TvpColumnMetadata> columns =
     [
-        TvpColumnMetadata.CreateForIDColumn(_infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition().ValueProperty)
+        TvpColumnMetadata.CreateForIDValueColumn(_infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition().ValueProperty)
     ];
     var tableTypeDefinition = CreateTableTypeDefinition(
         "TVP_AllTables_Delete",
@@ -296,7 +310,7 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
   {
     ImmutableArray<TvpColumnMetadata> columns =
     [
-        TvpColumnMetadata.CreateForIDColumn(_infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition().ValueProperty),
+        TvpColumnMetadata.CreateForIDValueColumn(_infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition().ValueProperty),
         TvpColumnMetadata.CreateForTimestampColumn(_infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition())
     ];
     var tableTypeDefinition = CreateTableTypeDefinition(

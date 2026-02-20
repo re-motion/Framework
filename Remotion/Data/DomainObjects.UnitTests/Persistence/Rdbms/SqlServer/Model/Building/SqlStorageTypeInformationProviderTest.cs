@@ -662,7 +662,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           "rowversion",
           DbType.Binary,
           true,
-          null,
+          8,
           typeof(Byte[]),
           Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
 
@@ -673,7 +673,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           "rowversion",
           DbType.Binary,
           false,
-          null,
+          8,
           typeof(Byte[]),
           Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
     }
