@@ -552,6 +552,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
 
       var dbCommandBuilderFactory = CreateDbCommandBuilderFactory(storageProviderDefinition);
 
+      var tableManipulationRecordDefinitionProvider = CreateTableManipulationRecordDefinitionProvider(storageProviderDefinition);
+
       return new RdbmsProviderCommandFactory(
           storageProviderDefinition,
           dbCommandBuilderFactory,
@@ -559,7 +561,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
           objectReaderFactory,
           new TableDefinitionFinder(persistenceModelProvider),
           dataStoragePropertyDefinitionFactory,
-          dataParameterDefinitionFactory);
+          dataParameterDefinitionFactory,
+          tableManipulationRecordDefinitionProvider);
     }
 
     protected virtual IDataContainerValidator CreateDataContainerValidator (RdbmsProviderDefinition storageProviderDefinition)
