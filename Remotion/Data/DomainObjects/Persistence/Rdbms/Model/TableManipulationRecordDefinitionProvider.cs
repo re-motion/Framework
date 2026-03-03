@@ -6,6 +6,7 @@ using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Remotion.Data.DomainObjects.Mapping;
@@ -21,9 +22,118 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 /// </summary>
 public class TableManipulationRecordDefinitionProvider : ITableManipulationRecordDefinitionProvider
 {
+  public class UnknownRecordPropertyDefinition : RecordPropertyDefinition
+  {
+    public UnknownRecordPropertyDefinition (IRdbmsStoragePropertyDefinition storagePropertyDefinition, Func<object, object?> getValue)
+        : base("Unknown", storagePropertyDefinition, getValue)
+    {
+    }
+  }
+
+  public class TableManipulationRecordDefinition : RecordDefinition
+  {
+    public TableManipulationRecordDefinition (string name, IRdbmsStructuredTypeDefinition structuredTypeDefinition, IReadOnlyCollection<RecordPropertyDefinition> propertyDefinitions)
+        : base(name, structuredTypeDefinition, propertyDefinitions)
+    {
+    }
+
+    public override object[] GetColumnValues (object item)
+    {
+      ArgumentNullException.ThrowIfNull(item);
+
+      // It is possible that we get NULL for a non-nullable type therefore ConvertToStorageType can fail.
+      // This happens when multiple classes are stored in the same table.
+      // eg: Class A and B : A where B introduces a new int property called IntPropOnB.
+      // If we now try to get all values for an instance of Class A we get a column for IntPropOnB but Class A will always return null.
+      // Because the property is typed to System.Int32 and null cannot be converted to System.In32 therefore ConvertToStorageType throws an exception.
+      // But instead we just want DBNull.Value because the column in the database has to be nullable.
+
+      var convertedValues = new List<object>();
+      foreach (var recordPropertyDefinition in PropertyDefinitions)
+      {
+        var columns = recordPropertyDefinition.StoragePropertyDefinition.SplitValue(recordPropertyDefinition.GetValue(item));
+
+        // TODO: RM-8491 Possibly remove this check when RM-8491 is fixed
+        if (recordPropertyDefinition is UnknownRecordPropertyDefinition)
+          convertedValues.AddRange(columns.Select(static _ => DBNull.Value));
+        else
+          convertedValues.AddRange(columns.Select(cv => cv.Column.StorageTypeInfo.ConvertToStorageType(cv.Value)));
+      }
+
+      return convertedValues.ToArray();
+    }
+  }
+
   private delegate RecordPropertyDefinition RecordPropertyDefinitionFactory (
       IRdbmsStoragePropertyDefinition property,
       IReadOnlyDictionary<IStoragePropertyDefinition, PropertyDefinition> propertyDefinitionLookup);
+
+  private class ColumnDefinitionEqualityComparer : IEqualityComparer<ColumnDefinition>
+  {
+    public bool Equals (ColumnDefinition? x, ColumnDefinition? y)
+    {
+      if (x == null && y == null)
+        return true;
+
+      if (x == null)
+        return false;
+
+      if (y == null)
+        return false;
+
+      return string.Equals(x.Name, y.Name, StringComparison.Ordinal) && x.IsPartOfPrimaryKey == y.IsPartOfPrimaryKey;
+    }
+
+    public int GetHashCode (ColumnDefinition obj)
+    {
+      var hashCode = obj.Name.GetHashCode();
+      hashCode ^= obj.IsPartOfPrimaryKey.GetHashCode();
+      return hashCode;
+    }
+  }
+
+  private class StoragePropertyDefinitionEqualityComparer : IEqualityComparer<IStoragePropertyDefinition>
+  {
+    private readonly ColumnDefinitionEqualityComparer _columnDefinitionEqualityComparer = new();
+
+    public bool Equals (IStoragePropertyDefinition? x, IStoragePropertyDefinition? y)
+    {
+      if (x == null && y == null)
+        return true;
+
+      if (x == null)
+        return false;
+
+      if (y == null)
+        return false;
+
+      if (ReferenceEquals(x, y))
+        return true;
+
+      if (x is not IRdbmsStoragePropertyDefinition xRdbms || y is not IRdbmsStoragePropertyDefinition yRdbms)
+        throw new UnreachableException("This should be unreachable, because every implementation compared here should implement IRdbmsStoragePropertyDefinition");
+
+      var xCols = xRdbms.GetColumns().OrderBy(c => c.Name).ThenBy(c => c.IsPartOfPrimaryKey);
+      var yCols = yRdbms.GetColumns().OrderBy(c => c.Name).ThenBy(c => c.IsPartOfPrimaryKey);
+      return xCols.SequenceEqual(yCols, _columnDefinitionEqualityComparer);
+
+    }
+
+    public int GetHashCode (IStoragePropertyDefinition obj)
+    {
+      var hashCode = obj.GetType().GetHashCode();
+      if (obj is IRdbmsStoragePropertyDefinition rdbmsStoragePropertyDefinition)
+      {
+        foreach (var column in rdbmsStoragePropertyDefinition.GetColumns().OrderBy(c => c.Name).ThenBy(c => c.IsPartOfPrimaryKey))
+        {
+          hashCode ^= column.Name.GetHashCode();
+          hashCode ^= column.IsPartOfPrimaryKey.GetHashCode();
+        }
+      }
+
+      return hashCode;
+    }
+  }
 
   /// <summary>
   /// Represents a column in the TVP and handles the creation of <see cref="RecordPropertyDefinition"/>.
@@ -100,8 +210,7 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
             }
             else
             {
-              return new RecordPropertyDefinition(
-                  "Unknown",
+              return new UnknownRecordPropertyDefinition(
                   property,
                   _ => null);
             }
@@ -130,8 +239,7 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
             }
             else
             {
-              return new RecordPropertyDefinition(
-                  "Unknown",
+              return new UnknownRecordPropertyDefinition(
                   property,
                   _ => null);
             }
@@ -156,8 +264,7 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
             }
             else
             {
-              return new RecordPropertyDefinition(
-                  "Unknown",
+              return new UnknownRecordPropertyDefinition(
                   isSetProperty,
                   _ => false);
             }
@@ -277,10 +384,12 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
 
     // We can't navigate from rdbms property to mapping property so we create a reverse lookup using the ClassDefinition.
     // The assumption is that this is enough to find our own properties. Properties from sibling ClassDefinitions are not included but also not relevant.
+    // We need a custom IEqualityComparer because the StoragePropertyDefinition is not always the same instance as the one in the table definition.
+    // This is caused by IRdbmsStoragePropertyDefinition.UnifyWithEquivalentProperties which creates new instances.
     var propertyLookup = classDefinition
         .GetPropertyDefinitions()
         .Where(pd => pd.StorageClass == StorageClass.Persistent)
-        .ToDictionary(e => e.StoragePropertyDefinition, e => e);
+        .ToDictionary(e => e.StoragePropertyDefinition, e => e, new StoragePropertyDefinitionEqualityComparer());
 
     var insertRecordDefinition = CreateRecordDefinition(tableTypeDefinitions.InsertTableTypeDefinition, tableTypeDefinitions.InsertColumns, propertyLookup);
     var updateRecordDefinition = CreateRecordDefinition(tableTypeDefinitions.UpdateTableTypeDefinition, tableTypeDefinitions.UpdateColumns, propertyLookup);
@@ -323,9 +432,9 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
         ReadOnlyDictionary<IStoragePropertyDefinition, PropertyDefinition>.Empty);
   }
 
-  private RecordDefinition CreateRecordDefinition (TableTypeDefinition tableTypeDefinition, ImmutableArray<TvpColumnMetadata> columns, IReadOnlyDictionary<IStoragePropertyDefinition, PropertyDefinition> propertyLookup)
+  private TableManipulationRecordDefinition CreateRecordDefinition (TableTypeDefinition tableTypeDefinition, ImmutableArray<TvpColumnMetadata> columns, IReadOnlyDictionary<IStoragePropertyDefinition, PropertyDefinition> propertyLookup)
   {
-    return new RecordDefinition(
+    return new TableManipulationRecordDefinition(
         tableTypeDefinition.TypeName.EntityName,
         tableTypeDefinition,
         columns.Select(e => e.RecordPropertyDefinitionFactory(e.Property, propertyLookup)).ToArray());

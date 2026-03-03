@@ -11,8 +11,8 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
+using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.SingleInheritance;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
@@ -135,6 +135,47 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
     Assert.That(
         recordDefinition1,
         Is.SameAs(recordDefinition2));
+  }
+
+  [Test]
+  public void GetInsertRecordDefinition_ClassWithMixin_ReturnsRecordDefinitionWithExpectedLayout ()
+  {
+    var classDefinition = MappingConfiguration.Current.GetClassDefinition(nameof(SingleInheritanceFirstDerivedClass));
+    var tableDefinition = (TableDefinition)((FilterViewDefinition)classDefinition.StorageEntityDefinition).BaseEntity;
+    var insertRecordDefinition = _tableManipulationRecordDefinitionProvider.GetInsertRecordDefinition(classDefinition);
+
+    AssertRecordDefinition(insertRecordDefinition, classDefinition, tableDefinition, "TVP_SingleInheritanceBaseClass_Insert", [
+        AssertedProperty.ID,
+        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceFirstDerivedClass.BaseProperty)),
+        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceBaseClass.VectorOpposingProperty)),
+        AssertedProperty.CopiedProperty(nameof(SingleInheritanceFirstDerivedClass.FirstDerivedProperty)),
+        AssertedProperty.CopiedProperty(typeof(SingleInheritancePersistentMixin), nameof(SingleInheritancePersistentMixin.PersistentProperty)),
+        AssertedProperty.UnknownProperty(nameof(SingleInheritanceSecondDerivedClass.SecondDerivedProperty)),
+      ]);
+
+  }
+
+  [Test]
+  public void GetUpdateRecordDefinition_ClassWithMixin_ReturnsRecordDefinitionWithExpectedLayout ()
+  {
+    var classDefinition = MappingConfiguration.Current.GetClassDefinition(nameof(SingleInheritanceFirstDerivedClass));
+    var tableDefinition = (TableDefinition)((FilterViewDefinition)classDefinition.StorageEntityDefinition).BaseEntity;
+
+    var updateRecordDefinition = _tableManipulationRecordDefinitionProvider.GetUpdateRecordDefinition(classDefinition);
+    const string isSetSuffix = "__IsSet";
+    AssertRecordDefinition(updateRecordDefinition, classDefinition, tableDefinition, "TVP_SingleInheritanceBaseClass_Update", [
+        AssertedProperty.ID,
+        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceFirstDerivedClass.BaseProperty)),
+        AssertedProperty.BitflagProperty(nameof(SingleInheritanceFirstDerivedClass.BaseProperty) + isSetSuffix ),
+        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceBaseClass.VectorOpposingProperty)),
+        AssertedProperty.CopiedProperty(nameof(SingleInheritanceFirstDerivedClass.FirstDerivedProperty)),
+        AssertedProperty.BitflagProperty(nameof(SingleInheritanceFirstDerivedClass.FirstDerivedProperty) + isSetSuffix ),
+        AssertedProperty.CopiedProperty(typeof(SingleInheritancePersistentMixin), nameof(SingleInheritancePersistentMixin.PersistentProperty)),
+        AssertedProperty.BitflagProperty(nameof(SingleInheritancePersistentMixin.PersistentProperty) + isSetSuffix ),
+        AssertedProperty.UnknownProperty(nameof(SingleInheritanceSecondDerivedClass.SecondDerivedProperty)),
+        AssertedProperty.BitflagProperty(nameof(SingleInheritanceSecondDerivedClass.SecondDerivedProperty) + isSetSuffix),
+      ]);
+
   }
 
   [Test]
@@ -483,9 +524,18 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         Assert.That(
             actualRecord.PropertyName,
             Is.EqualTo(expectedPropertyName));
-        Assert.That(
-            actualRecord.StoragePropertyDefinition,
-            Is.SameAs(propertyDefinition.StoragePropertyDefinition));
+
+        Assert.That(actualRecord.StoragePropertyDefinition.GetType(), Is.EqualTo(propertyDefinition.StoragePropertyDefinition.GetType()));
+        Assert.That(propertyDefinition.StoragePropertyDefinition, Is.InstanceOf<IRdbmsStoragePropertyDefinition>());
+
+        var expectedStoragePropertyDefinition = propertyDefinition.StoragePropertyDefinition as IRdbmsStoragePropertyDefinition;
+        var actualColumnDefinitions = actualRecord.StoragePropertyDefinition.GetColumns().OrderBy(c=>c.Name).ThenBy(c=>c.IsPartOfPrimaryKey).ToArray();
+        var expectedColumnDefinitions = expectedStoragePropertyDefinition!.GetColumns().OrderBy(c => c.Name).ThenBy(c => c.IsPartOfPrimaryKey).ToArray();
+        Assert.That(actualColumnDefinitions.Length, Is.EqualTo(expectedColumnDefinitions.Length));
+
+        var actualColumnsString = string.Join("-", actualColumnDefinitions.Select(c => c.Name + c.IsPartOfPrimaryKey));
+        var expectedColumnsString = string.Join("-", expectedColumnDefinitions.Select(c => c.Name + c.IsPartOfPrimaryKey));
+        Assert.That(actualColumnsString, Is.EqualTo(expectedColumnsString));
       }
       else if (expectedAssertedProperty.Type == AssertedPropertyType.BitflagProperty)
       {

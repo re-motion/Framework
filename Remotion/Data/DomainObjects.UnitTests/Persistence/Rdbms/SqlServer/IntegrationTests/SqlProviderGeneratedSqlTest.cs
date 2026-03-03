@@ -266,24 +266,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       SetPropertyValue(deletedDataContainer, typeof(Employee), "Supervisor", null);
       deletedDataContainer.Delete();
 
-      var expectedTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Lock", new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
-      expectedTvpValue.AddRecord([changedDataContainer.ID.Value, changedDataContainer.Timestamp]);
-      expectedTvpValue.AddRecord([deletedDataContainer.ID.Value, deletedDataContainer.Timestamp]);
-      expectedTvpValue.AddRecord([markedAsChangedDataContainer.ID.Value, markedAsChangedDataContainer.Timestamp]);
+      var expectedLockTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Lock", new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
+      expectedLockTvpValue.AddRecord([changedDataContainer.ID.Value, changedDataContainer.Timestamp]);
+      expectedLockTvpValue.AddRecord([deletedDataContainer.ID.Value, deletedDataContainer.Timestamp]);
+      expectedLockTvpValue.AddRecord([markedAsChangedDataContainer.ID.Value, markedAsChangedDataContainer.Timestamp]);
+
+
+      var expectedInsertTvpValue = new SqlTableValuedParameterValue("TVP_Employee_Insert", new[]
+                                                                                           { new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
+                                                                                             new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
+                                                                                             new SqlMetaData("Name", SqlDbType.NVarChar, 100),
+                                                                                             new SqlMetaData("SupervisorID", SqlDbType.UniqueIdentifier)
+                                                                                           });
+      expectedInsertTvpValue.AddRecord([newDataContainer.ID.Value,newDataContainer.ID.ClassID, "", DBNull.Value]);
 
       var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
           expectedCommandBehavior:CommandBehavior.Default,
           "DECLARE @TransactionIsolationLevel int;\r\nDECLARE @IsReadCommittedSnapshotOn bit;\r\nSET @TransactionIsolationLevel = (SELECT [transaction_isolation_level] FROM [sys].[dm_exec_sessions] WHERE [session_id] = @@SPID);\r\nSET @IsReadCommittedSnapshotOn = (SELECT [is_read_committed_snapshot_on] FROM [sys].[databases] WHERE [database_id] = DB_ID());\r\nIF (@TransactionIsolationLevel = 2 AND @IsReadCommittedSnapshotOn = 1)\r\nBEGIN\r\nSELECT [P].[ID], [P].[Timestamp] FROM [Employee] [T] WITH(ROWLOCK, XLOCK, READPAST)\r\nRIGHT JOIN @TVP_Lock_Employee [P] ON [P].[ID] = [T].[ID] AND [P].[Timestamp] = [T].[Timestamp]\r\nWHERE [T].[ID] IS NULL;\r\nEND\r\nELSE\r\nBEGIN\r\nSELECT [P].[ID], [P].[Timestamp] FROM [Employee] [T] WITH(ROWLOCK, XLOCK)\r\nRIGHT JOIN @TVP_Lock_Employee [P] ON [P].[ID] = [T].[ID] AND [P].[Timestamp] = [T].[Timestamp]\r\nWHERE [T].[ID] IS NULL;\r\nEND",
-          Tuple.Create("@TVP_Lock_Employee", DbType.Object, (object)expectedTvpValue));
+          Tuple.Create("@TVP_Lock_Employee", DbType.Object, (object)expectedLockTvpValue));
 
       _testHelper.ExpectExecuteNonQuery(
           sequence,
-          "INSERT INTO [Employee] ([ID], [ClassID], [Name]) VALUES (@ID, @ClassID, @Name);",
-          Tuple.Create("@ID", DbType.Guid, newDataContainer.ID.Value),
-          Tuple.Create("@ClassID", DbType.AnsiString, (object)"Employee"),
-          Tuple.Create("@Name", DbType.String, (object)""));
+          """
+          INSERT INTO [Employee] ([ID], [ClassID], [Name], [SupervisorID])
+          SELECT [ID], [ClassID], [Name], [SupervisorID] FROM @TVP_Insert_Employee;
+          """,
+          Tuple.Create("@TVP_Insert_Employee", DbType.Object, (object)expectedInsertTvpValue));
+
       _testHelper.ExpectExecuteNonQuery(
           sequence,
           "UPDATE [Employee] SET [Name] = @Name WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",

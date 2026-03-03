@@ -160,13 +160,14 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
   {
     var groupedDataContainers = GetGroupedDataContainer(dataContainers);
 
-    var locks = new List<IRdbmsProviderCommand>();
-    var inserts = new List<IRdbmsProviderCommand>();
+    var combinedCommands = new List<IRdbmsProviderCommand>();
     var updates = new List<IRdbmsProviderCommand>();
     var deletes = new List<IRdbmsProviderCommand>();
 
     var allDataContainersForLocking = new List<DataContainer>();
-    var lockCommandSpecifications = new List<IBatchedLockCommandSpecification>();
+    var allDataContainersForInsert = new List<DataContainer>();
+    var lockCommandSpecifications = new List<IBatchedCommandSpecification>();
+    var insertCommandSpecifications = new List<IBatchedCommandSpecification>();
 
     foreach (var kvp in groupedDataContainers)
     {
@@ -185,7 +186,10 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
       }
 
       if (dataContainerGroup.ForInsert.Count > 0)
-        inserts.AddRange(CreateCommandsForInsert(tableDefinition, dataContainerGroup.ForInsert));
+      {
+        allDataContainersForInsert.AddRange(kvp.Value.ForInsert);
+        insertCommandSpecifications.Add(CreateInsertCommandSpecification(tableDefinition, kvp.Value.ForInsert));
+      }
 
       if (dataContainerGroup.ForUpdate.Count > 0)
         updates.AddRange(CreateCommandsForUpdate(tableDefinition, dataContainerGroup.ForUpdate));
@@ -194,13 +198,24 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
         deletes.AddRange(CreateCommandsForDelete(tableDefinition, dataContainerGroup.ForDelete));
     }
 
+    // The order in combinedCommands is important!
+    // 1. Locks
+    // 2. Inserts
+    // 3. Updates
+    // 4. Deletes
     if (allDataContainersForLocking.Count > 0)
     {
       var lockCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedLock(lockCommandSpecifications.ToArray());
-      locks.Add(new BatchedLockRdbmsProviderCommand(lockCommandBuilder, allDataContainersForLocking));
+      combinedCommands.Add(new BatchedLockRdbmsProviderCommand(lockCommandBuilder, allDataContainersForLocking));
     }
 
-    return locks.Concat(inserts).Concat(updates).Concat(deletes);
+    if (allDataContainersForInsert.Count > 0)
+    {
+      var insertCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedInsert(insertCommandSpecifications.ToArray());
+      combinedCommands.Add(new BatchedObjectsRdbmsProviderCommand(insertCommandBuilder, allDataContainersForInsert));
+    }
+
+    return combinedCommands.Concat(updates).Concat(deletes);
   }
 
   private IDictionary<TableDefinition, DataContainerGroup> GetGroupedDataContainer (IEnumerable<DataContainer> dataContainers)
@@ -263,12 +278,19 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     }
   }
 
-  private IBatchedLockCommandSpecification CreateLockCommandSpecification (TableDefinition tableDefinition, DataContainer[] dataContainers)
+  private IBatchedCommandSpecification CreateLockCommandSpecification (TableDefinition tableDefinition, DataContainer[] dataContainers)
   {
     var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(
         _tableManipulationRecordDefinitionProvider,
         (provider, classDefinition) => provider.GetLockRecordDefinition(classDefinition));
-    var specification = new BatchedLockCommandSpecification(tableDefinition, parameterDefinition, dataContainers);
+    var specification = new BatchedCommandSpecification(tableDefinition, parameterDefinition, dataContainers);
+    return specification;
+  }
+
+  private IBatchedCommandSpecification CreateInsertCommandSpecification (TableDefinition tableDefinition, List<DataContainer> dataContainers)
+  {
+    var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(_tableManipulationRecordDefinitionProvider, (provider, classDefinition) => provider.GetInsertRecordDefinition(classDefinition));
+    var specification = new BatchedCommandSpecification(tableDefinition, parameterDefinition, dataContainers);
     return specification;
   }
 }

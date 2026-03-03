@@ -50,7 +50,7 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
 
     var tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"));
 
-    var commandSpecification = new Mock<IBatchedLockCommandSpecification>(MockBehavior.Strict);
+    var commandSpecification = new Mock<IBatchedCommandSpecification>(MockBehavior.Strict);
     commandSpecification.Setup(stub => stub.Columns).Returns(["col1", "col2"]);
     commandSpecification.Setup(stub => stub.TableDefinition).Returns(tableDefinition);
     commandSpecification.Setup(stub => stub.CreateDbParameter(It.IsAny<DbCommand>(), "@TVP_Lock_Table")).Returns(_dbDataParameterStub.Object);
@@ -88,7 +88,7 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
 
     var tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition("customscheme", "Table"));
 
-    var commandSpecification = new Mock<IBatchedLockCommandSpecification>(MockBehavior.Strict);
+    var commandSpecification = new Mock<IBatchedCommandSpecification>(MockBehavior.Strict);
     commandSpecification.Setup(stub => stub.Columns).Returns(["col1", "col2"]);
     commandSpecification.Setup(stub => stub.TableDefinition).Returns(tableDefinition);
     commandSpecification.Setup(stub => stub.CreateDbParameter(It.IsAny<DbCommand>(), "@TVP_Lock_Table")).Returns(_dbDataParameterStub.Object);
@@ -128,10 +128,10 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
     var tableDefinition2 = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table2"));
     var tableDefinition3 = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table3"));
 
-    var commandSpecifications = new List<IBatchedLockCommandSpecification>();
+    var commandSpecifications = new List<IBatchedCommandSpecification>();
     foreach (var td in new List<TableDefinition> { tableDefinition1, tableDefinition2, tableDefinition3 })
     {
-      var commandSpecification = new Mock<IBatchedLockCommandSpecification>(MockBehavior.Strict);
+      var commandSpecification = new Mock<IBatchedCommandSpecification>(MockBehavior.Strict);
       commandSpecification.Setup(stub => stub.Columns).Returns(["col1", "col2"]);
       commandSpecification.Setup(stub => stub.TableDefinition).Returns(td);
       commandSpecification.Setup(stub => stub.CreateDbParameter(It.IsAny<DbCommand>(), _sqlDialectStub.Object.GetParameterName("TVP_Lock_" + td.TableName.EntityName))).Returns(_dbDataParameterStub.Object);
@@ -189,10 +189,10 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
     var tableDefinition2 = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition("customscheme", "Table2"));
     var tableDefinition3 = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition("customscheme", "Table3"));
 
-    var commandSpecifications = new List<IBatchedLockCommandSpecification>();
+    var commandSpecifications = new List<IBatchedCommandSpecification>();
     foreach (var td in new List<TableDefinition> { tableDefinition1, tableDefinition2, tableDefinition3 })
     {
-      var commandSpecification = new Mock<IBatchedLockCommandSpecification>(MockBehavior.Strict);
+      var commandSpecification = new Mock<IBatchedCommandSpecification>(MockBehavior.Strict);
       commandSpecification.Setup(stub => stub.Columns).Returns(["col1", "col2"]);
       commandSpecification.Setup(stub => stub.TableDefinition).Returns(td);
       commandSpecification.Setup(stub => stub.CreateDbParameter(It.IsAny<DbCommand>(), _sqlDialectStub.Object.GetParameterName("TVP_Lock_" + td.TableName.EntityName))).Returns(_dbDataParameterStub.Object);

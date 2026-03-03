@@ -37,7 +37,14 @@ public class MultiClassTableValuedDataParameterDefinition : IDataParameterDefini
 
     public object GetTimestamp () => _dataContainer.Timestamp!;
 
-    public object? GetValue (PropertyDefinition propertyDefinition) => _dataContainer.GetValue(propertyDefinition);
+    public object? GetValue (PropertyDefinition propertyDefinition)
+    {
+      // TODO This ensures that no relation is inserted during insert but with RM-9647 this should be changed to a better logic
+      if (propertyDefinition.IsObjectID)
+        return null;
+
+      return _dataContainer.GetValueWithoutEvents(propertyDefinition);
+    }
 
     public object? GetOptionalValue (PropertyDefinition propertyDefinition)
     {

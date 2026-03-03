@@ -16,13 +16,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 /// </summary>
 public class BatchedLockDbCommandBuilder : DbCommandBuilder
 {
-  private readonly IBatchedLockCommandSpecification[] _commandSpecifications;
+  private readonly IReadOnlyList<IBatchedCommandSpecification> _commandSpecifications;
 
-  public BatchedLockDbCommandBuilder (ISqlDialect sqlDialect, IBatchedLockCommandSpecification[] commandSpecifications)
+  public BatchedLockDbCommandBuilder (ISqlDialect sqlDialect, IReadOnlyList<IBatchedCommandSpecification> commandSpecifications)
       : base(sqlDialect)
   {
     ArgumentNullException.ThrowIfNull(sqlDialect);
     ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(commandSpecifications), commandSpecifications);
+
     _commandSpecifications = commandSpecifications;
   }
 
