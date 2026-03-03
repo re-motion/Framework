@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
@@ -55,5 +57,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
         IEnumerable<ColumnValue> updatedColumns,
         IEnumerable<ColumnValue> comparedColumnValues);
     IDbCommandBuilder CreateForDelete (TableDefinition tableDefinition, IEnumerable<ColumnValue> comparedColumnValues);
+
+    /// <summary>
+    /// Creates an <see cref="IDbCommandBuilder"/> that creates an <see cref="DbCommand"/> for locking multiple records in a relational database.
+    /// </summary>
+    IDbCommandBuilder CreateForBatchedLock (IBatchedLockCommandSpecification[] commandSpecifications);
   }
 }

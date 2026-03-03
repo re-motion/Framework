@@ -109,7 +109,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
           "rowversion",
           DbType.Binary,
           isStorageTypeNullable,
-          null,
+          8,
           typeof(byte[]),
           new DefaultConverter(typeof(byte[])));
     }

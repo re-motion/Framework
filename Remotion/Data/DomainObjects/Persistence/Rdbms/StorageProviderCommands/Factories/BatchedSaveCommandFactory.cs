@@ -6,7 +6,9 @@ using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 
@@ -54,7 +56,7 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
   {
     ArgumentNullException.ThrowIfNull(dataContainers);
 
-    return new BatchedDataContainerSaveCommand(CreateSaveCommandContextsForSave(dataContainers));
+    return new CompoundRdbmsProviderCommand(CreateCommands(dataContainers));
   }
 
   protected virtual bool ShouldCreateInsertCommand (DataContainer dataContainer)
@@ -154,24 +156,51 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     return columnValues;
   }
 
-  private IEnumerable<SingleObjectMultiDataContainerSaveCommandContext> CreateSaveCommandContextsForSave (IEnumerable<DataContainer> dataContainers)
+  private IEnumerable<IRdbmsProviderCommand> CreateCommands (IEnumerable<DataContainer> dataContainers)
   {
     var groupedDataContainers = GetGroupedDataContainer(dataContainers);
 
-    var inserts = new List<SingleObjectMultiDataContainerSaveCommandContext>();
-    var updates = new List<SingleObjectMultiDataContainerSaveCommandContext>();
-    var deletes = new List<SingleObjectMultiDataContainerSaveCommandContext>();
+    var locks = new List<IRdbmsProviderCommand>();
+    var inserts = new List<IRdbmsProviderCommand>();
+    var updates = new List<IRdbmsProviderCommand>();
+    var deletes = new List<IRdbmsProviderCommand>();
+
+    var allDataContainersForLocking = new List<DataContainer>();
+    var lockCommandSpecifications = new List<IBatchedLockCommandSpecification>();
 
     foreach (var kvp in groupedDataContainers)
     {
       var tableDefinition = kvp.Key;
+      var dataContainerGroup = kvp.Value;
 
-      inserts.AddRange(CreateCommandContextsForInsert(tableDefinition, kvp.Value.ForInsert));
-      updates.AddRange(CreateCommandContextsForUpdate(tableDefinition, kvp.Value.ForUpdate));
-      deletes.AddRange(CreateCommandContextsForDelete(tableDefinition, kvp.Value.ForDelete));
+      var dataContainersForLock = dataContainerGroup.ForUpdate
+          .Select(u => u.DataContainer)
+          .Union(dataContainerGroup.ForDelete)
+          .Where(d => !d.State.IsNew)
+          .ToArray();
+      if (dataContainersForLock.Length > 0)
+      {
+        allDataContainersForLocking.AddRange(dataContainersForLock);
+        lockCommandSpecifications.Add(CreateLockCommandSpecification(tableDefinition, dataContainersForLock));
+      }
+
+      if (dataContainerGroup.ForInsert.Count > 0)
+        inserts.AddRange(CreateCommandsForInsert(tableDefinition, dataContainerGroup.ForInsert));
+
+      if (dataContainerGroup.ForUpdate.Count > 0)
+        updates.AddRange(CreateCommandsForUpdate(tableDefinition, dataContainerGroup.ForUpdate));
+
+      if (dataContainerGroup.ForDelete.Count > 0)
+        deletes.AddRange(CreateCommandsForDelete(tableDefinition, dataContainerGroup.ForDelete));
     }
 
-    return inserts.Concat(updates).Concat(deletes);
+    if (allDataContainersForLocking.Count > 0)
+    {
+      var lockCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedLock(lockCommandSpecifications.ToArray());
+      locks.Add(new BatchedLockRdbmsProviderCommand(lockCommandBuilder, allDataContainersForLocking));
+    }
+
+    return locks.Concat(inserts).Concat(updates).Concat(deletes);
   }
 
   private IDictionary<TableDefinition, DataContainerGroup> GetGroupedDataContainer (IEnumerable<DataContainer> dataContainers)
@@ -200,35 +229,46 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     return group;
   }
 
-  private IEnumerable<SingleObjectMultiDataContainerSaveCommandContext> CreateCommandContextsForInsert (TableDefinition tableDefinition, List<DataContainer> dataContainers)
+  private IEnumerable<IRdbmsProviderCommand> CreateCommandsForInsert (TableDefinition tableDefinition, List<DataContainer> dataContainers)
   {
     foreach (var dataContainer in dataContainers)
     {
       var columnValues = GetInsertedColumnValues(dataContainer, tableDefinition);
       var commandBuilder = _dbCommandBuilderFactory.CreateForInsert(tableDefinition, columnValues);
 
-      yield return new SingleObjectMultiDataContainerSaveCommandContext(dataContainer.ID, commandBuilder);
+      yield return new SingleObjectRdbmsProviderCommand(dataContainer.ID, commandBuilder);
     }
   }
 
-  private IEnumerable<SingleObjectMultiDataContainerSaveCommandContext> CreateCommandContextsForDelete (TableDefinition tableDefinition, List<DataContainer> dataContainers)
+  private IEnumerable<IRdbmsProviderCommand> CreateCommandsForDelete (TableDefinition tableDefinition, List<DataContainer> dataContainers)
   {
     foreach (var dataContainer in dataContainers)
     {
       var columnValues = GetComparedColumnValuesForDelete(dataContainer, tableDefinition);
       var commandBuilder = _dbCommandBuilderFactory.CreateForDelete(tableDefinition, columnValues);
 
-      yield return new SingleObjectMultiDataContainerSaveCommandContext(dataContainer.ID, commandBuilder);
+      yield return new SingleObjectRdbmsProviderCommand(dataContainer.ID, commandBuilder);
     }
   }
 
-  private IEnumerable<SingleObjectMultiDataContainerSaveCommandContext> CreateCommandContextsForUpdate (TableDefinition tableDefinition, List<(DataContainer DataContainer, ColumnValue[] UpdatedColumnValues)> updateInfos)
+  private IEnumerable<IRdbmsProviderCommand> CreateCommandsForUpdate (
+      TableDefinition tableDefinition,
+      List<(DataContainer DataContainer, ColumnValue[] UpdatedColumnValues)> updateInfos)
   {
     foreach (var info in updateInfos)
     {
       var comparedColumnValues = GetComparedColumnValuesForUpdate(info.DataContainer, tableDefinition);
       var commandBuilder = _dbCommandBuilderFactory.CreateForUpdate(tableDefinition, info.UpdatedColumnValues, comparedColumnValues);
-      yield return new SingleObjectMultiDataContainerSaveCommandContext(info.DataContainer.ID, commandBuilder);
+      yield return new SingleObjectRdbmsProviderCommand(info.DataContainer.ID, commandBuilder);
     }
+  }
+
+  private IBatchedLockCommandSpecification CreateLockCommandSpecification (TableDefinition tableDefinition, DataContainer[] dataContainers)
+  {
+    var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(
+        _tableManipulationRecordDefinitionProvider,
+        (provider, classDefinition) => provider.GetLockRecordDefinition(classDefinition));
+    var specification = new BatchedLockCommandSpecification(tableDefinition, parameterDefinition, dataContainers);
+    return specification;
   }
 }

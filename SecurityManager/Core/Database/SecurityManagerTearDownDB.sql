@@ -25,6 +25,8 @@ DROP TYPE IF EXISTS [dbo].[TVP_Date]
 DROP TYPE IF EXISTS [dbo].[TVP_Date_Distinct]
 DROP TYPE IF EXISTS [dbo].[TVP_Guid]
 DROP TYPE IF EXISTS [dbo].[TVP_Guid_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_AllTables_Lock]
+
 -- Drop all synonyms
 -- Drop all indexes
 -- Drop all views
