@@ -19,11 +19,12 @@
     "ObjectBinding.Web.Development.WebTesting.TestSite": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "index.html",
       "applicationUrl": "https://localhost:50543;http://localhost:50500",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_ROOT": "/usr/share/dotnet"
       }
     }
   }

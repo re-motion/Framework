@@ -106,14 +106,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
       s_resourceVirtualPathProvider = new ResourceVirtualPathProvider(
           new[]
           {
-              new ResourcePathMapping("Remotion.ObjectBinding.Sample/Image", @$"..\..\ObjectBinding\Sample\res\Image"),
-              new ResourcePathMapping("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
-              new ResourcePathMapping("Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared", @"..\..\ObjectBinding\Web.Development.WebTesting.TestSite.Shared"),
-              new ResourcePathMapping("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
-              new ResourcePathMapping("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
-              new ResourcePathMapping("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
-              new ResourcePathMapping("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Sample/Image", @$"../../ObjectBinding/Sample/res/Image"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web/Html", @$"../../ObjectBinding/Web.ClientScript/bin/{configuration}/dist"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web/Themes", @"../../ObjectBinding/Web/Res/Themes"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared", @"../../ObjectBinding/Web.Development.WebTesting.TestSite.Shared"),
+              new ResourcePathMapping("Remotion.Web/Html", @$"../../Web/ClientScript/bin/{configuration}/dist"),
+              new ResourcePathMapping("Remotion.Web/Image", @"../../Web/Core/Res/Image"),
+              new ResourcePathMapping("Remotion.Web/Themes", @"../../Web/Core/Res/Themes"),
+              new ResourcePathMapping("Remotion.Web/UI", @"../../Web/Core/Res/UI"),
           },
           FileExtensionHandlerMapping.Default);
       s_resourceVirtualPathProvider.Register();

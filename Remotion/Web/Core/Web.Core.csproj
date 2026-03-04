@@ -37,6 +37,7 @@
   <ItemGroup>
     <PackageReference Include="Remotion.ThirdPartyDependency.RobotoFonts" />
     <PackageReference Include="Remotion.ThirdPartyDependency.System.Web" />
+    <PackageReference Include="System.CodeDom" />
   </ItemGroup>
   <Target Name="EnsureClientScriptResourcesAreIncluded" BeforeTargets="Pack">
     <Error Text="Client script resources were not found." Condition="'@(_clientScriptResources)' == ''"/>

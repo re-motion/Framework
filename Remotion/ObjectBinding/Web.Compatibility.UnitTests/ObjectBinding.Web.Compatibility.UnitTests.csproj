@@ -20,5 +20,8 @@
     <ProjectReference Include="..\Web.Compatibility\ObjectBinding.Web.Compatibility.csproj" />
     <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CoreForms.Web" />
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

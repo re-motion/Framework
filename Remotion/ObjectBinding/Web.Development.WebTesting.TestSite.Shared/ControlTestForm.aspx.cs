@@ -57,7 +57,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared
 
     private void LoadUserControl ()
     {
-      var control = LoadControl(CurrentFunction.UserControl);
+    var control = LoadControl(CurrentFunction.UserControl);
       _dataEditControl = (IDataEditControl)control;
       _dataEditControl.ID = "DataEditControl";
 
