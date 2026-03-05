@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 /// </summary>
 public class BatchedInsertDbCommandBuilder : DbCommandBuilder
 {
+  private static readonly ConcurrentDictionary<TableDefinition, string> s_statementCache = new();
   private readonly IReadOnlyList<IBatchedCommandSpecification> _commandSpecifications;
 
   public BatchedInsertDbCommandBuilder (ISqlDialect sqlDialect, IReadOnlyList<IBatchedCommandSpecification> commandSpecifications)
@@ -42,14 +44,8 @@ public class BatchedInsertDbCommandBuilder : DbCommandBuilder
         statement.AppendLine();
 
       isFirstCommandSpecification = false;
-
-      var parameterName = SqlDialect.GetParameterName("TVP_Insert_" + specification.TableDefinition.TableName.EntityName);
-      var schemaName = GetSchemaName(specification.TableDefinition);
-      var tableName = SqlDialect.DelimitIdentifier(specification.TableDefinition.TableName.EntityName);
-
-      var delimitedColumns = specification.Columns.Select(c => SqlDialect.DelimitIdentifier(c)).ToArray();
-
-      AppendInsertStatement(statement, schemaName, tableName, parameterName, delimitedColumns);
+      var parameterName = GetParameterName(specification);
+      statement.Append(GetOrCreateStatement(specification));
       command.Parameters.Add(specification.CreateDbParameter(command, parameterName));
     }
 
@@ -58,19 +54,30 @@ public class BatchedInsertDbCommandBuilder : DbCommandBuilder
     return command;
   }
 
-  private void AppendInsertStatement (
-      StringBuilder stringBuilder,
-      string schemaName,
-      string tableName,
-      string parameterName,
-      string[] columns)
+  private string GetParameterName (IBatchedCommandSpecification specification)
   {
-    var joinedColumns = string.Join(", ", columns);
-    stringBuilder.Append(
-        $"""
-         INSERT INTO {schemaName}{tableName} ({joinedColumns})
-         SELECT {joinedColumns} FROM {parameterName}{SqlDialect.StatementDelimiter}
-         """);
+    return SqlDialect.GetParameterName("TVP_Insert_" + specification.TableDefinition.TableName.EntityName);
+  }
+
+  private string GetOrCreateStatement (IBatchedCommandSpecification specification)
+  {
+    return s_statementCache.GetOrAdd(specification.TableDefinition, _ => CreateInsertStatement(specification));
+  }
+
+  private string CreateInsertStatement (IBatchedCommandSpecification specification)
+  {
+    var parameterName = GetParameterName(specification);
+    var schemaName = GetSchemaName(specification.TableDefinition);
+    var tableName = SqlDialect.DelimitIdentifier(specification.TableDefinition.TableName.EntityName);
+
+    var joinedColumns = string.Join(", ", specification.Columns.Select(c => SqlDialect.DelimitIdentifier(c)));
+
+    var statement = $"""
+                     INSERT INTO {schemaName}{tableName} ({joinedColumns})
+                     SELECT {joinedColumns} FROM {parameterName}{SqlDialect.StatementDelimiter}
+                     """;
+
+    return statement;
   }
 
   private string GetSchemaName (TableDefinition tableDefinition)
