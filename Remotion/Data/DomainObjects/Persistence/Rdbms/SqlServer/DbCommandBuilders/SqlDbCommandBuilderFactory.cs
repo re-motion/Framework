@@ -189,6 +189,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
       return new BatchedUpdateDbCommandBuilder(_sqlDialect, commandSpecifications);
     }
 
+    /// <inheritdoc/>
+    public IDbCommandBuilder CreateForBatchedDelete (IReadOnlyList<IBatchedCommandSpecification> commandSpecifications)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(commandSpecifications), commandSpecifications);
+
+      return new BatchedDeleteDbCommandBuilder(_sqlDialect, commandSpecifications);
+    }
+
     private Tuple<ColumnDefinition, IEnumerable<object?>> GetValuesForSingleColumnDefinition (ColumnValueTable comparedColumnValueTable)
     {
       ColumnDefinition singleColumn;

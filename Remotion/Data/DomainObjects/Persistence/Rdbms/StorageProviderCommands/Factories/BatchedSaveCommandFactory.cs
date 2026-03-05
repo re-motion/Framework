@@ -187,21 +187,9 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     return false;
   }
 
-  protected virtual IEnumerable<ColumnValue> GetComparedColumnValuesForDelete (DataContainer dataContainer, TableDefinition tableDefinition)
-  {
-    ArgumentNullException.ThrowIfNull(dataContainer);
-    ArgumentNullException.ThrowIfNull(tableDefinition);
-
-    var objectIDColumnValues = tableDefinition.ObjectIDProperty.SplitValueForComparison(dataContainer.ID);
-    return objectIDColumnValues;
-  }
-
   private IEnumerable<IRdbmsProviderCommand> CreateCommands (IEnumerable<DataContainer> dataContainers)
   {
     var groupedDataContainers = GetGroupedDataContainer(dataContainers);
-
-    var combinedCommands = new List<IRdbmsProviderCommand>();
-    var deletes = new List<IRdbmsProviderCommand>();
 
     var allDataContainersForLocking = new List<DataContainer>();
     var lockCommandSpecifications = new List<IBatchedCommandSpecification>();
@@ -211,6 +199,9 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
 
     var allDataContainersForUpdate = new List<DataContainer>();
     var updateCommandSpecifications = new List<IBatchedCommandSpecification>();
+
+    var allDataContainersForDelete = new List<DataContainer>();
+    var deleteCommandSpecifications = new List<IBatchedCommandSpecification>();
 
     foreach (var kvp in groupedDataContainers)
     {
@@ -240,10 +231,13 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
       }
 
       if (dataContainerGroup.ForDelete.Count > 0)
-        deletes.AddRange(CreateCommandsForDelete(tableDefinition, dataContainerGroup.ForDelete));
+      {
+        allDataContainersForDelete.AddRange(dataContainerGroup.ForDelete);
+        deleteCommandSpecifications.Add(CreateDeleteCommandSpecification(tableDefinition, dataContainerGroup.ForDelete));
+      }
     }
 
-    // The order in combinedCommands is important!
+    // The order of the Commands is important!
     // 1. Locks
     // 2. Inserts
     // 3. Updates
@@ -251,22 +245,26 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     if (allDataContainersForLocking.Count > 0)
     {
       var lockCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedLock(lockCommandSpecifications);
-      combinedCommands.Add(new BatchedLockRdbmsProviderCommand(lockCommandBuilder, allDataContainersForLocking));
+      yield return new BatchedLockRdbmsProviderCommand(lockCommandBuilder, allDataContainersForLocking);
     }
 
     if (allDataContainersForInsert.Count > 0)
     {
       var insertCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedInsert(insertCommandSpecifications);
-      combinedCommands.Add(new BatchedObjectsRdbmsProviderCommand(insertCommandBuilder, allDataContainersForInsert));
+      yield return new BatchedObjectsRdbmsProviderCommand(insertCommandBuilder, allDataContainersForInsert);
     }
 
     if (allDataContainersForUpdate.Count > 0)
     {
       var updateCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedUpdate(updateCommandSpecifications);
-      combinedCommands.Add(new BatchedObjectsRdbmsProviderCommand(updateCommandBuilder, allDataContainersForUpdate));
+      yield return new BatchedObjectsRdbmsProviderCommand(updateCommandBuilder, allDataContainersForUpdate);
     }
 
-    return combinedCommands.Concat(deletes);
+    if (allDataContainersForDelete.Count > 0)
+    {
+      var deleteCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedDelete(deleteCommandSpecifications);
+      yield return new BatchedObjectsRdbmsProviderCommand(deleteCommandBuilder, allDataContainersForDelete);
+    }
   }
 
   private IDictionary<TableDefinition, DataContainerGroup> GetGroupedDataContainer (IEnumerable<DataContainer> dataContainers)
@@ -294,17 +292,6 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     return group;
   }
 
-  private IEnumerable<IRdbmsProviderCommand> CreateCommandsForDelete (TableDefinition tableDefinition, List<DataContainer> dataContainers)
-  {
-    foreach (var dataContainer in dataContainers)
-    {
-      var columnValues = GetComparedColumnValuesForDelete(dataContainer, tableDefinition);
-      var commandBuilder = _dbCommandBuilderFactory.CreateForDelete(tableDefinition, columnValues);
-
-      yield return new SingleObjectRdbmsProviderCommand(dataContainer.ID, commandBuilder);
-    }
-  }
-
   private IBatchedCommandSpecification CreateLockCommandSpecification (TableDefinition tableDefinition, DataContainer[] dataContainers)
   {
     return CreateCommandSpecification(
@@ -330,6 +317,15 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
         dataContainers,
         (provider, classDefinition) => provider.GetUpdateRecordDefinition(classDefinition),
         d => new UpdateTableManipulationDataContainerAccessor(d));
+  }
+
+  private IBatchedCommandSpecification CreateDeleteCommandSpecification (TableDefinition tableDefinition, List<DataContainer> dataContainers)
+  {
+    return CreateCommandSpecification(
+        tableDefinition,
+        dataContainers,
+        (provider, classDefinition) => provider.GetDeleteRecordDefinition(classDefinition),
+        d => new LockOrDeleteTableManipulationDataContainerAccessor(d));
   }
 
   private IBatchedCommandSpecification CreateCommandSpecification (

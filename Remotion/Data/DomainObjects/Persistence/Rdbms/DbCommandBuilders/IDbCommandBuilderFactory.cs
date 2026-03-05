@@ -72,5 +72,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
     /// Creates an <see cref="IDbCommandBuilder"/> that creates an <see cref="DbCommand"/> for updating multiple records in a relational database.
     /// </summary>
     IDbCommandBuilder CreateForBatchedUpdate (IReadOnlyList<IBatchedCommandSpecification> commandSpecifications);
+
+    /// <summary>
+    /// Creates an <see cref="IDbCommandBuilder"/> that creates an <see cref="DbCommand"/> for deleting multiple records in a relational database.
+    /// </summary>
+    IDbCommandBuilder CreateForBatchedDelete (IReadOnlyList<IBatchedCommandSpecification> commandSpecifications);
   }
 }

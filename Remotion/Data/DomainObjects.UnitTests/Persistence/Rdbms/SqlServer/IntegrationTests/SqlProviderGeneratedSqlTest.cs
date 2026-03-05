@@ -281,16 +281,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       expectedInsertTvpValue.AddRecord([newDataContainer.ID.Value,newDataContainer.ID.ClassID, "", DBNull.Value]);
 
       var expectedUpdateTvpValue = new SqlTableValuedParameterValue("TVP_Employee_Update", new[]
-                                                                                          { new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
-                                                                                             new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
-                                                                                             new SqlMetaData("Name", SqlDbType.NVarChar, 100),
-                                                                                             new SqlMetaData("Name__IsSet", SqlDbType.Bit),
-                                                                                             new SqlMetaData("SupervisorID", SqlDbType.UniqueIdentifier)
+                                                                                           {
+                                                                                               new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
+                                                                                               new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
+                                                                                               new SqlMetaData("Name", SqlDbType.NVarChar, 100),
+                                                                                               new SqlMetaData("Name__IsSet", SqlDbType.Bit),
+                                                                                               new SqlMetaData("SupervisorID", SqlDbType.UniqueIdentifier)
                                                                                            });
       expectedUpdateTvpValue.AddRecord([changedDataContainer.ID.Value, changedDataContainer.ID.ClassID, "George", true, DBNull.Value]);
       expectedUpdateTvpValue.AddRecord([newDataContainer.ID.Value, newDataContainer.ID.ClassID, "", false, DBNull.Value]);
       expectedUpdateTvpValue.AddRecord([deletedDataContainer.ID.Value, deletedDataContainer.ID.ClassID, "", false, DBNull.Value]);
       expectedUpdateTvpValue.AddRecord([markedAsChangedDataContainer.ID.Value, markedAsChangedDataContainer.ID.ClassID, "", false, DBNull.Value]);
+
+      var expectedDeleteTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Delete", new[]
+                                                                                            {
+                                                                                                new SqlMetaData("ID", SqlDbType.UniqueIdentifier)
+                                                                                            });
+      expectedDeleteTvpValue.AddRecord([deletedDataContainer.ID.Value]);
 
       var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
@@ -320,31 +327,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           INNER JOIN @TVP_Update_Employee [P] ON [P].[ID] = [T].[ID];
           """,
           Tuple.Create("@TVP_Update_Employee", DbType.Object, (object)expectedUpdateTvpValue)
-          //Tuple.Create("@Name", DbType.String, (object)"George"),
-          //Tuple.Create("@ID", DbType.Guid, changedDataContainer.ID.Value),
-          //Tuple.Create("@Timestamp", DbType.Binary, changedDataContainer.Timestamp)
           );
-      //_testHelper.ExpectExecuteNonQuery(
-      //    sequence,
-      //    "UPDATE [Employee] SET [SupervisorID] = @SupervisorID WHERE [ID] = @ID;",
-      //    Tuple.Create("@SupervisorID", DbType.Guid, (object)DBNull.Value),
-      //    Tuple.Create("@ID", DbType.Guid, newDataContainer.ID.Value));
-      //_testHelper.ExpectExecuteNonQuery(
-      //    sequence,
-      //    "UPDATE [Employee] SET [SupervisorID] = @SupervisorID WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
-      //    Tuple.Create("@SupervisorID", DbType.Guid, (object)DBNull.Value),
-      //    Tuple.Create("@ID", DbType.Guid, deletedDataContainer.ID.Value),
-      //    Tuple.Create("@Timestamp", DbType.Binary, deletedDataContainer.Timestamp));
-      //_testHelper.ExpectExecuteNonQuery(
-      //    sequence,
-      //    "UPDATE [Employee] SET [ClassID] = @ClassID WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
-      //    Tuple.Create("@ClassID", DbType.AnsiString, (object)"Employee"),
-      //    Tuple.Create("@ID", DbType.Guid, markedAsChangedDataContainer.ID.Value),
-      //    Tuple.Create("@Timestamp", DbType.Binary, markedAsChangedDataContainer.Timestamp));
+
       _testHelper.ExpectExecuteNonQuery(
           sequence,
-          "DELETE FROM [Employee] WHERE [ID] = @ID;",
-          Tuple.Create("@ID", DbType.Guid, deletedDataContainer.ID.Value));
+          """
+          DELETE [T]
+          FROM [Employee] [T]
+          INNER JOIN @TVP_Delete_Employee [P] ON [P].[ID] = [T].[ID];
+          """,
+          Tuple.Create("@TVP_Delete_Employee", DbType.Object, (object)expectedDeleteTvpValue));
 
       _testHelper.Provider.Save(new[] { changedDataContainer, newDataContainer, deletedDataContainer, markedAsChangedDataContainer, unchangedDataContainer});
 
