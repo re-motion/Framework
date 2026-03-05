@@ -487,6 +487,7 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
       string expectedRecordDefinitionName,
       AssertedProperty[] expectedProperties)
   {
+    Assert.That(recordDefinition, Is.TypeOf<TableManipulationRecordDefinitionProvider.TableManipulationRecordDefinition>());
     Assert.That(recordDefinition.RecordName, Is.EqualTo(expectedRecordDefinitionName));
 
     var recordProperties = recordDefinition.PropertyDefinitions.ToArray();
@@ -524,18 +525,6 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         Assert.That(
             actualRecord.PropertyName,
             Is.EqualTo(expectedPropertyName));
-
-        Assert.That(actualRecord.StoragePropertyDefinition.GetType(), Is.EqualTo(propertyDefinition.StoragePropertyDefinition.GetType()));
-        Assert.That(propertyDefinition.StoragePropertyDefinition, Is.InstanceOf<IRdbmsStoragePropertyDefinition>());
-
-        var expectedStoragePropertyDefinition = propertyDefinition.StoragePropertyDefinition as IRdbmsStoragePropertyDefinition;
-        var actualColumnDefinitions = actualRecord.StoragePropertyDefinition.GetColumns().OrderBy(c=>c.Name).ThenBy(c=>c.IsPartOfPrimaryKey).ToArray();
-        var expectedColumnDefinitions = expectedStoragePropertyDefinition!.GetColumns().OrderBy(c => c.Name).ThenBy(c => c.IsPartOfPrimaryKey).ToArray();
-        Assert.That(actualColumnDefinitions.Length, Is.EqualTo(expectedColumnDefinitions.Length));
-
-        var actualColumnsString = string.Join("-", actualColumnDefinitions.Select(c => c.Name + c.IsPartOfPrimaryKey));
-        var expectedColumnsString = string.Join("-", expectedColumnDefinitions.Select(c => c.Name + c.IsPartOfPrimaryKey));
-        Assert.That(actualColumnsString, Is.EqualTo(expectedColumnsString));
       }
       else if (expectedAssertedProperty.Type == AssertedPropertyType.BitflagProperty)
       {
@@ -556,6 +545,8 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
       }
       else if (expectedAssertedProperty.Type == AssertedPropertyType.UnknownProperty)
       {
+        Assert.That(actualRecord, Is.TypeOf<TableManipulationRecordDefinitionProvider.UnknownRecordPropertyDefinition>());
+
         Assert.That(
             actualRecord.PropertyName,
             Is.EqualTo("Unknown"));

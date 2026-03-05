@@ -86,9 +86,7 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
 
     public int GetHashCode (ColumnDefinition obj)
     {
-      var hashCode = obj.Name.GetHashCode();
-      hashCode ^= obj.IsPartOfPrimaryKey.GetHashCode();
-      return hashCode;
+      return HashCode.Combine(obj.Name, obj.IsPartOfPrimaryKey);
     }
   }
 
@@ -113,25 +111,26 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
       if (x is not IRdbmsStoragePropertyDefinition xRdbms || y is not IRdbmsStoragePropertyDefinition yRdbms)
         throw new UnreachableException("This should be unreachable, because every implementation compared here should implement IRdbmsStoragePropertyDefinition");
 
-      var xCols = xRdbms.GetColumns().OrderBy(c => c.Name).ThenBy(c => c.IsPartOfPrimaryKey);
-      var yCols = yRdbms.GetColumns().OrderBy(c => c.Name).ThenBy(c => c.IsPartOfPrimaryKey);
+      var xCols = xRdbms.GetColumns();
+      var yCols = yRdbms.GetColumns();
       return xCols.SequenceEqual(yCols, _columnDefinitionEqualityComparer);
 
     }
 
     public int GetHashCode (IStoragePropertyDefinition obj)
     {
-      var hashCode = obj.GetType().GetHashCode();
-      if (obj is IRdbmsStoragePropertyDefinition rdbmsStoragePropertyDefinition)
+      var hashCode = new HashCode();
+      hashCode.Add(obj.GetType().GetHashCode());
+
+      if (obj is not IRdbmsStoragePropertyDefinition rdbmsStoragePropertyDefinition)
+        return hashCode.ToHashCode();
+
+      foreach (var column in rdbmsStoragePropertyDefinition.GetColumns())
       {
-        foreach (var column in rdbmsStoragePropertyDefinition.GetColumns().OrderBy(c => c.Name).ThenBy(c => c.IsPartOfPrimaryKey))
-        {
-          hashCode ^= column.Name.GetHashCode();
-          hashCode ^= column.IsPartOfPrimaryKey.GetHashCode();
-        }
+        hashCode.Add(column.Name.GetHashCode());
       }
 
-      return hashCode;
+      return hashCode.ToHashCode();
     }
   }
 

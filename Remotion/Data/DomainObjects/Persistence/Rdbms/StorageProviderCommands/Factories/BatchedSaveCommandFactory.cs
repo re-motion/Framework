@@ -87,12 +87,14 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
   private class UpdateTableManipulationDataContainerAccessor : ITableManipulationDataContainerAccessor
   {
     private readonly DataContainer _dataContainer;
+    private readonly bool _isNewDataContainer;
 
     public UpdateTableManipulationDataContainerAccessor (DataContainer dataContainer)
     {
       ArgumentNullException.ThrowIfNull(dataContainer);
 
       _dataContainer = dataContainer;
+      _isNewDataContainer = dataContainer.State.IsNew;
     }
 
     public ObjectID GetID () => _dataContainer.ID;
@@ -111,6 +113,11 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
 
     public bool IsOptionalValueSet (PropertyDefinition propertyDefinition)
     {
+      // In case the DataContainer is new we do not need to set optional values again
+      // because they have already been set by the previous insert.
+      if (_isNewDataContainer)
+        return false;
+
       return _dataContainer.HasValueChanged(propertyDefinition);
     }
   }

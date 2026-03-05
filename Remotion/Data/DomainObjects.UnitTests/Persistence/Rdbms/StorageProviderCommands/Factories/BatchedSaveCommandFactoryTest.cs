@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient.Server;
 using Moq;
 using NUnit.Framework;
 using Remotion.Context;
@@ -20,11 +21,13 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specificat
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.ServiceLocation;
@@ -296,6 +299,51 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     var tuples = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
 
     Assert.That(tuples.Count, Is.EqualTo(0));
+  }
+
+
+  [Test]
+  public void CreateForSave_DoesNotAddOptionalValuesInUpdateForNewObject ()
+  {
+    var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Computer1);
+    SetPropertyValue(dataContainer, typeof(Computer), "SerialNumber", "123456");
+
+    var insertDbCommandBuilder = new Mock<IDbCommandBuilder>();
+    var updateDbCommandBuilder = new Mock<IDbCommandBuilder>();
+
+    var tableDefinition = (TableDefinition)dataContainer.ClassDefinition.StorageEntityDefinition;
+    StubTableDefinitionFinder(dataContainer.ID, tableDefinition);
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedInsert(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Returns(insertDbCommandBuilder.Object);
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedUpdate(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+        {
+          Assert.That(specifications.Count, Is.EqualTo(1));
+          var spec = specifications[0];
+          var actualParameter = spec.CreateDbParameter(new SqlCommand(), "DUMMY");
+
+          var expectedUpdateTvpValue = new SqlTableValuedParameterValue("TVP_Computer_Update", new[]
+                                                                                               {
+                                                                                                   new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
+                                                                                                   new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
+                                                                                                   new SqlMetaData("SerialNumber", SqlDbType.NVarChar, 20),
+                                                                                                   new SqlMetaData("SerialNumber__IsSet", SqlDbType.Bit),
+                                                                                                   new SqlMetaData("EmployeeID", SqlDbType.UniqueIdentifier)
+                                                                                               });
+          expectedUpdateTvpValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, "", false, null]);
+
+          SqlTableValuedParameterValueChecker.CheckEquals(actualParameter.Value, expectedUpdateTvpValue);
+
+        })
+        .Returns(updateDbCommandBuilder.Object)
+        .Verifiable($"{nameof(IDbCommandBuilderFactory.CreateForBatchedUpdate)} should have been called.");
+
+    _factory.CreateForSave([dataContainer]);
+    _dbCommandBuilderFactoryStrictMock.Verify();
   }
 
   [Test]
