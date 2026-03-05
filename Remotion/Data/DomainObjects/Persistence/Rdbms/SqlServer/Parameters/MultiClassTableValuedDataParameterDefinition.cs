@@ -7,7 +7,6 @@ using System.Data.Common;
 using System.Linq;
 using Microsoft.Data.SqlClient;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
@@ -21,51 +20,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 public class MultiClassTableValuedDataParameterDefinition : IDataParameterDefinition
 {
   private readonly Func<ITableManipulationRecordDefinitionProvider, ClassDefinition, RecordDefinition> _getRecordDefinitionFunc;
-
-  private class TableManipulationDataContainerAccessor : ITableManipulationDataContainerAccessor
-  {
-    private readonly DataContainer _dataContainer;
-
-    public TableManipulationDataContainerAccessor (DataContainer dataContainer)
-    {
-      ArgumentNullException.ThrowIfNull(dataContainer);
-
-      _dataContainer = dataContainer;
-    }
-
-    public ObjectID GetID () => _dataContainer.ID;
-
-    public object GetTimestamp () => _dataContainer.Timestamp!;
-
-    public object? GetValue (PropertyDefinition propertyDefinition)
-    {
-      // TODO This ensures that no relation is inserted during insert but with RM-9647 this should be changed to a better logic
-      if (propertyDefinition.IsObjectID)
-        return null;
-
-      return _dataContainer.GetValueWithoutEvents(propertyDefinition);
-    }
-
-    public object? GetOptionalValue (PropertyDefinition propertyDefinition)
-    {
-      throw new NotImplementedException();
-    }
-
-    public bool IsOptionalValueSet (PropertyDefinition propertyDefinition)
-    {
-      throw new NotImplementedException();
-    }
-  }
+  private readonly Func<DataContainer, ITableManipulationDataContainerAccessor> _tableManipulationDataContainerAccessorFactory;
 
   protected ITableManipulationRecordDefinitionProvider TableManipulationRecordDefinitionProvider { get; }
 
-  public MultiClassTableValuedDataParameterDefinition (ITableManipulationRecordDefinitionProvider tableManipulationRecordDefinitionProvider, Func<ITableManipulationRecordDefinitionProvider, ClassDefinition, RecordDefinition> getRecordDefinitionFunc)
+  public MultiClassTableValuedDataParameterDefinition (ITableManipulationRecordDefinitionProvider tableManipulationRecordDefinitionProvider, Func<ITableManipulationRecordDefinitionProvider, ClassDefinition, RecordDefinition> getRecordDefinitionFunc, Func<DataContainer, ITableManipulationDataContainerAccessor> tableManipulationDataContainerAccessorFactory)
   {
     ArgumentNullException.ThrowIfNull(tableManipulationRecordDefinitionProvider);
     ArgumentNullException.ThrowIfNull(getRecordDefinitionFunc);
+    ArgumentNullException.ThrowIfNull(tableManipulationDataContainerAccessorFactory);
 
     TableManipulationRecordDefinitionProvider = tableManipulationRecordDefinitionProvider;
     _getRecordDefinitionFunc = getRecordDefinitionFunc;
+    _tableManipulationDataContainerAccessorFactory = tableManipulationDataContainerAccessorFactory;
   }
 
   public object GetParameterValue (object? value)
@@ -93,14 +60,17 @@ public class MultiClassTableValuedDataParameterDefinition : IDataParameterDefini
         throw new InvalidOperationException($"Found different {nameof(TableTypeDefinition)}s for one {nameof(MultiClassTableValuedDataParameterDefinition)}.");
       }
 
-      foreach (var columnValues in group.Select(dataContainer => recordDefinition.GetColumnValues(new TableManipulationDataContainerAccessor(dataContainer))))
+      foreach (var columnValues in group.Select(dataContainer => recordDefinition.GetColumnValues(_tableManipulationDataContainerAccessorFactory(dataContainer))))
       {
         parameterValue!.AddRecord(columnValues);
       }
+
     }
 
     return parameterValue;
   }
+
+
 
   public DbParameter CreateDataParameter (DbCommand command, string parameterName, object parameterValue)
   {

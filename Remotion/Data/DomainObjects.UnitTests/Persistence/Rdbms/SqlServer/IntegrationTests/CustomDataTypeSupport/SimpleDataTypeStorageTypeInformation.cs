@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public object ConvertToStorageType (object dotNetValue)
     {
-      if (dotNetValue == null)
+      if (dotNetValue == null || string.Empty.Equals(dotNetValue))
         return DBNull.Value;
       var simpleDataType = (SimpleDataType)dotNetValue;
       return simpleDataType.StringValue;

@@ -36,7 +36,7 @@ public interface ITableManipulationDataContainerAccessor
   /// Returning a dummy value might be preferable if the value has not changed as it reduces the amount
   /// of data that needs to be transferred to the SQL Server.
   /// </remarks>
-  object? GetOptionalValue (PropertyDefinition propertyDefinition);
+  object? GetOptionalValue (PropertyDefinition propertyDefinition, object? defaultValue);
 
   /// <summary>
   /// Returns a boolean indicating if the specified optional <paramref name="propertyDefinition"/> is set.

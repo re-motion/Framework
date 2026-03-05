@@ -76,32 +76,20 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     SetPropertyValue(dataContainerNew2, typeof(Computer), "SerialNumber", "654321");
 
     var dataContainerNewWithoutRelations = DataContainer.CreateNew(DomainObjectIDs.Official3);
-
-    var insertDbCommandBuilderNew1 = new Mock<IDbCommandBuilder>();
-    var updateDbCommandBuilderNew1 = new Mock<IDbCommandBuilder>();
-    var updateDbCommandBuilderNew2 = new Mock<IDbCommandBuilder>();
+    var insertDbCommandBuilder = new Mock<IDbCommandBuilder>();
+    var updateDbCommandBuilder = new Mock<IDbCommandBuilder>();
 
     var tableDefinitionA = (TableDefinition)dataContainerNew1.ClassDefinition.StorageEntityDefinition;
     Assertion.DebugAssert((TableDefinition)dataContainerNew2.ClassDefinition.StorageEntityDefinition == tableDefinitionA);
     var tableDefinitionB = (TableDefinition)dataContainerNewWithoutRelations.ClassDefinition.StorageEntityDefinition;
 
-    var insertStatementReturnValues = new Queue<IDbCommandBuilder>(new[] { insertDbCommandBuilderNew1.Object});
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedInsert(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Returns(insertDbCommandBuilder.Object);
 
     _dbCommandBuilderFactoryStrictMock
-        .Setup(stub => stub.CreateForBatchedInsert(It.IsAny<IBatchedCommandSpecification[]>()))
-        .Returns(() => insertStatementReturnValues.Dequeue());
-
-    var updateStatementParameters = new Queue<DataContainer>(new[] { dataContainerNew1, dataContainerNew2 });
-    var updateStatementReturnValues = new Queue<IDbCommandBuilder>(new[] { updateDbCommandBuilderNew1.Object, updateDbCommandBuilderNew2.Object });
-    _dbCommandBuilderFactoryStrictMock
-        .Setup(stub => stub.CreateForUpdate(tableDefinitionA, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
-        .Callback((TableDefinition _, IEnumerable<ColumnValue> updatedColumns, IEnumerable<ColumnValue> comparedColumnValues) =>
-        {
-          var dataContainer = updateStatementParameters.Dequeue();
-          CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainer, expectEmployee: true, expectSerialNumber: false, expectClassID: false);
-          CheckComparedColumns(comparedColumnValues.ToArray(), dataContainer, tableDefinitionA);
-        })
-        .Returns(() => updateStatementReturnValues.Dequeue());
+        .Setup(stub => stub.CreateForBatchedUpdate(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Returns(updateDbCommandBuilder.Object);
 
     StubTableDefinitionFinder(dataContainerNew1.ID, tableDefinitionA);
     StubTableDefinitionFinder(dataContainerNew2.ID, tableDefinitionA);
@@ -116,18 +104,14 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
         });
 
     _tableDefinitionFinderStrictMock.Verify();
-    Assert.That(insertStatementReturnValues, Is.Empty);
-    Assert.That(updateStatementReturnValues, Is.Empty);
     Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
     var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
 
-    Assert.That(contexts.Count, Is.EqualTo(3));
+    Assert.That(contexts.Count, Is.EqualTo(2));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerNew1, dataContainerNew2, dataContainerNewWithoutRelations]));
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(insertDbCommandBuilderNew1.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[1]).ObjectID, Is.EqualTo(dataContainerNew1.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilderNew1.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[2]).ObjectID, Is.EqualTo(dataContainerNew2.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(updateDbCommandBuilderNew2.Object));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerNew1,dataContainerNew2]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
   }
 
   [Test]
@@ -140,44 +124,19 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     var dataContainerChangedMarkedAsChanged = DataContainer.CreateForExisting(DomainObjectIDs.Computer3, new byte[8], pd => pd.DefaultValue);
     dataContainerChangedMarkedAsChanged.MarkAsChanged();
 
-    var updateDbCommandBuilderChangedSerialNumber = new Mock<IDbCommandBuilder>();
-    var updateDbCommandBuilderChangedEmployee = new Mock<IDbCommandBuilder>();
-    var updateDbCommandBuilderMarkedAsChanged = new Mock<IDbCommandBuilder>();
+    var updateDbCommandBuilder = new Mock<IDbCommandBuilder>();
     var lockDbCommandBuilder = new Mock<IDbCommandBuilder>();
 
     var tableDefinition = (TableDefinition)dataContainerChangedSerialNumber.ClassDefinition.StorageEntityDefinition;
     Assertion.DebugAssert((TableDefinition)dataContainerChangedEmployee.ClassDefinition.StorageEntityDefinition == tableDefinition);
     Assertion.DebugAssert((TableDefinition)dataContainerChangedMarkedAsChanged.ClassDefinition.StorageEntityDefinition == tableDefinition);
 
-    var updateStatementParameters = new Queue<(DataContainer DataContainer, bool ExpectEmployee, bool ExpectSerialNumber, bool ExpectClassID)>(
-        new[]
-        {
-            (DataContainer: dataContainerChangedSerialNumber, ExpectEmployee: false, ExpectSerialNumber: true, ExpectClassID: false),
-            (DataContainer: dataContainerChangedEmployee, ExpectEmployee: true, ExpectSerialNumber: false, ExpectClassID: false),
-            (DataContainer: dataContainerChangedMarkedAsChanged, ExpectEmployee: false, ExpectSerialNumber: false, ExpectClassID: true)
-        });
-    var updateStatementReturnValues = new Queue<IDbCommandBuilder>(
-        new[] { updateDbCommandBuilderChangedSerialNumber.Object, updateDbCommandBuilderChangedEmployee.Object, updateDbCommandBuilderMarkedAsChanged.Object });
     _dbCommandBuilderFactoryStrictMock
-        .Setup(stub => stub.CreateForUpdate(tableDefinition, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
-        .Callback((TableDefinition _, IEnumerable<ColumnValue> updatedColumns, IEnumerable<ColumnValue> comparedColumnValues) =>
-        {
-          var parameters = updateStatementParameters.Dequeue();
-          CheckUpdatedComputerColumns(
-              updatedColumns.ToArray(),
-              parameters.DataContainer,
-              expectEmployee: parameters.ExpectEmployee,
-              expectSerialNumber: parameters.ExpectSerialNumber,
-              expectClassID: parameters.ExpectClassID);
-          CheckComparedColumns(
-              comparedColumnValues.ToArray(),
-              parameters.DataContainer,
-              tableDefinition);
-        })
-        .Returns(() => updateStatementReturnValues.Dequeue());
+        .Setup(stub => stub.CreateForBatchedUpdate(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Returns(updateDbCommandBuilder.Object);
 
     _dbCommandBuilderFactoryStrictMock
-        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IBatchedCommandSpecification[]>()))
+        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
         .Returns(lockDbCommandBuilder.Object);
 
     StubTableDefinitionFinder(dataContainerChangedSerialNumber.ID, tableDefinition);
@@ -191,20 +150,13 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
 
     _tableDefinitionFinderStrictMock.Verify();
-    Assert.That(updateStatementReturnValues, Is.Empty);
-    Assert.That(contexts.Count, Is.EqualTo(4));
+
+    Assert.That(contexts.Count, Is.EqualTo(2));
 
     Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
-    Assert.That(
-        ((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers,
-        Is.EqualTo([dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged]));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilderChangedSerialNumber.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[1]).ObjectID, Is.EqualTo(dataContainerChangedSerialNumber.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilderChangedSerialNumber.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[2]).ObjectID, Is.EqualTo(dataContainerChangedEmployee.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(updateDbCommandBuilderChangedEmployee.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[3]).ObjectID, Is.EqualTo(dataContainerChangedMarkedAsChanged.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[3]).CommandBuilder, Is.SameAs(updateDbCommandBuilderMarkedAsChanged.Object));
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged]));
   }
 
   [Test]
@@ -222,30 +174,21 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     Assertion.DebugAssert((TableDefinition)dataContainerDeletedWithRelations2.ClassDefinition.StorageEntityDefinition == tableDefinitionB);
 
-    var updateDbCommandBuilderDeleted2 = new Mock<IDbCommandBuilder>();
-    var updateDbCommandBuilderDeleted3 = new Mock<IDbCommandBuilder>();
+    var updateDbCommandBuilder = new Mock<IDbCommandBuilder>();
     var deleteDbCommandBuilderDeleted1 = new Mock<IDbCommandBuilder>();
     var deleteDbCommandBuilderDeleted2 = new Mock<IDbCommandBuilder>();
     var deleteDbCommandBuilderDeleted3 = new Mock<IDbCommandBuilder>();
-    var lockDbCommandBuilder1 = new Mock<IDbCommandBuilder>();
+    var lockDbCommandBuilder = new Mock<IDbCommandBuilder>();
 
-    var updateStatementParameters = new Queue<DataContainer>(new[] { dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2 });
-    var updateStatementReturnValues = new Queue<IDbCommandBuilder>(new[] { updateDbCommandBuilderDeleted2.Object, updateDbCommandBuilderDeleted3.Object });
-    var lockStatementReturnValues = new Queue<IDbCommandBuilder>(new[] { lockDbCommandBuilder1.Object });
     _dbCommandBuilderFactoryStrictMock
-        .Setup(stub => stub.CreateForUpdate(tableDefinitionB, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
-        .Callback((TableDefinition _, IEnumerable<ColumnValue> updatedColumns, IEnumerable<ColumnValue> comparedColumnValues) =>
-        {
-          var dataContainer = updateStatementParameters.Dequeue();
-          CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainer, expectEmployee: true, expectSerialNumber: false, expectClassID: false);
-          CheckComparedColumns(comparedColumnValues.ToArray(), dataContainer, tableDefinitionB);
-        })
-        .Returns(() => updateStatementReturnValues.Dequeue());
+       .Setup(stub => stub.CreateForBatchedUpdate(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+       .Returns(updateDbCommandBuilder.Object);
 
     var deleteStatementParameters = new Queue<DataContainer>(
         new[] { dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2 });
     var deleteStatementReturnValues = new Queue<IDbCommandBuilder>(
         new[] { deleteDbCommandBuilderDeleted1.Object, deleteDbCommandBuilderDeleted2.Object, deleteDbCommandBuilderDeleted3.Object });
+
     _dbCommandBuilderFactoryStrictMock
         .Setup(stub => stub.CreateForDelete(
             It.Is<TableDefinition>(p => p == deleteStatementParameters.Peek().ClassDefinition.StorageEntityDefinition),
@@ -258,8 +201,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
         .Returns(() => deleteStatementReturnValues.Dequeue());
 
     _dbCommandBuilderFactoryStrictMock
-        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IBatchedCommandSpecification[]>()))
-        .Returns(() => lockStatementReturnValues.Dequeue());
+        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Returns(lockDbCommandBuilder.Object);
 
     StubTableDefinitionFinder(dataContainerDeletedWithoutRelations.ID, tableDefinitionA);
     StubTableDefinitionFinder(dataContainerDeletedWithRelations1.ID, tableDefinitionB);
@@ -274,28 +217,26 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
         });
 
     _tableDefinitionFinderStrictMock.Verify();
-    Assert.That(updateStatementReturnValues, Is.Empty);
     Assert.That(deleteStatementReturnValues, Is.Empty);
     Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
     var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
 
-    Assert.That(contexts.Count, Is.EqualTo(6));
+    Assert.That(contexts.Count, Is.EqualTo(5));
 
     Assert.That(
         ((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers,
         Is.EqualTo([dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2]));
-    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder1.Object));
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
 
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[1]).ObjectID, Is.EqualTo(dataContainerDeletedWithRelations1.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilderDeleted2.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[2]).ObjectID, Is.EqualTo(dataContainerDeletedWithRelations2.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(updateDbCommandBuilderDeleted3.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[3]).ObjectID, Is.EqualTo(dataContainerDeletedWithoutRelations.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[3]).CommandBuilder, Is.SameAs(deleteDbCommandBuilderDeleted1.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[4]).ObjectID, Is.EqualTo(dataContainerDeletedWithRelations1.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[4]).CommandBuilder, Is.SameAs(deleteDbCommandBuilderDeleted2.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[5]).ObjectID, Is.EqualTo(dataContainerDeletedWithRelations2.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[5]).CommandBuilder, Is.SameAs(deleteDbCommandBuilderDeleted3.Object));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
+
+    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[2]).ObjectID, Is.EqualTo(dataContainerDeletedWithoutRelations.ID));
+    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(deleteDbCommandBuilderDeleted1.Object));
+    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[3]).ObjectID, Is.EqualTo(dataContainerDeletedWithRelations1.ID));
+    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[3]).CommandBuilder, Is.SameAs(deleteDbCommandBuilderDeleted2.Object));
+    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[4]).ObjectID, Is.EqualTo(dataContainerDeletedWithRelations2.ID));
+    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[4]).CommandBuilder, Is.SameAs(deleteDbCommandBuilderDeleted3.Object));
   }
 
   [Test]
@@ -316,7 +257,7 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     var insertDbCommandBuilder = new Mock<IDbCommandBuilder>();
 
     _dbCommandBuilderFactoryStrictMock
-        .Setup(stub => stub.CreateForUpdate(It.IsAny<TableDefinition>(), It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
+        .Setup(stub => stub.CreateForBatchedUpdate(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
         .Returns(updateDbCommandBuilder.Object);
 
     _dbCommandBuilderFactoryStrictMock
@@ -324,11 +265,11 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
         .Returns(deleteDbCommandBuilder.Object);
 
     _dbCommandBuilderFactoryStrictMock
-       .Setup(stub => stub.CreateForBatchedInsert(It.IsAny<IBatchedCommandSpecification[]>()))
+       .Setup(stub => stub.CreateForBatchedInsert(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
        .Returns(insertDbCommandBuilder.Object);
 
     _dbCommandBuilderFactoryStrictMock
-        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IBatchedCommandSpecification[]>()))
+        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
         .Returns(lockDbCommandBuilder.Object);
 
     StubTableDefinitionFinder(deletedDataContainer.ID, tableDefinition);
@@ -342,22 +283,16 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
     var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
 
-    Assert.That(contexts.Count, Is.EqualTo(6));
+    Assert.That(contexts.Count, Is.EqualTo(4));
 
     Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EquivalentTo([changedDataContainer, deletedDataContainer]));
     Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
-
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([newDataContainer]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
-
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[2]).ObjectID, Is.EqualTo(deletedDataContainer.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[3]).ObjectID, Is.EqualTo(changedDataContainer.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[3]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[4]).ObjectID, Is.EqualTo(newDataContainer.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[4]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[5]).ObjectID, Is.EqualTo(deletedDataContainer.ID));
-    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[5]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).AffectedDataContainers, Is.EqualTo([deletedDataContainer, changedDataContainer, newDataContainer]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
+    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[3]).ObjectID, Is.EqualTo(deletedDataContainer.ID));
+    Assert.That(((SingleObjectRdbmsProviderCommand)contexts[3]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
   }
 
   [Test]
@@ -370,7 +305,7 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     var lockDbCommandBuilder = new Mock<IDbCommandBuilder>();
 
     _dbCommandBuilderFactoryStrictMock
-        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IBatchedCommandSpecification[]>()))
+        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
         .Returns(lockDbCommandBuilder.Object);
 
     var result = _factory.CreateForSave(new[] { dataContainerUnchanged });
@@ -630,54 +565,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
   {
     var comparedColumnValues = columnValues;
 
+    Assert.That(comparedColumnValues.Count, Is.EqualTo(1));
     Assert.That(comparedColumnValues[0].Column, Is.SameAs(StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(tableDefinition.ObjectIDProperty)));
     Assert.That(comparedColumnValues[0].Value, Is.SameAs(dataContainer.ID.Value));
-    if (dataContainer.ClassDefinition.GetPropertyDefinitions().All(propertyDefinition => !propertyDefinition.IsObjectID))
-    {
-      Assert.That(comparedColumnValues[1].Column, Is.SameAs(StoragePropertyDefinitionTestHelper.GetSingleColumn(tableDefinition.TimestampProperty)));
-      Assert.That(comparedColumnValues[1].Value, Is.SameAs(dataContainer.Timestamp));
-    }
-  }
-
-  private void CheckUpdatedComputerColumns (
-      IReadOnlyList<ColumnValue> columnValues,
-      DataContainer dataContainer,
-      bool expectEmployee,
-      bool expectSerialNumber,
-      bool expectClassID)
-  {
-    CheckColumnValue("SerialNumber", expectSerialNumber, columnValues, GetPropertyValue(dataContainer, typeof(Computer), "SerialNumber"));
-    CheckColumnValue("EmployeeID", expectEmployee, columnValues, GetObjectIDValue(dataContainer, typeof(Computer), "Employee"));
-    CheckColumnValue("ClassID", expectClassID, columnValues, dataContainer.ID.ClassID);
-
-    var expectedColumnCount =
-        (expectEmployee ? 1 : 0)
-        + (expectSerialNumber ? 1 : 0)
-        + (expectClassID ? 1 : 0);
-    Assert.That(columnValues.Count(), Is.EqualTo(expectedColumnCount));
-  }
-
-  private object GetObjectIDValue (DataContainer dataContainer, Type declaringType, string shortPropertyName)
-  {
-    var objectID = (ObjectID)GetPropertyValue(dataContainer, declaringType, shortPropertyName);
-    return objectID != null ? objectID.Value : null;
-  }
-
-  private void CheckColumnValue (
-      string columnName,
-      bool shouldBeIncluded,
-      IReadOnlyList<ColumnValue> columnValues,
-      object expectedValue)
-  {
-    var column = columnValues.FirstOrDefault(cv => cv.Column.Name == columnName);
-    if (column.Column == null)
-    {
-      Assert.That(shouldBeIncluded, Is.False, $"Column '{columnName}' was expected, but not found.");
-    }
-    else
-    {
-      Assert.That(shouldBeIncluded, Is.True, $"Column '{columnName}' was not expected, but found.");
-      Assert.That(column.Value, Is.EqualTo(expectedValue));
-    }
   }
 }

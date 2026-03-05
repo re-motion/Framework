@@ -8,6 +8,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
@@ -17,10 +18,107 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 /// </summary>
 public class BatchedSaveCommandFactory : ISaveCommandFactory
 {
+  private class InsertTableManipulationDataContainerAccessor : ITableManipulationDataContainerAccessor
+  {
+    private readonly DataContainer _dataContainer;
+
+    public InsertTableManipulationDataContainerAccessor (DataContainer dataContainer)
+    {
+      ArgumentNullException.ThrowIfNull(dataContainer);
+
+      _dataContainer = dataContainer;
+    }
+
+    public ObjectID GetID () => _dataContainer.ID;
+
+    public object GetTimestamp () => throw new NotSupportedException($"{nameof(InsertTableManipulationDataContainerAccessor)} does not support {nameof(GetTimestamp)}");
+
+    public object? GetValue (PropertyDefinition propertyDefinition)
+    {
+      // TODO This ensures that no relation is inserted during insert but with RM-9647 this should be changed to a better logic
+      if (propertyDefinition.IsObjectID)
+        return null;
+
+      return _dataContainer.GetValueWithoutEvents(propertyDefinition);
+    }
+
+    public object GetOptionalValue (PropertyDefinition propertyDefinition, object? defaultValue)
+    {
+      throw new NotSupportedException($"{nameof(InsertTableManipulationDataContainerAccessor)} does not support {nameof(GetOptionalValue)}");
+    }
+
+    public bool IsOptionalValueSet (PropertyDefinition propertyDefinition)
+    {
+      throw new NotSupportedException($"{nameof(InsertTableManipulationDataContainerAccessor)} does not support {nameof(IsOptionalValueSet)}");
+    }
+  }
+
+  private class LockOrDeleteTableManipulationDataContainerAccessor : ITableManipulationDataContainerAccessor
+  {
+    private readonly DataContainer _dataContainer;
+
+    public LockOrDeleteTableManipulationDataContainerAccessor (DataContainer dataContainer)
+    {
+      ArgumentNullException.ThrowIfNull(dataContainer);
+
+      _dataContainer = dataContainer;
+    }
+
+    public ObjectID GetID () => _dataContainer.ID;
+
+    public object GetTimestamp () => _dataContainer.Timestamp!;
+
+    public object GetValue (PropertyDefinition propertyDefinition)
+    {
+      throw new NotSupportedException($"{nameof(LockOrDeleteTableManipulationDataContainerAccessor)} does not support {nameof(GetValue)}");
+    }
+
+    public object GetOptionalValue (PropertyDefinition propertyDefinition, object? defaultValue)
+    {
+      throw new NotSupportedException($"{nameof(LockOrDeleteTableManipulationDataContainerAccessor)} does not support {nameof(GetOptionalValue)}");
+    }
+
+    public bool IsOptionalValueSet (PropertyDefinition propertyDefinition)
+    {
+      throw new NotSupportedException($"{nameof(LockOrDeleteTableManipulationDataContainerAccessor)} does not support {nameof(IsOptionalValueSet)}");
+    }
+  }
+
+  private class UpdateTableManipulationDataContainerAccessor : ITableManipulationDataContainerAccessor
+  {
+    private readonly DataContainer _dataContainer;
+
+    public UpdateTableManipulationDataContainerAccessor (DataContainer dataContainer)
+    {
+      ArgumentNullException.ThrowIfNull(dataContainer);
+
+      _dataContainer = dataContainer;
+    }
+
+    public ObjectID GetID () => _dataContainer.ID;
+
+    public object GetTimestamp () => _dataContainer.Timestamp!;
+
+    public object? GetValue (PropertyDefinition propertyDefinition) => _dataContainer.GetValueWithoutEvents(propertyDefinition);
+
+    public object? GetOptionalValue (PropertyDefinition propertyDefinition, object? defaultValue)
+    {
+      if (IsOptionalValueSet(propertyDefinition))
+        return GetValue(propertyDefinition);
+
+      return defaultValue;
+    }
+
+    public bool IsOptionalValueSet (PropertyDefinition propertyDefinition)
+    {
+      return _dataContainer.HasValueChanged(propertyDefinition);
+    }
+  }
+
   private class DataContainerGroup
   {
     public List<DataContainer> ForInsert { get; } = new();
-    public List<(DataContainer DataContainer, ColumnValue[] UpdatedColumnValues)> ForUpdate { get; } = new();
+    public List<DataContainer> ForUpdate { get; } = new();
     public List<DataContainer> ForDelete { get; } = new();
   }
 
@@ -73,16 +171,20 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     return dataContainer.State.IsDeleted;
   }
 
-  protected virtual IEnumerable<ColumnValue> GetComparedColumnValuesForUpdate (DataContainer dataContainer, TableDefinition tableDefinition)
+  protected virtual bool ShouldCreateUpdateCommand (DataContainer dataContainer)
   {
     ArgumentNullException.ThrowIfNull(dataContainer);
-    ArgumentNullException.ThrowIfNull(tableDefinition);
 
-    var objectIDColumnValues = tableDefinition.ObjectIDProperty.SplitValueForComparison(dataContainer.ID);
-    if (dataContainer.State.IsNew)
-      return objectIDColumnValues;
+    if (dataContainer.State.IsChanged && dataContainer.State.IsPersistentDataChanged)
+      return true;
 
-    return objectIDColumnValues.Concat(tableDefinition.TimestampProperty.SplitValueForComparison(dataContainer.Timestamp));
+    if (dataContainer.State.IsNew || dataContainer.State.IsDeleted)
+    {
+      // TODO: This will be removed/refactored when ordering tables is implemented because it is no longer required for new or deleted datacontainers
+      return dataContainer.ClassDefinition.GetPropertyDefinitions().Any(pd => pd.StorageClass == StorageClass.Persistent && pd.IsObjectID);
+    }
+
+    return false;
   }
 
   protected virtual IEnumerable<ColumnValue> GetComparedColumnValuesForDelete (DataContainer dataContainer, TableDefinition tableDefinition)
@@ -91,69 +193,7 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     ArgumentNullException.ThrowIfNull(tableDefinition);
 
     var objectIDColumnValues = tableDefinition.ObjectIDProperty.SplitValueForComparison(dataContainer.ID);
-    // If a DataContainer contains a relation property, an Update previous to the Delete will already have checked the timestamp.
-    // Otherwise (no relation properties), the Delete must check the timestamp.
-    var mustAddTimestamp = dataContainer.ClassDefinition.GetPropertyDefinitions().All(pd => !pd.IsObjectID);
-    if (mustAddTimestamp)
-      return objectIDColumnValues.Concat(tableDefinition.TimestampProperty.SplitValueForComparison(dataContainer.Timestamp));
-
     return objectIDColumnValues;
-  }
-
-  protected virtual ColumnValue[] GetUpdatedColumnValues (DataContainer dataContainer, TableDefinition tableDefinition)
-  {
-    ArgumentNullException.ThrowIfNull(dataContainer);
-    ArgumentNullException.ThrowIfNull(tableDefinition);
-
-    var propertyFilter = GetUpdatedPropertyFilter(dataContainer);
-
-    var dataStorageColumnValues = dataContainer.ClassDefinition.GetPropertyDefinitions()
-        .Where(pd => pd.StorageClass == StorageClass.Persistent && propertyFilter(pd))
-        .SelectMany(pd => GetColumnValuesForPropertyValue(dataContainer, pd))
-        .ToArray();
-
-    if (dataStorageColumnValues.Length == 0 && dataContainer.HasBeenMarkedChanged)
-    {
-      // If the data container has no changed properties, but must still be saved (to update its timestamp), update the ClassID
-      return tableDefinition.ObjectIDProperty.ClassIDProperty.SplitValue(dataContainer.ID.ClassID).ToArray();
-    }
-
-    return dataStorageColumnValues;
-  }
-
-  protected virtual IEnumerable<ColumnValue> GetInsertedColumnValues (DataContainer dataContainer, TableDefinition tableDefinition)
-  {
-    ArgumentNullException.ThrowIfNull(dataContainer);
-    ArgumentNullException.ThrowIfNull(tableDefinition);
-
-    var objectIDStoragePropertyDefinition = ((IRdbmsStorageEntityDefinition)tableDefinition).ObjectIDProperty;
-    var columnValuesForID = objectIDStoragePropertyDefinition.SplitValue(dataContainer.ID);
-
-    var columnValuesForDataProperties = dataContainer.ClassDefinition.GetPropertyDefinitions()
-        .Where(pd => pd.StorageClass == StorageClass.Persistent && !pd.IsObjectID)
-        .SelectMany(pd => GetColumnValuesForPropertyValue(dataContainer, pd));
-    return columnValuesForID.Concat(columnValuesForDataProperties);
-  }
-
-  protected virtual Func<PropertyDefinition, bool> GetUpdatedPropertyFilter (DataContainer dataContainer)
-  {
-    ArgumentNullException.ThrowIfNull(dataContainer);
-
-    if (dataContainer.State.IsNew || dataContainer.State.IsDeleted)
-      return pd => pd.IsObjectID;
-    if (dataContainer.State.IsChanged)
-      return dataContainer.HasValueChanged;
-    return _ => false;
-  }
-
-  protected virtual IEnumerable<ColumnValue> GetColumnValuesForPropertyValue (DataContainer dataContainer, PropertyDefinition propertyDefinition)
-  {
-    ArgumentNullException.ThrowIfNull(dataContainer);
-    ArgumentNullException.ThrowIfNull(propertyDefinition);
-
-    var storageProperty = _rdbmsPersistenceModelProvider.GetStoragePropertyDefinition(propertyDefinition);
-    var columnValues = storageProperty.SplitValue(dataContainer.GetValueWithoutEvents(propertyDefinition));
-    return columnValues;
   }
 
   private IEnumerable<IRdbmsProviderCommand> CreateCommands (IEnumerable<DataContainer> dataContainers)
@@ -161,13 +201,16 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     var groupedDataContainers = GetGroupedDataContainer(dataContainers);
 
     var combinedCommands = new List<IRdbmsProviderCommand>();
-    var updates = new List<IRdbmsProviderCommand>();
     var deletes = new List<IRdbmsProviderCommand>();
 
     var allDataContainersForLocking = new List<DataContainer>();
-    var allDataContainersForInsert = new List<DataContainer>();
     var lockCommandSpecifications = new List<IBatchedCommandSpecification>();
+
+    var allDataContainersForInsert = new List<DataContainer>();
     var insertCommandSpecifications = new List<IBatchedCommandSpecification>();
+
+    var allDataContainersForUpdate = new List<DataContainer>();
+    var updateCommandSpecifications = new List<IBatchedCommandSpecification>();
 
     foreach (var kvp in groupedDataContainers)
     {
@@ -175,7 +218,6 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
       var dataContainerGroup = kvp.Value;
 
       var dataContainersForLock = dataContainerGroup.ForUpdate
-          .Select(u => u.DataContainer)
           .Union(dataContainerGroup.ForDelete)
           .Where(d => !d.State.IsNew)
           .ToArray();
@@ -187,12 +229,15 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
 
       if (dataContainerGroup.ForInsert.Count > 0)
       {
-        allDataContainersForInsert.AddRange(kvp.Value.ForInsert);
-        insertCommandSpecifications.Add(CreateInsertCommandSpecification(tableDefinition, kvp.Value.ForInsert));
+        allDataContainersForInsert.AddRange(dataContainerGroup.ForInsert);
+        insertCommandSpecifications.Add(CreateInsertCommandSpecification(tableDefinition, dataContainerGroup.ForInsert));
       }
 
       if (dataContainerGroup.ForUpdate.Count > 0)
-        updates.AddRange(CreateCommandsForUpdate(tableDefinition, dataContainerGroup.ForUpdate));
+      {
+        allDataContainersForUpdate.AddRange(dataContainerGroup.ForUpdate);
+        updateCommandSpecifications.Add(CreateUpdateCommandSpecification(tableDefinition, dataContainerGroup.ForUpdate));
+      }
 
       if (dataContainerGroup.ForDelete.Count > 0)
         deletes.AddRange(CreateCommandsForDelete(tableDefinition, dataContainerGroup.ForDelete));
@@ -205,17 +250,23 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     // 4. Deletes
     if (allDataContainersForLocking.Count > 0)
     {
-      var lockCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedLock(lockCommandSpecifications.ToArray());
+      var lockCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedLock(lockCommandSpecifications);
       combinedCommands.Add(new BatchedLockRdbmsProviderCommand(lockCommandBuilder, allDataContainersForLocking));
     }
 
     if (allDataContainersForInsert.Count > 0)
     {
-      var insertCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedInsert(insertCommandSpecifications.ToArray());
+      var insertCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedInsert(insertCommandSpecifications);
       combinedCommands.Add(new BatchedObjectsRdbmsProviderCommand(insertCommandBuilder, allDataContainersForInsert));
     }
 
-    return combinedCommands.Concat(updates).Concat(deletes);
+    if (allDataContainersForUpdate.Count > 0)
+    {
+      var updateCommandBuilder = _dbCommandBuilderFactory.CreateForBatchedUpdate(updateCommandSpecifications);
+      combinedCommands.Add(new BatchedObjectsRdbmsProviderCommand(updateCommandBuilder, allDataContainersForUpdate));
+    }
+
+    return combinedCommands.Concat(deletes);
   }
 
   private IDictionary<TableDefinition, DataContainerGroup> GetGroupedDataContainer (IEnumerable<DataContainer> dataContainers)
@@ -236,23 +287,11 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
       else if (ShouldCreateDeleteCommand(dataContainer))
         currentGroup.ForDelete.Add(dataContainer);
 
-      var updatedColumnValues = GetUpdatedColumnValues(dataContainer, tableDefinition);
-      if (updatedColumnValues.Length > 0)
-        currentGroup.ForUpdate.Add(new(dataContainer, updatedColumnValues));
+      if (ShouldCreateUpdateCommand(dataContainer))
+        currentGroup.ForUpdate.Add(dataContainer);
     }
 
     return group;
-  }
-
-  private IEnumerable<IRdbmsProviderCommand> CreateCommandsForInsert (TableDefinition tableDefinition, List<DataContainer> dataContainers)
-  {
-    foreach (var dataContainer in dataContainers)
-    {
-      var columnValues = GetInsertedColumnValues(dataContainer, tableDefinition);
-      var commandBuilder = _dbCommandBuilderFactory.CreateForInsert(tableDefinition, columnValues);
-
-      yield return new SingleObjectRdbmsProviderCommand(dataContainer.ID, commandBuilder);
-    }
   }
 
   private IEnumerable<IRdbmsProviderCommand> CreateCommandsForDelete (TableDefinition tableDefinition, List<DataContainer> dataContainers)
@@ -266,30 +305,40 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
     }
   }
 
-  private IEnumerable<IRdbmsProviderCommand> CreateCommandsForUpdate (
-      TableDefinition tableDefinition,
-      List<(DataContainer DataContainer, ColumnValue[] UpdatedColumnValues)> updateInfos)
-  {
-    foreach (var info in updateInfos)
-    {
-      var comparedColumnValues = GetComparedColumnValuesForUpdate(info.DataContainer, tableDefinition);
-      var commandBuilder = _dbCommandBuilderFactory.CreateForUpdate(tableDefinition, info.UpdatedColumnValues, comparedColumnValues);
-      yield return new SingleObjectRdbmsProviderCommand(info.DataContainer.ID, commandBuilder);
-    }
-  }
-
   private IBatchedCommandSpecification CreateLockCommandSpecification (TableDefinition tableDefinition, DataContainer[] dataContainers)
   {
-    var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(
-        _tableManipulationRecordDefinitionProvider,
-        (provider, classDefinition) => provider.GetLockRecordDefinition(classDefinition));
-    var specification = new BatchedCommandSpecification(tableDefinition, parameterDefinition, dataContainers);
-    return specification;
+    return CreateCommandSpecification(
+        tableDefinition,
+        dataContainers,
+        (provider, classDefinition) => provider.GetLockRecordDefinition(classDefinition),
+        d => new LockOrDeleteTableManipulationDataContainerAccessor(d));
   }
 
   private IBatchedCommandSpecification CreateInsertCommandSpecification (TableDefinition tableDefinition, List<DataContainer> dataContainers)
   {
-    var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(_tableManipulationRecordDefinitionProvider, (provider, classDefinition) => provider.GetInsertRecordDefinition(classDefinition));
+    return CreateCommandSpecification(
+        tableDefinition,
+        dataContainers,
+        (provider, classDefinition) => provider.GetInsertRecordDefinition(classDefinition),
+        d => new InsertTableManipulationDataContainerAccessor(d));
+  }
+
+  private IBatchedCommandSpecification CreateUpdateCommandSpecification (TableDefinition tableDefinition, List<DataContainer> dataContainers)
+  {
+    return CreateCommandSpecification(
+        tableDefinition,
+        dataContainers,
+        (provider, classDefinition) => provider.GetUpdateRecordDefinition(classDefinition),
+        d => new UpdateTableManipulationDataContainerAccessor(d));
+  }
+
+  private IBatchedCommandSpecification CreateCommandSpecification (
+      TableDefinition tableDefinition,
+      IReadOnlyList<DataContainer> dataContainers,
+      Func<ITableManipulationRecordDefinitionProvider, ClassDefinition, RecordDefinition> getRecordDefinitionFunc,
+      Func<DataContainer, ITableManipulationDataContainerAccessor> tableManipulationDataContainerAccessorFactory)
+  {
+    var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(_tableManipulationRecordDefinitionProvider, getRecordDefinitionFunc, tableManipulationDataContainerAccessorFactory);
     var specification = new BatchedCommandSpecification(tableDefinition, parameterDefinition, dataContainers);
     return specification;
   }

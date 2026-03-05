@@ -22,6 +22,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 /// </summary>
 public class TableManipulationRecordDefinitionProvider : ITableManipulationRecordDefinitionProvider
 {
+  public const string IsSetColumnPostFix = "__IsSet";
   public class UnknownRecordPropertyDefinition : RecordPropertyDefinition
   {
     public UnknownRecordPropertyDefinition (IRdbmsStoragePropertyDefinition storagePropertyDefinition, Func<object, object?> getValue)
@@ -48,14 +49,13 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
       // Because the property is typed to System.Int32 and null cannot be converted to System.In32 therefore ConvertToStorageType throws an exception.
       // But instead we just want DBNull.Value because the column in the database has to be nullable.
 
-      var convertedValues = new List<object>();
+      var convertedValues = new List<object>(PropertyDefinitions.Count * 2);
       foreach (var recordPropertyDefinition in PropertyDefinitions)
       {
         var columns = recordPropertyDefinition.StoragePropertyDefinition.SplitValue(recordPropertyDefinition.GetValue(item));
-
         // TODO: RM-8491 Possibly remove this check when RM-8491 is fixed
         if (recordPropertyDefinition is UnknownRecordPropertyDefinition)
-          convertedValues.AddRange(columns.Select(static _ => DBNull.Value));
+          convertedValues.AddRange(columns.Select(cv => cv.Value ?? DBNull.Value));
         else
           convertedValues.AddRange(columns.Select(cv => cv.Column.StorageTypeInfo.ConvertToStorageType(cv.Value)));
       }
@@ -235,7 +235,7 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
               return new RecordPropertyDefinition(
                   propertyDefinition.PropertyName,
                   property,
-                  o => ((ITableManipulationDataContainerAccessor)o).GetOptionalValue(propertyDefinition));
+                  o => ((ITableManipulationDataContainerAccessor)o).GetOptionalValue(propertyDefinition, defaultValue));
             }
             else
             {
@@ -246,7 +246,7 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
           });
 
       var columnDefinition = new ColumnDefinition(
-          $"{property.ColumnDefinition.Name}__IsSet",
+          $"{property.ColumnDefinition.Name}{IsSetColumnPostFix}",
           storageTypeInformationProvider.GetStorageType(typeof(bool)),
           false);
       var isDataSetPropertyDefinition = new SimpleStoragePropertyDefinition(typeof(bool), columnDefinition);

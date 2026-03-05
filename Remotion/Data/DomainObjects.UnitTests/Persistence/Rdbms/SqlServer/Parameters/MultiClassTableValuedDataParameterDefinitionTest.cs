@@ -23,14 +23,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
   [TestFixture]
   public class MultiClassTableValuedDataParameterDefinitionTest
   {
+    private class TableManipulationDataContainerAccessor : ITableManipulationDataContainerAccessor
+    {
+      private readonly DataContainer _dataContainer;
+
+      public TableManipulationDataContainerAccessor (DataContainer dataContainer)
+      {
+        ArgumentNullException.ThrowIfNull(dataContainer);
+
+        _dataContainer = dataContainer;
+      }
+
+      public ObjectID GetID () => _dataContainer.ID;
+
+      public object GetTimestamp () => _dataContainer.Timestamp!;
+
+      public object GetValue (PropertyDefinition propertyDefinition)
+      {
+        return _dataContainer.GetValueWithoutEvents(propertyDefinition);
+      }
+
+      public object GetOptionalValue (PropertyDefinition propertyDefinition, object defaultValue)
+      {
+        if (IsOptionalValueSet(propertyDefinition))
+          return GetValue(propertyDefinition);
+
+        return null;
+      }
+
+      public bool IsOptionalValueSet (PropertyDefinition propertyDefinition)
+      {
+        return _dataContainer.HasValueChanged(propertyDefinition);
+      }
+    }
+
     private TableManipulationRecordDefinitionProvider _tableManipulationRecordDefinitionProvider;
+
     [SetUp]
     public void Setup ()
     {
       MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
 
       var sqlStorageTypeInformationProvider = new SqlStorageTypeInformationProvider(new DateTimeDefaultStorageTypeProvider());
-      var infrastructureStoragePropertyDefinitionProvider = new InfrastructureStoragePropertyDefinitionProvider(sqlStorageTypeInformationProvider, new ReflectionBasedStorageNameProvider());
+      var infrastructureStoragePropertyDefinitionProvider =
+          new InfrastructureStoragePropertyDefinitionProvider(sqlStorageTypeInformationProvider, new ReflectionBasedStorageNameProvider());
       var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
 
       _tableManipulationRecordDefinitionProvider = new TableManipulationRecordDefinitionProvider(
@@ -57,7 +93,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
           {
             getRecordDefinitionFuncHasBeenCalled = true;
             return provider.GetLockRecordDefinition(definition);
-          });
+          },
+          d => new TableManipulationDataContainerAccessor(d));
 
       parameterDefinition.GetParameterValue(new List<DataContainer>() { dataContainer });
       Assert.That(getRecordDefinitionFuncHasBeenCalled, Is.True);
@@ -73,13 +110,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
 
       var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(
           _tableManipulationRecordDefinitionProvider,
-          (provider, definition) => provider.GetLockRecordDefinition(definition));
+          (provider, definition) => provider.GetLockRecordDefinition(definition),
+          d => new TableManipulationDataContainerAccessor(d));
 
       var result = parameterDefinition.GetParameterValue(new List<DataContainer>() { dataContainer1 });
       Assert.That(result, Is.TypeOf<SqlTableValuedParameterValue>());
 
 
-      var expectedTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Lock", new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
+      var expectedTvpValue = new SqlTableValuedParameterValue(
+          "TVP_AllTables_Lock",
+          new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
       expectedTvpValue.AddRecord([dataContainer1.ID.Value, dataContainer1.Timestamp]);
 
       var tvpValue = (SqlTableValuedParameterValue)result;
@@ -101,13 +141,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
 
       var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(
           _tableManipulationRecordDefinitionProvider,
-          (provider, definition) => provider.GetLockRecordDefinition(definition));
+          (provider, definition) => provider.GetLockRecordDefinition(definition),
+          d => new TableManipulationDataContainerAccessor(d));
 
       var result = parameterDefinition.GetParameterValue(new List<DataContainer>() { dataContainer1, dataContainer2 });
       Assert.That(result, Is.TypeOf<SqlTableValuedParameterValue>());
 
 
-      var expectedTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Lock", new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
+      var expectedTvpValue = new SqlTableValuedParameterValue(
+          "TVP_AllTables_Lock",
+          new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
       expectedTvpValue.AddRecord([dataContainer1.ID.Value, dataContainer1.Timestamp]);
       expectedTvpValue.AddRecord([dataContainer2.ID.Value, dataContainer2.Timestamp]);
 
@@ -134,12 +177,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
 
       var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(
           _tableManipulationRecordDefinitionProvider,
-          (provider, definition) => provider.GetLockRecordDefinition(definition));
+          (provider, definition) => provider.GetLockRecordDefinition(definition),
+          d => new TableManipulationDataContainerAccessor(d));
 
       var result = parameterDefinition.GetParameterValue(new List<DataContainer>() { dataContainer1, dataContainer2 });
       Assert.That(result, Is.TypeOf<SqlTableValuedParameterValue>());
 
-      var expectedTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Lock", new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
+      var expectedTvpValue = new SqlTableValuedParameterValue(
+          "TVP_AllTables_Lock",
+          new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
       expectedTvpValue.AddRecord([dataContainer1.ID.Value, dataContainer1.Timestamp]);
       expectedTvpValue.AddRecord([dataContainer2.ID.Value, dataContainer2.Timestamp]);
 
@@ -154,8 +200,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
       var dataContainerB = DataContainer.CreateForExisting(new ObjectID("Order", new Guid("5D35FFBC-3EBE-4DF1-9863-6163EE6F2486")), new byte[8], pd => pd.DefaultValue);
 
       Assert.That(dataContainerA.ClassDefinition.StorageEntityDefinition, Is.Not.EqualTo(dataContainerB.ClassDefinition.StorageEntityDefinition));
-      var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(_tableManipulationRecordDefinitionProvider,
-          (provider, definition) => provider.GetInsertRecordDefinition(definition));
+      var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(
+          _tableManipulationRecordDefinitionProvider,
+          (provider, definition) => provider.GetInsertRecordDefinition(definition),
+          d => new TableManipulationDataContainerAccessor(d));
 
       Assert.That(
           () => parameterDefinition.GetParameterValue(new List<DataContainer>() { dataContainerA, dataContainerB }),
@@ -167,7 +215,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
     {
       var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(
           _tableManipulationRecordDefinitionProvider,
-          (_, _) => throw new UnreachableException("This should not be reachable because an other exception should be thrown."));
+          (_, _) => throw new UnreachableException("This should not be reachable because an other exception should be thrown."),
+          d => new TableManipulationDataContainerAccessor(d));
 
       Assert.That(
           () => parameterDefinition.GetParameterValue(new List<DataContainer>()),
@@ -180,8 +229,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Para
       var dataContainerA = DataContainer.CreateForExisting(new ObjectID("Computer", new Guid("3F647D79-0CAF-4a53-BAA7-A56831F8CE2D")), new byte[8], pd => pd.DefaultValue);
       var dataContainerB = DataContainer.CreateForExisting(new ObjectID("Computer", new Guid("5D35FFBC-3EBE-4DF1-9863-6163EE6F2486")), new byte[8], pd => pd.DefaultValue);
 
-      var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(_tableManipulationRecordDefinitionProvider,
-          (provider, definition) => provider.GetInsertRecordDefinition(definition));
+      var parameterDefinition = new MultiClassTableValuedDataParameterDefinition(
+          _tableManipulationRecordDefinitionProvider,
+          (provider, definition) => provider.GetInsertRecordDefinition(definition),
+          d => new TableManipulationDataContainerAccessor(d));
 
       var tvpValue = (SqlTableValuedParameterValue)parameterDefinition.GetParameterValue(new List<DataContainer>() { dataContainerA, dataContainerB });
 

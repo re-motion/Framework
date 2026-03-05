@@ -451,7 +451,7 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
     dataContainerAccessorStub.Setup(e => e.GetValue(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".Product")))).Returns(product);
     dataContainerAccessorStub.Setup(e => e.GetValue(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".Reviewer")))).Returns(reviewer);
     dataContainerAccessorStub.Setup(e => e.GetValue(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".CreatedAt")))).Returns(createdAt);
-    dataContainerAccessorStub.Setup(e => e.GetOptionalValue(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".Comment")))).Returns("dummy content");
+    dataContainerAccessorStub.Setup(e => e.GetOptionalValue(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".Comment")), "")).Returns("dummy content");
     dataContainerAccessorStub.Setup(e => e.IsOptionalValueSet(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".Comment")))).Returns(true);
 
     var columnValues = productReviewRecordDefinition.GetColumnValues(dataContainerAccessorStub.Object);
