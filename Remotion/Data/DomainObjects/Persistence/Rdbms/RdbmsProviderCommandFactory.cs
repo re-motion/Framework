@@ -46,7 +46,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     private readonly ISaveCommandFactory _saveCommandFactory;
     private readonly QueryCommandFactory _queryCommandFactory;
     private readonly IDataParameterDefinitionFactory _dataParameterDefinitionFactory;
-    private readonly ITableManipulationRecordDefinitionProvider _tableManipulationRecordDefinitionProvider;
 
     public RdbmsProviderCommandFactory (
         RdbmsProviderDefinition storageProviderDefinition,
@@ -74,14 +73,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
       _tableDefinitionFinder = tableDefinitionFinder;
       _dataStoragePropertyDefinitionFactory = dataStoragePropertyDefinitionFactory;
       _dataParameterDefinitionFactory = dataParameterDefinitionFactory;
-      _tableManipulationRecordDefinitionProvider = tableManipulationRecordDefinitionProvider;
+      TableManipulationRecordDefinitionProvider = tableManipulationRecordDefinitionProvider;
 
       // ReSharper disable DoNotCallOverridableMethodsInConstructor
       _lookupCommandFactory = CreateLookupCommandFactory();
       _relationLookupCommandFactory = CreateRelationLookupCommandFactory();
       _saveCommandFactory = CreateSaveCommandFactory();
       _queryCommandFactory = CreateQueryCommandFactory();
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+      // ReSharper restore DoNotCallOverridableMethodsInConstructor
     }
 
     public RdbmsProviderDefinition StorageProviderDefinition
@@ -93,6 +92,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
     {
       get { return _dbCommandBuilderFactory; }
     }
+
+    public ITableManipulationRecordDefinitionProvider TableManipulationRecordDefinitionProvider { get; }
 
     public IRdbmsPersistenceModelProvider RdbmsPersistenceModelProvider
     {
@@ -203,7 +204,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 
     protected virtual ISaveCommandFactory CreateSaveCommandFactory ()
     {
-      return new BatchedSaveCommandFactory(_dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _tableDefinitionFinder, _tableManipulationRecordDefinitionProvider);
+      return new BatchedSaveCommandFactory(_dbCommandBuilderFactory, _rdbmsPersistenceModelProvider, _tableDefinitionFinder, TableManipulationRecordDefinitionProvider);
     }
 
     protected virtual QueryCommandFactory CreateQueryCommandFactory ()

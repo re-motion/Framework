@@ -30,16 +30,25 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
-  [TestFixture]
+
+  [TestFixture(CreateSaveCommandFactoryBehaviour.CreateBatchedSaveCommandFactory)]
+  [TestFixture(CreateSaveCommandFactoryBehaviour.CreateIndividualSaveCommandFactory)]
   public class SqlProviderGeneratedSqlTest : StandardMappingTest
   {
+    private readonly CreateSaveCommandFactoryBehaviour _createSaveCommandFactoryBehaviour;
+
+    public SqlProviderGeneratedSqlTest (CreateSaveCommandFactoryBehaviour createSaveCommandFactoryBehaviour)
+    {
+      _createSaveCommandFactoryBehaviour = createSaveCommandFactoryBehaviour;
+    }
+
     private SqlProviderGeneratedSqlTestHelper _testHelper;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _testHelper = new SqlProviderGeneratedSqlTestHelper(StorageSettings, TestDomainStorageProviderDefinition);
+      _testHelper = new SqlProviderGeneratedSqlTestHelper(StorageSettings, TestDomainStorageProviderDefinition, _createSaveCommandFactoryBehaviour);
     }
 
     public override void TearDown ()
@@ -252,8 +261,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    public void Save ()
+    public void Save_BatchedSaveCommandFactory ()
     {
+      if (_createSaveCommandFactoryBehaviour != CreateSaveCommandFactoryBehaviour.CreateBatchedSaveCommandFactory)
+      {
+        Assert.Ignore($"{nameof(Save_BatchedSaveCommandFactory)} is ignored because {nameof(_createSaveCommandFactoryBehaviour)} is {_createSaveCommandFactoryBehaviour}");
+        return;
+      }
+
       var newGuid = new Guid("322D1DCB-19E4-49BA-90AB-7F5C9C8126E8");
       var newDataContainer = DataContainer.CreateNew(new ObjectID(Configuration.GetTypeDefinition(typeof(Employee)), newGuid));
       SetPropertyValue(newDataContainer, typeof(Employee), "Name", "");
@@ -339,6 +354,69 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           Tuple.Create("@TVP_Delete_Employee", DbType.Object, (object)expectedDeleteTvpValue));
 
       _testHelper.Provider.Save(new[] { changedDataContainer, newDataContainer, deletedDataContainer, markedAsChangedDataContainer, unchangedDataContainer});
+
+      _testHelper.VerifyAllExpectations();
+      sequence.Verify();
+    }
+
+    [Test]
+    public void Save_IndividualSaveCommandFactory ()
+    {
+      if (_createSaveCommandFactoryBehaviour != CreateSaveCommandFactoryBehaviour.CreateIndividualSaveCommandFactory)
+      {
+        Assert.Ignore($"{nameof(Save_IndividualSaveCommandFactory)} is ignored because {nameof(_createSaveCommandFactoryBehaviour)} is {_createSaveCommandFactoryBehaviour}");
+        return;
+      }
+
+      var newGuid = new Guid("322D1DCB-19E4-49BA-90AB-7F5C9C8126E8");
+      var newDataContainer = DataContainer.CreateNew(new ObjectID(Configuration.GetTypeDefinition(typeof(Employee)), newGuid));
+      SetPropertyValue(newDataContainer, typeof(Employee), "Name", "");
+      var changedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee1);
+      SetPropertyValue(changedDataContainer, typeof(Employee), "Name", "George");
+      var markedAsChangedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee2);
+      markedAsChangedDataContainer.MarkAsChanged();
+      var unchangedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee3);
+      var deletedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee7);
+      SetPropertyValue(deletedDataContainer, typeof(Employee), "Supervisor", null);
+      deletedDataContainer.Delete();
+
+      var sequence = new VerifiableSequence();
+      _testHelper.ExpectExecuteNonQuery(
+          sequence,
+          "INSERT INTO [Employee] ([ID], [ClassID], [Name]) VALUES (@ID, @ClassID, @Name);",
+          Tuple.Create("@ID", DbType.Guid, newDataContainer.ID.Value),
+          Tuple.Create("@ClassID", DbType.AnsiString, (object)"Employee"),
+          Tuple.Create("@Name", DbType.String, (object)""));
+      _testHelper.ExpectExecuteNonQuery(
+          sequence,
+          "UPDATE [Employee] SET [Name] = @Name WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
+          Tuple.Create("@Name", DbType.String, (object)"George"),
+          Tuple.Create("@ID", DbType.Guid, changedDataContainer.ID.Value),
+          Tuple.Create("@Timestamp", DbType.Binary, changedDataContainer.Timestamp)
+          );
+      _testHelper.ExpectExecuteNonQuery(
+          sequence,
+          "UPDATE [Employee] SET [SupervisorID] = @SupervisorID WHERE [ID] = @ID;",
+          Tuple.Create("@SupervisorID", DbType.Guid, (object)DBNull.Value),
+          Tuple.Create("@ID", DbType.Guid, newDataContainer.ID.Value));
+      _testHelper.ExpectExecuteNonQuery(
+          sequence,
+          "UPDATE [Employee] SET [SupervisorID] = @SupervisorID WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
+          Tuple.Create("@SupervisorID", DbType.Guid, (object)DBNull.Value),
+          Tuple.Create("@ID", DbType.Guid, deletedDataContainer.ID.Value),
+          Tuple.Create("@Timestamp", DbType.Binary, deletedDataContainer.Timestamp));
+      _testHelper.ExpectExecuteNonQuery(
+          sequence,
+          "UPDATE [Employee] SET [ClassID] = @ClassID WHERE [ID] = @ID AND [Timestamp] = @Timestamp;",
+          Tuple.Create("@ClassID", DbType.AnsiString, (object)"Employee"),
+          Tuple.Create("@ID", DbType.Guid, markedAsChangedDataContainer.ID.Value),
+          Tuple.Create("@Timestamp", DbType.Binary, markedAsChangedDataContainer.Timestamp));
+      _testHelper.ExpectExecuteNonQuery(
+          sequence,
+          "DELETE FROM [Employee] WHERE [ID] = @ID;",
+          Tuple.Create("@ID", DbType.Guid, deletedDataContainer.ID.Value));
+
+      _testHelper.Provider.Save(new[] { changedDataContainer, newDataContainer, deletedDataContainer, markedAsChangedDataContainer, unchangedDataContainer });
 
       _testHelper.VerifyAllExpectations();
       sequence.Verify();

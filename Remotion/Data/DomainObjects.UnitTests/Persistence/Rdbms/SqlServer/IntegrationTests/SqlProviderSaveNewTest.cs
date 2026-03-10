@@ -23,9 +23,15 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
-  [TestFixture]
+  [TestFixture(CreateSaveCommandFactoryBehaviour.CreateBatchedSaveCommandFactory)]
+  [TestFixture(CreateSaveCommandFactoryBehaviour.CreateIndividualSaveCommandFactory)]
   public class SqlProviderSaveNewTest : SqlProviderBaseTest
   {
+    public SqlProviderSaveNewTest (CreateSaveCommandFactoryBehaviour createSaveCommandFactoryBehaviour)
+        : base(createSaveCommandFactoryBehaviour)
+    {
+    }
+
     [Test]
     public void NewDataContainer ()
     {

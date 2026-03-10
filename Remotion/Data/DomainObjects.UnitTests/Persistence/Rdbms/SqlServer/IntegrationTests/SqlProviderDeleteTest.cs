@@ -23,9 +23,15 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
-  [TestFixture]
+  [TestFixture(CreateSaveCommandFactoryBehaviour.CreateBatchedSaveCommandFactory)]
+  [TestFixture(CreateSaveCommandFactoryBehaviour.CreateIndividualSaveCommandFactory)]
   public class SqlProviderDeleteTest : SqlProviderBaseTest
   {
+    public SqlProviderDeleteTest (CreateSaveCommandFactoryBehaviour createSaveCommandFactoryBehaviour)
+        : base(createSaveCommandFactoryBehaviour)
+    {
+    }
+
     [Test]
     public void DeleteSingleDataContainer ()
     {

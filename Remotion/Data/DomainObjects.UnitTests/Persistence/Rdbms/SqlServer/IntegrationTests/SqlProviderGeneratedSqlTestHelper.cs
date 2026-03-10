@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     private readonly Mock<ObservableRdbmsProvider.ICommandExecutionListener> _executionListenerStrictMock;
     private readonly RdbmsProvider _provider;
 
-    public SqlProviderGeneratedSqlTestHelper (IStorageSettings storageSettings, RdbmsProviderDefinition rdbmsProviderDefinition)
+    public SqlProviderGeneratedSqlTestHelper (IStorageSettings storageSettings, RdbmsProviderDefinition rdbmsProviderDefinition, CreateSaveCommandFactoryBehaviour createSaveCommandFactoryBehaviour)
     {
       _storageSettings = storageSettings;
       _rdbmsProviderDefinition = rdbmsProviderDefinition;
@@ -44,6 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       _provider = RdbmsProviderObjectMother.CreateForIntegrationTest(
           storageSettings,
           rdbmsProviderDefinition,
+          createSaveCommandFactoryBehaviour,
           (providerDefinition, _, commandFactory) =>
               new ObservableRdbmsProvider(
                   providerDefinition,
@@ -174,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     public DataContainer LoadDataContainerInSeparateProvider (ObjectID objectID)
     {
-      using (var provider = RdbmsProviderObjectMother.CreateForIntegrationTest(_storageSettings, _rdbmsProviderDefinition))
+      using (var provider = RdbmsProviderObjectMother.CreateForIntegrationTest(_storageSettings, _rdbmsProviderDefinition, CreateSaveCommandFactoryBehaviour.CreateExceptionThrowingSaveCommandFactory))
       {
         return provider.LoadDataContainer(objectID).LocatedObject;
       }
