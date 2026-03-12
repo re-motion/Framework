@@ -65,7 +65,7 @@ public class RecordDefinition
   /// in the corresponding order.
   /// </summary>
   /// <param name="item">The <see cref="object"/> from which to read the values.</param>
-  public object[] GetColumnValues (object item)
+  public virtual object[] GetColumnValues (object item)
   {
     ArgumentNullException.ThrowIfNull(item);
 

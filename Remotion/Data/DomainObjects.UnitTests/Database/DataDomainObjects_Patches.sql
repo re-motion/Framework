@@ -187,3 +187,30 @@ CREATE PROCEDURE rpf_testSPQueryWithParameter
 AS
   SELECT * FROM [Order] WHERE [CustomerID] = @customerID ORDER BY [OrderNo] ASC
 GO
+
+
+CREATE TYPE [dbo].[TVP_CustomDataType_ClassWithCustomDataType_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [CompoundDataTypeValueStringValue] nvarchar (100) NULL,
+  [CompoundDataTypeValueInt32Value] int NULL,
+  [SimpleDataTypeValue] nvarchar (max) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_CustomDataType_ClassWithCustomDataType_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [CompoundDataTypeValueStringValue] nvarchar (100) NULL,
+  [CompoundDataTypeValueInt32Value] int NULL,
+  [SimpleDataTypeValue] nvarchar (max) NULL,
+  [SimpleDataTypeValue__IsSet] bit NOT NULL
+)
+GO
+CREATE TYPE [TVP_TableWithInvalidRelation_Update] AS TABLE(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [TableWithGuidKeyID] uniqueidentifier NULL
+) 
+GO

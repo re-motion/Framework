@@ -14,7 +14,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 /// </summary>
 public class BatchedLockRdbmsProviderCommand : IRdbmsProviderCommand
 {
-  public BatchedLockRdbmsProviderCommand (IDbCommandBuilder commandBuilder, List<DataContainer> affectedDataContainers)
+  public BatchedLockRdbmsProviderCommand (IDbCommandBuilder commandBuilder, IReadOnlyList<DataContainer> affectedDataContainers)
   {
     ArgumentNullException.ThrowIfNull(commandBuilder);
     ArgumentNullException.ThrowIfNull(affectedDataContainers);

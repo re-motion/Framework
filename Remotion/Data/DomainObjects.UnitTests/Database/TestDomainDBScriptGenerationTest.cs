@@ -18,10 +18,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Database
 {
@@ -64,6 +66,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
 
     private IEnumerable<Script> GenerateScripts ()
     {
+      // We need to create all TVPs for the classes of TableInheritanceTestDomainProvider but
+      // c_testDomainProviderID already creates them for SingleScalarStructuredTypeDefinitions and
+      // for the TableInheritanceTestDomainProvider they would be created as well.
+      // therefore we use a mock to filter the result only for Update/Insert TVPs of TableInheritanceTestDomainProvider
+      var tableManipulationOnlyStructuredTypeDefinitionProvider = new Mock<IRdbmsStructuredTypeDefinitionProvider>();
+      tableManipulationOnlyStructuredTypeDefinitionProvider
+          .Setup(stub => stub.GetTypeDefinitions(It.IsAny<RdbmsProviderDefinition>(), It.IsAny<IEnumerable<ClassDefinition>>()))
+          .Returns<RdbmsProviderDefinition, IEnumerable<ClassDefinition>>((provider, classDefinitions) =>
+          {
+            var regex = new Regex($"^TVP_(.*)_(Update|Insert)$", RegexOptions.Compiled);
+            var structuredTypeProvider = new RdbmsStructuredTypeDefinitionProvider();
+            var unfilteredTypeDefinitions = structuredTypeProvider.GetTypeDefinitions(provider, classDefinitions);
+            var filtered = unfilteredTypeDefinitions.Where(r => regex.IsMatch(r.TypeName.EntityName)).ToArray();
+            return filtered;
+          });
+
       var testDomainScriptGenerator = new ScriptGenerator(
           pd => pd.Factory.CreateSchemaScriptBuilder(pd),
           new RdbmsStorageEntityDefinitionProvider(),
@@ -72,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Database
       var tableInheritanceScriptGenerator = new ScriptGenerator(
           pd => pd.Factory.CreateSchemaScriptBuilder(pd),
           new RdbmsStorageEntityDefinitionProvider(),
-          new FakeStructuredTypeDefinitionProvider(),
+          tableManipulationOnlyStructuredTypeDefinitionProvider.Object,
           new ScriptToStringConverter());
 
       var typeDefinitions1 = MappingConfiguration.Current.GetTypeDefinitions()

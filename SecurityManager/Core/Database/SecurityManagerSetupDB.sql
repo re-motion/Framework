@@ -607,9 +607,449 @@ CREATE TYPE [dbo].[TVP_Guid_Distinct] AS TABLE
   UNIQUE CLUSTERED ([Value])
 )
 GO
+CREATE TYPE [dbo].[TVP_AllTables_Delete] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL
+)
+GO
 CREATE TYPE [dbo].[TVP_AllTables_Lock] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [Timestamp] varbinary(8) NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_AccessControlEntry_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [TenantCondition] int NOT NULL,
+  [TenantHierarchyCondition] int NOT NULL,
+  [GroupCondition] int NOT NULL,
+  [GroupHierarchyCondition] int NOT NULL,
+  [UserCondition] int NOT NULL,
+  [SpecificTenantID] uniqueidentifier NULL,
+  [SpecificGroupID] uniqueidentifier NULL,
+  [SpecificGroupTypeID] uniqueidentifier NULL,
+  [SpecificPositionID] uniqueidentifier NULL,
+  [SpecificUserID] uniqueidentifier NULL,
+  [SpecificAbstractRoleID] uniqueidentifier NULL,
+  [SpecificAbstractRoleIDClassID] varchar (100) NULL,
+  [AccessControlListID] uniqueidentifier NULL,
+  [AccessControlListIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_AccessControlEntry_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [TenantCondition] int NOT NULL,
+  [TenantHierarchyCondition] int NOT NULL,
+  [GroupCondition] int NOT NULL,
+  [GroupHierarchyCondition] int NOT NULL,
+  [UserCondition] int NOT NULL,
+  [SpecificTenantID] uniqueidentifier NULL,
+  [SpecificGroupID] uniqueidentifier NULL,
+  [SpecificGroupTypeID] uniqueidentifier NULL,
+  [SpecificPositionID] uniqueidentifier NULL,
+  [SpecificUserID] uniqueidentifier NULL,
+  [SpecificAbstractRoleID] uniqueidentifier NULL,
+  [SpecificAbstractRoleIDClassID] varchar (100) NULL,
+  [AccessControlListID] uniqueidentifier NULL,
+  [AccessControlListIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Permission_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Allowed] bit NULL,
+  [AccessTypeDefinitionID] uniqueidentifier NULL,
+  [AccessTypeDefinitionIDClassID] varchar (100) NULL,
+  [AccessControlEntryID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Permission_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Allowed] bit NULL,
+  [AccessTypeDefinitionID] uniqueidentifier NULL,
+  [AccessTypeDefinitionIDClassID] varchar (100) NULL,
+  [AccessControlEntryID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_StateCombination_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [AccessControlListID] uniqueidentifier NULL,
+  [AccessControlListIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_StateCombination_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [AccessControlListID] uniqueidentifier NULL,
+  [AccessControlListIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_AccessControlList_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NULL,
+  [StatefulAcl_ClassID] uniqueidentifier NULL,
+  [StatefulAcl_ClassIDClassID] varchar (100) NULL,
+  [StatelessAcl_ClassID] uniqueidentifier NULL,
+  [StatelessAcl_ClassIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_AccessControlList_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NULL,
+  [StatefulAcl_ClassID] uniqueidentifier NULL,
+  [StatefulAcl_ClassIDClassID] varchar (100) NULL,
+  [StatelessAcl_ClassID] uniqueidentifier NULL,
+  [StatelessAcl_ClassIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_StateUsage_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [StateDefinitionID] uniqueidentifier NULL,
+  [StateDefinitionIDClassID] varchar (100) NULL,
+  [StateCombinationID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_StateUsage_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [StateDefinitionID] uniqueidentifier NULL,
+  [StateDefinitionIDClassID] varchar (100) NULL,
+  [StateCombinationID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_EnumValueDefinition_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [MetadataItemID] uniqueidentifier NOT NULL,
+  [Name] nvarchar (200) NOT NULL,
+  [Value] int NOT NULL,
+  [StatePropertyID] uniqueidentifier NULL,
+  [StatePropertyIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_EnumValueDefinition_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [MetadataItemID] uniqueidentifier NOT NULL,
+  [Name] nvarchar (200) NOT NULL,
+  [Name__IsSet] bit NOT NULL,
+  [Value] int NOT NULL,
+  [StatePropertyID] uniqueidentifier NULL,
+  [StatePropertyIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_AccessTypeReference_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [SecurableClassID] uniqueidentifier NULL,
+  [SecurableClassIDClassID] varchar (100) NULL,
+  [AccessTypeID] uniqueidentifier NULL,
+  [AccessTypeIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_AccessTypeReference_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [SecurableClassID] uniqueidentifier NULL,
+  [SecurableClassIDClassID] varchar (100) NULL,
+  [AccessTypeID] uniqueidentifier NULL,
+  [AccessTypeIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Culture_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [CultureName] nvarchar (10) NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Culture_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [CultureName] nvarchar (10) NOT NULL,
+  [CultureName__IsSet] bit NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_LocalizedName_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Text] nvarchar (max) NOT NULL,
+  [CultureID] uniqueidentifier NULL,
+  [MetadataObjectID] uniqueidentifier NULL,
+  [MetadataObjectIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_LocalizedName_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Text] nvarchar (max) NOT NULL,
+  [Text__IsSet] bit NOT NULL,
+  [CultureID] uniqueidentifier NULL,
+  [MetadataObjectID] uniqueidentifier NULL,
+  [MetadataObjectIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_SecurableClassDefinition_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [MetadataItemID] uniqueidentifier NOT NULL,
+  [Name] nvarchar (200) NOT NULL,
+  [BaseSecurableClassID] uniqueidentifier NULL,
+  [BaseSecurableClassIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_SecurableClassDefinition_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [MetadataItemID] uniqueidentifier NOT NULL,
+  [Name] nvarchar (200) NOT NULL,
+  [Name__IsSet] bit NOT NULL,
+  [BaseSecurableClassID] uniqueidentifier NULL,
+  [BaseSecurableClassIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_StatePropertyDefinition_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [MetadataItemID] uniqueidentifier NOT NULL,
+  [Name] nvarchar (200) NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_StatePropertyDefinition_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Index] int NOT NULL,
+  [MetadataItemID] uniqueidentifier NOT NULL,
+  [Name] nvarchar (200) NOT NULL,
+  [Name__IsSet] bit NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_StatePropertyReference_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [SecurableClassID] uniqueidentifier NULL,
+  [SecurableClassIDClassID] varchar (100) NULL,
+  [StatePropertyID] uniqueidentifier NULL,
+  [StatePropertyIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_StatePropertyReference_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [SecurableClassID] uniqueidentifier NULL,
+  [SecurableClassIDClassID] varchar (100) NULL,
+  [StatePropertyID] uniqueidentifier NULL,
+  [StatePropertyIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Group_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [ShortName] nvarchar (20) NULL,
+  [UniqueIdentifier] nvarchar (100) NOT NULL,
+  [TenantID] uniqueidentifier NULL,
+  [ParentID] uniqueidentifier NULL,
+  [GroupTypeID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Group_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL,
+  [ShortName] nvarchar (20) NULL,
+  [ShortName__IsSet] bit NOT NULL,
+  [UniqueIdentifier] nvarchar (100) NOT NULL,
+  [UniqueIdentifier__IsSet] bit NOT NULL,
+  [TenantID] uniqueidentifier NULL,
+  [ParentID] uniqueidentifier NULL,
+  [GroupTypeID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_GroupType_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_GroupType_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_GroupTypePosition_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [GroupTypeID] uniqueidentifier NULL,
+  [PositionID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_GroupTypePosition_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [GroupTypeID] uniqueidentifier NULL,
+  [PositionID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Position_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [UniqueIdentifier] nvarchar (100) NOT NULL,
+  [Delegation] int NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Position_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL,
+  [UniqueIdentifier] nvarchar (100) NOT NULL,
+  [UniqueIdentifier__IsSet] bit NOT NULL,
+  [Delegation] int NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Role_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [GroupID] uniqueidentifier NULL,
+  [PositionID] uniqueidentifier NULL,
+  [UserID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Role_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [GroupID] uniqueidentifier NULL,
+  [PositionID] uniqueidentifier NULL,
+  [UserID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Substitution_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [SubstitutingUserID] uniqueidentifier NULL,
+  [SubstitutedUserID] uniqueidentifier NULL,
+  [SubstitutedRoleID] uniqueidentifier NULL,
+  [BeginDate] datetime2 NULL,
+  [EndDate] datetime2 NULL,
+  [IsEnabled] bit NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Substitution_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [SubstitutingUserID] uniqueidentifier NULL,
+  [SubstitutedUserID] uniqueidentifier NULL,
+  [SubstitutedRoleID] uniqueidentifier NULL,
+  [BeginDate] datetime2 NULL,
+  [EndDate] datetime2 NULL,
+  [IsEnabled] bit NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Tenant_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [UniqueIdentifier] nvarchar (100) NOT NULL,
+  [IsAbstract] bit NOT NULL,
+  [ParentID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_Tenant_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL,
+  [UniqueIdentifier] nvarchar (100) NOT NULL,
+  [UniqueIdentifier__IsSet] bit NOT NULL,
+  [IsAbstract] bit NOT NULL,
+  [ParentID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_User_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Title] nvarchar (100) NULL,
+  [FirstName] nvarchar (100) NULL,
+  [LastName] nvarchar (100) NOT NULL,
+  [UserName] nvarchar (100) NOT NULL,
+  [TenantID] uniqueidentifier NULL,
+  [OwningGroupID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_User_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Title] nvarchar (100) NULL,
+  [Title__IsSet] bit NOT NULL,
+  [FirstName] nvarchar (100) NULL,
+  [FirstName__IsSet] bit NOT NULL,
+  [LastName] nvarchar (100) NOT NULL,
+  [LastName__IsSet] bit NOT NULL,
+  [UserName] nvarchar (100) NOT NULL,
+  [UserName__IsSet] bit NOT NULL,
+  [TenantID] uniqueidentifier NULL,
+  [OwningGroupID] uniqueidentifier NULL
 )
 GO

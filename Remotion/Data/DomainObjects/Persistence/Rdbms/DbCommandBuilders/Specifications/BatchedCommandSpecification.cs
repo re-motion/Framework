@@ -11,12 +11,12 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 
 /// <inheritdoc/>
-public class BatchedLockCommandSpecification : IBatchedLockCommandSpecification
+public class BatchedCommandSpecification : IBatchedCommandSpecification
 {
   private readonly MultiClassTableValuedDataParameterDefinition _parameterDefinition;
   private readonly SqlTableValuedParameterValue _parameterValue;
 
-  public BatchedLockCommandSpecification (TableDefinition tableDefinition, MultiClassTableValuedDataParameterDefinition parameterDefinition, IEnumerable<DataContainer> dataContainers)
+  public BatchedCommandSpecification (TableDefinition tableDefinition, MultiClassTableValuedDataParameterDefinition parameterDefinition, IEnumerable<DataContainer> dataContainers)
   {
     ArgumentNullException.ThrowIfNull(tableDefinition);
     ArgumentNullException.ThrowIfNull(parameterDefinition);

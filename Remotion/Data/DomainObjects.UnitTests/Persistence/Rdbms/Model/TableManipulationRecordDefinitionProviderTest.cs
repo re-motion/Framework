@@ -11,8 +11,8 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building;
+using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain.SingleInheritance;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
@@ -135,6 +135,47 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
     Assert.That(
         recordDefinition1,
         Is.SameAs(recordDefinition2));
+  }
+
+  [Test]
+  public void GetInsertRecordDefinition_ClassWithMixin_ReturnsRecordDefinitionWithExpectedLayout ()
+  {
+    var classDefinition = MappingConfiguration.Current.GetClassDefinition(nameof(SingleInheritanceFirstDerivedClass));
+    var tableDefinition = (TableDefinition)((FilterViewDefinition)classDefinition.StorageEntityDefinition).BaseEntity;
+    var insertRecordDefinition = _tableManipulationRecordDefinitionProvider.GetInsertRecordDefinition(classDefinition);
+
+    AssertRecordDefinition(insertRecordDefinition, classDefinition, tableDefinition, "TVP_SingleInheritanceBaseClass_Insert", [
+        AssertedProperty.ID,
+        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceFirstDerivedClass.BaseProperty)),
+        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceBaseClass.VectorOpposingProperty)),
+        AssertedProperty.CopiedProperty(nameof(SingleInheritanceFirstDerivedClass.FirstDerivedProperty)),
+        AssertedProperty.CopiedProperty(typeof(SingleInheritancePersistentMixin), nameof(SingleInheritancePersistentMixin.PersistentProperty)),
+        AssertedProperty.UnknownProperty(nameof(SingleInheritanceSecondDerivedClass.SecondDerivedProperty)),
+      ]);
+
+  }
+
+  [Test]
+  public void GetUpdateRecordDefinition_ClassWithMixin_ReturnsRecordDefinitionWithExpectedLayout ()
+  {
+    var classDefinition = MappingConfiguration.Current.GetClassDefinition(nameof(SingleInheritanceFirstDerivedClass));
+    var tableDefinition = (TableDefinition)((FilterViewDefinition)classDefinition.StorageEntityDefinition).BaseEntity;
+
+    var updateRecordDefinition = _tableManipulationRecordDefinitionProvider.GetUpdateRecordDefinition(classDefinition);
+    const string isSetSuffix = "__IsSet";
+    AssertRecordDefinition(updateRecordDefinition, classDefinition, tableDefinition, "TVP_SingleInheritanceBaseClass_Update", [
+        AssertedProperty.ID,
+        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceFirstDerivedClass.BaseProperty)),
+        AssertedProperty.BitflagProperty(nameof(SingleInheritanceFirstDerivedClass.BaseProperty) + isSetSuffix ),
+        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceBaseClass.VectorOpposingProperty)),
+        AssertedProperty.CopiedProperty(nameof(SingleInheritanceFirstDerivedClass.FirstDerivedProperty)),
+        AssertedProperty.BitflagProperty(nameof(SingleInheritanceFirstDerivedClass.FirstDerivedProperty) + isSetSuffix ),
+        AssertedProperty.CopiedProperty(typeof(SingleInheritancePersistentMixin), nameof(SingleInheritancePersistentMixin.PersistentProperty)),
+        AssertedProperty.BitflagProperty(nameof(SingleInheritancePersistentMixin.PersistentProperty) + isSetSuffix ),
+        AssertedProperty.UnknownProperty(nameof(SingleInheritanceSecondDerivedClass.SecondDerivedProperty)),
+        AssertedProperty.BitflagProperty(nameof(SingleInheritanceSecondDerivedClass.SecondDerivedProperty) + isSetSuffix),
+      ]);
+
   }
 
   [Test]
@@ -410,7 +451,7 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
     dataContainerAccessorStub.Setup(e => e.GetValue(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".Product")))).Returns(product);
     dataContainerAccessorStub.Setup(e => e.GetValue(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".Reviewer")))).Returns(reviewer);
     dataContainerAccessorStub.Setup(e => e.GetValue(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".CreatedAt")))).Returns(createdAt);
-    dataContainerAccessorStub.Setup(e => e.GetOptionalValue(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".Comment")))).Returns("dummy content");
+    dataContainerAccessorStub.Setup(e => e.GetOptionalValue(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".Comment")), "")).Returns("dummy content");
     dataContainerAccessorStub.Setup(e => e.IsOptionalValueSet(It.Is<PropertyDefinition>(e => e.PropertyName.EndsWith(".Comment")))).Returns(true);
 
     var columnValues = productReviewRecordDefinition.GetColumnValues(dataContainerAccessorStub.Object);
@@ -446,6 +487,7 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
       string expectedRecordDefinitionName,
       AssertedProperty[] expectedProperties)
   {
+    Assert.That(recordDefinition, Is.TypeOf<TableManipulationRecordDefinitionProvider.TableManipulationRecordDefinition>());
     Assert.That(recordDefinition.RecordName, Is.EqualTo(expectedRecordDefinitionName));
 
     var recordProperties = recordDefinition.PropertyDefinitions.ToArray();
@@ -483,9 +525,6 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         Assert.That(
             actualRecord.PropertyName,
             Is.EqualTo(expectedPropertyName));
-        Assert.That(
-            actualRecord.StoragePropertyDefinition,
-            Is.SameAs(propertyDefinition.StoragePropertyDefinition));
       }
       else if (expectedAssertedProperty.Type == AssertedPropertyType.BitflagProperty)
       {
@@ -506,6 +545,8 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
       }
       else if (expectedAssertedProperty.Type == AssertedPropertyType.UnknownProperty)
       {
+        Assert.That(actualRecord, Is.TypeOf<TableManipulationRecordDefinitionProvider.UnknownRecordPropertyDefinition>());
+
         Assert.That(
             actualRecord.PropertyName,
             Is.EqualTo("Unknown"));

@@ -30,16 +30,25 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
-  [TestFixture]
+
+  [TestFixture(CreateSaveCommandFactoryBehaviour.CreateBatchedSaveCommandFactory)]
+  [TestFixture(CreateSaveCommandFactoryBehaviour.CreateIndividualSaveCommandFactory)]
   public class SqlProviderGeneratedSqlTest : StandardMappingTest
   {
+    private readonly CreateSaveCommandFactoryBehaviour _createSaveCommandFactoryBehaviour;
+
+    public SqlProviderGeneratedSqlTest (CreateSaveCommandFactoryBehaviour createSaveCommandFactoryBehaviour)
+    {
+      _createSaveCommandFactoryBehaviour = createSaveCommandFactoryBehaviour;
+    }
+
     private SqlProviderGeneratedSqlTestHelper _testHelper;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _testHelper = new SqlProviderGeneratedSqlTestHelper(StorageSettings, TestDomainStorageProviderDefinition);
+      _testHelper = new SqlProviderGeneratedSqlTestHelper(StorageSettings, TestDomainStorageProviderDefinition, _createSaveCommandFactoryBehaviour);
     }
 
     public override void TearDown ()
@@ -252,8 +261,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
-    public void Save ()
+    public void Save_BatchedSaveCommandFactory ()
     {
+      if (_createSaveCommandFactoryBehaviour != CreateSaveCommandFactoryBehaviour.CreateBatchedSaveCommandFactory)
+      {
+        Assert.Ignore($"{nameof(Save_BatchedSaveCommandFactory)} is ignored because {nameof(_createSaveCommandFactoryBehaviour)} is {_createSaveCommandFactoryBehaviour}");
+        return;
+      }
+
       var newGuid = new Guid("322D1DCB-19E4-49BA-90AB-7F5C9C8126E8");
       var newDataContainer = DataContainer.CreateNew(new ObjectID(Configuration.GetTypeDefinition(typeof(Employee)), newGuid));
       SetPropertyValue(newDataContainer, typeof(Employee), "Name", "");
@@ -266,18 +281,106 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       SetPropertyValue(deletedDataContainer, typeof(Employee), "Supervisor", null);
       deletedDataContainer.Delete();
 
-      var expectedTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Lock", new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
-      expectedTvpValue.AddRecord([changedDataContainer.ID.Value, changedDataContainer.Timestamp]);
-      expectedTvpValue.AddRecord([deletedDataContainer.ID.Value, deletedDataContainer.Timestamp]);
-      expectedTvpValue.AddRecord([markedAsChangedDataContainer.ID.Value, markedAsChangedDataContainer.Timestamp]);
+      var expectedLockTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Lock", new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
+      expectedLockTvpValue.AddRecord([changedDataContainer.ID.Value, changedDataContainer.Timestamp]);
+      expectedLockTvpValue.AddRecord([deletedDataContainer.ID.Value, deletedDataContainer.Timestamp]);
+      expectedLockTvpValue.AddRecord([markedAsChangedDataContainer.ID.Value, markedAsChangedDataContainer.Timestamp]);
+
+
+      var expectedInsertTvpValue = new SqlTableValuedParameterValue("TVP_Employee_Insert", new[]
+                                                                                           { new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
+                                                                                             new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
+                                                                                             new SqlMetaData("Name", SqlDbType.NVarChar, 100),
+                                                                                             new SqlMetaData("SupervisorID", SqlDbType.UniqueIdentifier)
+                                                                                           });
+      expectedInsertTvpValue.AddRecord([newDataContainer.ID.Value,newDataContainer.ID.ClassID, "", DBNull.Value]);
+
+      var expectedUpdateTvpValue = new SqlTableValuedParameterValue("TVP_Employee_Update", new[]
+                                                                                           {
+                                                                                               new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
+                                                                                               new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
+                                                                                               new SqlMetaData("Name", SqlDbType.NVarChar, 100),
+                                                                                               new SqlMetaData("Name__IsSet", SqlDbType.Bit),
+                                                                                               new SqlMetaData("SupervisorID", SqlDbType.UniqueIdentifier)
+                                                                                           });
+      expectedUpdateTvpValue.AddRecord([changedDataContainer.ID.Value, changedDataContainer.ID.ClassID, "George", true, DBNull.Value]);
+      expectedUpdateTvpValue.AddRecord([newDataContainer.ID.Value, newDataContainer.ID.ClassID, "", false, DBNull.Value]);
+      expectedUpdateTvpValue.AddRecord([deletedDataContainer.ID.Value, deletedDataContainer.ID.ClassID, "", false, DBNull.Value]);
+      expectedUpdateTvpValue.AddRecord([markedAsChangedDataContainer.ID.Value, markedAsChangedDataContainer.ID.ClassID, "", false, DBNull.Value]);
+
+      var expectedDeleteTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Delete", new[]
+                                                                                            {
+                                                                                                new SqlMetaData("ID", SqlDbType.UniqueIdentifier)
+                                                                                            });
+      expectedDeleteTvpValue.AddRecord([deletedDataContainer.ID.Value]);
 
       var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
           expectedCommandBehavior:CommandBehavior.Default,
           "DECLARE @TransactionIsolationLevel int;\r\nDECLARE @IsReadCommittedSnapshotOn bit;\r\nSET @TransactionIsolationLevel = (SELECT [transaction_isolation_level] FROM [sys].[dm_exec_sessions] WHERE [session_id] = @@SPID);\r\nSET @IsReadCommittedSnapshotOn = (SELECT [is_read_committed_snapshot_on] FROM [sys].[databases] WHERE [database_id] = DB_ID());\r\nIF (@TransactionIsolationLevel = 2 AND @IsReadCommittedSnapshotOn = 1)\r\nBEGIN\r\nSELECT [P].[ID], [P].[Timestamp] FROM [Employee] [T] WITH(ROWLOCK, XLOCK, READPAST)\r\nRIGHT JOIN @TVP_Lock_Employee [P] ON [P].[ID] = [T].[ID] AND [P].[Timestamp] = [T].[Timestamp]\r\nWHERE [T].[ID] IS NULL;\r\nEND\r\nELSE\r\nBEGIN\r\nSELECT [P].[ID], [P].[Timestamp] FROM [Employee] [T] WITH(ROWLOCK, XLOCK)\r\nRIGHT JOIN @TVP_Lock_Employee [P] ON [P].[ID] = [T].[ID] AND [P].[Timestamp] = [T].[Timestamp]\r\nWHERE [T].[ID] IS NULL;\r\nEND",
-          Tuple.Create("@TVP_Lock_Employee", DbType.Object, (object)expectedTvpValue));
+          Tuple.Create("@TVP_Lock_Employee", DbType.Object, (object)expectedLockTvpValue));
 
+      _testHelper.ExpectExecuteNonQuery(
+          sequence,
+          """
+          INSERT INTO [Employee] ([ID], [ClassID], [Name], [SupervisorID])
+          SELECT [ID], [ClassID], [Name], [SupervisorID] FROM @TVP_Insert_Employee;
+          """,
+          Tuple.Create("@TVP_Insert_Employee", DbType.Object, (object)expectedInsertTvpValue));
+
+      _testHelper.ExpectExecuteNonQuery(
+          sequence,
+          """
+          UPDATE [T]
+          SET
+          [T].[ID] = [P].[ID],
+          [T].[ClassID] = [P].[ClassID],
+          [T].[SupervisorID] = [P].[SupervisorID],
+          [T].[Name] = CASE WHEN [P].[Name__IsSet] = 1 THEN [P].[Name] ELSE [T].[Name] END
+          FROM [Employee] [T]
+          INNER JOIN @TVP_Update_Employee [P] ON [P].[ID] = [T].[ID];
+          """,
+          Tuple.Create("@TVP_Update_Employee", DbType.Object, (object)expectedUpdateTvpValue)
+          );
+
+      _testHelper.ExpectExecuteNonQuery(
+          sequence,
+          """
+          DELETE [T]
+          FROM [Employee] [T]
+          INNER JOIN @TVP_Delete_Employee [P] ON [P].[ID] = [T].[ID];
+          """,
+          Tuple.Create("@TVP_Delete_Employee", DbType.Object, (object)expectedDeleteTvpValue));
+
+      _testHelper.Provider.Save(new[] { changedDataContainer, newDataContainer, deletedDataContainer, markedAsChangedDataContainer, unchangedDataContainer});
+
+      _testHelper.VerifyAllExpectations();
+      sequence.Verify();
+    }
+
+    [Test]
+    public void Save_IndividualSaveCommandFactory ()
+    {
+      if (_createSaveCommandFactoryBehaviour != CreateSaveCommandFactoryBehaviour.CreateIndividualSaveCommandFactory)
+      {
+        Assert.Ignore($"{nameof(Save_IndividualSaveCommandFactory)} is ignored because {nameof(_createSaveCommandFactoryBehaviour)} is {_createSaveCommandFactoryBehaviour}");
+        return;
+      }
+
+      var newGuid = new Guid("322D1DCB-19E4-49BA-90AB-7F5C9C8126E8");
+      var newDataContainer = DataContainer.CreateNew(new ObjectID(Configuration.GetTypeDefinition(typeof(Employee)), newGuid));
+      SetPropertyValue(newDataContainer, typeof(Employee), "Name", "");
+      var changedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee1);
+      SetPropertyValue(changedDataContainer, typeof(Employee), "Name", "George");
+      var markedAsChangedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee2);
+      markedAsChangedDataContainer.MarkAsChanged();
+      var unchangedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee3);
+      var deletedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee7);
+      SetPropertyValue(deletedDataContainer, typeof(Employee), "Supervisor", null);
+      deletedDataContainer.Delete();
+
+      var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteNonQuery(
           sequence,
           "INSERT INTO [Employee] ([ID], [ClassID], [Name]) VALUES (@ID, @ClassID, @Name);",
@@ -313,7 +416,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           "DELETE FROM [Employee] WHERE [ID] = @ID;",
           Tuple.Create("@ID", DbType.Guid, deletedDataContainer.ID.Value));
 
-      _testHelper.Provider.Save(new[] { changedDataContainer, newDataContainer, deletedDataContainer, markedAsChangedDataContainer, unchangedDataContainer});
+      _testHelper.Provider.Save(new[] { changedDataContainer, newDataContainer, deletedDataContainer, markedAsChangedDataContainer, unchangedDataContainer });
 
       _testHelper.VerifyAllExpectations();
       sequence.Verify();

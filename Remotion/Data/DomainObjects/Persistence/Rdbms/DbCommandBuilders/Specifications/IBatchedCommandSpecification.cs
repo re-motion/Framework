@@ -9,10 +9,10 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications
 {
   /// <summary>
-  /// <see cref="IBatchedLockCommandSpecification"/> defines the API for all implementations that specify how to lock objects in a relational
+  /// <see cref="IBatchedCommandSpecification"/> defines the API for all implementations that specify how to lock objects in a relational
   /// database.
   /// </summary>
-  public interface IBatchedLockCommandSpecification
+  public interface IBatchedCommandSpecification
   {
     /// <summary>
     /// Creates the <see cref="DbParameter"/> for the given <paramref name="command"/>.

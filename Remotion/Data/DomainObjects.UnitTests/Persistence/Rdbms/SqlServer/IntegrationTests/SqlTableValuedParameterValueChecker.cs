@@ -64,7 +64,7 @@ public static class SqlTableValuedParameterValueChecker
       var actualRecord = actualRecordEnumerator.Current;
       Assert.That(actualRecord, Is.Not.Null);
 
-      var expectedRecord = actualRecordEnumerator.Current;
+      var expectedRecord = expectedRecordEnumerator.Current;
       Assert.That(expectedRecord, Is.Not.Null);
 
       Assert.That(actualRecord.FieldCount, Is.EqualTo(expectedRecord.FieldCount));

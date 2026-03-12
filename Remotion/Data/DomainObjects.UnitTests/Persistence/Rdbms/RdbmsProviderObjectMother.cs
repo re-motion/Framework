@@ -38,6 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     public static RdbmsProvider CreateForIntegrationTest (
         IStorageSettings storageSettings,
         RdbmsProviderDefinition storageProviderDefinition,
+        CreateSaveCommandFactoryBehaviour createSaveCommandFactoryBehaviour,
         Func<RdbmsProviderDefinition, IPersistenceExtension, IRdbmsProviderCommandFactory, RdbmsProvider> ctorCall = null)
     {
       if (!storageSettings.GetStorageProviderDefinitions().Contains(storageProviderDefinition))
@@ -72,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         infrastructureStoragePropertyDefinitionProvider,
         rdbmsPersistenceModelProvider);
 
-      var commandFactory = new RdbmsProviderCommandFactory(
+      var commandFactory = new TestableRdbmsProviderCommandFactory(
           storageProviderDefinition,
           dbCommandBuilderFactory,
           rdbmsPersistenceModelProvider,
@@ -80,7 +81,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
           new TableDefinitionFinder(rdbmsPersistenceModelProvider),
           dataStoragePropertyDefinitionFactory,
           dataParameterDefinitionFactoryChain,
-          tableManipulationRecordDefinitionProvider);
+          tableManipulationRecordDefinitionProvider,
+          createSaveCommandFactoryBehaviour);
 
       if (ctorCall == null)
         ctorCall = (def, ext, factory) => new RdbmsProvider(def, def.ConnectionString, ext, factory, () => new SqlConnection());
