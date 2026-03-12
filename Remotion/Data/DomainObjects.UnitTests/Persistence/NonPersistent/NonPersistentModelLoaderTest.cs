@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent.Model.NonPersistentPersistenceModelLoaderTestDomain;
 
@@ -35,7 +36,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
   {
     private string _storageProviderID;
     private StorageProviderDefinition _storageProviderDefinition;
-
+    private IPersistenceModelSortingProvider _persistenceModelSortingProviderMock;
     private NonPersistentPersistenceModelLoader _persistenceModelLoader;
 
     [SetUp]
@@ -45,6 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       _storageProviderDefinition = new UnitTestStorageProviderStubDefinition(_storageProviderID);
 
       _persistenceModelLoader = new NonPersistentPersistenceModelLoader(_storageProviderDefinition);
+      _persistenceModelSortingProviderMock = Mock.Of<IPersistenceModelSortingProvider>();
     }
 
     [Test]
@@ -74,7 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { persistentProperty, transactionProperty }, true));
       derivedClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new PropertyDefinition[0], true));
 
-      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass);
+      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass, _persistenceModelSortingProviderMock);
 
       Assert.That(baseClass.StorageEntityDefinition, Is.TypeOf<NonPersistentStorageEntity>());
       Assert.That(derivedClass.StorageEntityDefinition, Is.TypeOf<NonPersistentStorageEntity>());
@@ -98,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       baseClass.SetStorageEntity(fakeEntityDefinition);
       persistentProperty.SetStorageProperty(fakeStoragePropertyDefinition);
 
-      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass);
+      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass, _persistenceModelSortingProviderMock);
 
       Assert.That(baseClass.StorageEntityDefinition, Is.SameAs(fakeEntityDefinition));
       Assert.That(persistentProperty.StoragePropertyDefinition, Is.SameAs(fakeStoragePropertyDefinition));
@@ -116,7 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       baseClass.SetPropertyDefinitions(new PropertyDefinitionCollection(new PropertyDefinition[0], true));
 
       Assert.That(
-          () => _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass),
+          () => _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass, _persistenceModelSortingProviderMock),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "The storage entity definition of class 'Base' is not of type 'NonPersistentStorageEntity'."));
     }
@@ -133,7 +135,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
       persistentProperty.SetStorageProperty(new FakeStoragePropertyDefinition("Fake"));
 
       Assert.That(
-          () => _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass),
+          () => _persistenceModelLoader.ApplyPersistenceModelToHierarchy(baseClass, _persistenceModelSortingProviderMock),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "The property definition 'PersistentProperty' of class 'Base' has a storage property type of "
               + "'Remotion.Data.DomainObjects.UnitTests.Mapping.FakeStoragePropertyDefinition' when only 'NonPersistentStorageProperty' is supported."));

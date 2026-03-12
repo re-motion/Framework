@@ -50,7 +50,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2016
 {
   [TestFixture]
-  public class SqlStorageObjectFactoryTest
+  public class SqlStorageObjectFactoryTest : StandardMappingTest
   {
     private IRdbmsStorageObjectFactory _sqlStorageObjectFactory;
     private RdbmsProviderDefinition _rdbmsProviderDefinition;
@@ -78,8 +78,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2
     private Mock<IStoragePropertyDefinitionResolver> _storagePropertyDefinitionResolverStub;
 
     [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp();
       _persistenceExtensionStub = new Mock<IPersistenceExtension>();
       _tableBuilderStub = new Mock<TableScriptBuilder>(
           new Mock<ITableScriptElementFactory>().Object,

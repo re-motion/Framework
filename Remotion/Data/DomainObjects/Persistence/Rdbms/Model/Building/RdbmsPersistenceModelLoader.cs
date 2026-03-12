@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -85,30 +86,31 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
           new RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule());
     }
 
-    public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
+    public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider)
     {
       ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(persistenceModelSortingProvider);
 
       ClassDefinition[] derivedClasses = classDefinition.GetAllDerivedClasses();
       var allClassDefinitions = new[] { classDefinition }.Concat(derivedClasses);
 
       // ReSharper disable PossibleMultipleEnumeration - multiple enumeration is okay here.
       EnsureAllStoragePropertiesCreated(allClassDefinitions);
-      EnsureAllStorageEntitiesCreated(allClassDefinitions);
+      EnsureAllStorageEntitiesCreated(allClassDefinitions, persistenceModelSortingProvider);
       // ReSharper restore PossibleMultipleEnumeration
     }
 
-    private void EnsureAllStorageEntitiesCreated (IEnumerable<ClassDefinition> classDefinitions)
+    private void EnsureAllStorageEntitiesCreated (IEnumerable<ClassDefinition> classDefinitions, IPersistenceModelSortingProvider persistenceModelSortingProvider)
     {
       foreach (var classDefinition in classDefinitions)
-        EnsureStorageEntitiesCreated(classDefinition);
+        EnsureStorageEntitiesCreated(classDefinition, persistenceModelSortingProvider);
     }
 
-    private void EnsureStorageEntitiesCreated (ClassDefinition classDefinition)
+    private void EnsureStorageEntitiesCreated (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider)
     {
       if (!classDefinition.HasStorageEntityDefinitionBeenSet)
       {
-        var storageEntity = CreateEntityDefinition(classDefinition);
+        var storageEntity = CreateEntityDefinition(classDefinition, persistenceModelSortingProvider);
         classDefinition.SetStorageEntity(storageEntity);
       }
       else if (!(classDefinition.StorageEntityDefinition is IRdbmsStorageEntityDefinition))
@@ -152,35 +154,35 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       }
     }
 
-    private IStorageEntityDefinition CreateEntityDefinition (ClassDefinition classDefinition)
+    private IStorageEntityDefinition CreateEntityDefinition (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider)
     {
       if (_storageNameProvider.GetTableName(classDefinition) != null)
-        return _entityDefinitionFactory.CreateTableDefinition(classDefinition);
+        return _entityDefinitionFactory.CreateTableDefinition(classDefinition, persistenceModelSortingProvider);
 
       var baseClasses = classDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);
       if (baseClasses.Any(cd => _storageNameProvider.GetTableName(cd) != null))
-        return CreateEntityDefinitionForClassBelowTable(classDefinition);
+        return CreateEntityDefinitionForClassBelowTable(classDefinition, persistenceModelSortingProvider);
       else
-        return CreateEntityDefinitionForClassAboveTable(classDefinition);
+        return CreateEntityDefinitionForClassAboveTable(classDefinition, persistenceModelSortingProvider);
     }
 
-    private IStorageEntityDefinition CreateEntityDefinitionForClassBelowTable (ClassDefinition classDefinition)
+    private IStorageEntityDefinition CreateEntityDefinitionForClassBelowTable (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider)
     {
       Assertion.DebugIsNotNull(classDefinition.BaseClass, "classDefinition.BaseClass != null");
 
       // The following call is potentially recursive (GetEntityDefinition -> EnsureStorageEntitiesCreated -> CreateEntityDefinitionForClassBelowTable), but this is
       // guaranteed to terminate because we know at this point that there is a class in the classDefinition's base hierarchy that will get a 
       // TableDefinition
-      var baseStorageEntityDefinition = GetEntityDefinition(classDefinition.BaseClass);
+      var baseStorageEntityDefinition = GetEntityDefinition(classDefinition.BaseClass, persistenceModelSortingProvider);
 
       return _entityDefinitionFactory.CreateFilterViewDefinition(classDefinition, baseStorageEntityDefinition);
     }
 
-    private IStorageEntityDefinition CreateEntityDefinitionForClassAboveTable (ClassDefinition classDefinition)
+    private IStorageEntityDefinition CreateEntityDefinitionForClassAboveTable (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider)
     {
       var derivedStorageEntityDefinitions =
           (from ClassDefinition derivedClass in classDefinition.DerivedClasses
-           let entityDefinition = GetEntityDefinition(derivedClass)
+           let entityDefinition = GetEntityDefinition(derivedClass, persistenceModelSortingProvider)
            where !(entityDefinition is EmptyViewDefinition)
            select entityDefinition).ToList();
 
@@ -191,9 +193,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       return _entityDefinitionFactory.CreateUnionViewDefinition(classDefinition, derivedStorageEntityDefinitions);
     }
 
-    private IRdbmsStorageEntityDefinition GetEntityDefinition (ClassDefinition classDefinition)
+    private IRdbmsStorageEntityDefinition GetEntityDefinition (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider)
     {
-      EnsureStorageEntitiesCreated(classDefinition);
+      EnsureStorageEntitiesCreated(classDefinition, persistenceModelSortingProvider);
 
       return _rdbmsPersistenceModelProvider.GetEntityDefinition(classDefinition);
     }

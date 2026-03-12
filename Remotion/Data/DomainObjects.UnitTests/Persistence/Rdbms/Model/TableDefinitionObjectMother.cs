@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
@@ -100,7 +102,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
                 dataPropertyDefinitions,
                 tableConstraintDefinitions,
                 new IIndexDefinition[0],
-                new EntityNameDefinition[0]);
+                new EntityNameDefinition[0],
+                Mock.Of<IPersistenceModelSortingProvider>());
     }
 
     public static TableDefinition CreateWithIndexes (StorageProviderDefinition storageProviderDefinition, IEnumerable<IIndexDefinition> indexDefinitions)
@@ -114,7 +117,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new IRdbmsStoragePropertyDefinition[0],
           new ITableConstraintDefinition[0],
           indexDefinitions,
-          new EntityNameDefinition[0]);
+          new EntityNameDefinition[0],
+          Mock.Of<IPersistenceModelSortingProvider>());
     }
 
     public static TableDefinition CreateWithSynonyms (StorageProviderDefinition storageProviderDefinition, IEnumerable<EntityNameDefinition> synonyms)
@@ -128,7 +132,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new IRdbmsStoragePropertyDefinition[0],
           new ITableConstraintDefinition[0],
           new IIndexDefinition[0],
-          synonyms);
+          synonyms,
+          Mock.Of<IPersistenceModelSortingProvider>());
     }
 
     public static TableDefinition Create (StorageProviderDefinition storageProviderDefinition, IRdbmsStoragePropertyDefinition[] dataPropertyDefinitions)

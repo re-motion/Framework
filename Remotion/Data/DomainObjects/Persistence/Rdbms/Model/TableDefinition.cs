@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
@@ -40,7 +41,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         IEnumerable<IRdbmsStoragePropertyDefinition> dataProperties,
         IEnumerable<ITableConstraintDefinition> constraints,
         IEnumerable<IIndexDefinition> indexes,
-        IEnumerable<EntityNameDefinition> synonyms)
+        IEnumerable<EntityNameDefinition> synonyms,
+        IPersistenceModelSortingProvider persistenceModelSortingProvider)
         : base(
             storageProviderDefinition,
             viewName,
@@ -52,9 +54,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       ArgumentNullException.ThrowIfNull(tableName);
       ArgumentNullException.ThrowIfNull(constraints);
+      ArgumentNullException.ThrowIfNull(persistenceModelSortingProvider);
 
       _tableName = tableName;
       _constraints = constraints.ToList().AsReadOnly();
+      PersistenceModelSortingProvider = persistenceModelSortingProvider;
     }
 
     public EntityNameDefinition TableName
@@ -66,6 +70,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       get { return _constraints; }
     }
+
+    public IPersistenceModelSortingProvider PersistenceModelSortingProvider { get; }
 
     public override void Accept (IRdbmsStorageEntityDefinitionVisitor visitor)
     {

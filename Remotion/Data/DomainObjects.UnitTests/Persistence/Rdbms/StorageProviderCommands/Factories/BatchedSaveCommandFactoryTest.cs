@@ -3,9 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.SqlClient.Server;
 using Moq;
@@ -13,6 +16,7 @@ using NUnit.Framework;
 using Remotion.Context;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -25,6 +29,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests;
@@ -37,9 +42,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
 public class BatchedSaveCommandFactoryTest : StandardMappingTest
 {
+  [UnsafeAccessor(UnsafeAccessorKind.Method)]
+  private static extern IRdbmsProviderCommand CreateForSave (
+      BatchedSaveCommandFactory saveCommandFactory,
+      IEnumerable<DataContainer> dataContainers,
+      IPersistenceModelSortingProvider persistenceModelSortingProvider);
+
   private Mock<IDbCommandBuilderFactory> _dbCommandBuilderFactoryStrictMock;
   private RdbmsPersistenceModelProvider _rdbmsPersistenceModelProvider;
   private Mock<ITableDefinitionFinder> _tableDefinitionFinderStrictMock;
+  private Mock<IPersistenceModelSortingProvider> _sortOrderProviderStrictMock;
   private BatchedSaveCommandFactory _factory;
   private TableDefinition _tableDefinition1;
 
@@ -61,6 +73,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
         infrastructureStoragePropertyDefinitionProvider,
         rdbmsPersistenceModelProvider);
 
+    _sortOrderProviderStrictMock = new Mock<IPersistenceModelSortingProvider>(MockBehavior.Strict);
+
     _factory = new BatchedSaveCommandFactory(
         _dbCommandBuilderFactoryStrictMock.Object,
         _rdbmsPersistenceModelProvider,
@@ -71,50 +85,216 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
   }
 
   [Test]
-  public void CreateForSave_New ()
+  public void CreateForSave_New_WithIncorrectOrder_ForeignKeyRelevantProperties_WithNewRelatedObject_CreatesUpdate ()
   {
-    var dataContainerNew1 = DataContainer.CreateNew(DomainObjectIDs.Computer1);
-    SetPropertyValue(dataContainerNew1, typeof(Computer), "SerialNumber", "123456");
-    var dataContainerNew2 = DataContainer.CreateNew(DomainObjectIDs.Computer2);
-    SetPropertyValue(dataContainerNew2, typeof(Computer), "SerialNumber", "654321");
+    var computerDataContainer = DataContainer.CreateNew(DomainObjectIDs.Computer1);
+    SetPropertyValue(computerDataContainer, typeof(Computer), "SerialNumber", "123456");
+    var employeeDataContainer = DataContainer.CreateNew(DomainObjectIDs.Employee2);
+    SetPropertyValue(computerDataContainer, typeof(Computer), nameof(Computer.Employee), DomainObjectIDs.Employee2);
 
-    var dataContainerNewWithoutRelations = DataContainer.CreateNew(DomainObjectIDs.Official3);
+    var tableDefinitionComputer = StubTableDefinitionFinder(computerDataContainer);
+    var tableDefinitionEmployee = StubTableDefinitionFinder(employeeDataContainer);
+
     var insertDbCommandBuilder = new Mock<IDbCommandBuilder>();
     var updateDbCommandBuilder = new Mock<IDbCommandBuilder>();
 
-    var tableDefinitionA = (TableDefinition)dataContainerNew1.ClassDefinition.StorageEntityDefinition;
-    Assertion.DebugAssert((TableDefinition)dataContainerNew2.ClassDefinition.StorageEntityDefinition == tableDefinitionA);
-    var tableDefinitionB = (TableDefinition)dataContainerNewWithoutRelations.ClassDefinition.StorageEntityDefinition;
-
     _dbCommandBuilderFactoryStrictMock
         .Setup(stub => stub.CreateForBatchedInsert(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+          .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+          {
+            Assert.That(specifications.Count, Is.EqualTo(2));
+            var employeeSpec = specifications[0];
+            var actualEmployeeParameter = employeeSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+            var expectedEmployeeTvpValue = GetTvpEmployeeInsertParameterValue();
+            AddRecordToEmployeeInsertTvp(expectedEmployeeTvpValue, employeeDataContainer, null, null);
+            SqlTableValuedParameterValueChecker.CheckEquals(actualEmployeeParameter.Value, expectedEmployeeTvpValue);
+
+            var computerSpec = specifications[1];
+            var actualComputerParameter = computerSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+            var expectedComputerTvpValue = GetTvpComputerInsertParameterValue();
+            AddRecordToComputerInsertTvp(expectedComputerTvpValue, computerDataContainer, "123456", null);
+            SqlTableValuedParameterValueChecker.CheckEquals(actualComputerParameter.Value, expectedComputerTvpValue);
+          })
         .Returns(insertDbCommandBuilder.Object);
 
     _dbCommandBuilderFactoryStrictMock
         .Setup(stub => stub.CreateForBatchedUpdate(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+         .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+         {
+           Assert.That(specifications.Count, Is.EqualTo(1));
+           var spec = specifications[0];
+           var actualParameter = spec.CreateDbParameter(new SqlCommand(), "DUMMY");
+           var expectedUpdateTvpValue = GetTvpComputerUpdateParameterValue();
+           AddRecordToComputerUpdateTvp(expectedUpdateTvpValue, computerDataContainer, "", false, employeeDataContainer.ID);
+
+           SqlTableValuedParameterValueChecker.CheckEquals(actualParameter.Value, expectedUpdateTvpValue);
+
+         })
         .Returns(updateDbCommandBuilder.Object);
 
-    StubTableDefinitionFinder(dataContainerNew1.ID, tableDefinitionA);
-    StubTableDefinitionFinder(dataContainerNew2.ID, tableDefinitionA);
-    StubTableDefinitionFinder(dataContainerNewWithoutRelations.ID, tableDefinitionB);
+    var computerEmployeePropertyDefinition = GetPropertyDefinition(typeof(Computer), nameof(Computer.Employee));
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionEmployee)).Returns(0).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionComputer)).Returns(1).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(false).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(computerDataContainer.ClassDefinition)).Returns([computerEmployeePropertyDefinition]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(employeeDataContainer.ClassDefinition)).Returns([]).Verifiable();
 
-    var result = _factory.CreateForSave(
-        new[]
-        {
-            dataContainerNew1,
-            dataContainerNew2,
-            dataContainerNewWithoutRelations
-        });
+    var result = CreateForSave(_factory, [computerDataContainer, employeeDataContainer], _sortOrderProviderStrictMock.Object);
 
     _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
+
     Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
-    var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
+    var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.Cast<BatchedObjectsRdbmsProviderCommand>().ToList();
 
     Assert.That(contexts.Count, Is.EqualTo(2));
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerNew1, dataContainerNew2, dataContainerNewWithoutRelations]));
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerNew1,dataContainerNew2]));
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
+    Assert.That(contexts[0].AffectedDataContainers, Is.EqualTo([employeeDataContainer, computerDataContainer]));
+    Assert.That(contexts[0].CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
+
+    Assert.That(contexts[1].AffectedDataContainers, Is.EqualTo([computerDataContainer]));
+    Assert.That(contexts[1].CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
+  }
+
+  [Test]
+  public void CreateForSave_New_WithIncorrectOrder_ForeignKeyRelevantProperties_WithExistingRelatedObject_DoesNotCreatesUpdate ()
+  {
+    var computerDataContainer = DataContainer.CreateNew(DomainObjectIDs.Computer1);
+    SetPropertyValue(computerDataContainer, typeof(Computer), "SerialNumber", "123456");
+    SetPropertyValue(computerDataContainer, typeof(Computer), nameof(Computer.Employee), DomainObjectIDs.Employee2);
+
+    StubTableDefinitionFinder(computerDataContainer);
+
+    var insertDbCommandBuilder = new Mock<IDbCommandBuilder>();
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedInsert(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+         .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+         {
+           Assert.That(specifications.Count, Is.EqualTo(1));
+           var computerSpec = specifications[0];
+           var actualComputerParameter = computerSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+           var expectedComputerTvpValue = GetTvpComputerInsertParameterValue();
+           AddRecordToComputerInsertTvp(expectedComputerTvpValue, computerDataContainer, "123456", DomainObjectIDs.Employee2);
+           SqlTableValuedParameterValueChecker.CheckEquals(actualComputerParameter.Value, expectedComputerTvpValue);
+         })
+        .Returns(insertDbCommandBuilder.Object);
+
+    var computerEmployeePropertyDefinition = GetPropertyDefinition(typeof(Computer), nameof(Computer.Employee));
+
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(false).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(computerDataContainer.ClassDefinition)).Returns([computerEmployeePropertyDefinition]).Verifiable();
+
+    var result = CreateForSave(_factory, [computerDataContainer], _sortOrderProviderStrictMock.Object);
+
+    _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
+
+    Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
+    var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.Cast<BatchedObjectsRdbmsProviderCommand>().ToList();
+
+    Assert.That(contexts.Count, Is.EqualTo(1));
+    Assert.That(contexts[0].AffectedDataContainers, Is.EqualTo([computerDataContainer]));
+    Assert.That(contexts[0].CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
+  }
+
+  [Test]
+  public void CreateForSave_New_WithIncorrectOrder_NoForeignKeyRelevantProperties_WithNewRelatedObject_DoesNotCreatesUpdate ()
+  {
+    var computerDataContainer = DataContainer.CreateNew(DomainObjectIDs.Computer1);
+    SetPropertyValue(computerDataContainer, typeof(Computer), "SerialNumber", "123456");
+    var employeeDataContainer = DataContainer.CreateNew(DomainObjectIDs.Employee2);
+    SetPropertyValue(computerDataContainer, typeof(Computer), nameof(Computer.Employee), DomainObjectIDs.Employee2);
+
+    var tableDefinitionComputer = StubTableDefinitionFinder(computerDataContainer);
+    var tableDefinitionEmployee = StubTableDefinitionFinder(employeeDataContainer);
+
+    var insertDbCommandBuilder = new Mock<IDbCommandBuilder>();
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedInsert(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+        {
+          Assert.That(specifications.Count, Is.EqualTo(2));
+          var employeeSpec = specifications[0];
+          var actualEmployeeParameter = employeeSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedEmployeeTvpValue = GetTvpEmployeeInsertParameterValue();
+          AddRecordToEmployeeInsertTvp(expectedEmployeeTvpValue, employeeDataContainer, null, null);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualEmployeeParameter.Value, expectedEmployeeTvpValue);
+
+          var computerSpec = specifications[1];
+          var actualComputerParameter = computerSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedComputerTvpValue = GetTvpComputerInsertParameterValue();
+          AddRecordToComputerInsertTvp(expectedComputerTvpValue, computerDataContainer, "123456", DomainObjectIDs.Employee2);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualComputerParameter.Value, expectedComputerTvpValue);
+        })
+        .Returns(insertDbCommandBuilder.Object);
+
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionEmployee)).Returns(0).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionComputer)).Returns(1).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(false).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(computerDataContainer.ClassDefinition)).Returns([]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(employeeDataContainer.ClassDefinition)).Returns([]).Verifiable();
+
+    var result = CreateForSave(_factory, [computerDataContainer, employeeDataContainer], _sortOrderProviderStrictMock.Object);
+
+    _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
+
+    Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
+    var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.Cast<BatchedObjectsRdbmsProviderCommand>().ToList();
+
+    Assert.That(contexts.Count, Is.EqualTo(1));
+    Assert.That(contexts[0].AffectedDataContainers, Is.EqualTo([employeeDataContainer, computerDataContainer]));
+    Assert.That(contexts[0].CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
+  }
+
+  [Test]
+  public void CreateForSave_New_WithCorrectOrder_WithNewRelatedObject_DoesNotCreatesUpdate ()
+  {
+    var computerDataContainer = DataContainer.CreateNew(DomainObjectIDs.Computer1);
+    SetPropertyValue(computerDataContainer, typeof(Computer), "SerialNumber", "123456");
+    var employeeDataContainer = DataContainer.CreateNew(DomainObjectIDs.Employee2);
+    SetPropertyValue(computerDataContainer, typeof(Computer), nameof(Computer.Employee), DomainObjectIDs.Employee2);
+
+    var tableDefinitionComputer = StubTableDefinitionFinder(computerDataContainer);
+    var tableDefinitionEmployee = StubTableDefinitionFinder(employeeDataContainer);
+
+    var insertDbCommandBuilder = new Mock<IDbCommandBuilder>();
+
+    _dbCommandBuilderFactoryStrictMock
+       .Setup(stub => stub.CreateForBatchedInsert(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+        {
+          Assert.That(specifications.Count, Is.EqualTo(2));
+          var employeeSpec = specifications[0];
+          var actualEmployeeParameter = employeeSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedEmployeeTvpValue = GetTvpEmployeeInsertParameterValue();
+          AddRecordToEmployeeInsertTvp(expectedEmployeeTvpValue, employeeDataContainer, null, null);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualEmployeeParameter.Value, expectedEmployeeTvpValue);
+
+          var computerSpec = specifications[1];
+          var actualComputerParameter = computerSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedComputerTvpValue = GetTvpComputerInsertParameterValue();
+          AddRecordToComputerInsertTvp(expectedComputerTvpValue, computerDataContainer, "123456", DomainObjectIDs.Employee2);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualComputerParameter.Value, expectedComputerTvpValue);
+        })
+       .Returns(insertDbCommandBuilder.Object);
+
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionEmployee)).Returns(0).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionComputer)).Returns(1).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(true).Verifiable();
+
+    var result = CreateForSave(_factory, [computerDataContainer, employeeDataContainer], _sortOrderProviderStrictMock.Object);
+
+    _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
+
+    Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
+    var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.Cast<BatchedObjectsRdbmsProviderCommand>().ToList();
+
+    Assert.That(contexts.Count, Is.EqualTo(1));
+    Assert.That(contexts[0].AffectedDataContainers, Is.EqualTo([employeeDataContainer, computerDataContainer]));
+    Assert.That(contexts[0].CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
   }
 
   [Test]
@@ -136,6 +316,20 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     _dbCommandBuilderFactoryStrictMock
         .Setup(stub => stub.CreateForBatchedUpdate(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+        {
+          Assert.That(specifications.Count, Is.EqualTo(1));
+          var spec = specifications[0];
+          var actualParameter = spec.CreateDbParameter(new SqlCommand(), "DUMMY");
+
+          var expectedUpdateTvpValue = GetTvpComputerUpdateParameterValue();
+          AddRecordToComputerUpdateTvp(expectedUpdateTvpValue, dataContainerChangedSerialNumber, "123456", true, null);
+          AddRecordToComputerUpdateTvp(expectedUpdateTvpValue, dataContainerChangedEmployee, "", false, DomainObjectIDs.Employee2);
+          AddRecordToComputerUpdateTvp(expectedUpdateTvpValue, dataContainerChangedMarkedAsChanged, "", false, null);
+
+          SqlTableValuedParameterValueChecker.CheckEquals(actualParameter.Value, expectedUpdateTvpValue);
+
+        })
         .Returns(updateDbCommandBuilder.Object);
 
     _dbCommandBuilderFactoryStrictMock
@@ -147,7 +341,7 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     StubTableDefinitionFinder(dataContainerChangedMarkedAsChanged.ID, tableDefinition);
 
     var result =
-        _factory.CreateForSave(new[] { dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged });
+        CreateForSave(_factory, [dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged], _sortOrderProviderStrictMock.Object);
 
     Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
     var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
@@ -160,6 +354,383 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged]));
+  }
+
+  [Test]
+  public void CreateForSave_Deleted_WithIncorrectOrder_ForeignKeyRelevantProperties_WithDeletedRelatedObject_CreatesUpdate ()
+  {
+    var propertyDefinitionProductReviewProduct = GetPropertyDefinition(typeof(ProductReview), nameof(ProductReview.Product));
+    var propertyDefinitionProductReviewReviewer = GetPropertyDefinition(typeof(ProductReview), nameof(ProductReview.Reviewer));
+    var dataContainerProduct = DataContainer.CreateForExisting(DomainObjectIDs.Product1, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, pd => pd.DefaultValue);
+    var dataContainerProductReview = DataContainer.CreateForExisting(DomainObjectIDs.ProductReview1, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, pd =>
+    {
+      if (pd == propertyDefinitionProductReviewProduct)
+        return dataContainerProduct.ID;
+
+      if (pd == propertyDefinitionProductReviewReviewer)
+        return DomainObjectIDs.Person1;
+      return pd.DefaultValue;
+    });
+
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Product), null);
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Reviewer), null);
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Comment), "Comment");
+
+    dataContainerProduct.Delete();
+    dataContainerProductReview.Delete();
+
+    var updateDbCommandBuilder = new Mock<IDbCommandBuilder>();
+    var deleteDbCommandBuilder = new Mock<IDbCommandBuilder>();
+    var lockDbCommandBuilder = new Mock<IDbCommandBuilder>();
+
+    _dbCommandBuilderFactoryStrictMock
+       .Setup(stub => stub.CreateForBatchedUpdate(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+       .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+       {
+         Assert.That(specifications.Count, Is.EqualTo(1));
+         var spec = specifications[0];
+         var actualParameter = spec.CreateDbParameter(new SqlCommand(), "DUMMY");
+
+         var expectedUpdateTvpValue = GetTvpProductReviewUpdateParameterValue();
+         AddRecordToProductReviewUpdateTvp(expectedUpdateTvpValue, dataContainerProductReview, null, null, DateTime.MinValue, "", false);
+
+         SqlTableValuedParameterValueChecker.CheckEquals(actualParameter.Value, expectedUpdateTvpValue);
+
+       })
+       .Returns(updateDbCommandBuilder.Object);
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedDelete(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+        {
+          Assert.That(specifications.Count, Is.EqualTo(2));
+          var productSpec = specifications[0];
+          var actualProductParameter = productSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedProductTvpValue = GetTvpAllTablesDeleteParameterValue();
+          AddRecordToAllTablesDeleteTvp(expectedProductTvpValue, dataContainerProduct);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualProductParameter.Value, expectedProductTvpValue);
+
+          var productReviewSpec = specifications[1];
+          var actualProductReviewParameter = productReviewSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedProductReviewTvpValue = GetTvpAllTablesDeleteParameterValue();
+          AddRecordToAllTablesDeleteTvp(expectedProductReviewTvpValue, dataContainerProductReview);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualProductReviewParameter.Value, expectedProductReviewTvpValue);
+        })
+        .Returns(deleteDbCommandBuilder.Object);
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Returns(lockDbCommandBuilder.Object);
+
+    var tableDefinitionProductReview = StubTableDefinitionFinder(dataContainerProductReview);
+    var tableDefinitionProduct = StubTableDefinitionFinder(dataContainerProduct);
+
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionProductReview)).Returns(0).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionProduct)).Returns(1).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(dataContainerProductReview.ClassDefinition)).Returns([propertyDefinitionProductReviewProduct]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(dataContainerProduct.ClassDefinition)).Returns([]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(false).Verifiable();
+
+    var result = CreateForSave(_factory, [dataContainerProductReview, dataContainerProduct], _sortOrderProviderStrictMock.Object);
+
+    _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
+
+    Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
+    var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
+
+    Assert.That(contexts.Count, Is.EqualTo(3));
+
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview, dataContainerProduct]));
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
+
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
+
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview, dataContainerProduct]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+
+  }
+
+  [Test]
+  public void CreateForSave_Deleted_WithIncorrectOrder_NoForeignKeyRelevantProperties_WithDeletedRelatedObject_DoesNotCreatesUpdate ()
+  {
+    var propertyDefinitionProductReviewProduct = GetPropertyDefinition(typeof(ProductReview), nameof(ProductReview.Product));
+    var propertyDefinitionProductReviewReviewer = GetPropertyDefinition(typeof(ProductReview), nameof(ProductReview.Reviewer));
+    var dataContainerProduct = DataContainer.CreateForExisting(DomainObjectIDs.Product1, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, pd => pd.DefaultValue);
+    var dataContainerProductReview = DataContainer.CreateForExisting(DomainObjectIDs.ProductReview1, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, pd =>
+    {
+      if (pd == propertyDefinitionProductReviewProduct)
+        return dataContainerProduct.ID;
+
+      if (pd == propertyDefinitionProductReviewReviewer)
+        return DomainObjectIDs.Person1;
+      return pd.DefaultValue;
+    });
+
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Product), null);
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Reviewer), null);
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Comment), "Comment");
+
+    dataContainerProduct.Delete();
+    dataContainerProductReview.Delete();
+
+    var deleteDbCommandBuilder = new Mock<IDbCommandBuilder>();
+    var lockDbCommandBuilder = new Mock<IDbCommandBuilder>();
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedDelete(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+        {
+          Assert.That(specifications.Count, Is.EqualTo(2));
+          var productSpec = specifications[0];
+          var actualProductParameter = productSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedProductTvpValue = GetTvpAllTablesDeleteParameterValue();
+          AddRecordToAllTablesDeleteTvp(expectedProductTvpValue, dataContainerProduct);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualProductParameter.Value, expectedProductTvpValue);
+
+          var productReviewSpec = specifications[1];
+          var actualProductReviewParameter = productReviewSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedProductReviewTvpValue = GetTvpAllTablesDeleteParameterValue();
+          AddRecordToAllTablesDeleteTvp(expectedProductReviewTvpValue, dataContainerProductReview);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualProductReviewParameter.Value, expectedProductReviewTvpValue);
+        })
+        .Returns(deleteDbCommandBuilder.Object);
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Returns(lockDbCommandBuilder.Object);
+
+    var tableDefinitionProductReview = StubTableDefinitionFinder(dataContainerProductReview);
+    var tableDefinitionProduct = StubTableDefinitionFinder(dataContainerProduct);
+
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionProductReview)).Returns(0).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionProduct)).Returns(1).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(dataContainerProductReview.ClassDefinition)).Returns([]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(dataContainerProduct.ClassDefinition)).Returns([]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(false).Verifiable();
+
+    var result = CreateForSave(_factory, [dataContainerProductReview, dataContainerProduct], _sortOrderProviderStrictMock.Object);
+
+    _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
+
+    Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
+    var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
+
+    Assert.That(contexts.Count, Is.EqualTo(2));
+
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview, dataContainerProduct]));
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
+
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview, dataContainerProduct]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+  }
+
+  [Test]
+  public void CreateForSave_Deleted_WithCorrectOrder_WithDeletedRelatedObject_DoesNotCreatesUpdate ()
+  {
+    var propertyDefinitionProductReviewProduct = GetPropertyDefinition(typeof(ProductReview), nameof(ProductReview.Product));
+    var propertyDefinitionProductReviewReviewer = GetPropertyDefinition(typeof(ProductReview), nameof(ProductReview.Reviewer));
+    var dataContainerProduct = DataContainer.CreateForExisting(DomainObjectIDs.Product1, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, pd => pd.DefaultValue);
+    var dataContainerProductReview = DataContainer.CreateForExisting(DomainObjectIDs.ProductReview1, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, pd =>
+    {
+      if (pd == propertyDefinitionProductReviewProduct)
+        return dataContainerProduct.ID;
+
+      if (pd == propertyDefinitionProductReviewReviewer)
+        return DomainObjectIDs.Person1;
+      return pd.DefaultValue;
+    });
+
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Product), null);
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Reviewer), null);
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Comment), "Comment");
+
+    dataContainerProduct.Delete();
+    dataContainerProductReview.Delete();
+
+    var deleteDbCommandBuilder = new Mock<IDbCommandBuilder>();
+    var lockDbCommandBuilder = new Mock<IDbCommandBuilder>();
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedDelete(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+        {
+          Assert.That(specifications.Count, Is.EqualTo(2));
+          var productSpec = specifications[0];
+          var actualProductParameter = productSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedProductTvpValue = GetTvpAllTablesDeleteParameterValue();
+          AddRecordToAllTablesDeleteTvp(expectedProductTvpValue, dataContainerProduct);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualProductParameter.Value, expectedProductTvpValue);
+
+          var productReviewSpec = specifications[1];
+          var actualProductReviewParameter = productReviewSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedProductReviewTvpValue = GetTvpAllTablesDeleteParameterValue();
+          AddRecordToAllTablesDeleteTvp(expectedProductReviewTvpValue, dataContainerProductReview);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualProductReviewParameter.Value, expectedProductReviewTvpValue);
+        })
+        .Returns(deleteDbCommandBuilder.Object);
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Returns(lockDbCommandBuilder.Object);
+
+    var tableDefinitionProductReview = StubTableDefinitionFinder(dataContainerProductReview);
+    var tableDefinitionProduct = StubTableDefinitionFinder(dataContainerProduct);
+
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionProductReview)).Returns(0).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionProduct)).Returns(1).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(true).Verifiable();
+
+    var result = CreateForSave(_factory, [dataContainerProductReview, dataContainerProduct], _sortOrderProviderStrictMock.Object);
+
+    _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
+
+    Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
+    var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
+
+    Assert.That(contexts.Count, Is.EqualTo(2));
+
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview, dataContainerProduct]));
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
+
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview, dataContainerProduct]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+  }
+
+  [Test]
+  public void CreateForSave_Deleted_WithCorrectOrder_WithExistingRelatedObject_DoesNotCreatesUpdate ()
+  {
+    var propertyDefinitionProductReviewProduct = GetPropertyDefinition(typeof(ProductReview), nameof(ProductReview.Product));
+    var propertyDefinitionProductReviewReviewer = GetPropertyDefinition(typeof(ProductReview), nameof(ProductReview.Reviewer));
+    var dataContainerProduct = DataContainer.CreateForExisting(DomainObjectIDs.Product1, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, pd => pd.DefaultValue);
+    var dataContainerProductReview = DataContainer.CreateForExisting(DomainObjectIDs.ProductReview1, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, pd =>
+    {
+      if (pd == propertyDefinitionProductReviewProduct)
+        return dataContainerProduct.ID;
+
+      if (pd == propertyDefinitionProductReviewReviewer)
+        return DomainObjectIDs.Person1;
+      return pd.DefaultValue;
+    });
+
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Product), null);
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Reviewer), null);
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Comment), "Comment");
+
+    dataContainerProductReview.Delete();
+
+    var deleteDbCommandBuilder = new Mock<IDbCommandBuilder>();
+    var lockDbCommandBuilder = new Mock<IDbCommandBuilder>();
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedDelete(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+        {
+          Assert.That(specifications.Count, Is.EqualTo(1));
+          var productReviewSpec = specifications[0];
+          var actualProductReviewParameter = productReviewSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedProductReviewTvpValue = GetTvpAllTablesDeleteParameterValue();
+          AddRecordToAllTablesDeleteTvp(expectedProductReviewTvpValue, dataContainerProductReview);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualProductReviewParameter.Value, expectedProductReviewTvpValue);
+        })
+        .Returns(deleteDbCommandBuilder.Object);
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Returns(lockDbCommandBuilder.Object);
+
+    var tableDefinitionProductReview = StubTableDefinitionFinder(dataContainerProductReview);
+    var tableDefinitionProduct = StubTableDefinitionFinder(dataContainerProduct);
+
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionProductReview)).Returns(0).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionProduct)).Returns(1).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(true).Verifiable();
+
+    var result = CreateForSave(_factory, [dataContainerProductReview, dataContainerProduct], _sortOrderProviderStrictMock.Object);
+
+    _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
+
+    Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
+    var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
+
+    Assert.That(contexts.Count, Is.EqualTo(2));
+
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview]));
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
+
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+  }
+
+  [Test]
+  public void CreateForSave_Deleted_WithIncorrectOrder_ForeignKeyRelevantProperties_WithExistingRelatedObject_DoesNotCreatesUpdate ()
+  {
+    var propertyDefinitionProductReviewProduct = GetPropertyDefinition(typeof(ProductReview), nameof(ProductReview.Product));
+    var propertyDefinitionProductReviewReviewer = GetPropertyDefinition(typeof(ProductReview), nameof(ProductReview.Reviewer));
+    var dataContainerProduct = DataContainer.CreateForExisting(DomainObjectIDs.Product1, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, pd => pd.DefaultValue);
+    var dataContainerProductReview = DataContainer.CreateForExisting(DomainObjectIDs.ProductReview1, new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }, pd =>
+    {
+      if (pd == propertyDefinitionProductReviewProduct)
+        return dataContainerProduct.ID;
+
+      if (pd == propertyDefinitionProductReviewReviewer)
+        return DomainObjectIDs.Person1;
+      return pd.DefaultValue;
+    });
+
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Product), null);
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Reviewer), null);
+    SetPropertyValue(dataContainerProductReview, typeof(ProductReview), nameof(ProductReview.Comment), "Comment");
+
+    dataContainerProductReview.Delete();
+
+    var deleteDbCommandBuilder = new Mock<IDbCommandBuilder>();
+    var lockDbCommandBuilder = new Mock<IDbCommandBuilder>();
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedDelete(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
+        {
+          Assert.That(specifications.Count, Is.EqualTo(1));
+          var productReviewSpec = specifications[0];
+          var actualProductReviewParameter = productReviewSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedProductReviewTvpValue = GetTvpAllTablesDeleteParameterValue();
+          AddRecordToAllTablesDeleteTvp(expectedProductReviewTvpValue, dataContainerProductReview);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualProductReviewParameter.Value, expectedProductReviewTvpValue);
+        })
+        .Returns(deleteDbCommandBuilder.Object);
+
+    _dbCommandBuilderFactoryStrictMock
+        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
+        .Returns(lockDbCommandBuilder.Object);
+
+    var tableDefinitionProductReview = StubTableDefinitionFinder(dataContainerProductReview);
+    var tableDefinitionProduct = StubTableDefinitionFinder(dataContainerProduct);
+
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionProductReview)).Returns(0).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionProduct)).Returns(1).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(dataContainerProductReview.ClassDefinition)).Returns([propertyDefinitionProductReviewProduct]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(false).Verifiable();
+
+    var result = CreateForSave(_factory, [dataContainerProductReview, dataContainerProduct], _sortOrderProviderStrictMock.Object);
+
+    _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
+
+    Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
+    var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
+
+    Assert.That(contexts.Count, Is.EqualTo(2));
+
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview]));
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
+
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
   }
 
   [Test]
@@ -197,30 +768,28 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     StubTableDefinitionFinder(dataContainerDeletedWithRelations1.ID, tableDefinitionB);
     StubTableDefinitionFinder(dataContainerDeletedWithRelations2.ID, tableDefinitionB);
 
-    var result = _factory.CreateForSave(
-        new[]
-        {
-            dataContainerDeletedWithoutRelations,
-            dataContainerDeletedWithRelations1,
-            dataContainerDeletedWithRelations2
-        });
+    var propertyDefinitionMock = GetPropertyDefinition(typeof(Computer), "Employee");
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionA)).Returns(0).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(tableDefinitionB)).Returns(1).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(dataContainerDeletedWithRelations1.ClassDefinition)).Returns([propertyDefinitionMock]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(dataContainerDeletedWithoutRelations.ClassDefinition)).Returns([]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(false).Verifiable();
+
+    var result = CreateForSave(_factory, [dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2], _sortOrderProviderStrictMock.Object);
 
     _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
+
     Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
     var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
 
-    Assert.That(contexts.Count, Is.EqualTo(3));
+    Assert.That(contexts.Count, Is.EqualTo(2));
 
-    Assert.That(
-        ((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers,
-        Is.EqualTo([dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2]));
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2]));
     Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
 
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2]));
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
-
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).AffectedDataContainers, Is.EqualTo([dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2]));
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
   }
 
   [Test]
@@ -260,9 +829,14 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     StubTableDefinitionFinder(changedDataContainer.ID, tableDefinition);
     StubTableDefinitionFinder(newDataContainer.ID, tableDefinition);
 
-    var result = _factory.CreateForSave([deletedDataContainer, changedDataContainer, newDataContainer]);
+    var propertyDefinitionMock = GetPropertyDefinition(typeof(Computer), "Employee");
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(It.IsAny<ClassDefinition>())).Returns([propertyDefinitionMock]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(false).Verifiable();
+
+    var result = CreateForSave(_factory, [deletedDataContainer, changedDataContainer, newDataContainer], _sortOrderProviderStrictMock.Object);
 
     _tableDefinitionFinderStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
 
     Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
     var contexts = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
@@ -273,7 +847,7 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([newDataContainer]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).AffectedDataContainers, Is.EqualTo([deletedDataContainer, changedDataContainer, newDataContainer]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).AffectedDataContainers, Is.EqualTo([changedDataContainer]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[3]).AffectedDataContainers, Is.EqualTo([deletedDataContainer]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[3]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
@@ -286,33 +860,31 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     StubTableDefinitionFinder(DomainObjectIDs.Order4, _tableDefinition1);
 
-    var lockDbCommandBuilder = new Mock<IDbCommandBuilder>();
-
-    _dbCommandBuilderFactoryStrictMock
-        .Setup(stub => stub.CreateForBatchedLock(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
-        .Returns(lockDbCommandBuilder.Object);
-
-    var result = _factory.CreateForSave(new[] { dataContainerUnchanged });
+    var result = CreateForSave(_factory, [dataContainerUnchanged], _sortOrderProviderStrictMock.Object);
 
     _tableDefinitionFinderStrictMock.Verify();
+
     Assert.That(result, Is.TypeOf(typeof(CompoundRdbmsProviderCommand)));
     var tuples = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
 
     Assert.That(tuples.Count, Is.EqualTo(0));
   }
 
-
   [Test]
   public void CreateForSave_DoesNotAddOptionalValuesInUpdateForNewObject ()
   {
     var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Computer1);
     SetPropertyValue(dataContainer, typeof(Computer), "SerialNumber", "123456");
+    var employeeDataContainer = DataContainer.CreateNew(DomainObjectIDs.Employee2, pd => pd.DefaultValue);
+    SetPropertyValue(dataContainer, typeof(Computer), "Employee", DomainObjectIDs.Employee2);
 
     var insertDbCommandBuilder = new Mock<IDbCommandBuilder>();
     var updateDbCommandBuilder = new Mock<IDbCommandBuilder>();
 
     var tableDefinition = (TableDefinition)dataContainer.ClassDefinition.StorageEntityDefinition;
+    var tableDefinitionB = (TableDefinition)employeeDataContainer.ClassDefinition.StorageEntityDefinition;
     StubTableDefinitionFinder(dataContainer.ID, tableDefinition);
+    StubTableDefinitionFinder(employeeDataContainer.ID, tableDefinitionB);
 
     _dbCommandBuilderFactoryStrictMock
         .Setup(stub => stub.CreateForBatchedInsert(It.IsAny<IReadOnlyList<IBatchedCommandSpecification>>()))
@@ -326,15 +898,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
           var spec = specifications[0];
           var actualParameter = spec.CreateDbParameter(new SqlCommand(), "DUMMY");
 
-          var expectedUpdateTvpValue = new SqlTableValuedParameterValue("TVP_Computer_Update", new[]
-                                                                                               {
-                                                                                                   new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
-                                                                                                   new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
-                                                                                                   new SqlMetaData("SerialNumber", SqlDbType.NVarChar, 20),
-                                                                                                   new SqlMetaData("SerialNumber__IsSet", SqlDbType.Bit),
-                                                                                                   new SqlMetaData("EmployeeID", SqlDbType.UniqueIdentifier)
-                                                                                               });
-          expectedUpdateTvpValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, "", false, null]);
+          var expectedUpdateTvpValue = GetTvpComputerUpdateParameterValue();
+          AddRecordToComputerUpdateTvp(expectedUpdateTvpValue, dataContainer, "", false, employeeDataContainer.ID);
 
           SqlTableValuedParameterValueChecker.CheckEquals(actualParameter.Value, expectedUpdateTvpValue);
 
@@ -342,8 +907,16 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
         .Returns(updateDbCommandBuilder.Object)
         .Verifiable($"{nameof(IDbCommandBuilderFactory.CreateForBatchedUpdate)} should have been called.");
 
-    _factory.CreateForSave([dataContainer]);
+    var propertyDefinitionMock = GetPropertyDefinition(typeof(Computer), "Employee");
+    var propertyDefinitionMockA = GetPropertyDefinition(typeof(Employee), nameof(Employee.Supervisor));
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetSortPosition(It.IsAny<TableDefinition>())).Returns(0).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(dataContainer.ClassDefinition)).Returns([propertyDefinitionMock]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.GetForeignKeyRelevantPropertyDefinitions(employeeDataContainer.ClassDefinition)).Returns([propertyDefinitionMockA]).Verifiable();
+    _sortOrderProviderStrictMock.Setup(stub => stub.HasBeenSortedCorrectly(It.IsAny<TableDefinition>())).Returns(false).Verifiable();
+
+    CreateForSave(_factory, [dataContainer, employeeDataContainer], _sortOrderProviderStrictMock.Object);
     _dbCommandBuilderFactoryStrictMock.Verify();
+    _sortOrderProviderStrictMock.Verify();
   }
 
   [Test]
@@ -557,6 +1130,7 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     var storageObjectFactory = new SqlStorageObjectFactory(storageSettings, typeConversionProvider, dataContainerValidator, domainModelConstraintProvider);
     var rdbmsPersistenceModelProvider = storageObjectFactory.CreateRdbmsPersistenceModelProvider(TestDomainStorageProviderDefinition);
+
     var batchedSaveCommandFactory = new BatchedSaveCommandFactory(
         storageObjectFactory.CreateDbCommandBuilderFactory(TestDomainStorageProviderDefinition),
         rdbmsPersistenceModelProvider,
@@ -585,17 +1159,111 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     return provider;
   }
 
+  private SqlTableValuedParameterValue GetTvpComputerInsertParameterValue ()
+  {
+    return new SqlTableValuedParameterValue(
+        "TVP_Computer_Insert",
+        [
+            new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
+            new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
+            new SqlMetaData("SerialNumber", SqlDbType.NVarChar, 20),
+            new SqlMetaData("EmployeeID", SqlDbType.UniqueIdentifier)
+        ]);
+  }
+
+  private SqlTableValuedParameterValue GetTvpEmployeeInsertParameterValue ()
+  {
+    return new SqlTableValuedParameterValue(
+        "TVP_Employee_Insert",
+        [
+            new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
+            new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
+            new SqlMetaData("Name", SqlDbType.NVarChar, 100),
+            new SqlMetaData("SupervisorID", SqlDbType.UniqueIdentifier)
+        ]);
+  }
+
+  private SqlTableValuedParameterValue GetTvpComputerUpdateParameterValue ()
+  {
+    return new SqlTableValuedParameterValue(
+        "TVP_Computer_Update",
+        [
+            new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
+            new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
+            new SqlMetaData("SerialNumber", SqlDbType.NVarChar, 20),
+            new SqlMetaData("SerialNumber__IsSet", SqlDbType.Bit),
+            new SqlMetaData("EmployeeID", SqlDbType.UniqueIdentifier)
+        ]);
+  }
+
+  private SqlTableValuedParameterValue GetTvpProductReviewUpdateParameterValue ()
+  {
+    return new SqlTableValuedParameterValue(
+        "TVP_ProductReview_Update",
+        [
+            new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
+            new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
+            new SqlMetaData("ProductID", SqlDbType.UniqueIdentifier),
+            new SqlMetaData("ReviewerID", SqlDbType.UniqueIdentifier),
+            new SqlMetaData("CreatedAt", SqlDbType.DateTime2),
+            new SqlMetaData("Comment", SqlDbType.NVarChar, 1000),
+            new SqlMetaData("Comment__IsSet", SqlDbType.Bit)
+        ]);
+  }
+
+  private SqlTableValuedParameterValue GetTvpAllTablesDeleteParameterValue ()
+  {
+    return new SqlTableValuedParameterValue(
+        "TVP_AllTables_Delete",
+        [
+            new SqlMetaData("ID", SqlDbType.UniqueIdentifier)
+        ]);
+  }
+
+  private void AddRecordToComputerInsertTvp (SqlTableValuedParameterValue parameterValue, DataContainer dataContainer, string serialNumber, [CanBeNull] ObjectID emplObjectID)
+  {
+    parameterValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, serialNumber, emplObjectID?.Value]);
+  }
+
+  private void AddRecordToEmployeeInsertTvp (SqlTableValuedParameterValue parameterValue, DataContainer dataContainer, string name, [CanBeNull] ObjectID supervisorID)
+  {
+    parameterValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, name, supervisorID?.Value]);
+  }
+
+  private void AddRecordToComputerUpdateTvp (SqlTableValuedParameterValue parameterValue, DataContainer dataContainer, string serialNumber, bool serialNumberIsSet, [CanBeNull] ObjectID emplObjectID)
+  {
+    parameterValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, serialNumber, serialNumberIsSet, emplObjectID?.Value]);
+  }
+
+  private void AddRecordToProductReviewUpdateTvp (SqlTableValuedParameterValue parameterValue, DataContainer dataContainer, Guid? productID, Guid? reviewerID, DateTime createdAt, string comment, bool commentIsSet)
+  {
+    parameterValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, productID, reviewerID, createdAt, comment, commentIsSet]);
+  }
+
+  private void AddRecordToAllTablesDeleteTvp (SqlTableValuedParameterValue parameterValue, DataContainer dataContainer)
+  {
+    parameterValue.AddRecord([dataContainer.ID.Value]);
+  }
+
   private void StubTableDefinitionFinder (ObjectID objectID, TableDefinition tableDefinition)
   {
     _tableDefinitionFinderStrictMock.Setup(mock => mock.GetTableDefinition(objectID)).Returns(tableDefinition).Verifiable();
   }
 
-  private void CheckComparedColumns (IReadOnlyList<ColumnValue> columnValues, DataContainer dataContainer, TableDefinition tableDefinition)
+  private TableDefinition StubTableDefinitionFinder (DataContainer dataContainer)
   {
-    var comparedColumnValues = columnValues;
+    var tableDefinition = GetTableDefinition(dataContainer.ClassDefinition);
+    StubTableDefinitionFinder(dataContainer.ID, tableDefinition);
+    return tableDefinition;
+  }
 
-    Assert.That(comparedColumnValues.Count, Is.EqualTo(1));
-    Assert.That(comparedColumnValues[0].Column, Is.SameAs(StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(tableDefinition.ObjectIDProperty)));
-    Assert.That(comparedColumnValues[0].Value, Is.SameAs(dataContainer.ID.Value));
+  private TableDefinition GetTableDefinition (ClassDefinition classDefinition)
+  {
+    return InlineRdbmsStorageEntityDefinitionVisitor.Visit<TableDefinition>(
+        (IRdbmsStorageEntityDefinition)classDefinition.StorageEntityDefinition,
+        (table, _) => table,
+        (filterView, continuation) => continuation(filterView.BaseEntity),
+        (unionView, _) => { throw new AssertionException($"Could not determine {nameof(TableDefinition)} for {classDefinition.ID}"); },
+        (emptyView, _) => { throw new AssertionException($"Could not determine {nameof(TableDefinition)} for {classDefinition.ID}"); });
   }
 }

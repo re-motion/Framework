@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
@@ -81,7 +82,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
                                     "Remotion.Data.DomainObjects.UnitTests.TestDomain",
                                     "Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain",
                                     "Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain",
-                                    "Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain"
+                                    "Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain",
+                                    "Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SortingOptimization.TestDomain"
                                   };
       return new FilteringTypeDiscoveryService(
           typeDiscoveryService,
@@ -110,7 +112,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
       _mappingConfiguration = MappingConfiguration.Create(
             MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-            new PersistenceModelLoader(_storageSettings));
+            new PersistenceModelLoader(_storageSettings),
+            SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>());
     }
 
     private FakeStorageSettingsFactory CreateStorageSettings ()

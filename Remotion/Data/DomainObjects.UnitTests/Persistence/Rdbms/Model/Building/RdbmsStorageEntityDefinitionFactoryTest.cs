@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
@@ -40,6 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     private ForeignKeyConstraintDefinition _fakeForeignKeyConstraint;
     private Mock<IStorageNameProvider> _storageNameProviderMock;
     private RdbmsPersistenceModelLoaderTestHelper _testModel;
+    private IPersistenceModelSortingProvider _persistenceModelSortingProviderMock;
 
     [SetUp]
     public void SetUp ()
@@ -67,6 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           new EntityNameDefinition(null, "Test"),
           new[] { StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(_fakeObjectIDStorageProperty) },
           new[] { _fakeStorageProperty1.ColumnDefinition });
+      _persistenceModelSortingProviderMock = Mock.Of<IPersistenceModelSortingProvider>();
     }
 
     [Test]
@@ -97,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
 
       MockStandardProperties();
 
-      var result = _factory.CreateTableDefinition(_testModel.TableClassDefinition1);
+      var result = _factory.CreateTableDefinition(_testModel.TableClassDefinition1, _persistenceModelSortingProviderMock);
 
       _storagePropertyDefinitionResolverMock.Verify();
       _foreignKeyConstraintDefinitionFactoryMock.Verify();
@@ -160,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns(_fakeTimestampStorageProperty)
           .Verifiable();
 
-      var result = _factory.CreateTableDefinition(_testModel.TableClassDefinition1);
+      var result = _factory.CreateTableDefinition(_testModel.TableClassDefinition1, _persistenceModelSortingProviderMock);
 
       Assert.That(result, Is.TypeOf<TableDefinition>().With.Property("Constraints").Empty);
     }
@@ -173,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns((EntityNameDefinition)null)
           .Verifiable();
       Assert.That(
-          () => _factory.CreateTableDefinition(_testModel.TableClassDefinition1),
+          () => _factory.CreateTableDefinition(_testModel.TableClassDefinition1, _persistenceModelSortingProviderMock),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo("Class 'Table1Class' has no table name defined."));
     }

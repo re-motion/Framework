@@ -20,11 +20,13 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTests
 {
@@ -44,7 +46,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
 
       var mappingConfiguration = MappingConfiguration.Create(
           MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-          new PersistenceModelLoader(StandardConfiguration.Instance.GetStorageSettings()));
+          new PersistenceModelLoader(StandardConfiguration.Instance.GetStorageSettings()),
+          SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>());
       mappingConfiguration.EnsureInitialized();
     }
 
