@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿﻿﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it
@@ -317,6 +317,8 @@ namespace Remotion.Web.ContentSecurityPolicy
       {
         if (registeredEvent.Key == "href")
           base.WriteAttribute("href", _fallbackNavigationUrlProvider.GetURL());
+        else
+          WriteAttribute($"data-csp-replaced-{registeredEvent.Key}", string.Empty);
 
         var eventTargetID = _lastInlineEventTargetId;
         if (eventTargetID == null)
@@ -343,6 +345,8 @@ namespace Remotion.Web.ContentSecurityPolicy
       {
         if (registeredEvent.Key == "href")
           base.AddAttribute("href", _fallbackNavigationUrlProvider.GetURL());
+        else
+          base.AddAttribute($"data-csp-replaced-{registeredEvent.Key}", string.Empty);
 
         if (_registeredEvents.Exists(e => registeredEvent.Key.Equals(e.Key)))
           throw new ArgumentException($"Event handler '{registeredEvent.Key}' cannot be registered more than once.");
