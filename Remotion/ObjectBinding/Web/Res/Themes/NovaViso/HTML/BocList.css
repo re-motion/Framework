@@ -154,7 +154,9 @@ div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement 
 }
 
 div.bocList table.bocListTable td.bocListDataCell > div.bocListContent > div[onclick],
-div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div.bocListContent > div[onclick]
+div.bocList table.bocListTable td.bocListDataCell > div.bocListContent > div[data-csp-replaced-onclick],
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div.bocListContent > div[onclick],
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div.bocListContent > div[data-csp-replaced-onclick]
 {
   width: inherit;
 }
