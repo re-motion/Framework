@@ -746,6 +746,11 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
           typeof(SmartPage),
           "smartPageCreateScriptElementOverride",
           createScriptElementOverrideScript);
+      ClientScript.RegisterStartupScriptBlock(
+          this,
+          typeof(SmartPage),
+          "smartPageCspOverrides",
+          "Sys.WebForms.PageRequestManager.writeScriptDisposesAsScriptTags = true;");
     }
 
     base.OnPreRenderComplete(e);

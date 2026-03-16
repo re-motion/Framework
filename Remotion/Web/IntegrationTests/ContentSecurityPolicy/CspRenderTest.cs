@@ -25,7 +25,7 @@ namespace Remotion.Web.IntegrationTests.ContentSecurityPolicy;
 [PerformBrowserLogCheck(false)]
 public class CspRenderTest : IntegrationTest
 {
-  private enum CspMode
+  public enum CspMode
   {
     Off,
     Enabled,
@@ -42,6 +42,15 @@ public class CspRenderTest : IntegrationTest
     public string[] GetOutput ()
     {
       var text = Context.Scope.FindId("output").Text;
+      return text.Split(';')
+          .Where(e => !string.IsNullOrWhiteSpace(e))
+          .Select(e => e.Trim())
+          .ToArray();
+    }
+
+    public string[] GetDisposeOutput ()
+    {
+      var text = Context.Scope.FindId("disposeLog").Text;
       return text.Split(';')
           .Where(e => !string.IsNullOrWhiteSpace(e))
           .Select(e => e.Trim())
@@ -197,6 +206,29 @@ public class CspRenderTest : IntegrationTest
                 }));
 
     AssertErrors(home, errorCount: 2, reportOnlyErrors: 0);
+  }
+
+  [TestCase(CspMode.Off)]
+  [TestCase(CspMode.Enabled)]
+  [Test]
+  public void DisposeScript_NoCsp_WorkCorrectly (CspMode cspMode)
+  {
+    var home = Start(cspMode);
+
+    home.TriggerAsyncPostback();
+
+    Assert.That(
+        home.GetDisposeOutput(),
+        Is.EquivalentTo(
+            new[]
+            {
+                "DISPOSED",
+            }));
+
+    var expectedErrors = cspMode == CspMode.Enabled
+        ? 2
+        : 0;
+    AssertErrors(home, errorCount: expectedErrors, reportOnlyErrors: 0);
   }
 
   private void AssertErrors (PageObject page, int errorCount, int reportOnlyErrors)
