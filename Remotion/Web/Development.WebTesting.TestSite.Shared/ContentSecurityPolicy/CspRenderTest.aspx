@@ -40,6 +40,11 @@
 
 </div>
 
+<!-- Log for disposes -->
+<b>Dispose Output:</b>
+<div id="disposeLog">
+</div>
+
 <p>
  The first time is only updated on sync postbacks,
  while the second time is updated on async postbacks initiated by the button below.
@@ -55,6 +60,7 @@
    <app:CspRenderTestControl runat="server"/>
    <div id="asyncDate"><%= DateTime.Now.TimeOfDay.ToString("g") %></div>
    <asp:button id="asyncPostback" Text="Async postback" runat="server" />
+   <app:CspRenderTestControlWithDispose runat="server"/>
   </ContentTemplate>
  </asp:UpdatePanel>
 </form>
