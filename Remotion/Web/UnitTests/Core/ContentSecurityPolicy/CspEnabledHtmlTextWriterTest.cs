@@ -124,7 +124,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
               <root>
                 <div onNewAttribute="value">
 
-                </div><div data-inline-event-target="eventTargetID">
+                </div><div data-csp-replaced-onNewAttribute="" data-inline-event-target="eventTargetID">
 
                 </div>
               </root>
@@ -198,6 +198,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       var document = _htmlHelper.GetResultDocument();
       var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+      _htmlHelper.AssertAttribute(element, "data-csp-replaced-onclick", "");
 
       _clientScriptStub.Verify(
           m => m.RegisterScript(
@@ -230,6 +231,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       var document = _htmlHelper.GetResultDocument();
       var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
       _htmlHelper.AssertNoAttribute(element, "data-inline-event-target");
+      _htmlHelper.AssertNoAttribute(element, "data-csp-replaced-onclick");
 
       _clientScriptStub.Verify(
           m => m.RegisterScript(
@@ -261,6 +263,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       var document = _htmlHelper.GetResultDocument();
       var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+      _htmlHelper.AssertAttribute(element, $"data-csp-replaced-{value}", string.Empty);
 
       _clientScriptStub.Verify(
               m => m.RegisterScript(
@@ -300,6 +303,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       var document = _htmlHelper.GetResultDocument();
       var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
       _htmlHelper.AssertNoAttribute(element, "data-inline-event-target");
+      _htmlHelper.AssertNoAttribute(element, "data-csp-replaced-onclick");
 
       _clientScriptStub.Verify(
               m => m.RegisterScript(
@@ -325,6 +329,8 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       var document = _htmlHelper.GetResultDocument();
       var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+      _htmlHelper.AssertAttribute(element, "data-csp-replaced-onclick", "");
+      _htmlHelper.AssertAttribute(element, "data-csp-replaced-onchange", "");
 
       _clientScriptStub.Verify(
           m => m.RegisterScript(
@@ -441,6 +447,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       var document = _htmlHelper.GetResultDocument();
       var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+      _htmlHelper.AssertAttribute(element, "data-csp-replaced-onclick", "");
 
       _clientScriptStub.Verify(
           m => m.RegisterScript(
@@ -468,6 +475,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       var document = _htmlHelper.GetResultDocument();
       var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+      _htmlHelper.AssertAttribute(element, "data-csp-replaced-onclick", "");
 
       _clientScriptStub.Verify(
           m => m.RegisterScript(
@@ -495,6 +503,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       var document = _htmlHelper.GetResultDocument();
       var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+      _htmlHelper.AssertAttribute(element, "data-csp-replaced-onclick", "");
 
       _clientScriptStub.Verify(
           m => m.RegisterScript(
@@ -572,6 +581,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
       var document = _htmlHelper.GetResultDocument();
       var element = _htmlHelper.GetAssertedChildElement(document, "button", 0);
       _htmlHelper.AssertAttribute(element, "data-inline-event-target", "eventTargetID");
+      _htmlHelper.AssertAttribute(element, "data-csp-replaced-onclick", "");
 
       _clientScriptStub.Verify(
           m => m.RegisterScript(
@@ -653,7 +663,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div data-inline-event-target=\"eventTargetID\""));
+          Is.EqualTo("<div data-csp-replaced-onclick=\"\" data-inline-event-target=\"eventTargetID\""));
     }
 
     [Test]
@@ -675,7 +685,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div data-inline-event-target=\"eventTargetID\" data-event-content-onclick=\" javascript:test\""));
+          Is.EqualTo("<div data-csp-replaced-onclick=\"\" data-inline-event-target=\"eventTargetID\" data-event-content-onclick=\" javascript:test\""));
     }
 
     [Test]
@@ -703,7 +713,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div data-inline-event-target=\"eventTargetID\""));
+          Is.EqualTo("<div data-csp-replaced-onclick=\"\" data-inline-event-target=\"eventTargetID\" data-csp-replaced-onload=\"\""));
     }
 
     [Test]
@@ -732,7 +742,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div data-inline-event-target=\"eventTargetID\" data-event-content-onclick=\"test\" data-event-content-onload=\"test2\""));
+          Is.EqualTo("<div data-csp-replaced-onclick=\"\" data-inline-event-target=\"eventTargetID\" data-event-content-onclick=\"test\" data-csp-replaced-onload=\"\" data-event-content-onload=\"test2\""));
     }
 
     [Test]
@@ -752,7 +762,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div data-inline-event-target=\"eventTargetID1\"/><div data-inline-event-target=\"eventTargetID2\"/>"));
+          Is.EqualTo("<div data-csp-replaced-onclick=\"\" data-inline-event-target=\"eventTargetID1\"/><div data-csp-replaced-onclick=\"\" data-inline-event-target=\"eventTargetID2\"/>"));
     }
 
     [Test]
@@ -771,7 +781,7 @@ namespace Remotion.Web.UnitTests.Core.ContentSecurityPolicy
 
       Assert.That(
           _htmlHelper.GetDocumentText(),
-          Is.EqualTo("<div data-inline-event-target=\"eventTargetID1\"/><div> data-inline-event-target=\"eventTargetID2\""));
+          Is.EqualTo("<div data-csp-replaced-onclick=\"\" data-inline-event-target=\"eventTargetID1\"/><div> data-csp-replaced-onclick=\"\" data-inline-event-target=\"eventTargetID2\""));
     }
 
     [Test]
