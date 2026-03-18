@@ -14,21 +14,19 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession;
 /// BiDi logging currently only works in Firefox and requires web socket support to be enabled when the driver is created.
 /// For Chromium browsers use <see cref="SeleniumBrowserLogProvider"/>.
 /// </remarks>
-public class BiDiBrowserLogProvider : IBrowserLogProvider, IDisposable
+public class BiDiBrowserLogProvider : IBrowserLogProvider, ILifecycleWebTestFeature
 {
   private readonly ConcurrentQueue<BrowserLogEntry> _logEntries = new();
-  private readonly Subscription _eventSubscription;
+  private readonly IBidiConnectionProvider _bidiConnectionProvider;
+
+  private Subscription? _eventSubscription;
 
   public BiDiBrowserLogProvider (IBidiConnectionProvider bidiProvider)
   {
     ArgumentNullException.ThrowIfNull(bidiProvider);
 
-    bidiProvider.OpenBidiConnection();
-    _eventSubscription = bidiProvider.BiDiConnection.Log.OnEntryAddedAsync(entry => _logEntries.Enqueue(new BrowserLogEntry(entry)), new SubscriptionOptions
-      {
-          Timeout = bidiProvider.DefaultBidiTimeout
-      }).GetAwaiter().GetResult();
-}
+    _bidiConnectionProvider = bidiProvider;
+  }
 
   /// <inheritdoc />
   public IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ()
@@ -42,11 +40,25 @@ public class BiDiBrowserLogProvider : IBrowserLogProvider, IDisposable
     _logEntries.Clear();
   }
 
+  public void Initialize ()
+  {
+    if (_eventSubscription is not null)
+      return;
+
+    _bidiConnectionProvider.OpenBidiConnection();
+    _eventSubscription = _bidiConnectionProvider.BiDiConnection.Log
+        .OnEntryAddedAsync(
+            entry => _logEntries.Enqueue(new BrowserLogEntry(entry)),
+            new SubscriptionOptions { Timeout = _bidiConnectionProvider.DefaultBidiTimeout })
+        .GetAwaiter()
+        .GetResult();
+  }
+
   public void Dispose ()
   {
     try
     {
-      _eventSubscription.DisposeAsync().AsTask().GetAwaiter().GetResult();
+      _eventSubscription?.DisposeAsync().AsTask().GetAwaiter().GetResult();
     }
     catch (Exception)
     {

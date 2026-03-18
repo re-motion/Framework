@@ -89,6 +89,25 @@ public class WebTestFeatureCollection : IReadOnlyWebTestFeatureCollection, IDisp
     return false;
   }
 
+  public void InitializeFeatures ()
+  {
+    var exceptions = new List<Exception>();
+    foreach (var feature in _features.Values.OfType<ILifecycleWebTestFeature>())
+    {
+      try
+      {
+        feature.Initialize();
+      }
+      catch (Exception ex)
+      {
+        exceptions.Add(ex);
+      }
+    }
+
+    if (exceptions.Count != 0)
+      throw new AggregateException("One or more features failed to initialize.", exceptions);
+  }
+
   public void Dispose ()
   {
     foreach (var feature in _features.Values)
