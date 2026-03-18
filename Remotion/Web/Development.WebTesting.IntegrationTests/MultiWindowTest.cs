@@ -123,6 +123,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [Explicit("Dialog is only show when manually clicking the LoadFrameFunctionInFrameWithoutPostback Button.")]
     public void TestAcceptModalBrowserDialog ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
@@ -166,6 +167,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [Explicit("Dialog is only show when manually clicking the LoadFrameFunctionInFrameWithoutPostback Button.")]
     public void TestCancelModalBrowserDialog ()
     {
       if (Helper.BrowserConfiguration.IsFirefox())
