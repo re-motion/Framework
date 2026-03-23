@@ -33,7 +33,7 @@ public class CspHeader
 
   /// <inheritdoc cref="AddDirectiveValue(string,string)"/>
   [Pure]
-  public CspHeader AddDirectiveValue (CspDirectives directive, string value)
+  public CspHeader AddDirectiveValue (CspDirective directive, string value)
   {
     return AddDirectiveValue(GetCspDirectiveName(directive), value);
   }
@@ -61,7 +61,7 @@ public class CspHeader
 
   /// <inheritdoc cref="SetDirective(string,string)" />
   [Pure]
-  public CspHeader SetDirective (CspDirectives directive, string value)
+  public CspHeader SetDirective (CspDirective directive, string value)
   {
     return SetDirective(GetCspDirectiveName(directive), value);
   }
@@ -84,7 +84,7 @@ public class CspHeader
 
   /// <inheritdoc cref="RemoveDirective(string)" />
   [Pure]
-  public CspHeader RemoveDirective (CspDirectives directive)
+  public CspHeader RemoveDirective (CspDirective directive)
   {
     return RemoveDirective(GetCspDirectiveName(directive));
   }
@@ -107,7 +107,7 @@ public class CspHeader
 
   /// <inheritdoc cref="TryGetDirectiveValues(string,out Microsoft.Extensions.Primitives.StringValues)" />
   [Pure]
-  public bool TryGetDirectiveValues (CspDirectives directive, out StringValues values)
+  public bool TryGetDirectiveValues (CspDirective directive, out StringValues values)
   {
     return TryGetDirectiveValues(GetCspDirectiveName(directive), out values);
   }
@@ -164,30 +164,30 @@ public class CspHeader
     return new StringValues(value.Split(' ', StringSplitOptions.RemoveEmptyEntries));
   }
 
-  private string GetCspDirectiveName (CspDirectives directive)
+  private string GetCspDirectiveName (CspDirective directive)
   {
     return directive switch
     {
-        CspDirectives.BaseUri => "base-uri",
-        CspDirectives.ChildSrc => "child-src",
-        CspDirectives.ConnectSrc => "connect-src",
-        CspDirectives.DefaultSrc => "default-src",
-        CspDirectives.FontSrc => "font-src",
-        CspDirectives.FormAction => "form-action",
-        CspDirectives.FrameAncestors => "frame-ancestors",
-        CspDirectives.FrameSrc => "frame-src",
-        CspDirectives.ImgSrc => "img-src",
-        CspDirectives.ManifestSrc => "manifest-src",
-        CspDirectives.MediaSrc => "media-src",
-        CspDirectives.ObjectSrc => "object-src",
-        CspDirectives.ReportTo => "report-to",
-        CspDirectives.Sandbox => "sandbox",
-        CspDirectives.ScriptSrc => "script-src",
-        CspDirectives.ScriptSrcAttr => "script-src-attr",
-        CspDirectives.ScriptSrcElem => "script-src-elem",
-        CspDirectives.StyleSrc => "style-src",
-        CspDirectives.StyleSrcElem => "style-src-elem",
-        CspDirectives.WorkerSrc => "worker-src",
+        CspDirective.BaseUri => "base-uri",
+        CspDirective.ChildSrc => "child-src",
+        CspDirective.ConnectSrc => "connect-src",
+        CspDirective.DefaultSrc => "default-src",
+        CspDirective.FontSrc => "font-src",
+        CspDirective.FormAction => "form-action",
+        CspDirective.FrameAncestors => "frame-ancestors",
+        CspDirective.FrameSrc => "frame-src",
+        CspDirective.ImgSrc => "img-src",
+        CspDirective.ManifestSrc => "manifest-src",
+        CspDirective.MediaSrc => "media-src",
+        CspDirective.ObjectSrc => "object-src",
+        CspDirective.ReportTo => "report-to",
+        CspDirective.Sandbox => "sandbox",
+        CspDirective.ScriptSrc => "script-src",
+        CspDirective.ScriptSrcAttr => "script-src-attr",
+        CspDirective.ScriptSrcElem => "script-src-elem",
+        CspDirective.StyleSrc => "style-src",
+        CspDirective.StyleSrcElem => "style-src-elem",
+        CspDirective.WorkerSrc => "worker-src",
         _ => throw new ArgumentOutOfRangeException(nameof(directive), directive, null)
     };
   }
