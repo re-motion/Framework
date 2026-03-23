@@ -8,7 +8,7 @@ namespace Remotion.Web.ContentSecurityPolicy;
 /// <remarks>
 /// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 /// </remarks>
-public enum CspDirectives
+public enum CspDirective
 {
   /// <summary>
   /// The 'base-uri' CSP directive.
