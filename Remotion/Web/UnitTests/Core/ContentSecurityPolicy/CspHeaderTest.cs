@@ -42,10 +42,15 @@ public class CspHeaderTest
   }
 
   [Test]
-  public void AddDirectiveValue_WithSpace_Throws ()
+  [TestCase(' ')]
+  [TestCase('\t')]
+  [TestCase('\n')]
+  [TestCase('\r')]
+  [TestCase('\f')]
+  public void AddDirectiveValue_WithSpace_Throws (char whiteSpace)
   {
     Assert.That(
-        () => CspHeader.Empty.AddDirectiveValue(CspDirective.ScriptSrc, "'self' https:"),
+        () => CspHeader.Empty.AddDirectiveValue(CspDirective.ScriptSrc, $"'self'{whiteSpace}https:"),
         Throws.ArgumentException
             .With.ArgumentExceptionMessageEqualTo("Value must not contain spaces.", "value"));
   }
@@ -158,5 +163,71 @@ public class CspHeaderTest
     Assert.That(
         header.ToString(),
         Is.EqualTo(expectedHeaderName));
+  }
+
+  [Test]
+  public void Parse_EmptyInput_ReturnsEmptyCspHeader ()
+  {
+    Assert.That(CspHeader.Parse(string.Empty).ToString(), Is.EqualTo(CspHeader.Empty.ToString()));
+  }
+
+  [Test]
+  public void Parse_InputWithAsciiWhitespaces_ReturnsExpectedCspHeader ()
+  {
+    const string input = " \t\n\r\fdefault-src 'self'\t\n\r\f oesterreich.gv.at;\t\n\r\f";
+
+    Assert.That(CspHeader.Parse(input).ToString(), Is.EqualTo("default-src 'self' oesterreich.gv.at"));
+  }
+
+  [Test]
+  public void Parse_InputWithDuplicateDirective_IgnoresDuplicatedDirective ()
+  {
+    const string input = "default-src 'self';default-src data:";
+
+    var parsedHeader = CspHeader.Parse(input);
+    _ = parsedHeader.TryGetDirectiveValues(CspDirective.DefaultSrc, out var values);
+
+    Assert.That(values.Count, Is.EqualTo(1));
+    Assert.That(values[0], Is.EqualTo("'self'"));
+  }
+
+  [Test]
+  public void Parse_InputWithEmptyDirective_IsIgnored ()
+  {
+    const string input = "default-src 'self';   ;script-src 'self';";
+
+    var parsedHeader = CspHeader.Parse(input);
+
+    Assert.That(parsedHeader.ToString(), Is.EqualTo("default-src 'self'; script-src 'self'"));
+  }
+
+  [Test]
+  public void Parse_DirectiveWithNonAsciiCharacter_IsUsedAsIs ()
+  {
+    const string input = "default-src österreich.gv.at";
+
+    var parsedHeader = CspHeader.Parse(input);
+
+    Assert.That(parsedHeader.ToString(), Is.EqualTo(input));
+  }
+
+  [Test]
+  public void Parse_DirectiveNameWithDifferentCapitalization_IsLowered ()
+  {
+    const string input = "DeFaUlT-SrC 'self'";
+
+    var parsedHeader = CspHeader.Parse(input);
+
+    Assert.That(parsedHeader.ToString(), Is.EqualTo("default-src 'self'"));
+  }
+
+  [Test]
+  public void Parse_DirectiveValuesContainsSpace_IsUsedAsIs ()
+  {
+    const string input = "DeFaUlT-SrC 'se lf'";
+
+    var parsedHeader = CspHeader.Parse(input);
+
+    Assert.That(parsedHeader.ToString(), Is.EqualTo("default-src 'se lf'"));
   }
 }
