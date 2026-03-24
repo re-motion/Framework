@@ -364,7 +364,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   {
     var header = SafeServiceLocator.Current.GetInstance<ICspDefaultsProvider>().GetDefaultCspHeaderForPage(this);
     if (_cspNonceValue != null)
-      header = header.AddDirectiveValue(CspDirectives.ScriptSrc, $"'nonce-{_cspNonceValue}'");
+      header = header.AddDirectiveValue(CspDirective.ScriptSrc, $"'nonce-{_cspNonceValue}'");
 
     return header;
   }
@@ -376,7 +376,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   {
     var header = SafeServiceLocator.Current.GetInstance<ICspDefaultsProvider>().GetDefaultCspReportOnlyHeaderForPage(this);
     if (_cspNonceValue != null)
-      header = header.AddDirectiveValue(CspDirectives.ScriptSrc, $"'nonce-{_cspNonceValue}'");
+      header = header.AddDirectiveValue(CspDirective.ScriptSrc, $"'nonce-{_cspNonceValue}'");
 
     return header;
   }

@@ -5,7 +5,9 @@ using System.Collections.Immutable;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
+using Remotion.Logging;
 
 namespace Remotion.Web.ContentSecurityPolicy;
 
@@ -20,7 +22,58 @@ public class CspHeader
 {
   public static readonly CspHeader Empty = new(ImmutableDictionary<string, StringValues>.Empty);
 
+  //https://infra.spec.whatwg.org/#ascii-whitespace
+  private static readonly char[] s_asciiWhitespaces = [' ', '\t', '\n', '\r', '\f'];
+  private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<CspHeader>();
+
   private readonly ImmutableDictionary<string, StringValues> _directives;
+
+  /// <summary>
+  /// Parses a CSP HTTP Header, provided as a <see cref="string"/>, into a <see cref="CspHeader"/>.
+  /// </summary>
+  /// <param name="input">The value of the CSP HTTP header as <see cref="string"/>.</param>
+  /// <remarks>
+  /// https://www.w3.org/TR/CSP3/#grammardef-serialized-policy
+  /// </remarks>
+  [Pure]
+  public static CspHeader Parse (string input)
+  {
+    var directives = ImmutableDictionary.CreateBuilder<string, StringValues>();
+
+    foreach (var rawToken in input.Split(';', StringSplitOptions.RemoveEmptyEntries))
+    {
+      var token = StripAsciiWhitespace(rawToken);
+
+      if (string.IsNullOrWhiteSpace(token))
+        continue;
+
+      var (directiveName, directiveValuesStartIndex) = GetDirectiveName(token);
+      if (directives.TryGetValue(directiveName, out var valueToBeUsed))
+      {
+        s_logger.LogWarning(
+            "Multiple occurrences found for \"{DirectiveName}\". Any duplicate directives will be ignored. The value \"{DirectiveValue}\" will be used.",
+            directiveName,
+            valueToBeUsed);
+        continue;
+      }
+
+      var directiveValues = ParseDirectiveValues(token[directiveValuesStartIndex..]);
+      directives.Add(directiveName, directiveValues);
+    }
+
+    return new CspHeader(directives.ToImmutable());
+  }
+
+  private static (string directive, int endOfDirectiveNameIndex) GetDirectiveName (string token)
+  {
+    var endOfDirectiveNameIndex = token.IndexOfAny(s_asciiWhitespaces);
+    return (token[..endOfDirectiveNameIndex].ToLower(), endOfDirectiveNameIndex);
+  }
+
+  private static string StripAsciiWhitespace (string input)
+  {
+    return input.Trim(s_asciiWhitespaces);
+  }
 
   private CspHeader (ImmutableDictionary<string, StringValues> directives)
   {
@@ -33,7 +86,7 @@ public class CspHeader
 
   /// <inheritdoc cref="AddDirectiveValue(string,string)"/>
   [Pure]
-  public CspHeader AddDirectiveValue (CspDirectives directive, string value)
+  public CspHeader AddDirectiveValue (CspDirective directive, string value)
   {
     return AddDirectiveValue(GetCspDirectiveName(directive), value);
   }
@@ -50,7 +103,7 @@ public class CspHeader
   {
     ArgumentException.ThrowIfNullOrEmpty(directive);
     ArgumentException.ThrowIfNullOrEmpty(value);
-    if (value.Contains(' '))
+    if (value.IndexOfAny(s_asciiWhitespaces) >= 0)
       throw new ArgumentException("Value must not contain spaces.", nameof(value));
 
     var existingValues = _directives.GetValueOrDefault(directive);
@@ -61,7 +114,7 @@ public class CspHeader
 
   /// <inheritdoc cref="SetDirective(string,string)" />
   [Pure]
-  public CspHeader SetDirective (CspDirectives directive, string value)
+  public CspHeader SetDirective (CspDirective directive, string value)
   {
     return SetDirective(GetCspDirectiveName(directive), value);
   }
@@ -84,7 +137,7 @@ public class CspHeader
 
   /// <inheritdoc cref="RemoveDirective(string)" />
   [Pure]
-  public CspHeader RemoveDirective (CspDirectives directive)
+  public CspHeader RemoveDirective (CspDirective directive)
   {
     return RemoveDirective(GetCspDirectiveName(directive));
   }
@@ -107,7 +160,7 @@ public class CspHeader
 
   /// <inheritdoc cref="TryGetDirectiveValues(string,out Microsoft.Extensions.Primitives.StringValues)" />
   [Pure]
-  public bool TryGetDirectiveValues (CspDirectives directive, out StringValues values)
+  public bool TryGetDirectiveValues (CspDirective directive, out StringValues values)
   {
     return TryGetDirectiveValues(GetCspDirectiveName(directive), out values);
   }
@@ -156,38 +209,38 @@ public class CspHeader
     }
   }
 
-  private StringValues ParseDirectiveValues (string value)
+  private static StringValues ParseDirectiveValues (string value)
   {
     // The spec would allow other whitespaces as well, but we ignore them here as space is the most relevant.
     // This mainly has an effect on the StringValues object but the output will still contain the whitespace characters.
     // The only side effect here is that space values are collapsed into a single one, which is not a semantic change.
-    return new StringValues(value.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+    return new StringValues(value.Split(s_asciiWhitespaces, StringSplitOptions.RemoveEmptyEntries));
   }
 
-  private string GetCspDirectiveName (CspDirectives directive)
+  private static string GetCspDirectiveName (CspDirective directive)
   {
     return directive switch
     {
-        CspDirectives.BaseUri => "base-uri",
-        CspDirectives.ChildSrc => "child-src",
-        CspDirectives.ConnectSrc => "connect-src",
-        CspDirectives.DefaultSrc => "default-src",
-        CspDirectives.FontSrc => "font-src",
-        CspDirectives.FormAction => "form-action",
-        CspDirectives.FrameAncestors => "frame-ancestors",
-        CspDirectives.FrameSrc => "frame-src",
-        CspDirectives.ImgSrc => "img-src",
-        CspDirectives.ManifestSrc => "manifest-src",
-        CspDirectives.MediaSrc => "media-src",
-        CspDirectives.ObjectSrc => "object-src",
-        CspDirectives.ReportTo => "report-to",
-        CspDirectives.Sandbox => "sandbox",
-        CspDirectives.ScriptSrc => "script-src",
-        CspDirectives.ScriptSrcAttr => "script-src-attr",
-        CspDirectives.ScriptSrcElem => "script-src-elem",
-        CspDirectives.StyleSrc => "style-src",
-        CspDirectives.StyleSrcElem => "style-src-elem",
-        CspDirectives.WorkerSrc => "worker-src",
+        CspDirective.BaseUri => "base-uri",
+        CspDirective.ChildSrc => "child-src",
+        CspDirective.ConnectSrc => "connect-src",
+        CspDirective.DefaultSrc => "default-src",
+        CspDirective.FontSrc => "font-src",
+        CspDirective.FormAction => "form-action",
+        CspDirective.FrameAncestors => "frame-ancestors",
+        CspDirective.FrameSrc => "frame-src",
+        CspDirective.ImgSrc => "img-src",
+        CspDirective.ManifestSrc => "manifest-src",
+        CspDirective.MediaSrc => "media-src",
+        CspDirective.ObjectSrc => "object-src",
+        CspDirective.ReportTo => "report-to",
+        CspDirective.Sandbox => "sandbox",
+        CspDirective.ScriptSrc => "script-src",
+        CspDirective.ScriptSrcAttr => "script-src-attr",
+        CspDirective.ScriptSrcElem => "script-src-elem",
+        CspDirective.StyleSrc => "style-src",
+        CspDirective.StyleSrcElem => "style-src-elem",
+        CspDirective.WorkerSrc => "worker-src",
         _ => throw new ArgumentOutOfRangeException(nameof(directive), directive, null)
     };
   }
