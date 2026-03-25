@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Remotion.Web.Development.WebTesting.UnitTests;
 
@@ -127,6 +128,46 @@ public class WebTestFeatureCollectionTest
 
     var features = new WebTestFeatureCollection(items);
     AssertCollectionItems(features, items);
+  }
+
+  [Test]
+  public void InitializeFeatures ()
+  {
+    var webTestFeatureMock = new Mock<ILifecycleWebTestFeature>();
+    var items = new List<(Type, object)>
+                {
+                    (typeof(ILifecycleWebTestFeature), webTestFeatureMock.Object)
+                };
+
+    var features = new WebTestFeatureCollection(items);
+
+    features.InitializeFeatures();
+
+    webTestFeatureMock.Verify(f => f.Initialize(), Times.Once);
+  }
+
+  [Test]
+  public void InitializeFeatures_ThrowsAggregateException ()
+  {
+    var webTestFeatureMock1 = new Mock<ILifecycleWebTestFeature>();
+    var webTestFeatureMock2 = new Mock<ILifecycleWebTestFeature>();
+
+    Exception[] expectedExceptions = [new("Feature 1 failed")];
+    webTestFeatureMock1.Setup(f => f.Initialize()).Throws(expectedExceptions[0]);
+
+    var items = new List<(Type, object)>
+                {
+                    (typeof(ILifecycleWebTestFeature), webTestFeatureMock1.Object),
+                    (typeof(ITestFeature), webTestFeatureMock2.Object)
+                };
+    var features = new WebTestFeatureCollection(items);
+
+    var ex = Assert.Throws<AggregateException>(() => features.InitializeFeatures());
+
+    Assert.That(ex!.InnerExceptions, Is.EquivalentTo(expectedExceptions));
+
+    webTestFeatureMock1.Verify(f => f.Initialize(), Times.Once);
+    webTestFeatureMock2.Verify(f => f.Initialize(), Times.Once);
   }
 
   private void AssertCollectionItems (
