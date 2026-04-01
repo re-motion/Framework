@@ -210,7 +210,7 @@ class Build : RemotionBuild, IDependDB
         Chrome, Firefox, Edge);
     supportedTestDimensions.AddSupportedDimension<Databases>(
         NoDB, SqlServerDefault,
-        SqlServer2016, SqlServer2017, SqlServer2019, SqlServer2022);
+        SqlServer2016, SqlServer2017, SqlServer2019, SqlServer2022, SqlServer2025);
   }
 
   public override void ConfigureEnabledTestDimensions (EnabledTestDimensionsBuilder enabledTestDimensions)
@@ -265,6 +265,7 @@ class Build : RemotionBuild, IDependDB
             { LocalMachine, NET8_0_WINDOWS, NoBrowser, SqlServerDefault, Debug, x86 },
 
             // Exercise compatibility between installed .NET version, target framework and SQL Server
+            { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2025, Release, x64 },
             { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2022, Release, x64 },
             { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2019, Release, x64 },
             { Docker_Win_NET8_0, NET8_0_WINDOWS, NoBrowser, SqlServer2017, Release, x64 },
