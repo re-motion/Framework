@@ -231,6 +231,7 @@
               "SqlServer2017",
               "SqlServer2019",
               "SqlServer2022",
+              "SqlServer2025",
               "SqlServerDefault"
             ]
           }
