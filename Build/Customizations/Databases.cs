@@ -26,6 +26,7 @@ public class Databases : TestDimension
   public static readonly Databases SqlServer2017 = new(nameof(SqlServer2017), 2017);
   public static readonly Databases SqlServer2019 = new(nameof(SqlServer2019), 2019);
   public static readonly Databases SqlServer2022 = new(nameof(SqlServer2022), 2022);
+  public static readonly Databases SqlServer2025 = new(nameof(SqlServer2025), 2025);
 
   public bool HasSpecificVersion { get; }
 
