@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
             + "Example that registers a default instance of the RdbmsStorageSettingsFactory:\n"
             + "var serviceLocator = DefaultServiceLocator.Create();\n"
             + "serviceLocator.RegisterSingle(() => StorageSettingsFactory.CreateForSqlServer(\"\"connectionString\"\"));\n"
-            + "var serviceLocatorScope = new ServiceLocatorScope(serviceLocator);", ex);
+            + "ServiceLocator.SetLocatorProvider(() =>  serviceLocator);", ex);
       }
     }
   }
