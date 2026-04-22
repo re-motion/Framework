@@ -52,7 +52,7 @@ class WebTreeView
       const nodes = [...treeView.querySelectorAll ('.treeViewNode')];
       for (const node of nodes)
       {
-        const linkElement = node.querySelector (':scope > .treeViewNodeHead > a[onclick], :scope > .treeViewNodeHeadSelected > a[onclick]');
+        const linkElement = node.querySelector (':scope > .treeViewNodeHead > a[onclick], :scope > .treeViewNodeHeadSelected > a[onclick], :scope > .treeViewNodeHead > a[data-csp-replaced-onclick], :scope > .treeViewNodeHeadSelected > a[data-csp-replaced-onclick]');
         if (linkElement)
         {
           linkElement.addEventListener('click', ev =>
