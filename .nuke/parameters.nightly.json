@@ -6,5 +6,5 @@
   "TestPlatforms": [ "x86", "x64" ],
   "TestTargetRuntimes": [ "NET8_0", "NET10_0" ],
   "TestBrowsers": [ "NoBrowser", "Chrome", "Edge", "Firefox" ],
-  "TestSqlServers": [ "NoDB", "SqlServer2016", "SqlServer2017", "SqlServer2019", "SqlServer2022" ]
+  "TestSqlServers": [ "NoDB", "SqlServer2016", "SqlServer2017", "SqlServer2019", "SqlServer2022", "SqlServer2025" ]
 }
