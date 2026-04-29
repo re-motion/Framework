@@ -1,0 +1,5 @@
+<Project>
+  <ItemGroup>
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-4f7c-pmjv-c25w" />
+  </ItemGroup>
+</Project>
