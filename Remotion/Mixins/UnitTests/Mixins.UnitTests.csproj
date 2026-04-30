@@ -22,7 +22,7 @@
     <ProjectReference Include="..\Samples\Mixins.Samples.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-alpha.1" />
+    <PackageReference Include="Remotion.TypePipe.Development" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
