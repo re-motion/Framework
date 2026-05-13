@@ -19,11 +19,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using Moq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.SchemaGeneration
 {
@@ -46,7 +48,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
             firstTableDefinition.DataProperties,
             firstTableDefinition.Constraints,
             new IIndexDefinition[0],
-            new EntityNameDefinition[0]);
+            new EntityNameDefinition[0],
+            Mock.Of<IPersistenceModelSortingProvider>());
         entityDefinitions.Remove(firstTableDefinition);
         entityDefinitions.Add(newTableDefinition);
 
@@ -244,7 +247,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           dataProperties,
           constraints,
           indexes,
-          new EntityNameDefinition[0]);
+          new EntityNameDefinition[0],
+          Mock.Of<IPersistenceModelSortingProvider>());
     }
   }
 }

@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
@@ -75,7 +76,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       _mappingConfiguration = MappingConfiguration.Create(
           MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-          new PersistenceModelLoader(_storageSettings));
+          new PersistenceModelLoader(_storageSettings),
+          SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>());
       MappingConfiguration.SetCurrent(_mappingConfiguration);
 
       _domainObjectIDs = new DomainObjectIDs();

@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.ServiceLocation;
 using Remotion.Tools;
 
@@ -71,7 +72,8 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
       MappingConfiguration.SetCurrent(
           MappingConfiguration.Create(
               SafeServiceLocator.Current.GetInstance<IMappingLoader>(),
-              SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>()));
+              SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>(),
+              SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>()));
     }
 
     protected virtual void BuildSchema ()

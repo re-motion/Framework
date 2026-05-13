@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
@@ -44,6 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     private SimpleStoragePropertyDefinition _infrastructureIDStoragePropertyDefinition;
     private SimpleStoragePropertyDefinition _infrastructureClassIDStoragePropertyDefinition;
     private SimpleStoragePropertyDefinition _infrastructureTimestampStoragePropertyDefinition;
+    private IPersistenceModelSortingProvider _persistenceModelSortingProviderMock;
 
     public override void SetUp ()
     {
@@ -79,12 +82,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _testModel.DerivedPropertyDefinition1.SetStorageProperty(_fakeDerivedStoragePropertyDefinition1);
       _testModel.DerivedPropertyDefinition2.SetStorageProperty(_fakeDerivedStoragePropertyDefinition2);
       _testModel.DerivedDerivedPropertyDefinition.SetStorageProperty(_fakeDerivedDerivedStoragePropertyDefinition);
+
+      _persistenceModelSortingProviderMock = Mock.Of<IPersistenceModelSortingProvider>();
     }
 
     [Test]
     public void ApplyPersistenceModelToHierarchy_BaseBaseClassDefinition ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseBaseClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseBaseClassDefinition, _persistenceModelSortingProviderMock);
 
       AssertUnionViewDefinition(
           _testModel.BaseBaseClassDefinition,
@@ -108,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_BaseClassDefinition ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseClassDefinition, _persistenceModelSortingProviderMock);
 
       AssertUnionViewDefinition(
           _testModel.BaseClassDefinition,
@@ -132,7 +137,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_TableClassDefinition1 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition1);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition1, _persistenceModelSortingProviderMock);
 
       AssertTableDefinition(
           _testModel.TableClassDefinition1,
@@ -154,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_TableClassDefinition2 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition2);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition2, _persistenceModelSortingProviderMock);
 
       AssertTableDefinition(
           _testModel.TableClassDefinition2,
@@ -179,7 +184,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_DerivedClassDefinition1 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedClassDefinition1);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedClassDefinition1, _persistenceModelSortingProviderMock);
 
       AssertFilterViewDefinition(
           _testModel.DerivedClassDefinition1,
@@ -201,7 +206,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_DerivedClassDefinition2 ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedClassDefinition2);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedClassDefinition2, _persistenceModelSortingProviderMock);
 
       AssertFilterViewDefinition(
           _testModel.DerivedClassDefinition2,
@@ -224,7 +229,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     [Test]
     public void ApplyPersistenceModelToHierarchy_DerivedDerivedClassDefinition ()
     {
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition, _persistenceModelSortingProviderMock);
 
       AssertFilterViewDefinition(
           _testModel.DerivedDerivedClassDefinition,

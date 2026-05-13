@@ -23,6 +23,8 @@ using Microsoft.Extensions.Logging;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -80,12 +82,13 @@ namespace Remotion.Data.DomainObjects.Mapping
     /// <summary>
     /// Creates a fully initialized <see cref="MappingConfiguration"/>
     /// </summary>
-    public static MappingConfiguration Create (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader)
+    public static MappingConfiguration Create (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader, ISortingOptimizationNodeFactory sortingOptimizationNodeFactory)
     {
       ArgumentNullException.ThrowIfNull(mappingLoader);
       ArgumentNullException.ThrowIfNull(persistenceModelLoader);
+      ArgumentNullException.ThrowIfNull(sortingOptimizationNodeFactory);
 
-      var mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader);
+      var mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader, sortingOptimizationNodeFactory);
       mappingConfiguration.EnsureInitialized();
 
       return mappingConfiguration;
@@ -109,20 +112,24 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     // construction and disposing
 
-    public MappingConfiguration (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader)
+    public MappingConfiguration (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader, ISortingOptimizationNodeFactory sortingOptimizationNodeFactory)
     {
       ArgumentNullException.ThrowIfNull(mappingLoader);
       ArgumentNullException.ThrowIfNull(persistenceModelLoader);
+      ArgumentNullException.ThrowIfNull(sortingOptimizationNodeFactory);
 
       _resolveTypes = mappingLoader.ResolveTypes;
       _nameResolver = mappingLoader.NameResolver;
 
-      _mapping = new Lazy<Mapping>(() => InitializeMapping(mappingLoader, persistenceModelLoader), LazyThreadSafetyMode.ExecutionAndPublication);
+      _mapping = new Lazy<Mapping>(() => InitializeMapping(mappingLoader, persistenceModelLoader, sortingOptimizationNodeFactory), LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
-    private Mapping InitializeMapping (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader)
+    private Mapping InitializeMapping (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader, ISortingOptimizationNodeFactory sortingOptimizationNodeFactory)
     {
       s_logger.LogInformation("Building mapping configuration...");
+
+      var graphBasedSortingProvider = new GraphBasedPersistenceModelSortingProvider(sortingOptimizationNodeFactory);
+      var lazyPersistenceModelSortingProviderWrapper = new LazyPersistenceModelSortingProviderWrapper(graphBasedSortingProvider);
 
       using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time needed to build and validate mapping configuration: {elapsed}."))
       {
@@ -143,7 +150,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
         foreach (var rootClass in GetInheritanceRootClasses(typeDefinitionsDictionary.Values))
         {
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy(rootClass);
+          persistenceModelLoader.ApplyPersistenceModelToHierarchy(rootClass, lazyPersistenceModelSortingProviderWrapper);
           mappingConfigurationValidationHelper.VerifyPersistenceModelApplied(rootClass);
           mappingConfigurationValidationHelper.ValidatePersistenceMapping(rootClass);
         }
@@ -153,6 +160,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
         mappingConfigurationValidationHelper.ValidateSortExpression(relationDefinitionsDictionary.Values);
 
+        lazyPersistenceModelSortingProviderWrapper.Initialize(typeDefinitionsDictionary.Values.ToArray());
         return new Mapping(typeDefinitionsDictionary, classDefinitionsDictionary, relationDefinitionsDictionary);
       }
     }

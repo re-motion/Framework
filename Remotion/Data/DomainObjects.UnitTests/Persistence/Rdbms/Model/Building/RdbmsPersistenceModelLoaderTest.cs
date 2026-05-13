@@ -26,6 +26,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -62,6 +63,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
     private SimpleStoragePropertyDefinition _fakeColumnDefinition5;
     private SimpleStoragePropertyDefinition _fakeColumnDefinition6;
     private SimpleStoragePropertyDefinition _fakeColumnDefinition7;
+
+    private IPersistenceModelSortingProvider _persistenceModelSortingProviderMock;
 
     [SetUp]
     public void SetUp ()
@@ -102,6 +105,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _fakeColumnDefinition5 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test5");
       _fakeColumnDefinition6 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test6");
       _fakeColumnDefinition7 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Test7");
+
+      _persistenceModelSortingProviderMock = Mock.Of<IPersistenceModelSortingProvider>();
     }
 
     [Test]
@@ -160,11 +165,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns(_fakeEntityDefinitionBase.Object)
           .Verifiable();
       _entityDefinitionFactoryMock
-          .Setup(mock => mock.CreateTableDefinition(_testModel.TableClassDefinition1))
+          .Setup(mock => mock.CreateTableDefinition(_testModel.TableClassDefinition1, _persistenceModelSortingProviderMock))
           .Returns(_fakeEntityDefinitionTable1.Object)
           .Verifiable();
       _entityDefinitionFactoryMock
-          .Setup(mock => mock.CreateTableDefinition(_testModel.TableClassDefinition2))
+          .Setup(mock => mock.CreateTableDefinition(_testModel.TableClassDefinition2, _persistenceModelSortingProviderMock))
           .Returns(_fakeEntityDefinitionTable2.Object)
           .Verifiable();
       _entityDefinitionFactoryMock
@@ -184,7 +189,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns(_fakeEntityDefinitionDerivedDerivedDerived.Object)
           .Verifiable();
 
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseBaseClassDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.BaseBaseClassDefinition, _persistenceModelSortingProviderMock);
 
       _dataStoragePropertyDefinitionFactoryMock.Verify();
       _entityDefinitionFactoryMock.Verify();
@@ -213,7 +218,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _testModel.TableClassDefinition1.SetStorageEntity(_fakeEntityDefinitionTable1.Object);
       _testModel.TablePropertyDefinition1.SetStorageProperty(_fakeColumnDefinition1);
 
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition1);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.TableClassDefinition1, _persistenceModelSortingProviderMock);
 
       _dataStoragePropertyDefinitionFactoryMock.Verify();
       _entityDefinitionFactoryMock.Verify();
@@ -239,7 +244,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           .Returns(_fakeEntityDefinitionTable1.Object)
           .Verifiable();
 
-      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
+      _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition, _persistenceModelSortingProviderMock);
 
       _entityDefinitionFactoryMock.Verify();
       Assert.That(classDefinition.StorageEntityDefinition, Is.SameAs(_fakeEntityDefinitionTable1.Object));
@@ -252,7 +257,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _testModel.DerivedClassDefinition2.SetStorageEntity(invalidStorageEntityDefinition.Object);
       _testModel.DerivedDerivedPropertyDefinition.SetStorageProperty(_fakeColumnDefinition7);
       Assert.That(
-          () => _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition),
+          () => _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition, _persistenceModelSortingProviderMock),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The storage entity definition of class 'Derived2Class' does not implement interface 'IRdbmsStorageEntityDefinition'."));
@@ -264,7 +269,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
       _testModel.DerivedClassDefinition2.SetStorageEntity(_fakeEntityDefinitionDerived2.Object);
       _testModel.DerivedDerivedPropertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("Fake"));
       Assert.That(
-          () => _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition),
+          () => _rdbmsPersistenceModelLoader.ApplyPersistenceModelToHierarchy(_testModel.DerivedDerivedClassDefinition, _persistenceModelSortingProviderMock),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "The property definition 'DerivedDerivedProperty' of class 'DerivedDerivedClass' does not implement interface 'IRdbmsStoragePropertyDefinition'."));

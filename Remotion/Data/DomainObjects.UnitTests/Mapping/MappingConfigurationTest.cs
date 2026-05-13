@@ -27,6 +27,8 @@ using Remotion.Data.DomainObjects.Mapping.Validation.Reflection;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection.DomainObjectTypeIsNotGenericValidationRule;
@@ -47,6 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private Mock<IMappingLoader> _mockMappingLoader;
     private ReflectionBasedMemberInformationNameResolver _memberInformationNameResolver;
     private TableDefinition _fakeStorageEntityDefinition;
+    private Mock<ISortingOptimizationNodeFactory> _sortingOptimizationNodeFactory;
 
     public override void SetUp ()
     {
@@ -56,6 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _emptyRelationDefinitions = new RelationDefinition[0];
 
       _memberInformationNameResolver = new ReflectionBasedMemberInformationNameResolver();
+      _sortingOptimizationNodeFactory = new Mock<ISortingOptimizationNodeFactory>();
       _mockMappingLoader = new Mock<IMappingLoader>(MockBehavior.Strict);
 
       _fakeStorageEntityDefinition = TableDefinitionObjectMother.Create(
@@ -71,7 +75,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       StubMockMappingLoader(typeDefinitions, relationDefinitions);
 
       var configuration = new MappingConfiguration(
-          _mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings));
+          _mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings),
+          _sortingOptimizationNodeFactory.Object);
 
       _mockMappingLoader.Verify();
 
@@ -87,7 +92,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         StubMockMappingLoader(_emptyClassDefinitions, _emptyRelationDefinitions);
 
         var configuration = new MappingConfiguration(
-            _mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings));
+            _mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings),
+            _sortingOptimizationNodeFactory.Object);
         MappingConfiguration.SetCurrent(configuration);
 
         Assert.That(MappingConfiguration.Current, Is.SameAs(configuration));
@@ -111,7 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       StubMockMappingLoader(new[] { classDefinition1, classDefinition2 }, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(configuration.GetTypeDefinitions(), Is.EquivalentTo(new[] { classDefinition1, classDefinition2 }));
     }
@@ -124,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       classDefinition.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       StubMockMappingLoader(new[] { classDefinition }, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(configuration.ContainsTypeDefinition(typeof(RelationEndPointPropertyClass)), Is.True);
     }
@@ -134,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       StubMockMappingLoader(_emptyClassDefinitions, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(configuration.ContainsTypeDefinition(typeof(RelationEndPointPropertyClass)), Is.False);
     }
@@ -147,7 +153,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       classDefinition.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       StubMockMappingLoader(new[] { classDefinition }, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(configuration.GetTypeDefinition(typeof(RelationEndPointPropertyClass)), Is.SameAs(classDefinition));
     }
@@ -157,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       StubMockMappingLoader(_emptyClassDefinitions, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => configuration.GetTypeDefinition(typeof(DomainObject)),
@@ -170,7 +176,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       StubMockMappingLoader(_emptyClassDefinitions, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => configuration.GetTypeDefinition(typeof(DomainObject), t =>new ApplicationException(t.Name)),
@@ -186,7 +192,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       classDefinition.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       StubMockMappingLoader(new[] { classDefinition }, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(configuration.ContainsClassDefinition(classDefinition.ID), Is.True);
     }
@@ -196,7 +202,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       StubMockMappingLoader(_emptyClassDefinitions, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(configuration.ContainsClassDefinition("ID"), Is.False);
     }
@@ -209,7 +215,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       classDefinition.SetDerivedClasses(Enumerable.Empty<ClassDefinition>());
       StubMockMappingLoader(new[] { classDefinition }, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(configuration.GetClassDefinition(classDefinition.ID), Is.SameAs(classDefinition));
     }
@@ -219,7 +225,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       StubMockMappingLoader(_emptyClassDefinitions, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => configuration.GetClassDefinition("ID"),
@@ -232,7 +238,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       StubMockMappingLoader(_emptyClassDefinitions, _emptyRelationDefinitions);
       var persistenceModelLoaderStub = CreatePersistenceModelLoaderStub();
-      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub);
+      var configuration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => configuration.GetClassDefinition("ID", id =>new ApplicationException(id)),
@@ -252,15 +258,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var persistenceModelLoaderMock = new Mock<IPersistenceModelLoader>(MockBehavior.Strict);
       persistenceModelLoaderMock
-          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(classDefinition))
-          .Callback((ClassDefinition classDefinition) => classDefinition.SetStorageEntity(TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition)))
+          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(classDefinition, It.IsAny<IPersistenceModelSortingProvider>()))
+          .Callback((ClassDefinition classDefinition, IPersistenceModelSortingProvider sortProvider) => classDefinition.SetStorageEntity(TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition)))
           .Verifiable();
       persistenceModelLoaderMock
           .Setup(mock => mock.CreatePersistenceMappingValidator(classDefinition))
           .Returns(new PersistenceMappingValidator())
           .Verifiable();
 
-      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderMock.Object);
+      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderMock.Object, _sortingOptimizationNodeFactory.Object);
       mappingConfiguration.EnsureInitialized();
 
       persistenceModelLoaderMock.Verify();
@@ -277,7 +283,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var persistenceModelStub = new Mock<IPersistenceModelLoader>();
 
       StubMockMappingLoader(new[] { classDefinition }, new RelationDefinition[0]);
-      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelStub.Object);
+      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelStub.Object, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => mappingConfiguration.EnsureInitialized(),
@@ -303,9 +309,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       StubMockMappingLoader(new[] { classDefinition }, new RelationDefinition[0]);
 
       persistenceModelStub
-          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(classDefinition))
-          .Callback((ClassDefinition classDefinition) => classDefinition.SetStorageEntity(fakeStorageEntityDefinition));
-      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelStub.Object);
+          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(classDefinition, It.IsAny<IPersistenceModelSortingProvider>()))
+          .Callback((ClassDefinition classDefinition, IPersistenceModelSortingProvider sortProvider) => classDefinition.SetStorageEntity(fakeStorageEntityDefinition));
+      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelStub.Object, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => mappingConfiguration.EnsureInitialized(),
@@ -334,9 +340,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       StubMockMappingLoader(new[] { companyClass }, new RelationDefinition[0]);
 
       persistenceModelStub
-          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(companyClass))
-          .Callback((ClassDefinition classDefinition) => companyClass.SetStorageEntity(fakeStorageEntityDefinition));
-      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelStub.Object);
+          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(companyClass, It.IsAny<IPersistenceModelSortingProvider>()))
+          .Callback((ClassDefinition classDefinition, IPersistenceModelSortingProvider sortProvider) => companyClass.SetStorageEntity(fakeStorageEntityDefinition));
+      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelStub.Object, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => mappingConfiguration.EnsureInitialized(),
@@ -351,7 +357,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(type);
 
       StubMockMappingLoaderWithValidation(new[] { classDefinition }, new RelationDefinition[0]);
-      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings));
+      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings), _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => mappingConfiguration.EnsureInitialized(),
@@ -371,7 +377,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
 
       StubMockMappingLoaderWithValidation(new[] { classDefinition }, new RelationDefinition[0]);
-      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings));
+      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings), _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => mappingConfiguration.EnsureInitialized(),
@@ -395,7 +401,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               +"Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"];
 
       StubMockMappingLoaderWithValidation(new[] { classDefinition }, new[] { relationDefinition });
-      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings));
+      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings), _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => mappingConfiguration.EnsureInitialized(),
@@ -419,11 +425,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var persistenceModelLoaderStub = new Mock<IPersistenceModelLoader>();
       persistenceModelLoaderStub
-          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(It.IsAny<ClassDefinition>()));
+          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(It.IsAny<ClassDefinition>(), It.IsAny<IPersistenceModelSortingProvider>()));
       persistenceModelLoaderStub
           .Setup(stub => stub.CreatePersistenceMappingValidator(It.IsAny<ClassDefinition>()))
           .Returns(new PersistenceMappingValidator(new ClassAboveTableIsAbstractValidationRule()));
-      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub.Object);
+      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderStub.Object, _sortingOptimizationNodeFactory.Object);
 
       Assert.That(
           () => mappingConfiguration.EnsureInitialized(),
@@ -445,12 +451,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var rootClass2 = ClassDefinitionObjectMother.CreateClassDefinition_WithEmptyMembers_AndDerivedClasses("OrderTicket", typeof(OrderTicket));
 
       persistenceModelLoaderMock
-          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(rootClass1))
-          .Callback((ClassDefinition classDefinition) => rootClass1.SetStorageEntity(_fakeStorageEntityDefinition))
+          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(rootClass1, It.IsAny<IPersistenceModelSortingProvider>()))
+          .Callback((ClassDefinition classDefinition, IPersistenceModelSortingProvider sortProvider) => rootClass1.SetStorageEntity(_fakeStorageEntityDefinition))
           .Verifiable();
       persistenceModelLoaderMock
-          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(rootClass2))
-          .Callback((ClassDefinition classDefinition) => rootClass2.SetStorageEntity(_fakeStorageEntityDefinition))
+          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(rootClass2, It.IsAny<IPersistenceModelSortingProvider>()))
+          .Callback((ClassDefinition classDefinition, IPersistenceModelSortingProvider sortProvider) => rootClass2.SetStorageEntity(_fakeStorageEntityDefinition))
           .Verifiable();
 
       persistenceModelLoaderMock.Setup(mock => mock.CreatePersistenceMappingValidator(rootClass1)).Returns(validatorMock1.Object).Verifiable();
@@ -467,7 +473,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       StubMockMappingLoaderWithValidation(new[] { rootClass1, rootClass2 }, new RelationDefinition[0]);
 
-      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderMock.Object);
+      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderMock.Object, _sortingOptimizationNodeFactory.Object);
       mappingConfiguration.EnsureInitialized();
 
       persistenceModelLoaderMock.Verify();
@@ -486,9 +492,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var derivedClass2 = rootClass.DerivedClasses[1];
 
       persistenceModelLoaderMock
-          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(rootClass))
+          .Setup(mock => mock.ApplyPersistenceModelToHierarchy(rootClass, It.IsAny<IPersistenceModelSortingProvider>()))
           .Callback(
-              (ClassDefinition classDefinition) =>
+              (ClassDefinition classDefinition, IPersistenceModelSortingProvider sortProvider) =>
               {
                 rootClass.SetStorageEntity(_fakeStorageEntityDefinition);
                 derivedClass1.SetStorageEntity(_fakeStorageEntityDefinition);
@@ -504,7 +510,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       StubMockMappingLoaderWithValidation(new[] { rootClass, derivedClass1, derivedClass2 }, new RelationDefinition[0]);
 
-      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderMock.Object);
+      var mappingConfiguration = new MappingConfiguration(_mockMappingLoader.Object, persistenceModelLoaderMock.Object, _sortingOptimizationNodeFactory.Object);
       mappingConfiguration.EnsureInitialized();
 
       persistenceModelLoaderMock.Verify();
@@ -524,7 +530,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _mockMappingLoader.Setup(_ => _.CreateSortExpressionValidator()).Returns(new SortExpressionValidator());
 
       var configuration = new MappingConfiguration(
-          _mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings));
+          _mockMappingLoader.Object, new PersistenceModelLoader(StorageSettings), _sortingOptimizationNodeFactory.Object);
 
       _mockMappingLoader.Verify();
       Assert.That(
@@ -582,8 +588,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var persistenceModelLoaderStub = new Mock<IPersistenceModelLoader>();
       persistenceModelLoaderStub
-          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(It.IsAny<ClassDefinition>()))
-          .Callback((ClassDefinition classDefinition) => classDefinition.SetStorageEntity(TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition)));
+          .Setup(stub => stub.ApplyPersistenceModelToHierarchy(It.IsAny<ClassDefinition>(), It.IsAny<IPersistenceModelSortingProvider>()))
+          .Callback((ClassDefinition classDefinition, IPersistenceModelSortingProvider sortProvider) => classDefinition.SetStorageEntity(TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition)));
       persistenceModelLoaderStub
           .Setup(stub => stub.CreatePersistenceMappingValidator(It.IsAny<ClassDefinition>()))
           .Returns(new PersistenceMappingValidator());

@@ -68,28 +68,6 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
       IRdbmsStoragePropertyDefinition property,
       IReadOnlyDictionary<IStoragePropertyDefinition, PropertyDefinition> propertyDefinitionLookup);
 
-  private class ColumnDefinitionEqualityComparer : IEqualityComparer<ColumnDefinition>
-  {
-    public bool Equals (ColumnDefinition? x, ColumnDefinition? y)
-    {
-      if (x == null && y == null)
-        return true;
-
-      if (x == null)
-        return false;
-
-      if (y == null)
-        return false;
-
-      return string.Equals(x.Name, y.Name, StringComparison.Ordinal) && x.IsPartOfPrimaryKey == y.IsPartOfPrimaryKey;
-    }
-
-    public int GetHashCode (ColumnDefinition obj)
-    {
-      return HashCode.Combine(obj.Name, obj.IsPartOfPrimaryKey);
-    }
-  }
-
   private class StoragePropertyDefinitionEqualityComparer : IEqualityComparer<IStoragePropertyDefinition>
   {
     private readonly ColumnDefinitionEqualityComparer _columnDefinitionEqualityComparer = new();

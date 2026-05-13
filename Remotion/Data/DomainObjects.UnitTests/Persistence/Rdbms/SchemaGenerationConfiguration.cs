@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain;
@@ -114,7 +115,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       _mappingConfiguration = MappingConfiguration.Create(
             MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-            new PersistenceModelLoader(_storageSettings));
+            new PersistenceModelLoader(_storageSettings),
+            SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>());
     }
 
     public MappingConfiguration GetMappingConfiguration ()

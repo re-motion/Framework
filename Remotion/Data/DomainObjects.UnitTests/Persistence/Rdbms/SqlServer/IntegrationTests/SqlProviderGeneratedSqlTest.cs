@@ -283,8 +283,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       var expectedLockTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Lock", new[] { new SqlMetaData("ID", SqlDbType.UniqueIdentifier), new SqlMetaData("Timestamp", SqlDbType.VarBinary, 8) });
       expectedLockTvpValue.AddRecord([changedDataContainer.ID.Value, changedDataContainer.Timestamp]);
-      expectedLockTvpValue.AddRecord([deletedDataContainer.ID.Value, deletedDataContainer.Timestamp]);
       expectedLockTvpValue.AddRecord([markedAsChangedDataContainer.ID.Value, markedAsChangedDataContainer.Timestamp]);
+      expectedLockTvpValue.AddRecord([deletedDataContainer.ID.Value, deletedDataContainer.Timestamp]);
 
 
       var expectedInsertTvpValue = new SqlTableValuedParameterValue("TVP_Employee_Insert", new[]
@@ -304,8 +304,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
                                                                                                new SqlMetaData("SupervisorID", SqlDbType.UniqueIdentifier)
                                                                                            });
       expectedUpdateTvpValue.AddRecord([changedDataContainer.ID.Value, changedDataContainer.ID.ClassID, "George", true, DBNull.Value]);
-      expectedUpdateTvpValue.AddRecord([newDataContainer.ID.Value, newDataContainer.ID.ClassID, "", false, DBNull.Value]);
-      expectedUpdateTvpValue.AddRecord([deletedDataContainer.ID.Value, deletedDataContainer.ID.ClassID, "", false, DBNull.Value]);
       expectedUpdateTvpValue.AddRecord([markedAsChangedDataContainer.ID.Value, markedAsChangedDataContainer.ID.ClassID, "", false, DBNull.Value]);
 
       var expectedDeleteTvpValue = new SqlTableValuedParameterValue("TVP_AllTables_Delete", new[]

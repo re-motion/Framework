@@ -45,8 +45,8 @@ public class BatchedLockDbCommandBuilder : DbCommandBuilder
     {
       if (!isFirstCommandSpecification)
       {
-        forReadCommitBuilder.AppendLine().AppendLine("UNION ALL ");
-        forNonReadCommitBuilder.AppendLine().AppendLine("UNION ALL ");
+        forReadCommitBuilder.AppendLine().AppendLine("UNION ALL");
+        forNonReadCommitBuilder.AppendLine().AppendLine("UNION ALL");
       }
 
       isFirstCommandSpecification = false;

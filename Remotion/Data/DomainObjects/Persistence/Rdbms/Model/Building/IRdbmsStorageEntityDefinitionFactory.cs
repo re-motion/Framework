@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 {
@@ -25,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
   /// </summary>
   public interface IRdbmsStorageEntityDefinitionFactory
   {
-    IRdbmsStorageEntityDefinition CreateTableDefinition (ClassDefinition classDefinition);
+    IRdbmsStorageEntityDefinition CreateTableDefinition (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider);
     IRdbmsStorageEntityDefinition CreateFilterViewDefinition (ClassDefinition classDefinition, IRdbmsStorageEntityDefinition baseEntity);
     IRdbmsStorageEntityDefinition CreateUnionViewDefinition (ClassDefinition classDefinition, IEnumerable<IRdbmsStorageEntityDefinition> unionedEntities);
     IRdbmsStorageEntityDefinition CreateEmptyViewDefinition (ClassDefinition classDefinition);

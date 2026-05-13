@@ -18,6 +18,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
@@ -64,7 +65,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new[] { _property1, _property2, _property3 },
           _constraints,
           _indexes,
-          _synonyms);
+          _synonyms,
+          Mock.Of<IPersistenceModelSortingProvider>());
     }
 
     [Test]
@@ -95,7 +97,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new SimpleStoragePropertyDefinition[0],
           _constraints,
           new IIndexDefinition[0],
-          new EntityNameDefinition[0]);
+          new EntityNameDefinition[0],
+          Mock.Of<IPersistenceModelSortingProvider>());
       Assert.That(tableDefinition.ViewName, Is.Null);
     }
 

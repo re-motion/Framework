@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Model;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
@@ -50,9 +51,10 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
           new RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule());
     }
 
-    public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
+    public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider)
     {
       ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(persistenceModelSortingProvider);
 
 
       ClassDefinition[] derivedClasses = classDefinition.GetAllDerivedClasses();

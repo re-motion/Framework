@@ -153,11 +153,11 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
             SELECT [P].[col1], [P].[col2] FROM [Table1] [T] WITH(ROWLOCK, XLOCK, READPAST)
             RIGHT JOIN @TVP_Lock_Table1 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
-            UNION ALL 
+            UNION ALL
             SELECT [P].[col1], [P].[col2] FROM [Table2] [T] WITH(ROWLOCK, XLOCK, READPAST)
             RIGHT JOIN @TVP_Lock_Table2 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
-            UNION ALL 
+            UNION ALL
             SELECT [P].[col1], [P].[col2] FROM [Table3] [T] WITH(ROWLOCK, XLOCK, READPAST)
             RIGHT JOIN @TVP_Lock_Table3 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
@@ -167,11 +167,11 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
             SELECT [P].[col1], [P].[col2] FROM [Table1] [T] WITH(ROWLOCK, XLOCK)
             RIGHT JOIN @TVP_Lock_Table1 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
-            UNION ALL 
+            UNION ALL
             SELECT [P].[col1], [P].[col2] FROM [Table2] [T] WITH(ROWLOCK, XLOCK)
             RIGHT JOIN @TVP_Lock_Table2 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
-            UNION ALL 
+            UNION ALL
             SELECT [P].[col1], [P].[col2] FROM [Table3] [T] WITH(ROWLOCK, XLOCK)
             RIGHT JOIN @TVP_Lock_Table3 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
@@ -214,11 +214,11 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
             SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table1] [T] WITH(ROWLOCK, XLOCK, READPAST)
             RIGHT JOIN @TVP_Lock_Table1 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
-            UNION ALL 
+            UNION ALL
             SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table2] [T] WITH(ROWLOCK, XLOCK, READPAST)
             RIGHT JOIN @TVP_Lock_Table2 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
-            UNION ALL 
+            UNION ALL
             SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table3] [T] WITH(ROWLOCK, XLOCK, READPAST)
             RIGHT JOIN @TVP_Lock_Table3 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
@@ -228,11 +228,11 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
             SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table1] [T] WITH(ROWLOCK, XLOCK)
             RIGHT JOIN @TVP_Lock_Table1 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
-            UNION ALL 
+            UNION ALL
             SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table2] [T] WITH(ROWLOCK, XLOCK)
             RIGHT JOIN @TVP_Lock_Table2 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
-            UNION ALL 
+            UNION ALL
             SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table3] [T] WITH(ROWLOCK, XLOCK)
             RIGHT JOIN @TVP_Lock_Table3 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
