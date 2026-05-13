@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
@@ -18,9 +19,10 @@ public class GraphBasedPersistenceModelSortingProvider : IPersistenceModelSortin
 {
   private readonly ISortingOptimizationNodeFactory _nodeFactory;
 
-  private IDictionary<ClassDefinition, List<PropertyDefinition>> _foreignKeyRelevantPropertyDefinitions = null!;
-  private IDictionary<IStorageEntityDefinition, bool> _tableDefinitionToHasBeenOrderedCorrectly = null!;
-  private IDictionary<IStorageEntityDefinition, int> _tableSortOrder = null!;
+  private IDictionary<ClassDefinition, IReadOnlyCollection<SortingOptimizationObjectIDPropertySpecification>> _objectIDPropertyPropertySpecifications = null!;
+  private IDictionary<IStorageEntityDefinition, int> _sortOrderByStorageEntityDefinition = null!;
+  private IDictionary<ClassDefinition, int> _sortOrderByClassDefinition = null!;
+
   private bool _hasBeenInitialized;
 
   public GraphBasedPersistenceModelSortingProvider (ISortingOptimizationNodeFactory nodeFactory)
@@ -29,18 +31,18 @@ public class GraphBasedPersistenceModelSortingProvider : IPersistenceModelSortin
     _nodeFactory = nodeFactory;
   }
 
+  /// <inheritdoc/>
   public void Initialize (IReadOnlyList<ClassDefinition> classDefinitions)
   {
     ArgumentNullException.ThrowIfNull(classDefinitions);
 
     var nodes = _nodeFactory.CreateNodes(classDefinitions);
 
-    _foreignKeyRelevantPropertyDefinitions = CreateForeignKeyRelevantPropertyDefinitions(nodes);
+    _objectIDPropertyPropertySpecifications = nodes.SelectMany(d => d.ObjectIDPropertySpecifications).ToDictionary(k => k.Key, v => v.Value);
 
-    ApplyEdgeBreaks(nodes);
+    ResolveIndirectCyclicDependencies(nodes);
 
-    _tableSortOrder = CreateTableSortOrder(nodes);
-    _tableDefinitionToHasBeenOrderedCorrectly = nodes.ToDictionary(k => (IStorageEntityDefinition)k.TableDefinition, v => !v.HasBrokenEdges);
+    (_sortOrderByStorageEntityDefinition, _sortOrderByClassDefinition) = CreateTableSortOrder(nodes);
     _hasBeenInitialized = true;
   }
 
@@ -52,69 +54,35 @@ public class GraphBasedPersistenceModelSortingProvider : IPersistenceModelSortin
     if (!_hasBeenInitialized)
       throw new InvalidOperationException($"Before accessing {nameof(GetSortPosition)}, {nameof(Initialize)} has to be called.");
 
-    return _tableSortOrder[storageEntityDefinition];
+    return _sortOrderByStorageEntityDefinition[storageEntityDefinition];
   }
 
   /// <inheritdoc/>
-  public bool HasBeenSortedCorrectly (IStorageEntityDefinition storageEntityDefinition)
-  {
-    ArgumentNullException.ThrowIfNull(storageEntityDefinition);
-
-    if (!_hasBeenInitialized)
-      throw new InvalidOperationException($"Before accessing {nameof(HasBeenSortedCorrectly)}, {nameof(Initialize)} has to be called.");
-
-    return _tableDefinitionToHasBeenOrderedCorrectly[storageEntityDefinition];
-  }
-
-  /// <inheritdoc/>
-  public IReadOnlyList<PropertyDefinition> GetForeignKeyRelevantPropertyDefinitions (ClassDefinition classDefinition)
+  public int GetSortPosition (ClassDefinition classDefinition)
   {
     ArgumentNullException.ThrowIfNull(classDefinition);
 
     if (!_hasBeenInitialized)
-      throw new InvalidOperationException($"Before accessing {nameof(GetForeignKeyRelevantPropertyDefinitions)}, {nameof(Initialize)} has to be called.");
+      throw new InvalidOperationException($"Before accessing {nameof(GetSortPosition)}, {nameof(Initialize)} has to be called.");
 
-    if (_foreignKeyRelevantPropertyDefinitions.TryGetValue(classDefinition, out var list))
+    return _sortOrderByClassDefinition[classDefinition];
+  }
+
+  /// <inheritdoc/>
+  public IReadOnlyCollection<SortingOptimizationObjectIDPropertySpecification> GetPropertySpecificationsForForeignKeyProperties (ClassDefinition classDefinition)
+  {
+    ArgumentNullException.ThrowIfNull(classDefinition);
+
+    if (!_hasBeenInitialized)
+      throw new InvalidOperationException($"Before accessing {nameof(GetPropertySpecificationsForForeignKeyProperties)}, {nameof(Initialize)} has to be called.");
+
+    if (_objectIDPropertyPropertySpecifications.TryGetValue(classDefinition, out var list))
       return list;
 
-    return Array.Empty<PropertyDefinition>();
+    return Array.Empty<SortingOptimizationObjectIDPropertySpecification>();
   }
 
-  private IDictionary<ClassDefinition, List<PropertyDefinition>> CreateForeignKeyRelevantPropertyDefinitions (IReadOnlyList<SortingOptimizationNode> nodes)
-  {
-    var columnDefinitionComparer = new ColumnDefinitionEqualityComparer();
-    var foreignKeyRelevantProperties = new Dictionary<ClassDefinition, List<PropertyDefinition>>();
-
-    foreach (var node in nodes)
-    {
-      var classAndPropertyDefinitions = node.ClassDefinitions
-          .SelectMany(c => c.GetPropertyDefinitions().Where(p => p.IsObjectID && p.StorageClass == StorageClass.Persistent)
-              .Select(p => (
-                      ClassDefinition: c,
-                      PropertyDefinition: p,
-                      Columns: ((IObjectIDStoragePropertyDefinition)p.StoragePropertyDefinition).GetColumnsForComparison().ToArray()
-                  )
-              )).ToList();
-
-      foreach (var foreignKey in node.Edges.SelectMany(e => e.ForeignKeys))
-      {
-        var matchingPropertyDefinition = classAndPropertyDefinitions.Where(cpc => cpc.Columns.SequenceEqual(foreignKey.ReferencingColumns, columnDefinitionComparer)).ToArray();
-        foreach (var match in matchingPropertyDefinition)
-        {
-          classAndPropertyDefinitions.Remove(match);
-
-          if (foreignKeyRelevantProperties.TryGetValue(match.ClassDefinition, out var list))
-            list.Add(match.PropertyDefinition);
-          else
-            foreignKeyRelevantProperties[match.ClassDefinition] = [match.PropertyDefinition];
-        }
-      }
-    }
-
-    return foreignKeyRelevantProperties;
-  }
-
-  private IDictionary<IStorageEntityDefinition, int> CreateTableSortOrder (IReadOnlyList<SortingOptimizationNode> nodes)
+  private (IDictionary<IStorageEntityDefinition, int> byTable, IDictionary<ClassDefinition, int> byClassDefiniion) CreateTableSortOrder (IReadOnlyList<SortingOptimizationNode> nodes)
   {
     var resultNodesWithoutBrokenEdges = new List<SortingOptimizationNode>();
     var resultNodesWithBrokenEdges = new List<SortingOptimizationNode>();
@@ -126,7 +94,13 @@ public class GraphBasedPersistenceModelSortingProvider : IPersistenceModelSortin
     while (remainingNodes.Any())
     {
       if (remainingNodes.Count == lastRemainingNodesCount)
-        throw new InvalidOperationException("Could not correctly determine sort order.");
+      {
+        // this should be unreachable because ApplyEdgeBreaks should remove all indirect cyclic edges and
+        // if this was not possible ApplyEdgeBreaks already throws an exception and therefore
+        // sorting should always be possible because there should always be leaf nodes.
+        // So this is a failsafe if something else breaks to prevent endless loops.
+        throw new InvalidOperationException("Could not correctly determine sort order. This should be unreachable!");
+      }
 
       lastRemainingNodesCount = remainingNodes.Count;
       var currentLeafs = remainingNodes.Where(n => !n.Edges.Any(e => !e.IsSelfCyclingEdge && !removedNodes.Contains(e.PointingTo))).ToArray();
@@ -142,42 +116,90 @@ public class GraphBasedPersistenceModelSortingProvider : IPersistenceModelSortin
       }
     }
 
-    return resultNodesWithBrokenEdges.Concat(resultNodesWithoutBrokenEdges)
+    var concatenatedNodes = resultNodesWithBrokenEdges.Concat(resultNodesWithoutBrokenEdges).ToList();
+    var byTableDefinition = concatenatedNodes
         .Select((node, index) => (node.TableDefinition, index))
         .ToDictionary(k => (IStorageEntityDefinition)k.TableDefinition, v => v.index);
+
+    var byClassDefinition = concatenatedNodes.Select((node, index) => (node, index)).SelectMany(x => x.node.ClassDefinitions.Select(cd => (cd, x.index)))
+        .ToDictionary(k => k.cd, v => v.index);
+
+    return (byTableDefinition, byClassDefinition);
   }
 
-  private void ApplyEdgeBreaks (IReadOnlyList<SortingOptimizationNode> nodes)
+  private void ResolveIndirectCyclicDependencies (IReadOnlyList<SortingOptimizationNode> nodes)
   {
-    // TODO: RM-9648 here we should get all edges that should always break and break them, maybe even before we calculate the dependencies the first time.
-
-    var potentialNodes = nodes;
+    var previousNumberOfCyclicEdges = -1;
     while (true)
     {
+      var numberOfCyclicEdges = 0;
       // we need to recalculate the indirect cyclic dependencies always after we broke edges
-      foreach (var node in potentialNodes)
+      foreach (var node in nodes)
+      {
         node.CalculateIndirectCyclicDependencies();
+        numberOfCyclicEdges += node.IndirectSelfCyclicEdges.Sum(i => i.Value.Count);
+      }
 
-      potentialNodes = potentialNodes.Where(n => n.HasIndirectCyclicDependencies).ToList();
-      if (potentialNodes.Count == 0)
+      // if there are no cyclic edges we are done.
+      if (numberOfCyclicEdges == 0)
         break;
 
-      // One instance of an edge can occur in the multiple IndirectSelfCyclicEdges
-      // because it maybe in a chain leading to an indirect cycle.
-      // So we try to figure out which node is most often the owner of those edges.
-      // We then break this edges in hope this is the least amount of breaks we need.
+      // if the previous number matches the current number we have hit a dead end.
+      if (previousNumberOfCyclicEdges == numberOfCyclicEdges)
+        throw new InvalidOperationException($"{nameof(GraphBasedPersistenceModelSortingProvider)} could not resolve indirect cyclic dependencies.{Environment.NewLine}{CreateCyclicDependenciesErrorMessageHint(nodes)}");
 
-      // TODO: RM-9648 here we need to check if the edge may not be broken eg: e.Value.Where(ed => ed.NoBreak)
-      var mostGuiltyCyclicEdges = potentialNodes
-          .SelectMany(node => node.IndirectSelfCyclicEdges.SelectMany(e => e.Value))
-          .GroupBy(e => e.Owner) // Group edges by the node owner so we break these edges
-          .OrderByDescending(g => g.Count()) // Order by nodes which are most often involved in an indirect cyclic dependency
-          .ThenBy(g => g.Key.TableName) // Tie-break deterministically by table name
-          .Select(k => k.ToList().Distinct()) // Distinct because an edge can occur multiple times because it could be the way to an indirect cycle 
-          .First(); // We only take the currently most guilty edges
+      previousNumberOfCyclicEdges = numberOfCyclicEdges;
 
-      foreach (var edge in mostGuiltyCyclicEdges)
+      // we try to break only necessary edges therefore 
+      // if there are any indirect cyclic dependencies we try to break AlwaysBreak first then PreferredBreak and then Automatic
+      // in hope that this leads to the least amount of breaks so that most the tables can be sorted correct.
+      var edgesToBreak = GetMosGuiltyCyclicEdges(nodes, ForeignKeyCycleBreakHint.AlwaysBreak);
+      if (edgesToBreak.Count == 0)
+        edgesToBreak = GetMosGuiltyCyclicEdges(nodes, ForeignKeyCycleBreakHint.PreferredBreak);
+      if (edgesToBreak.Count == 0)
+        edgesToBreak = GetMosGuiltyCyclicEdges(nodes, ForeignKeyCycleBreakHint.Automatic);
+
+      foreach (var edge in edgesToBreak)
         edge.BreakEdge();
     }
+  }
+  private static List<SortingOptimizationEdge> GetMosGuiltyCyclicEdges (IReadOnlyList<SortingOptimizationNode> nodes, ForeignKeyCycleBreakHint withBreakHint)
+  {
+    // One instance of an edge can occur in the multiple IndirectSelfCyclicEdges
+    // because it maybe in a chain leading to an indirect cycle.
+    // So we try to figure out which node is most often the owner of those edges.
+    // We then break this edges in hope this is the least amount of breaks we need.
+
+    return nodes
+        .SelectMany(node => node.IndirectSelfCyclicEdges.SelectMany(e => e.Value.Where(ed => ed.CycleBreakHint == withBreakHint)))
+        .GroupBy(e => e.Owner) // Group edges by the node owner so we break these edges
+        .OrderByDescending(g => g.Count()) // Order by nodes which are most often involved in an indirect cyclic dependency
+        .ThenBy(g => g.Key.TableName) // Tie-break deterministically by table name
+        .Select(k => k.ToList().Distinct()) // Distinct because an edge can occur multiple times because it could be the way to an indirect cycle 
+        .FirstOrDefault()?.ToList() ?? [];
+  }
+
+  private string CreateCyclicDependenciesErrorMessageHint (IReadOnlyList<SortingOptimizationNode> nodes)
+  {
+    var messageBuilder = new StringBuilder();
+
+    foreach (var node in nodes)
+    {
+      messageBuilder.AppendLine($"Table: {node.TableName}");
+      foreach (var edges in node.IndirectSelfCyclicEdges.Values)
+      {
+        foreach (var edgeAndIndex in edges.Select((edge, index) => new { edge, index }).ToArray())
+        {
+          messageBuilder.Append($"  {edgeAndIndex.index}. ");
+          messageBuilder.AppendJoin(", ", edgeAndIndex.edge.ForeignKey.ReferencingColumns.Select(rc => edgeAndIndex.edge.Owner.TableName + "." + rc.Name));
+          messageBuilder.Append(" -> ");
+          messageBuilder.AppendJoin(", ", edgeAndIndex.edge.ForeignKey.ReferencedColumns.Select(rc => edgeAndIndex.edge.PointingTo.TableName + "." + rc.Name));
+          messageBuilder.AppendLine();
+        }
+        messageBuilder.AppendLine();
+      }
+    }
+
+    return messageBuilder.ToString().Trim();
   }
 }

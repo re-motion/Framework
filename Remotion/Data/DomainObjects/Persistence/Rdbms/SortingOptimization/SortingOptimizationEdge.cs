@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
@@ -13,15 +13,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 [DebuggerDisplay("Edge: {Owner.TableName} -> {PointingTo.TableName}")]
 public class SortingOptimizationEdge
 {
-  private readonly List<ForeignKeyConstraintDefinition> _foreignKeys;
-
   public SortingOptimizationEdge (ForeignKeyConstraintDefinition foreignKey, SortingOptimizationNode owner, SortingOptimizationNode pointingTo)
   {
     ArgumentNullException.ThrowIfNull(foreignKey);
     ArgumentNullException.ThrowIfNull(owner);
     ArgumentNullException.ThrowIfNull(pointingTo);
 
-    _foreignKeys = [foreignKey];
+    ForeignKey = foreignKey;
     Owner = owner;
     PointingTo = pointingTo;
     IsSelfCyclingEdge = owner == pointingTo;
@@ -30,7 +28,12 @@ public class SortingOptimizationEdge
   /// <summary>
   /// Gets all <see cref="ForeignKeyConstraintDefinition"/> relevant for this <see cref="SortingOptimizationEdge"/>.
   /// </summary>
-  public IReadOnlyCollection<ForeignKeyConstraintDefinition> ForeignKeys => _foreignKeys;
+  public ForeignKeyConstraintDefinition ForeignKey { get; }
+
+  /// <summary>
+  /// Gets the <see cref="ForeignKeyCycleBreakHint"/> for the <see cref="ForeignKey"/>.
+  /// </summary>
+  public ForeignKeyCycleBreakHint CycleBreakHint => ForeignKey.ForeignKeyCycleBreakHint;
 
   /// <summary>
   /// Gets the owner <see cref="SortingOptimizationNode"/> of this <see cref="SortingOptimizationEdge"/>.
@@ -53,15 +56,5 @@ public class SortingOptimizationEdge
   public void BreakEdge ()
   {
     Owner.BreakEdge(this);
-  }
-
-  /// <summary>
-  /// Adds a <see cref="ForeignKeyConstraintDefinition"/> to <see cref="ForeignKeys"/>.
-  /// </summary>
-  public void AddForeignKey (ForeignKeyConstraintDefinition foreignKey)
-  {
-    ArgumentNullException.ThrowIfNull(foreignKey);
-
-    _foreignKeys.Add(foreignKey);
   }
 }

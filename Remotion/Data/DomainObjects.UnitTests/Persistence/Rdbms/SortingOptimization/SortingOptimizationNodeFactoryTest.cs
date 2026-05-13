@@ -3,6 +3,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SortingOptimization.TestDomain;
@@ -13,52 +14,103 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SortingOptimiz
 public class SortingOptimizationNodeFactoryTest : SortingOptimizationTestBase
 {
   private SortingOptimizationNodeFactory _nodeFactory;
-  private MappingConfiguration _mappingConfiguration;
 
   [SetUp]
   public void SetUp ()
   {
-    _nodeFactory = new SortingOptimizationNodeFactory();
-    _mappingConfiguration = GetMappingConfiguration();
+    _nodeFactory = new SortingOptimizationNodeFactory(new DomainModelConstraintProvider());
   }
 
   [Test]
   public void CreateNodes_ResultIsValid ()
   {
-    var objectA = _mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectA));
-    var objectB = _mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectB));
-    var objectC = _mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectC));
-    var objectD = _mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectDWithNoTable));
+    var mappingConfiguration = GetMappingConfiguration(
+        typeof(NodeFactoryObjectA),
+        typeof(NodeFactoryObjectB),
+        typeof(NodeFactoryObjectC),
+        typeof(NodeFactoryObjectDWithNoTable),
+        typeof(NodeFactoryObjectMixin),
+        typeof(NodeFactoryObjectWithMixin));
 
-    var nodes = _nodeFactory.CreateNodes([objectA, objectB, objectC, objectD]);
+    var objectA = mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectA));
+    var objectB = mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectB));
+    var objectC = mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectC));
+    var objectD = mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectDWithNoTable));
+    var objectE = mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectWithMixin));
 
-    Assert.That(nodes.Count, Is.EqualTo(3));
+    var nodes = _nodeFactory.CreateNodes([objectA, objectB, objectC, objectD, objectE]);
+
+    Assert.That(nodes.Count, Is.EqualTo(4));
     var aNode = nodes[0];
     var bNode = nodes[1];
     var cNode = nodes[2];
+    var eNode = nodes[3];
 
     Assert.That(aNode.TableDefinition, Is.EqualTo(GetTableDefinition(objectA)));
-    Assert.That(aNode.Edges.Count, Is.EqualTo(1));
-    AssertEdge(aNode.Edges[0], ["FK_NodeFactoryObjectA_SelfCyclingPropID"], aNode, true);
+    AssertEdgesOfNode(aNode, [("FK_NodeFactoryObjectA_SelfCyclingPropID", aNode, true)]);
+    AssertObjectIDPropertySpecification(
+        aNode,
+        [new ExpectedPropertySpecification(objectA, GetPropertyInfo<NodeFactoryObjectA>(o => o.SelfCyclingProp), true, ForeignKeyCycleBreakHint.Automatic)]);
 
     Assert.That(bNode.TableDefinition, Is.EqualTo(GetTableDefinition(objectB)));
     Assert.That(bNode.TableDefinition, Is.EqualTo(GetTableDefinition(objectD)));
-    Assert.That(bNode.Edges.Count, Is.EqualTo(2));
-    AssertEdge(bNode.Edges[0], ["FK_NodeFactoryObjectB_NodeFactoryBPropAID", "FK_NodeFactoryObjectB_NodeFactoryDPropAID"], aNode, false);
-    AssertEdge(bNode.Edges[1], ["FK_NodeFactoryObjectB_NodeFactoryDPropCID"], cNode, false);
+    AssertEdgesOfNode(
+        bNode,
+        [
+            ("FK_NodeFactoryObjectB_NodeFactoryBPropAID", aNode, false),
+            ("FK_NodeFactoryObjectB_NodeFactoryDPropAID", aNode, false),
+            ("FK_NodeFactoryObjectB_NodeFactoryDPropCID", cNode, false),
+            ("FK_NodeFactoryObjectB_MixinPropAID", aNode, false)
+        ]
+    );
+    AssertObjectIDPropertySpecification(
+        bNode,
+        [
+            new ExpectedPropertySpecification(objectB, GetPropertyInfo<NodeFactoryObjectB>(o => o.NodeFactoryBPropA), true, ForeignKeyCycleBreakHint.Automatic),
+            new ExpectedPropertySpecification(objectB, GetPropertyInfo<NodeFactoryObjectMixin>(o => o.MixinPropA), true, ForeignKeyCycleBreakHint.AlwaysBreak),
+            new ExpectedPropertySpecification(objectD, GetPropertyInfo<NodeFactoryObjectB>(o => o.NodeFactoryBPropA), true, ForeignKeyCycleBreakHint.Automatic),
+            new ExpectedPropertySpecification(objectD, GetPropertyInfo<NodeFactoryObjectMixin>(o => o.MixinPropA), true, ForeignKeyCycleBreakHint.AlwaysBreak),
+            new ExpectedPropertySpecification(objectD, GetPropertyInfo<NodeFactoryObjectDWithNoTable>(o => o.NodeFactoryDPropA), true, ForeignKeyCycleBreakHint.Automatic),
+            new ExpectedPropertySpecification(objectD, GetPropertyInfo<NodeFactoryObjectDWithNoTable>(o => o.NodeFactoryDPropC), true, ForeignKeyCycleBreakHint.NeverBreak),
+            new ExpectedPropertySpecification(objectD, GetPropertyInfo<NodeFactoryObjectDWithNoTable>(o => o.NodeFactoryDPropASuppressForeignKey), false, ForeignKeyCycleBreakHint.Automatic)
+        ]);
 
     Assert.That(cNode.TableDefinition, Is.EqualTo(GetTableDefinition(objectC)));
-    Assert.That(cNode.Edges.Count, Is.EqualTo(2));
+    AssertEdgesOfNode(
+        cNode,
+        [
+            ("FK_NodeFactoryObjectC_NodeFactoryCPropAID", aNode, false),
+            ("FK_NodeFactoryObjectC_NodeFactoryCPropBID", bNode, false)
+        ]
+    );
+    AssertObjectIDPropertySpecification(
+        cNode,
+        [
+            new ExpectedPropertySpecification(objectC, GetPropertyInfo<NodeFactoryObjectC>(o => o.NodeFactoryCPropA), true, ForeignKeyCycleBreakHint.Automatic),
+            new ExpectedPropertySpecification(objectC, GetPropertyInfo<NodeFactoryObjectC>(o => o.NodeFactoryCPropB), true, ForeignKeyCycleBreakHint.PreferredBreak)
+        ]);
 
-    AssertEdge(cNode.Edges[0], ["FK_NodeFactoryObjectC_NodeFactoryCPropAID"], aNode, false);
-    AssertEdge(cNode.Edges[1], ["FK_NodeFactoryObjectC_NodeFactoryCPropBID"], bNode, false);
+    Assert.That(eNode.TableDefinition, Is.EqualTo(GetTableDefinition(objectE)));
+    AssertEdgesOfNode(eNode, [("FK_NodeFactoryObjectWithMixin_MixinPropAID", aNode, false)]);
+    AssertObjectIDPropertySpecification(
+        eNode,
+        [
+            new ExpectedPropertySpecification(objectE, GetPropertyInfo<NodeFactoryObjectMixin>(o => o.MixinPropA), true, ForeignKeyCycleBreakHint.AlwaysBreak)
+        ]);
   }
 
   [Test]
   public void CreateNodes_WithMissingLink_ThrowsException ()
   {
-    var objectA = _mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectA));
-    var objectC = _mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectC));
+    var mappingConfiguration = GetMappingConfiguration(
+        typeof(NodeFactoryObjectA),
+        typeof(NodeFactoryObjectB),
+        typeof(NodeFactoryObjectC),
+        typeof(NodeFactoryObjectDWithNoTable),
+        typeof(NodeFactoryObjectMixin));
+
+    var objectA = mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectA));
+    var objectC = mappingConfiguration.GetTypeDefinition(typeof(NodeFactoryObjectC));
 
     Assert.That(
         () => _nodeFactory.CreateNodes([objectA, objectC]),
@@ -66,12 +118,30 @@ public class SortingOptimizationNodeFactoryTest : SortingOptimizationTestBase
             "Could not find SortingOptimizationNode 'NodeFactoryObjectB' for foreign key 'FK_NodeFactoryObjectC_NodeFactoryCPropBID' on node 'NodeFactoryObjectC'."));
   }
 
-  private void AssertEdge (SortingOptimizationEdge edgeToTest, string[] foreignKeyNames, SortingOptimizationNode pointingTo, bool isSelfCyclic)
+  private void AssertEdgesOfNode (SortingOptimizationNode nodeToTest, (string foreignKeyName, SortingOptimizationNode pointingTo, bool isSelfCyclic)[] expected)
   {
-    Assert.That(edgeToTest.IsSelfCyclingEdge, Is.EqualTo(isSelfCyclic));
-    Assert.That(edgeToTest.PointingTo, Is.EqualTo(pointingTo));
+    Assert.That(nodeToTest.Edges.Count, Is.EqualTo(expected.Length));
 
-    Assert.That(edgeToTest.ForeignKeys.Count, Is.EqualTo(foreignKeyNames.Length));
-    Assert.That(edgeToTest.ForeignKeys.Select(k => k.ConstraintName), Is.EquivalentTo(foreignKeyNames));
+    foreach (var expectedValue in expected)
+    {
+      var edge = nodeToTest.Edges.FirstOrDefault(n => n.ForeignKey.ConstraintName == expectedValue.foreignKeyName);
+      Assert.That(edge, Is.Not.Null, $"Could not find {nameof(SortingOptimizationEdge)} with constraint name '{expectedValue.foreignKeyName}'.");
+      Assert.That(edge.IsSelfCyclingEdge, Is.EqualTo(expectedValue.isSelfCyclic));
+      Assert.That(edge.PointingTo, Is.EqualTo(expectedValue.pointingTo));
+      Assert.That(edge.ForeignKey.ConstraintName, Is.EquivalentTo(expectedValue.foreignKeyName));
+    }
+  }
+
+  private void AssertObjectIDPropertySpecification (SortingOptimizationNode nodeToTest, ExpectedPropertySpecification[] expectedValues)
+  {
+    var groupedByClass = expectedValues.GroupBy(e => e.ClassDefinition).ToList();
+    Assert.That(nodeToTest.ObjectIDPropertySpecifications.Count, Is.EqualTo(groupedByClass.Count));
+
+    foreach (var expected in groupedByClass)
+    {
+      Assert.That(nodeToTest.ObjectIDPropertySpecifications.ContainsKey(expected.Key), Is.True);
+      var actualProperties = nodeToTest.ObjectIDPropertySpecifications[expected.Key];
+      AssertForeignKeyPropertySpecifications(expected.Key, expected, actualProperties);
+    }
   }
 }

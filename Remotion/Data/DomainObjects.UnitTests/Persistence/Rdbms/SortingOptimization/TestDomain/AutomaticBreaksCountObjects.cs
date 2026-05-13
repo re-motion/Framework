@@ -31,5 +31,5 @@ public abstract class AutomaticBreaksCountObjectC : SortingOptimizationDomainBas
 public abstract class AutomaticBreaksCountObjectZ : SortingOptimizationDomainBase
 {
   public AutomaticBreaksCountObjectA AutomaticBreakCountZPropA { get; set; }
-  public AutomaticBreaksCountObjectB AutomaticBreakCountTPropB { get; set; }
+  public AutomaticBreaksCountObjectB AutomaticBreakCountZPropB { get; set; }
 }

@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Building
           "FakeForeignKeyConstraint",
           new EntityNameDefinition(null, "Test"),
           new[] { StoragePropertyDefinitionTestHelper.GetIDColumnDefinition(_fakeObjectIDStorageProperty) },
-          new[] { _fakeStorageProperty1.ColumnDefinition });
+          new[] { _fakeStorageProperty1.ColumnDefinition }, ForeignKeyCycleBreakHint.Automatic);
       _persistenceModelSortingProviderMock = Mock.Of<IPersistenceModelSortingProvider>();
     }
 

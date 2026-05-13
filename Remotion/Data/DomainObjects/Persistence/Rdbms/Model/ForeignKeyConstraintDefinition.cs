@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 {
@@ -35,7 +36,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         string constraintName,
         EntityNameDefinition referencedTableName,
         IEnumerable<ColumnDefinition> referencingColumns,
-        IEnumerable<ColumnDefinition> referencedColumns)
+        IEnumerable<ColumnDefinition> referencedColumns,
+        ForeignKeyCycleBreakHint foreignKeyCycleBreakHint)
     {
       ArgumentException.ThrowIfNullOrEmpty(constraintName);
       ArgumentNullException.ThrowIfNull(referencedTableName);
@@ -46,6 +48,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       _referencedTableName = referencedTableName;
       _referencingColumns = referencingColumns.ToList().AsReadOnly();
       _referencedColumns = referencedColumns.ToList().AsReadOnly();
+      ForeignKeyCycleBreakHint = foreignKeyCycleBreakHint;
 
       if (_referencingColumns.Count != _referencedColumns.Count)
         throw new ArgumentException("The referencing and referenced column sets must have the same number of items.", nameof(referencingColumns));
@@ -70,6 +73,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       get { return _referencedColumns; }
     }
+
+    public ForeignKeyCycleBreakHint ForeignKeyCycleBreakHint { get; }
 
     public void Accept (ITableConstraintDefinitionVisitor visitor)
     {

@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,7 +19,8 @@ public class SortingOptimizationNode
 {
   private readonly List<SortingOptimizationEdge> _edges = [];
   private readonly List<SortingOptimizationEdge> _brokenEdges = [];
-  private readonly Dictionary<SortingOptimizationEdge, List<SortingOptimizationEdge>> _indirectSelfCyclicEdges = new();
+  private readonly Dictionary<SortingOptimizationEdge, IReadOnlyCollection<SortingOptimizationEdge>> _indirectSelfCyclicEdges = new();
+  private readonly Dictionary<ClassDefinition, IReadOnlyCollection<SortingOptimizationObjectIDPropertySpecification>> _objectIDPropertySpecifications = new();
 
   public SortingOptimizationNode (TableDefinition tableDefinition, IReadOnlyList<ClassDefinition> classDefinitions)
   {
@@ -77,7 +79,7 @@ public class SortingOptimizationNode
   /// The value is the list of all <see cref="SortingOptimizationEdge"/>s involved in the cyclic dependency.
   /// This will be empty until <see cref="CalculateIndirectCyclicDependencies"/> has been called.
   /// </summary>
-  public IReadOnlyDictionary<SortingOptimizationEdge, List<SortingOptimizationEdge>> IndirectSelfCyclicEdges => _indirectSelfCyclicEdges;
+  public IReadOnlyDictionary<SortingOptimizationEdge, IReadOnlyCollection<SortingOptimizationEdge>> IndirectSelfCyclicEdges => _indirectSelfCyclicEdges;
 
   /// <summary>
   /// Gets if this <see cref="SortingOptimizationNode"/> has cyclic dependency.
@@ -90,25 +92,43 @@ public class SortingOptimizationNode
   public bool HasBrokenEdges => _brokenEdges.Count > 0;
 
   /// <summary>
-  /// Adds a <see cref="SortingOptimizationEdge"/> to this <see cref="SortingOptimizationNode"/> or
-  /// updates the <see cref="SortingOptimizationEdge.ForeignKeys"/> list of an already existing <see cref="SortingOptimizationEdge"/>
+  /// Gets all <see cref="SortingOptimizationObjectIDPropertySpecification"/>s grouped by the defining <see cref="ClassDefinition"/>.
+  /// The key is the <see cref="ClassDefinition"/> which introduces the <see cref="PropertyDefinition"/> of the <see cref="SortingOptimizationObjectIDPropertySpecification"/>
+  /// </summary>
+  public IReadOnlyDictionary<ClassDefinition, IReadOnlyCollection<SortingOptimizationObjectIDPropertySpecification>> ObjectIDPropertySpecifications => _objectIDPropertySpecifications;
+
+  /// <summary>
+  /// Adds a <see cref="SortingOptimizationEdge"/> to this <see cref="SortingOptimizationNode"/> 
   /// </summary>
   public void AddEdge (ForeignKeyConstraintDefinition foreignKey, SortingOptimizationNode pointingTo)
   {
     ArgumentNullException.ThrowIfNull(foreignKey);
     ArgumentNullException.ThrowIfNull(pointingTo);
 
-    // if there is already an edge pointing to the node we just add the foreign key to this edge
-    var existingEdge = _edges.FirstOrDefault(e => e.PointingTo == pointingTo);
-    if (existingEdge == null)
-    {
-      var edge = new SortingOptimizationEdge(foreignKey, this, pointingTo);
-      _edges.Add(edge);
-    }
+    var edge = new SortingOptimizationEdge(foreignKey, this, pointingTo);
+    _edges.Add(edge);
+  }
+
+  /// <summary>
+  /// Adds a new <see cref="SortingOptimizationObjectIDPropertySpecification"/> for the given <paramref name="propertyDefinition"/>
+  /// </summary>
+  public void AddForeignKeyPropertyDefinition (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, bool hasForeignKeyConstraint, ForeignKeyCycleBreakHint cycleBreakHint)
+  {
+    ArgumentNullException.ThrowIfNull(classDefinition);
+    ArgumentNullException.ThrowIfNull(propertyDefinition);
+
+    if (!propertyDefinition.IsObjectID)
+      throw new ArgumentException($"The given {nameof(PropertyDefinition)} '{propertyDefinition.PropertyName}' is no ObjectID.", nameof(propertyDefinition));
+
+    if (propertyDefinition.StorageClass != StorageClass.Persistent)
+      throw new ArgumentException($"The given {nameof(PropertyDefinition)} '{propertyDefinition.PropertyName}' has '{nameof(StorageClass)}.{nameof(PropertyDefinition.StorageClass)}' instead of '{nameof(StorageClass)}.{nameof(StorageClass.Persistent)}'.", nameof(propertyDefinition));
+
+    var specification = new SortingOptimizationObjectIDPropertySpecification(propertyDefinition, hasForeignKeyConstraint, cycleBreakHint);
+
+    if (_objectIDPropertySpecifications.TryGetValue(classDefinition, out var list))
+      ((IList)list).Add(specification);
     else
-    {
-      existingEdge.AddForeignKey(foreignKey);
-    }
+      _objectIDPropertySpecifications[classDefinition] = new List<SortingOptimizationObjectIDPropertySpecification>{specification};
   }
 
   /// <summary>

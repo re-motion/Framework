@@ -82,8 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
                                     "Remotion.Data.DomainObjects.UnitTests.TestDomain",
                                     "Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain",
                                     "Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain",
-                                    "Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain",
-                                    "Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SortingOptimization.TestDomain"
+                                    "Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain"
                                   };
       return new FilteringTypeDiscoveryService(
           typeDiscoveryService,

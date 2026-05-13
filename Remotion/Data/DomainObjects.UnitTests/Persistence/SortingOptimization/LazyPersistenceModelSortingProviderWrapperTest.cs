@@ -7,6 +7,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 
@@ -24,7 +25,7 @@ public class LazyPersistenceModelSortingProviderWrapperTest
   {
     _wrappedProviderMock = new Mock<IPersistenceModelSortingProvider>(MockBehavior.Strict);
     _wrapper = new LazyPersistenceModelSortingProviderWrapper(_wrappedProviderMock.Object);
-    _emptyClassDefinitions = Array.Empty<ClassDefinition>();
+    _emptyClassDefinitions = [];
   }
 
   [Test]
@@ -100,7 +101,7 @@ public class LazyPersistenceModelSortingProviderWrapperTest
   }
 
   [Test]
-  public void GetSortPosition_BeforeInitialize_ThrowsInvalidOperationException ()
+  public void GetSortPosition_WithStorageEntityDefinition_BeforeInitialize_ThrowsInvalidOperationException ()
   {
     var storageEntityDefinition = Mock.Of<IStorageEntityDefinition>();
 
@@ -111,15 +112,15 @@ public class LazyPersistenceModelSortingProviderWrapperTest
   }
 
   [Test]
-  public void GetSortPosition_StorageEntityDefinitionNull_ThrowsArgumentNullException ()
+  public void GetSortPosition_WithStorageEntityDefinition_StorageEntityDefinitionNull_ThrowsArgumentNullException ()
   {
     Assert.That(
-        () => _wrapper.GetSortPosition(null!),
+        () => _wrapper.GetSortPosition((IStorageEntityDefinition)null!),
         Throws.TypeOf<ArgumentNullException>());
   }
 
   [Test]
-  public void GetSortPosition_AfterInitialize_DelegatesToWrappedProviderAndReturnsResult ()
+  public void GetSortPosition_WithStorageEntityDefinition_AfterInitialize_DelegatesToWrappedProviderAndReturnsResult ()
   {
     var storageEntityDefinition = Mock.Of<IStorageEntityDefinition>();
     _wrappedProviderMock.Setup(p => p.Initialize(_emptyClassDefinitions));
@@ -133,70 +134,70 @@ public class LazyPersistenceModelSortingProviderWrapperTest
   }
 
   [Test]
-  public void HasBeenSortedCorrectly_BeforeInitialize_ThrowsInvalidOperationException ()
+  public void GetSortPosition_WithClassDefinition_BeforeInitialize_ThrowsInvalidOperationException ()
   {
-    var storageEntityDefinition = Mock.Of<IStorageEntityDefinition>();
+    var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
 
     Assert.That(
-        () => _wrapper.HasBeenSortedCorrectly(storageEntityDefinition),
+        () => _wrapper.GetSortPosition(classDefinition),
         Throws.InvalidOperationException.With.Message.EqualTo(
             "Before accessing any methods, Initialize has to be called."));
   }
 
   [Test]
-  public void HasBeenSortedCorrectly_StorageEntityDefinitionNull_ThrowsArgumentNullException ()
+  public void GetSortPosition_WithClassDefinition_ClassDefinitionNull_ThrowsArgumentNullException ()
   {
     Assert.That(
-        () => _wrapper.HasBeenSortedCorrectly(null!),
+        () => _wrapper.GetSortPosition((ClassDefinition)null!),
         Throws.TypeOf<ArgumentNullException>());
   }
 
   [Test]
-  public void HasBeenSortedCorrectly_AfterInitialize_DelegatesToWrappedProviderAndReturnsResult ()
+  public void GetSortPosition_WithClassDefinition_AfterInitialize_DelegatesToWrappedProviderAndReturnsResult ()
   {
-    var storageEntityDefinition = Mock.Of<IStorageEntityDefinition>();
+    var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
     _wrappedProviderMock.Setup(p => p.Initialize(_emptyClassDefinitions));
-    _wrappedProviderMock.Setup(p => p.HasBeenSortedCorrectly(storageEntityDefinition)).Returns(true);
+    _wrappedProviderMock.Setup(p => p.GetSortPosition(classDefinition)).Returns(7);
 
     _wrapper.Initialize(_emptyClassDefinitions);
-    var result = _wrapper.HasBeenSortedCorrectly(storageEntityDefinition);
+    var result = _wrapper.GetSortPosition(classDefinition);
 
-    Assert.That(result, Is.True);
-    _wrappedProviderMock.Verify(p => p.HasBeenSortedCorrectly(storageEntityDefinition), Times.Once);
+    Assert.That(result, Is.EqualTo(7));
+    _wrappedProviderMock.Verify(p => p.GetSortPosition(classDefinition), Times.Once);
   }
 
   [Test]
-  public void GetForeignKeyRelevantPropertyDefinitions_BeforeInitialize_ThrowsInvalidOperationException ()
+  public void GetPropertySpecificationsForForeignKeyProperties_BeforeInitialize_ThrowsInvalidOperationException ()
   {
     var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
 
     Assert.That(
-        () => _wrapper.GetForeignKeyRelevantPropertyDefinitions(classDefinition),
+        () => _wrapper.GetPropertySpecificationsForForeignKeyProperties(classDefinition),
         Throws.InvalidOperationException.With.Message.EqualTo(
             "Before accessing any methods, Initialize has to be called."));
   }
 
   [Test]
-  public void GetForeignKeyRelevantPropertyDefinitions_ClassDefinitionNull_ThrowsArgumentNullException ()
+  public void GetPropertySpecificationsForForeignKeyProperties_ClassDefinitionNull_ThrowsArgumentNullException ()
   {
     Assert.That(
-        () => _wrapper.GetForeignKeyRelevantPropertyDefinitions(null!),
+        () => _wrapper.GetPropertySpecificationsForForeignKeyProperties(null!),
         Throws.TypeOf<ArgumentNullException>());
   }
 
   [Test]
-  public void GetForeignKeyRelevantPropertyDefinitions_AfterInitialize_DelegatesToWrappedProviderAndReturnsResult ()
+  public void GetPropertySpecificationsForForeignKeyProperties_AfterInitialize_DelegatesToWrappedProviderAndReturnsResult ()
   {
     var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition();
-    var expectedResult = (IReadOnlyList<PropertyDefinition>)Array.Empty<PropertyDefinition>();
+    IReadOnlyList<SortingOptimizationObjectIDPropertySpecification> expectedResult = [];
     _wrappedProviderMock.Setup(p => p.Initialize(_emptyClassDefinitions));
-    _wrappedProviderMock.Setup(p => p.GetForeignKeyRelevantPropertyDefinitions(classDefinition)).Returns(expectedResult);
+    _wrappedProviderMock.Setup(p => p.GetPropertySpecificationsForForeignKeyProperties(classDefinition)).Returns(expectedResult);
 
     _wrapper.Initialize(_emptyClassDefinitions);
-    var result = _wrapper.GetForeignKeyRelevantPropertyDefinitions(classDefinition);
+    var result = _wrapper.GetPropertySpecificationsForForeignKeyProperties(classDefinition);
 
     Assert.That(result, Is.SameAs(expectedResult));
-    _wrappedProviderMock.Verify(p => p.GetForeignKeyRelevantPropertyDefinitions(classDefinition), Times.Once);
+    _wrappedProviderMock.Verify(p => p.GetPropertySpecificationsForForeignKeyProperties(classDefinition), Times.Once);
   }
 
   private void SetupAndCallGetSortPositionToWaitForInitialization ()

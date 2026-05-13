@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 
 namespace Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 
@@ -24,12 +25,14 @@ public interface IPersistenceModelSortingProvider
   int GetSortPosition (IStorageEntityDefinition storageEntityDefinition);
 
   /// <summary>
-  /// Gets if <paramref name="storageEntityDefinition"/> has been sorted correctly or not.
+  /// Gets the sort position for the given <paramref name="classDefinition"/>.
+  /// Multiple <see cref="ClassDefinition"/> can have the same sort position which means
+  /// they are stored in the same table.
   /// </summary>
-  bool HasBeenSortedCorrectly (IStorageEntityDefinition storageEntityDefinition);
+  int GetSortPosition (ClassDefinition classDefinition);
 
   /// <summary>
-  /// Gets all foreign key relevant <see cref="PropertyDefinition"/>s for the given <paramref name="classDefinition"/>
+  /// Gets all <see cref="SortingOptimizationObjectIDPropertySpecification"/> for properties which are <see cref="ObjectID"/>s for the given <paramref name="classDefinition"/>
   /// </summary>
-  IReadOnlyList<PropertyDefinition> GetForeignKeyRelevantPropertyDefinitions (ClassDefinition classDefinition);
+  IReadOnlyCollection<SortingOptimizationObjectIDPropertySpecification> GetPropertySpecificationsForForeignKeyProperties (ClassDefinition classDefinition);
 }

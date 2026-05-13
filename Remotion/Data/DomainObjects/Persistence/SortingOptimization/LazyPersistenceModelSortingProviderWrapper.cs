@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Remotion.Context;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 
 namespace Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 
@@ -55,18 +56,18 @@ public class LazyPersistenceModelSortingProviderWrapper : IPersistenceModelSorti
     return WaitAndGetInitializedWrappedProvider().GetSortPosition(storageEntityDefinition);
   }
 
-  public bool HasBeenSortedCorrectly (IStorageEntityDefinition storageEntityDefinition)
-  {
-    ArgumentNullException.ThrowIfNull(storageEntityDefinition);
-
-    return WaitAndGetInitializedWrappedProvider().HasBeenSortedCorrectly(storageEntityDefinition);
-  }
-
-  public IReadOnlyList<PropertyDefinition> GetForeignKeyRelevantPropertyDefinitions (ClassDefinition classDefinition)
+  public int GetSortPosition (ClassDefinition classDefinition)
   {
     ArgumentNullException.ThrowIfNull(classDefinition);
 
-    return WaitAndGetInitializedWrappedProvider().GetForeignKeyRelevantPropertyDefinitions(classDefinition);
+    return WaitAndGetInitializedWrappedProvider().GetSortPosition(classDefinition);
+  }
+
+  public IReadOnlyCollection<SortingOptimizationObjectIDPropertySpecification> GetPropertySpecificationsForForeignKeyProperties (ClassDefinition classDefinition)
+  {
+    ArgumentNullException.ThrowIfNull(classDefinition);
+
+    return WaitAndGetInitializedWrappedProvider().GetPropertySpecificationsForForeignKeyProperties(classDefinition);
   }
 
   private IPersistenceModelSortingProvider WaitAndGetInitializedWrappedProvider ()
