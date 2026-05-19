@@ -18,6 +18,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
@@ -30,6 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private Mock<INullablePropertyAttribute> _nullablePropertyAttributeStub;
     private Mock<ILengthConstrainedPropertyAttribute> _lengthConstraintPropertyAttributeStub;
     private Mock<ISuppressForeignKeyConstraintAttribute> _suppressForeignKeyConstraintAttributeStub;
+    private Mock<IForeignKeyCycleBreakHintAttribute> _foreignKeyCycleBreakHintAttributeStub;
 
     [SetUp]
     public void SetUp ()
@@ -39,6 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _nullablePropertyAttributeStub = new Mock<INullablePropertyAttribute>();
       _lengthConstraintPropertyAttributeStub = new Mock<ILengthConstrainedPropertyAttribute>();
       _suppressForeignKeyConstraintAttributeStub = new Mock<ISuppressForeignKeyConstraintAttribute>();
+      _foreignKeyCycleBreakHintAttributeStub = new Mock<IForeignKeyCycleBreakHintAttribute>();
     }
 
     [Test]
@@ -126,5 +129,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       Assert.That(result, Is.False);
     }
 
+    [Test]
+    public void GetForeignKeyCycleBreakHint_NoAttribute_Returns_Automatic ()
+    {
+      _propertyInformationStub.Setup(stub => stub.GetCustomAttribute<IForeignKeyCycleBreakHintAttribute>(true)).Returns((IForeignKeyCycleBreakHintAttribute)null);
+
+      var result = _domainModelConstraintProvider.GetForeignKeyCycleBreakHint(_propertyInformationStub.Object);
+
+      Assert.That(result, Is.EqualTo(ForeignKeyCycleBreakHint.Automatic));
+    }
+
+    [TestCase(ForeignKeyCycleBreakHint.Automatic)]
+    [TestCase(ForeignKeyCycleBreakHint.NeverBreak)]
+    [TestCase(ForeignKeyCycleBreakHint.PreferredBreak)]
+    [TestCase(ForeignKeyCycleBreakHint.AlwaysBreak)]
+    public void GetForeignKeyCycleBreakHint_Returns_HintFromAttribute (ForeignKeyCycleBreakHint breakHint)
+    {
+      _foreignKeyCycleBreakHintAttributeStub.Setup(stub => stub.CycleBreakHint).Returns(breakHint);
+      _propertyInformationStub.Setup(stub => stub.GetCustomAttribute<IForeignKeyCycleBreakHintAttribute>(true)).Returns(_foreignKeyCycleBreakHintAttributeStub.Object);
+
+      var result = _domainModelConstraintProvider.GetForeignKeyCycleBreakHint(_propertyInformationStub.Object);
+
+      Assert.That(result, Is.EqualTo(breakHint));
+    }
   }
 }

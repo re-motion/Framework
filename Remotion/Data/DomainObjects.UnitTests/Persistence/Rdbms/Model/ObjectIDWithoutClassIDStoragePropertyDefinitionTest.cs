@@ -321,7 +321,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
             return "fkname";
           },
           new EntityNameDefinition("entityschema", "entityname"),
-          referencedObjectIDProperty);
+          referencedObjectIDProperty,
+          ForeignKeyCycleBreakHint.Automatic);
 
       Assert.That(result.ConstraintName, Is.EqualTo("fkname"));
       Assert.That(result.ReferencedTableName, Is.EqualTo(new EntityNameDefinition("entityschema", "entityname")));

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SortingOptimization.TestDomain;
@@ -16,46 +17,51 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
 {
   private Mock<ISortingOptimizationNodeFactory> _nodeFactoryStrictMock;
   private ISortingOptimizationNodeFactory _realNodeFactory;
-  private MappingConfiguration _mappingConfiguration;
 
   [SetUp]
   public void SetUp ()
   {
-    _realNodeFactory = new SortingOptimizationNodeFactory();
+    _realNodeFactory = new SortingOptimizationNodeFactory(new DomainModelConstraintProvider());
     _nodeFactoryStrictMock = new Mock<ISortingOptimizationNodeFactory>(MockBehavior.Strict);
-    _mappingConfiguration = GetMappingConfiguration();
   }
 
   [Test]
-  public void CreatesCorrectOrder_WithoutAnyBreaks ()
+  public void Initialize_CreatesValidResult_WithoutAnyBreaks ()
   {
-    var objectA = _mappingConfiguration.GetTypeDefinition(typeof(NoBreaksObjectA));
-    var objectB = _mappingConfiguration.GetTypeDefinition(typeof(NoBreaksObjectB));
-    var objectC = _mappingConfiguration.GetTypeDefinition(typeof(NoBreaksObjectC));
+    var mappingConfiguration = GetMappingConfiguration(typeof(NoBreaksObjectA), typeof(NoBreaksObjectB), typeof(NoBreaksObjectC));
+
+    var objectA = mappingConfiguration.GetTypeDefinition(typeof(NoBreaksObjectA));
+    var objectB = mappingConfiguration.GetTypeDefinition(typeof(NoBreaksObjectB));
+    var objectC = mappingConfiguration.GetTypeDefinition(typeof(NoBreaksObjectC));
 
     var provider = new GraphBasedPersistenceModelSortingProvider(_realNodeFactory);
     provider.Initialize([objectC, objectB, objectA]);
 
     AssertPositionAndCorrectOrder(
         provider,
-        [
-            (objectA, true),
-            (objectC, true),
-            (objectB, true)
-        ]
-    );
+        (objectA, true),
+        (objectC, true),
+        (objectB, true));
 
-    AssertForeignKeyProperties(provider, objectA, []);
-    AssertForeignKeyProperties(provider, objectB, [nameof(NoBreaksObjectB.NoBreakBPropA), nameof(NoBreaksObjectB.NoBreakBPropC)]);
-    AssertForeignKeyProperties(provider, objectC, [nameof(NoBreaksObjectC.NoBreakCPropA)]);
+    Assert.That(provider.GetPropertySpecificationsForForeignKeyProperties(objectA).Count, Is.EqualTo(0));
+
+    AssertPropertySpecifications(
+        provider,
+        new ExpectedPropertySpecification(objectB, GetPropertyInfo<NoBreaksObjectB>(o => o.NoBreakBPropA), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectB, GetPropertyInfo<NoBreaksObjectB>(o => o.NoBreakBPropC), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectC, GetPropertyInfo<NoBreaksObjectC>(o => o.NoBreakCPropA), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectC, GetPropertyInfo<NoBreaksObjectC>(o => o.NoBreakCPropAWithoutForeignKey), false, ForeignKeyCycleBreakHint.Automatic)
+    );
   }
 
   [Test]
-  public void CreatesCorrectOrder_WithoutAutomaticBreaks_BreakIsDeterminedByTableName ()
+  public void Initialize_CreatesValidResult_WithAutomaticBreaks_BreakIsDeterminedByTableName ()
   {
-    var objectA = _mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksTableNameObjectA));
-    var objectB = _mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksTableNameObjectB));
-    var objectC = _mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksTableNameObjectC));
+    var mappingConfiguration = GetMappingConfiguration(typeof(AutomaticBreaksTableNameObjectA), typeof(AutomaticBreaksTableNameObjectB), typeof(AutomaticBreaksTableNameObjectC));
+
+    var objectA = mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksTableNameObjectA));
+    var objectB = mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksTableNameObjectB));
+    var objectC = mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksTableNameObjectC));
 
     var nodes = _realNodeFactory.CreateNodes([objectB, objectA, objectC]);
 
@@ -65,10 +71,6 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
     var expectedBrokenEdge = GetEdgeForProperty(nameof(AutomaticBreaksTableNameObjectA.AutomaticBreakTableNameBPropB), nodeForA);
 
     SetupNodeFactoryMock(nodes);
-
-    Assert.That(nodeForA.HasBrokenEdges, Is.False);
-    Assert.That(nodeForB.HasBrokenEdges, Is.False);
-    Assert.That(nodeForC.HasBrokenEdges, Is.False);
 
     var provider = new GraphBasedPersistenceModelSortingProvider(_nodeFactoryStrictMock.Object);
     provider.Initialize([]);
@@ -82,30 +84,33 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
 
     AssertPositionAndCorrectOrder(
         provider,
-        [
-            (objectA, false), // A is broken therefore first
-            (objectC, true), // C has no other dependencies than A and A is broken therefore second
-            (objectB, true) // B has dependency on C therefore third
-        ]
-    );
+        (objectA, false),
+        (objectC, true),
+        (objectB, true));
 
-    AssertForeignKeyProperties(provider, objectA, [nameof(AutomaticBreaksTableNameObjectA.AutomaticBreakTableNameBPropB)]);
-    AssertForeignKeyProperties(provider, objectB, [nameof(AutomaticBreaksTableNameObjectB.AutomaticBreakTableNameBPropC)]);
-    AssertForeignKeyProperties(provider, objectC, [nameof(AutomaticBreaksTableNameObjectC.AutomaticBreakTableNameCPropA)]);
+    AssertPropertySpecifications(
+        provider,
+        new ExpectedPropertySpecification(objectA, GetPropertyInfo<AutomaticBreaksTableNameObjectA>(o => o.AutomaticBreakTableNameBPropB), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectB, GetPropertyInfo<AutomaticBreaksTableNameObjectB>(o => o.AutomaticBreakTableNameBPropC), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectC, GetPropertyInfo<AutomaticBreaksTableNameObjectC>(o => o.AutomaticBreakTableNameCPropA), true, ForeignKeyCycleBreakHint.Automatic)
+    );
   }
 
   [Test]
-  public void CreatesCorrectOrder_WithoutAutomaticBreaks_BreakIsDeterminedByCountOfOccurence ()
+  public void Initialize_CreatesValidResult_WitAutomaticBreaks_BreakIsDeterminedByCountOfOccurence ()
   {
-    var objectZ = _mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksCountObjectZ));
-    var objectA = _mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksCountObjectA));
-    var objectB = _mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksCountObjectB));
-    var objectC = _mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksCountObjectC));
+    var mappingConfiguration = GetMappingConfiguration(
+        typeof(AutomaticBreaksCountObjectZ),
+        typeof(AutomaticBreaksCountObjectA),
+        typeof(AutomaticBreaksCountObjectB),
+        typeof(AutomaticBreaksCountObjectC));
+
+    var objectZ = mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksCountObjectZ));
+    var objectA = mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksCountObjectA));
+    var objectB = mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksCountObjectB));
+    var objectC = mappingConfiguration.GetTypeDefinition(typeof(AutomaticBreaksCountObjectC));
 
     var nodes = _realNodeFactory.CreateNodes([objectZ, objectC, objectA, objectB]);
-
-    foreach(var node in nodes)
-      node.CalculateIndirectCyclicDependencies();
 
     var nodeForZ = GetNodeForClassDefinition(objectZ, nodes);
     var nodeForA = GetNodeForClassDefinition(objectA, nodes);
@@ -113,14 +118,9 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
     var nodeForC = GetNodeForClassDefinition(objectC, nodes);
 
     var expectedBrokenEdge1 = GetEdgeForProperty(nameof(AutomaticBreaksCountObjectZ.AutomaticBreakCountZPropA), nodeForZ);
-    var expectedBrokenEdge2 = GetEdgeForProperty(nameof(AutomaticBreaksCountObjectZ.AutomaticBreakCountTPropB), nodeForZ);
+    var expectedBrokenEdge2 = GetEdgeForProperty(nameof(AutomaticBreaksCountObjectZ.AutomaticBreakCountZPropB), nodeForZ);
 
     SetupNodeFactoryMock(nodes);
-
-    Assert.That(nodeForA.HasBrokenEdges, Is.False);
-    Assert.That(nodeForB.HasBrokenEdges, Is.False);
-    Assert.That(nodeForC.HasBrokenEdges, Is.False);
-    Assert.That(nodeForZ.HasBrokenEdges, Is.False);
 
     var provider = new GraphBasedPersistenceModelSortingProvider(_nodeFactoryStrictMock.Object);
     provider.Initialize([]);
@@ -136,18 +136,108 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
 
     AssertPositionAndCorrectOrder(
         provider,
-        [
-            (objectZ, false), // Z is broken therefore first
-            (objectA, true),  // A and C has no other dependencies than Z and then they are ordered by their table name
-            (objectC, true),  // therefore A is second and C is third
-            (objectB, true)   // B has dependency on C therefore third
-        ]
-    );
+        (objectZ, false),
+        (objectA, true),
+        (objectC, true),
+        (objectB, true));
 
-    AssertForeignKeyProperties(provider, objectA, [nameof(AutomaticBreaksCountObjectA.AutomaticBreakCountAPropZ)]);
-    AssertForeignKeyProperties(provider, objectB, [nameof(AutomaticBreaksCountObjectB.AutomaticBreakCountBPropC)]);
-    AssertForeignKeyProperties(provider, objectC, [nameof(AutomaticBreaksCountObjectC.AutomaticBreakCountCPropZ)]);
-    AssertForeignKeyProperties(provider, objectZ, [nameof(AutomaticBreaksCountObjectZ.AutomaticBreakCountZPropA), nameof(AutomaticBreaksCountObjectZ.AutomaticBreakCountTPropB)]);
+    AssertPropertySpecifications(
+        provider,
+        new ExpectedPropertySpecification(objectA, GetPropertyInfo<AutomaticBreaksCountObjectA>(o => o.AutomaticBreakCountAPropZ), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectB, GetPropertyInfo<AutomaticBreaksCountObjectB>(o => o.AutomaticBreakCountBPropC), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectC, GetPropertyInfo<AutomaticBreaksCountObjectC>(o => o.AutomaticBreakCountCPropZ), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectZ, GetPropertyInfo<AutomaticBreaksCountObjectZ>(o => o.AutomaticBreakCountZPropA), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectZ, GetPropertyInfo<AutomaticBreaksCountObjectZ>(o => o.AutomaticBreakCountZPropB), true, ForeignKeyCycleBreakHint.Automatic)
+    );
+  }
+
+  [Test]
+  public void Initialize_CreatesValidResult_WithAutomaticBreaks_BreakIsDeterminedByBreakHints ()
+  {
+    var mappingConfiguration = GetMappingConfiguration(
+        typeof(BreaksOnEdgeWithHintObjectA),
+        typeof(BreaksOnEdgeWithHintObjectB),
+        typeof(BreaksOnEdgeWithHintObjectC),
+        typeof(BreaksOnEdgeWithHintObjectZ));
+
+    var objectZ = mappingConfiguration.GetTypeDefinition(typeof(BreaksOnEdgeWithHintObjectZ));
+    var objectA = mappingConfiguration.GetTypeDefinition(typeof(BreaksOnEdgeWithHintObjectA));
+    var objectB = mappingConfiguration.GetTypeDefinition(typeof(BreaksOnEdgeWithHintObjectB));
+    var objectC = mappingConfiguration.GetTypeDefinition(typeof(BreaksOnEdgeWithHintObjectC));
+
+    var nodes = _realNodeFactory.CreateNodes([objectZ, objectC, objectB, objectA]);
+
+    var nodeForZ = GetNodeForClassDefinition(objectZ, nodes);
+    var nodeForA = GetNodeForClassDefinition(objectA, nodes);
+    var nodeForB = GetNodeForClassDefinition(objectB, nodes);
+    var nodeForC = GetNodeForClassDefinition(objectC, nodes);
+
+    var expectedBrokenEdge1 = GetEdgeForProperty(nameof(BreaksOnEdgeWithHintObjectA.AutomaticBreakCountAPropZ), nodeForA);
+    var expectedBrokenEdge2 = GetEdgeForProperty(nameof(BreaksOnEdgeWithHintObjectA.AutomaticBreakCountAPropB), nodeForA);
+
+    SetupNodeFactoryMock(nodes);
+
+    var provider = new GraphBasedPersistenceModelSortingProvider(_nodeFactoryStrictMock.Object);
+    provider.Initialize([]);
+
+    Assert.That(nodeForA.HasBrokenEdges, Is.True);
+    Assert.That(nodeForA.BrokenEdges.Count, Is.EqualTo(2));
+    Assert.That(nodeForA.BrokenEdges.Contains(expectedBrokenEdge1), Is.True);
+    Assert.That(nodeForA.BrokenEdges.Contains(expectedBrokenEdge2), Is.True);
+
+    Assert.That(nodeForB.HasBrokenEdges, Is.False);
+    Assert.That(nodeForC.HasBrokenEdges, Is.False);
+    Assert.That(nodeForZ.HasBrokenEdges, Is.False);
+
+    AssertPositionAndCorrectOrder(
+        provider,
+        (objectA, false),
+        (objectZ, true),
+        (objectC, true),
+        (objectB, true));
+
+    AssertPropertySpecifications(
+        provider,
+        new ExpectedPropertySpecification(objectA, GetPropertyInfo<BreaksOnEdgeWithHintObjectA>(o => o.AutomaticBreakCountAPropZ), true, ForeignKeyCycleBreakHint.PreferredBreak),
+        new ExpectedPropertySpecification(objectA, GetPropertyInfo<BreaksOnEdgeWithHintObjectA>(o => o.AutomaticBreakCountAPropB), true, ForeignKeyCycleBreakHint.AlwaysBreak),
+        new ExpectedPropertySpecification(objectB, GetPropertyInfo<BreaksOnEdgeWithHintObjectB>(o => o.AutomaticBreakCountBPropC), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectC, GetPropertyInfo<BreaksOnEdgeWithHintObjectC>(o => o.AutomaticBreakCountCPropZ), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectZ, GetPropertyInfo<BreaksOnEdgeWithHintObjectZ>(o => o.AutomaticBreakCountZPropA1), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectZ, GetPropertyInfo<BreaksOnEdgeWithHintObjectZ>(o => o.AutomaticBreakCountZPropA2), true, ForeignKeyCycleBreakHint.Automatic),
+        new ExpectedPropertySpecification(objectZ, GetPropertyInfo<BreaksOnEdgeWithHintObjectZ>(o => o.AutomaticBreakCountZPropA3), true, ForeignKeyCycleBreakHint.Automatic)
+    );
+  }
+
+  [Test]
+  public void Initialize_ThrowsException_WhenBreaksCouldNotBeDetermined ()
+  {
+    var mappingConfiguration = GetMappingConfiguration(typeof(PreventBreaksObjectA), typeof(PreventBreaksObjectB), typeof(PreventBreaksObjectC));
+
+    var objectA = mappingConfiguration.GetTypeDefinition(typeof(PreventBreaksObjectA));
+    var objectB = mappingConfiguration.GetTypeDefinition(typeof(PreventBreaksObjectB));
+    var objectC = mappingConfiguration.GetTypeDefinition(typeof(PreventBreaksObjectC));
+
+    var provider = new GraphBasedPersistenceModelSortingProvider(_realNodeFactory);
+    Assert.That(
+        () => provider.Initialize([objectA, objectB, objectC]),
+        Throws.InvalidOperationException.With.Message.EqualTo(
+            $"""
+             {nameof(GraphBasedPersistenceModelSortingProvider)} could not resolve indirect cyclic dependencies.
+             Table: PreventBreaksObjectA
+               0. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
+               1. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
+               2. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
+
+             Table: PreventBreaksObjectB
+               0. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
+               1. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
+               2. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
+
+             Table: PreventBreaksObjectC
+               0. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
+               1. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
+               2. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
+             """.ReplaceLineEndings()));
   }
 
   private void AssertPositionAndCorrectOrder (GraphBasedPersistenceModelSortingProvider provider, params (ClassDefinition classDefinition, bool isOrderedCorrect)[] expectedValues)
@@ -157,17 +247,19 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
       var expectedValue = expectedValues[i];
       var tableDefinition = GetTableDefinition(expectedValue.classDefinition);
       Assert.That(provider.GetSortPosition(tableDefinition), Is.EqualTo(i));
-      Assert.That(provider.HasBeenSortedCorrectly(tableDefinition), Is.EqualTo(expectedValue.isOrderedCorrect));
     }
   }
 
-  private void AssertForeignKeyProperties (GraphBasedPersistenceModelSortingProvider provider, ClassDefinition classDefinition, string[] expectedProps)
+  private void AssertPropertySpecifications (GraphBasedPersistenceModelSortingProvider provider, params ExpectedPropertySpecification[] expectedProps)
   {
-    var actualProps = provider.GetForeignKeyRelevantPropertyDefinitions(classDefinition);
-    Assert.That(actualProps.Count, Is.EqualTo(expectedProps.Length));
+    var grouped = expectedProps.GroupBy(e => e.ClassDefinition).ToList();
 
-    var expectedPropertyDefinitions = expectedProps.Select(e => GetPropertyDefinition(classDefinition, e));
-    Assert.That(actualProps, Is.EquivalentTo(expectedPropertyDefinitions));
+    foreach (var group in grouped)
+    {
+      var actualProps = provider.GetPropertySpecificationsForForeignKeyProperties(group.Key);
+      Assert.That(actualProps.Count, Is.EqualTo(group.Count()));
+      AssertForeignKeyPropertySpecifications(group.Key, group, actualProps);
+    }
   }
 
   private SortingOptimizationNode GetNodeForClassDefinition (ClassDefinition classDefinition, IReadOnlyList<SortingOptimizationNode> nodes)
@@ -178,12 +270,7 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
 
   private SortingOptimizationEdge GetEdgeForProperty (string propertyName, SortingOptimizationNode node)
   {
-    return node.Edges.Single(e => e.ForeignKeys.Any(f => f.ReferencingColumns.Any(c => c.Name == propertyName + "ID")));
-  }
-
-  private PropertyDefinition GetPropertyDefinition (ClassDefinition classDefinition, string propertyName)
-  {
-    return classDefinition.GetPropertyDefinitions().First(p => p.PropertyName.EndsWith("." + propertyName));
+    return node.Edges.Single(e => e.ForeignKey.ReferencingColumns.Any(c => c.Name == propertyName + "ID"));
   }
 
   private void SetupNodeFactoryMock (IReadOnlyList<SortingOptimizationNode> nodes)

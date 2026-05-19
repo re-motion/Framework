@@ -17,6 +17,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
@@ -50,9 +51,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       _builder = new ForeignKeyConstraintScriptBuilder(_factoryStub.Object, new SqlCommentScriptElementFactory());
 
       _tableName = new EntityNameDefinition(null, "Table");
-      _constraint1 = new ForeignKeyConstraintDefinition("FK1", _tableName, new ColumnDefinition[0], new ColumnDefinition[0]);
-      _constraint2 = new ForeignKeyConstraintDefinition("FK2", _tableName, new ColumnDefinition[0], new ColumnDefinition[0]);
-      _constraint3 = new ForeignKeyConstraintDefinition("FK3", _tableName, new ColumnDefinition[0], new ColumnDefinition[0]);
+      _constraint1 = new ForeignKeyConstraintDefinition("FK1", _tableName, new ColumnDefinition[0], new ColumnDefinition[0], ForeignKeyCycleBreakHint.Automatic);
+      _constraint2 = new ForeignKeyConstraintDefinition("FK2", _tableName, new ColumnDefinition[0], new ColumnDefinition[0], ForeignKeyCycleBreakHint.Automatic);
+      _constraint3 = new ForeignKeyConstraintDefinition("FK3", _tableName, new ColumnDefinition[0], new ColumnDefinition[0], ForeignKeyCycleBreakHint.Automatic);
 
       _tableDefinition1 = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,

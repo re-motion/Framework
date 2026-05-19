@@ -20,6 +20,7 @@ using System.Linq;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.NUnit.UnitTesting;
@@ -228,7 +229,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           () => _serializedObjectIDStoragePropertyDefinition.CreateForeignKeyConstraint(
           cols => { throw new Exception("Should not be called."); },
           new EntityNameDefinition("entityschema", "entityname"),
-          ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty),
+          ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
+          ForeignKeyCycleBreakHint.Automatic),
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "String-serialized ObjectID values cannot be used as foreign keys."));

@@ -3,6 +3,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
@@ -38,7 +39,7 @@ public class SortingOptimizationEdgeTest
 
     Assert.That(edge.Owner, Is.SameAs(_nodeA));
     Assert.That(edge.PointingTo, Is.SameAs(_nodeB));
-    Assert.That(edge.ForeignKeys, Is.EquivalentTo([_foreignKey]));
+    Assert.That(edge.ForeignKey, Is.SameAs(_foreignKey));
     Assert.That(edge.IsSelfCyclingEdge, Is.False);
   }
 
@@ -65,8 +66,7 @@ public class SortingOptimizationEdgeTest
   {
     var edge = new SortingOptimizationEdge(_foreignKey, _nodeA, _nodeB);
 
-    Assert.That(edge.ForeignKeys.Count, Is.EqualTo(1));
-    Assert.That(edge.ForeignKeys.Single(), Is.SameAs(_foreignKey));
+    Assert.That(edge.ForeignKey, Is.SameAs(_foreignKey));
   }
 
   [Test]
@@ -117,57 +117,7 @@ public class SortingOptimizationEdgeTest
 
     Assert.That(edge.Owner, Is.SameAs(_nodeA));
     Assert.That(edge.PointingTo, Is.SameAs(_nodeB));
-    Assert.That(edge.ForeignKeys, Is.EquivalentTo([_foreignKey]));
-  }
-
-  [Test]
-  public void AddForeignKey_AppendsForeignKey ()
-  {
-    var edge = new SortingOptimizationEdge(_foreignKey, _nodeA, _nodeB);
-    var additionalForeignKey = CreateForeignKey("FK_A_To_B_Additional", _tableB.TableName);
-
-    edge.AddForeignKey(additionalForeignKey);
-
-    Assert.That(edge.ForeignKeys.Count, Is.EqualTo(2));
-    Assert.That(edge.ForeignKeys, Is.EquivalentTo([_foreignKey, additionalForeignKey]));
-  }
-
-  [Test]
-  public void AddForeignKey_MultipleCalls_AppendsAllInOrder ()
-  {
-    var edge = new SortingOptimizationEdge(_foreignKey, _nodeA, _nodeB);
-    var fk2 = CreateForeignKey("FK_2", _tableB.TableName);
-    var fk3 = CreateForeignKey("FK_3", _tableB.TableName);
-
-    edge.AddForeignKey(fk2);
-    edge.AddForeignKey(fk3);
-
-    Assert.That(edge.ForeignKeys, Is.EquivalentTo([_foreignKey, fk2, fk3]));
-  }
-
-  [Test]
-  public void AddForeignKey_SameInstanceTwice_StoresBothEntries ()
-  {
-    // The implementation does not de-duplicate — calling AddForeignKey twice
-    // with the same instance results in two list entries.
-    var edge = new SortingOptimizationEdge(_foreignKey, _nodeA, _nodeB);
-    var duplicate = CreateForeignKey("FK_Duplicate", _tableB.TableName);
-
-    edge.AddForeignKey(duplicate);
-    edge.AddForeignKey(duplicate);
-
-    Assert.That(edge.ForeignKeys.Count, Is.EqualTo(3));
-    Assert.That(edge.ForeignKeys, Is.EquivalentTo([_foreignKey, duplicate, duplicate]));
-  }
-
-  [Test]
-  public void AddForeignKey_Null_ThrowsArgumentNullException ()
-  {
-    var edge = new SortingOptimizationEdge(_foreignKey, _nodeA, _nodeB);
-
-    Assert.That(
-        () => edge.AddForeignKey(null!),
-        Throws.TypeOf<ArgumentNullException>());
+    Assert.That(edge.ForeignKey, Is.SameAs(_foreignKey));
   }
 
   private static ForeignKeyConstraintDefinition CreateForeignKey (string name, EntityNameDefinition referencedTableName)
@@ -178,6 +128,7 @@ public class SortingOptimizationEdgeTest
         name,
         referencedTableName,
         [referencingColumn],
-        [referencedColumn]);
+        [referencedColumn],
+        ForeignKeyCycleBreakHint.Automatic);
   }
 }

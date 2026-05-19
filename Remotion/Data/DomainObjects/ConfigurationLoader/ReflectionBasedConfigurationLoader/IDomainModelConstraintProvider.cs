@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -28,5 +29,6 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     bool IsNullable (IPropertyInformation propertyInfo);
     int? GetMaxLength (IPropertyInformation propertyInfo);
     bool IsForeignKeyConstraintSuppressed (IPropertyInformation propertyInfo);
+    ForeignKeyCycleBreakHint GetForeignKeyCycleBreakHint (IPropertyInformation propertyInfo);
   }
 }

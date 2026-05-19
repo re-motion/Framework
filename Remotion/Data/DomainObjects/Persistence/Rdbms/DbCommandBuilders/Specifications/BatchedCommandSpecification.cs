@@ -16,7 +16,10 @@ public class BatchedCommandSpecification : IBatchedCommandSpecification
   private readonly MultiClassTableValuedDataParameterDefinition _parameterDefinition;
   private readonly SqlTableValuedParameterValue _parameterValue;
 
-  public BatchedCommandSpecification (TableDefinition tableDefinition, MultiClassTableValuedDataParameterDefinition parameterDefinition, IEnumerable<DataContainer> dataContainers)
+  public BatchedCommandSpecification (
+      TableDefinition tableDefinition,
+      MultiClassTableValuedDataParameterDefinition parameterDefinition,
+      IReadOnlyCollection<DataContainer> dataContainers)
   {
     ArgumentNullException.ThrowIfNull(tableDefinition);
     ArgumentNullException.ThrowIfNull(parameterDefinition);

@@ -90,7 +90,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
           select referencingStorageProperty.CreateForeignKeyConstraint(
               referencingColumns => _storageNameProvider.GetForeignKeyConstraintName(classDefinition, referencingColumns),
               referencedTableName,
-              referencedStoragePropertyDefinition)
+              referencedStoragePropertyDefinition,
+              _domainModelConstraintProvider.GetForeignKeyCycleBreakHint(propertyDefinition.PropertyInfo))
           ).ToList();
     }
 

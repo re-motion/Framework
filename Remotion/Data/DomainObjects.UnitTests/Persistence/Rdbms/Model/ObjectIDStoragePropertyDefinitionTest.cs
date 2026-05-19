@@ -20,6 +20,7 @@ using System.Linq;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
@@ -250,7 +251,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
             return "fkname";
           },
           new EntityNameDefinition("entityschema", "entityname"),
-          referencedObjectIDProperty);
+          referencedObjectIDProperty,
+          ForeignKeyCycleBreakHint.Automatic);
 
       Assert.That(result.ConstraintName, Is.EqualTo("fkname"));
       Assert.That(result.ReferencedTableName, Is.EqualTo(new EntityNameDefinition("entityschema", "entityname")));

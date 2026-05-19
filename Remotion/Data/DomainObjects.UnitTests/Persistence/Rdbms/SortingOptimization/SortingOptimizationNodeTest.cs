@@ -39,7 +39,7 @@ public class SortingOptimizationNodeTest
     var node = new SortingOptimizationNode(_tableA, new[] { classDefinition });
 
     Assert.That(node.TableDefinition, Is.SameAs(_tableA));
-    Assert.That(node.ClassDefinitions, Is.EqualTo(new[] { classDefinition }));
+    Assert.That(node.ClassDefinitions, Is.EquivalentTo(new[] { classDefinition }));
     Assert.That(node.TableName, Is.EqualTo("TableA"));
     Assert.That(node.Edges, Is.Empty);
     Assert.That(node.BrokenEdges, Is.Empty);
@@ -56,7 +56,7 @@ public class SortingOptimizationNodeTest
 
     var node = new SortingOptimizationNode(_tableA, new[] { classDefinition1, classDefinition2 });
 
-    Assert.That(node.ClassDefinitions, Is.EqualTo(new[] { classDefinition1, classDefinition2 }));
+    Assert.That(node.ClassDefinitions, Is.EquivalentTo(new[] { classDefinition1, classDefinition2 }));
   }
 
   [Test]
@@ -71,7 +71,7 @@ public class SortingOptimizationNodeTest
     var node = new SortingOptimizationNode(_tableA, new[] { classDefinition });
 
     Assert.That(node.TableDefinition, Is.SameAs(_tableA));
-    Assert.That(node.ClassDefinitions, Is.EqualTo(new[] { classDefinition }));
+    Assert.That(node.ClassDefinitions, Is.EquivalentTo(new[] { classDefinition }));
   }
 
   [Test]
@@ -178,7 +178,7 @@ public class SortingOptimizationNodeTest
     var edge = nodeA.Edges[0];
     Assert.That(edge.Owner, Is.SameAs(nodeA));
     Assert.That(edge.PointingTo, Is.SameAs(nodeB));
-    Assert.That(edge.ForeignKeys, Is.EqualTo(new[] { foreignKey }));
+    Assert.That(edge.ForeignKey, Is.SameAs(foreignKey));
     Assert.That(edge.IsSelfCyclingEdge, Is.False);
   }
 
@@ -206,10 +206,14 @@ public class SortingOptimizationNodeTest
     nodeA.AddEdge(foreignKey1, nodeB);
     nodeA.AddEdge(foreignKey2, nodeB);
 
-    Assert.That(nodeA.Edges.Count, Is.EqualTo(1));
+    Assert.That(nodeA.Edges.Count, Is.EqualTo(2));
     var edge = nodeA.Edges[0];
     Assert.That(edge.PointingTo, Is.SameAs(nodeB));
-    Assert.That(edge.ForeignKeys, Is.EquivalentTo(new[] { foreignKey1, foreignKey2 }));
+    Assert.That(edge.ForeignKey, Is.SameAs(foreignKey1));
+
+    var edge2 = nodeA.Edges[1];
+    Assert.That(edge2.PointingTo, Is.SameAs(nodeB));
+    Assert.That(edge2.ForeignKey, Is.SameAs(foreignKey2));
   }
 
   [Test]
@@ -262,7 +266,7 @@ public class SortingOptimizationNodeTest
     nodeA.BreakEdge(edge);
 
     Assert.That(nodeA.Edges, Is.Empty);
-    Assert.That(nodeA.BrokenEdges, Is.EqualTo(new[] { edge }));
+    Assert.That(nodeA.BrokenEdges, Is.EquivalentTo(new[] { edge }));
     Assert.That(nodeA.HasBrokenEdges, Is.True);
   }
 
@@ -280,7 +284,7 @@ public class SortingOptimizationNodeTest
 
     Assert.That(nodeA.Edges.Count, Is.EqualTo(1));
     Assert.That(nodeA.Edges[0].PointingTo, Is.SameAs(nodeC));
-    Assert.That(nodeA.BrokenEdges, Is.EqualTo(new[] { edgeToBreak }));
+    Assert.That(nodeA.BrokenEdges, Is.EquivalentTo(new[] { edgeToBreak }));
   }
 
   [Test]
@@ -347,7 +351,7 @@ public class SortingOptimizationNodeTest
     Assert.That(nodeA.HasIndirectCyclicDependencies, Is.True);
     Assert.That(nodeA.IndirectSelfCyclicEdges.Count, Is.EqualTo(1));
     Assert.That(nodeA.IndirectSelfCyclicEdges.ContainsKey(edgeAToB), Is.True);
-    Assert.That(nodeA.IndirectSelfCyclicEdges[edgeAToB], Is.EqualTo(new[] { edgeAToB, edgeBToA }));
+    Assert.That(nodeA.IndirectSelfCyclicEdges[edgeAToB], Is.EquivalentTo(new[] { edgeAToB, edgeBToA }));
   }
 
   [Test]
@@ -368,7 +372,7 @@ public class SortingOptimizationNodeTest
     Assert.That(nodeA.HasIndirectCyclicDependencies, Is.True);
     Assert.That(nodeA.IndirectSelfCyclicEdges.Count, Is.EqualTo(1));
     Assert.That(nodeA.IndirectSelfCyclicEdges.ContainsKey(edgeAToB), Is.True);
-    Assert.That(nodeA.IndirectSelfCyclicEdges[edgeAToB], Is.EqualTo(new[] { edgeAToB, edgeBToC, edgeCToA }));
+    Assert.That(nodeA.IndirectSelfCyclicEdges[edgeAToB], Is.EquivalentTo(new[] { edgeAToB, edgeBToC, edgeCToA }));
   }
 
   [Test]
@@ -465,6 +469,7 @@ public class SortingOptimizationNodeTest
         name,
         referencedTableName,
         new[] { referencingColumn },
-        new[] { referencedColumn });
+        new[] { referencedColumn },
+        ForeignKeyCycleBreakHint.Automatic);
   }
 }
