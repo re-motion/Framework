@@ -381,7 +381,7 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
       }
       else if (ShouldCreateUpdateCommand(dataContainer))
       {
-        currentGroup.UpdateAccessors.Add(dataContainer, new UpdateTableManipulationDataContainerAccessor(dataContainer, null));
+        currentGroup.UpdateAccessors.Add(dataContainer, CreateUpdateDataContainerAccessor(dataContainer, null));
       }
     }
 

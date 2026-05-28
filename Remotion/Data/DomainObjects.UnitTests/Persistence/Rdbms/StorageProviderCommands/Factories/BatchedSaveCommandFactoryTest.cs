@@ -53,7 +53,7 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
   private RdbmsPersistenceModelProvider _rdbmsPersistenceModelProvider;
   private Mock<ITableDefinitionFinder> _tableDefinitionFinderStrictMock;
   private Mock<IPersistenceModelSortingProvider> _sortOrderProviderStrictMock;
-  private BatchedSaveCommandFactory _factory;
+  private TestableBatchedSaveCommandFactory _factory;
   private TableDefinition _tableDefinition1;
 
   public override void SetUp ()
@@ -76,7 +76,7 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     _sortOrderProviderStrictMock = new Mock<IPersistenceModelSortingProvider>(MockBehavior.Strict);
 
-    _factory = new BatchedSaveCommandFactory(
+    _factory = new TestableBatchedSaveCommandFactory(
         _dbCommandBuilderFactoryStrictMock.Object,
         _rdbmsPersistenceModelProvider,
         _tableDefinitionFinderStrictMock.Object,
@@ -152,6 +152,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     Assert.That(contexts[1].AffectedDataContainers, Is.EqualTo([computerDataContainer]));
     Assert.That(contexts[1].CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled([computerDataContainer, employeeDataContainer], [computerDataContainer]);
   }
 
   [Test]
@@ -194,6 +196,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(contexts.Count, Is.EqualTo(1));
     Assert.That(contexts[0].AffectedDataContainers, Is.EqualTo([computerDataContainer]));
     Assert.That(contexts[0].CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled([computerDataContainer]);
   }
 
   [Test]
@@ -254,6 +258,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     Assert.That(contexts[1].AffectedDataContainers, Is.EqualTo([computerDataContainer]));
     Assert.That(contexts[1].CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled([computerDataContainer], [computerDataContainer]);
   }
 
   [Test]
@@ -305,6 +311,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(contexts.Count, Is.EqualTo(1));
     Assert.That(contexts[0].AffectedDataContainers, Is.EqualTo([computerDataContainer, employeeDataContainer]));
     Assert.That(contexts[0].CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled([computerDataContainer, employeeDataContainer]);
   }
 
   [Test]
@@ -354,6 +362,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(contexts.Count, Is.EqualTo(1));
     Assert.That(contexts[0].AffectedDataContainers, Is.EqualTo([computerDataContainer, employeeDataContainer]));
     Assert.That(contexts[0].CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled([computerDataContainer, employeeDataContainer]);
   }
 
   [Test]
@@ -402,6 +412,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(contexts.Count, Is.EqualTo(1));
     Assert.That(contexts[0].AffectedDataContainers, Is.EqualTo([employeeDataContainer, computerDataContainer]));
     Assert.That(contexts[0].CommandBuilder, Is.SameAs(insertDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled([computerDataContainer, employeeDataContainer]);
   }
 
   [Test]
@@ -461,6 +473,12 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged]));
+
+    AssertTableManipulationAccessorExtensionPointsCalled(
+        null,
+        [dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged, dataContainerChangedSerialNumber],
+        null,
+        [dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged, dataContainerChangedSerialNumber]);
   }
 
   [Test]
@@ -556,6 +574,11 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).AffectedDataContainers, Is.EqualTo([dataContainerProduct, dataContainerProductReview]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
 
+    AssertTableManipulationAccessorExtensionPointsCalled(
+        null,
+        [dataContainerProductReview],
+        [dataContainerProduct, dataContainerProductReview],
+        [dataContainerProduct, dataContainerProductReview]);
   }
 
   [Test]
@@ -630,6 +653,11 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProduct, dataContainerProductReview]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
 
+    AssertTableManipulationAccessorExtensionPointsCalled(
+        null,
+        null,
+        [dataContainerProduct, dataContainerProductReview],
+        [dataContainerProduct, dataContainerProductReview]);
   }
 
   [Test]
@@ -703,6 +731,12 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProduct, dataContainerProductReview]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled(
+        null,
+        null,
+        [dataContainerProduct, dataContainerProductReview],
+        [dataContainerProduct, dataContainerProductReview]);
   }
 
   [Test]
@@ -775,6 +809,12 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview, dataContainerProduct]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled(
+        null,
+        null,
+        [dataContainerProduct, dataContainerProductReview],
+        [dataContainerProduct, dataContainerProductReview]);
   }
 
   [Test]
@@ -842,6 +882,12 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled(
+        null,
+        null,
+        [dataContainerProductReview],
+        [dataContainerProductReview]);
   }
 
   [Test]
@@ -928,6 +974,12 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled(
+        null,
+        [dataContainerProductReview],
+        [dataContainerProductReview],
+        [dataContainerProductReview]);
   }
 
   [Test]
@@ -993,6 +1045,12 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled(
+        null,
+        null,
+        [dataContainerProductReview],
+        [dataContainerProductReview]);
   }
 
   [Test]
@@ -1050,6 +1108,12 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
+
+    AssertTableManipulationAccessorExtensionPointsCalled(
+        null,
+        null,
+        [dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2],
+        [dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2]);
   }
 
   private void SetupSortOrderProviderSortPosition (ClassDefinition classDefinition, int position, bool forClassDefinition, bool forTableDefintion)
@@ -1151,6 +1215,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     var tuples = ((CompoundRdbmsProviderCommand)result).InnerCommands.ToList();
 
     Assert.That(tuples.Count, Is.EqualTo(0));
+
+    AssertTableManipulationAccessorExtensionPointsCalled();
   }
 
   [Test]
@@ -1392,6 +1458,19 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
       computer.Delete();
       ClientTransaction.Current.Commit();
     }
+  }
+
+  private void AssertTableManipulationAccessorExtensionPointsCalled (
+      IReadOnlyCollection<DataContainer> expectedInsert = null,
+      IReadOnlyCollection<DataContainer> expectedUpdate = null,
+      IReadOnlyCollection<DataContainer> expectedDeletes = null,
+      IReadOnlyCollection<DataContainer> expectedLocks = null)
+  {
+
+    Assert.That(_factory.CreateInsertDataContainerAccessorCalledForDataContainers, Is.EquivalentTo(expectedInsert ?? Array.Empty<DataContainer>()));
+    Assert.That(_factory.CreateUpdateDataContainerAccessorCalledForDataContainers, Is.EquivalentTo(expectedUpdate ?? Array.Empty<DataContainer>()));
+    Assert.That(_factory.CreateDeleteDataContainerAccessorForDataContainers, Is.EquivalentTo(expectedDeletes ?? Array.Empty<DataContainer>()));
+    Assert.That(_factory.CreateLockDataContainerAccessorAccessorCalledForDataContainers, Is.EquivalentTo(expectedLocks ?? Array.Empty<DataContainer>()));
   }
 
   private TestableRdbmsProvider CreateTestableRdbmsProvider (IsolationLevel isolationLevel, Action<CompoundRdbmsProviderCommand> commandAssertions, int commandTimeout)
