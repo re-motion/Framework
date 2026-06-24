@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -116,7 +117,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       _mappingConfiguration = MappingConfiguration.Create(
             MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
             new PersistenceModelLoader(_storageSettings),
-            SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>());
+            SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>(),
+            SafeServiceLocator.Current.GetInstance<ILoggerFactory>());
     }
 
     public MappingConfiguration GetMappingConfiguration ()

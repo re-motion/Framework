@@ -85,7 +85,8 @@ namespace Remotion.SecurityManager.UnitTests
                     SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
                     SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
                 SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>(),
-                SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>()));
+                SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>(),
+                SafeServiceLocator.Current.GetInstance<ILoggerFactory>()));
 
         SqlConnection.ClearAllPools();
 

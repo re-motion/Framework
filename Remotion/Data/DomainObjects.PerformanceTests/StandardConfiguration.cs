@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel.Design;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
@@ -57,7 +58,8 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
               SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
               SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
          SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>(),
-         SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>());
+         SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>(),
+         SafeServiceLocator.Current.GetInstance<ILoggerFactory>());
       MappingConfiguration.SetCurrent(mappingConfiguration);
     }
   }

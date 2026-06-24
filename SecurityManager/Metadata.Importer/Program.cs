@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel.Design;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -109,7 +110,8 @@ namespace Remotion.SecurityManager.Metadata.Importer
                     SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
                     SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
                 SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>(),
-                SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>()));
+                SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>(),
+                SafeServiceLocator.Current.GetInstance<ILoggerFactory>()));
 
         ClientTransaction transaction = ClientTransaction.CreateRootTransaction();
 
