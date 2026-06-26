@@ -223,7 +223,7 @@ public class GraphBasedPersistenceModelSortingProvider : IPersistenceModelSortin
       messageBuilder.AppendLine($"Table: {node.TableName}");
       foreach (var edges in node.IndirectSelfCyclicEdges.Values)
       {
-        foreach (var edgeAndIndex in edges.Select((edge, index) => new { edge, index }).ToArray())
+        foreach (var edgeAndIndex in edges.Select((edge, index) => new { edge, index = index + 1 }).ToArray())
         {
           messageBuilder.Append($"  {edgeAndIndex.index}. ");
           AppendEdgeConnection(messageBuilder, edgeAndIndex.edge);

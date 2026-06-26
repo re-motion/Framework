@@ -269,19 +269,19 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
             $"""
              {nameof(GraphBasedPersistenceModelSortingProvider)} could not resolve indirect cyclic dependencies.
              Table: PreventBreaksObjectA
-               0. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
-               1. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
-               2. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
-
-             Table: PreventBreaksObjectB
-               0. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
-               1. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
-               2. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
-
-             Table: PreventBreaksObjectC
-               0. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
                1. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
                2. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
+               3. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
+
+             Table: PreventBreaksObjectB
+               1. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
+               2. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
+               3. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
+
+             Table: PreventBreaksObjectC
+               1. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
+               2. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
+               3. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
              """.ReplaceLineEndings()));
   }
 
