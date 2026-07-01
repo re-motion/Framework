@@ -25,7 +25,6 @@ using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
-using Remotion.Logging;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -61,7 +60,6 @@ namespace Remotion.Data.DomainObjects.Mapping
     }
 
     private static readonly Fields s_fields = new Fields();
-    private static readonly ILogger s_logger = LazyLoggerFactory.CreateLogger<MappingConfiguration>();
 
     public static IMappingConfiguration Current
     {
@@ -82,13 +80,14 @@ namespace Remotion.Data.DomainObjects.Mapping
     /// <summary>
     /// Creates a fully initialized <see cref="MappingConfiguration"/>
     /// </summary>
-    public static MappingConfiguration Create (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader, ISortingOptimizationNodeFactory sortingOptimizationNodeFactory)
+    public static MappingConfiguration Create (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader, ISortingOptimizationNodeFactory sortingOptimizationNodeFactory, ILoggerFactory loggerFactory)
     {
       ArgumentNullException.ThrowIfNull(mappingLoader);
       ArgumentNullException.ThrowIfNull(persistenceModelLoader);
       ArgumentNullException.ThrowIfNull(sortingOptimizationNodeFactory);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
-      var mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader, sortingOptimizationNodeFactory);
+      var mappingConfiguration = new MappingConfiguration(mappingLoader, persistenceModelLoader, sortingOptimizationNodeFactory, loggerFactory);
       mappingConfiguration.EnsureInitialized();
 
       return mappingConfiguration;
@@ -109,29 +108,32 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly Lazy<Mapping> _mapping;
     private readonly bool _resolveTypes;
     private readonly IMemberInformationNameResolver _nameResolver;
+    private readonly ILogger _logger;
 
     // construction and disposing
 
-    public MappingConfiguration (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader, ISortingOptimizationNodeFactory sortingOptimizationNodeFactory)
+    public MappingConfiguration (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader, ISortingOptimizationNodeFactory sortingOptimizationNodeFactory, ILoggerFactory loggerFactory)
     {
       ArgumentNullException.ThrowIfNull(mappingLoader);
       ArgumentNullException.ThrowIfNull(persistenceModelLoader);
       ArgumentNullException.ThrowIfNull(sortingOptimizationNodeFactory);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
 
       _resolveTypes = mappingLoader.ResolveTypes;
       _nameResolver = mappingLoader.NameResolver;
+      _logger = loggerFactory.CreateLogger<MappingConfiguration>();
 
-      _mapping = new Lazy<Mapping>(() => InitializeMapping(mappingLoader, persistenceModelLoader, sortingOptimizationNodeFactory), LazyThreadSafetyMode.ExecutionAndPublication);
+      _mapping = new Lazy<Mapping>(() => InitializeMapping(mappingLoader, persistenceModelLoader, sortingOptimizationNodeFactory, loggerFactory), LazyThreadSafetyMode.ExecutionAndPublication);
     }
 
-    private Mapping InitializeMapping (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader, ISortingOptimizationNodeFactory sortingOptimizationNodeFactory)
+    private Mapping InitializeMapping (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader, ISortingOptimizationNodeFactory sortingOptimizationNodeFactory, ILoggerFactory loggerFactory)
     {
-      s_logger.LogInformation("Building mapping configuration...");
+      _logger.LogInformation("Building mapping configuration...");
 
-      var graphBasedSortingProvider = new GraphBasedPersistenceModelSortingProvider(sortingOptimizationNodeFactory);
+      var graphBasedSortingProvider = new GraphBasedPersistenceModelSortingProvider(sortingOptimizationNodeFactory, loggerFactory);
       var lazyPersistenceModelSortingProviderWrapper = new LazyPersistenceModelSortingProviderWrapper(graphBasedSortingProvider);
 
-      using (StopwatchScope.CreateScope(s_logger, LogLevel.Information, "Time needed to build and validate mapping configuration: {elapsed}."))
+      using (StopwatchScope.CreateScope(_logger, LogLevel.Information, "Time needed to build and validate mapping configuration: {elapsed}."))
       {
         var mappingConfigurationValidationHelper = new MappingConfigurationValidationHelper(mappingLoader, persistenceModelLoader);
 

@@ -17,6 +17,7 @@
 
 using System;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
@@ -71,7 +72,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>());
       var persistenceModelLoader = _storageObjectFactory.CreatePersistenceModelLoader(_storageProviderDefinition);
       var sortingOptimizationNodeFactory = SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>();
-      _mappingConfiguration = MappingConfiguration.Create(mappingLoader, persistenceModelLoader, sortingOptimizationNodeFactory);
+      var loggerFactory = SafeServiceLocator.Current.GetInstance<ILoggerFactory>();
+      _mappingConfiguration = MappingConfiguration.Create(mappingLoader, persistenceModelLoader, sortingOptimizationNodeFactory, loggerFactory);
       MappingConfiguration.SetCurrent(_mappingConfiguration);
     }
 

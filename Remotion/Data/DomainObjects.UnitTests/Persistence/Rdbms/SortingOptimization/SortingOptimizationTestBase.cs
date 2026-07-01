@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
@@ -45,7 +46,8 @@ public abstract class SortingOptimizationTestBase
     var mappingConfiguration = MappingConfiguration.Create(
         MappingReflectorObjectMother.CreateMappingReflector(fixedTypeDiscoveryService),
         new PersistenceModelLoader(storageSettings),
-        new SortingOptimizationNodeFactory(new DomainModelConstraintProvider()));
+        new SortingOptimizationNodeFactory(new DomainModelConstraintProvider()),
+        SafeServiceLocator.Current.GetInstance<ILoggerFactory>());
     return mappingConfiguration;
   }
 

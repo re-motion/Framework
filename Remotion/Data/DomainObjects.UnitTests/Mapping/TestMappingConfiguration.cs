@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
@@ -77,7 +78,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _mappingConfiguration = MappingConfiguration.Create(
           MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
           new PersistenceModelLoader(_storageSettings),
-          SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>());
+          SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>(),
+          SafeServiceLocator.Current.GetInstance<ILoggerFactory>());
       MappingConfiguration.SetCurrent(_mappingConfiguration);
 
       _domainObjectIDs = new DomainObjectIDs();

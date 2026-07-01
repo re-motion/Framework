@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Testing;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -17,12 +19,18 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
 {
   private Mock<ISortingOptimizationNodeFactory> _nodeFactoryStrictMock;
   private ISortingOptimizationNodeFactory _realNodeFactory;
+  private FakeLogCollector _fakeLogCollector;
+  private ILoggerFactory _loggerFactory;
 
   [SetUp]
   public void SetUp ()
   {
     _realNodeFactory = new SortingOptimizationNodeFactory(new DomainModelConstraintProvider());
     _nodeFactoryStrictMock = new Mock<ISortingOptimizationNodeFactory>(MockBehavior.Strict);
+
+    _fakeLogCollector = new FakeLogCollector();
+    var fakeLoggerProvider = new FakeLoggerProvider(_fakeLogCollector);
+    _loggerFactory = new LoggerFactory([fakeLoggerProvider]);
   }
 
   [Test]
@@ -34,8 +42,10 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
     var objectB = mappingConfiguration.GetTypeDefinition(typeof(NoBreaksObjectB));
     var objectC = mappingConfiguration.GetTypeDefinition(typeof(NoBreaksObjectC));
 
-    var provider = new GraphBasedPersistenceModelSortingProvider(_realNodeFactory);
+    var provider = new GraphBasedPersistenceModelSortingProvider(_realNodeFactory, _loggerFactory);
     provider.Initialize([objectC, objectB, objectA]);
+
+    AssertLogMessage(_fakeLogCollector.GetSnapshot(), []);
 
     AssertPositionAndCorrectOrder(
         provider,
@@ -72,8 +82,17 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
 
     SetupNodeFactoryMock(nodes);
 
-    var provider = new GraphBasedPersistenceModelSortingProvider(_nodeFactoryStrictMock.Object);
+    var provider = new GraphBasedPersistenceModelSortingProvider(_nodeFactoryStrictMock.Object, _loggerFactory);
     provider.Initialize([]);
+
+    var expectedLogMessage = """
+                             Persistence dependency cycles with breaks:
+                               CYCLEBREAK (Automatic) -> 1. AutomaticBreaksTableNameObjectA.AutomaticBreakTableNameBPropBID -> AutomaticBreaksTableNameObjectB.ID
+                                                         2. AutomaticBreaksTableNameObjectB.AutomaticBreakTableNameBPropCID -> AutomaticBreaksTableNameObjectC.ID
+                                                         3. AutomaticBreaksTableNameObjectC.AutomaticBreakTableNameCPropAID -> AutomaticBreaksTableNameObjectA.ID
+
+                             """.ReplaceLineEndings();
+    AssertLogMessage(_fakeLogCollector.GetSnapshot(), [(expectedLogMessage, LogLevel.Information)]);
 
     Assert.That(nodeForA.HasBrokenEdges, Is.True);
     Assert.That(nodeForA.BrokenEdges.Count, Is.EqualTo(1));
@@ -122,8 +141,21 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
 
     SetupNodeFactoryMock(nodes);
 
-    var provider = new GraphBasedPersistenceModelSortingProvider(_nodeFactoryStrictMock.Object);
+    var provider = new GraphBasedPersistenceModelSortingProvider(_nodeFactoryStrictMock.Object, _loggerFactory);
+
     provider.Initialize([]);
+
+    var expectedLogMessage = """
+                              Persistence dependency cycles with breaks:
+                                CYCLEBREAK (Automatic) -> 1. AutomaticBreaksCountObjectZ.AutomaticBreakCountZPropAID -> AutomaticBreaksCountObjectA.ID
+                                                          2. AutomaticBreaksCountObjectA.AutomaticBreakCountAPropZID -> AutomaticBreaksCountObjectZ.ID
+
+                                CYCLEBREAK (Automatic) -> 1. AutomaticBreaksCountObjectZ.AutomaticBreakCountZPropBID -> AutomaticBreaksCountObjectB.ID
+                                                          2. AutomaticBreaksCountObjectB.AutomaticBreakCountBPropCID -> AutomaticBreaksCountObjectC.ID
+                                                          3. AutomaticBreaksCountObjectC.AutomaticBreakCountCPropZID -> AutomaticBreaksCountObjectZ.ID
+
+                              """.ReplaceLineEndings();
+    AssertLogMessage(_fakeLogCollector.GetSnapshot(), [(expectedLogMessage, LogLevel.Information)]);
 
     Assert.That(nodeForA.HasBrokenEdges, Is.False);
     Assert.That(nodeForB.HasBrokenEdges, Is.False);
@@ -177,8 +209,21 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
 
     SetupNodeFactoryMock(nodes);
 
-    var provider = new GraphBasedPersistenceModelSortingProvider(_nodeFactoryStrictMock.Object);
+    var provider = new GraphBasedPersistenceModelSortingProvider(_nodeFactoryStrictMock.Object, _loggerFactory);
     provider.Initialize([]);
+
+    var expectedLogMessage = """
+                             Persistence dependency cycles with breaks:
+                               CYCLEBREAK (AlwaysBreak) -> 1. BreaksOnEdgeWithHintObjectA.AutomaticBreakCountAPropBID -> BreaksOnEdgeWithHintObjectB.ID
+                                                           2. BreaksOnEdgeWithHintObjectB.AutomaticBreakCountBPropCID -> BreaksOnEdgeWithHintObjectC.ID
+                                                           3. BreaksOnEdgeWithHintObjectC.AutomaticBreakCountCPropZID -> BreaksOnEdgeWithHintObjectZ.ID
+                                                           4. BreaksOnEdgeWithHintObjectZ.AutomaticBreakCountZPropA1ID -> BreaksOnEdgeWithHintObjectA.ID
+
+                               CYCLEBREAK (PreferredBreak) -> 1. BreaksOnEdgeWithHintObjectA.AutomaticBreakCountAPropZID -> BreaksOnEdgeWithHintObjectZ.ID
+                                                              2. BreaksOnEdgeWithHintObjectZ.AutomaticBreakCountZPropA1ID -> BreaksOnEdgeWithHintObjectA.ID
+
+                             """.ReplaceLineEndings();
+    AssertLogMessage(_fakeLogCollector.GetSnapshot(), [(expectedLogMessage, LogLevel.Information)]);
 
     Assert.That(nodeForA.HasBrokenEdges, Is.True);
     Assert.That(nodeForA.BrokenEdges.Count, Is.EqualTo(2));
@@ -217,26 +262,26 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
     var objectB = mappingConfiguration.GetTypeDefinition(typeof(PreventBreaksObjectB));
     var objectC = mappingConfiguration.GetTypeDefinition(typeof(PreventBreaksObjectC));
 
-    var provider = new GraphBasedPersistenceModelSortingProvider(_realNodeFactory);
+    var provider = new GraphBasedPersistenceModelSortingProvider(_realNodeFactory, _loggerFactory);
     Assert.That(
         () => provider.Initialize([objectA, objectB, objectC]),
         Throws.InvalidOperationException.With.Message.EqualTo(
             $"""
              {nameof(GraphBasedPersistenceModelSortingProvider)} could not resolve indirect cyclic dependencies.
              Table: PreventBreaksObjectA
-               0. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
-               1. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
-               2. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
-
-             Table: PreventBreaksObjectB
-               0. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
-               1. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
-               2. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
-
-             Table: PreventBreaksObjectC
-               0. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
                1. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
                2. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
+               3. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
+
+             Table: PreventBreaksObjectB
+               1. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
+               2. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
+               3. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
+
+             Table: PreventBreaksObjectC
+               1. PreventBreaksObjectC.PreventBreakCPropAID -> PreventBreaksObjectA.ID
+               2. PreventBreaksObjectA.PreventBreakAPropBID -> PreventBreaksObjectB.ID
+               3. PreventBreaksObjectB.PreventBreakBPropCID -> PreventBreaksObjectC.ID
              """.ReplaceLineEndings()));
   }
 
@@ -259,6 +304,15 @@ public class GraphBasedPersistenceModelSortingProviderTest : SortingOptimization
       var actualProps = provider.GetPropertySpecificationsForForeignKeyProperties(group.Key);
       Assert.That(actualProps.Count, Is.EqualTo(group.Count()));
       AssertForeignKeyPropertySpecifications(group.Key, group, actualProps);
+    }
+  }
+
+  private void AssertLogMessage (IReadOnlyList<FakeLogRecord> logRecordSnapshot, (string message, LogLevel logLevel)[] expectedEntries)
+  {
+    foreach (var expectedEntry in expectedEntries)
+    {
+      var matchingRecord = logRecordSnapshot.FirstOrDefault(r => r.Level == expectedEntry.logLevel && r.Message == expectedEntry.message);
+      Assert.That(matchingRecord, Is.Not.Null, $"No log message found with level '{expectedEntry.logLevel}' and message '{expectedEntry.message}'");
     }
   }
 

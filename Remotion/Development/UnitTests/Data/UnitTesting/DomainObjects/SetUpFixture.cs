@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel.Design;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -58,7 +59,8 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
                     new SortExpressionDefinitionProvider(),
                     new ThrowingDomainObjectCreator()),
                 new PersistenceModelLoader(storageSettings),
-                sortingOptimizationNodeFactory));
+                sortingOptimizationNodeFactory,
+                SafeServiceLocator.Current.GetInstance<ILoggerFactory>()));
       }
       catch (Exception e)
       {
