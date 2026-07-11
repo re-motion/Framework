@@ -41,7 +41,7 @@ namespace Remotion.SecurityManager.Clients.Web.Test
 
       var storageSettingsFactory =
           StorageSettingsFactory.CreateForSqlServer<SecurityManagerSqlStorageObjectFactory>(
-              "Integrated Security=SSPI;Initial Catalog=RemotionSecurityManagerWebClientTest;Data Source=localhost");
+              "Integrated Security=SSPI;Initial Catalog=RemotionSecurityManagerWebClientTest;Data Source=localhost;TrustServerCertificate=true;");
       defaultServiceLocator.RegisterSingle(() => storageSettingsFactory);
 
       //defaultServiceLocator.Register (typeof (Remotion.Data.DomainObjects.IClientTransactionExtensionFactory), typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory), LifetimeKind.Singleton);

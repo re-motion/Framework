@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 {
   public class StandardConfiguration
   {
-    public const string ConnectionString = "Integrated Security=SSPI;Initial Catalog=PerformanceTestDomain;Data Source=localhost";
+    public const string ConnectionString = "Integrated Security=SSPI;Initial Catalog=PerformanceTestDomain;Data Source=localhost;TrustServerCertificate=true;";
 
     public static void Initialize ()
     {
