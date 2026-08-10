@@ -14,6 +14,10 @@ delete from [MixedDomains_RelationTarget]
 delete from [EagerFetching_BaseClass]
 delete from [EagerFetching_RelationTarget]
 
+delete from [UnionInheritance_Motorcycle]
+delete from [UnionInheritance_Truck]
+delete from [UnionInheritance_Car]
+
 delete from [FileSystemItem]
 delete from [Location]
 delete from [Client]
@@ -590,6 +594,45 @@ update [EagerFetching_BaseClass]
     set [ScalarProperty2RealSideID] = '{5DD64E95-5449-4345-8DE8-1D766BB23B17}'
     where [ID] = '10742FC3-AB58-49BC-AF04-CBDE1B160CBF'
 
-update [EagerFetching_BaseClass] 
+update [EagerFetching_BaseClass]
     set [UnidirectionalPropertyID] = '{03CDC3BF-DA09-442D-A2C0-96567B48BC5D}'
     where [ID] = 'F6090162-7B12-4689-951B-B52EFD72C34F'
+
+
+-- Vehicle (UnionInheritance test domain)
+
+-- Car
+insert into [UnionInheritance_Car] (ID, ClassID, [Manufacturer], [LicensePlate], [NumberOfDoors], [TopSpeedInKmh])
+    values ('{A1000001-0000-4000-8000-000000000001}', 'Car', 'Toyota', 'W-12345A', 4, NULL)
+
+-- SportsCar (shares the Car table)
+insert into [UnionInheritance_Car] (ID, ClassID, [Manufacturer], [LicensePlate], [NumberOfDoors], [TopSpeedInKmh])
+    values ('{A1000002-0000-4000-8000-000000000002}', 'SportsCar', 'Ferrari', 'W-99887F', 2, 330)
+
+-- Truck
+insert into [UnionInheritance_Truck] (ID, ClassID, [Manufacturer], [LicensePlate], [MaxLoadWeightInKg])
+    values ('{A2000001-0000-4000-8000-000000000001}', 'Truck', 'Volvo', 'W-55501T', 12000)
+
+insert into [UnionInheritance_Truck] (ID, ClassID, [Manufacturer], [LicensePlate], [MaxLoadWeightInKg])
+    values ('{A2000002-0000-4000-8000-000000000002}', 'Truck', 'Scania', 'W-55502T', 18000)
+
+-- Motorcycle
+insert into [UnionInheritance_Motorcycle] (ID, ClassID, [Manufacturer], [LicensePlate], [EngineDisplacementInCcm], [HandlebarWidthInCm], [FairingColor])
+    values ('{A3000001-0000-4000-8000-000000000001}', 'Motorcycle', 'Honda', 'W-77001M', 600, NULL, NULL)
+
+-- Chopper (shares the Motorcycle table)
+insert into [UnionInheritance_Motorcycle] (ID, ClassID, [Manufacturer], [LicensePlate], [EngineDisplacementInCcm], [HandlebarWidthInCm], [FairingColor])
+    values ('{A3000002-0000-4000-8000-000000000002}', 'Chopper', 'Harley-Davidson', 'W-77002M', 1800, 90, NULL)
+
+-- SportBike (shares the Motorcycle table)
+insert into [UnionInheritance_Motorcycle] (ID, ClassID, [Manufacturer], [LicensePlate], [EngineDisplacementInCcm], [HandlebarWidthInCm], [FairingColor])
+    values ('{A3000003-0000-4000-8000-000000000003}', 'SportBike', 'Kawasaki', 'W-77003M', 1000, NULL, 'Green')
+
+-- Truck1 tows Car1; Truck2 tows Chopper1 (set via update to avoid foreign key ordering issues)
+update [UnionInheritance_Car]
+    set [TowedByID] = '{A2000001-0000-4000-8000-000000000001}', [TowedByIDClassID] = 'Truck'
+    where [ID] = 'A1000001-0000-4000-8000-000000000001'
+
+update [UnionInheritance_Motorcycle]
+    set [TowedByID] = '{A2000002-0000-4000-8000-000000000002}', [TowedByIDClassID] = 'Truck'
+    where [ID] = 'A3000002-0000-4000-8000-000000000002'

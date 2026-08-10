@@ -581,6 +581,45 @@ CREATE TABLE [dbo].[DerivedClassWithStorageSpecificIdentifierAttribute]
   [Timestamp] rowversion NOT NULL,
   CONSTRAINT [PK_DerivedClassWithStorageSpecificIdentifierAttribute] PRIMARY KEY CLUSTERED ([ID])
 )
+CREATE TABLE [dbo].[UnionInheritance_Motorcycle]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [Manufacturer] nvarchar (100) NOT NULL,
+  [LicensePlate] nvarchar (100) NOT NULL,
+  [TowedByID] uniqueidentifier NULL,
+  [TowedByIDClassID] varchar (100) NULL,
+  [EngineDisplacementInCcm] int NOT NULL,
+  [HandlebarWidthInCm] int NULL,
+  [FairingColor] nvarchar (100) NULL,
+  CONSTRAINT [PK_UnionInheritance_Motorcycle] PRIMARY KEY CLUSTERED ([ID])
+)
+CREATE TABLE [dbo].[UnionInheritance_Car]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [Manufacturer] nvarchar (100) NOT NULL,
+  [LicensePlate] nvarchar (100) NOT NULL,
+  [TowedByID] uniqueidentifier NULL,
+  [TowedByIDClassID] varchar (100) NULL,
+  [NumberOfDoors] int NOT NULL,
+  [TopSpeedInKmh] int NULL,
+  CONSTRAINT [PK_UnionInheritance_Car] PRIMARY KEY CLUSTERED ([ID])
+)
+CREATE TABLE [dbo].[UnionInheritance_Truck]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [Manufacturer] nvarchar (100) NOT NULL,
+  [LicensePlate] nvarchar (100) NOT NULL,
+  [TowedByID] uniqueidentifier NULL,
+  [TowedByIDClassID] varchar (100) NULL,
+  [MaxLoadWeightInKg] int NOT NULL,
+  CONSTRAINT [PK_UnionInheritance_Truck] PRIMARY KEY CLUSTERED ([ID])
+)
 -- Create foreign key constraints for tables that were created above
 ALTER TABLE [dbo].[EagerFetching_BaseClass] ADD
   CONSTRAINT [FK_EagerFetching_BaseClass_ScalarProperty2RealSideID] FOREIGN KEY ([ScalarProperty2RealSideID]) REFERENCES [dbo].[EagerFetching_RelationTarget] ([ID])
@@ -1153,6 +1192,56 @@ CREATE VIEW [dbo].[SupplierView] ([ID], [ClassID], [Timestamp], [Name], [Industr
   SELECT [ID], [ClassID], [Timestamp], [Name], [IndustrialSectorID], [ContactPersonID], [SupplierQuality]
     FROM [dbo].[Company]
     WHERE [ClassID] IN ('Supplier')
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[VehicleView] ([ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [EngineDisplacementInCcm], [HandlebarWidthInCm], [FairingColor], [NumberOfDoors], [TopSpeedInKmh], [MaxLoadWeightInKg])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [EngineDisplacementInCcm], [HandlebarWidthInCm], [FairingColor], NULL, NULL, NULL
+    FROM [dbo].[UnionInheritance_Motorcycle]
+  UNION ALL
+  SELECT [ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], NULL, NULL, NULL, [NumberOfDoors], [TopSpeedInKmh], NULL
+    FROM [dbo].[UnionInheritance_Car]
+  UNION ALL
+  SELECT [ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], NULL, NULL, NULL, NULL, NULL, [MaxLoadWeightInKg]
+    FROM [dbo].[UnionInheritance_Truck]
+GO
+CREATE VIEW [dbo].[MotorcycleView] ([ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [EngineDisplacementInCcm], [HandlebarWidthInCm], [FairingColor])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [EngineDisplacementInCcm], [HandlebarWidthInCm], [FairingColor]
+    FROM [dbo].[UnionInheritance_Motorcycle]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[ChopperView] ([ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [EngineDisplacementInCcm], [HandlebarWidthInCm])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [EngineDisplacementInCcm], [HandlebarWidthInCm]
+    FROM [dbo].[UnionInheritance_Motorcycle]
+    WHERE [ClassID] IN ('Chopper')
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[SportBikeView] ([ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [EngineDisplacementInCcm], [FairingColor])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [EngineDisplacementInCcm], [FairingColor]
+    FROM [dbo].[UnionInheritance_Motorcycle]
+    WHERE [ClassID] IN ('SportBike')
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[CarView] ([ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [NumberOfDoors], [TopSpeedInKmh])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [NumberOfDoors], [TopSpeedInKmh]
+    FROM [dbo].[UnionInheritance_Car]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[SportsCarView] ([ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [NumberOfDoors], [TopSpeedInKmh])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [NumberOfDoors], [TopSpeedInKmh]
+    FROM [dbo].[UnionInheritance_Car]
+    WHERE [ClassID] IN ('SportsCar')
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[TruckView] ([ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [MaxLoadWeightInKg])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Manufacturer], [LicensePlate], [TowedByID], [TowedByIDClassID], [MaxLoadWeightInKg]
+    FROM [dbo].[UnionInheritance_Truck]
   WITH CHECK OPTION
 GO
 -- Create indexes for tables that were created above
@@ -2380,5 +2469,84 @@ CREATE TYPE [dbo].[TVP_DerivedClassWithStorageSpecificIdentifierAttribute_Update
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_UnionInheritance_Motorcycle_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Manufacturer] nvarchar (100) NOT NULL,
+  [LicensePlate] nvarchar (100) NOT NULL,
+  [TowedByID] uniqueidentifier NULL,
+  [TowedByIDClassID] varchar (100) NULL,
+  [EngineDisplacementInCcm] int NOT NULL,
+  [HandlebarWidthInCm] int NULL,
+  [FairingColor] nvarchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_UnionInheritance_Motorcycle_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Manufacturer] nvarchar (100) NOT NULL,
+  [Manufacturer__IsSet] bit NOT NULL,
+  [LicensePlate] nvarchar (100) NOT NULL,
+  [LicensePlate__IsSet] bit NOT NULL,
+  [TowedByID] uniqueidentifier NULL,
+  [TowedByIDClassID] varchar (100) NULL,
+  [EngineDisplacementInCcm] int NOT NULL,
+  [HandlebarWidthInCm] int NULL,
+  [FairingColor] nvarchar (100) NULL,
+  [FairingColor__IsSet] bit NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_UnionInheritance_Car_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Manufacturer] nvarchar (100) NOT NULL,
+  [LicensePlate] nvarchar (100) NOT NULL,
+  [TowedByID] uniqueidentifier NULL,
+  [TowedByIDClassID] varchar (100) NULL,
+  [NumberOfDoors] int NOT NULL,
+  [TopSpeedInKmh] int NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_UnionInheritance_Car_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Manufacturer] nvarchar (100) NOT NULL,
+  [Manufacturer__IsSet] bit NOT NULL,
+  [LicensePlate] nvarchar (100) NOT NULL,
+  [LicensePlate__IsSet] bit NOT NULL,
+  [TowedByID] uniqueidentifier NULL,
+  [TowedByIDClassID] varchar (100) NULL,
+  [NumberOfDoors] int NOT NULL,
+  [TopSpeedInKmh] int NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_UnionInheritance_Truck_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Manufacturer] nvarchar (100) NOT NULL,
+  [LicensePlate] nvarchar (100) NOT NULL,
+  [TowedByID] uniqueidentifier NULL,
+  [TowedByIDClassID] varchar (100) NULL,
+  [MaxLoadWeightInKg] int NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_UnionInheritance_Truck_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Manufacturer] nvarchar (100) NOT NULL,
+  [Manufacturer__IsSet] bit NOT NULL,
+  [LicensePlate] nvarchar (100) NOT NULL,
+  [LicensePlate__IsSet] bit NOT NULL,
+  [TowedByID] uniqueidentifier NULL,
+  [TowedByIDClassID] varchar (100) NULL,
+  [MaxLoadWeightInKg] int NOT NULL
 )
 GO
