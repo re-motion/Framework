@@ -109,5 +109,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       return _innerMappingResolver.TryResolveOptimizedMemberExpression(entityRefMemberExpression, memberInfo);
     }
+
+    public bool TryResolveSetOperationReconciliationContext (Expression[] projections, out ISetOperationReconciliationContext reconciliationContext)
+    {
+      return _innerMappingResolver.TryResolveSetOperationReconciliationContext(projections, out reconciliationContext);
+    }
   }
 }
