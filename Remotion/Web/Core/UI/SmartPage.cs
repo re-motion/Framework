@@ -247,6 +247,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   private readonly INonceGenerator _nonceGenerator;
   private string? _cspNonceValue;
   private bool _isHtmlWriterCreated;
+  private bool? _enableCoreFormsClientScriptUnloadEvent;
 
   public SmartPage ()
   {
@@ -692,6 +693,26 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
     }
   }
 
+  /// <summary>
+  /// Gets or sets the flag that determines whether CoreForms client scripts will use the deprecated unload event.
+  /// By default, the unload event will not be used. Set this property to enable the unload-event integration as seen in System.Web on .NET Framework.
+  /// </summary>
+  /// <remarks>
+  /// The unload event is deprecated in Chrome and will no longer work in the future without explicit opt-in.
+  /// Unload events in CoreForms are used for cleanup only, which should no longer be necessary in modern browsers.
+  /// As such, the unload event is disabled by default.
+  /// Set this property to <see langword="true"/> to opt-out of this behavior and to use the unload event.
+  /// Note that the unload event will only fire if it is explicitly enabled in Chrome via `Permissions-Policy` header.
+  /// </remarks>
+  [Description("The flag that determines wheter the unload event is used in the CoreForms client scripts.")]
+  [Category("Behavior")]
+  [DefaultValue(null)]
+  public bool? EnableCoreFormsClientScriptUnloadEvent
+  {
+    get { return _enableCoreFormsClientScriptUnloadEvent; }
+    set { _enableCoreFormsClientScriptUnloadEvent = value; }
+  }
+
   protected override void OnInit (EventArgs e)
   {
     if (AsyncMode)
@@ -751,6 +772,15 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
           typeof(SmartPage),
           "smartPageCspOverrides",
           "Sys.WebForms.PageRequestManager.writeScriptDisposesAsScriptTags = true;");
+    }
+
+    if (scriptManager != null && !scriptManager.IsInAsyncPostBack && _enableCoreFormsClientScriptUnloadEvent != true)
+    {
+      ClientScript.RegisterClientScriptBlock(
+          this,
+          typeof(SmartPage),
+          "coreFormsUnloadAppSettingsOverride",
+          "if (window.coreFormsAppSettings) { window.coreFormsAppSettings.disableUnload = true; } else { window.coreFormsAppSettings = { disableUnload: true }; }");
     }
 
     base.OnPreRenderComplete(e);
