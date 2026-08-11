@@ -3,13 +3,13 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <!-- merge conflict buffer -->
-    <CoreFormsVersion>9.1.2</CoreFormsVersion>
+    <CoreFormsVersion>9.1.5</CoreFormsVersion>
     <!-- merge conflict buffer -->
     <TypePipeVersion>4.1.0</TypePipeVersion>
     <!-- merge conflict buffer -->
     <SqlBackendVersion>3.1.0</SqlBackendVersion>
     <!-- merge conflict buffer -->
-    <Net10CoreFormsVersion>10.0.1</Net10CoreFormsVersion>
+    <Net10CoreFormsVersion>10.0.3</Net10CoreFormsVersion>
     <!-- merge conflict buffer -->
     <Net10PackagesVersion>10.0.0</Net10PackagesVersion>
     <!-- merge conflict buffer -->
