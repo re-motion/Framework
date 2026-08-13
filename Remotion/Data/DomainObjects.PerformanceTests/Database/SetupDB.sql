@@ -471,642 +471,656 @@ GO
 -- Create all structured types
 CREATE TYPE [dbo].[TVP_String] AS TABLE
 (
-  [Value] nvarchar (max) NULL
+    [Value] nvarchar (max) NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Binary] AS TABLE
 (
-  [Value] varbinary (max) NULL
+    [Value] varbinary (max) NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_AnsiString] AS TABLE
 (
-  [Value] varchar (max) NULL
+    [Value] varchar (max) NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Boolean] AS TABLE
 (
-  [Value] bit NULL
+    [Value] bit NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Boolean_Distinct] AS TABLE
 (
-  [Value] bit NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] bit NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_Byte] AS TABLE
 (
-  [Value] tinyint NULL
+    [Value] tinyint NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Byte_Distinct] AS TABLE
 (
-  [Value] tinyint NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] tinyint NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_Int16] AS TABLE
 (
-  [Value] smallint NULL
+    [Value] smallint NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Int16_Distinct] AS TABLE
 (
-  [Value] smallint NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] smallint NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_Int32] AS TABLE
 (
-  [Value] int NULL
+    [Value] int NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Int32_Distinct] AS TABLE
 (
-  [Value] int NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] int NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_Int64] AS TABLE
 (
-  [Value] bigint NULL
+    [Value] bigint NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Int64_Distinct] AS TABLE
 (
-  [Value] bigint NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] bigint NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_Decimal] AS TABLE
 (
-  [Value] decimal (38, 3) NULL
+    [Value] decimal (38, 3) NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Decimal_Distinct] AS TABLE
 (
-  [Value] decimal (38, 3) NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] decimal (38, 3) NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_Single] AS TABLE
 (
-  [Value] real NULL
+    [Value] real NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Single_Distinct] AS TABLE
 (
-  [Value] real NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] real NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_Double] AS TABLE
 (
-  [Value] float NULL
+    [Value] float NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Double_Distinct] AS TABLE
 (
-  [Value] float NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] float NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_DateTime2] AS TABLE
 (
-  [Value] datetime2 NULL
+    [Value] datetime2 NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_DateTime2_Distinct] AS TABLE
 (
-  [Value] datetime2 NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] datetime2 NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_Date] AS TABLE
 (
-  [Value] date NULL
+    [Value] date NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Date_Distinct] AS TABLE
 (
-  [Value] date NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] date NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_Guid] AS TABLE
 (
-  [Value] uniqueidentifier NULL
+    [Value] uniqueidentifier NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Guid_Distinct] AS TABLE
 (
-  [Value] uniqueidentifier NULL
-  UNIQUE CLUSTERED ([Value])
+    [Value] uniqueidentifier NULL
+        UNIQUE CLUSTERED ([Value])
 )
 GO
 CREATE TYPE [dbo].[TVP_AllTables_Delete] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL
+    [ID] uniqueidentifier NOT NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_AllTables_Lock] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [Timestamp] varbinary(8) NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [Timestamp] varbinary(8) NOT NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithFewValueProperties_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [IntProperty1] int NOT NULL,
-  [IntProperty2] int NOT NULL,
-  [IntProperty3] int NOT NULL,
-  [IntProperty4] int NOT NULL,
-  [IntProperty5] int NOT NULL,
-  [DateTimeProperty1] datetime2 NOT NULL,
-  [DateTimeProperty2] datetime2 NOT NULL,
-  [DateTimeProperty3] datetime2 NOT NULL,
-  [DateTimeProperty4] datetime2 NOT NULL,
-  [DateTimeProperty5] datetime2 NOT NULL,
-  [StringProperty1] nvarchar (max) NULL,
-  [StringProperty2] nvarchar (max) NULL,
-  [StringProperty3] nvarchar (max) NULL,
-  [StringProperty4] nvarchar (max) NULL,
-  [StringProperty5] nvarchar (max) NULL,
-  [BoolProperty1] bit NOT NULL,
-  [BoolProperty2] bit NOT NULL,
-  [BoolProperty3] bit NOT NULL,
-  [BoolProperty4] bit NOT NULL,
-  [BoolProperty5] bit NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [IntProperty1] int NOT NULL,
+    [IntProperty2] int NOT NULL,
+    [IntProperty3] int NOT NULL,
+    [IntProperty4] int NOT NULL,
+    [IntProperty5] int NOT NULL,
+    [DateTimeProperty1] datetime2 NOT NULL,
+    [DateTimeProperty2] datetime2 NOT NULL,
+    [DateTimeProperty3] datetime2 NOT NULL,
+    [DateTimeProperty4] datetime2 NOT NULL,
+    [DateTimeProperty5] datetime2 NOT NULL,
+    [StringProperty1] nvarchar (max) NULL,
+    [StringProperty2] nvarchar (max) NULL,
+    [StringProperty3] nvarchar (max) NULL,
+    [StringProperty4] nvarchar (max) NULL,
+    [StringProperty5] nvarchar (max) NULL,
+    [BoolProperty1] bit NOT NULL,
+    [BoolProperty2] bit NOT NULL,
+    [BoolProperty3] bit NOT NULL,
+    [BoolProperty4] bit NOT NULL,
+    [BoolProperty5] bit NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithFewValueProperties_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [IntProperty1] int NOT NULL,
-  [IntProperty2] int NOT NULL,
-  [IntProperty3] int NOT NULL,
-  [IntProperty4] int NOT NULL,
-  [IntProperty5] int NOT NULL,
-  [DateTimeProperty1] datetime2 NOT NULL,
-  [DateTimeProperty2] datetime2 NOT NULL,
-  [DateTimeProperty3] datetime2 NOT NULL,
-  [DateTimeProperty4] datetime2 NOT NULL,
-  [DateTimeProperty5] datetime2 NOT NULL,
-  [StringProperty1] nvarchar (max) NULL,
-  [StringProperty1__IsSet] bit NOT NULL,
-  [StringProperty2] nvarchar (max) NULL,
-  [StringProperty2__IsSet] bit NOT NULL,
-  [StringProperty3] nvarchar (max) NULL,
-  [StringProperty3__IsSet] bit NOT NULL,
-  [StringProperty4] nvarchar (max) NULL,
-  [StringProperty4__IsSet] bit NOT NULL,
-  [StringProperty5] nvarchar (max) NULL,
-  [StringProperty5__IsSet] bit NOT NULL,
-  [BoolProperty1] bit NOT NULL,
-  [BoolProperty2] bit NOT NULL,
-  [BoolProperty3] bit NOT NULL,
-  [BoolProperty4] bit NOT NULL,
-  [BoolProperty5] bit NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [IntProperty1] int NOT NULL,
+    [IntProperty2] int NOT NULL,
+    [IntProperty3] int NOT NULL,
+    [IntProperty4] int NOT NULL,
+    [IntProperty5] int NOT NULL,
+    [DateTimeProperty1] datetime2 NOT NULL,
+    [DateTimeProperty2] datetime2 NOT NULL,
+    [DateTimeProperty3] datetime2 NOT NULL,
+    [DateTimeProperty4] datetime2 NOT NULL,
+    [DateTimeProperty5] datetime2 NOT NULL,
+    [StringProperty1] nvarchar (max) NULL,
+    [StringProperty1__IsSet] bit NOT NULL,
+    [StringProperty2] nvarchar (max) NULL,
+    [StringProperty2__IsSet] bit NOT NULL,
+    [StringProperty3] nvarchar (max) NULL,
+    [StringProperty3__IsSet] bit NOT NULL,
+    [StringProperty4] nvarchar (max) NULL,
+    [StringProperty4__IsSet] bit NOT NULL,
+    [StringProperty5] nvarchar (max) NULL,
+    [StringProperty5__IsSet] bit NOT NULL,
+    [BoolProperty1] bit NOT NULL,
+    [BoolProperty2] bit NOT NULL,
+    [BoolProperty3] bit NOT NULL,
+    [BoolProperty4] bit NOT NULL,
+    [BoolProperty5] bit NOT NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithRelationProperties_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Unary1ID] uniqueidentifier NULL,
-  [Unary2ID] uniqueidentifier NULL,
-  [Unary3ID] uniqueidentifier NULL,
-  [Unary4ID] uniqueidentifier NULL,
-  [Unary5ID] uniqueidentifier NULL,
-  [Unary6ID] uniqueidentifier NULL,
-  [Unary7ID] uniqueidentifier NULL,
-  [Unary8ID] uniqueidentifier NULL,
-  [Unary9ID] uniqueidentifier NULL,
-  [Unary10ID] uniqueidentifier NULL,
-  [Real1ID] uniqueidentifier NULL,
-  [Real2ID] uniqueidentifier NULL,
-  [Real3ID] uniqueidentifier NULL,
-  [Real4ID] uniqueidentifier NULL,
-  [Real5ID] uniqueidentifier NULL,
-  [Real6ID] uniqueidentifier NULL,
-  [Real7ID] uniqueidentifier NULL,
-  [Real8ID] uniqueidentifier NULL,
-  [Real9ID] uniqueidentifier NULL,
-  [Real10ID] uniqueidentifier NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [Unary1ID] uniqueidentifier NULL,
+    [Unary2ID] uniqueidentifier NULL,
+    [Unary3ID] uniqueidentifier NULL,
+    [Unary4ID] uniqueidentifier NULL,
+    [Unary5ID] uniqueidentifier NULL,
+    [Unary6ID] uniqueidentifier NULL,
+    [Unary7ID] uniqueidentifier NULL,
+    [Unary8ID] uniqueidentifier NULL,
+    [Unary9ID] uniqueidentifier NULL,
+    [Unary10ID] uniqueidentifier NULL,
+    [Real1ID] uniqueidentifier NULL,
+    [Real2ID] uniqueidentifier NULL,
+    [Real3ID] uniqueidentifier NULL,
+    [Real4ID] uniqueidentifier NULL,
+    [Real5ID] uniqueidentifier NULL,
+    [Real6ID] uniqueidentifier NULL,
+    [Real7ID] uniqueidentifier NULL,
+    [Real8ID] uniqueidentifier NULL,
+    [Real9ID] uniqueidentifier NULL,
+    [Real10ID] uniqueidentifier NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithRelationProperties_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Unary1ID] uniqueidentifier NULL,
-  [Unary2ID] uniqueidentifier NULL,
-  [Unary3ID] uniqueidentifier NULL,
-  [Unary4ID] uniqueidentifier NULL,
-  [Unary5ID] uniqueidentifier NULL,
-  [Unary6ID] uniqueidentifier NULL,
-  [Unary7ID] uniqueidentifier NULL,
-  [Unary8ID] uniqueidentifier NULL,
-  [Unary9ID] uniqueidentifier NULL,
-  [Unary10ID] uniqueidentifier NULL,
-  [Real1ID] uniqueidentifier NULL,
-  [Real2ID] uniqueidentifier NULL,
-  [Real3ID] uniqueidentifier NULL,
-  [Real4ID] uniqueidentifier NULL,
-  [Real5ID] uniqueidentifier NULL,
-  [Real6ID] uniqueidentifier NULL,
-  [Real7ID] uniqueidentifier NULL,
-  [Real8ID] uniqueidentifier NULL,
-  [Real9ID] uniqueidentifier NULL,
-  [Real10ID] uniqueidentifier NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [Unary1ID] uniqueidentifier NULL,
+    [Unary2ID] uniqueidentifier NULL,
+    [Unary3ID] uniqueidentifier NULL,
+    [Unary4ID] uniqueidentifier NULL,
+    [Unary5ID] uniqueidentifier NULL,
+    [Unary6ID] uniqueidentifier NULL,
+    [Unary7ID] uniqueidentifier NULL,
+    [Unary8ID] uniqueidentifier NULL,
+    [Unary9ID] uniqueidentifier NULL,
+    [Unary10ID] uniqueidentifier NULL,
+    [Real1ID] uniqueidentifier NULL,
+    [Real2ID] uniqueidentifier NULL,
+    [Real3ID] uniqueidentifier NULL,
+    [Real4ID] uniqueidentifier NULL,
+    [Real5ID] uniqueidentifier NULL,
+    [Real6ID] uniqueidentifier NULL,
+    [Real7ID] uniqueidentifier NULL,
+    [Real8ID] uniqueidentifier NULL,
+    [Real9ID] uniqueidentifier NULL,
+    [Real10ID] uniqueidentifier NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithValueProperties_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [IntProperty1] int NOT NULL,
-  [IntProperty2] int NOT NULL,
-  [IntProperty3] int NOT NULL,
-  [IntProperty4] int NOT NULL,
-  [IntProperty5] int NOT NULL,
-  [IntProperty6] int NOT NULL,
-  [IntProperty7] int NOT NULL,
-  [IntProperty8] int NOT NULL,
-  [IntProperty9] int NOT NULL,
-  [IntProperty10] int NOT NULL,
-  [DateTimeProperty1] datetime2 NOT NULL,
-  [DateTimeProperty2] datetime2 NOT NULL,
-  [DateTimeProperty3] datetime2 NOT NULL,
-  [DateTimeProperty4] datetime2 NOT NULL,
-  [DateTimeProperty5] datetime2 NOT NULL,
-  [DateTimeProperty6] datetime2 NOT NULL,
-  [DateTimeProperty7] datetime2 NOT NULL,
-  [DateTimeProperty8] datetime2 NOT NULL,
-  [DateTimeProperty9] datetime2 NOT NULL,
-  [DateTimeProperty10] datetime2 NOT NULL,
-  [StringProperty1] nvarchar (max) NULL,
-  [StringProperty2] nvarchar (max) NULL,
-  [StringProperty3] nvarchar (max) NULL,
-  [StringProperty4] nvarchar (max) NULL,
-  [StringProperty5] nvarchar (max) NULL,
-  [StringProperty6] nvarchar (max) NULL,
-  [StringProperty7] nvarchar (max) NULL,
-  [StringProperty8] nvarchar (max) NULL,
-  [StringProperty9] nvarchar (max) NULL,
-  [StringProperty10] nvarchar (max) NULL,
-  [BoolProperty1] bit NOT NULL,
-  [BoolProperty2] bit NOT NULL,
-  [BoolProperty3] bit NOT NULL,
-  [BoolProperty4] bit NOT NULL,
-  [BoolProperty5] bit NOT NULL,
-  [BoolProperty6] bit NOT NULL,
-  [BoolProperty7] bit NOT NULL,
-  [BoolProperty8] bit NOT NULL,
-  [BoolProperty9] bit NOT NULL,
-  [BoolProperty10] bit NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [IntProperty1] int NOT NULL,
+    [IntProperty2] int NOT NULL,
+    [IntProperty3] int NOT NULL,
+    [IntProperty4] int NOT NULL,
+    [IntProperty5] int NOT NULL,
+    [IntProperty6] int NOT NULL,
+    [IntProperty7] int NOT NULL,
+    [IntProperty8] int NOT NULL,
+    [IntProperty9] int NOT NULL,
+    [IntProperty10] int NOT NULL,
+    [DateTimeProperty1] datetime2 NOT NULL,
+    [DateTimeProperty2] datetime2 NOT NULL,
+    [DateTimeProperty3] datetime2 NOT NULL,
+    [DateTimeProperty4] datetime2 NOT NULL,
+    [DateTimeProperty5] datetime2 NOT NULL,
+    [DateTimeProperty6] datetime2 NOT NULL,
+    [DateTimeProperty7] datetime2 NOT NULL,
+    [DateTimeProperty8] datetime2 NOT NULL,
+    [DateTimeProperty9] datetime2 NOT NULL,
+    [DateTimeProperty10] datetime2 NOT NULL,
+    [StringProperty1] nvarchar (max) NULL,
+    [StringProperty2] nvarchar (max) NULL,
+    [StringProperty3] nvarchar (max) NULL,
+    [StringProperty4] nvarchar (max) NULL,
+    [StringProperty5] nvarchar (max) NULL,
+    [StringProperty6] nvarchar (max) NULL,
+    [StringProperty7] nvarchar (max) NULL,
+    [StringProperty8] nvarchar (max) NULL,
+    [StringProperty9] nvarchar (max) NULL,
+    [StringProperty10] nvarchar (max) NULL,
+    [BoolProperty1] bit NOT NULL,
+    [BoolProperty2] bit NOT NULL,
+    [BoolProperty3] bit NOT NULL,
+    [BoolProperty4] bit NOT NULL,
+    [BoolProperty5] bit NOT NULL,
+    [BoolProperty6] bit NOT NULL,
+    [BoolProperty7] bit NOT NULL,
+    [BoolProperty8] bit NOT NULL,
+    [BoolProperty9] bit NOT NULL,
+    [BoolProperty10] bit NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithValueProperties_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [IntProperty1] int NOT NULL,
-  [IntProperty2] int NOT NULL,
-  [IntProperty3] int NOT NULL,
-  [IntProperty4] int NOT NULL,
-  [IntProperty5] int NOT NULL,
-  [IntProperty6] int NOT NULL,
-  [IntProperty7] int NOT NULL,
-  [IntProperty8] int NOT NULL,
-  [IntProperty9] int NOT NULL,
-  [IntProperty10] int NOT NULL,
-  [DateTimeProperty1] datetime2 NOT NULL,
-  [DateTimeProperty2] datetime2 NOT NULL,
-  [DateTimeProperty3] datetime2 NOT NULL,
-  [DateTimeProperty4] datetime2 NOT NULL,
-  [DateTimeProperty5] datetime2 NOT NULL,
-  [DateTimeProperty6] datetime2 NOT NULL,
-  [DateTimeProperty7] datetime2 NOT NULL,
-  [DateTimeProperty8] datetime2 NOT NULL,
-  [DateTimeProperty9] datetime2 NOT NULL,
-  [DateTimeProperty10] datetime2 NOT NULL,
-  [StringProperty1] nvarchar (max) NULL,
-  [StringProperty1__IsSet] bit NOT NULL,
-  [StringProperty2] nvarchar (max) NULL,
-  [StringProperty2__IsSet] bit NOT NULL,
-  [StringProperty3] nvarchar (max) NULL,
-  [StringProperty3__IsSet] bit NOT NULL,
-  [StringProperty4] nvarchar (max) NULL,
-  [StringProperty4__IsSet] bit NOT NULL,
-  [StringProperty5] nvarchar (max) NULL,
-  [StringProperty5__IsSet] bit NOT NULL,
-  [StringProperty6] nvarchar (max) NULL,
-  [StringProperty6__IsSet] bit NOT NULL,
-  [StringProperty7] nvarchar (max) NULL,
-  [StringProperty7__IsSet] bit NOT NULL,
-  [StringProperty8] nvarchar (max) NULL,
-  [StringProperty8__IsSet] bit NOT NULL,
-  [StringProperty9] nvarchar (max) NULL,
-  [StringProperty9__IsSet] bit NOT NULL,
-  [StringProperty10] nvarchar (max) NULL,
-  [StringProperty10__IsSet] bit NOT NULL,
-  [BoolProperty1] bit NOT NULL,
-  [BoolProperty2] bit NOT NULL,
-  [BoolProperty3] bit NOT NULL,
-  [BoolProperty4] bit NOT NULL,
-  [BoolProperty5] bit NOT NULL,
-  [BoolProperty6] bit NOT NULL,
-  [BoolProperty7] bit NOT NULL,
-  [BoolProperty8] bit NOT NULL,
-  [BoolProperty9] bit NOT NULL,
-  [BoolProperty10] bit NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [IntProperty1] int NOT NULL,
+    [IntProperty2] int NOT NULL,
+    [IntProperty3] int NOT NULL,
+    [IntProperty4] int NOT NULL,
+    [IntProperty5] int NOT NULL,
+    [IntProperty6] int NOT NULL,
+    [IntProperty7] int NOT NULL,
+    [IntProperty8] int NOT NULL,
+    [IntProperty9] int NOT NULL,
+    [IntProperty10] int NOT NULL,
+    [DateTimeProperty1] datetime2 NOT NULL,
+    [DateTimeProperty2] datetime2 NOT NULL,
+    [DateTimeProperty3] datetime2 NOT NULL,
+    [DateTimeProperty4] datetime2 NOT NULL,
+    [DateTimeProperty5] datetime2 NOT NULL,
+    [DateTimeProperty6] datetime2 NOT NULL,
+    [DateTimeProperty7] datetime2 NOT NULL,
+    [DateTimeProperty8] datetime2 NOT NULL,
+    [DateTimeProperty9] datetime2 NOT NULL,
+    [DateTimeProperty10] datetime2 NOT NULL,
+    [StringProperty1] nvarchar (max) NULL,
+    [StringProperty1__IsSet] bit NOT NULL,
+    [StringProperty2] nvarchar (max) NULL,
+    [StringProperty2__IsSet] bit NOT NULL,
+    [StringProperty3] nvarchar (max) NULL,
+    [StringProperty3__IsSet] bit NOT NULL,
+    [StringProperty4] nvarchar (max) NULL,
+    [StringProperty4__IsSet] bit NOT NULL,
+    [StringProperty5] nvarchar (max) NULL,
+    [StringProperty5__IsSet] bit NOT NULL,
+    [StringProperty6] nvarchar (max) NULL,
+    [StringProperty6__IsSet] bit NOT NULL,
+    [StringProperty7] nvarchar (max) NULL,
+    [StringProperty7__IsSet] bit NOT NULL,
+    [StringProperty8] nvarchar (max) NULL,
+    [StringProperty8__IsSet] bit NOT NULL,
+    [StringProperty9] nvarchar (max) NULL,
+    [StringProperty9__IsSet] bit NOT NULL,
+    [StringProperty10] nvarchar (max) NULL,
+    [StringProperty10__IsSet] bit NOT NULL,
+    [BoolProperty1] bit NOT NULL,
+    [BoolProperty2] bit NOT NULL,
+    [BoolProperty3] bit NOT NULL,
+    [BoolProperty4] bit NOT NULL,
+    [BoolProperty5] bit NOT NULL,
+    [BoolProperty6] bit NOT NULL,
+    [BoolProperty7] bit NOT NULL,
+    [BoolProperty8] bit NOT NULL,
+    [BoolProperty9] bit NOT NULL,
+    [BoolProperty10] bit NOT NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Client_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Name] nvarchar (100) NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [Name] nvarchar (100) NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Client_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Name] nvarchar (100) NOT NULL,
-  [Name__IsSet] bit NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [Name] nvarchar (100) NOT NULL,
+    [Name__IsSet] bit NOT NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Company_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [ClientID] uniqueidentifier NULL,
-  [Name] nvarchar (100) NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [ClientID] uniqueidentifier NULL,
+    [Name] nvarchar (100) NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Company_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [ClientID] uniqueidentifier NULL,
-  [Name] nvarchar (100) NOT NULL,
-  [Name__IsSet] bit NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [ClientID] uniqueidentifier NULL,
+    [Name] nvarchar (100) NOT NULL,
+    [Name__IsSet] bit NOT NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_File_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Number] nvarchar (100) NOT NULL,
-  [ClientID] uniqueidentifier NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [Number] nvarchar (100) NOT NULL,
+    [ClientID] uniqueidentifier NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_File_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Number] nvarchar (100) NOT NULL,
-  [Number__IsSet] bit NOT NULL,
-  [ClientID] uniqueidentifier NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [Number] nvarchar (100) NOT NULL,
+    [Number__IsSet] bit NOT NULL,
+    [ClientID] uniqueidentifier NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ObjectWithSecurity_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [IntProperty1] int NOT NULL,
-  [IntProperty2] int NOT NULL,
-  [IntProperty3] int NOT NULL,
-  [IntProperty4] int NOT NULL,
-  [IntProperty5] int NOT NULL,
-  [IntProperty6] int NOT NULL,
-  [IntProperty7] int NOT NULL,
-  [IntProperty8] int NOT NULL,
-  [IntProperty9] int NOT NULL,
-  [IntProperty10] int NOT NULL,
-  [DateTimeProperty1] datetime2 NOT NULL,
-  [DateTimeProperty2] datetime2 NOT NULL,
-  [DateTimeProperty3] datetime2 NOT NULL,
-  [DateTimeProperty4] datetime2 NOT NULL,
-  [DateTimeProperty5] datetime2 NOT NULL,
-  [DateTimeProperty6] datetime2 NOT NULL,
-  [DateTimeProperty7] datetime2 NOT NULL,
-  [DateTimeProperty8] datetime2 NOT NULL,
-  [DateTimeProperty9] datetime2 NOT NULL,
-  [DateTimeProperty10] datetime2 NOT NULL,
-  [StringProperty1] nvarchar (max) NULL,
-  [StringProperty2] nvarchar (max) NULL,
-  [StringProperty3] nvarchar (max) NULL,
-  [StringProperty4] nvarchar (max) NULL,
-  [StringProperty5] nvarchar (max) NULL,
-  [StringProperty6] nvarchar (max) NULL,
-  [StringProperty7] nvarchar (max) NULL,
-  [StringProperty8] nvarchar (max) NULL,
-  [StringProperty9] nvarchar (max) NULL,
-  [StringProperty10] nvarchar (max) NULL,
-  [BoolProperty1] bit NOT NULL,
-  [BoolProperty2] bit NOT NULL,
-  [BoolProperty3] bit NOT NULL,
-  [BoolProperty4] bit NOT NULL,
-  [BoolProperty5] bit NOT NULL,
-  [BoolProperty6] bit NOT NULL,
-  [BoolProperty7] bit NOT NULL,
-  [BoolProperty8] bit NOT NULL,
-  [BoolProperty9] bit NOT NULL,
-  [BoolProperty10] bit NOT NULL,
-  [Unary1ID] uniqueidentifier NULL,
-  [Unary2ID] uniqueidentifier NULL,
-  [Unary3ID] uniqueidentifier NULL,
-  [Unary4ID] uniqueidentifier NULL,
-  [Unary5ID] uniqueidentifier NULL,
-  [Unary6ID] uniqueidentifier NULL,
-  [Unary7ID] uniqueidentifier NULL,
-  [Unary8ID] uniqueidentifier NULL,
-  [Unary9ID] uniqueidentifier NULL,
-  [Unary10ID] uniqueidentifier NULL,
-  [Real1ID] uniqueidentifier NULL,
-  [Real2ID] uniqueidentifier NULL,
-  [Real3ID] uniqueidentifier NULL,
-  [Real4ID] uniqueidentifier NULL,
-  [Real5ID] uniqueidentifier NULL,
-  [Real6ID] uniqueidentifier NULL,
-  [Real7ID] uniqueidentifier NULL,
-  [Real8ID] uniqueidentifier NULL,
-  [Real9ID] uniqueidentifier NULL,
-  [Real10ID] uniqueidentifier NULL,
-  [TheProperty] int NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [IntProperty1] int NOT NULL,
+    [IntProperty2] int NOT NULL,
+    [IntProperty3] int NOT NULL,
+    [IntProperty4] int NOT NULL,
+    [IntProperty5] int NOT NULL,
+    [IntProperty6] int NOT NULL,
+    [IntProperty7] int NOT NULL,
+    [IntProperty8] int NOT NULL,
+    [IntProperty9] int NOT NULL,
+    [IntProperty10] int NOT NULL,
+    [DateTimeProperty1] datetime2 NOT NULL,
+    [DateTimeProperty2] datetime2 NOT NULL,
+    [DateTimeProperty3] datetime2 NOT NULL,
+    [DateTimeProperty4] datetime2 NOT NULL,
+    [DateTimeProperty5] datetime2 NOT NULL,
+    [DateTimeProperty6] datetime2 NOT NULL,
+    [DateTimeProperty7] datetime2 NOT NULL,
+    [DateTimeProperty8] datetime2 NOT NULL,
+    [DateTimeProperty9] datetime2 NOT NULL,
+    [DateTimeProperty10] datetime2 NOT NULL,
+    [StringProperty1] nvarchar (max) NULL,
+    [StringProperty2] nvarchar (max) NULL,
+    [StringProperty3] nvarchar (max) NULL,
+    [StringProperty4] nvarchar (max) NULL,
+    [StringProperty5] nvarchar (max) NULL,
+    [StringProperty6] nvarchar (max) NULL,
+    [StringProperty7] nvarchar (max) NULL,
+    [StringProperty8] nvarchar (max) NULL,
+    [StringProperty9] nvarchar (max) NULL,
+    [StringProperty10] nvarchar (max) NULL,
+    [BoolProperty1] bit NOT NULL,
+    [BoolProperty2] bit NOT NULL,
+    [BoolProperty3] bit NOT NULL,
+    [BoolProperty4] bit NOT NULL,
+    [BoolProperty5] bit NOT NULL,
+    [BoolProperty6] bit NOT NULL,
+    [BoolProperty7] bit NOT NULL,
+    [BoolProperty8] bit NOT NULL,
+    [BoolProperty9] bit NOT NULL,
+    [BoolProperty10] bit NOT NULL,
+    [Unary1ID] uniqueidentifier NULL,
+    [Unary2ID] uniqueidentifier NULL,
+    [Unary3ID] uniqueidentifier NULL,
+    [Unary4ID] uniqueidentifier NULL,
+    [Unary5ID] uniqueidentifier NULL,
+    [Unary6ID] uniqueidentifier NULL,
+    [Unary7ID] uniqueidentifier NULL,
+    [Unary8ID] uniqueidentifier NULL,
+    [Unary9ID] uniqueidentifier NULL,
+    [Unary10ID] uniqueidentifier NULL,
+    [Real1ID] uniqueidentifier NULL,
+    [Real2ID] uniqueidentifier NULL,
+    [Real3ID] uniqueidentifier NULL,
+    [Real4ID] uniqueidentifier NULL,
+    [Real5ID] uniqueidentifier NULL,
+    [Real6ID] uniqueidentifier NULL,
+    [Real7ID] uniqueidentifier NULL,
+    [Real8ID] uniqueidentifier NULL,
+    [Real9ID] uniqueidentifier NULL,
+    [Real10ID] uniqueidentifier NULL,
+    [TheProperty] int NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_ObjectWithSecurity_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [IntProperty1] int NOT NULL,
-  [IntProperty2] int NOT NULL,
-  [IntProperty3] int NOT NULL,
-  [IntProperty4] int NOT NULL,
-  [IntProperty5] int NOT NULL,
-  [IntProperty6] int NOT NULL,
-  [IntProperty7] int NOT NULL,
-  [IntProperty8] int NOT NULL,
-  [IntProperty9] int NOT NULL,
-  [IntProperty10] int NOT NULL,
-  [DateTimeProperty1] datetime2 NOT NULL,
-  [DateTimeProperty2] datetime2 NOT NULL,
-  [DateTimeProperty3] datetime2 NOT NULL,
-  [DateTimeProperty4] datetime2 NOT NULL,
-  [DateTimeProperty5] datetime2 NOT NULL,
-  [DateTimeProperty6] datetime2 NOT NULL,
-  [DateTimeProperty7] datetime2 NOT NULL,
-  [DateTimeProperty8] datetime2 NOT NULL,
-  [DateTimeProperty9] datetime2 NOT NULL,
-  [DateTimeProperty10] datetime2 NOT NULL,
-  [StringProperty1] nvarchar (max) NULL,
-  [StringProperty1__IsSet] bit NOT NULL,
-  [StringProperty2] nvarchar (max) NULL,
-  [StringProperty2__IsSet] bit NOT NULL,
-  [StringProperty3] nvarchar (max) NULL,
-  [StringProperty3__IsSet] bit NOT NULL,
-  [StringProperty4] nvarchar (max) NULL,
-  [StringProperty4__IsSet] bit NOT NULL,
-  [StringProperty5] nvarchar (max) NULL,
-  [StringProperty5__IsSet] bit NOT NULL,
-  [StringProperty6] nvarchar (max) NULL,
-  [StringProperty6__IsSet] bit NOT NULL,
-  [StringProperty7] nvarchar (max) NULL,
-  [StringProperty7__IsSet] bit NOT NULL,
-  [StringProperty8] nvarchar (max) NULL,
-  [StringProperty8__IsSet] bit NOT NULL,
-  [StringProperty9] nvarchar (max) NULL,
-  [StringProperty9__IsSet] bit NOT NULL,
-  [StringProperty10] nvarchar (max) NULL,
-  [StringProperty10__IsSet] bit NOT NULL,
-  [BoolProperty1] bit NOT NULL,
-  [BoolProperty2] bit NOT NULL,
-  [BoolProperty3] bit NOT NULL,
-  [BoolProperty4] bit NOT NULL,
-  [BoolProperty5] bit NOT NULL,
-  [BoolProperty6] bit NOT NULL,
-  [BoolProperty7] bit NOT NULL,
-  [BoolProperty8] bit NOT NULL,
-  [BoolProperty9] bit NOT NULL,
-  [BoolProperty10] bit NOT NULL,
-  [Unary1ID] uniqueidentifier NULL,
-  [Unary2ID] uniqueidentifier NULL,
-  [Unary3ID] uniqueidentifier NULL,
-  [Unary4ID] uniqueidentifier NULL,
-  [Unary5ID] uniqueidentifier NULL,
-  [Unary6ID] uniqueidentifier NULL,
-  [Unary7ID] uniqueidentifier NULL,
-  [Unary8ID] uniqueidentifier NULL,
-  [Unary9ID] uniqueidentifier NULL,
-  [Unary10ID] uniqueidentifier NULL,
-  [Real1ID] uniqueidentifier NULL,
-  [Real2ID] uniqueidentifier NULL,
-  [Real3ID] uniqueidentifier NULL,
-  [Real4ID] uniqueidentifier NULL,
-  [Real5ID] uniqueidentifier NULL,
-  [Real6ID] uniqueidentifier NULL,
-  [Real7ID] uniqueidentifier NULL,
-  [Real8ID] uniqueidentifier NULL,
-  [Real9ID] uniqueidentifier NULL,
-  [Real10ID] uniqueidentifier NULL,
-  [TheProperty] int NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [IntProperty1] int NOT NULL,
+    [IntProperty2] int NOT NULL,
+    [IntProperty3] int NOT NULL,
+    [IntProperty4] int NOT NULL,
+    [IntProperty5] int NOT NULL,
+    [IntProperty6] int NOT NULL,
+    [IntProperty7] int NOT NULL,
+    [IntProperty8] int NOT NULL,
+    [IntProperty9] int NOT NULL,
+    [IntProperty10] int NOT NULL,
+    [DateTimeProperty1] datetime2 NOT NULL,
+    [DateTimeProperty2] datetime2 NOT NULL,
+    [DateTimeProperty3] datetime2 NOT NULL,
+    [DateTimeProperty4] datetime2 NOT NULL,
+    [DateTimeProperty5] datetime2 NOT NULL,
+    [DateTimeProperty6] datetime2 NOT NULL,
+    [DateTimeProperty7] datetime2 NOT NULL,
+    [DateTimeProperty8] datetime2 NOT NULL,
+    [DateTimeProperty9] datetime2 NOT NULL,
+    [DateTimeProperty10] datetime2 NOT NULL,
+    [StringProperty1] nvarchar (max) NULL,
+    [StringProperty1__IsSet] bit NOT NULL,
+    [StringProperty2] nvarchar (max) NULL,
+    [StringProperty2__IsSet] bit NOT NULL,
+    [StringProperty3] nvarchar (max) NULL,
+    [StringProperty3__IsSet] bit NOT NULL,
+    [StringProperty4] nvarchar (max) NULL,
+    [StringProperty4__IsSet] bit NOT NULL,
+    [StringProperty5] nvarchar (max) NULL,
+    [StringProperty5__IsSet] bit NOT NULL,
+    [StringProperty6] nvarchar (max) NULL,
+    [StringProperty6__IsSet] bit NOT NULL,
+    [StringProperty7] nvarchar (max) NULL,
+    [StringProperty7__IsSet] bit NOT NULL,
+    [StringProperty8] nvarchar (max) NULL,
+    [StringProperty8__IsSet] bit NOT NULL,
+    [StringProperty9] nvarchar (max) NULL,
+    [StringProperty9__IsSet] bit NOT NULL,
+    [StringProperty10] nvarchar (max) NULL,
+    [StringProperty10__IsSet] bit NOT NULL,
+    [BoolProperty1] bit NOT NULL,
+    [BoolProperty2] bit NOT NULL,
+    [BoolProperty3] bit NOT NULL,
+    [BoolProperty4] bit NOT NULL,
+    [BoolProperty5] bit NOT NULL,
+    [BoolProperty6] bit NOT NULL,
+    [BoolProperty7] bit NOT NULL,
+    [BoolProperty8] bit NOT NULL,
+    [BoolProperty9] bit NOT NULL,
+    [BoolProperty10] bit NOT NULL,
+    [Unary1ID] uniqueidentifier NULL,
+    [Unary2ID] uniqueidentifier NULL,
+    [Unary3ID] uniqueidentifier NULL,
+    [Unary4ID] uniqueidentifier NULL,
+    [Unary5ID] uniqueidentifier NULL,
+    [Unary6ID] uniqueidentifier NULL,
+    [Unary7ID] uniqueidentifier NULL,
+    [Unary8ID] uniqueidentifier NULL,
+    [Unary9ID] uniqueidentifier NULL,
+    [Unary10ID] uniqueidentifier NULL,
+    [Real1ID] uniqueidentifier NULL,
+    [Real2ID] uniqueidentifier NULL,
+    [Real3ID] uniqueidentifier NULL,
+    [Real4ID] uniqueidentifier NULL,
+    [Real5ID] uniqueidentifier NULL,
+    [Real6ID] uniqueidentifier NULL,
+    [Real7ID] uniqueidentifier NULL,
+    [Real8ID] uniqueidentifier NULL,
+    [Real9ID] uniqueidentifier NULL,
+    [Real10ID] uniqueidentifier NULL,
+    [TheProperty] int NOT NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithAnonymousRelationProperties_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithAnonymousRelationProperties_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithCollectionRelationProperties_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [EndOfCollectionID] uniqueidentifier NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [EndOfCollectionID] uniqueidentifier NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithCollectionRelationProperties_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [EndOfCollectionID] uniqueidentifier NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [EndOfCollectionID] uniqueidentifier NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithRealRelationProperties_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Real1ID] uniqueidentifier NULL,
-  [Real2ID] uniqueidentifier NULL,
-  [Real3ID] uniqueidentifier NULL,
-  [Real4ID] uniqueidentifier NULL,
-  [Real5ID] uniqueidentifier NULL,
-  [Real6ID] uniqueidentifier NULL,
-  [Real7ID] uniqueidentifier NULL,
-  [Real8ID] uniqueidentifier NULL,
-  [Real9ID] uniqueidentifier NULL,
-  [Real10ID] uniqueidentifier NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [Real1ID] uniqueidentifier NULL,
+    [Real2ID] uniqueidentifier NULL,
+    [Real3ID] uniqueidentifier NULL,
+    [Real4ID] uniqueidentifier NULL,
+    [Real5ID] uniqueidentifier NULL,
+    [Real6ID] uniqueidentifier NULL,
+    [Real7ID] uniqueidentifier NULL,
+    [Real8ID] uniqueidentifier NULL,
+    [Real9ID] uniqueidentifier NULL,
+    [Real10ID] uniqueidentifier NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithRealRelationProperties_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Real1ID] uniqueidentifier NULL,
-  [Real2ID] uniqueidentifier NULL,
-  [Real3ID] uniqueidentifier NULL,
-  [Real4ID] uniqueidentifier NULL,
-  [Real5ID] uniqueidentifier NULL,
-  [Real6ID] uniqueidentifier NULL,
-  [Real7ID] uniqueidentifier NULL,
-  [Real8ID] uniqueidentifier NULL,
-  [Real9ID] uniqueidentifier NULL,
-  [Real10ID] uniqueidentifier NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [Real1ID] uniqueidentifier NULL,
+    [Real2ID] uniqueidentifier NULL,
+    [Real3ID] uniqueidentifier NULL,
+    [Real4ID] uniqueidentifier NULL,
+    [Real5ID] uniqueidentifier NULL,
+    [Real6ID] uniqueidentifier NULL,
+    [Real7ID] uniqueidentifier NULL,
+    [Real8ID] uniqueidentifier NULL,
+    [Real9ID] uniqueidentifier NULL,
+    [Real10ID] uniqueidentifier NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithVirtualRelationProperties_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithVirtualRelationProperties_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Person_Insert] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [ClientID] uniqueidentifier NULL,
-  [FirstName] nvarchar (100) NOT NULL,
-  [LastName] nvarchar (100) NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [ClientID] uniqueidentifier NULL,
+    [FirstName] nvarchar (100) NOT NULL,
+    [LastName] nvarchar (100) NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Person_Update] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [ClientID] uniqueidentifier NULL,
-  [FirstName] nvarchar (100) NOT NULL,
-  [FirstName__IsSet] bit NOT NULL,
-  [LastName] nvarchar (100) NOT NULL,
-  [LastName__IsSet] bit NOT NULL
+    [ID] uniqueidentifier NOT NULL,
+    [ClassID] varchar (100) NOT NULL,
+    [ClientID] uniqueidentifier NULL,
+    [FirstName] nvarchar (100) NOT NULL,
+    [FirstName__IsSet] bit NOT NULL,
+    [LastName] nvarchar (100) NOT NULL,
+    [LastName__IsSet] bit NOT NULL
+        PRIMARY KEY CLUSTERED ([ID])
 )
 GO
