@@ -25,6 +25,10 @@
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>AnchorTest.aspx</DependentUpon>
     </Compile>
+    <Compile Update="CoreFormsUnloadEventTest.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>CoreFormsUnloadEventTest.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
