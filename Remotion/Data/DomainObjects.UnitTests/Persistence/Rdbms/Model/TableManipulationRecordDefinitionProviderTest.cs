@@ -436,6 +436,46 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
   }
 
   [Test]
+  public void GetDeleteRecordDefinition_HasPrimaryKeyConstraintOnID ()
+  {
+    var classDefinition = MappingConfiguration.Current.GetClassDefinition("ClassWithAllDataTypes");
+    var recordDefinition = _tableManipulationRecordDefinitionProvider.GetDeleteRecordDefinition(classDefinition);
+
+    AssertHasPrimaryKeyIDConstraint(recordDefinition, _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition().ValueProperty);
+  }
+
+  [Test]
+  public void GetLockRecordDefinition_HasPrimaryKeyConstraintOnID ()
+  {
+    var classDefinition = MappingConfiguration.Current.GetClassDefinition("ClassWithAllDataTypes");
+    var recordDefinition = _tableManipulationRecordDefinitionProvider.GetLockRecordDefinition(classDefinition);
+
+    AssertHasPrimaryKeyIDConstraint(recordDefinition, _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition().ValueProperty);
+  }
+
+  [Test]
+  public void GetInsertRecordDefinition_HasNoConstraints ()
+  {
+    // The Insert TVP is never joined against the target table (see BatchedInsertDbCommandBuilder), so unlike the Update/Delete/Lock
+    // TVPs it gets no benefit from a primary key constraint on ID.
+    var classDefinition = MappingConfiguration.Current.GetClassDefinition("ClassWithAllDataTypes");
+    var recordDefinition = _tableManipulationRecordDefinitionProvider.GetInsertRecordDefinition(classDefinition);
+
+    var tableTypeDefinition = (TableTypeDefinition)recordDefinition.StructuredTypeDefinition;
+    Assert.That(tableTypeDefinition.Constraints, Is.Empty);
+  }
+
+  [Test]
+  public void GetUpdateRecordDefinition_HasPrimaryKeyConstraintOnID ()
+  {
+    var classDefinition = MappingConfiguration.Current.GetClassDefinition("ClassWithAllDataTypes");
+    var tableDefinition = (TableDefinition)classDefinition.StorageEntityDefinition;
+    var recordDefinition = _tableManipulationRecordDefinitionProvider.GetUpdateRecordDefinition(classDefinition);
+
+    AssertHasPrimaryKeyIDConstraint(recordDefinition, tableDefinition.ObjectIDProperty);
+  }
+
+  [Test]
   public void GetColumnValues_WithTableManipulationDataContainerAccessor_ReturnsCorrectValues ()
   {
     var productReviewClassDefinition = MappingConfiguration.Current.GetClassDefinition("ProductReview");
@@ -567,6 +607,24 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         throw new NotSupportedException();
       }
     }
+  }
+
+  private static void AssertHasPrimaryKeyIDConstraint (RecordDefinition recordDefinition, IRdbmsStoragePropertyDefinition idProperty)
+  {
+    var tableTypeDefinition = (TableTypeDefinition)recordDefinition.StructuredTypeDefinition;
+    var expectedColumns = idProperty.GetColumnsForComparison().ToArray();
+
+    Assert.That(tableTypeDefinition.Constraints, Has.Count.EqualTo(1));
+
+    var constraint = tableTypeDefinition.Constraints.Single();
+    Assert.That(constraint, Is.TypeOf<PrimaryKeyConstraintDefinition>());
+
+    var primaryKeyConstraint = (PrimaryKeyConstraintDefinition)constraint;
+    Assert.That(primaryKeyConstraint.IsClustered, Is.True);
+    Assert.That(primaryKeyConstraint.Columns, Is.EqualTo(expectedColumns));
+    Assert.That(
+        primaryKeyConstraint.ConstraintName,
+        Is.EqualTo($"PK_{tableTypeDefinition.TypeName.EntityName}"));
   }
 
   private enum AssertedPropertyType

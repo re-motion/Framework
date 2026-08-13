@@ -205,12 +205,14 @@ CREATE TYPE [dbo].[TVP_CustomDataType_ClassWithCustomDataType_Update] AS TABLE
   [CompoundDataTypeValueStringValue] nvarchar (100) NULL,
   [CompoundDataTypeValueInt32Value] int NULL,
   [SimpleDataTypeValue] nvarchar (max) NULL,
-  [SimpleDataTypeValue__IsSet] bit NOT NULL
+  [SimpleDataTypeValue__IsSet] bit NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [TVP_TableWithInvalidRelation_Update] AS TABLE(
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [TableWithGuidKeyID] uniqueidentifier NULL
+  [TableWithGuidKeyID] uniqueidentifier NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 ) 
 GO

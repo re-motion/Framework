@@ -326,6 +326,7 @@ CREATE TYPE [dbo].[TVP_TableInheritance_DerivedClassWithEntityWithHierarchy_Upda
   [ClientFromDerivedClassWithEntityFromBaseClassID] uniqueidentifier NULL,
   [FileSystemItemFromDerivedClassWithEntityFromBaseClassID] uniqueidentifier NULL,
   [FileSystemItemFromDerivedClassWithEntityFromBaseClassIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableInheritance_Address_Insert] AS TABLE
@@ -354,6 +355,7 @@ CREATE TYPE [dbo].[TVP_TableInheritance_Address_Update] AS TABLE
   [Country__IsSet] bit NOT NULL,
   [PersonID] uniqueidentifier NULL,
   [PersonIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableInheritance_TableWithUnidirectionalRelation_Insert] AS TABLE
@@ -370,6 +372,7 @@ CREATE TYPE [dbo].[TVP_TableInheritance_TableWithUnidirectionalRelation_Update] 
   [ClassID] varchar (100) NOT NULL,
   [DomainBaseID] uniqueidentifier NULL,
   [DomainBaseIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableInheritance_Client_Insert] AS TABLE
@@ -385,6 +388,7 @@ CREATE TYPE [dbo].[TVP_TableInheritance_Client_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [Name] nvarchar (100) NOT NULL,
   [Name__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableInheritance_Person_Insert] AS TABLE
@@ -421,6 +425,7 @@ CREATE TYPE [dbo].[TVP_TableInheritance_Person_Update] AS TABLE
   [CustomerType] int NULL,
   [CustomerSince] datetime2 NULL,
   [RegionID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableInheritance_File_Insert] AS TABLE
@@ -444,6 +449,7 @@ CREATE TYPE [dbo].[TVP_TableInheritance_File_Update] AS TABLE
   [ParentFolderIDClassID] varchar (100) NULL,
   [Size] int NOT NULL,
   [FileCreatedAt] datetime2 NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableInheritance_HistoryEntry_Insert] AS TABLE
@@ -465,6 +471,7 @@ CREATE TYPE [dbo].[TVP_TableInheritance_HistoryEntry_Update] AS TABLE
   [Text__IsSet] bit NOT NULL,
   [OwnerID] uniqueidentifier NULL,
   [OwnerIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableInheritance_Order_Insert] AS TABLE
@@ -485,6 +492,7 @@ CREATE TYPE [dbo].[TVP_TableInheritance_Order_Update] AS TABLE
   [OrderDate] datetime2 NOT NULL,
   [CustomerID] uniqueidentifier NULL,
   [CustomerIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableInheritance_OrganizationalUnit_Insert] AS TABLE
@@ -507,6 +515,7 @@ CREATE TYPE [dbo].[TVP_TableInheritance_OrganizationalUnit_Update] AS TABLE
   [ClientID] uniqueidentifier NULL,
   [Name] nvarchar (100) NOT NULL,
   [Name__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableInheritance_Region_Insert] AS TABLE
@@ -522,6 +531,7 @@ CREATE TYPE [dbo].[TVP_TableInheritance_Region_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [Name] nvarchar (100) NOT NULL,
   [Name__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableInheritance_Folder_Insert] AS TABLE
@@ -543,5 +553,6 @@ CREATE TYPE [dbo].[TVP_TableInheritance_Folder_Update] AS TABLE
   [ParentFolderID] uniqueidentifier NULL,
   [ParentFolderIDClassID] varchar (100) NULL,
   [FolderCreatedAt] datetime2 NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO

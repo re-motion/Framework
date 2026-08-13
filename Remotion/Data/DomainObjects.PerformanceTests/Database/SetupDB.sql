@@ -607,13 +607,15 @@ CREATE TYPE [dbo].[TVP_Guid_Distinct] AS TABLE
 GO
 CREATE TYPE [dbo].[TVP_AllTables_Delete] AS TABLE
 (
-  [ID] uniqueidentifier NOT NULL
+  [ID] uniqueidentifier NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_AllTables_Lock] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
-  [Timestamp] varbinary(8) NOT NULL
+  [Timestamp] varbinary(8) NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithFewValueProperties_Insert] AS TABLE
@@ -670,7 +672,8 @@ CREATE TYPE [dbo].[TVP_ClassWithFewValueProperties_Update] AS TABLE
   [BoolProperty2] bit NOT NULL,
   [BoolProperty3] bit NOT NULL,
   [BoolProperty4] bit NOT NULL,
-  [BoolProperty5] bit NOT NULL
+  [BoolProperty5] bit NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithRelationProperties_Insert] AS TABLE
@@ -722,7 +725,8 @@ CREATE TYPE [dbo].[TVP_ClassWithRelationProperties_Update] AS TABLE
   [Real7ID] uniqueidentifier NULL,
   [Real8ID] uniqueidentifier NULL,
   [Real9ID] uniqueidentifier NULL,
-  [Real10ID] uniqueidentifier NULL
+  [Real10ID] uniqueidentifier NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithValueProperties_Insert] AS TABLE
@@ -824,7 +828,8 @@ CREATE TYPE [dbo].[TVP_ClassWithValueProperties_Update] AS TABLE
   [BoolProperty7] bit NOT NULL,
   [BoolProperty8] bit NOT NULL,
   [BoolProperty9] bit NOT NULL,
-  [BoolProperty10] bit NOT NULL
+  [BoolProperty10] bit NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Client_Insert] AS TABLE
@@ -839,7 +844,8 @@ CREATE TYPE [dbo].[TVP_Client_Update] AS TABLE
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [Name] nvarchar (100) NOT NULL,
-  [Name__IsSet] bit NOT NULL
+  [Name__IsSet] bit NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Company_Insert] AS TABLE
@@ -856,7 +862,8 @@ CREATE TYPE [dbo].[TVP_Company_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [ClientID] uniqueidentifier NULL,
   [Name] nvarchar (100) NOT NULL,
-  [Name__IsSet] bit NOT NULL
+  [Name__IsSet] bit NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_File_Insert] AS TABLE
@@ -873,7 +880,8 @@ CREATE TYPE [dbo].[TVP_File_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [Number] nvarchar (100) NOT NULL,
   [Number__IsSet] bit NOT NULL,
-  [ClientID] uniqueidentifier NULL
+  [ClientID] uniqueidentifier NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ObjectWithSecurity_Insert] AS TABLE
@@ -1017,7 +1025,8 @@ CREATE TYPE [dbo].[TVP_ObjectWithSecurity_Update] AS TABLE
   [Real8ID] uniqueidentifier NULL,
   [Real9ID] uniqueidentifier NULL,
   [Real10ID] uniqueidentifier NULL,
-  [TheProperty] int NOT NULL
+  [TheProperty] int NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithAnonymousRelationProperties_Insert] AS TABLE
@@ -1029,7 +1038,8 @@ GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithAnonymousRelationProperties_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL
+  [ClassID] varchar (100) NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithCollectionRelationProperties_Insert] AS TABLE
@@ -1043,7 +1053,8 @@ CREATE TYPE [dbo].[TVP_OppositeClassWithCollectionRelationProperties_Update] AS 
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [EndOfCollectionID] uniqueidentifier NULL
+  [EndOfCollectionID] uniqueidentifier NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithRealRelationProperties_Insert] AS TABLE
@@ -1075,7 +1086,8 @@ CREATE TYPE [dbo].[TVP_OppositeClassWithRealRelationProperties_Update] AS TABLE
   [Real7ID] uniqueidentifier NULL,
   [Real8ID] uniqueidentifier NULL,
   [Real9ID] uniqueidentifier NULL,
-  [Real10ID] uniqueidentifier NULL
+  [Real10ID] uniqueidentifier NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithVirtualRelationProperties_Insert] AS TABLE
@@ -1087,7 +1099,8 @@ GO
 CREATE TYPE [dbo].[TVP_OppositeClassWithVirtualRelationProperties_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL
+  [ClassID] varchar (100) NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Person_Insert] AS TABLE
@@ -1107,6 +1120,7 @@ CREATE TYPE [dbo].[TVP_Person_Update] AS TABLE
   [FirstName] nvarchar (100) NOT NULL,
   [FirstName__IsSet] bit NOT NULL,
   [LastName] nvarchar (100) NOT NULL,
-  [LastName__IsSet] bit NOT NULL
+  [LastName__IsSet] bit NOT NULL,
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
