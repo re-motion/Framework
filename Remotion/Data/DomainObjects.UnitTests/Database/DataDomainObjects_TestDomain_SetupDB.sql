@@ -1297,12 +1297,14 @@ GO
 CREATE TYPE [dbo].[TVP_AllTables_Delete] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_AllTables_Lock] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [Timestamp] varbinary(8) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithPropertiesHavingStorageClassAttribute_Insert] AS TABLE
@@ -1317,6 +1319,7 @@ CREATE TYPE [dbo].[TVP_ClassWithPropertiesHavingStorageClassAttribute_Update] AS
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [Persistent] int NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_EagerFetching_BaseClass_Insert] AS TABLE
@@ -1333,6 +1336,7 @@ CREATE TYPE [dbo].[TVP_EagerFetching_BaseClass_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [ScalarProperty2RealSideID] uniqueidentifier NULL,
   [UnidirectionalPropertyID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_EagerFetching_RelationTarget_Insert] AS TABLE
@@ -1353,6 +1357,7 @@ CREATE TYPE [dbo].[TVP_EagerFetching_RelationTarget_Update] AS TABLE
   [CollectionPropertyOneSideIDClassID] varchar (100) NULL,
   [ScalarProperty1RealSideID] uniqueidentifier NULL,
   [ScalarProperty1RealSideIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_NestedDomainObject_Insert] AS TABLE
@@ -1365,6 +1370,7 @@ CREATE TYPE [dbo].[TVP_NestedDomainObject_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ConcreteInheritanceFirstDerivedClass_Insert] AS TABLE
@@ -1388,6 +1394,7 @@ CREATE TYPE [dbo].[TVP_ConcreteInheritanceFirstDerivedClass_Update] AS TABLE
   [FirstDerivedProperty__IsSet] bit NOT NULL,
   [PersistentProperty] nvarchar (max) NULL,
   [PersistentProperty__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ConcreteInheritanceObjectWithRelations_Insert] AS TABLE
@@ -1404,6 +1411,7 @@ CREATE TYPE [dbo].[TVP_ConcreteInheritanceObjectWithRelations_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [ScalarPropertyID] uniqueidentifier NULL,
   [ScalarPropertyIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ConcreteInheritanceSecondDerivedClass_Insert] AS TABLE
@@ -1427,6 +1435,7 @@ CREATE TYPE [dbo].[TVP_ConcreteInheritanceSecondDerivedClass_Update] AS TABLE
   [SecondDerivedProperty__IsSet] bit NOT NULL,
   [PersistentProperty] nvarchar (max) NULL,
   [PersistentProperty__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_MixedDomains_Target_Insert] AS TABLE
@@ -1451,6 +1460,7 @@ CREATE TYPE [dbo].[TVP_MixedDomains_Target_Update] AS TABLE
   [RelationPropertyID] uniqueidentifier NULL,
   [CollectionPropertyNSideID] uniqueidentifier NULL,
   [PrivateBaseRelationPropertyID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_HookedTargetClass_Insert] AS TABLE
@@ -1467,6 +1477,7 @@ CREATE TYPE [dbo].[TVP_HookedTargetClass_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [Property] int NOT NULL,
   [TargetID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_InheritanceRootInheritingPersistentMixin_Insert] AS TABLE
@@ -1483,6 +1494,7 @@ CREATE TYPE [dbo].[TVP_InheritanceRootInheritingPersistentMixin_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [PersistentProperty] int NOT NULL,
   [PersistentRelationPropertyID] varchar (255) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_MixedDomains_RelationTarget_Insert] AS TABLE
@@ -1503,6 +1515,7 @@ CREATE TYPE [dbo].[TVP_MixedDomains_RelationTarget_Update] AS TABLE
   [RelationProperty2IDClassID] varchar (100) NULL,
   [RelationProperty3ID] uniqueidentifier NULL,
   [RelationProperty3IDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_SingleInheritanceBaseClass_Insert] AS TABLE
@@ -1529,6 +1542,7 @@ CREATE TYPE [dbo].[TVP_SingleInheritanceBaseClass_Update] AS TABLE
   [PersistentProperty__IsSet] bit NOT NULL,
   [SecondDerivedProperty] nvarchar (max) NULL,
   [SecondDerivedProperty__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_SingleInheritanceObjectWithRelations_Insert] AS TABLE
@@ -1545,6 +1559,7 @@ CREATE TYPE [dbo].[TVP_SingleInheritanceObjectWithRelations_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [ScalarPropertyID] uniqueidentifier NULL,
   [ScalarPropertyIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TargetClassForBehavioralMixin_Insert] AS TABLE
@@ -1560,6 +1575,7 @@ CREATE TYPE [dbo].[TVP_TargetClassForBehavioralMixin_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [Property] nvarchar (max) NULL,
   [Property__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TargetClassForMixinWithState_Insert] AS TABLE
@@ -1572,6 +1588,7 @@ CREATE TYPE [dbo].[TVP_TargetClassForMixinWithState_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_MixedDomains_TargetClassWithSameInterfaceAsPersistentMixin_Insert] AS TABLE
@@ -1586,6 +1603,7 @@ CREATE TYPE [dbo].[TVP_MixedDomains_TargetClassWithSameInterfaceAsPersistentMixi
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [PersistentPropertyRedirectedToMixin] int NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_MixedDomains_TargetWithTwoUnidirectionalMixins_Insert] AS TABLE
@@ -1602,6 +1620,7 @@ CREATE TYPE [dbo].[TVP_MixedDomains_TargetWithTwoUnidirectionalMixins_Update] AS
   [ClassID] varchar (100) NOT NULL,
   [ComputerID] uniqueidentifier NULL,
   [Computer2ID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_MixedDomains_TargetWithUnidirectionalMixin1_Insert] AS TABLE
@@ -1616,6 +1635,7 @@ CREATE TYPE [dbo].[TVP_MixedDomains_TargetWithUnidirectionalMixin1_Update] AS TA
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [ComputerID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_MixedDomains_TargetWithUnidirectionalMixin2_Insert] AS TABLE
@@ -1630,6 +1650,7 @@ CREATE TYPE [dbo].[TVP_MixedDomains_TargetWithUnidirectionalMixin2_Update] AS TA
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [ComputerID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Ceo_Insert] AS TABLE
@@ -1649,6 +1670,7 @@ CREATE TYPE [dbo].[TVP_Ceo_Update] AS TABLE
   [Name__IsSet] bit NOT NULL,
   [CompanyID] uniqueidentifier NULL,
   [CompanyIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassNotInMapping_Insert] AS TABLE
@@ -1661,6 +1683,7 @@ CREATE TYPE [dbo].[TVP_ClassNotInMapping_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableWithAllDataTypes_Insert] AS TABLE
@@ -1770,6 +1793,7 @@ CREATE TYPE [dbo].[TVP_TableWithAllDataTypes_Update] AS TABLE
   [NaSingleWithNullValue] real NULL,
   [NullableBinary] varbinary (1000) NULL,
   [NullableBinary__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithEnumNotDefiningZero_Insert] AS TABLE
@@ -1784,6 +1808,7 @@ CREATE TYPE [dbo].[TVP_ClassWithEnumNotDefiningZero_Update] AS TABLE
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [EnumValue] int NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableWithGuidKey_Insert] AS TABLE
@@ -1796,6 +1821,7 @@ CREATE TYPE [dbo].[TVP_TableWithGuidKey_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithNonPublicProperties_Insert] AS TABLE
@@ -1816,6 +1842,7 @@ CREATE TYPE [dbo].[TVP_ClassWithNonPublicProperties_Update] AS TABLE
   [PublicGetProtectedSet] int NOT NULL,
   [ProtectedGetSet] int NOT NULL,
   [PrivateGetSet] int NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableWithOptionalOneToOneRelationAndOppositeDerivedClass_Insert] AS TABLE
@@ -1832,6 +1859,7 @@ CREATE TYPE [dbo].[TVP_TableWithOptionalOneToOneRelationAndOppositeDerivedClass_
   [ClassID] varchar (100) NOT NULL,
   [CompanyID] uniqueidentifier NULL,
   [CompanyIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithoutProperties_Insert] AS TABLE
@@ -1844,6 +1872,7 @@ CREATE TYPE [dbo].[TVP_ClassWithoutProperties_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithPropertyTypeImplementingIStructuralEquatable_Insert] AS TABLE
@@ -1856,6 +1885,7 @@ CREATE TYPE [dbo].[TVP_ClassWithPropertyTypeImplementingIStructuralEquatable_Upd
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableWithRelatedClassIDColumnAndNoInheritance_Insert] AS TABLE
@@ -1870,6 +1900,7 @@ CREATE TYPE [dbo].[TVP_TableWithRelatedClassIDColumnAndNoInheritance_Update] AS 
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [TableWithGuidKeyID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_TableWithValidRelations_Insert] AS TABLE
@@ -1886,6 +1917,7 @@ CREATE TYPE [dbo].[TVP_TableWithValidRelations_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [TableWithGuidKeyOptionalID] uniqueidentifier NULL,
   [TableWithGuidKeyNonOptionalID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Client_Insert] AS TABLE
@@ -1900,6 +1932,7 @@ CREATE TYPE [dbo].[TVP_Client_Update] AS TABLE
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [ParentClientID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Computer_Insert] AS TABLE
@@ -1917,6 +1950,7 @@ CREATE TYPE [dbo].[TVP_Computer_Update] AS TABLE
   [SerialNumber] nvarchar (20) NOT NULL,
   [SerialNumber__IsSet] bit NOT NULL,
   [EmployeeID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Company_Insert] AS TABLE
@@ -1944,6 +1978,7 @@ CREATE TYPE [dbo].[TVP_Company_Update] AS TABLE
   [SupplierQuality] int NULL,
   [CustomerSince] datetime2 NULL,
   [CustomerType] int NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Employee_Insert] AS TABLE
@@ -1961,6 +1996,7 @@ CREATE TYPE [dbo].[TVP_Employee_Update] AS TABLE
   [Name] nvarchar (100) NOT NULL,
   [Name__IsSet] bit NOT NULL,
   [SupervisorID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_FileSystemItem_Insert] AS TABLE
@@ -1981,6 +2017,7 @@ CREATE TYPE [dbo].[TVP_FileSystemItem_Update] AS TABLE
   [ParentFolderIDClassID] varchar (100) NULL,
   [ParentFolderRelation] uniqueidentifier NULL,
   [ParentFolderRelationClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_IndustrialSector_Insert] AS TABLE
@@ -1996,6 +2033,7 @@ CREATE TYPE [dbo].[TVP_IndustrialSector_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [Name] nvarchar (100) NOT NULL,
   [Name__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_StorageGroupClass_Insert] AS TABLE
@@ -2014,6 +2052,7 @@ CREATE TYPE [dbo].[TVP_StorageGroupClass_Update] AS TABLE
   [AboveInheritanceIdentifier__IsSet] bit NOT NULL,
   [StorageGroupClassIdentifier] nvarchar (100) NOT NULL,
   [StorageGroupClassIdentifier__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Location_Insert] AS TABLE
@@ -2028,6 +2067,7 @@ CREATE TYPE [dbo].[TVP_Location_Update] AS TABLE
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [ClientID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Order_Insert] AS TABLE
@@ -2050,6 +2090,7 @@ CREATE TYPE [dbo].[TVP_Order_Update] AS TABLE
   [OfficialID] varchar (255) NULL,
   [CustomerID] uniqueidentifier NULL,
   [CustomerIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_OrderItem_Insert] AS TABLE
@@ -2069,6 +2110,7 @@ CREATE TYPE [dbo].[TVP_OrderItem_Update] AS TABLE
   [Product] nvarchar (100) NOT NULL,
   [Product__IsSet] bit NOT NULL,
   [OrderID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_OrderTicket_Insert] AS TABLE
@@ -2086,6 +2128,7 @@ CREATE TYPE [dbo].[TVP_OrderTicket_Update] AS TABLE
   [FileName] nvarchar (255) NOT NULL,
   [FileName__IsSet] bit NOT NULL,
   [OrderID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Person_Insert] AS TABLE
@@ -2105,6 +2148,7 @@ CREATE TYPE [dbo].[TVP_Person_Update] AS TABLE
   [Name__IsSet] bit NOT NULL,
   [AssociatedCustomerCompanyID] uniqueidentifier NULL,
   [AssociatedCustomerCompanyIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Product_Insert] AS TABLE
@@ -2122,6 +2166,7 @@ CREATE TYPE [dbo].[TVP_Product_Update] AS TABLE
   [Name] nvarchar (100) NOT NULL,
   [Name__IsSet] bit NOT NULL,
   [Price] decimal (38, 3) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ProductReview_Insert] AS TABLE
@@ -2143,6 +2188,7 @@ CREATE TYPE [dbo].[TVP_ProductReview_Update] AS TABLE
   [CreatedAt] datetime2 NOT NULL,
   [Comment] nvarchar (1000) NOT NULL,
   [Comment__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassIDForClassHavingClassIDAttribute_Insert] AS TABLE
@@ -2155,6 +2201,7 @@ CREATE TYPE [dbo].[TVP_ClassIDForClassHavingClassIDAttribute_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttributeTable_Insert] AS TABLE
@@ -2167,6 +2214,7 @@ CREATE TYPE [dbo].[TVP_ClassHavingClassIDAttributeAndStorageSpecificIdentifierAt
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassHavingStorageSpecificIdentifierAttributeTable_Insert] AS TABLE
@@ -2183,6 +2231,7 @@ CREATE TYPE [dbo].[TVP_ClassHavingStorageSpecificIdentifierAttributeTable_Update
   [ClassID] varchar (100) NOT NULL,
   [NoAttribute] int NOT NULL,
   [CustomName] int NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithBinaryProperties_Insert] AS TABLE
@@ -2210,6 +2259,7 @@ CREATE TYPE [dbo].[TVP_ClassWithBinaryProperties_Update] AS TABLE
   [MaximumLength__IsSet] bit NOT NULL,
   [NotNullableAndMaximumLength] varbinary (100) NOT NULL,
   [NotNullableAndMaximumLength__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithBothEndPointsOnSameClass_Insert] AS TABLE
@@ -2224,6 +2274,7 @@ CREATE TYPE [dbo].[TVP_ClassWithBothEndPointsOnSameClass_Update] AS TABLE
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [ParentID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithExtensibleEnumProperties_Insert] AS TABLE
@@ -2242,6 +2293,7 @@ CREATE TYPE [dbo].[TVP_ClassWithExtensibleEnumProperties_Update] AS TABLE
   [NoAttribute] varchar (113) NULL,
   [NullableFromAttribute] varchar (113) NULL,
   [NotNullable] varchar (113) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithManySideRelationProperties_Insert] AS TABLE
@@ -2276,6 +2328,7 @@ CREATE TYPE [dbo].[TVP_ClassWithManySideRelationProperties_Update] AS TABLE
   [UnidirectionalID] uniqueidentifier NULL,
   [BidirectionalOneToOneID] uniqueidentifier NULL,
   [BidirectionalOneToManyID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithOneSideRelationProperties_Insert] AS TABLE
@@ -2288,6 +2341,7 @@ CREATE TYPE [dbo].[TVP_ClassWithOneSideRelationProperties_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClosedGenericClass_Insert] AS TABLE
@@ -2300,6 +2354,7 @@ CREATE TYPE [dbo].[TVP_ClosedGenericClass_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClosedGenericClassWithManySideRelationProperties_Insert] AS TABLE
@@ -2318,6 +2373,7 @@ CREATE TYPE [dbo].[TVP_ClosedGenericClassWithManySideRelationProperties_Update] 
   [BaseUnidirectionalID] uniqueidentifier NULL,
   [BaseBidirectionalOneToOneID] uniqueidentifier NULL,
   [BaseBidirectionalOneToManyID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClosedGenericClassWithOneSideRelationProperties_Insert] AS TABLE
@@ -2330,6 +2386,7 @@ CREATE TYPE [dbo].[TVP_ClosedGenericClassWithOneSideRelationProperties_Update] A
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_ClassWithDifferentProperties_Insert] AS TABLE
@@ -2368,6 +2425,7 @@ CREATE TYPE [dbo].[TVP_ClassWithDifferentProperties_Update] AS TABLE
   [NewString__IsSet] bit NOT NULL,
   [DerivedPrivateString] nvarchar (max) NULL,
   [DerivedPrivateString__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_DerivedClassWithStorageSpecificIdentifierAttribute_Insert] AS TABLE
@@ -2380,5 +2438,6 @@ CREATE TYPE [dbo].[TVP_DerivedClassWithStorageSpecificIdentifierAttribute_Update
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO

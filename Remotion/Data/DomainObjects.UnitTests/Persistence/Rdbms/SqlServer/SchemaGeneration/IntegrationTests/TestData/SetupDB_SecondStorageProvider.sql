@@ -169,12 +169,14 @@ GO
 CREATE TYPE [dbo].[TVP_AllTables_Delete] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_AllTables_Lock] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [Timestamp] varbinary(8) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 CREATE TYPE [dbo].[TVP_Official_Insert] AS TABLE
@@ -197,5 +199,6 @@ CREATE TYPE [dbo].[TVP_Official_Update] AS TABLE
   [ResponsibleForCustomerType] int NOT NULL,
   [Speciality] nvarchar (255) NULL,
   [Speciality__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
 )
 GO

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 
@@ -382,9 +383,11 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
     [
         TvpColumnMetadata.CreateForIDValueColumn(_infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition().ValueProperty)
     ];
+
     var tableTypeDefinition = CreateTableTypeDefinition(
         "TVP_AllTables_Delete",
-        columns);
+        columns,
+        [CreateIDPrimaryKeyConstraint("TVP_AllTables_Delete", columns[0])]);
 
     return CreateRecordDefinition(
         tableTypeDefinition,
@@ -399,9 +402,11 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
         TvpColumnMetadata.CreateForIDValueColumn(_infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition().ValueProperty),
         TvpColumnMetadata.CreateForTimestampColumn(_infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition())
     ];
+
     var tableTypeDefinition = CreateTableTypeDefinition(
         "TVP_AllTables_Lock",
-        columns);
+        columns,
+        [CreateIDPrimaryKeyConstraint("TVP_AllTables_Lock", columns[0])]);
 
     return CreateRecordDefinition(
         tableTypeDefinition,
@@ -419,11 +424,14 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
 
   private TvpTableTypeDefinitions CreateTableTypeDefinition (TableDefinition tableDefinition)
   {
+    // The Insert TVP is only ever used for a plain INSERT ... SELECT FROM TVP (see BatchedInsertDbCommandBuilder), which never
+    // joins against the target table, so it gets no benefit from a unique constraint on ID.
     var insertColumns = GetInsertTvpColumns(tableDefinition).ToImmutableArray();
-    var insertTableDefinition = CreateTableTypeDefinition($"TVP_{tableDefinition.TableName.EntityName}_Insert", insertColumns);
+    var insertTableDefinition = CreateTableTypeDefinition($"TVP_{tableDefinition.TableName.EntityName}_Insert", insertColumns, []);
 
     var updateColumns = GetUpdateTvpColumns(tableDefinition).ToImmutableArray();
-    var updateTableDefinition = CreateTableTypeDefinition($"TVP_{tableDefinition.TableName.EntityName}_Update", updateColumns);
+    var updateTableName = $"TVP_{tableDefinition.TableName.EntityName}_Update";
+    var updateTableDefinition = CreateTableTypeDefinition(updateTableName, updateColumns, [CreateIDPrimaryKeyConstraint(updateTableName, updateColumns[0])]);
 
     return new TvpTableTypeDefinitions(
         insertTableDefinition,
@@ -432,12 +440,24 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
         updateColumns);
   }
 
-  private TableTypeDefinition CreateTableTypeDefinition (string name, ImmutableArray<TvpColumnMetadata> columns)
+  private TableTypeDefinition CreateTableTypeDefinition (string name, ImmutableArray<TvpColumnMetadata> columns, ImmutableArray<ITableConstraintDefinition> constraints)
   {
     return new TableTypeDefinition(
         new EntityNameDefinition(null, name),
         columns.Select(e => e.Property).ToArray(),
-        []);
+        constraints);
+  }
+
+  /// <summary>
+  /// Without this constraint, SQL Server has no index to seek into the TVP when it is joined against the target table by ID
+  /// (see <see cref="BatchedUpdateDbCommandBuilder"/>, <see cref="BatchedDeleteDbCommandBuilder"/>, and <see cref="BatchedLockDbCommandBuilder"/>),
+  /// so it can fall back to scanning the entire target table instead of only the affected rows, causing lock escalation and deadlocks
+  /// between concurrently executing batches (RM-9726).
+  /// </summary>
+  private static PrimaryKeyConstraintDefinition CreateIDPrimaryKeyConstraint (string name, TvpColumnMetadata idColumn)
+  {
+    var idColumns = idColumn.Property.GetColumnsForComparison().ToArray();
+    return new PrimaryKeyConstraintDefinition($"PK_{name}", true, idColumns);
   }
 
   private IEnumerable<TvpColumnMetadata> GetInsertTvpColumns (TableDefinition tableDefinition)
