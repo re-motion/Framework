@@ -67,13 +67,13 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
             SET @IsReadCommittedSnapshotOn = (SELECT [is_read_committed_snapshot_on] FROM [sys].[databases] WHERE [database_id] = DB_ID());
             IF (@TransactionIsolationLevel = 2 AND @IsReadCommittedSnapshotOn = 1)
             BEGIN
-            SELECT [P].[col1], [P].[col2] FROM [Table] [T] WITH(ROWLOCK, XLOCK, READPAST)
+            SELECT [P].[col1], [P].[col2] FROM [Table] [T] WITH(ROWLOCK, XLOCK, READPAST, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
             END
             ELSE
             BEGIN
-            SELECT [P].[col1], [P].[col2] FROM [Table] [T] WITH(ROWLOCK, XLOCK)
+            SELECT [P].[col1], [P].[col2] FROM [Table] [T] WITH(ROWLOCK, XLOCK, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
             END
@@ -105,13 +105,13 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
             SET @IsReadCommittedSnapshotOn = (SELECT [is_read_committed_snapshot_on] FROM [sys].[databases] WHERE [database_id] = DB_ID());
             IF (@TransactionIsolationLevel = 2 AND @IsReadCommittedSnapshotOn = 1)
             BEGIN
-            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table] [T] WITH(ROWLOCK, XLOCK, READPAST)
+            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table] [T] WITH(ROWLOCK, XLOCK, READPAST, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
             END
             ELSE
             BEGIN
-            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table] [T] WITH(ROWLOCK, XLOCK)
+            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table] [T] WITH(ROWLOCK, XLOCK, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
             END
@@ -150,29 +150,29 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
             SET @IsReadCommittedSnapshotOn = (SELECT [is_read_committed_snapshot_on] FROM [sys].[databases] WHERE [database_id] = DB_ID());
             IF (@TransactionIsolationLevel = 2 AND @IsReadCommittedSnapshotOn = 1)
             BEGIN
-            SELECT [P].[col1], [P].[col2] FROM [Table1] [T] WITH(ROWLOCK, XLOCK, READPAST)
+            SELECT [P].[col1], [P].[col2] FROM [Table1] [T] WITH(ROWLOCK, XLOCK, READPAST, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table1 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
             UNION ALL
-            SELECT [P].[col1], [P].[col2] FROM [Table2] [T] WITH(ROWLOCK, XLOCK, READPAST)
+            SELECT [P].[col1], [P].[col2] FROM [Table2] [T] WITH(ROWLOCK, XLOCK, READPAST, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table2 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
             UNION ALL
-            SELECT [P].[col1], [P].[col2] FROM [Table3] [T] WITH(ROWLOCK, XLOCK, READPAST)
+            SELECT [P].[col1], [P].[col2] FROM [Table3] [T] WITH(ROWLOCK, XLOCK, READPAST, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table3 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
             END
             ELSE
             BEGIN
-            SELECT [P].[col1], [P].[col2] FROM [Table1] [T] WITH(ROWLOCK, XLOCK)
+            SELECT [P].[col1], [P].[col2] FROM [Table1] [T] WITH(ROWLOCK, XLOCK, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table1 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
             UNION ALL
-            SELECT [P].[col1], [P].[col2] FROM [Table2] [T] WITH(ROWLOCK, XLOCK)
+            SELECT [P].[col1], [P].[col2] FROM [Table2] [T] WITH(ROWLOCK, XLOCK, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table2 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
             UNION ALL
-            SELECT [P].[col1], [P].[col2] FROM [Table3] [T] WITH(ROWLOCK, XLOCK)
+            SELECT [P].[col1], [P].[col2] FROM [Table3] [T] WITH(ROWLOCK, XLOCK, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table3 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
             END
@@ -211,29 +211,29 @@ public class BatchedLockDbCommandBuilderTest : StandardMappingTest
             SET @IsReadCommittedSnapshotOn = (SELECT [is_read_committed_snapshot_on] FROM [sys].[databases] WHERE [database_id] = DB_ID());
             IF (@TransactionIsolationLevel = 2 AND @IsReadCommittedSnapshotOn = 1)
             BEGIN
-            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table1] [T] WITH(ROWLOCK, XLOCK, READPAST)
+            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table1] [T] WITH(ROWLOCK, XLOCK, READPAST, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table1 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
             UNION ALL
-            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table2] [T] WITH(ROWLOCK, XLOCK, READPAST)
+            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table2] [T] WITH(ROWLOCK, XLOCK, READPAST, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table2 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
             UNION ALL
-            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table3] [T] WITH(ROWLOCK, XLOCK, READPAST)
+            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table3] [T] WITH(ROWLOCK, XLOCK, READPAST, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table3 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
             END
             ELSE
             BEGIN
-            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table1] [T] WITH(ROWLOCK, XLOCK)
+            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table1] [T] WITH(ROWLOCK, XLOCK, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table1 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
             UNION ALL
-            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table2] [T] WITH(ROWLOCK, XLOCK)
+            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table2] [T] WITH(ROWLOCK, XLOCK, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table2 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL
             UNION ALL
-            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table3] [T] WITH(ROWLOCK, XLOCK)
+            SELECT [P].[col1], [P].[col2] FROM [customscheme].[Table3] [T] WITH(ROWLOCK, XLOCK, FORCESEEK)
             RIGHT JOIN @TVP_Lock_Table3 [P] ON [P].[col1] = [T].[col1] AND [P].[col2] = [T].[col2]
             WHERE [T].[ID] IS NULL;
             END
