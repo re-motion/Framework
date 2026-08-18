@@ -885,6 +885,45 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     #endregion
 
+    #region Vehicle
+
+    public ObjectID Car1
+    {
+      get { return CreateObjectID("Car", new Guid("{A1000001-0000-4000-8000-000000000001}")); }
+    }
+
+    public ObjectID SportsCar1
+    {
+      get { return CreateObjectID("SportsCar", new Guid("{A1000002-0000-4000-8000-000000000002}")); }
+    }
+
+    public ObjectID Truck1
+    {
+      get { return CreateObjectID("Truck", new Guid("{A2000001-0000-4000-8000-000000000001}")); }
+    }
+
+    public ObjectID Truck2
+    {
+      get { return CreateObjectID("Truck", new Guid("{A2000002-0000-4000-8000-000000000002}")); }
+    }
+
+    public ObjectID Motorcycle1
+    {
+      get { return CreateObjectID("Motorcycle", new Guid("{A3000001-0000-4000-8000-000000000001}")); }
+    }
+
+    public ObjectID Chopper1
+    {
+      get { return CreateObjectID("Chopper", new Guid("{A3000002-0000-4000-8000-000000000002}")); }
+    }
+
+    public ObjectID SportBike1
+    {
+      get { return CreateObjectID("SportBike", new Guid("{A3000003-0000-4000-8000-000000000003}")); }
+    }
+
+    #endregion
+
     private ObjectID CreateObjectID (string classID, object value)
     {
       return new ObjectID(_mappingConfiguration.GetClassDefinition(classID), value);
