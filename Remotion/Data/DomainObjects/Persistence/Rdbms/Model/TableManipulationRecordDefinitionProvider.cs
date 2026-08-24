@@ -383,11 +383,11 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
     [
         TvpColumnMetadata.CreateForIDValueColumn(_infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition().ValueProperty)
     ];
-
+    const string tvpName = "TVP_AllTables_Delete";
     var tableTypeDefinition = CreateTableTypeDefinition(
-        "TVP_AllTables_Delete",
+        tvpName,
         columns,
-        [CreateIDPrimaryKeyConstraint("TVP_AllTables_Delete", columns[0])]);
+        [CreateIDPrimaryKeyConstraint(tvpName, columns[0])]);
 
     return CreateRecordDefinition(
         tableTypeDefinition,
@@ -403,10 +403,11 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
         TvpColumnMetadata.CreateForTimestampColumn(_infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition())
     ];
 
+    const string tvpName = "TVP_AllTables_Lock";
     var tableTypeDefinition = CreateTableTypeDefinition(
-        "TVP_AllTables_Lock",
+        tvpName,
         columns,
-        [CreateIDPrimaryKeyConstraint("TVP_AllTables_Lock", columns[0])]);
+        [CreateIDPrimaryKeyConstraint(tvpName, columns[0])]);
 
     return CreateRecordDefinition(
         tableTypeDefinition,
