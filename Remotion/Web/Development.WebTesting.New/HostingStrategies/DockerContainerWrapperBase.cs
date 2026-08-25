@@ -1,0 +1,90 @@
+// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
+// SPDX-License-Identifier: LGPL-2.1-or-later
+using System;
+using System.Threading;
+using Microsoft.Extensions.Logging;
+using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting;
+
+namespace Remotion.Web.Development.WebTesting.HostingStrategies
+{
+  /// <summary>
+  /// Represents a Docker container base which manages the lifecycle of a docker container.
+  /// </summary>
+  public abstract class DockerContainerWrapperBase : IDisposable
+  {
+    protected IDockerClient Docker { get; }
+
+    protected ILogger Logger { get; }
+
+    protected string? ContainerName;
+
+    protected DockerContainerWrapperBase (IDockerClient docker, ILoggerFactory loggerFactory)
+    {
+      ArgumentNullException.ThrowIfNull(docker);
+      ArgumentNullException.ThrowIfNull(loggerFactory);
+
+      Docker = docker;
+      Logger = loggerFactory.CreateLogger<DockerContainerWrapperBase>();
+    }
+
+    public abstract DockerRunSettings CreateDockerRunSettings ();
+
+    /// <summary>
+    /// Pulls and starts the configured docker image as a container with the settings specified in the App.config.
+    /// </summary>
+    public void Run ()
+    {
+      var dockerRunSettings = CreateDockerRunSettings();
+      Run(dockerRunSettings);
+    }
+
+    protected virtual void Run (DockerRunSettings settings)
+    {
+      try
+      {
+        Docker.Pull(settings.ImageName);
+      }
+      catch (DockerOperationException ex)
+      {
+        Logger.LogError($"Pulling the docker image '{settings.ImageName}' failed. Trying to proceed with a locally cached image.", ex);
+      }
+
+      ContainerName = Docker.Run(settings);
+    }
+
+    public void Dispose ()
+    {
+      Assertion.IsNotNull(ContainerName, "No container was started.");
+
+      Docker.Stop(ContainerName);
+      var isContainerRemovedAfterStop = IsContainerRemoved(retries: 15, interval: TimeSpan.FromMilliseconds(100));
+
+      if (isContainerRemovedAfterStop)
+        return;
+
+      Docker.Remove(ContainerName, true);
+      var isContainerRemovedAfterForceRemove = IsContainerRemoved(retries: 15, interval: TimeSpan.FromMilliseconds(100));
+
+      if (isContainerRemovedAfterForceRemove)
+        return;
+
+      throw new InvalidOperationException($"The container with the id '{ContainerName}' could not be removed.");
+    }
+
+    private bool IsContainerRemoved (int retries, TimeSpan interval)
+    {
+      Assertion.DebugIsNotNull(ContainerName, "No container was started.");
+
+      for (var i = 0; i <= retries; i++)
+      {
+        if (!Docker.ContainerExists(ContainerName))
+          return true;
+
+        Thread.Sleep((int)interval.TotalMilliseconds);
+      }
+
+      return false;
+    }
+  }
+}

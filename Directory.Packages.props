@@ -25,6 +25,8 @@
     <PackageVersion Include="Microsoft.Maui.Graphics.Skia" Version="10.0.10" />
     <PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.11.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="Microsoft.Playwright" Version="1.62.0" />
+    <PackageVersion Include="Microsoft.Playwright.NUnit" Version="1.62.0" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="Microsoft.TypeScript.MSBuild" Version="5.8.3" />
     <PackageVersion Include="microsoft-ajax.TypeScript.DefinitelyTyped" Version="0.1.4" />
@@ -72,21 +74,21 @@
   </ItemGroup>
   <Choose>
     <When Condition="$(TargetFramework.StartsWith('net10.0'))">
-     <ItemGroup>
-        <PackageVersion Include="CoreForms.Web" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="CoreForms.Web.Extensions" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="CoreForms.Web.Services" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.0.0"/>
-        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="System.CodeDom" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="System.Resources.Extensions" Version="$(Net10PackagesVersion)"/>
+      <ItemGroup>
+        <PackageVersion Include="CoreForms.Web" Version="$(Net10CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Extensions" Version="$(Net10CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(Net10CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(Net10CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(Net10CoreFormsVersion)" />
+        <PackageVersion Include="CoreForms.Web.Services" Version="$(Net10CoreFormsVersion)" />
+        <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.0.0" />
+        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(Net10PackagesVersion)" />
+        <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(Net10PackagesVersion)" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Net10PackagesVersion)" />
+        <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="$(Net10PackagesVersion)" />
+        <PackageVersion Include="System.CodeDom" Version="$(Net10PackagesVersion)" />
+        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="$(Net10PackagesVersion)" />
+        <PackageVersion Include="System.Resources.Extensions" Version="$(Net10PackagesVersion)" />
       </ItemGroup>
     </When>
   </Choose>
