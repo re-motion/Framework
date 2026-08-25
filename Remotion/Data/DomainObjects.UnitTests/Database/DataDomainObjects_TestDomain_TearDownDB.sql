@@ -146,6 +146,12 @@ DROP TYPE IF EXISTS [dbo].[TVP_ClassWithDifferentProperties_Insert]
 DROP TYPE IF EXISTS [dbo].[TVP_ClassWithDifferentProperties_Update]
 DROP TYPE IF EXISTS [dbo].[TVP_DerivedClassWithStorageSpecificIdentifierAttribute_Insert]
 DROP TYPE IF EXISTS [dbo].[TVP_DerivedClassWithStorageSpecificIdentifierAttribute_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Motorcycle_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Motorcycle_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Car_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Car_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Truck_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Truck_Update]
 -- Drop all synonyms
 -- Drop all indexes
 -- Drop all views
@@ -297,6 +303,20 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SpecialCus
   DROP VIEW [dbo].[SpecialCustomerView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SupplierView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[SupplierView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'VehicleView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[VehicleView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'MotorcycleView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[MotorcycleView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ChopperView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[ChopperView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SportBikeView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[SportBikeView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CarView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[CarView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SportsCarView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[SportsCarView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TruckView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[TruckView]
 -- Drop foreign keys of all tables
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_EagerFetching_BaseClass_ScalarProperty2RealSideID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'EagerFetching_BaseClass')
   ALTER TABLE [dbo].[EagerFetching_BaseClass] DROP CONSTRAINT FK_EagerFetching_BaseClass_ScalarProperty2RealSideID
@@ -523,3 +543,9 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWith
   DROP TABLE [dbo].[ClassWithDifferentProperties]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'DerivedClassWithStorageSpecificIdentifierAttribute' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[DerivedClassWithStorageSpecificIdentifierAttribute]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'UnionInheritance_Motorcycle' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[UnionInheritance_Motorcycle]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'UnionInheritance_Car' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[UnionInheritance_Car]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'UnionInheritance_Truck' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[UnionInheritance_Truck]
