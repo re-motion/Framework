@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>Library</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Web Testing Framework Control Objects for ObjectBinding</AssemblyTitle>
+    <Description>Provides an abstraction layer when implementing web tests for applications based on re-motion business object web controls.</Description>
+    <AssemblyName>Remotion.ObjectBinding.Web.Development.WebTesting.New</AssemblyName>
+    <RootNamespace>Remotion.ObjectBinding.Web.Development.Webtesting</RootNamespace>
+    <SignAssembly>False</SignAssembly>
+    <NoWarn>$(NoWarn);CS1574</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs" Link="SharedSource\Utilities\ArgumentUtility.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs" Link="SharedSource\Utilities\Assertion.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs" Link="SharedSource\Utilities\NullableTypeUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
+    <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects.New\Web.Development.WebTesting.ControlObjects.New.csproj" />
+    <ProjectReference Include="..\..\Web\Development.WebTesting.New\Web.Development.WebTesting.New.csproj" />
+    <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

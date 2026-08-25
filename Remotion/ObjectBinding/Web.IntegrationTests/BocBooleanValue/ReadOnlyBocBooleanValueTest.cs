@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Diagnostics;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
@@ -28,6 +29,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocBooleanValue
     [Test]
     public void Validate_OnReadOnlyControl_CreatesValidationErrors ()
     {
+      var start = Stopwatch.GetTimestamp();
       var home = Start();
       home.GetValidateButton().Click();
 
@@ -35,6 +37,7 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocBooleanValue
       var validationErrors = readOnlyControl.GetValidationErrorsForReadOnly();
 
       Assert.That(validationErrors, Is.EqualTo(new[] { "Localized invalid deceased status." }));
+      Console.WriteLine(Stopwatch.GetElapsedTime(start));
     }
 
     private WxePageObject Start ()

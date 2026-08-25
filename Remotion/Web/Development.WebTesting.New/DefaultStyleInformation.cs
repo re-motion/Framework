@@ -1,0 +1,62 @@
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// Copyright (c) rubicon IT GmbH, www.rubicon.eu
+// 
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
+// License, or (at your option) any later version.
+// 
+// re-motion is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with re-motion; if not, see http://www.gnu.org/licenses.
+// 
+using System;
+using System.Linq;
+using JetBrains.Annotations;
+
+namespace Remotion.Web.Development.WebTesting
+{
+  /// <summary>
+  /// Default implementation of <see cref="IStyleInformation"/>, suitable for most control objects.
+  /// </summary>
+  public class DefaultStyleInformation : IStyleInformation
+  {
+    private readonly ControlObject _controlObject;
+    private readonly ElementScope _styledScope;
+
+    public DefaultStyleInformation ([NotNull] ControlObject controlObject, [NotNull] ElementScope styledScope)
+    {
+      ArgumentNullException.ThrowIfNull(controlObject);
+      ArgumentNullException.ThrowIfNull(styledScope);
+
+      _controlObject = controlObject;
+      _styledScope = styledScope;
+    }
+
+    /// <inheritdoc/>
+    public bool HasCssClass (string cssClass)
+    {
+      ArgumentException.ThrowIfNullOrEmpty(cssClass);
+
+      return _styledScope["class"].Split(' ').Contains(cssClass);
+    }
+
+    /// <inheritdoc/>
+    public WebColor GetBackgroundColor ()
+    {
+      // TODO: implement
+      return default;
+    }
+
+    /// <inheritdoc/>
+    public WebColor GetTextColor ()
+    {
+      // TODO: implement
+      return default;
+    }
+  }
+}

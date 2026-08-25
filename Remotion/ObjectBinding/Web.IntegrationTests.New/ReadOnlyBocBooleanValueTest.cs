@@ -15,8 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Diagnostics;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.PageObjects;
+using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
+using Remotion.Web.Development.WebTesting.FluentControlSelection;
 
 namespace Remotion.ObjectBinding.Web.IntegrationTests.New
 {
@@ -26,18 +29,20 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.New
     [Test]
     public void Validate_OnReadOnlyControl_CreatesValidationErrors ()
     {
+      var start = Stopwatch.GetTimestamp();
       var home = Start();
-      // home.GetValidateButton().Click();
-      //
-      // var readOnlyControl = home.BooleanValues().GetByLocalID("DeceasedField_ReadOnly");
-      // var validationErrors = readOnlyControl.GetValidationErrorsForReadOnly();
-      //
-      // Assert.That(validationErrors, Is.EqualTo(new[] { "Localized invalid deceased status." }));
+      home.GetValidateButton().Click();
+
+      var readOnlyControl = home.BooleanValues().GetByLocalID("DeceasedField_ReadOnly");
+      var validationErrors = readOnlyControl.GetValidationErrorsForReadOnly();
+
+      Assert.That(validationErrors, Is.EqualTo(new[] { "Localized invalid deceased status." }));
+      Console.WriteLine(Stopwatch.GetElapsedTime(start));
     }
 
-    private HtmlPageObject Start ()
+    private WxePageObject Start ()
     {
-      return Start<HtmlPageObject>("BocBooleanValue");
+      return Start<WxePageObject>("BocBooleanValue");
     }
   }
 }
