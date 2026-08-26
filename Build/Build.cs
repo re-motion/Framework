@@ -78,7 +78,8 @@ class Build : RemotionBuild, IDependDB, ITest
 
         FileSystemTasks.CopyFile(
             globalJsonFile,
-            TemporaryDirectory / "global.json");
+            TemporaryDirectory / "global.json",
+            FileExistsPolicy.Overwrite);
       });
 
   public override ISbomGeneratorBuilder ConfigureSbomGenerationInfoBuilder (Solution solution)
