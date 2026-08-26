@@ -30,6 +30,7 @@ using Remotion.BuildScript.GenerateSbom;
 using Remotion.BuildScript.Test;
 using Remotion.BuildScript.Test.Dimensions;
 using Remotion.BuildScript.TestPlan;
+using Serilog;
 using static Customizations.Browsers;
 using static Customizations.Databases;
 using static Remotion.BuildScript.Test.Dimensions.Configurations;
@@ -52,6 +53,8 @@ class Build : RemotionBuild, IDependDB, ITest
   [CanBeNull] private TestMatrix _databaseTestMatrix;
   [CanBeNull] private TestMatrix _normalTestMatrix;
   [CanBeNull] private TestMatrix _webTestingTestMatrix;
+
+  [CanBeNull] private AbsolutePath _sbomSolutionPath;
 
   public static int Main () => Execute<Build>();
 
@@ -82,8 +85,24 @@ class Build : RemotionBuild, IDependDB, ITest
             FileExistsPolicy.Overwrite);
       });
 
+  [UsedImplicitly]
+  public Target RemoveSbomSolution => _ => _
+      .TriggeredBy<IGenerateSbom>()
+      .Unlisted()
+      .Executes(() =>
+      {
+          _sbomSolutionPath?.DeleteFile();
+      });
+
   public override ISbomGeneratorBuilder ConfigureSbomGenerationInfoBuilder (Solution solution)
   {
+      var newSolutionPath = solution.Path.Parent / $"{solution.Path.NameWithoutExtension}-SBOM{solution.Path.Extension}";
+      _sbomSolutionPath = newSolutionPath;
+
+      var sbomSolution = solution.Path.ReadSolution();
+      sbomSolution.RemoveProject(sbomSolution.AllProjects.Single(e => e.Name == "Build"));
+      sbomSolution.SaveAs(newSolutionPath);
+
       var version = ((IBuildMetadata)this).GetBaseVersion();
 
       var semanticVersion = SemanticVersion.Parse(version);
@@ -107,9 +126,10 @@ class Build : RemotionBuild, IDependDB, ITest
       var outputSbomPath = outputFolderPath / "re-motion.sbom.json";
 
       // We do not require github auth because we do not do enough requests for licenses and package infos
-      var builder = new SolutionSbomGeneratorBuilder(solution, semanticVersion.ToString(), TemporaryDirectory / "sbomGeneration", outputSbomPath, "", "")
+      var builder = new SolutionSbomGeneratorBuilder(sbomSolution, semanticVersion.ToString(), TemporaryDirectory / "sbomGeneration", outputSbomPath, "", "")
               .WithProjectsBlackListed(blacklistedProjects)
-              .WithPackageJsonFile(packageJsonWithVersion);
+              .WithPackageJsonFile(packageJsonWithVersion)
+              .WithSbomCleaner(null);
 
       return builder;
   }
