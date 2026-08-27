@@ -23,7 +23,7 @@
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="7.0.2" />
     <!-- NOTE: The referenced SkiaSharp version (refereced by Maui) must match the SkiaSharp.NativeAssets package below. -->
     <PackageVersion Include="Microsoft.Maui.Graphics.Skia" Version="10.0.10" />
-    <PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.11.0" />
+    <PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.14.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
     <PackageVersion Include="Microsoft.TypeScript.MSBuild" Version="5.8.3" />
