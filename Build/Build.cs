@@ -264,8 +264,6 @@ class Build : RemotionBuild, IDependDB, ITest
     projects.AddUnitTestProject("SecurityManager.Core.UnitTests", databaseTestConfiguration);
   }
 
-  public static readonly DockerExecutionRuntimes Docker_Win_NET10_0 = new(nameof(Docker_Win_NET10_0));
-
   public override void ConfigureSupportedTestDimensions (SupportedTestDimensionsBuilder supportedTestDimensions)
   {
     supportedTestDimensions.AddOperatingSystemsDimension();
