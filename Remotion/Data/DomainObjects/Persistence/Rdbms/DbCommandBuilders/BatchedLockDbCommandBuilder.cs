@@ -121,7 +121,11 @@ public class BatchedLockDbCommandBuilder : DbCommandBuilder
   {
     var selectColumns = string.Join(", ", columns.Select(c => $"{parameterAlias}.{c}"));
     var joinCondition = string.Join(" AND ", columns.Select(c => $"{parameterAlias}.{c} = {tableAlias}.{c}"));
-    var tableHints = forReadCommittedIsolation ? "ROWLOCK, XLOCK, READPAST" : "ROWLOCK, XLOCK";
+    // FORCESEEK guarantees that the optimizer seeks into the target table's index instead of scanning it, which would otherwise
+    // XLOCK every row of the table (not just the rows being locked) on small tables and cause spurious ConcurrencyViolations
+    // for concurrent batches locking disjoint rows (RM-9724). The target table's ID column always has a clustered index (its
+    // primary key), so a seek plan always exists.
+    var tableHints = forReadCommittedIsolation ? "ROWLOCK, XLOCK, READPAST, FORCESEEK" : "ROWLOCK, XLOCK, FORCESEEK";
 
     return $"""
             SELECT {selectColumns} FROM {schemaName}{tableName} {tableAlias} WITH({tableHints})
