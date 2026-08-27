@@ -269,8 +269,10 @@ class Build : RemotionBuild, IDependDB, ITest
     supportedTestDimensions.AddOperatingSystemsDimension();
 
     supportedTestDimensions.AddSupportedDimension<ExecutionRuntimes>(
-        LocalMachine, EnforcedLocalMachine(Docker_Win_NET10_0), Docker_Win_NET10_0);
-    supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET10_0);
+        LocalMachine,
+        EnforcedLocalMachine(Docker_Win_NET10_0), Docker_Win_NET10_0,
+        EnforcedLocalMachine(Docker_Win_NET11_0), Docker_Win_NET11_0);
+    supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET10_0, NET11_0);
     supportedTestDimensions.AddSupportedDimension<Configurations>(Debug, Release);
     supportedTestDimensions.AddSupportedDimension<Platforms>(x64, x86);
 
@@ -322,6 +324,9 @@ class Build : RemotionBuild, IDependDB, ITest
             { AnyOs, Chrome, NET10_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
             { AnyOs, Firefox, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
             { AnyOs, Edge, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Chrome, NET11_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET11_0) },
+            { AnyOs, Firefox, NET11_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET11_0) },
+            { AnyOs, Edge, NET11_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET11_0) },
         },
         allowEmpty: true);
 
@@ -331,16 +336,24 @@ class Build : RemotionBuild, IDependDB, ITest
         {
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2016, Debug, x64 },
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2016, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2016, Debug, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2016, Release, x64 },
 
             // Local-->
             { Windows, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x86 },
             { Linux, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x64 },
+            { Windows, LocalMachine, NET11_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Linux, LocalMachine, NET11_0, NoBrowser, SqlServerDefault, Debug, x64 },
 
             // Exercise compatibility between installed .NET version, target framework and SQL Server
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2025, Release, x64 },
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2022, Release, x64 },
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2019, Release, x64 },
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2017, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2025, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2022, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2019, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2017, Release, x64 },
         },
         allowEmpty: true);
 
@@ -350,10 +363,14 @@ class Build : RemotionBuild, IDependDB, ITest
         {
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, NoDB, Debug, x64 },
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, NoDB, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, NoDB, Debug, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, NoDB, Release, x64 },
 
             //  Local-->
             { Windows, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x86 },
             { Linux, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x64 },
+            { Windows, LocalMachine, NET11_0, NoBrowser, SqlServerDefault, Debug, x86 },
+            { Linux, LocalMachine, NET11_0, NoBrowser, SqlServerDefault, Debug, x64 },
         },
         allowEmpty: true);
   }

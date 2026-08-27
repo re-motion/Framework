@@ -13,6 +13,10 @@
     <!-- merge conflict buffer -->
     <Net10PackagesVersion>10.0.0</Net10PackagesVersion>
     <!-- merge conflict buffer -->
+    <Net11CoreFormsVersion>10.0.4</Net11CoreFormsVersion>
+    <!-- merge conflict buffer -->
+    <Net11PackagesVersion>11.0.0-preview.7.26381.103</Net11PackagesVersion>
+    <!-- merge conflict buffer -->
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Castle.Core" Version="4.4.0" />
@@ -71,22 +75,40 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.10.0" />
   </ItemGroup>
   <Choose>
-    <When Condition="$(TargetFramework.StartsWith('net10.0'))">
+      <When Condition="$(TargetFramework.StartsWith('net10.0'))">
+          <ItemGroup>
+              <PackageVersion Include="CoreForms.Web" Version="$(Net10CoreFormsVersion)"/>
+              <PackageVersion Include="CoreForms.Web.Extensions" Version="$(Net10CoreFormsVersion)"/>
+              <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(Net10CoreFormsVersion)"/>
+              <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(Net10CoreFormsVersion)"/>
+              <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(Net10CoreFormsVersion)"/>
+              <PackageVersion Include="CoreForms.Web.Services" Version="$(Net10CoreFormsVersion)"/>
+              <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.0.0"/>
+              <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(Net10PackagesVersion)"/>
+              <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(Net10PackagesVersion)"/>
+              <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Net10PackagesVersion)"/>
+              <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="$(Net10PackagesVersion)"/>
+              <PackageVersion Include="System.CodeDom" Version="$(Net10PackagesVersion)"/>
+              <PackageVersion Include="System.Configuration.ConfigurationManager" Version="$(Net10PackagesVersion)"/>
+              <PackageVersion Include="System.Resources.Extensions" Version="$(Net10PackagesVersion)"/>
+          </ItemGroup>
+      </When>
+    <When Condition="$(TargetFramework.StartsWith('net11.0'))">
      <ItemGroup>
-        <PackageVersion Include="CoreForms.Web" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="CoreForms.Web.Extensions" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(Net10CoreFormsVersion)"/>
-        <PackageVersion Include="CoreForms.Web.Services" Version="$(Net10CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web" Version="$(Net11CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Extensions" Version="$(Net11CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Infrastructure" Version="$(Net11CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Infrastructure.MachineConfig" Version="$(Net11CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Infrastructure.Roslyn" Version="$(Net11CoreFormsVersion)"/>
+        <PackageVersion Include="CoreForms.Web.Services" Version="$(Net11CoreFormsVersion)"/>
         <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.0.0"/>
-        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="System.CodeDom" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="$(Net10PackagesVersion)"/>
-        <PackageVersion Include="System.Resources.Extensions" Version="$(Net10PackagesVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(Net11PackagesVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(Net11PackagesVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(Net11PackagesVersion)"/>
+        <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="$(Net11PackagesVersion)"/>
+        <PackageVersion Include="System.CodeDom" Version="$(Net11PackagesVersion)"/>
+        <PackageVersion Include="System.Configuration.ConfigurationManager" Version="$(Net11PackagesVersion)"/>
+        <PackageVersion Include="System.Resources.Extensions" Version="$(Net11PackagesVersion)"/>
       </ItemGroup>
     </When>
   </Choose>

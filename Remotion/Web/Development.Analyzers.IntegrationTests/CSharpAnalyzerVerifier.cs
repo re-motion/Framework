@@ -74,6 +74,7 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
       {
           ".NETCoreApp,Version=v8.0" => ReferenceAssemblies.Net.Net80,
           ".NETCoreApp,Version=v10.0" => new ReferenceAssemblies("net10.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "10.0.0-rc.1.25451.107"), Path.Combine("ref", "net10.0")),
+          ".NETCoreApp,Version=v11.0" => new ReferenceAssemblies("net11.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "11.0.0-preview.7.26381.103"), Path.Combine("ref", "net11.0")),
           var frameworkName => throw new NotSupportedException($"'{frameworkName}' is not supported.")
       };
     }
