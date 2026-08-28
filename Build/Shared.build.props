@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <LangVersion>12</LangVersion>
+    <LangVersion>latest</LangVersion>
     <DebugType>embedded</DebugType>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\remotion.snk</AssemblyOriginatorKeyFile>
