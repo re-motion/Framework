@@ -1,4 +1,4 @@
-USE DBPrefix_SchemaGenerationTestDomain1
+﻿USE DBPrefix_SchemaGenerationTestDomain1
 -- Create all tables
 CREATE TABLE [dbo].[Address]
 (
@@ -585,24 +585,24 @@ CREATE TYPE [dbo].[TVP_Address_Insert] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [Street] nvarchar (100) NOT NULL,
-  [Zip] nvarchar (10) NOT NULL,
   [City] nvarchar (100) NOT NULL,
-  [Country] nvarchar (100) NOT NULL
+  [Country] nvarchar (100) NOT NULL,
+  [Street] nvarchar (100) NOT NULL,
+  [Zip] nvarchar (10) NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Address_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [Street] nvarchar (100) NOT NULL,
-  [Street__IsSet] bit NOT NULL,
-  [Zip] nvarchar (10) NOT NULL,
-  [Zip__IsSet] bit NOT NULL,
   [City] nvarchar (100) NOT NULL,
   [City__IsSet] bit NOT NULL,
   [Country] nvarchar (100) NOT NULL,
-  [Country__IsSet] bit NOT NULL
+  [Country__IsSet] bit NOT NULL,
+  [Street] nvarchar (100) NOT NULL,
+  [Street__IsSet] bit NOT NULL,
+  [Zip] nvarchar (10) NOT NULL,
+  [Zip__IsSet] bit NOT NULL
   PRIMARY KEY CLUSTERED ([ID])
 )
 GO
@@ -610,19 +610,19 @@ CREATE TYPE [dbo].[TVP_Ceo_Insert] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [Name] nvarchar (100) NOT NULL,
   [CompanyID] uniqueidentifier NULL,
-  [CompanyIDClassID] varchar (100) NULL
+  [CompanyIDClassID] varchar (100) NULL,
+  [Name] nvarchar (100) NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Ceo_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [Name] nvarchar (100) NOT NULL,
-  [Name__IsSet] bit NOT NULL,
   [CompanyID] uniqueidentifier NULL,
-  [CompanyIDClassID] varchar (100) NULL
+  [CompanyIDClassID] varchar (100) NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL
   PRIMARY KEY CLUSTERED ([ID])
 )
 GO
@@ -630,6 +630,8 @@ CREATE TYPE [dbo].[TVP_TableWithAllDataTypes_Insert] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
+  [Binary] varbinary (100) NOT NULL,
+  [BinaryWithoutMaxLength] varbinary (max) NOT NULL,
   [Boolean] bit NOT NULL,
   [Byte] tinyint NOT NULL,
   [Date] date NOT NULL,
@@ -638,49 +640,51 @@ CREATE TYPE [dbo].[TVP_TableWithAllDataTypes_Insert] AS TABLE
   [Double] float NOT NULL,
   [Enum] int NOT NULL,
   [ExtensibleEnum] varchar (104) NOT NULL,
+  [ExtensibleEnumWithNullValue] varchar (104) NULL,
   [Guid] uniqueidentifier NOT NULL,
   [Int16] smallint NOT NULL,
   [Int32] int NOT NULL,
   [Int64] bigint NOT NULL,
-  [Single] real NOT NULL,
-  [String] nvarchar (100) NOT NULL,
-  [StringWithoutMaxLength] nvarchar (max) NOT NULL,
-  [Binary] varbinary (100) NOT NULL,
-  [BinaryWithoutMaxLength] varbinary (max) NOT NULL,
   [NaBoolean] bit NULL,
+  [NaBooleanWithNullValue] bit NULL,
   [NaByte] tinyint NULL,
+  [NaByteWithNullValue] tinyint NULL,
   [NaDate] date NULL,
   [NaDateTime] datetime2 NULL,
-  [NaDecimal] decimal (38, 3) NULL,
-  [NaDouble] float NULL,
-  [NaEnum] int NULL,
-  [NaGuid] uniqueidentifier NULL,
-  [NaInt16] smallint NULL,
-  [NaInt32] int NULL,
-  [NaInt64] bigint NULL,
-  [NaSingle] real NULL,
-  [StringWithNullValue] nvarchar (100) NULL,
-  [ExtensibleEnumWithNullValue] varchar (104) NULL,
-  [NaBooleanWithNullValue] bit NULL,
-  [NaByteWithNullValue] tinyint NULL,
-  [NaDateWithNullValue] date NULL,
   [NaDateTimeWithNullValue] datetime2 NULL,
+  [NaDateWithNullValue] date NULL,
+  [NaDecimal] decimal (38, 3) NULL,
   [NaDecimalWithNullValue] decimal (38, 3) NULL,
+  [NaDouble] float NULL,
   [NaDoubleWithNullValue] float NULL,
+  [NaEnum] int NULL,
   [NaEnumWithNullValue] int NULL,
+  [NaGuid] uniqueidentifier NULL,
   [NaGuidWithNullValue] uniqueidentifier NULL,
+  [NaInt16] smallint NULL,
   [NaInt16WithNullValue] smallint NULL,
+  [NaInt32] int NULL,
   [NaInt32WithNullValue] int NULL,
+  [NaInt64] bigint NULL,
   [NaInt64WithNullValue] bigint NULL,
+  [NaSingle] real NULL,
   [NaSingleWithNullValue] real NULL,
   [NullableBinary] varbinary (100) NULL,
-  [NullableBinaryWithoutMaxLength] varbinary (max) NULL
+  [NullableBinaryWithoutMaxLength] varbinary (max) NULL,
+  [Single] real NOT NULL,
+  [String] nvarchar (100) NOT NULL,
+  [StringWithNullValue] nvarchar (100) NULL,
+  [StringWithoutMaxLength] nvarchar (max) NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_TableWithAllDataTypes_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
+  [Binary] varbinary (100) NOT NULL,
+  [Binary__IsSet] bit NOT NULL,
+  [BinaryWithoutMaxLength] varbinary (max) NOT NULL,
+  [BinaryWithoutMaxLength__IsSet] bit NOT NULL,
   [Boolean] bit NOT NULL,
   [Byte] tinyint NOT NULL,
   [Date] date NOT NULL,
@@ -689,50 +693,46 @@ CREATE TYPE [dbo].[TVP_TableWithAllDataTypes_Update] AS TABLE
   [Double] float NOT NULL,
   [Enum] int NOT NULL,
   [ExtensibleEnum] varchar (104) NOT NULL,
+  [ExtensibleEnumWithNullValue] varchar (104) NULL,
   [Guid] uniqueidentifier NOT NULL,
   [Int16] smallint NOT NULL,
   [Int32] int NOT NULL,
   [Int64] bigint NOT NULL,
-  [Single] real NOT NULL,
-  [String] nvarchar (100) NOT NULL,
-  [String__IsSet] bit NOT NULL,
-  [StringWithoutMaxLength] nvarchar (max) NOT NULL,
-  [StringWithoutMaxLength__IsSet] bit NOT NULL,
-  [Binary] varbinary (100) NOT NULL,
-  [Binary__IsSet] bit NOT NULL,
-  [BinaryWithoutMaxLength] varbinary (max) NOT NULL,
-  [BinaryWithoutMaxLength__IsSet] bit NOT NULL,
   [NaBoolean] bit NULL,
+  [NaBooleanWithNullValue] bit NULL,
   [NaByte] tinyint NULL,
+  [NaByteWithNullValue] tinyint NULL,
   [NaDate] date NULL,
   [NaDateTime] datetime2 NULL,
-  [NaDecimal] decimal (38, 3) NULL,
-  [NaDouble] float NULL,
-  [NaEnum] int NULL,
-  [NaGuid] uniqueidentifier NULL,
-  [NaInt16] smallint NULL,
-  [NaInt32] int NULL,
-  [NaInt64] bigint NULL,
-  [NaSingle] real NULL,
-  [StringWithNullValue] nvarchar (100) NULL,
-  [StringWithNullValue__IsSet] bit NOT NULL,
-  [ExtensibleEnumWithNullValue] varchar (104) NULL,
-  [NaBooleanWithNullValue] bit NULL,
-  [NaByteWithNullValue] tinyint NULL,
-  [NaDateWithNullValue] date NULL,
   [NaDateTimeWithNullValue] datetime2 NULL,
+  [NaDateWithNullValue] date NULL,
+  [NaDecimal] decimal (38, 3) NULL,
   [NaDecimalWithNullValue] decimal (38, 3) NULL,
+  [NaDouble] float NULL,
   [NaDoubleWithNullValue] float NULL,
+  [NaEnum] int NULL,
   [NaEnumWithNullValue] int NULL,
+  [NaGuid] uniqueidentifier NULL,
   [NaGuidWithNullValue] uniqueidentifier NULL,
+  [NaInt16] smallint NULL,
   [NaInt16WithNullValue] smallint NULL,
+  [NaInt32] int NULL,
   [NaInt32WithNullValue] int NULL,
+  [NaInt64] bigint NULL,
   [NaInt64WithNullValue] bigint NULL,
+  [NaSingle] real NULL,
   [NaSingleWithNullValue] real NULL,
   [NullableBinary] varbinary (100) NULL,
   [NullableBinary__IsSet] bit NOT NULL,
   [NullableBinaryWithoutMaxLength] varbinary (max) NULL,
-  [NullableBinaryWithoutMaxLength__IsSet] bit NOT NULL
+  [NullableBinaryWithoutMaxLength__IsSet] bit NOT NULL,
+  [Single] real NOT NULL,
+  [String] nvarchar (100) NOT NULL,
+  [String__IsSet] bit NOT NULL,
+  [StringWithNullValue] nvarchar (100) NULL,
+  [StringWithNullValue__IsSet] bit NOT NULL,
+  [StringWithoutMaxLength] nvarchar (max) NOT NULL,
+  [StringWithoutMaxLength__IsSet] bit NOT NULL
   PRIMARY KEY CLUSTERED ([ID])
 )
 GO
@@ -770,30 +770,30 @@ CREATE TYPE [dbo].[TVP_Customer_Insert] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
+  [AddressID] uniqueidentifier NULL,
+  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,
+  [CustomerType] int NOT NULL,
+  [LicenseCode] nvarchar (max) NULL,
   [Name] nvarchar (100) NOT NULL,
   [PhoneNumber] nvarchar (100) NULL,
-  [AddressID] uniqueidentifier NULL,
-  [CustomerType] int NOT NULL,
-  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,
-  [PrimaryOfficialID] varchar (255) NULL,
-  [LicenseCode] nvarchar (max) NULL
+  [PrimaryOfficialID] varchar (255) NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Customer_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
+  [AddressID] uniqueidentifier NULL,
+  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,
+  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches__IsSet] bit NOT NULL,
+  [CustomerType] int NOT NULL,
+  [LicenseCode] nvarchar (max) NULL,
+  [LicenseCode__IsSet] bit NOT NULL,
   [Name] nvarchar (100) NOT NULL,
   [Name__IsSet] bit NOT NULL,
   [PhoneNumber] nvarchar (100) NULL,
   [PhoneNumber__IsSet] bit NOT NULL,
-  [AddressID] uniqueidentifier NULL,
-  [CustomerType] int NOT NULL,
-  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,
-  [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches__IsSet] bit NOT NULL,
-  [PrimaryOfficialID] varchar (255) NULL,
-  [LicenseCode] nvarchar (max) NULL,
-  [LicenseCode__IsSet] bit NOT NULL
+  [PrimaryOfficialID] varchar (255) NULL
   PRIMARY KEY CLUSTERED ([ID])
 )
 GO
@@ -823,35 +823,35 @@ CREATE TYPE [dbo].[TVP_ConcreteClass_Insert] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [PropertyInConcreteClass] nvarchar (100) NOT NULL,
-  [PropertyInDerivedClass] nvarchar (100) NULL,
-  [PersistentProperty] nvarchar (max) NULL,
-  [PropertyInDerivedOfDerivedClass] nvarchar (100) NULL,
   [ClassWithRelationsInDerivedOfDerivedClassID] uniqueidentifier NULL,
   [ClassWithRelationsInDerivedOfDerivedClassIDClassID] varchar (100) NULL,
-  [PropertyInSecondDerivedClass] nvarchar (100) NULL,
   [ClassWithRelationsInSecondDerivedClassID] uniqueidentifier NULL,
-  [ClassWithRelationsInSecondDerivedClassIDClassID] varchar (100) NULL
+  [ClassWithRelationsInSecondDerivedClassIDClassID] varchar (100) NULL,
+  [PersistentProperty] nvarchar (max) NULL,
+  [PropertyInConcreteClass] nvarchar (100) NOT NULL,
+  [PropertyInDerivedClass] nvarchar (100) NULL,
+  [PropertyInDerivedOfDerivedClass] nvarchar (100) NULL,
+  [PropertyInSecondDerivedClass] nvarchar (100) NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_ConcreteClass_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
+  [ClassWithRelationsInDerivedOfDerivedClassID] uniqueidentifier NULL,
+  [ClassWithRelationsInDerivedOfDerivedClassIDClassID] varchar (100) NULL,
+  [ClassWithRelationsInSecondDerivedClassID] uniqueidentifier NULL,
+  [ClassWithRelationsInSecondDerivedClassIDClassID] varchar (100) NULL,
+  [PersistentProperty] nvarchar (max) NULL,
+  [PersistentProperty__IsSet] bit NOT NULL,
   [PropertyInConcreteClass] nvarchar (100) NOT NULL,
   [PropertyInConcreteClass__IsSet] bit NOT NULL,
   [PropertyInDerivedClass] nvarchar (100) NULL,
   [PropertyInDerivedClass__IsSet] bit NOT NULL,
-  [PersistentProperty] nvarchar (max) NULL,
-  [PersistentProperty__IsSet] bit NOT NULL,
   [PropertyInDerivedOfDerivedClass] nvarchar (100) NULL,
   [PropertyInDerivedOfDerivedClass__IsSet] bit NOT NULL,
-  [ClassWithRelationsInDerivedOfDerivedClassID] uniqueidentifier NULL,
-  [ClassWithRelationsInDerivedOfDerivedClassIDClassID] varchar (100) NULL,
   [PropertyInSecondDerivedClass] nvarchar (100) NULL,
-  [PropertyInSecondDerivedClass__IsSet] bit NOT NULL,
-  [ClassWithRelationsInSecondDerivedClassID] uniqueidentifier NULL,
-  [ClassWithRelationsInSecondDerivedClassIDClassID] varchar (100) NULL
+  [PropertyInSecondDerivedClass__IsSet] bit NOT NULL
   PRIMARY KEY CLUSTERED ([ID])
 )
 GO
@@ -859,32 +859,32 @@ CREATE TYPE [dbo].[TVP_DevelopmentPartner_Insert] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [Name] nvarchar (100) NOT NULL,
-  [PhoneNumber] nvarchar (100) NULL,
   [AddressID] uniqueidentifier NULL,
-  [Description] nvarchar (255) NOT NULL,
-  [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,
   [Competences] nvarchar (255) NOT NULL,
-  [LicenseCode] nvarchar (max) NULL
+  [Description] nvarchar (255) NOT NULL,
+  [LicenseCode] nvarchar (max) NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,
+  [PhoneNumber] nvarchar (100) NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_DevelopmentPartner_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [Name] nvarchar (100) NOT NULL,
-  [Name__IsSet] bit NOT NULL,
-  [PhoneNumber] nvarchar (100) NULL,
-  [PhoneNumber__IsSet] bit NOT NULL,
   [AddressID] uniqueidentifier NULL,
-  [Description] nvarchar (255) NOT NULL,
-  [Description__IsSet] bit NOT NULL,
-  [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,
-  [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches__IsSet] bit NOT NULL,
   [Competences] nvarchar (255) NOT NULL,
   [Competences__IsSet] bit NOT NULL,
+  [Description] nvarchar (255) NOT NULL,
+  [Description__IsSet] bit NOT NULL,
   [LicenseCode] nvarchar (max) NULL,
-  [LicenseCode__IsSet] bit NOT NULL
+  [LicenseCode__IsSet] bit NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL,
+  [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches] nvarchar (100) NOT NULL,
+  [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches__IsSet] bit NOT NULL,
+  [PhoneNumber] nvarchar (100) NULL,
+  [PhoneNumber__IsSet] bit NOT NULL
   PRIMARY KEY CLUSTERED ([ID])
 )
 GO
@@ -957,22 +957,22 @@ CREATE TYPE [dbo].[TVP_Order_Insert] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [Number] int NOT NULL,
-  [Priority] int NOT NULL,
   [CustomerID] uniqueidentifier NULL,
   [CustomerIDClassID] varchar (100) NULL,
-  [OfficialID] varchar (255) NULL
+  [Number] int NOT NULL,
+  [OfficialID] varchar (255) NULL,
+  [Priority] int NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_Order_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
-  [Number] int NOT NULL,
-  [Priority] int NOT NULL,
   [CustomerID] uniqueidentifier NULL,
   [CustomerIDClassID] varchar (100) NULL,
-  [OfficialID] varchar (255) NULL
+  [Number] int NOT NULL,
+  [OfficialID] varchar (255) NULL,
+  [Priority] int NOT NULL
   PRIMARY KEY CLUSTERED ([ID])
 )
 GO
@@ -980,19 +980,19 @@ CREATE TYPE [dbo].[TVP_OrderItem_Insert] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
+  [OrderID] uniqueidentifier NULL,
   [Position] int NOT NULL,
-  [Product] nvarchar (100) NOT NULL,
-  [OrderID] uniqueidentifier NULL
+  [Product] nvarchar (100) NOT NULL
 )
 GO
 CREATE TYPE [dbo].[TVP_OrderItem_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
+  [OrderID] uniqueidentifier NULL,
   [Position] int NOT NULL,
   [Product] nvarchar (100) NOT NULL,
-  [Product__IsSet] bit NOT NULL,
-  [OrderID] uniqueidentifier NULL
+  [Product__IsSet] bit NOT NULL
   PRIMARY KEY CLUSTERED ([ID])
 )
 GO

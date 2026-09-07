@@ -1,4 +1,4 @@
-USE DBPrefix_SchemaGenerationTestDomain2
+﻿USE DBPrefix_SchemaGenerationTestDomain2
 -- Create all tables
 CREATE TABLE [dbo].[Official]
 (
@@ -184,8 +184,8 @@ CREATE TYPE [dbo].[TVP_Official_Insert] AS TABLE
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [Name] nvarchar (100) NOT NULL,
-  [ResponsibleForOrderPriority] int NOT NULL,
   [ResponsibleForCustomerType] int NOT NULL,
+  [ResponsibleForOrderPriority] int NOT NULL,
   [Speciality] nvarchar (255) NULL
 )
 GO
@@ -195,8 +195,8 @@ CREATE TYPE [dbo].[TVP_Official_Update] AS TABLE
   [ClassID] varchar (100) NOT NULL,
   [Name] nvarchar (100) NOT NULL,
   [Name__IsSet] bit NOT NULL,
-  [ResponsibleForOrderPriority] int NOT NULL,
   [ResponsibleForCustomerType] int NOT NULL,
+  [ResponsibleForOrderPriority] int NOT NULL,
   [Speciality] nvarchar (255) NULL,
   [Speciality__IsSet] bit NOT NULL
   PRIMARY KEY CLUSTERED ([ID])
