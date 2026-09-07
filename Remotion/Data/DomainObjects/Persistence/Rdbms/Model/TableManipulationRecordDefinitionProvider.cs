@@ -425,20 +425,59 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
 
   private TvpTableTypeDefinitions CreateTableTypeDefinition (TableDefinition tableDefinition)
   {
+    var idColumn = TvpColumnMetadata.CreateForIDColumn(tableDefinition);
+
     // The Insert TVP is only ever used for a plain INSERT ... SELECT FROM TVP (see BatchedInsertDbCommandBuilder), which never
     // joins against the target table, so it gets no benefit from a unique constraint on ID.
-    var insertColumns = GetInsertTvpColumns(tableDefinition).ToImmutableArray();
+    var insertColumns = OrderColumns(idColumn, GetInsertTvpDataColumns(tableDefinition));
     var insertTableDefinition = CreateTableTypeDefinition($"TVP_{tableDefinition.TableName.EntityName}_Insert", insertColumns, []);
 
-    var updateColumns = GetUpdateTvpColumns(tableDefinition).ToImmutableArray();
+    var updateColumns = OrderColumns(idColumn, GetUpdateTvpDataColumns(tableDefinition));
     var updateTableName = $"TVP_{tableDefinition.TableName.EntityName}_Update";
-    var updateTableDefinition = CreateTableTypeDefinition(updateTableName, updateColumns, [CreateIDPrimaryKeyConstraint(updateTableName, updateColumns[0])]);
+    var updateTableDefinition = CreateTableTypeDefinition(updateTableName, updateColumns, [CreateIDPrimaryKeyConstraint(updateTableName, idColumn)]);
 
     return new TvpTableTypeDefinitions(
         insertTableDefinition,
         insertColumns,
         updateTableDefinition,
         updateColumns);
+  }
+
+  /// <summary>
+  /// Orders the TVP columns so that the resulting order is a pure function of the column names.
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  /// The order of <see cref="RdbmsStorageEntityDefinitionBase.DataProperties"/> is not stable between processes: it follows the order in which
+  /// persistent mixins are discovered, which in turn follows assembly and type discovery.
+  /// </para>
+  /// </remarks>
+  private static ImmutableArray<TvpColumnMetadata> OrderColumns (TvpColumnMetadata idColumn, IEnumerable<TvpColumnMetadata> dataColumns)
+  {
+    return
+    [
+        // The ID column stays first, both because the primary key is defined on it and because it keeps the generated scripts readable.
+        idColumn,
+        ..dataColumns
+            .OrderBy(GetBaseColumnName, StringComparer.Ordinal)
+            .ThenBy(c => IsIsSetColumn(c) ? 1 : 0)
+    ];
+  }
+
+  private static string GetColumnName (TvpColumnMetadata column)
+  {
+    return column.Property.GetColumns().First().Name;
+  }
+
+  private static bool IsIsSetColumn (TvpColumnMetadata column)
+  {
+    return GetColumnName(column).EndsWith(IsSetColumnPostFix, StringComparison.Ordinal);
+  }
+
+  private static string GetBaseColumnName (TvpColumnMetadata column)
+  {
+    var name = GetColumnName(column);
+    return IsIsSetColumn(column) ? name.Substring(0, name.Length - IsSetColumnPostFix.Length) : name;
   }
 
   private TableTypeDefinition CreateTableTypeDefinition (string name, ImmutableArray<TvpColumnMetadata> columns, ImmutableArray<ITableConstraintDefinition> constraints)
@@ -461,16 +500,14 @@ public class TableManipulationRecordDefinitionProvider : ITableManipulationRecor
     return new PrimaryKeyConstraintDefinition($"PK_{name}", true, idColumns);
   }
 
-  private IEnumerable<TvpColumnMetadata> GetInsertTvpColumns (TableDefinition tableDefinition)
+  private IEnumerable<TvpColumnMetadata> GetInsertTvpDataColumns (TableDefinition tableDefinition)
   {
-    yield return TvpColumnMetadata.CreateForIDColumn(tableDefinition);
     foreach (var dataProperty in tableDefinition.DataProperties)
       yield return TvpColumnMetadata.CreateForDataColumn(dataProperty);
   }
 
-  private IEnumerable<TvpColumnMetadata> GetUpdateTvpColumns (TableDefinition tableDefinition)
+  private IEnumerable<TvpColumnMetadata> GetUpdateTvpDataColumns (TableDefinition tableDefinition)
   {
-    yield return TvpColumnMetadata.CreateForIDColumn(tableDefinition);
     foreach (var dataProperty in tableDefinition.DataProperties)
     {
       if (dataProperty is SimpleStoragePropertyDefinition simpleDataProperty
