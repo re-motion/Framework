@@ -20,6 +20,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 [TestFixture]
 public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
 {
+  private static readonly string[] s_orderedProductReviewInsertColumns = ["ID", "ClassID", "Comment", "CreatedAt", "ProductID", "ReviewerID"];
+  private static readonly string[] s_orderedProductReviewUpdateColumns = ["ID", "ClassID", "Comment", "Comment__IsSet", "CreatedAt", "ProductID", "ReviewerID"];
+
   private TableManipulationRecordDefinitionProvider _tableManipulationRecordDefinitionProvider;
   private IInfrastructureStoragePropertyDefinitionProvider _infrastructureStoragePropertyDefinitionProvider;
 
@@ -147,10 +150,11 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
     AssertRecordDefinition(insertRecordDefinition, classDefinition, tableDefinition, "TVP_SingleInheritanceBaseClass_Insert", [
         AssertedProperty.ID,
         AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceFirstDerivedClass.BaseProperty)),
-        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceBaseClass.VectorOpposingProperty)),
         AssertedProperty.CopiedProperty(nameof(SingleInheritanceFirstDerivedClass.FirstDerivedProperty)),
         AssertedProperty.CopiedProperty(typeof(SingleInheritancePersistentMixin), nameof(SingleInheritancePersistentMixin.PersistentProperty)),
         AssertedProperty.UnknownProperty(nameof(SingleInheritanceSecondDerivedClass.SecondDerivedProperty)),
+        // Column "VectorOpposingPropertyID", so it sorts after "SecondDerivedProperty".
+        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceBaseClass.VectorOpposingProperty)),
       ]);
 
   }
@@ -167,13 +171,14 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         AssertedProperty.ID,
         AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceFirstDerivedClass.BaseProperty)),
         AssertedProperty.BitflagProperty(nameof(SingleInheritanceFirstDerivedClass.BaseProperty) + isSetSuffix ),
-        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceBaseClass.VectorOpposingProperty)),
         AssertedProperty.CopiedProperty(nameof(SingleInheritanceFirstDerivedClass.FirstDerivedProperty)),
         AssertedProperty.BitflagProperty(nameof(SingleInheritanceFirstDerivedClass.FirstDerivedProperty) + isSetSuffix ),
         AssertedProperty.CopiedProperty(typeof(SingleInheritancePersistentMixin), nameof(SingleInheritancePersistentMixin.PersistentProperty)),
         AssertedProperty.BitflagProperty(nameof(SingleInheritancePersistentMixin.PersistentProperty) + isSetSuffix ),
         AssertedProperty.UnknownProperty(nameof(SingleInheritanceSecondDerivedClass.SecondDerivedProperty)),
         AssertedProperty.BitflagProperty(nameof(SingleInheritanceSecondDerivedClass.SecondDerivedProperty) + isSetSuffix),
+        // Column "VectorOpposingPropertyID", so it sorts after "SecondDerivedProperty".
+        AssertedProperty.CopiedProperty(typeof(SingleInheritanceBaseClass), nameof(SingleInheritanceBaseClass.VectorOpposingProperty)),
       ]);
 
   }
@@ -190,6 +195,7 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         "TVP_TableWithAllDataTypes_Insert",
         [
             AssertedProperty.ID,
+            AssertedProperty.CopiedProperty("BinaryProperty"),
             AssertedProperty.CopiedProperty("BooleanProperty"),
             AssertedProperty.CopiedProperty("ByteProperty"),
             AssertedProperty.CopiedProperty("DateProperty"),
@@ -197,45 +203,44 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
             AssertedProperty.CopiedProperty("DecimalProperty"),
             AssertedProperty.CopiedProperty("DoubleProperty"),
             AssertedProperty.CopiedProperty("EnumProperty"),
-            AssertedProperty.CopiedProperty("FlagsProperty"),
             AssertedProperty.CopiedProperty("ExtensibleEnumProperty"),
+            AssertedProperty.CopiedProperty("ExtensibleEnumWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("FlagsProperty"),
             AssertedProperty.CopiedProperty("GuidProperty"),
             AssertedProperty.CopiedProperty("Int16Property"),
             AssertedProperty.CopiedProperty("Int32Property"),
             AssertedProperty.CopiedProperty("Int64Property"),
-            AssertedProperty.CopiedProperty("SingleProperty"),
-            AssertedProperty.CopiedProperty("StringProperty"),
-            AssertedProperty.CopiedProperty("StringPropertyWithoutMaxLength"),
-            AssertedProperty.CopiedProperty("BinaryProperty"),
             AssertedProperty.CopiedProperty("NaBooleanProperty"),
+            AssertedProperty.CopiedProperty("NaBooleanWithNullValueProperty"),
             AssertedProperty.CopiedProperty("NaByteProperty"),
+            AssertedProperty.CopiedProperty("NaByteWithNullValueProperty"),
             AssertedProperty.CopiedProperty("NaDateProperty"),
             AssertedProperty.CopiedProperty("NaDateTimeProperty"),
-            AssertedProperty.CopiedProperty("NaDecimalProperty"),
-            AssertedProperty.CopiedProperty("NaDoubleProperty"),
-            AssertedProperty.CopiedProperty("NaEnumProperty"),
-            AssertedProperty.CopiedProperty("NaFlagsProperty"),
-            AssertedProperty.CopiedProperty("NaGuidProperty"),
-            AssertedProperty.CopiedProperty("NaInt16Property"),
-            AssertedProperty.CopiedProperty("NaInt32Property"),
-            AssertedProperty.CopiedProperty("NaInt64Property"),
-            AssertedProperty.CopiedProperty("NaSingleProperty"),
-            AssertedProperty.CopiedProperty("StringWithNullValueProperty"),
-            AssertedProperty.CopiedProperty("ExtensibleEnumWithNullValueProperty"),
-            AssertedProperty.CopiedProperty("NaBooleanWithNullValueProperty"),
-            AssertedProperty.CopiedProperty("NaByteWithNullValueProperty"),
-            AssertedProperty.CopiedProperty("NaDateWithNullValueProperty"),
             AssertedProperty.CopiedProperty("NaDateTimeWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaDateWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaDecimalProperty"),
             AssertedProperty.CopiedProperty("NaDecimalWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaDoubleProperty"),
             AssertedProperty.CopiedProperty("NaDoubleWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaEnumProperty"),
             AssertedProperty.CopiedProperty("NaEnumWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaFlagsProperty"),
             AssertedProperty.CopiedProperty("NaFlagsWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaGuidProperty"),
             AssertedProperty.CopiedProperty("NaGuidWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaInt16Property"),
             AssertedProperty.CopiedProperty("NaInt16WithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaInt32Property"),
             AssertedProperty.CopiedProperty("NaInt32WithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaInt64Property"),
             AssertedProperty.CopiedProperty("NaInt64WithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaSingleProperty"),
             AssertedProperty.CopiedProperty("NaSingleWithNullValueProperty"),
             AssertedProperty.CopiedProperty("NullableBinaryProperty"),
+            AssertedProperty.CopiedProperty("SingleProperty"),
+            AssertedProperty.CopiedProperty("StringProperty"),
+            AssertedProperty.CopiedProperty("StringWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("StringPropertyWithoutMaxLength"),
         ]);
   }
 
@@ -254,13 +259,13 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         "TVP_Company_Insert",
         [
             AssertedProperty.ID,
-            AssertedProperty.CopiedProperty(typeof(Company), "Name"),
-            AssertedProperty.CopiedProperty(typeof(Company), "IndustrialSector"),
             AssertedProperty.CopiedProperty(typeof(Partner), "ContactPerson"),
-            AssertedProperty.CopiedProperty(typeof(Distributor), "NumberOfShops"),
-            AssertedProperty.UnknownProperty("SupplierQuality"),
             AssertedProperty.UnknownProperty("CustomerSince"),
             AssertedProperty.UnknownProperty("CustomerType"),
+            AssertedProperty.CopiedProperty(typeof(Company), "IndustrialSector"),
+            AssertedProperty.CopiedProperty(typeof(Company), "Name"),
+            AssertedProperty.CopiedProperty("NumberOfShops"),
+            AssertedProperty.UnknownProperty("SupplierQuality"),
         ]);
 
     var customerClassDefinition = MappingConfiguration.Current.GetClassDefinition("Customer");
@@ -273,13 +278,13 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         "TVP_Company_Insert",
         [
             AssertedProperty.ID,
-            AssertedProperty.CopiedProperty(typeof(Company), "Name"),
-            AssertedProperty.CopiedProperty(typeof(Company), "IndustrialSector"),
             AssertedProperty.UnknownProperty("ContactPersonID"),
+            AssertedProperty.CopiedProperty("CustomerSince"),
+            AssertedProperty.CopiedProperty("Type"),
+            AssertedProperty.CopiedProperty(typeof(Company), "IndustrialSector"),
+            AssertedProperty.CopiedProperty(typeof(Company), "Name"),
             AssertedProperty.UnknownProperty("NumberOfShops"),
             AssertedProperty.UnknownProperty("SupplierQuality"),
-            AssertedProperty.CopiedProperty(typeof(Customer), "CustomerSince"),
-            AssertedProperty.CopiedProperty(typeof(Customer), "Type"),
         ]);
   }
 
@@ -335,6 +340,8 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         "TVP_TableWithAllDataTypes_Update",
         [
             AssertedProperty.ID,
+            AssertedProperty.CopiedProperty("BinaryProperty"),
+            AssertedProperty.BitflagProperty("Binary__IsSet"),
             AssertedProperty.CopiedProperty("BooleanProperty"),
             AssertedProperty.CopiedProperty("ByteProperty"),
             AssertedProperty.CopiedProperty("DateProperty"),
@@ -342,50 +349,48 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
             AssertedProperty.CopiedProperty("DecimalProperty"),
             AssertedProperty.CopiedProperty("DoubleProperty"),
             AssertedProperty.CopiedProperty("EnumProperty"),
-            AssertedProperty.CopiedProperty("FlagsProperty"),
             AssertedProperty.CopiedProperty("ExtensibleEnumProperty"),
+            AssertedProperty.CopiedProperty("ExtensibleEnumWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("FlagsProperty"),
             AssertedProperty.CopiedProperty("GuidProperty"),
             AssertedProperty.CopiedProperty("Int16Property"),
             AssertedProperty.CopiedProperty("Int32Property"),
             AssertedProperty.CopiedProperty("Int64Property"),
-            AssertedProperty.CopiedProperty("SingleProperty"),
-            AssertedProperty.CopiedProperty("StringProperty"),
-            AssertedProperty.BitflagProperty("String__IsSet"),
-            AssertedProperty.CopiedProperty("StringPropertyWithoutMaxLength"),
-            AssertedProperty.BitflagProperty("StringWithoutMaxLength__IsSet"),
-            AssertedProperty.CopiedProperty("BinaryProperty"),
-            AssertedProperty.BitflagProperty("Binary__IsSet"),
             AssertedProperty.CopiedProperty("NaBooleanProperty"),
+            AssertedProperty.CopiedProperty("NaBooleanWithNullValueProperty"),
             AssertedProperty.CopiedProperty("NaByteProperty"),
+            AssertedProperty.CopiedProperty("NaByteWithNullValueProperty"),
             AssertedProperty.CopiedProperty("NaDateProperty"),
             AssertedProperty.CopiedProperty("NaDateTimeProperty"),
-            AssertedProperty.CopiedProperty("NaDecimalProperty"),
-            AssertedProperty.CopiedProperty("NaDoubleProperty"),
-            AssertedProperty.CopiedProperty("NaEnumProperty"),
-            AssertedProperty.CopiedProperty("NaFlagsProperty"),
-            AssertedProperty.CopiedProperty("NaGuidProperty"),
-            AssertedProperty.CopiedProperty("NaInt16Property"),
-            AssertedProperty.CopiedProperty("NaInt32Property"),
-            AssertedProperty.CopiedProperty("NaInt64Property"),
-            AssertedProperty.CopiedProperty("NaSingleProperty"),
-            AssertedProperty.CopiedProperty("StringWithNullValueProperty"),
-            AssertedProperty.BitflagProperty("StringWithNullValue__IsSet"),
-            AssertedProperty.CopiedProperty("ExtensibleEnumWithNullValueProperty"),
-            AssertedProperty.CopiedProperty("NaBooleanWithNullValueProperty"),
-            AssertedProperty.CopiedProperty("NaByteWithNullValueProperty"),
-            AssertedProperty.CopiedProperty("NaDateWithNullValueProperty"),
             AssertedProperty.CopiedProperty("NaDateTimeWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaDateWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaDecimalProperty"),
             AssertedProperty.CopiedProperty("NaDecimalWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaDoubleProperty"),
             AssertedProperty.CopiedProperty("NaDoubleWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaEnumProperty"),
             AssertedProperty.CopiedProperty("NaEnumWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaFlagsProperty"),
             AssertedProperty.CopiedProperty("NaFlagsWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaGuidProperty"),
             AssertedProperty.CopiedProperty("NaGuidWithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaInt16Property"),
             AssertedProperty.CopiedProperty("NaInt16WithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaInt32Property"),
             AssertedProperty.CopiedProperty("NaInt32WithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaInt64Property"),
             AssertedProperty.CopiedProperty("NaInt64WithNullValueProperty"),
+            AssertedProperty.CopiedProperty("NaSingleProperty"),
             AssertedProperty.CopiedProperty("NaSingleWithNullValueProperty"),
             AssertedProperty.CopiedProperty("NullableBinaryProperty"),
             AssertedProperty.BitflagProperty("NullableBinary__IsSet"),
+            AssertedProperty.CopiedProperty("SingleProperty"),
+            AssertedProperty.CopiedProperty("StringProperty"),
+            AssertedProperty.BitflagProperty("String__IsSet"),
+            AssertedProperty.CopiedProperty("StringWithNullValueProperty"),
+            AssertedProperty.BitflagProperty("StringWithNullValue__IsSet"),
+            AssertedProperty.CopiedProperty("StringPropertyWithoutMaxLength"),
+            AssertedProperty.BitflagProperty("StringWithoutMaxLength__IsSet"),
         ]);
   }
 
@@ -404,14 +409,14 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         "TVP_Company_Update",
         [
             AssertedProperty.ID,
-            AssertedProperty.CopiedProperty(typeof(Company), "Name"),
-            AssertedProperty.BitflagProperty("Name__IsSet"),
-            AssertedProperty.CopiedProperty(typeof(Company), "IndustrialSector"),
             AssertedProperty.CopiedProperty(typeof(Partner), "ContactPerson"),
-            AssertedProperty.CopiedProperty(typeof(Distributor), "NumberOfShops"),
-            AssertedProperty.UnknownProperty("SupplierQuality"),
             AssertedProperty.UnknownProperty("CustomerSince"),
             AssertedProperty.UnknownProperty("CustomerType"),
+            AssertedProperty.CopiedProperty(typeof(Company), "IndustrialSector"),
+            AssertedProperty.CopiedProperty(typeof(Company), "Name"),
+            AssertedProperty.BitflagProperty("Name__IsSet"),
+            AssertedProperty.CopiedProperty("NumberOfShops"),
+            AssertedProperty.UnknownProperty("SupplierQuality"),
         ]);
 
     var customerClassDefinition = MappingConfiguration.Current.GetClassDefinition("Customer");
@@ -424,14 +429,14 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
         "TVP_Company_Update",
         [
             AssertedProperty.ID,
+            AssertedProperty.UnknownProperty("ContactPersonID"),
+            AssertedProperty.CopiedProperty("CustomerSince"),
+            AssertedProperty.CopiedProperty("Type"),
+            AssertedProperty.CopiedProperty(typeof(Company), "IndustrialSector"),
             AssertedProperty.CopiedProperty(typeof(Company), "Name"),
             AssertedProperty.BitflagProperty("Name__IsSet"),
-            AssertedProperty.CopiedProperty(typeof(Company), "IndustrialSector"),
-            AssertedProperty.UnknownProperty("ContactPersonID"),
             AssertedProperty.UnknownProperty("NumberOfShops"),
             AssertedProperty.UnknownProperty("SupplierQuality"),
-            AssertedProperty.CopiedProperty(typeof(Customer), "CustomerSince"),
-            AssertedProperty.CopiedProperty(typeof(Customer), "Type"),
         ]);
   }
 
@@ -476,6 +481,68 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
   }
 
   [Test]
+  public void GetRecordDefinition_OrdersColumnsByName ()
+  {
+    var classDefinition = MappingConfiguration.Current.GetClassDefinition("ProductReview");
+
+    Assert.That(
+        GetColumnNames(_tableManipulationRecordDefinitionProvider.GetInsertRecordDefinition(classDefinition)),
+        Is.EqualTo(s_orderedProductReviewInsertColumns));
+    Assert.That(
+        GetColumnNames(_tableManipulationRecordDefinitionProvider.GetUpdateRecordDefinition(classDefinition)),
+        Is.EqualTo(s_orderedProductReviewUpdateColumns));
+  }
+
+  [Test]
+  public void GetRecordDefinition_ColumnOrderDoesNotDependOnDataPropertyOrder ()
+  {
+    // The order of TableDefinition.DataProperties is not stable between processes, so the generated column order must not depend on it.
+    var classDefinition = MappingConfiguration.Current.GetClassDefinition("ProductReview");
+    var tableDefinition = (TableDefinition)classDefinition.StorageEntityDefinition;
+    var provider = CreateProviderFor(
+        classDefinition,
+        CloneWithDataProperties(tableDefinition, tableDefinition.DataProperties.Reverse()));
+
+    Assert.That(
+        GetColumnNames(provider.GetInsertRecordDefinition(classDefinition)),
+        Is.EqualTo(s_orderedProductReviewInsertColumns));
+    Assert.That(
+        GetColumnNames(provider.GetUpdateRecordDefinition(classDefinition)),
+        Is.EqualTo(s_orderedProductReviewUpdateColumns));
+  }
+
+  private static string[] GetColumnNames (RecordDefinition recordDefinition)
+  {
+    return ((TableTypeDefinition)recordDefinition.StructuredTypeDefinition).GetAllColumns().Select(c => c.Name).ToArray();
+  }
+
+  private static TableDefinition CloneWithDataProperties (TableDefinition tableDefinition, IEnumerable<IRdbmsStoragePropertyDefinition> dataProperties)
+  {
+    return new TableDefinition(
+        tableDefinition.StorageProviderDefinition,
+        tableDefinition.TableName,
+        tableDefinition.ViewName,
+        tableDefinition.ObjectIDProperty,
+        tableDefinition.TimestampProperty,
+        dataProperties,
+        tableDefinition.Constraints,
+        tableDefinition.Indexes,
+        tableDefinition.Synonyms,
+        tableDefinition.PersistenceModelSortingProvider);
+  }
+
+  private TableManipulationRecordDefinitionProvider CreateProviderFor (ClassDefinition classDefinition, TableDefinition tableDefinition)
+  {
+    var persistenceModelProviderStub = new Mock<IRdbmsPersistenceModelProvider>();
+    persistenceModelProviderStub.Setup(_ => _.GetEntityDefinition(classDefinition)).Returns(tableDefinition);
+
+    return new TableManipulationRecordDefinitionProvider(
+        new SqlStorageTypeInformationProvider(new DateTimeDefaultStorageTypeProvider()),
+        _infrastructureStoragePropertyDefinitionProvider,
+        persistenceModelProviderStub.Object);
+  }
+
+  [Test]
   public void GetColumnValues_WithTableManipulationDataContainerAccessor_ReturnsCorrectValues ()
   {
     var productReviewClassDefinition = MappingConfiguration.Current.GetClassDefinition("ProductReview");
@@ -498,14 +565,15 @@ public class TableManipulationRecordDefinitionProviderTest : StandardMappingTest
     Assert.That(
         columnValues,
         Is.EqualTo(
+        // Columns are ordered by name: ID, ClassID, Comment, Comment__IsSet, CreatedAt, ProductID, ReviewerID.
         (object[])[
             objectId.Value,
             "ProductReview",
-            product.Value,
-            reviewer.Value,
-            createdAt,
             "dummy content",
-            true
+            true,
+            createdAt,
+            product.Value,
+            reviewer.Value
         ]));
   }
 

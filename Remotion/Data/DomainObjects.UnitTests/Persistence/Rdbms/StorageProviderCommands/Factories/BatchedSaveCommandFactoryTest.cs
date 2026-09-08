@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
+﻿// SPDX-FileCopyrightText: (c) RUBICON IT GmbH, www.rubicon.eu
 // SPDX-License-Identifier: LGPL-2.1-or-later
 using System;
 using System.Collections.Generic;
@@ -1529,8 +1529,8 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
         [
             new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
             new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
-            new SqlMetaData("SerialNumber", SqlDbType.NVarChar, 20),
-            new SqlMetaData("EmployeeID", SqlDbType.UniqueIdentifier)
+            new SqlMetaData("EmployeeID", SqlDbType.UniqueIdentifier),
+            new SqlMetaData("SerialNumber", SqlDbType.NVarChar, 20)
         ]);
   }
 
@@ -1553,9 +1553,9 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
         [
             new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
             new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
+            new SqlMetaData("EmployeeID", SqlDbType.UniqueIdentifier),
             new SqlMetaData("SerialNumber", SqlDbType.NVarChar, 20),
-            new SqlMetaData("SerialNumber__IsSet", SqlDbType.Bit),
-            new SqlMetaData("EmployeeID", SqlDbType.UniqueIdentifier)
+            new SqlMetaData("SerialNumber__IsSet", SqlDbType.Bit)
         ]);
   }
 
@@ -1566,11 +1566,11 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
         [
             new SqlMetaData("ID", SqlDbType.UniqueIdentifier),
             new SqlMetaData("ClassID", SqlDbType.VarChar, 100),
-            new SqlMetaData("ProductID", SqlDbType.UniqueIdentifier),
-            new SqlMetaData("ReviewerID", SqlDbType.UniqueIdentifier),
-            new SqlMetaData("CreatedAt", SqlDbType.DateTime2),
             new SqlMetaData("Comment", SqlDbType.NVarChar, 1000),
-            new SqlMetaData("Comment__IsSet", SqlDbType.Bit)
+            new SqlMetaData("Comment__IsSet", SqlDbType.Bit),
+            new SqlMetaData("CreatedAt", SqlDbType.DateTime2),
+            new SqlMetaData("ProductID", SqlDbType.UniqueIdentifier),
+            new SqlMetaData("ReviewerID", SqlDbType.UniqueIdentifier)
         ]);
   }
 
@@ -1585,7 +1585,7 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
   private void AddRecordToComputerInsertTvp (SqlTableValuedParameterValue parameterValue, DataContainer dataContainer, string serialNumber, [CanBeNull] ObjectID emplObjectID)
   {
-    parameterValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, serialNumber, emplObjectID?.Value]);
+    parameterValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, emplObjectID?.Value, serialNumber]);
   }
 
   private void AddRecordToEmployeeInsertTvp (SqlTableValuedParameterValue parameterValue, DataContainer dataContainer, string name, [CanBeNull] ObjectID supervisorID)
@@ -1595,12 +1595,12 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
   private void AddRecordToComputerUpdateTvp (SqlTableValuedParameterValue parameterValue, DataContainer dataContainer, string serialNumber, bool serialNumberIsSet, [CanBeNull] ObjectID emplObjectID)
   {
-    parameterValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, serialNumber, serialNumberIsSet, emplObjectID?.Value]);
+    parameterValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, emplObjectID?.Value, serialNumber, serialNumberIsSet]);
   }
 
   private void AddRecordToProductReviewUpdateTvp (SqlTableValuedParameterValue parameterValue, DataContainer dataContainer, Guid? productID, Guid? reviewerID, DateTime createdAt, string comment, bool commentIsSet)
   {
-    parameterValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, productID, reviewerID, createdAt, comment, commentIsSet]);
+    parameterValue.AddRecord([dataContainer.ID.Value, dataContainer.ID.ClassID, comment, commentIsSet, createdAt, productID, reviewerID]);
   }
 
   private void AddRecordToAllTablesDeleteTvp (SqlTableValuedParameterValue parameterValue, DataContainer dataContainer)
