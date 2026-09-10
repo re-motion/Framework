@@ -21,6 +21,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.ReadOnlyTransactions
 {
@@ -56,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
             .Setup(
                 mock => mock.FilterQueryResult(
                     ReadOnlyRootTransaction,
-                    It.Is<QueryResult<DomainObject>>(qr => qr.ToArray().SequenceEqual(new[] { _order1 }))))
+                    It.Is<QueryResult<DomainObject>>(qr => qr.ToArray().AsEnumerable().SequenceEqual(new[] { _order1 }))))
             .Returns(new QueryResult<DomainObject>(_queryStub.Object, new[] { _order3 }))
             .Callback((ClientTransaction _, QueryResult<DomainObject> _) => Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.False))
             .Verifiable();
@@ -65,7 +66,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
             .Setup(
                 mock => mock.FilterQueryResult(
                     ReadOnlyMiddleTransaction,
-                    It.Is<QueryResult<DomainObject>>(qr => qr.ToArray().SequenceEqual(new[] { _order3 }))))
+                    It.Is<QueryResult<DomainObject>>(qr => qr.ToArray().AsEnumerable().SequenceEqual(new[] { _order3 }))))
             .Returns(new QueryResult<DomainObject>(_queryStub.Object, new[] { _order4 }))
             .Callback((ClientTransaction _, QueryResult<DomainObject> _) => Assert.That(ReadOnlyMiddleTransaction.IsWriteable, Is.False))
             .Verifiable();
@@ -74,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
             .Setup(
                 mock => mock.FilterQueryResult(
                     WriteableSubTransaction,
-                    It.Is<QueryResult<DomainObject>>(qr => qr.ToArray().SequenceEqual(new[] { _order4 }))))
+                    It.Is<QueryResult<DomainObject>>(qr => qr.ToArray().AsEnumerable().SequenceEqual(new[] { _order4 }))))
             .Returns(new QueryResult<DomainObject>(_queryStub.Object, new[] { _order5 }))
             .Callback((ClientTransaction _, QueryResult<DomainObject> _) => Assert.That(WriteableSubTransaction.IsWriteable, Is.True))
             .Verifiable();
