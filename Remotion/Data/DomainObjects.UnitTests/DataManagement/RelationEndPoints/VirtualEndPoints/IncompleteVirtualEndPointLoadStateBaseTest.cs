@@ -152,14 +152,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void UnregisterOriginalOppositeEndPoint_ThrowsIfNotRegistered ()
     {
       Assert.That(_loadState.OriginalOppositeEndPoints.Count, Is.EqualTo(0));
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
       var endPointMock = new Mock<IRealObjectEndPoint>(MockBehavior.Strict);
       endPointMock.Setup(stub => stub.IsNull).Returns(false);
       endPointMock.Setup(stub => stub.ObjectID).Returns(DomainObjectIDs.Order1);
+      endPointMock.Setup(stub => stub.ID).Returns(endPointID);
       Assert.That(
           () => _loadState.UnregisterOriginalOppositeEndPoint(_virtualEndPointMock.Object, endPointMock.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The opposite end-point has not been registered."));
+                  $"The opposite end-point '{endPointID}' has not been registered."));
     }
 
     [Test]

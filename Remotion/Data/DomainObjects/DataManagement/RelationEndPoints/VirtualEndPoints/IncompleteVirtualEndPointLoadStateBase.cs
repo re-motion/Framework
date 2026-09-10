@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       if (!_originalOppositeEndPoints.ContainsKey(oppositeEndPoint.ObjectID))
-        throw new InvalidOperationException("The opposite end-point has not been registered.");
+        throw new InvalidOperationException($"The opposite end-point '{oppositeEndPoint.ID}' has not been registered.");
 
       _originalOppositeEndPoints.Remove(oppositeEndPoint.ObjectID);
     }
