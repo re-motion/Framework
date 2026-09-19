@@ -132,6 +132,8 @@
               "GenerateSbom",
               "NightlyBuild",
               "Pack",
+              "PrepareDotnetSdkInTempDirectory",
+              "RemoveSbomSolution",
               "Restore",
               "Test",
               "VerifyTestParameters"
@@ -162,6 +164,8 @@
               "GenerateSbom",
               "NightlyBuild",
               "Pack",
+              "PrepareDotnetSdkInTempDirectory",
+              "RemoveSbomSolution",
               "Restore",
               "Test",
               "VerifyTestParameters"
@@ -199,7 +203,8 @@
           "items": {
             "type": "string",
             "enum": [
-              "Docker_Win_NET8_0", "Docker_Win_NET10_0",
+              "Docker_Win_NET10_0",
+              "Docker_Win_NET8_0",
               "EnforcedLocalMachine(Docker_Win_NET8_0)",
               "LocalMachine"
             ]
