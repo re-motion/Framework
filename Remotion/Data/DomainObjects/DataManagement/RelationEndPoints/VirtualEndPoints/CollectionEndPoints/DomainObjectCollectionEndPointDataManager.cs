@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       if (ContainsOriginalOppositeEndPoint(oppositeEndPoint))
-        throw new InvalidOperationException("The opposite end-point has already been registered.");
+        throw new InvalidOperationException($"The opposite end-point '{oppositeEndPoint.ID}' has already been registered.");
 
       var item = oppositeEndPoint.GetDomainObjectReference();
       Assertion.DebugIsNotNull(item, "oppositeEndPoint.GetDomainObjectReference() != null when oppositeEndPoint.IsNull == false");
@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         throw new ArgumentException("End point must not be a null object.", nameof(oppositeEndPoint));
 
       if (ContainsCurrentOppositeEndPoint(oppositeEndPoint))
-        throw new InvalidOperationException("The opposite end-point has already been registered.");
+        throw new InvalidOperationException($"The opposite end-point '{oppositeEndPoint.ID}' has already been registered.");
 
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 

@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(
           () => _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("A different original opposite item has already been registered."));
+              .With.Message.EqualTo($"A different original opposite item has already been registered: '{oppositeObject2.ID}'."));
     }
 
     [Test]
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.RegisterOriginalOppositeEndPoint(new Mock<IRealObjectEndPoint>().Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The original opposite end-point has already been registered."));
+                  $"The original opposite end-point '{_oppositeEndPointStub.Object.ID}' has already been registered."));
     }
 
     [Test]
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "An original opposite item has already been registered."));
+                  $"An original opposite item has already been registered: '{_oppositeObject.ID}'."));
     }
 
     [Test]
@@ -231,7 +231,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "An original opposite item has already been registered."));
+                  $"An original opposite item has already been registered: '{_oppositeObject.ID}'."));
     }
 
     [Test]
@@ -266,10 +266,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void UnregisterOriginalItemWithoutEndPoint_InvalidID ()
     {
       _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject);
+      var wrongObject = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket2);
       Assert.That(
-          () => _dataManager.UnregisterOriginalItemWithoutEndPoint(DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket2)),
+          () => _dataManager.UnregisterOriginalItemWithoutEndPoint(wrongObject),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("Cannot unregister original item, it has not been registered."));
+              .With.Message.EqualTo(
+                  $"The original opposite item '{wrongObject.ID}' has not been registered. "
+                  + $"Currently registered: '{_oppositeObject.ID}'"));
     }
 
     [Test]
@@ -279,7 +282,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(
           () => _dataManager.UnregisterOriginalItemWithoutEndPoint(_oppositeObject),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("Cannot unregister original item, an end-point has been registered for it."));
+              .With.Message.EqualTo(
+                  $"Cannot unregister original item '{_oppositeObject.ID}', an end-point has been registered for it: '{_oppositeEndPointStub.Object.ID}'."));
     }
 
     [Test]
@@ -293,12 +297,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void RegisterCurrentOppositeEndPoint_AlreadyRegistered ()
     {
-      _dataManager.RegisterCurrentOppositeEndPoint(new Mock<IRealObjectEndPoint>().Object);
+      _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
       Assert.That(
-          () => _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object),
+          () => _dataManager.RegisterCurrentOppositeEndPoint(new Mock<IRealObjectEndPoint>().Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "An opposite end-point has already been registered."));
+                  $"An opposite end-point has already been registered: '{_oppositeEndPointStub.Object.ID}'."));
     }
 
     [Test]
