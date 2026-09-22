@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       query.Parameters.Add("@byte", (byte)85);
       query.Parameters.Add("@date", new DateOnly(2005, 1, 1));
       query.Parameters.Add("@dateTime", new DateTime(2005, 1, 1, 17, 0, 0));
-      query.Parameters.Add("@decimal", (decimal)123456.789);
+      query.Parameters.Add("@decimal", 123456.789m);
       query.Parameters.Add("@doubleLowerBound", 987654D);
       query.Parameters.Add("@doubleUpperBound", 987655D);
       query.Parameters.Add("@enum", ClassWithAllDataTypes.EnumType.Value1);
