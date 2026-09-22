@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint1.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  $"The opposite end-point '{_domainObjectEndPoint1.Object.ID}' has already been registered."));
+                  "The opposite end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has already been registered."));
     }
 
     [Test]
@@ -277,7 +277,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  $"The opposite end-point '{_domainObjectEndPoint1.Object.ID}' has already been registered."));
+                  "The opposite end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has already been registered."));
     }
 
     [Test]

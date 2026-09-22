@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(
           () => _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object),
           Throws.InvalidOperationException
-              .With.Message.EqualTo($"A different original opposite item has already been registered: '{oppositeObject2.ID}'."));
+              .With.Message.EqualTo("A different original opposite item has already been registered: 'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid'."));
     }
 
     [Test]
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.RegisterOriginalOppositeEndPoint(new Mock<IRealObjectEndPoint>().Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  $"The original opposite end-point '{_oppositeEndPointStub.Object.ID}' has already been registered."));
+                  "The original opposite end-point 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' has already been registered."));
     }
 
     [Test]
@@ -220,7 +220,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  $"An original opposite item has already been registered: '{_oppositeObject.ID}'."));
+                  "An original opposite item has already been registered: 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid'."));
     }
 
     [Test]
@@ -231,7 +231,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  $"An original opposite item has already been registered: '{_oppositeObject.ID}'."));
+                  "An original opposite item has already been registered: 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid'."));
     }
 
     [Test]
@@ -271,8 +271,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.UnregisterOriginalItemWithoutEndPoint(wrongObject),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  $"The original opposite item '{wrongObject.ID}' has not been registered. "
-                  + $"Currently registered: '{_oppositeObject.ID}'"));
+                  "The original opposite item 'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid' has not been registered. "
+                  + "Currently registered: 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid'"));
     }
 
     [Test]
@@ -283,7 +283,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.UnregisterOriginalItemWithoutEndPoint(_oppositeObject),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  $"Cannot unregister original item '{_oppositeObject.ID}', an end-point has been registered for it: '{_oppositeEndPointStub.Object.ID}'."));
+                  "Cannot unregister original item 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid', an end-point has been registered for it: 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'."));
     }
 
     [Test]
@@ -302,7 +302,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.RegisterCurrentOppositeEndPoint(new Mock<IRealObjectEndPoint>().Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  $"An opposite end-point has already been registered: '{_oppositeEndPointStub.Object.ID}'."));
+                  "An opposite end-point has already been registered: 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order'."));
     }
 
     [Test]

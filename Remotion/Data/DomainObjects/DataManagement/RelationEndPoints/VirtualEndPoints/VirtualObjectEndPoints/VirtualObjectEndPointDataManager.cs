@@ -138,13 +138,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentNullException.ThrowIfNull(domainObject);
 
       if (domainObject != _originalOppositeObject)
+      {
         throw new InvalidOperationException(
             $"The original opposite item '{domainObject.ID}' has not been registered. "
             + $"Currently registered: {(_originalOppositeObject != null ? $"'{_originalOppositeObject.ID}'" : "<none>")}");
+      }
 
       if (_originalOppositeEndPoint != null)
+      {
         throw new InvalidOperationException(
             $"Cannot unregister original item '{domainObject.ID}', an end-point has been registered for it: '{_originalOppositeEndPoint.ID}'.");
+      }
 
       // Only set current value if it hasn't already been set to a different value
       if (!HasDataChanged())
