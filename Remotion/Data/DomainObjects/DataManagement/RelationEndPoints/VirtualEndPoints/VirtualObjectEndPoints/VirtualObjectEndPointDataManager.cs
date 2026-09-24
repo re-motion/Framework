@@ -82,11 +82,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       if (_originalOppositeEndPoint != null)
-        throw new InvalidOperationException("The original opposite end-point has already been registered.");
+        throw new InvalidOperationException($"The original opposite end-point '{_originalOppositeEndPoint.ID}' has already been registered.");
 
       var oppositeObject = oppositeEndPoint.GetDomainObjectReference();
       if (_originalOppositeObject != null && _originalOppositeObject != oppositeObject)
-        throw new InvalidOperationException("A different original opposite item has already been registered.");
+        throw new InvalidOperationException($"A different original opposite item has already been registered: '{_originalOppositeObject.ID}'.");
 
       // Only set current end-point/value if they haven't already been set to a different value
       if (!HasDataChanged())
@@ -104,7 +104,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       if (_originalOppositeEndPoint != oppositeEndPoint)
-        throw new InvalidOperationException("The original opposite end-point has not been registered.");
+      {
+        throw new InvalidOperationException(
+            $"The original opposite end-point '{oppositeEndPoint.ID}' has not been registered. "
+            + $"Currently registered: {(_originalOppositeEndPoint != null ? $"'{_originalOppositeEndPoint.ID}'" : "<none>")}");
+      }
 
       _originalOppositeEndPoint = null;
       _originalOppositeObject = null;
@@ -118,7 +122,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentNullException.ThrowIfNull(domainObject);
 
       if (_originalOppositeObject != null)
-        throw new InvalidOperationException("An original opposite item has already been registered.");
+        throw new InvalidOperationException($"An original opposite item has already been registered: '{_originalOppositeObject.ID}'.");
 
       Assertion.IsTrue(_originalOppositeEndPoint == null, "if _originalOppositeObject is null, _originalOppositeEndPoint must be null, too");
 
@@ -134,10 +138,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentNullException.ThrowIfNull(domainObject);
 
       if (domainObject != _originalOppositeObject)
-        throw new InvalidOperationException("Cannot unregister original item, it has not been registered.");
+      {
+        throw new InvalidOperationException(
+            $"The original opposite item '{domainObject.ID}' has not been registered. "
+            + $"Currently registered: {(_originalOppositeObject != null ? $"'{_originalOppositeObject.ID}'" : "<none>")}");
+      }
 
       if (_originalOppositeEndPoint != null)
-        throw new InvalidOperationException("Cannot unregister original item, an end-point has been registered for it.");
+      {
+        throw new InvalidOperationException(
+            $"Cannot unregister original item '{domainObject.ID}', an end-point has been registered for it: '{_originalOppositeEndPoint.ID}'.");
+      }
 
       // Only set current value if it hasn't already been set to a different value
       if (!HasDataChanged())
@@ -151,7 +162,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       if (_currentOppositeEndPoint != null)
-        throw new InvalidOperationException("An opposite end-point has already been registered.");
+        throw new InvalidOperationException($"An opposite end-point has already been registered: '{_currentOppositeEndPoint.ID}'.");
 
       _currentOppositeEndPoint = oppositeEndPoint;
     }
@@ -161,7 +172,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
       if (_currentOppositeEndPoint != oppositeEndPoint)
-        throw new InvalidOperationException("The opposite end-point has not been registered.");
+      {
+        throw new InvalidOperationException(
+            $"The opposite end-point '{oppositeEndPoint.ID}' has not been registered. "
+            + $"Currently registered: {(_currentOppositeEndPoint != null ? $"'{_currentOppositeEndPoint.ID}'" : "<none>")}");
+      }
 
       _currentOppositeEndPoint = null;
     }

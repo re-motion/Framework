@@ -152,14 +152,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void UnregisterOriginalOppositeEndPoint_ThrowsIfNotRegistered ()
     {
       Assert.That(_loadState.OriginalOppositeEndPoints.Count, Is.EqualTo(0));
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
       var endPointMock = new Mock<IRealObjectEndPoint>(MockBehavior.Strict);
       endPointMock.Setup(stub => stub.IsNull).Returns(false);
       endPointMock.Setup(stub => stub.ObjectID).Returns(DomainObjectIDs.Order1);
+      endPointMock.Setup(stub => stub.ID).Returns(endPointID);
       Assert.That(
           () => _loadState.UnregisterOriginalOppositeEndPoint(_virtualEndPointMock.Object, endPointMock.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The opposite end-point has not been registered."));
+                  "The opposite end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has not been registered."));
     }
 
     [Test]
@@ -203,18 +205,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(
           () => _loadState.SynchronizeOppositeEndPoint(_virtualEndPointMock.Object, _relatedEndPointStub1.Object),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("Cannot synchronize an opposite end-point with a virtual end-point in incomplete state."));
+              .With.Message.EqualTo(
+                  "Cannot synchronize the opposite end-point "
+                  + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' "
+                  + "with a virtual end-point in incomplete state."));
     }
 
     [Test]
     public void SetDataFromSubTransaction ()
     {
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Customer1, typeof(Customer), "Orders");
+      _virtualEndPointMock.Setup(stub => stub.ID).Returns(endPointID);
       Assert.That(
           () => _loadState.SetDataFromSubTransaction(
-          _virtualEndPointMock.Object,
-          new Mock<IVirtualEndPointLoadState<IVirtualEndPoint<object>, object, IVirtualEndPointDataManager>>().Object),
+              _virtualEndPointMock.Object,
+              new Mock<IVirtualEndPointLoadState<IVirtualEndPoint<object>, object, IVirtualEndPointDataManager>>().Object),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("Cannot comit data from a sub-transaction into a virtual end-point in incomplete state."));
+              .With.Message.EqualTo(
+                  "Cannot commit data from a sub-transaction into the virtual end-point "
+                  + "'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Customer.Orders' "
+                  + "because it is in incomplete state."));
     }
 
     [Test]

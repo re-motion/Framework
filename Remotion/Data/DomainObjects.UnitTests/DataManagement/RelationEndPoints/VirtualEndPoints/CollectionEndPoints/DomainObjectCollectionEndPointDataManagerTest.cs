@@ -61,6 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _domainObjectEndPoint1 = new Mock<IRealObjectEndPoint>();
       _domainObjectEndPoint1.Setup(stub => stub.GetDomainObjectReference()).Returns(_domainObject1);
       _domainObjectEndPoint1.Setup(stub => stub.ObjectID).Returns(_domainObject1.ID);
+      _domainObjectEndPoint1.Setup(stub => stub.ID).Returns(RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer"));
 
       _domainObjectEndPoint2 = new Mock<IRealObjectEndPoint>();
       _domainObjectEndPoint2.Setup(stub => stub.GetDomainObjectReference()).Returns(_domainObject2);
@@ -140,13 +141,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void RegisterOriginalOppositeEndPoint_AlreadyRegistered ()
     {
-      var oppositeEndPoint = DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject1);
-      _dataManager.RegisterOriginalOppositeEndPoint(oppositeEndPoint);
+      _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint1.Object);
       Assert.That(
-          () => _dataManager.RegisterOriginalOppositeEndPoint(oppositeEndPoint),
+          () => _dataManager.RegisterOriginalOppositeEndPoint(_domainObjectEndPoint1.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The opposite end-point has already been registered."));
+                  "The opposite end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has already been registered."));
     }
 
     [Test]
@@ -215,12 +215,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void UnregisterOriginalOppositeEndPoint_NotRegistered ()
     {
-      var oppositeEndPoint = DomainObjectCollectionEndPointTestHelper.GetFakeOppositeEndPoint(_domainObject1);
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
+      var oppositeEndPoint = new Mock<IRealObjectEndPoint>();
+      oppositeEndPoint.Setup(stub => stub.ID).Returns(endPointID);
       Assert.That(
-          () => _dataManager.UnregisterOriginalOppositeEndPoint(oppositeEndPoint),
+          () => _dataManager.UnregisterOriginalOppositeEndPoint(oppositeEndPoint.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The opposite end-point has not been registered."));
+                  "The opposite end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has not been registered."));
     }
 
     [Test]
@@ -275,7 +277,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.RegisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The opposite end-point has already been registered."));
+                  "The opposite end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has already been registered."));
     }
 
     [Test]
@@ -309,7 +311,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
           () => _dataManager.UnregisterCurrentOppositeEndPoint(_domainObjectEndPoint1.Object),
           Throws.InvalidOperationException
               .With.Message.EqualTo(
-                  "The opposite end-point has not been registered."));
+                  "The opposite end-point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' has not been registered."));
     }
 
     [Test]
