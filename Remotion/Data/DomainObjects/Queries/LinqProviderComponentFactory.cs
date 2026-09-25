@@ -102,8 +102,28 @@ namespace Remotion.Data.DomainObjects.Queries
     {
       var customNodeTypeRegistry = new MethodInfoBasedNodeTypeRegistry();
 
+      var genericParameter = Type.MakeGenericMethodParameter(0);
       customNodeTypeRegistry.Register(
-          new[] { MemberInfoFromExpressionUtility.GetMethod((DomainObjectCollection obj) => obj.ContainsObject(null!)) },
+          new[]
+          {
+              MemberInfoFromExpressionUtility.GetMethod((DomainObjectCollection obj) => obj.ContainsObject(null!)),
+              MemberInfoFromExpressionUtility.GetGenericMethodDefinition(() => Enumerable.Contains(
+                  (IEnumerable<object>)null!,
+                  (object)null!)),
+              MemberInfoFromExpressionUtility.GetGenericMethodDefinition(() => Enumerable.Contains(
+                  (IEnumerable<object>)null!,
+                  (object)null!,
+                  (IEqualityComparer<object>)null!)),
+              Assertion.IsNotNull(
+                  typeof(MemoryExtensions).GetMethod(
+                      nameof(MemoryExtensions.Contains),
+                      new[] { typeof(ReadOnlySpan<>).MakeGenericType(genericParameter), genericParameter }),
+                  "MemoryExtensions.Contains(ReadOnlySpan<T>, T)"),
+              Assertion.IsNotNull(
+                  typeof(MemoryExtensions).GetMethod(
+                      nameof(MemoryExtensions.Contains),
+                      new[] { typeof(ReadOnlySpan<>).MakeGenericType(genericParameter), genericParameter, typeof(IEqualityComparer<>).MakeGenericType(genericParameter) }))
+          },
           typeof(ContainsExpressionNode));
       customNodeTypeRegistry.Register(
           new[] { MemberInfoFromExpressionUtility.GetProperty((DomainObjectCollection obj) => obj.Count).GetGetMethod() },
@@ -111,7 +131,6 @@ namespace Remotion.Data.DomainObjects.Queries
       customNodeTypeRegistry.Register(
           new[] { typeof(IObjectList<>).GetRuntimeMethod("get_Count", new Type[0]) },
           typeof(CountExpressionNode));
-
       customNodeTypeRegistry.Register(new[] { typeof(EagerFetchingExtensionMethods).GetMethod("FetchOne") }, typeof(FetchOneExpressionNode));
       customNodeTypeRegistry.Register(new[] { typeof(EagerFetchingExtensionMethods).GetMethod("FetchMany") }, typeof(FetchManyExpressionNode));
       customNodeTypeRegistry.Register(
@@ -130,7 +149,11 @@ namespace Remotion.Data.DomainObjects.Queries
       nodeTypeProvider.InnerProviders.Insert(0, customNodeTypeProvider);
 
       var transformerRegistry = ExpressionTransformerRegistry.CreateDefault();
-      var processor = ExpressionTreeParser.CreateDefaultProcessor(transformerRegistry);
+      //transformerRegistry.Register(new SpanContainsExpressionTransformer());
+
+      var evaluatableExpressionFilter = new ByRefLikeAwareEvaluatableExpressionFilter();
+
+      var processor = ExpressionTreeParser.CreateDefaultProcessor(transformerRegistry, evaluatableExpressionFilter);
       return new ExpressionTreeParser(nodeTypeProvider, processor);
     }
 
