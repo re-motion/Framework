@@ -291,7 +291,6 @@ class Build : RemotionBuild, IDependDB, ITest
 
     supportedTestDimensions.AddSupportedDimension<ExecutionRuntimes>(
         LocalMachine,
-        EnforcedLocalMachine(Docker_Win_NET10_0), Docker_Win_NET10_0,
         EnforcedLocalMachine(Docker_Win_NET11_0), Docker_Win_NET11_0);
     supportedTestDimensions.AddSupportedDimension<TargetFrameworks>(NET10_0, NET11_0);
     supportedTestDimensions.AddSupportedDimension<Configurations>(Debug, Release);
@@ -342,9 +341,9 @@ class Build : RemotionBuild, IDependDB, ITest
         "WebTestingTestMatrix",
         new TestDimension[,] // todo docker images need to be wired to the config file
         {
-            { AnyOs, Chrome, NET10_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
-            { AnyOs, Firefox, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
-            { AnyOs, Edge, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET10_0) },
+            { AnyOs, Chrome, NET10_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET11_0) },
+            { AnyOs, Firefox, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET11_0) },
+            { AnyOs, Edge, NET10_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET11_0) },
             { AnyOs, Chrome, NET11_0, Debug, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET11_0) },
             { AnyOs, Firefox, NET11_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET11_0) },
             { AnyOs, Edge, NET11_0, Release, x64, NoDB, EnforcedLocalMachine(Docker_Win_NET11_0) },
@@ -355,8 +354,8 @@ class Build : RemotionBuild, IDependDB, ITest
         "DatabaseTestMatrix",
         new TestDimension[,]
         {
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2016, Debug, x64 },
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2016, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, SqlServer2016, Debug, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, SqlServer2016, Release, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2016, Debug, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2016, Release, x64 },
 
@@ -367,10 +366,10 @@ class Build : RemotionBuild, IDependDB, ITest
             { Linux, LocalMachine, NET11_0, NoBrowser, SqlServerDefault, Debug, x64 },
 
             // Exercise compatibility between installed .NET version, target framework and SQL Server
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2025, Release, x64 },
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2022, Release, x64 },
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2019, Release, x64 },
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2017, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, SqlServer2025, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, SqlServer2022, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, SqlServer2019, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, SqlServer2017, Release, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2025, Release, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2022, Release, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2019, Release, x64 },
@@ -382,8 +381,8 @@ class Build : RemotionBuild, IDependDB, ITest
         "NormalTestMatrix",
         new TestDimension[,]
         {
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, NoDB, Debug, x64 },
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, NoDB, Release, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, NoDB, Debug, x64 },
+            { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, NoDB, Release, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, NoDB, Debug, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, NoDB, Release, x64 },
 

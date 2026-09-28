@@ -203,8 +203,8 @@
           "items": {
             "type": "string",
             "enum": [
-              "Docker_Win_NET10_0",
-              "EnforcedLocalMachine(Docker_Win_NET10_0)",
+              "Docker_Win_NET11_0",
+              "EnforcedLocalMachine(Docker_Win_NET11_0)",
               "LocalMachine"
             ]
           }
@@ -243,7 +243,8 @@
           "items": {
             "type": "string",
             "enum": [
-              "NET10_0"
+              "NET10_0",
+              "NET11_0"
             ]
           }
         },
