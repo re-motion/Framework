@@ -1367,95 +1367,96 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
   }
 
   [Test]
-  public void Lock_DoesNotWaitToFail_ForOtherTransaction_WithIsolationLevel_ReadCommitted ()
+  [TestCase(2, 1)]
+  [TestCase(10, 1)]
+  [TestCase(4, 4)]
+  public void Lock_DoesNotWaitOrFail_ForConcurrentUpdates_WithIsolationLevel_ReadCommitted (int threadCount, int objectsPerThread)
   {
     DisposeTransactionScope();
     var commandTimeout = 2;
-    var waitTimeOut = (commandTimeout * 1000) / 2;
+    var waitTimeOut = TimeSpan.FromMilliseconds((commandTimeout * 1000) / 2);
 
-    IDomainObjectHandle<Computer> computerHandle;
+    var computerHandlesPerThread = new IDomainObjectHandle<Computer>[threadCount][];
     using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
     {
-      var computer = Computer.NewObject();
-      computer.SerialNumber = "12345";
-      computerHandle = computer.GetHandle();
+      for (var i = 0; i < threadCount; i++)
+      {
+        computerHandlesPerThread[i] = new IDomainObjectHandle<Computer>[objectsPerThread];
+        for (var j = 0; j < objectsPerThread; j++)
+        {
+          var computer = Computer.NewObject();
+          computer.SerialNumber = "12345";
+          computerHandlesPerThread[i][j] = computer.GetHandle();
+        }
+      }
+
       ClientTransaction.Current!.Commit();
     }
 
-    Action<CompoundRdbmsProviderCommand> commandAssertions = (c) =>
-    {
-      Assert.That(c.InnerCommands.Count, Is.GreaterThan(0));
-      Assert.That(c.InnerCommands[0], Is.TypeOf<BatchedLockRdbmsProviderCommand>());
-      var lockCommandContext = (BatchedLockRdbmsProviderCommand)c.InnerCommands[0];
-      Assert.That(lockCommandContext.AffectedDataContainers.Count, Is.EqualTo(1));
-      Assert.That(lockCommandContext.AffectedDataContainers[0].ID, Is.EqualTo(computerHandle.ObjectID));
-    };
+    // All transactions must hold their row locks at the same time. If the lock command locks more than the affected rows (e.g. because of
+    // a table scan), the other transactions either wait for the lock (and run into the command timeout) or skip the rows via READPAST and
+    // fail with a ConcurrencyViolationException.
+    using var allTransactionsStartedBarrier = new Barrier(threadCount);
+    using var allSavesFinishedBarrier = new Barrier(threadCount);
 
-    var task1ObjectLoadedResetEvent = new ManualResetEventSlim();
-    var task2ObjectLoadedResetEvent = new ManualResetEventSlim();
-    var task1SaveResetEvent = new ManualResetEventSlim();
-    var task2SaveFailed = new ManualResetEventSlim();
-
-    var task1 = SafeContext.Task.Run(() =>
-    {
-      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
-      {
-        var computer = computerHandle.GetObject();
-        computer.SerialNumber = "Task1";
-        var dataContainer = computer.InternalDataContainer;
-
-        task1ObjectLoadedResetEvent.Set();
-        task2ObjectLoadedResetEvent.Wait(waitTimeOut);
-
-        using (var provider = CreateTestableRdbmsProvider(IsolationLevel.ReadCommitted, commandAssertions, commandTimeout))
+    var tasks = Enumerable.Range(0, threadCount).Select(
+        index => SafeContext.Task.Run(() =>
         {
-          provider.BeginTransaction();
-          provider.Save([dataContainer]);
-          task1SaveResetEvent.Set();
-
-          var task2SaveFailedWasSet = task2SaveFailed.Wait(waitTimeOut);
-          Assert.That(task2SaveFailedWasSet, Is.True);
-          provider.Commit();
-        }
-      }
-    });
-
-    var task2 = SafeContext.Task.Run(() =>
-    {
-      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
-      {
-        var computer = computerHandle.GetObject();
-        computer.SerialNumber = "Task2";
-        var dataContainer = computer.InternalDataContainer;
-
-        task2ObjectLoadedResetEvent.Set();
-        task1ObjectLoadedResetEvent.Wait(waitTimeOut);
-
-        task1SaveResetEvent.Wait();
-        using (var provider = CreateTestableRdbmsProvider(IsolationLevel.ReadCommitted, commandAssertions, commandTimeout))
-        {
-          provider.BeginTransaction();
-          try
+          var computerHandles = computerHandlesPerThread[index];
+          Action<CompoundRdbmsProviderCommand> commandAssertions = (c) =>
           {
-            provider.Save([dataContainer]);
-            Assert.Fail($"Task2 Save should fail with a {nameof(ConcurrencyViolationException)}");
-          }
-          catch (Exception ex)
-          {
-            Assert.That(ex, Is.TypeOf<ConcurrencyViolationException>());
-            task2SaveFailed.Set();
-          }
-        }
-      }
-    });
+            Assert.That(c.InnerCommands.Count, Is.GreaterThan(0));
+            Assert.That(c.InnerCommands[0], Is.TypeOf<BatchedLockRdbmsProviderCommand>());
+            var lockCommandContext = (BatchedLockRdbmsProviderCommand)c.InnerCommands[0];
+            Assert.That(lockCommandContext.AffectedDataContainers.Select(d => d.ID), Is.EquivalentTo(computerHandles.Select(h => h.ObjectID)));
+          };
 
-    var waitAllSucceeded = Task.WaitAll([task1, task2], waitTimeOut * 2);
+          using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+          {
+            var dataContainers = computerHandles
+                .Select(
+                    (handle, objectIndex) =>
+                    {
+                      var computer = handle.GetObject();
+                      computer.SerialNumber = $"Thread{index}_{objectIndex}";
+                      return computer.InternalDataContainer;
+                    })
+                .ToArray();
+
+            using (var provider = CreateTestableRdbmsProvider(IsolationLevel.ReadCommitted, commandAssertions, commandTimeout, maxPoolSize: threadCount))
+            {
+              provider.BeginTransaction();
+
+              // ReSharper disable once AccessToDisposedClosure
+              var allTransactionsStarted = allTransactionsStartedBarrier.SignalAndWait(waitTimeOut);
+              Assert.That(allTransactionsStarted, Is.True, $"Thread{index}: Not all transactions were started within the timeout.");
+
+              provider.Save(dataContainers);
+
+              // ReSharper disable once AccessToDisposedClosure
+              var allSavesFinished = allSavesFinishedBarrier.SignalAndWait(waitTimeOut);
+              Assert.That(allSavesFinished, Is.True, $"Thread{index}: Not all saves finished within the timeout while holding the locks.");
+
+              provider.Commit();
+            }
+          }
+        })).ToArray();
+
+    var waitAllSucceeded = Task.WaitAll(tasks, waitTimeOut * 3);
     Assert.That(waitAllSucceeded, Is.True, "WaitAll did not finish within timeout. Therefore something in the Test went wrong.");
 
     using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
     {
-      var computer = computerHandle.GetObject();
-      computer.Delete();
+      for (var i = 0; i < threadCount; i++)
+      {
+        for (var j = 0; j < objectsPerThread; j++)
+        {
+          var computer = computerHandlesPerThread[i][j].GetObject();
+          Assert.That(computer.SerialNumber, Is.EqualTo($"Thread{i}_{j}"));
+          computer.Delete();
+        }
+      }
+
       ClientTransaction.Current.Commit();
     }
   }
@@ -1473,7 +1474,11 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     Assert.That(_factory.CreateLockDataContainerAccessorAccessorCalledForDataContainers, Is.EquivalentTo(expectedLocks ?? Array.Empty<DataContainer>()));
   }
 
-  private TestableRdbmsProvider CreateTestableRdbmsProvider (IsolationLevel isolationLevel, Action<CompoundRdbmsProviderCommand> commandAssertions, int commandTimeout)
+  private TestableRdbmsProvider CreateTestableRdbmsProvider (
+      IsolationLevel isolationLevel,
+      Action<CompoundRdbmsProviderCommand> commandAssertions,
+      int commandTimeout,
+      int maxPoolSize = 2)
   {
     var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
     var dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
@@ -1481,7 +1486,7 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
     var connectionStringBuilder = new SqlConnectionStringBuilder(TestDomainStorageProviderDefinition.ConnectionString);
-    connectionStringBuilder.MaxPoolSize = 2;
+    connectionStringBuilder.MaxPoolSize = maxPoolSize;
     connectionStringBuilder.CommandTimeout = commandTimeout;
 
     var providerDefinition = new RdbmsProviderDefinition(
