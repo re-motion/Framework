@@ -474,7 +474,7 @@ public class BatchedSaveCommandFactory : ISaveCommandFactory
         case ForeignKeyCycleBreakHint.Automatic:
           if (propertySpecification.HasForeignKeyConstraint
               && originalPropertyValue != null
-              && persistenceModelSortingProvider.GetSortPosition(originalPropertyValue.ClassDefinition) < sortPosition
+              && persistenceModelSortingProvider.GetSortPosition(originalPropertyValue.ClassDefinition) > sortPosition
               && dataContainers.TryGetValue(originalPropertyValue, out var foundDataContainer)
               && foundDataContainer.State.IsDeleted)
           {

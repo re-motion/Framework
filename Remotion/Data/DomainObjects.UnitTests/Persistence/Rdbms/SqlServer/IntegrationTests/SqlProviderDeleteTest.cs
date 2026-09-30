@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence;
@@ -62,6 +63,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       Provider.Connect();
       Provider.Save(containers);
+    }
+
+    [Test]
+    public void DeleteRelatedDataContainers_WithForeignKeyCycleBetweenTables ()
+    {
+      // Company.ContactPersonID -> Person and Person.AssociatedCustomerCompanyID -> Company form a foreign key cycle between two tables.
+      // Both directions are used so the test does not depend on which edge the sorting provider decides to break.
+      ObjectID[] objectIDs;
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var partnerContactPerson = Person.NewObject();
+        partnerContactPerson.Name = "Partner contact person";
+        var partner = Partner.NewObject();
+        partner.Name = "Partner";
+        partner.ContactPerson = partnerContactPerson;
+        var partnerCeo = Ceo.NewObject();
+        partnerCeo.Name = "Partner CEO";
+        partnerCeo.Company = partner;
+
+        var customerContactPerson = Person.NewObject();
+        customerContactPerson.Name = "Customer contact person";
+        var customer = Customer.NewObject();
+        customer.Name = "Customer";
+        customer.ContactPerson = customerContactPerson;
+        var customerCeo = Ceo.NewObject();
+        customerCeo.Name = "Customer CEO";
+        customerCeo.Company = customer;
+
+        var newObjects = new TestDomainBase[] { partner, partnerContactPerson, partnerCeo, customer, customerContactPerson, customerCeo };
+        objectIDs = newObjects.Select(o => o.ID).ToArray();
+
+        using (var insertProvider = CreateRdbmsProvider())
+        {
+          insertProvider.Connect();
+          insertProvider.Save(newObjects.Select(o => o.InternalDataContainer).ToArray());
+        }
+      }
+
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
+      {
+        var deletedObjects = objectIDs.Select(id => id.GetObject<TestDomainBase>()).ToArray();
+        foreach (var deletedObject in deletedObjects)
+          deletedObject.Delete();
+
+        IReadOnlyCollection<DataContainer> containers = deletedObjects.Select(o => o.InternalDataContainer).ToArray();
+
+        Provider.Connect();
+        Assert.That(() => Provider.Save(containers), Throws.Nothing);
+      }
+
+      foreach (var objectID in objectIDs)
+        Assert.That(Provider.LoadDataContainer(objectID).LocatedObject, Is.Null);
     }
 
     [Test]

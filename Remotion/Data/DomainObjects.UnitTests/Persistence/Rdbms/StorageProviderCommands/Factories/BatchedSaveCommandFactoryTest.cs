@@ -529,17 +529,17 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
         .Callback((IReadOnlyList<IBatchedCommandSpecification> specifications) =>
         {
           Assert.That(specifications.Count, Is.EqualTo(2));
-          var productReviewSpec = specifications[0];
-          var actualProductReviewParameter = productReviewSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
-          var expectedProductReviewTvpValue = GetTvpAllTablesDeleteParameterValue();
-          AddRecordToAllTablesDeleteTvp(expectedProductReviewTvpValue, dataContainerProductReview);
-          SqlTableValuedParameterValueChecker.CheckEquals(actualProductReviewParameter.Value, expectedProductReviewTvpValue);
-
-          var productSpec = specifications[1];
+          var productSpec = specifications[0];
           var actualProductParameter = productSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
           var expectedProductTvpValue = GetTvpAllTablesDeleteParameterValue();
           AddRecordToAllTablesDeleteTvp(expectedProductTvpValue, dataContainerProduct);
           SqlTableValuedParameterValueChecker.CheckEquals(actualProductParameter.Value, expectedProductTvpValue);
+
+          var productReviewSpec = specifications[1];
+          var actualProductReviewParameter = productReviewSpec.CreateDbParameter(new SqlCommand(), "DUMMY");
+          var expectedProductReviewTvpValue = GetTvpAllTablesDeleteParameterValue();
+          AddRecordToAllTablesDeleteTvp(expectedProductReviewTvpValue, dataContainerProductReview);
+          SqlTableValuedParameterValueChecker.CheckEquals(actualProductReviewParameter.Value, expectedProductReviewTvpValue);
         })
         .Returns(deleteDbCommandBuilder.Object);
 
@@ -550,7 +550,7 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
     StubTableDefinitionFinder(dataContainerProductReview);
     StubTableDefinitionFinder(dataContainerProduct);
 
-    SetupSortOrderProviderSortPositionForClassAndTable(dataContainerProduct.ClassDefinition, dataContainerProductReview.ClassDefinition);
+    SetupSortOrderProviderSortPositionForClassAndTable(dataContainerProductReview.ClassDefinition, dataContainerProduct.ClassDefinition);
 
     _sortOrderProviderStrictMock.Setup(stub => stub.GetPropertySpecificationsForForeignKeyProperties(dataContainerProductReview.ClassDefinition)).Returns([propertyDefinitionProductReviewProduct]).Verifiable();
     _sortOrderProviderStrictMock.Setup(stub => stub.GetPropertySpecificationsForForeignKeyProperties(dataContainerProduct.ClassDefinition)).Returns([]).Verifiable();
@@ -565,13 +565,13 @@ public class BatchedSaveCommandFactoryTest : StandardMappingTest
 
     Assert.That(contexts.Count, Is.EqualTo(3));
 
-    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerProduct, dataContainerProductReview]));
+    Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview, dataContainerProduct]));
     Assert.That(((BatchedLockRdbmsProviderCommand)contexts[0]).CommandBuilder, Is.SameAs(lockDbCommandBuilder.Object));
 
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[1]).CommandBuilder, Is.SameAs(updateDbCommandBuilder.Object));
 
-    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).AffectedDataContainers, Is.EqualTo([dataContainerProduct, dataContainerProductReview]));
+    Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).AffectedDataContainers, Is.EqualTo([dataContainerProductReview, dataContainerProduct]));
     Assert.That(((BatchedObjectsRdbmsProviderCommand)contexts[2]).CommandBuilder, Is.SameAs(deleteDbCommandBuilder.Object));
 
     AssertTableManipulationAccessorExtensionPointsCalled(
