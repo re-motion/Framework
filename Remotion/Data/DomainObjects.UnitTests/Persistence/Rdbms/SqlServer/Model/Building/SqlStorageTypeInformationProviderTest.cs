@@ -74,7 +74,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(bool),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(bool)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(bool)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Byte),
           null,
@@ -86,7 +88,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(byte),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(DateTime),
           null,
@@ -98,7 +102,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(DateTime),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(DateTime)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(DateTime)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(DateOnly),
           null,
@@ -110,7 +116,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(DateOnly),
-          Is.TypeOf(typeof(DateOnlyConverter)));
+          Is.TypeOf(typeof(DateOnlyConverter)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Decimal),
           null,
@@ -122,7 +130,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(decimal),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Decimal)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Decimal)),
+          38,
+          3);
       CheckGetStorageType_ForProperty(
           typeof(Double),
           null,
@@ -134,7 +144,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(double),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Double)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Double)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Guid),
           null,
@@ -146,7 +158,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(Guid),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Guid)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Guid)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Int16),
           null,
@@ -158,7 +172,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(short),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Int16)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Int16)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Int32),
           null,
@@ -170,7 +186,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(int),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Int32)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Int32)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Int64),
           null,
@@ -182,7 +200,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(long),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Int64)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Int64)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Single),
           null,
@@ -194,7 +214,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(float),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Single)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Single)),
+          null,
+          null);
     }
 
     [Test]
@@ -211,7 +233,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(Int32Enum),
-          Is.TypeOf(typeof(AdvancedEnumConverter)).With.Property("EnumType").EqualTo(typeof(Int32Enum)));
+          Is.TypeOf(typeof(AdvancedEnumConverter)).With.Property("EnumType").EqualTo(typeof(Int32Enum)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Int16Enum),
           null,
@@ -223,7 +247,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(Int16Enum),
-          Is.TypeOf(typeof(AdvancedEnumConverter)).With.Property("EnumType").EqualTo(typeof(Int16Enum)));
+          Is.TypeOf(typeof(AdvancedEnumConverter)).With.Property("EnumType").EqualTo(typeof(Int16Enum)),
+          null,
+          null);
     }
 
     [Test]
@@ -241,7 +267,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           maxColorIDLength,
           typeof(Color),
-          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(Color)));
+          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(Color)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Color),
           null,
@@ -253,7 +281,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           maxColorIDLength,
           typeof(Color),
-          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(Color)));
+          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(Color)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Color),
           null,
@@ -265,7 +295,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           maxColorIDLength,
           typeof(Color),
-          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(Color)));
+          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(Color)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(ExtensibleEnumNotDefiningAnyValues),
           null,
@@ -277,7 +309,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           -1,
           typeof(ExtensibleEnumNotDefiningAnyValues),
-          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(ExtensibleEnumNotDefiningAnyValues)));
+          Is.TypeOf(typeof(ExtensibleEnumConverter)).With.Property("ExtensibleEnumType").EqualTo(typeof(ExtensibleEnumNotDefiningAnyValues)),
+          null,
+          null);
     }
 
     [Test]
@@ -294,7 +328,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           200,
           typeof(string),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(String),
           200,
@@ -306,7 +342,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           200,
           typeof(string),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(String),
           200,
@@ -318,7 +356,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           200,
           typeof(string),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(String),
           null,
@@ -330,7 +370,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           -1,
           typeof(string),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)),
+          null,
+          null);
     }
 
     [Test]
@@ -347,7 +389,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           200,
           typeof(byte[]),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Byte[]),
           200,
@@ -359,7 +403,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           200,
           typeof(byte[]),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Byte[]),
           200,
@@ -371,7 +417,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           200,
           typeof(byte[]),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Byte[]),
           null,
@@ -383,7 +431,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           -1,
           typeof(byte[]),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])),
+          null,
+          null);
     }
 
     [Test]
@@ -400,7 +450,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(bool?),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").SameAs(typeof(bool?)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").SameAs(typeof(bool?)),
+          null,
+          null);
 
       CheckGetStorageType_ForProperty(
           typeof(bool?),
@@ -413,7 +465,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           null,
           typeof(bool?),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").SameAs(typeof(bool?)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").SameAs(typeof(bool?)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(bool?),
           null,
@@ -425,7 +479,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           null,
           typeof(bool?),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").SameAs(typeof(bool?)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").SameAs(typeof(bool?)),
+          null,
+          null);
 
       CheckGetStorageType_ForProperty(
           typeof(Int16Enum?),
@@ -438,7 +494,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(Int16Enum?),
-          Is.TypeOf(typeof(AdvancedEnumConverter)));
+          Is.TypeOf(typeof(AdvancedEnumConverter)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Int16Enum?),
           null,
@@ -450,7 +508,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           null,
           typeof(Int16Enum?),
-          Is.TypeOf(typeof(AdvancedEnumConverter)));
+          Is.TypeOf(typeof(AdvancedEnumConverter)),
+          null,
+          null);
       CheckGetStorageType_ForProperty(
           typeof(Int16Enum?),
           null,
@@ -462,7 +522,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           null,
           typeof(Int16Enum?),
-          Is.TypeOf(typeof(AdvancedEnumConverter)));
+          Is.TypeOf(typeof(AdvancedEnumConverter)),
+          null,
+          null);
     }
 
     [Test]
@@ -487,7 +549,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
                 nullable,
                 null,
                 expectedType,
-                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(expectedType));
+                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(expectedType),
+                null,
+                null);
     }
 
     [Test]
@@ -512,7 +576,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
                 nullable,
                 null,
                 expectedType,
-                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(expectedType));
+                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(expectedType),
+                null,
+                null);
     }
 
     [Test]
@@ -542,7 +608,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
                 nullable,
                 null,
                 expectedType,
-                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(expectedType));
+                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(expectedType),
+                null,
+                null);
     }
 
     [Test]
@@ -570,7 +638,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
                 false,
                 null,
                 typeof(DateTime),
-                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(DateTime)));
+                Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(DateTime)),
+                null,
+                null);
     }
 
     [Test]
@@ -585,7 +655,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           null,
           typeof(Guid?),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Guid?)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Guid?)),
+          null,
+          null);
 
       var storageTypeForObjectIDNotNullable = (StorageTypeInformation)_storageTypeInformationProvider.GetStorageTypeForID(false);
       CheckStorageTypeInformation(
@@ -596,7 +668,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(Guid?),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Guid?)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(Guid?)),
+          null,
+          null);
     }
 
     [Test]
@@ -611,7 +685,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           255,
           typeof(string),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)),
+          null,
+          null);
 
       var storageTypeForSerializedObjectIDNotNullable =
           (StorageTypeInformation)_storageTypeInformationProvider.GetStorageTypeForSerializedObjectID(false);
@@ -623,7 +699,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           255,
           typeof(string),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)),
+          null,
+          null);
     }
 
     [Test]
@@ -638,7 +716,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           100,
           typeof(string),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)),
+          null,
+          null);
 
       var storageTypeForClassIDNotNullable = (StorageTypeInformation)_storageTypeInformationProvider.GetStorageTypeForClassID(false);
       CheckStorageTypeInformation(
@@ -649,7 +729,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           100,
           typeof(string),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)),
+          null,
+          null);
     }
 
     [Test]
@@ -664,7 +746,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           8,
           typeof(Byte[]),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])),
+          null,
+          null);
 
       var storageTypeForTimestampNotNullable = (StorageTypeInformation)_storageTypeInformationProvider.GetStorageTypeForTimestamp(false);
       CheckStorageTypeInformation(
@@ -675,7 +759,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           8,
           typeof(Byte[]),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(byte[])),
+          null,
+          null);
     }
 
     [Test]
@@ -702,7 +788,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           null,
           typeof(int?),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(int?)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(int?)),
+          null,
+          null);
     }
 
     [Test]
@@ -718,7 +806,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(int),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(int)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(int)),
+          null,
+          null);
     }
 
     [Test]
@@ -754,17 +844,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
     [Test]
     public void GetStorageTypeInformation_ValueNull ()
     {
-      var result = (StorageTypeInformation)_storageTypeInformationProvider.GetStorageType((object)null);
+        var result = (StorageTypeInformation)_storageTypeInformationProvider.GetStorageType((object)null);
+
+        CheckStorageTypeInformation(
+                result,
+                typeof(object),
+                "nvarchar (max)",
+                DbType.String,
+                true,
+                -1,
+                typeof(object),
+                Is.TypeOf(typeof(NullValueConverter)),
+                null,
+                null);
+    }
+
+    [Test]
+    public void GetStorageTypeInformation_ValueNotNull_Decimal ()
+    {
+      var result = (StorageTypeInformation)_storageTypeInformationProvider.GetStorageType(10m);
 
       CheckStorageTypeInformation(
           result,
-          typeof(object),
-          "nvarchar (max)",
-          DbType.String,
-          true,
-          -1,
-          typeof(object),
-          Is.TypeOf(typeof(NullValueConverter)));
+          typeof(decimal),
+          "decimal (38, 3)",
+          DbType.Decimal,
+          false,
+          null,
+          typeof(decimal),
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(decimal)),
+          38,
+          3);
     }
 
     [Test]
@@ -780,7 +890,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           false,
           null,
           typeof(int),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(int)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(int)),
+          null,
+          null);
     }
 
     [Test]
@@ -796,21 +908,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           true,
           -1,
           typeof(string),
-          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)));
+          Is.TypeOf(typeof(DefaultConverter)).With.Property("Type").EqualTo(typeof(string)),
+          null,
+          null);
     }
 
     private void CheckGetStorageType_ForProperty (
-        Type propertyType,
-        int? maxLength,
-        bool isPropertyNullable,
-        bool forceNullable,
-        Type expectedStorageType,
-        string expectedStorageTypeName,
-        DbType expectedStorageDbType,
-        bool expectedIsNullable,
-        int? expectedStorageTypeLength,
-        Type expectedDotNetType,
-        IResolveConstraint expectedDotNetTypeConverterConstraint)
+            Type propertyType,
+            int? maxLength,
+            bool isPropertyNullable,
+            bool forceNullable,
+            Type expectedStorageType,
+            string expectedStorageTypeName,
+            DbType expectedStorageDbType,
+            bool expectedIsNullable,
+            int? expectedStorageTypeLength,
+            Type expectedDotNetType,
+            IResolveConstraint expectedDotNetTypeConverterConstraint,
+            byte? precision,
+            byte? scale)
     {
       var propertyDefinition = CreatePropertyDefinition(propertyType, isPropertyNullable, maxLength);
       var info = (StorageTypeInformation)_storageTypeInformationProvider.GetStorageType(propertyDefinition, forceNullable);
@@ -822,7 +938,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
           expectedIsNullable,
           expectedStorageTypeLength,
           expectedDotNetType,
-          expectedDotNetTypeConverterConstraint);
+          expectedDotNetTypeConverterConstraint,
+          precision,
+          scale);
     }
 
     private PropertyDefinition CreatePropertyDefinition (Type propertyType, bool isNullable, int? maxLength = null)
@@ -846,7 +964,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
         bool expectedIsNullable,
         int? expectedStorageTypeLength,
         Type expectedDotNetType,
-        IResolveConstraint dotNetTypeConverterConstraint)
+        IResolveConstraint dotNetTypeConverterConstraint,
+        byte? precision,
+        byte? scale)
     {
       Assert.That(storageTypeInformation.StorageType, Is.SameAs(expectedStorageType));
       Assert.That(storageTypeInformation.StorageTypeName, Is.EqualTo(expectedStorageTypeName));
@@ -855,6 +975,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Mode
       Assert.That(storageTypeInformation.StorageTypeLength, Is.EqualTo(expectedStorageTypeLength));
       Assert.That(storageTypeInformation.DotNetType, Is.SameAs(expectedDotNetType));
       Assert.That(storageTypeInformation.DotNetTypeConverter, dotNetTypeConverterConstraint);
+      Assert.That(storageTypeInformation.Precision, Is.EqualTo(precision));
+      Assert.That(storageTypeInformation.Scale, Is.EqualTo(scale));
     }
   }
 }

@@ -30,12 +30,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     private readonly DbType _storageDbType;
     private readonly bool _isStorageTypeNullable;
     private readonly int? _storageTypeLength;
+    private readonly byte? _precision;
+    private readonly byte? _scale;
 
     public SimpleDataTypeStorageTypeInformation (
         string storageTypeName,
         DbType storageDbType,
         bool isStorageTypeNullable,
-        int? storageTypeLength)
+        int? storageTypeLength,
+        byte? precision = null,
+        byte? scale = null)
     {
       ArgumentException.ThrowIfNullOrEmpty(storageTypeName);
 
@@ -43,6 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       _storageDbType = storageDbType;
       _isStorageTypeNullable = isStorageTypeNullable;
       _storageTypeLength = storageTypeLength;
+      _precision = precision;
+      _scale = scale;
     }
 
     public Type StorageType
@@ -68,6 +74,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public int? StorageTypeLength
     {
       get { return _storageTypeLength; }
+    }
+
+    /// <inheritdoc />
+    public byte? Precision
+    {
+      get { return _precision; }
+    }
+
+    /// <inheritdoc />
+    public byte? Scale
+    {
+      get { return _scale; }
     }
 
     public Type DotNetType
