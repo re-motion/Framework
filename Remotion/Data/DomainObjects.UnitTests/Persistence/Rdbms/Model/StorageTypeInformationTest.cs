@@ -74,24 +74,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     {
       var storageTypeInformation = new StorageTypeInformation(
           typeof(decimal),
-          "decimal (38, 3)",
+          "decimal (22, 7)",
           DbType.Decimal,
           false,
           null,
           typeof(decimal),
           _typeConverterStub.Object,
-          38,
-          3);
+          22,
+          7);
 
       Assert.That(storageTypeInformation.StorageType, Is.EqualTo(typeof(decimal)));
-      Assert.That(storageTypeInformation.StorageTypeName, Is.EqualTo("decimal (38, 3)"));
+      Assert.That(storageTypeInformation.StorageTypeName, Is.EqualTo("decimal (22, 7)"));
       Assert.That(storageTypeInformation.StorageDbType, Is.EqualTo(DbType.Decimal));
       Assert.That(storageTypeInformation.IsStorageTypeNullable, Is.EqualTo(false));
       Assert.That(storageTypeInformation.StorageTypeLength, Is.EqualTo(null));
       Assert.That(storageTypeInformation.DotNetType, Is.EqualTo(typeof(decimal)));
       Assert.That(storageTypeInformation.DotNetTypeConverter, Is.SameAs(_typeConverterStub.Object));
-      Assert.That(storageTypeInformation.Precision, Is.EqualTo(38));
-      Assert.That(storageTypeInformation.Scale, Is.EqualTo(3));
+      Assert.That(storageTypeInformation.Precision, Is.EqualTo(22));
+      Assert.That(storageTypeInformation.Scale, Is.EqualTo(7));
     }
 
     [Test]
