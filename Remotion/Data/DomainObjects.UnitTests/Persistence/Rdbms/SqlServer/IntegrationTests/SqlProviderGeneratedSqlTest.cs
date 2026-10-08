@@ -332,8 +332,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           """
           UPDATE [T]
           SET
-          [T].[ID] = [P].[ID],
-          [T].[ClassID] = [P].[ClassID],
           [T].[SupervisorID] = [P].[SupervisorID],
           [T].[Name] = CASE WHEN [P].[Name__IsSet] = 1 THEN [P].[Name] ELSE [T].[Name] END
           FROM [Employee] [T]

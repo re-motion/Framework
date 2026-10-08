@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
@@ -18,14 +19,17 @@ public class BatchedDeleteDbCommandBuilder : DbCommandBuilder
 {
   private static readonly ConcurrentDictionary<TableDefinition, string> s_statementCache = new();
   private readonly IReadOnlyList<IBatchedCommandSpecification> _commandSpecifications;
+  private readonly IStorageNameProvider _storageNameProvider;
 
-  public BatchedDeleteDbCommandBuilder (ISqlDialect sqlDialect, IReadOnlyList<IBatchedCommandSpecification> commandSpecifications)
+  public BatchedDeleteDbCommandBuilder (ISqlDialect sqlDialect, IReadOnlyList<IBatchedCommandSpecification> commandSpecifications, IStorageNameProvider storageNameProvider)
       : base(sqlDialect)
   {
     ArgumentNullException.ThrowIfNull(sqlDialect);
     ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(commandSpecifications), commandSpecifications);
+    ArgumentNullException.ThrowIfNull(storageNameProvider);
 
     _commandSpecifications = commandSpecifications;
+    _storageNameProvider = storageNameProvider;
   }
 
   public override DbCommand Create (IDbCommandFactory dbCommandFactory)
@@ -74,7 +78,7 @@ public class BatchedDeleteDbCommandBuilder : DbCommandBuilder
     var statement = $"""
                      DELETE {tableAlias}
                      FROM {schemaName}{tableName} {tableAlias}
-                     INNER JOIN {parameterName} {parameterAlias} ON {parameterAlias}.[ID] = {tableAlias}.[ID]{SqlDialect.StatementDelimiter}
+                     INNER JOIN {parameterName} {parameterAlias} ON {parameterAlias}.[{_storageNameProvider.GetIDColumnName()}] = {tableAlias}.[{_storageNameProvider.GetIDColumnName()}]{SqlDialect.StatementDelimiter}
                      """;
     return statement;
   }

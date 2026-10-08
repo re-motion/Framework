@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
@@ -19,14 +20,18 @@ public class BatchedUpdateDbCommandBuilder : DbCommandBuilder
 {
   private static readonly ConcurrentDictionary<TableDefinition, string> s_statementCache = new();
   private readonly IReadOnlyList<IBatchedCommandSpecification> _commandSpecifications;
+  private readonly IStorageNameProvider _storageNameProvider;
 
-  public BatchedUpdateDbCommandBuilder (ISqlDialect sqlDialect, IReadOnlyList<IBatchedCommandSpecification> commandSpecifications)
+  public BatchedUpdateDbCommandBuilder (ISqlDialect sqlDialect, IReadOnlyList<IBatchedCommandSpecification> commandSpecifications, IStorageNameProvider storageNameProvider)
       : base(sqlDialect)
   {
     ArgumentNullException.ThrowIfNull(sqlDialect);
+    ArgumentNullException.ThrowIfNull(storageNameProvider);
+
     ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(commandSpecifications), commandSpecifications);
 
     _commandSpecifications = commandSpecifications;
+    _storageNameProvider = storageNameProvider;
   }
 
   public override DbCommand Create (IDbCommandFactory dbCommandFactory)
@@ -77,7 +82,7 @@ public class BatchedUpdateDbCommandBuilder : DbCommandBuilder
     var optionalColumns = specification.Columns.Where(c => c.EndsWith(TableManipulationRecordDefinitionProvider.IsSetColumnPostFix))
         .Select(c => c.Substring(0, c.Length - TableManipulationRecordDefinitionProvider.IsSetColumnPostFix.Length))
         .ToArray();
-    var nonOptionalColumns = specification.Columns.Where(c => !optionalColumns.Contains(c) && !c.EndsWith(TableManipulationRecordDefinitionProvider.IsSetColumnPostFix))
+    var nonOptionalColumns = specification.Columns.Where(c =>  !c.Equals(_storageNameProvider.GetIDColumnName()) && !c.Equals(_storageNameProvider.GetClassIDColumnName()) && !optionalColumns.Contains(c) && !c.EndsWith(TableManipulationRecordDefinitionProvider.IsSetColumnPostFix))
         .Select(c => SqlDialect.DelimitIdentifier(c)).ToArray();
 
     AppendUpdateStatement(statement, schemaName, tableName, tableAlias, parameterName, parameterAlias, nonOptionalColumns, optionalColumns);
@@ -105,7 +110,7 @@ public class BatchedUpdateDbCommandBuilder : DbCommandBuilder
          SET
          {combinedSets}
          FROM {schemaName}{tableName} {tableAlias}
-         INNER JOIN {parameterName} {parameterAlias} ON {parameterAlias}.[ID] = {tableAlias}.[ID]{SqlDialect.StatementDelimiter}
+         INNER JOIN {parameterName} {parameterAlias} ON {parameterAlias}.[{_storageNameProvider.GetIDColumnName()}] = {tableAlias}.[{_storageNameProvider.GetIDColumnName()}]{SqlDialect.StatementDelimiter}
          """);
   }
 

@@ -45,8 +45,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
         throw new ArgumentException($"RdbmsProviderDefinition '{storageProviderDefinition.Name}' is not part of the storage settings.", nameof(storageProviderDefinition));
 
       var storageTypeInformationProvider = new SqlStorageTypeInformationProvider(new DateTime2DefaultStorageTypeProvider());
-      var dbCommandBuilderFactory = new SqlDbCommandBuilderFactory(new SingleScalarSqlTableTypeDefinitionProvider(storageTypeInformationProvider), new SqlDialect());
       var storageNameProvider = new ReflectionBasedStorageNameProvider();
+      var dbCommandBuilderFactory = new SqlDbCommandBuilderFactory(new SingleScalarSqlTableTypeDefinitionProvider(storageTypeInformationProvider), new SqlDialect(), storageNameProvider);
       var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
       var infrastructureStoragePropertyDefinitionProvider = new InfrastructureStoragePropertyDefinitionProvider(
           storageTypeInformationProvider, storageNameProvider);
