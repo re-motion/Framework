@@ -56,11 +56,13 @@ public class BatchedLockRdbmsProviderCommand : IRdbmsProviderCommand
   private RdbmsProviderException WrapRdbmsProviderException (RdbmsProviderException e)
   {
     var numberOfIdsToShow = 10;
-    var ids = string.Join(", ", AffectedDataContainers.Take(numberOfIdsToShow).Select(d => d.ID));
-    if (AffectedDataContainers.Count > numberOfIdsToShow)
-      return new RdbmsProviderException($"Error while locking objects '{ids}, ...'. {e.Message}", e);
+    var affectedObjectIds = AffectedDataContainers.Select(d => d.ID).ToArray();
+    var displayedIds = string.Join(", ", affectedObjectIds.Take(numberOfIdsToShow));
 
-    return new RdbmsProviderException($"Error while locking objects '{ids}'. {e.Message}", e);
+    if (AffectedDataContainers.Count > numberOfIdsToShow)
+      return new RdbmsProviderException($"Error while locking objects '{displayedIds}, ...'. {e.Message}", e, affectedObjectIds);
+
+    return new RdbmsProviderException($"Error while locking objects '{displayedIds}'. {e.Message}", e, affectedObjectIds);
   }
 
   private ConcurrencyViolationException CreateConcurrencyViolationException (HashSet<Guid> failedIDs)

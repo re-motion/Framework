@@ -126,6 +126,7 @@ public class BatchedObjectsRdbmsProviderCommandTest
       Assert.That(rdbms.InnerException, Is.TypeOf<RdbmsProviderException>());
       Assert.That(rdbms.InnerException!.Message, Is.EqualTo("Original Message"));
       Assert.That(rdbms.Message, Is.EqualTo($"Error while saving objects '{dataContainer1.ID}'. Original Message"));
+      Assert.That(rdbms.IDs, Is.EquivalentTo([dataContainer1.ID]));
     }
     catch (Exception ex)
     {
@@ -163,6 +164,7 @@ public class BatchedObjectsRdbmsProviderCommandTest
       Assert.That(rdbms.InnerException!.Message, Is.EqualTo("Original Message"));
       Assert.That(rdbms.Message, Is.EqualTo($"Error while saving objects '{string.Join(", ", dataContainers.Take(10).Select(d => d.ID))}, ...'. Original Message"));
       Assert.That(rdbms.Message, Is.Not.EqualTo($"Error while saving objects '{string.Join(", ", dataContainers.Select(d => d.ID))}, ...'. Original Message"));
+      Assert.That(rdbms.IDs, Is.EquivalentTo(dataContainers.Select(d => d.ID)));
     }
     catch (Exception ex)
     {

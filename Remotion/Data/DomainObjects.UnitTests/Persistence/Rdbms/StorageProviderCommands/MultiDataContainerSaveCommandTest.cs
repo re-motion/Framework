@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using Moq;
 using Moq.Protected;
@@ -135,7 +136,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           () => command.Execute(_rdbmsExecutionContextStrictMock.Object),
           Throws.Exception.TypeOf<RdbmsProviderException>()
               .With.Message.EqualTo("Error while saving object 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'. Text")
-              .And.InnerException.SameAs(rdbmsProviderException));
+              .And.InnerException.SameAs(rdbmsProviderException)
+              .And.Property(nameof(RdbmsProviderException.IDs)).EquivalentTo(new[] {_objectID1}));
 
       _dbCommandBuilderMock1.Verify();
       _dbCommandBuilderMock2.Verify();
