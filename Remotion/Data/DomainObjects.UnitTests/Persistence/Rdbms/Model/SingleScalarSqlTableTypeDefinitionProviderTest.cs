@@ -169,7 +169,11 @@ public class SingleScalarSqlTableTypeDefinitionProviderTest
   [TestCase(typeof(ClassWithAllDataTypes.EnumType?), DbType.AnsiString, true)]
   public void GetStructuredTypeDefinition_SupportsType (Type elementType, DbType dbType, bool withUniqueConstraint)
   {
-    var storageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation(storageDbType: dbType, dotNetType: elementType);
+    var storageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation(
+        storageDbType: dbType,
+        dotNetType: elementType,
+        precision: dbType == DbType.Decimal ? 38 : null,
+        scale: dbType == DbType.Decimal ? 3 : null);
 
     var effectiveType = NullableTypeUtility.IsNullableType(elementType) ? elementType : typeof(Nullable<>).MakeGenericType(elementType);
     var storageTypeInformationProviderStub = new Mock<IStorageTypeInformationProvider>();

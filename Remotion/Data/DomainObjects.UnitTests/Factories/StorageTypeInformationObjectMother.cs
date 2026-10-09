@@ -32,7 +32,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
         bool? isStorageTypeNullable = null,
         int? storageTypeLength = null,
         Type dotNetType = null,
-        TypeConverter dotNetTypeConverter = null)
+        TypeConverter dotNetTypeConverter = null,
+        byte? precision = null,
+        byte? scale = null)
     {
       var dbType = storageDbType ?? DbType.String;
       var dbTypeSize = storageTypeLength ?? GetDefaultSize(dbType);
@@ -44,7 +46,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           isStorageTypeNullable ?? true,
           dbTypeSize,
           dotNetType ?? typeof(string),
-          dotNetTypeConverter ?? new DefaultConverter(typeof(string)));
+          dotNetTypeConverter ?? new DefaultConverter(typeof(string)),
+          precision,
+          scale);
     }
 
     private static int? GetDefaultSize (DbType dbType)

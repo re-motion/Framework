@@ -123,6 +123,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     }
 
     [Test]
+    public void SaveHighScaleDecimal_IsStoredWithCorrectScale ()
+    {
+      ObjectID id;
+      using (var separateProvider = CreateRdbmsProvider())
+      {
+        var newDataContainer = DataContainer.CreateNew(
+            separateProvider.CreateNewObjectID(MappingConfiguration.Current.GetTypeDefinition(typeof(ClassWithHighScaleDecimal))));
+        id = newDataContainer.ID;
+        separateProvider.Save(new[] { newDataContainer });
+      }
+
+      DataContainer savedClassWithHighScaleDecimal = LoadDataContainer(id);
+
+      SetPropertyValue(savedClassWithHighScaleDecimal, typeof(ClassWithHighScaleDecimal), "HighScaleDecimalProperty", 3.00000019m);
+      SetPropertyValue(savedClassWithHighScaleDecimal, typeof(ClassWithHighScaleDecimal), "NaHighScaleDecimalProperty", 3.00000019m);
+
+      Provider.Save(new[] { savedClassWithHighScaleDecimal });
+
+      DataContainer reloadedClassWithHighScaleDecimal = ReloadDataContainer(id);
+
+      Assert.That(GetPropertyValue(reloadedClassWithHighScaleDecimal, typeof(ClassWithHighScaleDecimal), "HighScaleDecimalProperty"), Is.EqualTo(3.0000002m));
+      Assert.That(GetPropertyValue(reloadedClassWithHighScaleDecimal, typeof(ClassWithHighScaleDecimal), "NaHighScaleDecimalProperty"), Is.EqualTo(3.0000002m));
+    }
+
+    [Test]
     public void SaveAllNullableTypes ()
     {
       DataContainer savedClassWithAllDataTypes = LoadDataContainer(DomainObjectIDs.ClassWithAllDataTypes1);

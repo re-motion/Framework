@@ -267,6 +267,15 @@ CREATE TABLE [dbo].[TableWithGuidKey]
   [Timestamp] rowversion NOT NULL,
   CONSTRAINT [PK_TableWithGuidKey] PRIMARY KEY CLUSTERED ([ID])
 )
+CREATE TABLE [dbo].[TableWithHighScaleDecimal]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [HighScaleDecimalProperty] decimal (28, 7) NOT NULL,
+  [NaHighScaleDecimalProperty] decimal (28, 7) NULL,
+  CONSTRAINT [PK_TableWithHighScaleDecimal] PRIMARY KEY CLUSTERED ([ID])
+)
 CREATE TABLE [dbo].[ClassWithNonPublicProperties]
 (
   [ID] uniqueidentifier NOT NULL,
@@ -932,6 +941,12 @@ CREATE VIEW [dbo].[ClassWithGuidKeyView] ([ID], [ClassID], [Timestamp])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp]
     FROM [dbo].[TableWithGuidKey]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[ClassWithHighScaleDecimalView] ([ID], [ClassID], [Timestamp], [HighScaleDecimalProperty], [NaHighScaleDecimalProperty])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [HighScaleDecimalProperty], [NaHighScaleDecimalProperty]
+    FROM [dbo].[TableWithHighScaleDecimal]
   WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[ClassWithNonPublicPropertiesView] ([ID], [ClassID], [Timestamp], [PublicGetSet], [PublicGetProtectedSet], [ProtectedGetSet], [PrivateGetSet])
@@ -1910,6 +1925,23 @@ CREATE TYPE [dbo].[TVP_TableWithGuidKey_Update] AS TABLE
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableWithHighScaleDecimal_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [HighScaleDecimalProperty] decimal (28, 7) NOT NULL,
+  [NaHighScaleDecimalProperty] decimal (28, 7) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableWithHighScaleDecimal_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [HighScaleDecimalProperty] decimal (28, 7) NOT NULL,
+  [NaHighScaleDecimalProperty] decimal (28, 7) NULL
   PRIMARY KEY CLUSTERED ([ID])
 )
 GO

@@ -80,6 +80,8 @@ DROP TYPE IF EXISTS [dbo].[TVP_ClassWithEnumNotDefiningZero_Insert]
 DROP TYPE IF EXISTS [dbo].[TVP_ClassWithEnumNotDefiningZero_Update]
 DROP TYPE IF EXISTS [dbo].[TVP_TableWithGuidKey_Insert]
 DROP TYPE IF EXISTS [dbo].[TVP_TableWithGuidKey_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithHighScaleDecimal_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithHighScaleDecimal_Update]
 DROP TYPE IF EXISTS [dbo].[TVP_ClassWithNonPublicProperties_Insert]
 DROP TYPE IF EXISTS [dbo].[TVP_ClassWithNonPublicProperties_Update]
 DROP TYPE IF EXISTS [dbo].[TVP_TableWithOptionalOneToOneRelationAndOppositeDerivedClass_Insert]
@@ -219,6 +221,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithE
   DROP VIEW [dbo].[ClassWithEnumNotDefiningZeroView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithGuidKeyView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClassWithGuidKeyView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithHighScaleDecimalView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[ClassWithHighScaleDecimalView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithNonPublicPropertiesView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClassWithNonPublicPropertiesView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithOptionalOneToOneRelationAndOppositeDerivedClassView' AND TABLE_SCHEMA = 'dbo')
@@ -477,6 +481,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWith
   DROP TABLE [dbo].[ClassWithEnumNotDefiningZero]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithGuidKey' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[TableWithGuidKey]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithHighScaleDecimal' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[TableWithHighScaleDecimal]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWithNonPublicProperties' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[ClassWithNonPublicProperties]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithOptionalOneToOneRelationAndOppositeDerivedClass' AND TABLE_SCHEMA = 'dbo')
