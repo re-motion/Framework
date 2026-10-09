@@ -15,23 +15,39 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms
 {
-public class RdbmsProviderException : StorageProviderException
-{
-  // types
+  public class RdbmsProviderException : StorageProviderException
+  {
+    // types
 
-  // static members and constants
+    // static members and constants
 
-  // member fields
+    // member fields
 
-  // construction and disposing
+    private readonly ObjectID[] _ids;
 
-  public RdbmsProviderException (string message) : base(message) {}
-  public RdbmsProviderException (string message, Exception inner) : base(message, inner) {}
+    // construction and disposing
 
-  // methods and properties
 
-}
+
+    public RdbmsProviderException (string message, IEnumerable<ObjectID>? ids = null)
+        : this(message, null, ids)
+    {
+    }
+
+    public RdbmsProviderException (string message, Exception? inner, IEnumerable<ObjectID>? ids = null)
+        : base(message, inner)
+    {
+      _ids = ids?.ToArray() ?? Array.Empty<ObjectID>();
+    }
+
+    // methods and properties
+
+    public ReadOnlyCollection<ObjectID> IDs => Array.AsReadOnly(_ids);
+  }
 }

@@ -49,11 +49,12 @@ public class BatchedObjectsRdbmsProviderCommand : IRdbmsProviderCommand
   private RdbmsProviderException WrapRdbmsProviderException (RdbmsProviderException e)
   {
     var numberOfIdsToShow = 10;
-    var ids = string.Join(", ", AffectedDataContainers.Take(numberOfIdsToShow).Select(d => d.ID));
-    if (AffectedDataContainers.Count > numberOfIdsToShow)
-      return new RdbmsProviderException($"Error while saving objects '{ids}, ...'. {e.Message}", e);
+    var affectedObjectIds = AffectedDataContainers.Select(d => d.ID).ToArray();
+    var displayedIds = string.Join(", ", affectedObjectIds.Take(numberOfIdsToShow));
+    if (affectedObjectIds.Length > numberOfIdsToShow)
+      return new RdbmsProviderException($"Error while saving objects '{displayedIds}, ...'. {e.Message}", e, affectedObjectIds);
 
-    return new RdbmsProviderException($"Error while saving objects '{ids}'. {e.Message}", e);
+    return new RdbmsProviderException($"Error while saving objects '{displayedIds}'. {e.Message}", e, affectedObjectIds);
   }
 
   private ConcurrencyViolationException CreateConcurrencyViolationException ()
