@@ -20,7 +20,6 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Testing;
-using Moq;
 using NUnit.Framework;
 using Remotion.Utilities;
 
@@ -178,9 +177,8 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void CreateScope_Writer ()
     {
-      var writerMock = new Mock<TextWriter>();
-
-      var scope = StopwatchScope.CreateScope(writerMock.Object, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
+      var stringWriter = new StringWriter();
+      var scope = StopwatchScope.CreateScope(stringWriter, "{context}#{elapsed}#{elapsed:ms}#{elapsedCP}#{elapsedCP:ms}");
 
       Wait(TimeSpan.FromMilliseconds(1.0));
 
@@ -199,23 +197,15 @@ namespace Remotion.UnitTests.Utilities
       var secondElapsedCP = scope.ElapsedSinceLastCheckpoint;
       scope.Dispose();
 
-      var expectedFirstArgs = new[] {
-          "one",
-          firstElapsed.ToString(),
-          firstElapsed.TotalMilliseconds.ToString(),
-          firstElapsedCP.ToString(),
-          firstElapsedCP.TotalMilliseconds.ToString()
-      };
-      writerMock.Verify(mock => mock.WriteLine("{0}#{1}#{2}#{3}#{4}", expectedFirstArgs), Times.AtLeastOnce());
 
-      var expectedSecondArgs = new[] {
-          "end",
-          secondElapsed.ToString(),
-          secondElapsed.TotalMilliseconds.ToString(),
-          secondElapsedCP.ToString(),
-          secondElapsedCP.TotalMilliseconds.ToString()
-      };
-      writerMock.Verify(mock => mock.WriteLine("{0}#{1}#{2}#{3}#{4}", expectedSecondArgs), Times.AtLeastOnce());
+      Assert.That(
+          stringWriter.GetStringBuilder().ToString(),
+          Is.EqualTo(
+              $"""
+               one#{firstElapsed}#{firstElapsed.TotalMilliseconds}#{firstElapsedCP}#{firstElapsedCP.TotalMilliseconds}
+               end#{secondElapsed}#{secondElapsed.TotalMilliseconds}#{secondElapsedCP}#{secondElapsedCP.TotalMilliseconds}
+
+               """));
     }
 
     [Test]
@@ -279,8 +269,8 @@ namespace Remotion.UnitTests.Utilities
     public void CreateScope_Console ()
     {
       var oldOut = Console.Out;
-      var writerMock = new Mock<TextWriter>();
-      Console.SetOut(writerMock.Object);
+      var stringWriter = new StringWriter();
+      Console.SetOut(stringWriter);
 
       try
       {
@@ -303,25 +293,14 @@ namespace Remotion.UnitTests.Utilities
         var secondElapsedCP = scope.ElapsedSinceLastCheckpoint;
         scope.Dispose();
 
-        var expectedFirstArgs = new[]
-                                {
-                                    "one",
-                                    firstElapsed.ToString(),
-                                    firstElapsed.TotalMilliseconds.ToString(),
-                                    firstElapsedCP.ToString(),
-                                    firstElapsedCP.TotalMilliseconds.ToString()
-                                };
-        writerMock.Verify(mock => mock.WriteLine("{0}#{1}#{2}#{3}#{4}", expectedFirstArgs), Times.AtLeastOnce());
+        Assert.That(
+            stringWriter.GetStringBuilder().ToString(),
+            Is.EqualTo(
+                $"""
+                one#{firstElapsed}#{firstElapsed.TotalMilliseconds}#{firstElapsedCP}#{firstElapsedCP.TotalMilliseconds}
+                end#{secondElapsed}#{secondElapsed.TotalMilliseconds}#{secondElapsedCP}#{secondElapsedCP.TotalMilliseconds}
 
-        var expectedSecondArgs = new[]
-                                 {
-                                     "end",
-                                     secondElapsed.ToString(),
-                                     secondElapsed.TotalMilliseconds.ToString(),
-                                     secondElapsedCP.ToString(),
-                                     secondElapsedCP.TotalMilliseconds.ToString()
-                                 };
-        writerMock.Verify(mock => mock.WriteLine("{0}#{1}#{2}#{3}#{4}", expectedSecondArgs), Times.AtLeastOnce());
+                """));
       }
       finally
       {
