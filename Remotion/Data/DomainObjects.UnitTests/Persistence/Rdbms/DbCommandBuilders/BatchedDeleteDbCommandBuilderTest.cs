@@ -10,6 +10,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuilders;
@@ -22,6 +23,9 @@ public class BatchedDeleteDbCommandBuilderTest : StandardMappingTest
   private Mock<DbParameterCollection> _dataParameterCollectionMock;
   private Mock<DbCommand> _dbCommandStub;
   private Mock<IDbCommandFactory> _dbCommandFactoryStub;
+  private Mock<IStorageNameProvider> _storageNameProvider;
+  private const string c_idColumn = "ID_COLUMN";
+  private const string c_classIDColumn = "ClassID_COLUMN";
 
   public override void SetUp ()
   {
@@ -42,6 +46,10 @@ public class BatchedDeleteDbCommandBuilderTest : StandardMappingTest
 
     _dbCommandFactoryStub = new Mock<IDbCommandFactory>();
     _dbCommandFactoryStub.Setup(stub => stub.CreateDbCommand()).Returns(_dbCommandStub.Object);
+
+    _storageNameProvider = new Mock<IStorageNameProvider>();
+    _storageNameProvider.Setup(stub => stub.GetIDColumnName()).Returns(c_idColumn);
+    _storageNameProvider.Setup(stub => stub.GetClassIDColumnName()).Returns(c_classIDColumn);
   }
 
   [Test]
@@ -56,16 +64,16 @@ public class BatchedDeleteDbCommandBuilderTest : StandardMappingTest
     commandSpecification.Setup(stub => stub.TableDefinition).Returns(tableDefinition);
     commandSpecification.Setup(stub => stub.CreateDbParameter(It.IsAny<DbCommand>(), "@TVP_Delete_Table")).Returns(_dbDataParameterStub.Object);
 
-    var builder = new BatchedDeleteDbCommandBuilder(_sqlDialectStub.Object, [commandSpecification.Object]);
+    var builder = new BatchedDeleteDbCommandBuilder(_sqlDialectStub.Object, [commandSpecification.Object], _storageNameProvider.Object);
     var result = builder.Create(_dbCommandFactoryStub.Object);
     Console.WriteLine(result.CommandText);
     Assert.That(
         result.CommandText,
         Is.EqualTo(
-            """
+            $"""
             DELETE [T]
             FROM [Table] [T]
-            INNER JOIN @TVP_Delete_Table [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Delete_Table [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             """));
   }
 
@@ -82,16 +90,16 @@ public class BatchedDeleteDbCommandBuilderTest : StandardMappingTest
     commandSpecification.Setup(stub => stub.TableDefinition).Returns(tableDefinition);
     commandSpecification.Setup(stub => stub.CreateDbParameter(It.IsAny<DbCommand>(), "@TVP_Delete_Table")).Returns(_dbDataParameterStub.Object);
 
-    var builder = new BatchedDeleteDbCommandBuilder(_sqlDialectStub.Object, [commandSpecification.Object]);
+    var builder = new BatchedDeleteDbCommandBuilder(_sqlDialectStub.Object, [commandSpecification.Object], _storageNameProvider.Object);
     var result = builder.Create(_dbCommandFactoryStub.Object);
     Console.WriteLine(result.CommandText);
     Assert.That(
         result.CommandText,
         Is.EqualTo(
-            """
+            $"""
             DELETE [T]
             FROM [customscheme].[Table] [T]
-            INNER JOIN @TVP_Delete_Table [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Delete_Table [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             """));
   }
 
@@ -116,22 +124,22 @@ public class BatchedDeleteDbCommandBuilderTest : StandardMappingTest
       commandSpecifications.Add(commandSpecification.Object);
     }
 
-    var builder = new BatchedDeleteDbCommandBuilder(_sqlDialectStub.Object, commandSpecifications.ToArray());
+    var builder = new BatchedDeleteDbCommandBuilder(_sqlDialectStub.Object, commandSpecifications.ToArray(), _storageNameProvider.Object);
     var result = builder.Create(_dbCommandFactoryStub.Object);
     Console.WriteLine(result.CommandText);
     Assert.That(
         result.CommandText,
         Is.EqualTo(
-            """
+            $"""
             DELETE [T]
             FROM [Table1] [T]
-            INNER JOIN @TVP_Delete_Table1 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Delete_Table1 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             DELETE [T]
             FROM [Table2] [T]
-            INNER JOIN @TVP_Delete_Table2 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Delete_Table2 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             DELETE [T]
             FROM [Table3] [T]
-            INNER JOIN @TVP_Delete_Table3 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Delete_Table3 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             """));
   }
 
@@ -156,22 +164,22 @@ public class BatchedDeleteDbCommandBuilderTest : StandardMappingTest
       commandSpecifications.Add(commandSpecification.Object);
     }
 
-    var builder = new BatchedDeleteDbCommandBuilder(_sqlDialectStub.Object, commandSpecifications.ToArray());
+    var builder = new BatchedDeleteDbCommandBuilder(_sqlDialectStub.Object, commandSpecifications.ToArray(), _storageNameProvider.Object);
     var result = builder.Create(_dbCommandFactoryStub.Object);
     Console.WriteLine(result.CommandText);
     Assert.That(
         result.CommandText,
         Is.EqualTo(
-            """
+            $"""
             DELETE [T]
             FROM [customscheme].[Table1] [T]
-            INNER JOIN @TVP_Delete_Table1 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Delete_Table1 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             DELETE [T]
             FROM [customscheme].[Table2] [T]
-            INNER JOIN @TVP_Delete_Table2 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Delete_Table2 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             DELETE [T]
             FROM [customscheme].[Table3] [T]
-            INNER JOIN @TVP_Delete_Table3 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Delete_Table3 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             """));
   }
 }

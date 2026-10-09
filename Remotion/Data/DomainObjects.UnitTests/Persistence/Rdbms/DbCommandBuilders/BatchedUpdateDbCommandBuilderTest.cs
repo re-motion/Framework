@@ -10,6 +10,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuilders;
@@ -22,6 +23,9 @@ public class BatchedUpdateDbCommandBuilderTest : StandardMappingTest
   private Mock<DbParameterCollection> _dataParameterCollectionMock;
   private Mock<DbCommand> _dbCommandStub;
   private Mock<IDbCommandFactory> _dbCommandFactoryStub;
+  private Mock<IStorageNameProvider> _storageNameProvider;
+  private const string c_idColumn = "ID_COLUMN";
+  private const string c_classIDColumn = "ClassID_COLUMN";
 
   public override void SetUp ()
   {
@@ -42,6 +46,10 @@ public class BatchedUpdateDbCommandBuilderTest : StandardMappingTest
 
     _dbCommandFactoryStub = new Mock<IDbCommandFactory>();
     _dbCommandFactoryStub.Setup(stub => stub.CreateDbCommand()).Returns(_dbCommandStub.Object);
+
+    _storageNameProvider = new Mock<IStorageNameProvider>();
+    _storageNameProvider.Setup(stub => stub.GetIDColumnName()).Returns(c_idColumn);
+    _storageNameProvider.Setup(stub => stub.GetClassIDColumnName()).Returns(c_classIDColumn);
   }
 
   [Test]
@@ -52,23 +60,23 @@ public class BatchedUpdateDbCommandBuilderTest : StandardMappingTest
     var tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"));
 
     var commandSpecification = new Mock<IBatchedCommandSpecification>(MockBehavior.Strict);
-    commandSpecification.Setup(stub => stub.Columns).Returns(["col1", "col2", "col2" + TableManipulationRecordDefinitionProvider.IsSetColumnPostFix]);
+    commandSpecification.Setup(stub => stub.Columns).Returns([c_idColumn, c_classIDColumn, "col1", "col2", "col2" + TableManipulationRecordDefinitionProvider.IsSetColumnPostFix]);
     commandSpecification.Setup(stub => stub.TableDefinition).Returns(tableDefinition);
     commandSpecification.Setup(stub => stub.CreateDbParameter(It.IsAny<DbCommand>(), "@TVP_Update_Table")).Returns(_dbDataParameterStub.Object);
 
-    var builder = new BatchedUpdateDbCommandBuilder(_sqlDialectStub.Object, [commandSpecification.Object]);
+    var builder = new BatchedUpdateDbCommandBuilder(_sqlDialectStub.Object, [commandSpecification.Object], _storageNameProvider.Object);
     var result = builder.Create(_dbCommandFactoryStub.Object);
 
     Assert.That(
         result.CommandText,
         Is.EqualTo(
-            """
+            $"""
             UPDATE [T]
             SET
             [T].[col1] = [P].[col1],
             [T].[col2] = CASE WHEN [P].[col2__IsSet] = 1 THEN [P].[col2] ELSE [T].[col2] END
             FROM [Table] [T]
-            INNER JOIN @TVP_Update_Table [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Update_Table [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             """));
   }
 
@@ -81,23 +89,23 @@ public class BatchedUpdateDbCommandBuilderTest : StandardMappingTest
     var tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition("customscheme", "Table"));
 
     var commandSpecification = new Mock<IBatchedCommandSpecification>(MockBehavior.Strict);
-    commandSpecification.Setup(stub => stub.Columns).Returns(["col1", "col2"]);
+    commandSpecification.Setup(stub => stub.Columns).Returns([c_idColumn, c_classIDColumn, "col1", "col2"]);
     commandSpecification.Setup(stub => stub.TableDefinition).Returns(tableDefinition);
     commandSpecification.Setup(stub => stub.CreateDbParameter(It.IsAny<DbCommand>(), "@TVP_Update_Table")).Returns(_dbDataParameterStub.Object);
 
-    var builder = new BatchedUpdateDbCommandBuilder(_sqlDialectStub.Object, [commandSpecification.Object]);
+    var builder = new BatchedUpdateDbCommandBuilder(_sqlDialectStub.Object, [commandSpecification.Object], _storageNameProvider.Object);
     var result = builder.Create(_dbCommandFactoryStub.Object);
 
     Assert.That(
         result.CommandText,
         Is.EqualTo(
-            """
+            $"""
             UPDATE [T]
             SET
             [T].[col1] = [P].[col1],
             [T].[col2] = [P].[col2]
             FROM [customscheme].[Table] [T]
-            INNER JOIN @TVP_Update_Table [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Update_Table [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             """));
   }
 
@@ -115,38 +123,38 @@ public class BatchedUpdateDbCommandBuilderTest : StandardMappingTest
     foreach (var td in new List<TableDefinition> { tableDefinition1, tableDefinition2, tableDefinition3 })
     {
       var commandSpecification = new Mock<IBatchedCommandSpecification>(MockBehavior.Strict);
-      commandSpecification.Setup(stub => stub.Columns).Returns(["col1", "col2", "col2" + TableManipulationRecordDefinitionProvider.IsSetColumnPostFix]);
+      commandSpecification.Setup(stub => stub.Columns).Returns([c_idColumn, c_classIDColumn, "col1", "col2", "col2" + TableManipulationRecordDefinitionProvider.IsSetColumnPostFix]);
       commandSpecification.Setup(stub => stub.TableDefinition).Returns(td);
       commandSpecification.Setup(stub => stub.CreateDbParameter(It.IsAny<DbCommand>(), _sqlDialectStub.Object.GetParameterName("TVP_Update_" + td.TableName.EntityName)))
           .Returns(_dbDataParameterStub.Object);
       commandSpecifications.Add(commandSpecification.Object);
     }
 
-    var builder = new BatchedUpdateDbCommandBuilder(_sqlDialectStub.Object, commandSpecifications.ToArray());
+    var builder = new BatchedUpdateDbCommandBuilder(_sqlDialectStub.Object, commandSpecifications.ToArray(), _storageNameProvider.Object);
     var result = builder.Create(_dbCommandFactoryStub.Object);
 
     Assert.That(
         result.CommandText,
         Is.EqualTo(
-            """
+            $"""
             UPDATE [T]
             SET
             [T].[col1] = [P].[col1],
             [T].[col2] = CASE WHEN [P].[col2__IsSet] = 1 THEN [P].[col2] ELSE [T].[col2] END
             FROM [Table1] [T]
-            INNER JOIN @TVP_Update_Table1 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Update_Table1 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             UPDATE [T]
             SET
             [T].[col1] = [P].[col1],
             [T].[col2] = CASE WHEN [P].[col2__IsSet] = 1 THEN [P].[col2] ELSE [T].[col2] END
             FROM [Table2] [T]
-            INNER JOIN @TVP_Update_Table2 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Update_Table2 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             UPDATE [T]
             SET
             [T].[col1] = [P].[col1],
             [T].[col2] = CASE WHEN [P].[col2__IsSet] = 1 THEN [P].[col2] ELSE [T].[col2] END
             FROM [Table3] [T]
-            INNER JOIN @TVP_Update_Table3 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Update_Table3 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             """));
   }
 
@@ -164,38 +172,38 @@ public class BatchedUpdateDbCommandBuilderTest : StandardMappingTest
     foreach (var td in new List<TableDefinition> { tableDefinition1, tableDefinition2, tableDefinition3 })
     {
       var commandSpecification = new Mock<IBatchedCommandSpecification>(MockBehavior.Strict);
-      commandSpecification.Setup(stub => stub.Columns).Returns(["col1", "col2", "col2" + TableManipulationRecordDefinitionProvider.IsSetColumnPostFix]);
+      commandSpecification.Setup(stub => stub.Columns).Returns([c_idColumn, c_classIDColumn, "col1", "col2", "col2" + TableManipulationRecordDefinitionProvider.IsSetColumnPostFix]);
       commandSpecification.Setup(stub => stub.TableDefinition).Returns(td);
       commandSpecification.Setup(stub => stub.CreateDbParameter(It.IsAny<DbCommand>(), _sqlDialectStub.Object.GetParameterName("TVP_Update_" + td.TableName.EntityName)))
           .Returns(_dbDataParameterStub.Object);
       commandSpecifications.Add(commandSpecification.Object);
     }
 
-    var builder = new BatchedUpdateDbCommandBuilder(_sqlDialectStub.Object, commandSpecifications.ToArray());
+    var builder = new BatchedUpdateDbCommandBuilder(_sqlDialectStub.Object, commandSpecifications.ToArray(), _storageNameProvider.Object);
     var result = builder.Create(_dbCommandFactoryStub.Object);
 
     Assert.That(
         result.CommandText,
         Is.EqualTo(
-            """
+            $"""
             UPDATE [T]
             SET
             [T].[col1] = [P].[col1],
             [T].[col2] = CASE WHEN [P].[col2__IsSet] = 1 THEN [P].[col2] ELSE [T].[col2] END
             FROM [customscheme].[Table1] [T]
-            INNER JOIN @TVP_Update_Table1 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Update_Table1 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             UPDATE [T]
             SET
             [T].[col1] = [P].[col1],
             [T].[col2] = CASE WHEN [P].[col2__IsSet] = 1 THEN [P].[col2] ELSE [T].[col2] END
             FROM [customscheme].[Table2] [T]
-            INNER JOIN @TVP_Update_Table2 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Update_Table2 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             UPDATE [T]
             SET
             [T].[col1] = [P].[col1],
             [T].[col2] = CASE WHEN [P].[col2__IsSet] = 1 THEN [P].[col2] ELSE [T].[col2] END
             FROM [customscheme].[Table3] [T]
-            INNER JOIN @TVP_Update_Table3 [P] ON [P].[ID] = [T].[ID];
+            INNER JOIN @TVP_Update_Table3 [P] ON [P].[{c_idColumn}] = [T].[{c_idColumn}];
             """));
   }
 }

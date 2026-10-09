@@ -249,7 +249,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016
 
       var singleScalarStructuredTypeDefinitionProvider = CreateSingleScalarStructuredTypeDefinitionProvider(storageProviderDefinition);
       var sqlDialect = CreateSqlDialect(storageProviderDefinition);
-      return new SqlDbCommandBuilderFactory(singleScalarStructuredTypeDefinitionProvider, sqlDialect);
+      var storageNameProvider = CreateStorageNameProvider(storageProviderDefinition);
+      return new SqlDbCommandBuilderFactory(singleScalarStructuredTypeDefinitionProvider, sqlDialect, storageNameProvider);
     }
 
 
