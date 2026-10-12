@@ -72,6 +72,24 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     int? StorageTypeLength { get; }
 
     /// <summary>
+    /// Gets the precision (total number of digits) of the storage type as used by the underlying database.
+    /// </summary>
+    /// <value>
+    /// The precision of the storage type. <see langword="null" /> is used if the storage type does not specify an explicit precision,
+    /// and a default value will be used.
+    /// </value>
+    byte? Precision { get; }
+
+    /// <summary>
+    /// Gets the scale (number of digits after the decimal point) of the storage type as used by the underlying database.
+    /// </summary>
+    /// <value>
+    /// The scale of the storage type. <see langword="null" /> is used if the storage type does not specify an explicit scale,
+    /// and a default value will be used.
+    /// </value>
+    byte? Scale { get; }
+
+    /// <summary>
     /// Reads a value from the specified <see cref="DbDataReader"/> at the given <paramref name="ordinal"/>, returning it as an instance of 
     /// <see cref="DotNetType"/> (or <see langword="null" />).
     /// </summary>

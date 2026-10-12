@@ -1,6 +1,9 @@
+using System;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Utilities;
@@ -22,5 +25,12 @@ public class TestSqlStorageObjectFactory : SqlStorageObjectFactory
       return Threshold.Value;
 
     return base.GetTableValuedParameterThreshold();
+  }
+
+  public override IStorageTypeInformationProvider CreateStorageTypeInformationProvider (RdbmsProviderDefinition rdmsStorageProviderDefinition)
+  {
+    ArgumentNullException.ThrowIfNull(rdmsStorageProviderDefinition);
+
+    return new TestSqlStorageTypeInformationProvider(CreateDateTimeDefaultStorageTypeProvider(rdmsStorageProviderDefinition));
   }
 }

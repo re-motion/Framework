@@ -212,7 +212,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       if (dotNetType == typeof(DateOnly))
         return new StorageTypeInformation(typeof(DateTime), "date", DbType.Date, isNullableInDatabase, null, dotNetType, new DateOnlyConverter());
       if (dotNetType == typeof(Decimal))
-        return new StorageTypeInformation(typeof(Decimal), "decimal (38, 3)", DbType.Decimal, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
+        return new StorageTypeInformation(typeof(Decimal), "decimal (38, 3)", DbType.Decimal, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType), 38, 3);
       if (dotNetType == typeof(Double))
         return new StorageTypeInformation(typeof(Double), "float", DbType.Double, isNullableInDatabase, null, dotNetType, new DefaultConverter(dotNetType));
       if (dotNetType == typeof(Guid))
@@ -269,7 +269,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
           isNullableInDatabase,
           maxLength,
           nullableValueType,
-          GetTypeConverter(nullableValueType, underlyingType));
+          GetTypeConverter(nullableValueType, underlyingType),
+          underlyingStorageInformation.Precision,
+          underlyingStorageInformation.Scale);
     }
 
     private TypeConverter GetTypeConverter (Type nullableValueType, Type underlyingType)
@@ -295,7 +297,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
           underlyingStorageInformation.IsStorageTypeNullable,
           maxLength,
           enumType,
-          new AdvancedEnumConverter(enumType));
+          new AdvancedEnumConverter(enumType),
+          underlyingStorageInformation.Precision,
+          underlyingStorageInformation.Scale);
     }
 
     private string GetStorageTypeStringForVarType (string varType, int? maxLength)
