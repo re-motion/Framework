@@ -52,12 +52,10 @@
 
   <PropertyGroup>
     <ProjectFeaturesRoot>$(MSBuildThisFileDirectory)ProjectFeatures\</ProjectFeaturesRoot>
-    <UseSourceLink>true</UseSourceLink>
   </PropertyGroup>
 
   <Import Project="$(ProjectFeaturesRoot)UseWebForms.props" Condition="'$(UseWebForms)' == 'true'" />
   <Import Project="$(ProjectFeaturesRoot)UseNetOnly.props" Condition="'$(UseNetOnly)' == 'true'" />
-  <Import Project="$(ProjectFeaturesRoot)UseSourceLink.props" Condition="'$(UseSourceLink)' == 'true'" />
 
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\remotion.snk" Link="remotion.snk" />
