@@ -96,5 +96,7 @@
     <PackageVersion Include="System.Net.Http" Version="4.3.4" />
     <!-- Introduced via Moq / .net Standard 1.6.1 as version 4.3.0. -->
     <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
+    <!-- Introduced by Microsoft.Data.SqlClient as version 9.y.z -> Once this is up to 10.y.z -->
+    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
   </ItemGroup>
 </Project>
