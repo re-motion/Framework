@@ -89,6 +89,8 @@
       <ItemGroup>
         <!-- Transitive pinned packages - check if they are still needed on package upgrades -->
         <PackageVersion Include="System.Formats.Asn1" Version="8.0.1" />
+        <!-- Introduced by Microsoft.Data.SqlClient as version 9.y.z -> Once this is up to 10.y.z -->
+        <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="8.0.2" />
       </ItemGroup>
     </When>
     <When Condition="$(TargetFramework.StartsWith('net10.0'))">
@@ -107,6 +109,10 @@
         <PackageVersion Include="System.CodeDom" Version="$(Net10PackagesVersion)"/>
         <PackageVersion Include="System.Configuration.ConfigurationManager" Version="$(Net10PackagesVersion)"/>
         <PackageVersion Include="System.Resources.Extensions" Version="$(Net10PackagesVersion)"/>
+      </ItemGroup>
+      <ItemGroup>
+        <!-- Introduced by Microsoft.Data.SqlClient as version 9.y.z -> Once this is up to 10.y.z -->
+        <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
       </ItemGroup>
     </When>
   </Choose>
