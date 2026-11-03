@@ -43,19 +43,19 @@
 
   <Import Project="$(ProjectTypePropsFile)" Condition="'$(ProjectTypePropsFile)' != '' AND Exists('$(ProjectTypePropsFile)')" />
 
+  <!-- Make NuGet package audit an opt-in feature using `EnableNuGetAudit`.  -->
   <PropertyGroup>
-    <DisabledVulnerabilityWarnings Condition="'$(DisabledVulnerabilityWarnings)' == ''">NU1901;NU1902;NU1903;NU1904</DisabledVulnerabilityWarnings>
-    <NoWarn>$(NoWarn);$(DisabledVulnerabilityWarnings)</NoWarn>
+    <NuGetAuditCodes>NU1900;NU1901;NU1902;NU1903;NU1904;NU1905</NuGetAuditCodes>
+    <WarningsAsErrors Condition="'$(EnableNuGetAudit)' == 'true'">$(WarningsAsErrors);$(NuGetAuditCodes)</WarningsAsErrors>
+    <WarningsNotAsErrors Condition="'$(EnableNuGetAudit)' != 'true'">$(WarningsNotAsErrors);$(NuGetAuditCodes)</WarningsNotAsErrors>
   </PropertyGroup>
 
   <PropertyGroup>
     <ProjectFeaturesRoot>$(MSBuildThisFileDirectory)ProjectFeatures\</ProjectFeaturesRoot>
-    <UseSourceLink>true</UseSourceLink>
   </PropertyGroup>
 
   <Import Project="$(ProjectFeaturesRoot)UseWebForms.props" Condition="'$(UseWebForms)' == 'true'" />
   <Import Project="$(ProjectFeaturesRoot)UseNetOnly.props" Condition="'$(UseNetOnly)' == 'true'" />
-  <Import Project="$(ProjectFeaturesRoot)UseSourceLink.props" Condition="'$(UseSourceLink)' == 'true'" />
 
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\remotion.snk" Link="remotion.snk" />

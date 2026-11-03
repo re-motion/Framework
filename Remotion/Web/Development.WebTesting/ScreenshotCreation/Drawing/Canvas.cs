@@ -145,14 +145,14 @@ public class Canvas : IDisposable
   {
     ArgumentNullException.ThrowIfNull(layerImage);
 
-    SkiaCanvas.Canvas.DrawBitmap(layerImage.SkiaBitmap, new SKPoint(point.X, point.Y));
+    SkiaCanvas.Canvas.DrawBitmap(layerImage.SkiaBitmap, new SKPoint(point.X, point.Y), SKSamplingOptions.Default);
   }
 
   public void DrawImage (Image layerImage, Rectangle newImageBounds, Rectangle normalizedCroppingRectangle)
   {
     ArgumentNullException.ThrowIfNull(layerImage);
 
-    SkiaCanvas.Canvas.DrawBitmap(layerImage.SkiaBitmap, normalizedCroppingRectangle.ToSkRect(), newImageBounds.ToSkRect());
+    SkiaCanvas.Canvas.DrawBitmap(layerImage.SkiaBitmap, normalizedCroppingRectangle.ToSkRect(), newImageBounds.ToSkRect(), SKSamplingOptions.Default);
   }
 
   private MauiVerticalAlignment ToMauiVerticalAlignment (VerticalAlignment verticalAlignment)
