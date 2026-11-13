@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Coypu;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
@@ -53,8 +54,8 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     private readonly bool _headless;
     private readonly WebTestFeatureCollection _features;
 
-    private BiDi? _bidiConnection;
-    private Subscription? _promptSubscription;
+    private IBiDi? _bidiConnection;
+    private ISubscription? _promptSubscription;
     private bool _isDisposed;
 
     protected BrowserSessionBase (
@@ -95,7 +96,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     public TimeSpan DefaultBidiTimeout => _bidiTimeout;
 
     /// <inheritdoc/>/>
-    public BiDi BiDiConnection => _bidiConnection
+    public IBiDi BiDiConnection => _bidiConnection
                                   ?? throw new InvalidOperationException("Call 'OpenBidiConnection' before accessing 'BiDiConnection'.");
 
     /// <inheritdoc/>
@@ -111,12 +112,16 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       // This should be moved into a scope based PromptHandler that can be used during a test to enable and disable handling of prompts similar to how it works for non bidi prompt handling.
       // Accept all user prompts as they come up - IWebTestHelper.AcceptPossibleModalDialog() does not work with BiDi
       // because the WebTest-Thread is not continued when a user prompt is shown.
-      _promptSubscription = _bidiConnection.BrowsingContext.OnUserPromptOpenedAsync(args =>
-              args.BiDi.BrowsingContext.HandleUserPromptAsync(args.Context, new HandleUserPromptOptions { Accept = true, Timeout = _bidiTimeout}).GetAwaiter().GetResult(),
-              new BrowsingContextsSubscriptionOptions(new SubscriptionOptions
-                                                      {
-                                                          Timeout = _bidiTimeout
-                                                      }))
+      using var subscribeCancellationTokenSource = new CancellationTokenSource(_bidiTimeout);
+      _promptSubscription = _bidiConnection.BrowsingContext.UserPromptOpened.SubscribeAsync(
+              args =>
+              {
+                using var handleCancellationTokenSource = new CancellationTokenSource(_bidiTimeout);
+                args.BiDi.BrowsingContext.HandleUserPromptAsync(args.Context, new HandleUserPromptOptions { Accept = true }, handleCancellationTokenSource.Token)
+                    .GetAwaiter()
+                    .GetResult();
+              },
+              subscribeCancellationTokenSource.Token)
           .GetAwaiter().GetResult();
     }
 

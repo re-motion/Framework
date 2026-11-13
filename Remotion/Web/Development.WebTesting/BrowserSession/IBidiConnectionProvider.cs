@@ -21,7 +21,7 @@ public interface IBidiConnectionProvider: IDisposable
   /// Gets the open Bidi connection. Trying to access this before calling <see cref="OpenBidiConnection"/>
   /// should result in a <see cref="InvalidOperationException"/>
   /// </summary>
-  BiDi BiDiConnection { get; }
+  IBiDi BiDiConnection { get; }
 
   /// <summary>
   /// Used for timeouts for opening connections and interactions with the browser

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using OpenQA.Selenium.BiDi;
 
 namespace Remotion.Web.Development.WebTesting.BrowserSession;
@@ -19,7 +20,7 @@ public class BiDiBrowserLogProvider : IBrowserLogProvider, ILifecycleWebTestFeat
   private readonly ConcurrentQueue<BrowserLogEntry> _logEntries = new();
   private readonly IBidiConnectionProvider _bidiConnectionProvider;
 
-  private Subscription? _eventSubscription;
+  private ISubscription? _eventSubscription;
 
   public BiDiBrowserLogProvider (IBidiConnectionProvider bidiProvider)
   {
@@ -46,10 +47,11 @@ public class BiDiBrowserLogProvider : IBrowserLogProvider, ILifecycleWebTestFeat
       return;
 
     _bidiConnectionProvider.OpenBidiConnection();
-    _eventSubscription = _bidiConnectionProvider.BiDiConnection.Log
-        .OnEntryAddedAsync(
+    using var cancellationTokenSource = new CancellationTokenSource(_bidiConnectionProvider.DefaultBidiTimeout);
+    _eventSubscription = _bidiConnectionProvider.BiDiConnection.Log.EntryAdded
+        .SubscribeAsync(
             entry => _logEntries.Enqueue(new BrowserLogEntry(entry)),
-            new SubscriptionOptions { Timeout = _bidiConnectionProvider.DefaultBidiTimeout })
+            cancellationTokenSource.Token)
         .GetAwaiter()
         .GetResult();
   }

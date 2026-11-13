@@ -55,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       };
     }
 
-    public BrowserLogEntry ([NotNull] OpenQA.Selenium.BiDi.Log.LogEntry logEntry)
+    public BrowserLogEntry ([NotNull] OpenQA.Selenium.BiDi.Log.EntryAddedEventArgs logEntry)
         : this(GetLogLevel(logEntry.Level), logEntry.Text ?? "", logEntry.Timestamp.DateTime)
     {
       ArgumentNullException.ThrowIfNull(logEntry);
