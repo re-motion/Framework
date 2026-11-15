@@ -22,7 +22,6 @@ public class Databases : TestDimension
 {
   public static readonly Databases NoDB = new(nameof(NoDB));
   public static readonly Databases SqlServerDefault = new(nameof(SqlServerDefault));
-  public static readonly Databases SqlServer2016 = new(nameof(SqlServer2016), 2016);
   public static readonly Databases SqlServer2017 = new(nameof(SqlServer2017), 2017);
   public static readonly Databases SqlServer2019 = new(nameof(SqlServer2019), 2019);
   public static readonly Databases SqlServer2022 = new(nameof(SqlServer2022), 2022);

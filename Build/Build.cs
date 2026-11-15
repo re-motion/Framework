@@ -302,7 +302,7 @@ class Build : RemotionBuild, IDependDB, ITest
         Chrome, Firefox, Edge);
     supportedTestDimensions.AddSupportedDimension<Databases>(
         NoDB, SqlServerDefault,
-        SqlServer2016, SqlServer2017, SqlServer2019, SqlServer2022, SqlServer2025);
+        SqlServer2017, SqlServer2019, SqlServer2022, SqlServer2025);
   }
 
   public override void ConfigureEnabledTestDimensions (EnabledTestDimensionsBuilder enabledTestDimensions)
@@ -352,8 +352,8 @@ class Build : RemotionBuild, IDependDB, ITest
         "DatabaseTestMatrix",
         new TestDimension[,]
         {
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2016, Debug, x64 },
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2016, Release, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2017, Debug, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2017, Release, x64 },
 
             // Local-->
             { Windows, LocalMachine, NET10_0, NoBrowser, SqlServerDefault, Debug, x86 },
@@ -363,7 +363,6 @@ class Build : RemotionBuild, IDependDB, ITest
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2025, Release, x64 },
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2022, Release, x64 },
             { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2019, Release, x64 },
-            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2017, Release, x64 },
         },
         allowEmpty: true);
 
