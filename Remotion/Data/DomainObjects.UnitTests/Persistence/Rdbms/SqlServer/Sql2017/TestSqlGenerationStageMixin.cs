@@ -16,25 +16,26 @@
 // 
 using System;
 using System.Linq.Expressions;
-using Remotion.Linq;
-using Remotion.Linq.Clauses.StreamedData;
-using Remotion.Linq.SqlBackend.SqlPreparation;
+using NUnit.Framework;
+using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
+using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
 using Remotion.Mixins;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2016
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2017
 {
-  public class TestSqlPreparationStageMixin
+  public class TestSqlGenerationStageMixin
   {
     [OverrideTarget]
-    public virtual SqlStatement PrepareSqlStatement (QueryModel queryModel, ISqlPreparationContext context)
+    public virtual void GenerateTextForOuterSqlStatement (ISqlCommandBuilder commandBuilder, SqlStatement sqlStatement)
     {
-      var builder = new SqlStatementBuilder
-                    {
-                        DataInfo = new StreamedScalarValueInfo(typeof(string)),
-                        SelectProjection = Expression.Constant("Value added by preparation mixin")
-                    };
-      return builder.GetSqlStatement();
+      Assert.That(sqlStatement.SelectProjection, Is.TypeOf(typeof(SqlEntityDefinitionExpression)));
+      Assert.That(sqlStatement.SelectProjection.Type, Is.EqualTo(typeof(int)));
+      Assert.That(((SqlEntityDefinitionExpression)sqlStatement.SelectProjection).TableAlias, Is.EqualTo("c"));
+      Assert.That(((SqlEntityDefinitionExpression)sqlStatement.SelectProjection).Name, Is.EqualTo("CookTable"));
+
+      commandBuilder.Append("Value added by generation mixin");
+      commandBuilder.SetInMemoryProjectionBody(Expression.Constant(null));
     }
   }
 }
