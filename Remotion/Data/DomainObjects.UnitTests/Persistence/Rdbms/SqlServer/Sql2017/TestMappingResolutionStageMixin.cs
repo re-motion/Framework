@@ -17,25 +17,29 @@
 using System;
 using System.Linq.Expressions;
 using NUnit.Framework;
-using Remotion.Linq.SqlBackend.SqlGeneration;
+using Remotion.Linq.Clauses.StreamedData;
+using Remotion.Linq.SqlBackend.MappingResolution;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
 using Remotion.Mixins;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2016
+namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sql2017
 {
-  public class TestSqlGenerationStageMixin
+  public class TestMappingResolutionStageMixin
   {
     [OverrideTarget]
-    public virtual void GenerateTextForOuterSqlStatement (ISqlCommandBuilder commandBuilder, SqlStatement sqlStatement)
+    public virtual SqlStatement ResolveSqlStatement (SqlStatement sqlStatement, IMappingResolutionContext context)
     {
-      Assert.That(sqlStatement.SelectProjection, Is.TypeOf(typeof(SqlEntityDefinitionExpression)));
-      Assert.That(sqlStatement.SelectProjection.Type, Is.EqualTo(typeof(int)));
-      Assert.That(((SqlEntityDefinitionExpression)sqlStatement.SelectProjection).TableAlias, Is.EqualTo("c"));
-      Assert.That(((SqlEntityDefinitionExpression)sqlStatement.SelectProjection).Name, Is.EqualTo("CookTable"));
+      Assert.That(sqlStatement.SelectProjection, Is.TypeOf(typeof(ConstantExpression)));
+      Assert.That(((ConstantExpression)sqlStatement.SelectProjection).Value, Is.EqualTo("Value added by preparation mixin"));
 
-      commandBuilder.Append("Value added by generation mixin");
-      commandBuilder.SetInMemoryProjectionBody(Expression.Constant(null));
+      var builder = new SqlStatementBuilder
+                    {
+                        DataInfo = new StreamedScalarValueInfo(typeof(string)),
+                        SelectProjection =
+                            new SqlEntityDefinitionExpression(typeof(int), "c", "CookTable", e => e.GetColumn(typeof(int), "ID", false))
+                    };
+      return builder.GetSqlStatement();
     }
   }
 }
