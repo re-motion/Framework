@@ -6,6 +6,6 @@
   "TestPlatforms": [ "x64" ],
   "TestTargetRuntimes": [ "NET8_0", "NET10_0" ],
   "TestBrowsers": [ "NoBrowser", "Chrome" ],
-  "TestSqlServers": [ "NoDB", "SqlServer2016" ],
+  "TestSqlServers": [ "NoDB", "SqlServer2017" ],
   "TestFilter": "TestCategory!=LongRunning&TestCategory!=ControlSelectorTest"
 }

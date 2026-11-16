@@ -230,7 +230,6 @@
             "type": "string",
             "enum": [
               "NoDB",
-              "SqlServer2016",
               "SqlServer2017",
               "SqlServer2019",
               "SqlServer2022",
