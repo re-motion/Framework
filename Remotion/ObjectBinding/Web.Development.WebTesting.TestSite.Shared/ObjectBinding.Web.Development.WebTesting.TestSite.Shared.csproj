@@ -27,7 +27,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="UrlMapping.xml" CopyToOutputDirectory="PreserveNewest" />
+    <Content Update="UrlMapping.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
