@@ -68,7 +68,7 @@ namespace Remotion.Core.Development.Analyzers.IntegrationTests
       return assembly.GetCustomAttribute<TargetFrameworkAttribute>()!.FrameworkName switch
       {
           ".NETCoreApp,Version=v10.0" => ReferenceAssemblies.Net.Net100,
-          //".NETCoreApp,Version=v11.0" => new ReferenceAssemblies("net11.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "11.0.0-preview.1.2"), Path.Combine("ref", "net11.0")),
+          ".NETCoreApp,Version=v11.0" => new ReferenceAssemblies("net11.0", new PackageIdentity("Microsoft.NETCore.App.Ref", "11.0.0"), Path.Combine("ref", "net11.0")),
           var frameworkName => throw new NotSupportedException($"'{frameworkName}' is not supported.")
       };
     }
