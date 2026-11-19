@@ -20,13 +20,16 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests
 {
@@ -89,7 +92,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
     {
       var storageSettings = StandardConfiguration.Instance.GetStorageSettings();
       var persistenceModelLoader = new PersistenceModelLoader(storageSettings);
-      return MappingConfiguration.Create(mappingReflector, persistenceModelLoader).GetTypeDefinitions();
+      var sortingOptimizationNodeFactory = SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>();
+      var loggerFactory = SafeServiceLocator.Current.GetInstance<ILoggerFactory>();
+      return MappingConfiguration.Create(mappingReflector, persistenceModelLoader, sortingOptimizationNodeFactory, loggerFactory).GetTypeDefinitions();
     }
 
     protected PropertyInfoAdapter GetPropertyInformation (Type declaringType, string propertyName)

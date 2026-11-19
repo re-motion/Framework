@@ -130,7 +130,11 @@ namespace Remotion.Data.DomainObjects.Queries
       nodeTypeProvider.InnerProviders.Insert(0, customNodeTypeProvider);
 
       var transformerRegistry = ExpressionTransformerRegistry.CreateDefault();
-      var processor = ExpressionTreeParser.CreateDefaultProcessor(transformerRegistry);
+      transformerRegistry.Register(new SpanContainsExpressionTransformer());
+
+      var evaluatableExpressionFilter = new ByRefLikeAwareEvaluatableExpressionFilter();
+
+      var processor = ExpressionTreeParser.CreateDefaultProcessor(transformerRegistry, evaluatableExpressionFilter);
       return new ExpressionTreeParser(nodeTypeProvider, processor);
     }
 

@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 
 namespace Remotion.Data.DomainObjects.Persistence.Model
 {
@@ -25,6 +26,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Model
   /// <threadsafety static="true" instance="true"/>
   public interface IPersistenceModelLoader : IPersistenceModelValidatorFactory
   {
-    void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition);
+    void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider);
   }
 }

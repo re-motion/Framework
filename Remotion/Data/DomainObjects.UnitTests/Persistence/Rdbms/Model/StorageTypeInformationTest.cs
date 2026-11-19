@@ -54,7 +54,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           storageTypeNullable,
           storageTypeLength,
           typeof(int),
-          _typeConverterStub.Object);
+          _typeConverterStub.Object,
+          38,
+          3);
 
       Assert.That(storageTypeInformation.StorageType, Is.EqualTo(typeof(bool)));
       Assert.That(storageTypeInformation.StorageTypeName, Is.EqualTo("test"));
@@ -63,6 +65,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       Assert.That(storageTypeInformation.StorageTypeLength, Is.EqualTo(storageTypeLength));
       Assert.That(storageTypeInformation.DotNetType, Is.EqualTo(typeof(int)));
       Assert.That(storageTypeInformation.DotNetTypeConverter, Is.SameAs(_typeConverterStub.Object));
+      Assert.That(storageTypeInformation.Precision, Is.EqualTo(38));
+      Assert.That(storageTypeInformation.Scale, Is.EqualTo(3));
+    }
+
+    [Test]
+    public void Initialization_WithDecimalAndPrecisionScale ()
+    {
+      var storageTypeInformation = new StorageTypeInformation(
+          typeof(decimal),
+          "decimal (22, 7)",
+          DbType.Decimal,
+          false,
+          null,
+          typeof(decimal),
+          _typeConverterStub.Object,
+          22,
+          7);
+
+      Assert.That(storageTypeInformation.StorageType, Is.EqualTo(typeof(decimal)));
+      Assert.That(storageTypeInformation.StorageTypeName, Is.EqualTo("decimal (22, 7)"));
+      Assert.That(storageTypeInformation.StorageDbType, Is.EqualTo(DbType.Decimal));
+      Assert.That(storageTypeInformation.IsStorageTypeNullable, Is.EqualTo(false));
+      Assert.That(storageTypeInformation.StorageTypeLength, Is.EqualTo(null));
+      Assert.That(storageTypeInformation.DotNetType, Is.EqualTo(typeof(decimal)));
+      Assert.That(storageTypeInformation.DotNetTypeConverter, Is.SameAs(_typeConverterStub.Object));
+      Assert.That(storageTypeInformation.Precision, Is.EqualTo(22));
+      Assert.That(storageTypeInformation.Scale, Is.EqualTo(7));
+    }
+
+    [Test]
+    [TestCase(null, null)]
+    [TestCase(38, null)]
+    [TestCase(null, 3)]
+    public void Initialization_WithDecimalAndNoPrecisionOrScale_ThrowsArgumentException (byte? precision, byte? scale)
+    {
+      Assert.That(
+          () => new StorageTypeInformation(
+              typeof(decimal),
+              "decimal (38, 3)",
+              DbType.Decimal,
+              false,
+              null,
+              typeof(decimal),
+              _typeConverterStub.Object,
+              precision,
+              scale),
+          Throws.ArgumentException
+              .With.Message.EqualTo("When creating a StorageTypeInformation with DB type 'Decimal', a precision and a scale must be set."));
     }
 
     [Test]
@@ -160,9 +210,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void UnifyForEquivalentProperties_CombinesStorageTypes_AllNonNullable_CombinedIsAlsoNonNullable ()
     {
-      var typeInfo1 = new StorageTypeInformation(typeof(string), "X", DbType.Int32, false, 5, typeof(int), new DefaultConverter(typeof(string)));
-      var typeInfo2 = new StorageTypeInformation(typeof(string), "X", DbType.Int32, false, 5, typeof(int), new DefaultConverter(typeof(string)));
-      var typeInfo3 = new StorageTypeInformation(typeof(string), "X", DbType.Int32, false, 5, typeof(int), new DefaultConverter(typeof(string)));
+      var typeInfo1 = new StorageTypeInformation(typeof(string), "X", DbType.Int32, false, 5, typeof(int), new DefaultConverter(typeof(string)), 28, 5);
+      var typeInfo2 = new StorageTypeInformation(typeof(string), "X", DbType.Int32, false, 5, typeof(int), new DefaultConverter(typeof(string)), 28, 5);
+      var typeInfo3 = new StorageTypeInformation(typeof(string), "X", DbType.Int32, false, 5, typeof(int), new DefaultConverter(typeof(string)), 28, 5);
 
       var result = typeInfo1.UnifyForEquivalentProperties(new[] { typeInfo2, typeInfo3 });
 
@@ -174,6 +224,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       Assert.That(((StorageTypeInformation)result).StorageTypeLength, Is.EqualTo(5));
       Assert.That(((StorageTypeInformation)result).DotNetType, Is.SameAs(typeof(int)));
       Assert.That(((StorageTypeInformation)result).DotNetTypeConverter, Is.SameAs(typeInfo1.DotNetTypeConverter));
+      Assert.That(((StorageTypeInformation)result).Precision, Is.EqualTo(28));
+      Assert.That(((StorageTypeInformation)result).Scale, Is.EqualTo(5));
     }
 
     [Test]
@@ -250,6 +302,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
+    public void UnifyForEquivalentProperties_ThrowsForDifferentPrecision ()
+    {
+      var typeInfo1 = new StorageTypeInformation(typeof(decimal), "X", DbType.Decimal, true, null, typeof(decimal), new DefaultConverter(typeof(decimal)), 28, 2);
+      var typeInfo2 = new StorageTypeInformation(typeof(decimal), "X", DbType.Decimal, true, null, typeof(decimal), new DefaultConverter(typeof(decimal)), 38, 2);
+      Assert.That(
+          () => typeInfo1.UnifyForEquivalentProperties(new[] { typeInfo2 }),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "Only equivalent properties can be combined, but this property has precision '28', and the given property has "
+              + "precision '38'.", "equivalentStorageTypes"));
+    }
+
+    [Test]
+    public void UnifyForEquivalentProperties_ThrowsForDifferentScale ()
+    {
+      var typeInfo1 = new StorageTypeInformation(typeof(decimal), "X", DbType.Decimal, true, null, typeof(decimal), new DefaultConverter(typeof(decimal)), 28, 5);
+      var typeInfo2 = new StorageTypeInformation(typeof(decimal), "X", DbType.Decimal, true, null, typeof(decimal), new DefaultConverter(typeof(decimal)), 28, 2);
+      Assert.That(
+          () => typeInfo1.UnifyForEquivalentProperties(new[] { typeInfo2 }),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "Only equivalent properties can be combined, but this property has scale '5', and the given property has "
+              + "scale '2'.", "equivalentStorageTypes"));
+    }
+
+    [Test]
     public void UnifyForEquivalentProperties_ThrowsForDifferentDotNetType ()
     {
       var typeInfo1 = new StorageTypeInformation(typeof(int), "X", DbType.Int32, true, null, typeof(string), new DefaultConverter(typeof(string)));
@@ -297,6 +373,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
       }
 
       public int? StorageTypeLength
+      {
+        get { throw new NotImplementedException(); }
+      }
+
+      public byte? Precision
+      {
+        get { throw new NotImplementedException(); }
+      }
+
+      public byte? Scale
       {
         get { throw new NotImplementedException(); }
       }

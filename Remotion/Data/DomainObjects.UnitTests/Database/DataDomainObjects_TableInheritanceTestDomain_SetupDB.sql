@@ -283,3 +283,276 @@ GO
 -- Create indexes for tables that were created above
 -- Create synonyms for tables that were created above
 -- Create all structured types
+CREATE TYPE [dbo].[TVP_TableInheritance_DerivedClassWithEntityWithHierarchy_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [ClientFromAbstractBaseClassID] uniqueidentifier NULL,
+  [ClientFromDerivedClassWithEntityFromBaseClassID] uniqueidentifier NULL,
+  [ClientFromDerivedClassWithEntityID] uniqueidentifier NULL,
+  [FileSystemItemFromAbstractBaseClassID] uniqueidentifier NULL,
+  [FileSystemItemFromAbstractBaseClassIDClassID] varchar (100) NULL,
+  [FileSystemItemFromDerivedClassWithEntityFromBaseClassID] uniqueidentifier NULL,
+  [FileSystemItemFromDerivedClassWithEntityFromBaseClassIDClassID] varchar (100) NULL,
+  [FileSystemItemFromDerivedClassWithEntityID] uniqueidentifier NULL,
+  [FileSystemItemFromDerivedClassWithEntityIDClassID] varchar (100) NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [ParentAbstractBaseClassWithHierarchyID] uniqueidentifier NULL,
+  [ParentAbstractBaseClassWithHierarchyIDClassID] varchar (100) NULL,
+  [ParentDerivedClassWithEntityFromBaseClassWithHierarchyID] uniqueidentifier NULL,
+  [ParentDerivedClassWithEntityFromBaseClassWithHierarchyIDClassID] varchar (100) NULL,
+  [ParentDerivedClassWithEntityWithHierarchyID] uniqueidentifier NULL,
+  [ParentDerivedClassWithEntityWithHierarchyIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_DerivedClassWithEntityWithHierarchy_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [ClientFromAbstractBaseClassID] uniqueidentifier NULL,
+  [ClientFromDerivedClassWithEntityFromBaseClassID] uniqueidentifier NULL,
+  [ClientFromDerivedClassWithEntityID] uniqueidentifier NULL,
+  [FileSystemItemFromAbstractBaseClassID] uniqueidentifier NULL,
+  [FileSystemItemFromAbstractBaseClassIDClassID] varchar (100) NULL,
+  [FileSystemItemFromDerivedClassWithEntityFromBaseClassID] uniqueidentifier NULL,
+  [FileSystemItemFromDerivedClassWithEntityFromBaseClassIDClassID] varchar (100) NULL,
+  [FileSystemItemFromDerivedClassWithEntityID] uniqueidentifier NULL,
+  [FileSystemItemFromDerivedClassWithEntityIDClassID] varchar (100) NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL,
+  [ParentAbstractBaseClassWithHierarchyID] uniqueidentifier NULL,
+  [ParentAbstractBaseClassWithHierarchyIDClassID] varchar (100) NULL,
+  [ParentDerivedClassWithEntityFromBaseClassWithHierarchyID] uniqueidentifier NULL,
+  [ParentDerivedClassWithEntityFromBaseClassWithHierarchyIDClassID] varchar (100) NULL,
+  [ParentDerivedClassWithEntityWithHierarchyID] uniqueidentifier NULL,
+  [ParentDerivedClassWithEntityWithHierarchyIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Address_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [City] nvarchar (100) NOT NULL,
+  [Country] nvarchar (100) NOT NULL,
+  [PersonID] uniqueidentifier NULL,
+  [PersonIDClassID] varchar (100) NULL,
+  [Street] nvarchar (100) NOT NULL,
+  [Zip] nvarchar (10) NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Address_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [City] nvarchar (100) NOT NULL,
+  [City__IsSet] bit NOT NULL,
+  [Country] nvarchar (100) NOT NULL,
+  [Country__IsSet] bit NOT NULL,
+  [PersonID] uniqueidentifier NULL,
+  [PersonIDClassID] varchar (100) NULL,
+  [Street] nvarchar (100) NOT NULL,
+  [Street__IsSet] bit NOT NULL,
+  [Zip] nvarchar (10) NOT NULL,
+  [Zip__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_TableWithUnidirectionalRelation_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [DomainBaseID] uniqueidentifier NULL,
+  [DomainBaseIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_TableWithUnidirectionalRelation_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [DomainBaseID] uniqueidentifier NULL,
+  [DomainBaseIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Client_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Client_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Person_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [ClientID] uniqueidentifier NULL,
+  [CreatedAt] datetime2 NOT NULL,
+  [CreatedBy] nvarchar (100) NOT NULL,
+  [CustomerSince] datetime2 NULL,
+  [CustomerType] int NULL,
+  [DateOfBirth] datetime2 NOT NULL,
+  [FirstName] nvarchar (100) NOT NULL,
+  [LastName] nvarchar (100) NOT NULL,
+  [Photo] varbinary (max) NULL,
+  [RegionID] uniqueidentifier NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Person_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [ClientID] uniqueidentifier NULL,
+  [CreatedAt] datetime2 NOT NULL,
+  [CreatedBy] nvarchar (100) NOT NULL,
+  [CreatedBy__IsSet] bit NOT NULL,
+  [CustomerSince] datetime2 NULL,
+  [CustomerType] int NULL,
+  [DateOfBirth] datetime2 NOT NULL,
+  [FirstName] nvarchar (100) NOT NULL,
+  [FirstName__IsSet] bit NOT NULL,
+  [LastName] nvarchar (100) NOT NULL,
+  [LastName__IsSet] bit NOT NULL,
+  [Photo] varbinary (max) NULL,
+  [Photo__IsSet] bit NOT NULL,
+  [RegionID] uniqueidentifier NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_File_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [FileCreatedAt] datetime2 NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [ParentFolderID] uniqueidentifier NULL,
+  [ParentFolderIDClassID] varchar (100) NULL,
+  [Size] int NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_File_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [FileCreatedAt] datetime2 NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL,
+  [ParentFolderID] uniqueidentifier NULL,
+  [ParentFolderIDClassID] varchar (100) NULL,
+  [Size] int NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_HistoryEntry_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [HistoryDate] datetime2 NOT NULL,
+  [OwnerID] uniqueidentifier NULL,
+  [OwnerIDClassID] varchar (100) NULL,
+  [Text] nvarchar (250) NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_HistoryEntry_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [HistoryDate] datetime2 NOT NULL,
+  [OwnerID] uniqueidentifier NULL,
+  [OwnerIDClassID] varchar (100) NULL,
+  [Text] nvarchar (250) NOT NULL,
+  [Text__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Order_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [CustomerID] uniqueidentifier NULL,
+  [CustomerIDClassID] varchar (100) NULL,
+  [Number] int NOT NULL,
+  [OrderDate] datetime2 NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Order_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [CustomerID] uniqueidentifier NULL,
+  [CustomerIDClassID] varchar (100) NULL,
+  [Number] int NOT NULL,
+  [OrderDate] datetime2 NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_OrganizationalUnit_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [ClientID] uniqueidentifier NULL,
+  [CreatedAt] datetime2 NOT NULL,
+  [CreatedBy] nvarchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_OrganizationalUnit_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [ClientID] uniqueidentifier NULL,
+  [CreatedAt] datetime2 NOT NULL,
+  [CreatedBy] nvarchar (100) NOT NULL,
+  [CreatedBy__IsSet] bit NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Region_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Region_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Folder_Insert] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [FolderCreatedAt] datetime2 NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [ParentFolderID] uniqueidentifier NULL,
+  [ParentFolderIDClassID] varchar (100) NULL
+)
+GO
+CREATE TYPE [dbo].[TVP_TableInheritance_Folder_Update] AS TABLE
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [FolderCreatedAt] datetime2 NOT NULL,
+  [Name] nvarchar (100) NOT NULL,
+  [Name__IsSet] bit NOT NULL,
+  [ParentFolderID] uniqueidentifier NULL,
+  [ParentFolderIDClassID] varchar (100) NULL
+  PRIMARY KEY CLUSTERED ([ID])
+)
+GO

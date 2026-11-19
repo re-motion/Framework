@@ -86,12 +86,24 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       {
         var sqlDbType = GetSqlDbType(columnDefinition.StorageTypeInfo);
         SqlMetaData sqlMetaData;
-        if(sqlDbType == SqlDbType.Decimal)
-          sqlMetaData = new SqlMetaData(columnDefinition.Name, sqlDbType, 38, 3);
+        if (sqlDbType == SqlDbType.Decimal)
+        {
+          var precision = Assertion.IsNotNull(
+              columnDefinition.StorageTypeInfo.Precision,
+              "Expected precision to be set as the DB type is Decimal.").Value;
+          var scale = Assertion.IsNotNull(
+              columnDefinition.StorageTypeInfo.Scale,
+              "Expected scale to be set as the DB type is Decimal.").Value;
+          sqlMetaData = new SqlMetaData(columnDefinition.Name, sqlDbType, precision, scale);
+        }
         else if (columnDefinition.StorageTypeInfo.StorageTypeLength.HasValue)
+        {
           sqlMetaData = new SqlMetaData(columnDefinition.Name, sqlDbType, columnDefinition.StorageTypeInfo.StorageTypeLength.Value);
+        }
         else
+        {
           sqlMetaData = new SqlMetaData(columnDefinition.Name, sqlDbType);
+        }
 
         columnMetaData.Add(sqlMetaData);
       }

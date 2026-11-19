@@ -18,11 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2017;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
@@ -74,7 +77,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       _mappingConfiguration = MappingConfiguration.Create(
           MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-          new PersistenceModelLoader(_storageSettings));
+          new PersistenceModelLoader(_storageSettings),
+          SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>(),
+          SafeServiceLocator.Current.GetInstance<ILoggerFactory>());
       MappingConfiguration.SetCurrent(_mappingConfiguration);
 
       _domainObjectIDs = new DomainObjectIDs();
@@ -91,7 +96,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       var sqlStorageObjectFactory = new SqlStorageObjectFactory(
           deferredStorageSettings,
           SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>());
 
       var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
 

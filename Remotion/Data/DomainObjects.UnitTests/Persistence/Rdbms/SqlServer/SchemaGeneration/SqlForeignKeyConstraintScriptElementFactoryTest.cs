@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration.ScriptElements;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
@@ -46,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
       _table1 = new EntityNameDefinition(null, "TableName1");
       _table2 = new EntityNameDefinition("SchemaName", "TableName2");
 
-      _constraint1 = new ForeignKeyConstraintDefinition("FK1", _table1, new[] { _column1 }, new[] { _column2 });
-      _constraint2 = new ForeignKeyConstraintDefinition("FK2", _table2, new[] { _column1, _column2 }, new[] { _column2, _column1 });
+      _constraint1 = new ForeignKeyConstraintDefinition("FK1", _table1, new[] { _column1 }, new[] { _column2 }, ForeignKeyCycleBreakHint.Automatic);
+      _constraint2 = new ForeignKeyConstraintDefinition("FK2", _table2, new[] { _column1, _column2 }, new[] { _column2, _column1 }, ForeignKeyCycleBreakHint.Automatic);
     }
 
     [Test]

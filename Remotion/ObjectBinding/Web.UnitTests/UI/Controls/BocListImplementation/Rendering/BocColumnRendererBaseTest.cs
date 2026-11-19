@@ -119,6 +119,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(0, Is.LessThan(th.ChildNodes.Count));
       var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
       Html.AssertAttribute(sortCommandLink, "id", List.Object.ClientID + "_0_SortCommand");
+      Html.AssertAttribute(sortCommandLink, "role", "button");
+      Html.AssertAttribute(sortCommandLink, "onkeyup", "if (event.keyCode === 32) { event.target.click(); }");
       Html.AssertChildElementCount(sortCommandLink, 1);
 
       var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 0);
@@ -142,6 +144,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var document = Html.GetResultDocument();
       var th = document.GetAssertedChildElement("th", 0);
       var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Html.AssertAttribute(sortCommandLink, "role", "button");
+      Html.AssertAttribute(sortCommandLink, "onkeyup", "if (event.keyCode === 32) { event.target.click(); }");
       var title = sortCommandLink.GetAssertedChildElement("span", 0);
       Assert.That(title.InnerXml, Is.EqualTo("Multiline<br />ColumnTitle"));
     }
@@ -165,6 +169,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.That(0, Is.LessThan(th.ChildNodes.Count));
       var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Html.AssertAttribute(sortCommandLink, "role", "button");
+      Html.AssertAttribute(sortCommandLink, "onkeyup", "if (event.keyCode === 32) { event.target.click(); }");
       Html.AssertChildElementCount(sortCommandLink, 1);
 
       var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 0);
@@ -225,6 +231,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.That(0, Is.LessThan(th.ChildNodes.Count));
       var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Html.AssertAttribute(sortCommandLink, "role", "button");
+      Html.AssertAttribute(sortCommandLink, "onkeyup", "if (event.keyCode === 32) { event.target.click(); }");
       Assert.That(sortCommandLink.ChildNodes.Count, Is.EqualTo(2));
 
       var img = Html.GetAssertedChildElement(sortCommandLink, "img", 0);
@@ -256,6 +264,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.That(0, Is.LessThan(th.ChildNodes.Count));
       var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Html.AssertAttribute(sortCommandLink, "role", "button");
+      Html.AssertAttribute(sortCommandLink, "onkeyup", "if (event.keyCode === 32) { event.target.click(); }");
       Assert.That(sortCommandLink.ChildNodes.Count, Is.EqualTo(2));
 
       var img = Html.GetAssertedChildElement(sortCommandLink, "img", 0);
@@ -286,6 +296,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Assert.That(0, Is.LessThan(th.ChildNodes.Count));
       var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      Html.AssertAttribute(sortCommandLink, "role", "button");
+      Html.AssertAttribute(sortCommandLink, "onkeyup", "if (event.keyCode === 32) { event.target.click(); }");
       Assert.That(sortCommandLink.ChildNodes.Count, Is.EqualTo(1));
 
       var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 0);
@@ -525,6 +537,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(0, Is.LessThan(th.ChildNodes.Count));
       var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
       Html.AssertAttribute(sortCommandLink, "id", List.Object.ClientID + "_0_SortCommand");
+      Html.AssertAttribute(sortCommandLink, "role", "button");
+      Html.AssertAttribute(sortCommandLink, "onkeyup", "if (event.keyCode === 32) { event.target.click(); }");
       Html.AssertChildElementCount(sortCommandLink, 2);
 
       var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 0);

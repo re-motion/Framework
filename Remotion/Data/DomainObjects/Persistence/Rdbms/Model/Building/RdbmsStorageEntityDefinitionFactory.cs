@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
@@ -79,9 +80,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       get { return _storageNameProvider; }
     }
 
-    public virtual IRdbmsStorageEntityDefinition CreateTableDefinition (ClassDefinition classDefinition)
+    public virtual IRdbmsStorageEntityDefinition CreateTableDefinition (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider)
     {
       ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(persistenceModelSortingProvider);
 
       var tableName = _storageNameProvider.GetTableName(classDefinition);
       if (tableName == null)
@@ -104,7 +106,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
           dataProperties,
           primaryKeyConstraints.Concat(foreignKeyConstraints),
           CreateIndexesForTableDefinition(classDefinition, allProperties),
-          CreateSynonymsForTableDefinition(classDefinition));
+          CreateSynonymsForTableDefinition(classDefinition),
+          persistenceModelSortingProvider);
     }
 
     public virtual IRdbmsStorageEntityDefinition CreateFilterViewDefinition (

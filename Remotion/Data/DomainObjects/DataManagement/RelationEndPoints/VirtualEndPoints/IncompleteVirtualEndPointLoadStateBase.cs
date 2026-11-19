@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       Assertion.DebugIsNotNull(oppositeEndPoint.ObjectID, "oppositeEndPoint.ObjectID != null when oppositeEndPoint.IsNull == false");
 
       if (!_originalOppositeEndPoints.ContainsKey(oppositeEndPoint.ObjectID))
-        throw new InvalidOperationException("The opposite end-point has not been registered.");
+        throw new InvalidOperationException($"The opposite end-point '{oppositeEndPoint.ID}' has not been registered.");
 
       _originalOppositeEndPoints.Remove(oppositeEndPoint.ObjectID);
     }
@@ -172,7 +172,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     {
       ArgumentNullException.ThrowIfNull(oppositeEndPoint);
 
-      throw new InvalidOperationException("Cannot synchronize an opposite end-point with a virtual end-point in incomplete state.");
+      throw new InvalidOperationException(
+          $"Cannot synchronize the opposite end-point '{oppositeEndPoint.ID}' with a virtual end-point in incomplete state.");
     }
 
     public void SetDataFromSubTransaction (TEndPoint endPoint, IVirtualEndPointLoadState<TEndPoint, TData, TDataManager> sourceLoadState)
@@ -180,7 +181,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentNullException.ThrowIfNull(endPoint);
       ArgumentNullException.ThrowIfNull(sourceLoadState);
 
-      throw new InvalidOperationException("Cannot comit data from a sub-transaction into a virtual end-point in incomplete state.");
+      throw new InvalidOperationException(
+          $"Cannot commit data from a sub-transaction into the virtual end-point '{endPoint.ID}' because it is in incomplete state.");
     }
 
     public bool HasChanged ()

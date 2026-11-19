@@ -22,6 +22,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   public class SqlProviderBaseTest : ClientTransactionBaseTest
   {
     private RdbmsProvider _provider;
+    private readonly CreateSaveCommandFactoryBehaviour _createSaveCommandFactoryBehaviour;
+
+    public SqlProviderBaseTest (CreateSaveCommandFactoryBehaviour createSaveCommandFactoryBehaviour = CreateSaveCommandFactoryBehaviour.CreateExceptionThrowingSaveCommandFactory)
+    {
+      _createSaveCommandFactoryBehaviour = createSaveCommandFactoryBehaviour;
+    }
 
     public override void SetUp ()
     {
@@ -43,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
     protected RdbmsProvider CreateRdbmsProvider ()
     {
-      return RdbmsProviderObjectMother.CreateForIntegrationTest(StorageSettings, TestDomainStorageProviderDefinition);
+      return RdbmsProviderObjectMother.CreateForIntegrationTest(StorageSettings, TestDomainStorageProviderDefinition, _createSaveCommandFactoryBehaviour);
     }
   }
 }

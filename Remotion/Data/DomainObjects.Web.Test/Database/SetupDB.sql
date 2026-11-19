@@ -1,4 +1,4 @@
-USE RpaTest
+﻿USE RpaTest
 GO
 
 -- Drop all structured types that will be created below

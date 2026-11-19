@@ -16,6 +16,8 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Reflection;
+using System.Threading;
 using System.Web.UI.WebControls;
 using Remotion.Reflection;
 using Remotion.Utilities;
@@ -308,6 +310,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool? _readOnly;
     private bool? _autoPostBack;
     private bool? _checkClientSideMaxLength;
+    private bool? _checkMaxLengthOnPaste;
 
     public virtual void ApplyStyle (TextBox textBox)
     {
@@ -340,6 +343,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         this._readOnly = ts._readOnly;
         this._autoPostBack = ts._autoPostBack;
         this._checkClientSideMaxLength = ts._checkClientSideMaxLength;
+        this._checkMaxLengthOnPaste = ts._checkMaxLengthOnPaste;
       }
     }
 
@@ -401,7 +405,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     [Description(
-        "Whether the text in the control can exceed its max length during input. If true, MaxLength is only used for validation after the input is completed."
+        "Whether the text in the control can exceed its max length during input. If false, MaxLength is only used for validation after the input is completed."
         )]
     [Category("Behavior")]
     [DefaultValue(typeof(bool?), "")]
@@ -410,6 +414,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _checkClientSideMaxLength; }
       set { _checkClientSideMaxLength = value; }
+    }
+
+    [Description(
+        "Whether the text in the control can exceed its max length after a paste operation. If false or CheckClientSideMaxLength is false, the MaxLength is only used for validation after the input is completed."
+        )]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
+    public bool? CheckMaxLengthOnPaste
+    {
+      get { return _checkMaxLengthOnPaste; }
+      set { _checkMaxLengthOnPaste = value; }
     }
 
     public int? GetMaxLength ()
@@ -432,7 +448,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   public class TextBoxStyle : SingleRowTextBoxStyle
   {
-    private static readonly string s_scriptFileKey = typeof(TextBoxStyle).GetFullNameChecked() + "_Script";
+    private static readonly Lazy<bool> s_targetsAtLeastFramework472 = new(
+        () =>
+        {
+          var type = Assertion.IsNotNull(typeof(TextBox).Assembly.GetType("System.Web.Util.BinaryCompatibility"), "System.Web.Util.BinaryCompatibility");
+          var current = Assertion.IsNotNull(type.InvokeMember("Current", BindingFlags.Static | BindingFlags.Public | BindingFlags.GetField, null, null, null), "BinaryCompatibility.Current");
+          return (bool?)type.InvokeMember("TargetsAtLeastFramework472", BindingFlags.GetProperty, null, current, null) == true;
+        },
+        LazyThreadSafetyMode.ExecutionAndPublication);
 
     private int? _rows;
     private PlainTextString _placeholder;
@@ -469,12 +492,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!string.IsNullOrEmpty(_autoComplete))
         textBox.Attributes.Add("autocomplete", _autoComplete);
 
-      var maxLength = GetMaxLength();
-
-      if (_textMode == BocTextBoxMode.MultiLine
-          && maxLength != null
-          && CheckClientSideMaxLength != false)
-        textBox.Attributes.Add("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + maxLength.Value + ");");
+      if (_textMode == BocTextBoxMode.MultiLine && textBox.MaxLength > 0 && s_targetsAtLeastFramework472.Value == false)
+      {
+        // ASP.NET WebForms only renders maxlength attribute when the TargetFramework-check evaluates >= 4.7.2.
+        // This check is not enabled in unit tests
+        textBox.Attributes.Add("maxlength", textBox.MaxLength.ToString());
+      }
 
       textBox.TextMode = GetSystemWebTextMode();
     }

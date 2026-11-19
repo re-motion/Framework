@@ -18,6 +18,7 @@ using System;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.Mapping
@@ -37,12 +38,13 @@ namespace Remotion.Data.DomainObjects.Mapping
       _storageSettings = storageSettings;
     }
 
-    public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
+    public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition, IPersistenceModelSortingProvider persistenceModelSortingProvider)
     {
       ArgumentNullException.ThrowIfNull(classDefinition);
+      ArgumentNullException.ThrowIfNull(persistenceModelSortingProvider);
 
       var persistenceModelLoader = GetProviderSpecificPersistenceModelLoader(classDefinition);
-      persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
+      persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition, persistenceModelSortingProvider);
     }
 
     public IPersistenceMappingValidator CreatePersistenceMappingValidator (ClassDefinition classDefinition)

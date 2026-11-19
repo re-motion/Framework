@@ -30,8 +30,20 @@ namespace Remotion.Reflection
 
     public static string GetFullNameChecked (this Type type)
     {
+      var fullName = type.FullName;
+      if (fullName == null && type.IsConstructedGenericType)
+      {
+        // Constructed generic types like `List<int>` have a full name so the only way get here
+        // is through an open constructed type like `List<T>`, which does not have a full name.
+        // Using `.ToString()` here will get us `System.Collection.Generics.List`1[T]`,
+        // which is not a valid full name but contains the generic information (the `T`), which
+        // would be missing if we used only valid full names.
+        // Using an invalid full name here is okay as the method is used for debugging/logging.
+        return type.ToString();
+      }
+
       // ReSharper disable once ConstantNullCoalescingCondition
-      return type.FullName ?? throw new InvalidOperationException(string.Format("Type '{0}' does not have a full name.", type.Name));
+      return fullName ?? throw new InvalidOperationException(string.Format("Type '{0}' does not have a full name.", type.Name));
     }
 
     public static string GetNamespaceSafe (this Type type)

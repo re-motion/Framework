@@ -63,6 +63,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [TearDown]
     public virtual void TearDown ()
     {
+      DisposeTransactionScope();
+    }
+
+    protected void DisposeTransactionScope ()
+    {
       _transactionScope.Dispose();
     }
 

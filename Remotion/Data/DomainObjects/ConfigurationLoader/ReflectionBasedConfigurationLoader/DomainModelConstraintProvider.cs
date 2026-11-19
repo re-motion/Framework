@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 
@@ -46,6 +47,22 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
       var attribute = propertyInfo.GetCustomAttribute<ILengthConstrainedPropertyAttribute>(true);
       return attribute != null ? attribute.MaximumLength : null;
+    }
+
+    public bool IsForeignKeyConstraintSuppressed (IPropertyInformation propertyInfo)
+    {
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+
+      var suppressForeignKeyConstraint = propertyInfo.GetCustomAttribute<ISuppressForeignKeyConstraintAttribute>(true);
+      return suppressForeignKeyConstraint?.IsForeignKeyConstraintSuppressed == true;
+    }
+
+    public ForeignKeyCycleBreakHint GetForeignKeyCycleBreakHint (IPropertyInformation propertyInfo)
+    {
+      ArgumentNullException.ThrowIfNull(propertyInfo);
+
+      var cycleBreakHintAttribute = propertyInfo.GetCustomAttribute<IForeignKeyCycleBreakHintAttribute>(true);
+      return cycleBreakHintAttribute?.CycleBreakHint ?? ForeignKeyCycleBreakHint.Automatic;
     }
   }
 }

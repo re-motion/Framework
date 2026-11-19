@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
           }
           catch (RdbmsProviderException e)
           {
-            throw new RdbmsProviderException(string.Format("Error while saving object '{0}'. {1}", tuple.Item1, e.Message), e);
+            throw new RdbmsProviderException(string.Format("Error while saving object '{0}'. {1}", tuple.Item1, e.Message), e, EnumerableUtility.Singleton(tuple.Item1));
           }
 
           if (recordsAffected != 1)

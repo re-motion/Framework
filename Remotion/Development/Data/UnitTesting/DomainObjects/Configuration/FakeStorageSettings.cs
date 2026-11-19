@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2017;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -49,7 +50,8 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Configuration
           : new SqlStorageObjectFactory(
               deferredStorageSettings,
               SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-              SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+              SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+              SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>());
 
       Assertion.IsNotNull(sqlStorageObjectFactory, "sqlStorageObjectFactoryFactory(...) was evaluated and returned null");
 

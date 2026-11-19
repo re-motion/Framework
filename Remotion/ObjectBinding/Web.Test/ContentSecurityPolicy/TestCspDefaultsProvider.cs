@@ -22,10 +22,10 @@ public class TestCspDefaultsProvider : ICspDefaultsProvider
 
   public CspHeader GetDefaultCspHeaderForPage (IPage page)
   {
-    return CspDefaultsProvider.DefaultCspHeader.AddDirectiveValue(CspDirectives.ScriptSrc, "'nonce-testsite'");
+    return CspDefaultsProvider.DefaultCspHeader.AddDirectiveValue(CspDirective.ScriptSrc, "'nonce-testsite'");
   }
   public CspHeader GetDefaultCspReportOnlyHeaderForPage (IPage page)
   {
-    return CspDefaultsProvider.DefaultCspHeader.AddDirectiveValue(CspDirectives.ScriptSrc, "'nonce-testsite'");
+    return CspDefaultsProvider.DefaultCspHeader.AddDirectiveValue(CspDirective.ScriptSrc, "'nonce-testsite'");
   }
 }

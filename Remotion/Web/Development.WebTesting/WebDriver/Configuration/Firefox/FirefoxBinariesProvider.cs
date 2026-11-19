@@ -45,7 +45,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
     /// <summary>
     /// First Firefox version supported by <see cref="FirefoxBinariesProvider"/>.
     /// </summary>
-    private static readonly Version s_minimumSupportedFirefoxVersion = new Version(130, 0);
+    private static readonly Version s_minimumSupportedFirefoxVersion = new Version(148, 0);
 
     [NotNull]
     public FirefoxExecutable GetInstalledExecutable ()

@@ -19,9 +19,10 @@ using System.IO;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2017;
 using Remotion.Data.DomainObjects.UnitTests.Resources;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.ServiceLocation;
@@ -38,7 +39,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       var sqlStorageObjectFactory = new SqlStorageObjectFactory(
           StorageSettings,
           SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>());
       var mappingSerializer =
           new MappingSerializer(
               d => sqlStorageObjectFactory.CreateEnumSerializer(),
@@ -56,7 +58,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
       var sqlStorageObjectFactory = new SqlStorageObjectFactory(
           StorageSettings,
           SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>());
       var mappingSerializer =
           new MappingSerializer(
               d => sqlStorageObjectFactory.CreateEnumSerializer(),

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -145,7 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
           .Returns(new[] { _fakeEntityDefinition1.Object })
           .Verifiable();
       _structuredTypeDefinitionProviderMock
-          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationSecondStorageProviderDefinition))
+          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationSecondStorageProviderDefinition, It.IsAny<IEnumerable<ClassDefinition>>()))
           .Returns(new[] { _fakeStructuredTypeDefinition1.Object })
           .Verifiable();
 
@@ -171,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
           .Returns(new[] { _fakeEntityDefinition1.Object, _fakeEntityDefinition2.Object })
           .Verifiable();
       _structuredTypeDefinitionProviderMock
-          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationFirstStorageProviderDefinition))
+          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationFirstStorageProviderDefinition, It.IsAny<IEnumerable<ClassDefinition>>()))
           .Returns(new[] { _fakeStructuredTypeDefinition1.Object, _fakeStructuredTypeDefinition2.Object})
           .Verifiable();
 
@@ -203,11 +204,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
           .Returns(new[] { _fakeEntityDefinition3.Object })
           .Verifiable();
       _structuredTypeDefinitionProviderMock
-          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationFirstStorageProviderDefinition))
+          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationFirstStorageProviderDefinition, It.IsAny<IEnumerable<ClassDefinition>>()))
           .Returns(new[] { _fakeStructuredTypeDefinition1.Object, _fakeStructuredTypeDefinition2.Object })
           .Verifiable();
       _structuredTypeDefinitionProviderMock
-          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationSecondStorageProviderDefinition))
+          .Setup(mock => mock.GetTypeDefinitions(SchemaGenerationSecondStorageProviderDefinition, It.IsAny<IEnumerable<ClassDefinition>>()))
           .Returns(new[] { _fakeStructuredTypeDefinition3.Object })
           .Verifiable();
 

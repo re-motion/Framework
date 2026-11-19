@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿﻿﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it
@@ -43,8 +43,8 @@ namespace Remotion.Web.ContentSecurityPolicy
       {
         return Type switch
         {
-            RegisteredEventType.InlineEventAttribute => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').{EventType} = function (event){{{EventValue}}};",
-            RegisteredEventType.EventListener => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]').addEventListener('{EventType}', function (event){{{EventValue}}});",
+            RegisteredEventType.InlineEventAttribute => $";(function() {{ const target = document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]'); if (target) {{ target.{EventType} = function (event){{{EventValue}}}; }} }})();",
+            RegisteredEventType.EventListener => $"document.querySelector('[data-inline-event-target=\"{eventTargetID}\"]')?.addEventListener('{EventType}', function (event){{{EventValue}}});",
             _ => throw new InvalidOperationException($"Unsupported registered event type '{Type}'.")
         };
       }
@@ -160,7 +160,7 @@ namespace Remotion.Web.ContentSecurityPolicy
 
     private readonly List<RegisteredEvent> _registeredEvents = new();
     private readonly INonceGenerator _nonceGenerator;
-    private readonly ISmartPage _page;
+    private readonly ICspClientScriptManager _scriptManager;
     private readonly string _requestNonce;
     private readonly IRenderingFeatures _renderingFeatures;
     private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
@@ -174,25 +174,52 @@ namespace Remotion.Web.ContentSecurityPolicy
         string requestNonce,
         IRenderingFeatures renderingFeatures,
         IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        : this(new SmartPageCspClientScriptManagerAdapter(page), writer, nonceGenerator, requestNonce, renderingFeatures, fallbackNavigationUrlProvider)
+    {
+    }
+
+    public CspEnabledHtmlTextWriter (
+        ICspClientScriptManager scriptManager,
+        TextWriter writer,
+        INonceGenerator nonceGenerator,
+        string requestNonce,
+        IRenderingFeatures renderingFeatures,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(writer)
     {
-      ArgumentNullException.ThrowIfNull(page);
+      ArgumentNullException.ThrowIfNull(scriptManager);
       ArgumentNullException.ThrowIfNull(writer);
       ArgumentNullException.ThrowIfNull(nonceGenerator);
       ArgumentException.ThrowIfNullOrEmpty(requestNonce);
       ArgumentNullException.ThrowIfNull(renderingFeatures);
 
-      _page = page;
+      _scriptManager = scriptManager;
       _nonceGenerator = nonceGenerator;
       _requestNonce = requestNonce;
       _renderingFeatures = renderingFeatures;
       _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
+    /// <summary>
+    /// Clones the <see cref="CspEnabledHtmlTextWriter"/>, using the specified <paramref name="textWriter"/> as new output.
+    /// </summary>
+    public CspEnabledHtmlTextWriter CloneWithTextWriter (TextWriter textWriter)
+    {
+      ArgumentNullException.ThrowIfNull(textWriter);
+
+      return new CspEnabledHtmlTextWriter(
+          _scriptManager,
+          textWriter,
+          _nonceGenerator,
+          _requestNonce,
+          _renderingFeatures,
+          _fallbackNavigationUrlProvider);
+    }
+
     protected override HtmlTextWriter CreateUpdatePanelHtmlTextWriter (TextWriter textWriter)
     {
       return new CspEnabledHtmlTextWriter(
-          _page,
+          _scriptManager,
           textWriter,
           _nonceGenerator,
           _requestNonce,
@@ -215,7 +242,7 @@ namespace Remotion.Web.ContentSecurityPolicy
         foreach (var registeredEvent in _registeredEvents)
         {
           var script = registeredEvent.GetScript(eventTargetID);
-          _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), $"{eventTargetID}-{registeredEvent.Key}", script);
+          _scriptManager.RegisterScript($"{eventTargetID}-{registeredEvent.Key}", script);
           if (_renderingFeatures.EnableDiagnosticMetadata)
             base.AddAttribute("data-event-content-" + registeredEvent.Key, registeredEvent.OriginalValue);
         }
@@ -290,6 +317,8 @@ namespace Remotion.Web.ContentSecurityPolicy
       {
         if (registeredEvent.Key == "href")
           base.WriteAttribute("href", _fallbackNavigationUrlProvider.GetURL());
+        else
+          WriteAttribute($"data-csp-replaced-{registeredEvent.Key}", string.Empty);
 
         var eventTargetID = _lastInlineEventTargetId;
         if (eventTargetID == null)
@@ -300,7 +329,7 @@ namespace Remotion.Web.ContentSecurityPolicy
         }
 
         var script = registeredEvent.GetScript(eventTargetID);
-        _page.ClientScript.RegisterStartupScriptBlock(_page, typeof(CspEnabledHtmlTextWriter), $"{eventTargetID}-{registeredEvent.Key}", script);
+        _scriptManager.RegisterScript($"{eventTargetID}-{registeredEvent.Key}", script);
         if (_renderingFeatures.EnableDiagnosticMetadata)
           base.WriteAttribute("data-event-content-" + registeredEvent.Key, registeredEvent.OriginalValue);
       }
@@ -316,6 +345,8 @@ namespace Remotion.Web.ContentSecurityPolicy
       {
         if (registeredEvent.Key == "href")
           base.AddAttribute("href", _fallbackNavigationUrlProvider.GetURL());
+        else
+          base.AddAttribute($"data-csp-replaced-{registeredEvent.Key}", string.Empty);
 
         if (_registeredEvents.Exists(e => registeredEvent.Key.Equals(e.Key)))
           throw new ArgumentException($"Event handler '{registeredEvent.Key}' cannot be registered more than once.");

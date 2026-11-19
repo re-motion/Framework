@@ -59,13 +59,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
           where cd.StorageEntityDefinition.StorageProviderDefinition is RdbmsProviderDefinition
           group cd by cd.StorageEntityDefinition.StorageProviderDefinition
           into g
-            select new { StorageProviderDefinition = (RdbmsProviderDefinition)g.Key, ClassDefinitions = g };
+            select new { StorageProviderDefinition = (RdbmsProviderDefinition)g.Key, ClassDefinitions = g.ToArray() };
 
       foreach (var group in classDefinitionsByStorageProvider)
       {
         var scriptBuilder = _scriptBuilderFactory(group.StorageProviderDefinition);
 
-        var types = _structuredTypeDefinitionProvider.GetTypeDefinitions(group.StorageProviderDefinition);
+        var types = _structuredTypeDefinitionProvider.GetTypeDefinitions(group.StorageProviderDefinition, group.ClassDefinitions);
         foreach (var typeDefinition in types)
           scriptBuilder.AddStructuredTypeDefinition(typeDefinition);
 

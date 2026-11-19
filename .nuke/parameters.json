@@ -7,5 +7,5 @@
   "DependDBProjectImportNotificationMailAddressCc": "",
   "DependDBTrackedReferences": "Remotion;Remotion.*",
   "DependDBNugetConfig": "~/nuget.config",
-  "DependDBTargetFramework": "net8.0-windows"
+  "DependDBTargetFramework": "net10.0-windows"
 }

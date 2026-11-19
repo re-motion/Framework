@@ -16,10 +16,12 @@
 // 
 using System;
 using System.ComponentModel.Design;
+using Microsoft.Extensions.Logging;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -30,7 +32,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 {
   public class StandardConfiguration
   {
-    public const string ConnectionString = "Integrated Security=SSPI;Initial Catalog=PerformanceTestDomain;Data Source=localhost";
+    public const string ConnectionString = "Integrated Security=SSPI;Initial Catalog=PerformanceTestDomain;Data Source=localhost;TrustServerCertificate=true;";
 
     public static void Initialize ()
     {
@@ -55,7 +57,9 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
               SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
               SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
               SafeServiceLocator.Current.GetInstance<IDomainObjectCreator>()),
-         SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>());
+         SafeServiceLocator.Current.GetInstance<IPersistenceModelLoader>(),
+         SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>(),
+         SafeServiceLocator.Current.GetInstance<ILoggerFactory>());
       MappingConfiguration.SetCurrent(mappingConfiguration);
     }
   }

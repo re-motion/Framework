@@ -56,7 +56,7 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
     protected override void AddAttribute (string name, string? value, HtmlTextWriterAttribute key)
     {
       base.AddAttribute(name, value, key);
-      _attributes[key] = value;
+      _attributes[name] = value;
     }
 
     public override void RenderBeginTag (HtmlTextWriterTag tagKey)

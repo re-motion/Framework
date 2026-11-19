@@ -17,6 +17,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -48,7 +49,8 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
       _securityManagerSqlStorageObjectFactory = new SecurityManagerSqlStorageObjectFactory(
           Mock.Of<IStorageSettings>(MockBehavior.Strict),
           Mock.Of<ITypeConversionProvider>(MockBehavior.Strict),
-          Mock.Of<IDataContainerValidator>(MockBehavior.Strict));
+          Mock.Of<IDataContainerValidator>(MockBehavior.Strict),
+          Mock.Of<IDomainModelConstraintProvider>());
       _persistenceExtensionStub = new Mock<IPersistenceExtension>();
     }
 

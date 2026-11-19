@@ -21,6 +21,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 
@@ -53,19 +54,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
           .Setup(stub => stub.GetStorageProviderDefinition(It.IsAny<ClassDefinition>()))
           .Returns(nonPersistentStorageProviderDefinition);
 
+      var persistenceModelSortingProviderMock = Mock.Of<IPersistenceModelSortingProvider>();
+
       foreach (ClassDefinition classDefinition in inheritanceRootClasses)
       {
         if (typeof(OrderViewModel).IsAssignableFrom(classDefinition.ClassType))
         {
           var persistenceModelLoader = nonPersistentStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
               nonPersistentStorageProviderDefinition);
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
+          persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition, persistenceModelSortingProviderMock);
         }
         else
         {
           var persistenceModelLoader = defaultStorageProviderDefinition.Factory.CreatePersistenceModelLoader(
               defaultStorageProviderDefinition);
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition);
+          persistenceModelLoader.ApplyPersistenceModelToHierarchy(classDefinition, persistenceModelSortingProviderMock);
         }
       }
 

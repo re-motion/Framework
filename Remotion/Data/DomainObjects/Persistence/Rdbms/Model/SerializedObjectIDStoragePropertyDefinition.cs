@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
@@ -108,7 +109,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     public ForeignKeyConstraintDefinition CreateForeignKeyConstraint (
         Func<IEnumerable<ColumnDefinition>, string> nameProvider,
         EntityNameDefinition referencedTableName,
-        ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
+        ObjectIDStoragePropertyDefinition referencedObjectIDProperty,
+        ForeignKeyCycleBreakHint foreignKeyCycleBreakHint)
     {
       ArgumentNullException.ThrowIfNull(nameProvider);
       ArgumentNullException.ThrowIfNull(referencedTableName);

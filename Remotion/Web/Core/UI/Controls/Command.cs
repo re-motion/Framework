@@ -445,6 +445,22 @@ namespace Remotion.Web.UI.Controls
 
       style.AddAttributesToRender(writer);
 
+      // We also check for commandInfo.OnClick as to ensure that we are actually rendering a clickable command.
+      // If we have a disabled command, we would get commandInfo.onClick == null.
+      // We accept that a disabled command isn't identified as a button to the screen reader for the time being.
+      // This might be a future refactoring / improvement.
+      if ((_type is CommandType.Event or CommandType.WxeFunction) && commandInfo.OnClick != null)
+      {
+        // Ensure that we don't override the role as that would lead to a duplicate role attribute
+        if (attributes.Get(HtmlTextWriterAttribute2.Role) == null)
+          writer.AddAttribute(HtmlTextWriterAttribute2.Role, "button");
+
+        // Same for the onkeyup event. The caller is responsible for re-implementing the spacebar click handling.
+        // Ideally, we would use a button as tag, which comes with that behavior built-in so we don't have to set the attribute here.
+        if (attributes.Get(HtmlTextWriterAttribute2.OnKeyUp) == null)
+          writer.AddAttribute(HtmlTextWriterAttribute2.OnKeyUp, "if (event.keyCode === 32) { event.target.click(); }");
+      }
+
       for (int i = 0; i < attributes.Count; i++)
       {
         var attributeName = attributes.Keys[i]!; // TODO RM-8118: not null assertion

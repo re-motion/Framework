@@ -566,10 +566,122 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(result, Is.Null);
     }
 
+    [Test]
+    public void TryResolveSetOperationReconciliationContext_AllProjectionsAreEntitiesWithMatchingColumn_ReturnsTrueAndMergesColumnsByName ()
+    {
+      var entity1 = CreateFakeEntityExpression(typeof(Order));
+      var entity2 = CreateFakeEntityExpression(typeof(Order));
+
+      var result = _resolver.TryResolveSetOperationReconciliationContext(new Expression[] { entity1, entity2 }, out var reconciliationContext);
+
+      Assert.That(result, Is.True);
+      Assert.That(reconciliationContext, Is.Not.Null);
+
+      Assert.That(reconciliationContext.IsReconciliationRequired(entity1), Is.True);
+      Assert.That(
+          reconciliationContext.GetReconciledColumns(entity1),
+          Is.EqualTo(entity1.Columns));
+
+      Assert.That(reconciliationContext.IsReconciliationRequired(entity2), Is.True);
+      Assert.That(
+          reconciliationContext.GetReconciledColumns(entity2),
+          Is.EqualTo(entity2.Columns));
+    }
+
+    [Test]
+    public void TryResolveSetOperationReconciliationContext_ProjectionWrappedInConvertExpression_UnwrapsEntityAndSucceeds ()
+    {
+      var entity = CreateFakeEntityExpression(typeof(Order));
+      var wrappedEntity = Expression.Convert(Expression.Convert(entity, typeof(object)), typeof(object));
+      var otherEntity = CreateFakeEntityExpression(typeof(Order));
+
+      var result = _resolver.TryResolveSetOperationReconciliationContext(new Expression[] { wrappedEntity, otherEntity }, out var reconciliationContext);
+
+      Assert.That(result, Is.True);
+      Assert.That(reconciliationContext, Is.Not.Null);
+      Assert.That(reconciliationContext.IsReconciliationRequired(entity), Is.True);
+    }
+
+    [Test]
+    public void TryResolveSetOperationReconciliationContext_ProjectionIsNotAnEntity_ReturnsFalse ()
+    {
+      var entity = CreateFakeEntityExpression(typeof(Order));
+      var nonEntityProjection = Expression.Constant(5);
+
+      var result = _resolver.TryResolveSetOperationReconciliationContext(new Expression[] { entity, nonEntityProjection }, out var reconciliationContext);
+
+      Assert.That(result, Is.False);
+      Assert.That(reconciliationContext, Is.Null);
+    }
+
+    [Test]
+    public void TryResolveSetOperationReconciliationContext_CommonMappedBaseTypeInInheritanceHierarchy_MergesSharedColumnsAndKeepsAdditionalColumns ()
+    {
+      var customerEntity = CreateFakeEntityExpression(typeof(Customer), "c", "ID", "Name", "CustomerType");
+      var companyEntity = CreateFakeEntityExpression(typeof(Company), "co", "ID", "Name", "CompanyType");
+
+      var result = _resolver.TryResolveSetOperationReconciliationContext(new Expression[] { customerEntity, companyEntity }, out var reconciliationContext);
+
+      Assert.That(result, Is.True);
+      Assert.That(reconciliationContext, Is.Not.Null);
+
+      Assert.That(reconciliationContext.IsReconciliationRequired(customerEntity), Is.True);
+      var customerReconciledColumns = reconciliationContext.GetReconciledColumns(customerEntity);
+      Assert.That(customerReconciledColumns.Length, Is.EqualTo(4));
+      Assert.That(customerReconciledColumns[0], Is.EqualTo(customerEntity.Columns[0]));
+      Assert.That(customerReconciledColumns[1], Is.EqualTo(customerEntity.Columns[1]));
+      Assert.That(customerReconciledColumns[2], Is.EqualTo(customerEntity.Columns[2]));
+      AssertNullColumn(customerReconciledColumns[3], "CompanyType");
+
+      Assert.That(reconciliationContext.IsReconciliationRequired(companyEntity), Is.True);
+      var companyReconciledColumns = reconciliationContext.GetReconciledColumns(companyEntity);
+      Assert.That(companyReconciledColumns.Length, Is.EqualTo(4));
+      Assert.That(companyReconciledColumns[0], Is.EqualTo(companyEntity.Columns[0]));
+      Assert.That(companyReconciledColumns[1], Is.EqualTo(companyEntity.Columns[1]));
+      AssertNullColumn(companyReconciledColumns[2], "CustomerType");
+      Assert.That(companyReconciledColumns[3], Is.EqualTo(companyEntity.Columns[2]));
+
+      static void AssertNullColumn (SqlColumnExpression column, string columnName)
+      {
+        Assert.That(column, Is.TypeOf<SqlComputedColumnExpression>());
+        Assert.That(column.ColumnName, Is.EqualTo(columnName));
+
+        var computedColumnExpression = (SqlComputedColumnExpression)column;
+        Assert.That(computedColumnExpression.Value, Is.TypeOf<ConstantExpression>());
+        Assert.That(
+            ((ConstantExpression)computedColumnExpression.Value).Value,
+            Is.Null);
+      }
+    }
+
+    [Test]
+    public void TryResolveSetOperationReconciliationContext_SingleProjection_ReturnsTrue ()
+    {
+      var entity = CreateFakeEntityExpression(typeof(Order));
+
+      var result = _resolver.TryResolveSetOperationReconciliationContext(new Expression[] { entity }, out var reconciliationContext);
+
+      Assert.That(result, Is.True);
+      Assert.That(reconciliationContext, Is.Not.Null);
+      Assert.That(reconciliationContext.IsReconciliationRequired(entity), Is.True);
+      Assert.That(
+          reconciliationContext.GetReconciledColumns(entity),
+          Is.EqualTo(entity.Columns));
+    }
+
     private SqlEntityDefinitionExpression CreateFakeEntityExpression (Type classType)
     {
       var starColumn = new SqlColumnDefinitionExpression(classType, "o", "*", false);
       return new SqlEntityDefinitionExpression(classType, "o", null, e => e.GetColumn(typeof(ObjectID), "ID", true), starColumn);
+    }
+
+    private SqlEntityDefinitionExpression CreateFakeEntityExpression (Type classType, string tableAlias, params string[] columnNames)
+    {
+      var columns = new SqlColumnExpression[columnNames.Length];
+      for (var i = 0; i < columnNames.Length; i++)
+        columns[i] = new SqlColumnDefinitionExpression(typeof(int), tableAlias, columnNames[i], false);
+
+      return new SqlEntityDefinitionExpression(classType, tableAlias, null, e => e.GetColumn(typeof(ObjectID), "ID", true), columns);
     }
 
     private PropertyDefinition GetPropertyDefinition (PropertyInfo property)

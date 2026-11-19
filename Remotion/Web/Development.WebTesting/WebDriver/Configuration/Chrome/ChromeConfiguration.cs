@@ -127,8 +127,8 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
                               UserDirectory = userDirectory
                           };
 
+      chromeOptions.SetLoggingPreference(LogType.Browser, LogLevel.All);
       DisableSpecCompliance(chromeOptions);
-
       chromeOptions.AddArgument($"user-data-dir={userDirectory}");
 
       chromeOptions.AddArgument("no-first-run");

@@ -49,7 +49,7 @@ public class RecordPropertyDefinition
 
   private readonly Func<object, object?> _getValue;
 
-  protected RecordPropertyDefinition (string propertyName, IRdbmsStoragePropertyDefinition storagePropertyDefinition, Func<object, object?> getValue)
+  public RecordPropertyDefinition (string propertyName, IRdbmsStoragePropertyDefinition storagePropertyDefinition, Func<object, object?> getValue)
   {
     ArgumentException.ThrowIfNullOrEmpty(propertyName);
     ArgumentNullException.ThrowIfNull(storagePropertyDefinition);

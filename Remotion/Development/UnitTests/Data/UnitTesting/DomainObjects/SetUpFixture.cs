@@ -16,16 +16,19 @@
 // 
 using System;
 using System.ComponentModel.Design;
+using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Development.Data.UnitTesting.DomainObjects.Configuration;
 using Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects.TestDomain;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
 {
@@ -43,7 +46,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
         var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
         var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
         ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
-
+        var sortingOptimizationNodeFactory = SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>();
         MappingConfiguration.SetCurrent(
             MappingConfiguration.Create(
                 MappingReflector.Create(
@@ -55,7 +58,9 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
                     new PropertyDefaultValueProvider(),
                     new SortExpressionDefinitionProvider(),
                     new ThrowingDomainObjectCreator()),
-                new PersistenceModelLoader(storageSettings)));
+                new PersistenceModelLoader(storageSettings),
+                sortingOptimizationNodeFactory,
+                SafeServiceLocator.Current.GetInstance<ILoggerFactory>()));
       }
       catch (Exception e)
       {

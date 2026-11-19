@@ -141,4 +141,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.InvalidCharactersForMultiLineErrorMessage" xml:space="preserve">
     <value>Der Wert enthält nicht unterstützte Zeichen: "{0}" (Zeilennummer: {2}, Zeilenposition: {1}).</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocTextValue.TextOverflowOnPasteValidationMessage" xml:space="preserve">
+    <value>Der eingefügte Text wurde auf die maximale Länge von {0} Zeichen gekürzt.</value>
+  </data>
 </root>

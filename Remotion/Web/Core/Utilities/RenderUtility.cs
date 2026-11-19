@@ -16,10 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using Remotion.Web.ContentSecurityPolicy;
 
 namespace Remotion.Web.Utilities
 {
@@ -36,6 +38,20 @@ namespace Remotion.Web.Utilities
       ArgumentNullException.ThrowIfNull(lines);
 
       return string.Join("<br />", lines.Select(HttpUtility.HtmlEncode));
+    }
+
+    /// <summary>
+    /// Clones the <paramref name="htmlTextWriter"/>, using the specified <paramref name="textWriter"/> as new output.
+    /// Respects CSP support and will thus clone <see cref="CspEnabledHtmlTextWriter"/> correctly.
+    /// </summary>
+    public static HtmlTextWriter CloneWithTextWriter (this HtmlTextWriter htmlTextWriter, TextWriter textWriter)
+    {
+      ArgumentNullException.ThrowIfNull(htmlTextWriter);
+      ArgumentNullException.ThrowIfNull(textWriter);
+
+      return htmlTextWriter is CspEnabledHtmlTextWriter cspEnabledHtmlTextWriter
+          ? cspEnabledHtmlTextWriter.CloneWithTextWriter(textWriter)
+          : new HtmlTextWriter(textWriter);
     }
 
     /// <summary>

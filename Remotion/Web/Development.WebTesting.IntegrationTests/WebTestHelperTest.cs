@@ -60,18 +60,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private Mock<ITestContext> _testContext;
     private Dictionary<string,object> _testContextProperties;
 
-    [OneTimeSetUp]
-    public void OneTimeSetUp ()
-    {
-      var webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
-      //TODO: RM-9595 fix and reenable WebTestHelperTests for firefox
-      //WebTestHelperTests currently cause firefox with Bidi active to hang
-      if (webTestHelper.BrowserConfiguration.IsFirefox())
-      {
-        Assert.Ignore();
-      }
-    }
-
     [SetUp]
     public void SetUp ()
     {
@@ -116,6 +104,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       webTestHelper.OnSetUp(_testContext.Object);
       browserLogEntries = webTestHelper.MainBrowserSession.GetBrowserLogs();
       Assert.That(browserLogEntries, Is.Empty);
+
+      ShutdownWebTestHelper(webTestHelper, true);
     }
 
     [Test]
@@ -158,6 +148,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       testContext.Verify(
           _ => _.SetFailure(It.IsRegex($"There are unexpected browser log entries at the end of the test:{Environment.NewLine}.*\"?any error message\"?")),
           Times.Once());
+
+      webTestHelper.OnFixtureTearDown();
     }
 
     [Test]

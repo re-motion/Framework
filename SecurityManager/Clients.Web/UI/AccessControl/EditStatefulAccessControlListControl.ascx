@@ -34,7 +34,7 @@
   <tr>
     <td class="stateCombinationsContainer">
       <asp:PlaceHolder id="StateCombinationControls" runat="server" />
-      <asp:CustomValidator ID="MissingStateCombinationsValidator" runat="server" ErrorMessage="###" OnServerValidate="MissingStateCombinationsValidator_ServerValidate" CssClass="permissionsEditorValidationMessage" />
+      <asp:CustomValidator ID="MissingStateCombinationsValidator" runat="server" ErrorMessage="###" OnServerValidate="MissingStateCombinationsValidator_ServerValidate" CssClass="permissionsEditorValidationMessage" EnableClientScript="false" />
     </td>
   </tr>
   <tr>

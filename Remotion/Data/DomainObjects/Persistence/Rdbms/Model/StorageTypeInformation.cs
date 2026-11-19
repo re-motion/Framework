@@ -42,6 +42,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     private readonly int? _storageTypeLength;
     private readonly Type _dotNetType;
     private readonly TypeConverter _dotNetTypeConverter;
+    private readonly byte? _precision;
+    private readonly byte? _scale;
 
     public StorageTypeInformation (
         Type storageType,
@@ -50,12 +52,17 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         bool isStorageTypeNullable,
         int? storageTypeLength,
         Type dotNetType,
-        TypeConverter dotNetTypeConverter)
+        TypeConverter dotNetTypeConverter,
+        byte? precision = null,
+        byte? scale = null)
     {
       ArgumentException.ThrowIfNullOrEmpty(storageTypeName);
       ArgumentNullException.ThrowIfNull(storageType);
       ArgumentNullException.ThrowIfNull(dotNetType);
       ArgumentNullException.ThrowIfNull(dotNetTypeConverter);
+
+      if (storageDbType == DbType.Decimal && (!precision.HasValue || !scale.HasValue))
+        throw new ArgumentException("When creating a StorageTypeInformation with DB type 'Decimal', a precision and a scale must be set.");
 
       _storageType = storageType;
       _storageTypeName = storageTypeName;
@@ -64,6 +71,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       _storageTypeLength = storageTypeLength;
       _dotNetType = dotNetType;
       _dotNetTypeConverter = dotNetTypeConverter;
+      _precision = precision;
+      _scale = scale;
     }
 
     /// <inheritdoc />
@@ -100,6 +109,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     public Type DotNetType
     {
       get { return _dotNetType; }
+    }
+
+    /// <inheritdoc />
+    public byte? Precision
+    {
+      get { return _precision; }
+    }
+
+    /// <inheritdoc />
+    public byte? Scale
+    {
+      get { return _scale; }
     }
 
     /// <summary>
@@ -163,7 +184,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
                       info => Tuple.Create<string, object?>("storage DbType", info.StorageDbType),
                       info => Tuple.Create<string, object?>("storage type length", info.StorageTypeLength),
                       info => Tuple.Create<string, object?>(".NET type", info.DotNetType),
-                      info => Tuple.Create<string, object?>(".NET type converter type", info.DotNetTypeConverter.GetType())))
+                      info => Tuple.Create<string, object?>(".NET type converter type", info.DotNetTypeConverter.GetType()),
+                      info => Tuple.Create<string, object?>("precision", info.Precision),
+                      info => Tuple.Create<string, object?>("scale", info.Scale)))
               .ToArray();
 
       return new StorageTypeInformation(
@@ -173,7 +196,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
           _isStorageTypeNullable || castStorageTypes.Any(x => x._isStorageTypeNullable),
           _storageTypeLength,
           _dotNetType,
-          _dotNetTypeConverter);
+          _dotNetTypeConverter,
+          _precision,
+          _scale);
     }
   }
 }

@@ -46,6 +46,7 @@
     <PackageReference Include="Remotion.Linq.Development" />
     <PackageReference Include="Remotion.Linq.SqlBackend.Development" />
     <PackageReference Include="Remotion.TypePipe.Development" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.Testing" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

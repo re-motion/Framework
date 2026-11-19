@@ -150,6 +150,8 @@ public class TableTypeDefinitionTest
         var storageTypeInfo = new Mock<IStorageTypeInformation>();
         storageTypeInfo.Setup(_ => _.StorageDbType).Returns(column.DbType);
         storageTypeInfo.Setup(_ => _.StorageTypeLength).Returns(column.Length);
+        storageTypeInfo.Setup(_ => _.Precision).Returns(38);
+        storageTypeInfo.Setup(_ => _.Scale).Returns(3);
 
         var columnDefinition = new ColumnDefinition(column.Name, storageTypeInfo.Object, false);
         columnDefinitions.Add(columnDefinition);
@@ -183,7 +185,7 @@ public class TableTypeDefinitionTest
   }
 
   [Test]
-  public void CreateTableValuedParameterValue_Decimal ()
+  public void CreateTableValuedParameterValue_DecimalWithExplicitPrecisionScale ()
   {
     var storagePropertyDefinitions = new List<IRdbmsStoragePropertyDefinition>();
     var columnDefinitions = new List<ColumnDefinition>();
@@ -191,6 +193,46 @@ public class TableTypeDefinitionTest
     var storageTypeInfo = new Mock<IStorageTypeInformation>();
     storageTypeInfo.Setup(_ => _.StorageDbType).Returns(DbType.Decimal);
     storageTypeInfo.Setup(_ => _.StorageTypeLength).Returns(default(int?));
+    storageTypeInfo.Setup(_ => _.Precision).Returns(28);
+    storageTypeInfo.Setup(_ => _.Scale).Returns(7);
+
+    var columnDefinition = new ColumnDefinition("DecimalValue", storageTypeInfo.Object, false);
+    columnDefinitions.Add(columnDefinition);
+
+    var storagePropertyDefinition = new Mock<IRdbmsStoragePropertyDefinition>();
+    storagePropertyDefinition.Setup(_ => _.GetColumns()).Returns(columnDefinitions);
+    storagePropertyDefinitions.Add(storagePropertyDefinition.Object);
+
+    var tableTypeName = new EntityNameDefinition(null, $"TestTableType");
+    var tableTypeDefinition = new TableTypeDefinition(
+        tableTypeName,
+        storagePropertyDefinitions,
+        Array.Empty<ITableConstraintDefinition>());
+
+    var result = tableTypeDefinition.CreateTableValuedParameterValue();
+    Assert.That(result.IsEmpty, Is.True);
+    Assert.That(result.TableTypeName, Is.EqualTo("TestTableType"));
+    Assert.That(result.ColumnMetaData.Count, Is.EqualTo(1));
+
+    var sqlMetaData = result.ColumnMetaData.Single();
+
+    Assert.That(sqlMetaData.Name, Is.EqualTo("DecimalValue"));
+    Assert.That(sqlMetaData.SqlDbType, Is.EqualTo(SqlDbType.Decimal));
+    Assert.That(sqlMetaData.Precision, Is.EqualTo(28));
+    Assert.That(sqlMetaData.Scale, Is.EqualTo(7));
+  }
+
+  [Test]
+  public void CreateTableValuedParameterValue_DecimalWithFallbackPrecisionScale ()
+  {
+    var storagePropertyDefinitions = new List<IRdbmsStoragePropertyDefinition>();
+    var columnDefinitions = new List<ColumnDefinition>();
+
+    var storageTypeInfo = new Mock<IStorageTypeInformation>();
+    storageTypeInfo.Setup(_ => _.StorageDbType).Returns(DbType.Decimal);
+    storageTypeInfo.Setup(_ => _.StorageTypeLength).Returns(default(int?));
+    storageTypeInfo.Setup(_ => _.Precision).Returns(38);
+    storageTypeInfo.Setup(_ => _.Scale).Returns(3);
 
     var columnDefinition = new ColumnDefinition("DecimalValue", storageTypeInfo.Object, false);
     columnDefinitions.Add(columnDefinition);

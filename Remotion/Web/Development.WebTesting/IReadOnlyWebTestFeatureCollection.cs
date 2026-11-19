@@ -18,4 +18,10 @@ public interface IReadOnlyWebTestFeatureCollection : IEnumerable<KeyValuePair<Ty
   /// </summary>
   bool TryGet<TFeature> ([NotNullWhen(true)] out TFeature? result)
       where TFeature : class;
+
+  /// <summary>
+  /// Iterates through the collection and invokes the initialization logic for each initializable feature.
+  /// </summary>
+  /// <exception cref="AggregateException">Thrown if one or more features fail to initialize.</exception>
+  void InitializeFeatures ();
 }

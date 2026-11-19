@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer;
@@ -65,15 +66,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
       var singleScalarTableTypeDefinitionProvider = new SingleScalarSqlTableTypeDefinitionProvider(storageTypeInformationProvider);
 
+      var tableManipulationRecordDefinitionProvider = new TableManipulationRecordDefinitionProvider(
+          storageTypeInformationProvider,
+          infrastructureStoragePropertyDefinitionProvider,
+          rdbmsPersistenceModelProvider);
+
       _factory = new RdbmsProviderCommandFactory(
           TestDomainStorageProviderDefinition,
-          new SqlDbCommandBuilderFactory(singleScalarTableTypeDefinitionProvider, new SqlDialect()),
+          new SqlDbCommandBuilderFactory(singleScalarTableTypeDefinitionProvider, new SqlDialect(), storageNameProvider),
           rdbmsPersistenceModelProvider,
           new ObjectReaderFactory(
               rdbmsPersistenceModelProvider, infrastructureStoragePropertyDefinitionProvider, storageTypeInformationProvider, dataContainerValidator),
           new TableDefinitionFinder(rdbmsPersistenceModelProvider),
           dataStoragePropertyDefinitionFactory,
-          dataParameterDefinitionFactoryChain);
+          dataParameterDefinitionFactoryChain,
+          tableManipulationRecordDefinitionProvider);
 
       _objectID1 = DomainObjectIDs.Order1;
       _objectID2 = DomainObjectIDs.Order3;

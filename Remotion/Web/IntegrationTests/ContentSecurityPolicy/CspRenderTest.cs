@@ -10,6 +10,7 @@ using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.BrowserLog;
 using Remotion.Web.Development.WebTesting.IntegrationTests;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.IntegrationTests.ContentSecurityPolicy;
 
@@ -25,7 +26,7 @@ namespace Remotion.Web.IntegrationTests.ContentSecurityPolicy;
 [PerformBrowserLogCheck(false)]
 public class CspRenderTest : IntegrationTest
 {
-  private enum CspMode
+  public enum CspMode
   {
     Off,
     Enabled,
@@ -48,13 +49,22 @@ public class CspRenderTest : IntegrationTest
           .ToArray();
     }
 
+    public string[] GetDisposeOutput ()
+    {
+      var text = Context.Scope.FindId("disposeLog").Text;
+      return text.Split(';')
+          .Where(e => !string.IsNullOrWhiteSpace(e))
+          .Select(e => e.Trim())
+          .ToArray();
+    }
+
     public void TriggerAsyncPostback ()
     {
-        var syncDate = Context.Scope.FindId("syncDate").Text;
-        Context.Scope.FindId("asyncPostback").Click();
-        RetryUntilTimeout.Run(
-                Logger,
-                () => Assert.That(Context.Scope.FindId("asyncDate").Text, Is.Not.EqualTo(syncDate)));
+      var syncDate = Context.Scope.FindId("syncDate").Text;
+      Context.Scope.FindId("asyncPostback").Click();
+      RetryUntilTimeout.Run(
+          Logger,
+          () => Assert.That(Context.Scope.FindId("asyncDate").Text, Is.Not.EqualTo(syncDate)));
     }
 
     /// <summary>
@@ -63,7 +73,7 @@ public class CspRenderTest : IntegrationTest
     /// </summary>
     public void ClickTestLink ()
     {
-        Context.Scope.FindId("myTestLink").Click();
+      Context.Scope.FindId("myTestLink").Click();
     }
   }
 
@@ -80,14 +90,14 @@ public class CspRenderTest : IntegrationTest
     Assert.That(
         home.GetOutput(),
         Is.EquivalentTo(
-                new[]
-                {
-                        "INLINE EVENT HANDLER",
-                        "INLINE SCRIPT",
-                        "REGISTERED STARTUP SCRIPT",
-                        "CONTROL INLINE ATTRIBUTE",
-                        "CONTROL INLINE SCRIPT"
-                }));
+            new[]
+            {
+                "INLINE EVENT HANDLER",
+                "INLINE SCRIPT",
+                "REGISTERED STARTUP SCRIPT",
+                "CONTROL INLINE ATTRIBUTE",
+                "CONTROL INLINE SCRIPT"
+            }));
 
     AssertErrors(home, errorCount: 0, reportOnlyErrors: 0);
   }
@@ -105,12 +115,12 @@ public class CspRenderTest : IntegrationTest
     Assert.That(
         home.GetOutput(),
         Is.EquivalentTo(
-                new[]
-                {
-                        "REGISTERED STARTUP SCRIPT",
-                        "CONTROL INLINE ATTRIBUTE",
-                        "CONTROL INLINE SCRIPT"
-                }));
+            new[]
+            {
+                "REGISTERED STARTUP SCRIPT",
+                "CONTROL INLINE ATTRIBUTE",
+                "CONTROL INLINE SCRIPT"
+            }));
 
     AssertErrors(home, errorCount: 2, reportOnlyErrors: 0);
   }
@@ -128,16 +138,22 @@ public class CspRenderTest : IntegrationTest
     Assert.That(
         home.GetOutput(),
         Is.EquivalentTo(
-                new[]
-                {
-                        "INLINE EVENT HANDLER",
-                        "INLINE SCRIPT",
-                        "REGISTERED STARTUP SCRIPT",
-                        "CONTROL INLINE ATTRIBUTE",
-                        "CONTROL INLINE SCRIPT"
-                }));
+            new[]
+            {
+                "INLINE EVENT HANDLER",
+                "INLINE SCRIPT",
+                "REGISTERED STARTUP SCRIPT",
+                "CONTROL INLINE ATTRIBUTE",
+                "CONTROL INLINE SCRIPT"
+            }));
 
-    AssertErrors(home, errorCount: 2, reportOnlyErrors: 2);
+    if (Helper.BrowserConfiguration.IsChrome())
+      AssertLogs(home, logCount: 2, logLevel: LogLevel.All, matchAll: true, "Content Security Policy", "report-only");
+    else
+    {
+      AssertLogs(home, logCount: 2, logLevel: LogLevel.Severe, matchAll: false, "Content Security Policy", "Content-Security-Policy");
+      AssertLogs(home, logCount: 2, logLevel: LogLevel.Severe, matchAll: false, "[Report Only]", "(Report-Only policy)");
+    }
   }
 
   /// <summary>
@@ -157,15 +173,15 @@ public class CspRenderTest : IntegrationTest
     Assert.That(
         home.GetOutput(),
         Is.EquivalentTo(
-                new[]
-                {
-                        "INLINE EVENT HANDLER",
-                        "INLINE SCRIPT",
-                        "REGISTERED STARTUP SCRIPT",
-                        "REGISTERED STARTUP SCRIPT",
-                        "CONTROL INLINE ATTRIBUTE",
-                        "CONTROL INLINE SCRIPT"
-                }));
+            new[]
+            {
+                "INLINE EVENT HANDLER",
+                "INLINE SCRIPT",
+                "REGISTERED STARTUP SCRIPT",
+                "REGISTERED STARTUP SCRIPT",
+                "CONTROL INLINE ATTRIBUTE",
+                "CONTROL INLINE SCRIPT"
+            }));
 
     AssertErrors(home, errorCount: 0, reportOnlyErrors: 0);
   }
@@ -188,43 +204,74 @@ public class CspRenderTest : IntegrationTest
     Assert.That(
         home.GetOutput(),
         Is.EquivalentTo(
-                new[]
-                {
-                        "REGISTERED STARTUP SCRIPT",
-                        "REGISTERED STARTUP SCRIPT",
-                        "CONTROL INLINE ATTRIBUTE",
-                        "CONTROL INLINE SCRIPT"
-                }));
+            new[]
+            {
+                "REGISTERED STARTUP SCRIPT",
+                "REGISTERED STARTUP SCRIPT",
+                "CONTROL INLINE ATTRIBUTE",
+                "CONTROL INLINE SCRIPT"
+            }));
 
     AssertErrors(home, errorCount: 2, reportOnlyErrors: 0);
   }
 
-  private void AssertErrors (PageObject page, int errorCount, int reportOnlyErrors)
+  [TestCase(CspMode.Off)]
+  [TestCase(CspMode.Enabled)]
+  [Test]
+  public void DisposeScript_NoCsp_WorkCorrectly (CspMode cspMode)
   {
-      var errors = new List<string>();
-      RetryUntilTimeout.Run(
-              page.Logger,
-              () =>
-              {
-                  errors.AddRange(GetErrors(page));
-                  if (errors.Count < errorCount)
-                      throw new InvalidOperationException($"Expected {errorCount} errors but got only {errors.Count}.");
-              });
+    var home = Start(cspMode);
+
+    home.TriggerAsyncPostback();
 
     Assert.That(
-        errors.Count,
-        Is.EqualTo(errorCount));
+        home.GetDisposeOutput(),
+        Is.EquivalentTo(
+            new[]
+            {
+                "DISPOSED",
+            }));
+
+    var expectedErrors = cspMode == CspMode.Enabled
+        ? 2
+        : 0;
+    AssertErrors(home, errorCount: expectedErrors, reportOnlyErrors: 0);
+  }
+
+  private void AssertErrors (PageObject page, int errorCount, int reportOnlyErrors)
+  {
+    var errors = GetFilteredBrowserLogs(page, LogLevel.Severe, matchAll: false, "Content Security Policy", "Content-Security-Policy");
+    Assert.That(errors.Count, Is.EqualTo(errorCount));
     Assert.That(
         FilterForReportOnly(errors).Length,
         Is.EqualTo(reportOnlyErrors));
   }
 
-  private string[] GetErrors (PageObject pageObject)
+  private void AssertLogs (PageObject page, int logCount, LogLevel? logLevel, bool matchAll, [CanBeNull] params string[] filter)
+  {
+    var logs = new List<string>();
+    RetryUntilTimeout.Run(
+        page.Logger,
+        () =>
+        {
+          logs.AddRange(GetFilteredBrowserLogs(page, logLevel, matchAll, filter));
+          if (logs.Count < logCount)
+            throw new InvalidOperationException($"Expected {logCount} logs but got only {logs.Count}.");
+        });
+
+    Assert.That(
+        logs.Count,
+        Is.EqualTo(logCount));
+  }
+
+  private string[] GetFilteredBrowserLogs (PageObject pageObject, LogLevel? logLevel, bool matchAll, [CanBeNull] params string[] filter)
   {
     var browserLogs = pageObject.Context.Browser.GetBrowserLogs();
     return browserLogs
-        .Where(e => e.Level == LogLevel.Severe)
-        .Where(e => e.Message.Contains("Content Security Policy") || e.Message.Contains("Content-Security-Policy"))
+        .Where(e => logLevel is null || e.Level >= logLevel)
+        .Where(e => filter is null || (matchAll
+            ? filter.All(f => e.Message.Contains(f))
+            : filter.Any(f => e.Message.Contains(f))))
         .Select(e => e.Message)
         .ToArray();
   }

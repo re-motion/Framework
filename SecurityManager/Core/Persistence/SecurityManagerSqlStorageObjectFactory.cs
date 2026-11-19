@@ -17,10 +17,11 @@
 using System;
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2017;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Mixins;
@@ -33,8 +34,8 @@ namespace Remotion.SecurityManager.Persistence
   [ImplementationFor(typeof(SecurityManagerSqlStorageObjectFactory), Lifetime = LifetimeKind.Singleton)]
   public class SecurityManagerSqlStorageObjectFactory : SqlStorageObjectFactory
   {
-    public SecurityManagerSqlStorageObjectFactory (IStorageSettings storageSettings, ITypeConversionProvider typeConversionProvider, IDataContainerValidator dataContainerValidator)
-        : base(storageSettings, typeConversionProvider, dataContainerValidator)
+    public SecurityManagerSqlStorageObjectFactory (IStorageSettings storageSettings, ITypeConversionProvider typeConversionProvider, IDataContainerValidator dataContainerValidator, IDomainModelConstraintProvider domainModelConstraintProvider)
+        : base(storageSettings, typeConversionProvider, dataContainerValidator, domainModelConstraintProvider)
     {
     }
 

@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Specialized;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -87,16 +90,60 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       Assert.That(_testHelper.HtmlWriter.Tag, Is.Not.Null, "Missing Tag");
       Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
 
-      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], Is.Not.Null, "Missing Href");
+      Assert.That(
+          _testHelper.HtmlWriter.Attributes.Keys,
+          Is.EquivalentTo((object[])[
+              HtmlTextWriterAttribute.Href, HtmlTextWriterAttribute.Onclick, HtmlTextWriterAttribute.Title, HtmlTextWriterAttribute2.Role, HtmlTextWriterAttribute2.OnKeyUp]));
+
       Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], Is.EqualTo("fakeFallbackUrl"), "Wrong Href");
-
-      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], Is.Not.Null, "Missing OnClick");
       Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], Is.EqualTo(expectedOnClick), "Wrong OnClick");
-
-      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], Is.Not.Null, "Missing Title");
       Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], Is.EqualTo(_testHelper.ToolTip), "Wrong Title");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute2.Role], Is.EqualTo("button"), "Wrong Role");
+      Assert.That(
+          _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute2.OnKeyUp],
+          Is.EqualTo("if (event.keyCode === 32) { event.target.click(); }"),
+          "Wrong onKeyUp");
+    }
 
-      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], Is.Null, "Has Target");
+    [Test]
+    public void Render_WithAccessGrantedAndOverridenAttributes ()
+    {
+      var command = _testHelper.CreateEventCommandAsPartialMock();
+      command.Object.Click += TestHandler;
+      string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick + "return false;";
+      _testHelper.ExpectOnceOnHasAccess(command, true);
+
+      command.Object.RenderBegin(
+          _testHelper.HtmlWriter,
+          RenderingFeatures.Default,
+          _testHelper.PostBackEvent,
+          new string[0],
+          _testHelper.OnClick,
+          _testHelper.SecurableObject,
+          new NameValueCollection(0),
+          true,
+          new Style(),
+          new NameValueCollection
+          {
+              [HtmlTextWriterAttribute2.Role] = "testrole",
+              [HtmlTextWriterAttribute2.OnKeyUp] = "testjs"
+          });
+
+      _testHelper.VerifyAll();
+
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.Not.Null, "Missing Tag");
+      Assert.That(_testHelper.HtmlWriter.Tag, Is.EqualTo(HtmlTextWriterTag.A), "Wrong Tag");
+
+      Assert.That(
+          _testHelper.HtmlWriter.Attributes.Keys,
+          Is.EquivalentTo((object[])[
+              HtmlTextWriterAttribute.Href, HtmlTextWriterAttribute.Onclick, HtmlTextWriterAttribute.Title, HtmlTextWriterAttribute2.Role, HtmlTextWriterAttribute2.OnKeyUp]));
+
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], Is.EqualTo("fakeFallbackUrl"), "Wrong Href");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], Is.EqualTo(expectedOnClick), "Wrong OnClick");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], Is.EqualTo(_testHelper.ToolTip), "Wrong Title");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute2.Role], Is.EqualTo("testrole"), "Wrong Role");
+      Assert.That(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute2.OnKeyUp], Is.EqualTo("testjs"), "Wrong onKeyUp");
     }
 
     [Test]

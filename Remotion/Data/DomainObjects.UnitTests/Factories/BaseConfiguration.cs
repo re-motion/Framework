@@ -20,10 +20,13 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
@@ -109,7 +112,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
       _mappingConfiguration = MappingConfiguration.Create(
             MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
-            new PersistenceModelLoader(_storageSettings));
+            new PersistenceModelLoader(_storageSettings),
+            SafeServiceLocator.Current.GetInstance<ISortingOptimizationNodeFactory>(),
+            SafeServiceLocator.Current.GetInstance<ILoggerFactory>());
     }
 
     private FakeStorageSettingsFactory CreateStorageSettings ()
@@ -125,7 +130,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       var sqlStorageObjectFactory = new TestSqlStorageObjectFactory(
           deferredStorageSettings,
           SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>(),
-          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>());
+          SafeServiceLocator.Current.GetInstance<IDataContainerValidator>(),
+          SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>());
 
       var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
 

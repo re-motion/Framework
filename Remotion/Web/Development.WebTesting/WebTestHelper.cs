@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
@@ -188,6 +189,9 @@ namespace Remotion.Web.Development.WebTesting
       _mainBrowserSession = CreateNewBrowserSession(windowSize, configurationOverride);
       _logger.LogInformation("Browser: {0}, version {1}", _mainBrowserSession.Driver.GetBrowserName(), _mainBrowserSession.Driver.GetBrowserVersion());
       _logger.LogInformation("WebDriver version: {0}", _mainBrowserSession.Driver.GetWebDriverVersion());
+
+      foreach (var browserSession in _browserSessions)
+        browserSession.Features.InitializeFeatures();
     }
 
     [Obsolete("Use OnSetUp(ITestContext) instead, using the implementation example given in the ITestContext documentation, or your own implementation. (Version: 8.0.0)", true)]

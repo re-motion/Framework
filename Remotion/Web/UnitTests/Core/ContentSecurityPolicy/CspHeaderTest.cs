@@ -16,7 +16,7 @@ public class CspHeaderTest
   [Test]
   public void AddDirectiveValue_WithNonExistentDirective ()
   {
-    var header = CspHeader.Empty.AddDirectiveValue(CspDirectives.ScriptSrc, "asd");
+    var header = CspHeader.Empty.AddDirectiveValue(CspDirective.ScriptSrc, "asd");
 
     Assert.That(header.ToString(), Is.EqualTo("script-src asd"));
   }
@@ -25,8 +25,8 @@ public class CspHeaderTest
   public void AddDirectiveValue_WithExistentDirective ()
   {
     var header = CspHeader.Empty
-        .SetDirective(CspDirectives.ScriptSrc, "bbb")
-        .AddDirectiveValue(CspDirectives.ScriptSrc, "asd");
+        .SetDirective(CspDirective.ScriptSrc, "bbb")
+        .AddDirectiveValue(CspDirective.ScriptSrc, "asd");
 
     Assert.That(header.ToString(), Is.EqualTo("script-src bbb asd"));
   }
@@ -35,17 +35,22 @@ public class CspHeaderTest
   public void AddDirectiveValue_WithExistingDirectiveValue ()
   {
     var header = CspHeader.Empty
-        .SetDirective(CspDirectives.ScriptSrc, "a b c")
-        .AddDirectiveValue(CspDirectives.ScriptSrc, "a");
+        .SetDirective(CspDirective.ScriptSrc, "a b c")
+        .AddDirectiveValue(CspDirective.ScriptSrc, "a");
 
     Assert.That(header.ToString(), Is.EqualTo("script-src a b c"));
   }
 
   [Test]
-  public void AddDirectiveValue_WithSpace_Throws ()
+  [TestCase(' ')]
+  [TestCase('\t')]
+  [TestCase('\n')]
+  [TestCase('\r')]
+  [TestCase('\f')]
+  public void AddDirectiveValue_WithSpace_Throws (char whiteSpace)
   {
     Assert.That(
-        () => CspHeader.Empty.AddDirectiveValue(CspDirectives.ScriptSrc, "'self' https:"),
+        () => CspHeader.Empty.AddDirectiveValue(CspDirective.ScriptSrc, $"'self'{whiteSpace}https:"),
         Throws.ArgumentException
             .With.ArgumentExceptionMessageEqualTo("Value must not contain spaces.", "value"));
   }
@@ -53,7 +58,7 @@ public class CspHeaderTest
   [Test]
   public void SetDirectiveValue_WithNonExistentDirective ()
   {
-    var header = CspHeader.Empty.SetDirective(CspDirectives.ScriptSrc, "asd 123");
+    var header = CspHeader.Empty.SetDirective(CspDirective.ScriptSrc, "asd 123");
 
     Assert.That(header.ToString(), Is.EqualTo("script-src asd 123"));
   }
@@ -62,8 +67,8 @@ public class CspHeaderTest
   public void SetDirectiveValue_WithExistentDirective ()
   {
     var header = CspHeader.Empty
-        .SetDirective(CspDirectives.ScriptSrc, "bbb")
-        .SetDirective(CspDirectives.ScriptSrc, "asd 123");
+        .SetDirective(CspDirective.ScriptSrc, "bbb")
+        .SetDirective(CspDirective.ScriptSrc, "asd 123");
 
     Assert.That(header.ToString(), Is.EqualTo("script-src asd 123"));
   }
@@ -71,7 +76,7 @@ public class CspHeaderTest
   [Test]
   public void RemoveDirectiveValue_WithNonExistentDirective ()
   {
-    var header = CspHeader.Empty.RemoveDirective(CspDirectives.ScriptSrc);
+    var header = CspHeader.Empty.RemoveDirective(CspDirective.ScriptSrc);
 
     Assert.That(header.ToString(), Is.EqualTo(""));
   }
@@ -80,8 +85,8 @@ public class CspHeaderTest
   public void RemoveDirectiveValue_WithExistentDirective ()
   {
     var header = CspHeader.Empty
-        .SetDirective(CspDirectives.ScriptSrc, "bbb")
-        .RemoveDirective(CspDirectives.ScriptSrc);
+        .SetDirective(CspDirective.ScriptSrc, "bbb")
+        .RemoveDirective(CspDirective.ScriptSrc);
 
     Assert.That(header.ToString(), Is.EqualTo(""));
   }
@@ -92,7 +97,7 @@ public class CspHeaderTest
     var header = CspHeader.Empty;
 
     Assert.That(
-        header.TryGetDirectiveValues(CspDirectives.ScriptSrc, out var values),
+        header.TryGetDirectiveValues(CspDirective.ScriptSrc, out var values),
         Is.False);
     Assert.That(values, Is.EqualTo(StringValues.Empty));
   }
@@ -101,10 +106,10 @@ public class CspHeaderTest
   public void TryGetDirectiveValues_WithSingleValue ()
   {
     var header = CspHeader.Empty
-        .SetDirective(CspDirectives.ScriptSrc, "asd");
+        .SetDirective(CspDirective.ScriptSrc, "asd");
 
     Assert.That(
-        header.TryGetDirectiveValues(CspDirectives.ScriptSrc, out var values),
+        header.TryGetDirectiveValues(CspDirective.ScriptSrc, out var values),
         Is.True);
     Assert.That(
         values,
@@ -115,11 +120,11 @@ public class CspHeaderTest
   public void TryGetDirectiveValues_WithMultipleValues ()
   {
     var header = CspHeader.Empty
-        .SetDirective(CspDirectives.ScriptSrc, "a b")
-        .AddDirectiveValue(CspDirectives.ScriptSrc, "c");
+        .SetDirective(CspDirective.ScriptSrc, "a b")
+        .AddDirectiveValue(CspDirective.ScriptSrc, "c");
 
     Assert.That(
-        header.TryGetDirectiveValues(CspDirectives.ScriptSrc, out var values),
+        header.TryGetDirectiveValues(CspDirective.ScriptSrc, out var values),
         Is.True);
     Assert.That(
         values.ToArray(),
@@ -130,22 +135,22 @@ public class CspHeaderTest
   public void ToString_WithMultipleElements ()
   {
     var header = CspHeader.Empty
-        .SetDirective(CspDirectives.ScriptSrc, "'self' https:")
-        .SetDirective(CspDirectives.ImgSrc, "'none'")
-        .AddDirectiveValue(CspDirectives.FormAction, "bla")
-        .AddDirectiveValue(CspDirectives.ScriptSrc, "http://mycode.com")
-        .RemoveDirective(CspDirectives.FormAction);
+        .SetDirective(CspDirective.ScriptSrc, "'self' https:")
+        .SetDirective(CspDirective.ImgSrc, "'none'")
+        .AddDirectiveValue(CspDirective.FormAction, "bla")
+        .AddDirectiveValue(CspDirective.ScriptSrc, "http://mycode.com")
+        .RemoveDirective(CspDirective.FormAction);
 
     Assert.That(
         header.ToString(),
         Is.EqualTo("img-src 'none'; script-src 'self' https: http://mycode.com"));
   }
 
-  private static object[] s_enumValues = Enum.GetValues<CspDirectives>().Cast<object>().ToArray();
+  private static object[] s_enumValues = Enum.GetValues<CspDirective>().Cast<object>().ToArray();
 
   [TestCaseSource(nameof(s_enumValues))]
   [Test]
-  public void EnumValuesNamesTest (CspDirectives directive)
+  public void EnumValuesNamesTest (CspDirective directive)
   {
     var header = CspHeader.Empty.SetDirective(directive, "");
 
@@ -158,5 +163,71 @@ public class CspHeaderTest
     Assert.That(
         header.ToString(),
         Is.EqualTo(expectedHeaderName));
+  }
+
+  [Test]
+  public void Parse_EmptyInput_ReturnsEmptyCspHeader ()
+  {
+    Assert.That(CspHeader.Parse(string.Empty).ToString(), Is.EqualTo(CspHeader.Empty.ToString()));
+  }
+
+  [Test]
+  public void Parse_InputWithAsciiWhitespaces_ReturnsExpectedCspHeader ()
+  {
+    const string input = " \t\n\r\fdefault-src 'self'\t\n\r\f oesterreich.gv.at;\t\n\r\f";
+
+    Assert.That(CspHeader.Parse(input).ToString(), Is.EqualTo("default-src 'self' oesterreich.gv.at"));
+  }
+
+  [Test]
+  public void Parse_InputWithDuplicateDirective_IgnoresDuplicatedDirective ()
+  {
+    const string input = "default-src 'self';default-src data:";
+
+    var parsedHeader = CspHeader.Parse(input);
+    _ = parsedHeader.TryGetDirectiveValues(CspDirective.DefaultSrc, out var values);
+
+    Assert.That(values.Count, Is.EqualTo(1));
+    Assert.That(values[0], Is.EqualTo("'self'"));
+  }
+
+  [Test]
+  public void Parse_InputWithEmptyDirective_IsIgnored ()
+  {
+    const string input = "default-src 'self';   ;script-src 'self';";
+
+    var parsedHeader = CspHeader.Parse(input);
+
+    Assert.That(parsedHeader.ToString(), Is.EqualTo("default-src 'self'; script-src 'self'"));
+  }
+
+  [Test]
+  public void Parse_DirectiveWithNonAsciiCharacter_IsUsedAsIs ()
+  {
+    const string input = "default-src österreich.gv.at";
+
+    var parsedHeader = CspHeader.Parse(input);
+
+    Assert.That(parsedHeader.ToString(), Is.EqualTo(input));
+  }
+
+  [Test]
+  public void Parse_DirectiveNameWithDifferentCapitalization_IsLowered ()
+  {
+    const string input = "DeFaUlT-SrC 'self'";
+
+    var parsedHeader = CspHeader.Parse(input);
+
+    Assert.That(parsedHeader.ToString(), Is.EqualTo("default-src 'self'"));
+  }
+
+  [Test]
+  public void Parse_DirectiveValuesContainsSpace_IsUsedAsIs ()
+  {
+    const string input = "DeFaUlT-SrC 'se lf'";
+
+    var parsedHeader = CspHeader.Parse(input);
+
+    Assert.That(parsedHeader.ToString(), Is.EqualTo("default-src 'se lf'"));
   }
 }

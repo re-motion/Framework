@@ -135,7 +135,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     public ForeignKeyConstraintDefinition CreateForeignKeyConstraint (
         Func<IEnumerable<ColumnDefinition>, string> nameProvider,
         EntityNameDefinition referencedTableName,
-        ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
+        ObjectIDStoragePropertyDefinition referencedObjectIDProperty,
+        ForeignKeyCycleBreakHint foreignKeyCycleBreakHint)
     {
       ArgumentNullException.ThrowIfNull(nameProvider);
       ArgumentNullException.ThrowIfNull(referencedTableName);
@@ -143,7 +144,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
       var referencingColumns = ValueProperty.GetColumnsForComparison();
       var referencedColumns = referencedObjectIDProperty.ValueProperty.GetColumnsForComparison();
-      return new ForeignKeyConstraintDefinition(nameProvider(referencingColumns), referencedTableName, referencingColumns, referencedColumns);
+      return new ForeignKeyConstraintDefinition(nameProvider(referencingColumns), referencedTableName, referencingColumns, referencedColumns, foreignKeyCycleBreakHint);
     }
 
     private void CheckClassDefinition (ObjectID? objectID, string paramName)

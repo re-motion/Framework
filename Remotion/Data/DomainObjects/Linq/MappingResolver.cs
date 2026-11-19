@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -197,6 +199,49 @@ namespace Remotion.Data.DomainObjects.Linq
         return null;
 
       return _storageSpecificExpressionResolver.ResolveIDPropertyViaForeignKey(entityRefMemberExpression.OriginatingEntity, foreignKeyEndPoint);
+    }
+
+    public bool TryResolveSetOperationReconciliationContext (Expression[] projections, [NotNullWhen(true)] out ISetOperationReconciliationContext? reconciliationContext)
+    {
+      ArgumentUtility.CheckNotNull(nameof(projections), projections);
+      reconciliationContext = null;
+
+      // For reconciliation, every projection needs to come from an entity.
+      // We don't support mixing entities with, for example, constants.
+      // If we can't find all the entities, we don't do reconciliation.
+      // We don't throw an exception to continue to support existing queries that work even if they are not really supported.
+      var entities = new SqlEntityExpression[projections.Length];
+      for (var i = 0; i < projections.Length; i++)
+      {
+        var entity = UnwrapSqlEntityExpression(projections[i]);
+        if (entity == null)
+          return false;
+
+        entities[i] = entity;
+      }
+
+      var builder = DefaultSetOperationReconciliationContext.CreateBuilder();
+      foreach (var entity in entities)
+      {
+        foreach (var column in entity.Columns)
+          builder.AddSqlColumn(entity, column);
+      }
+
+      reconciliationContext = builder.Build();
+      return true;
+    }
+
+    private static SqlEntityExpression? UnwrapSqlEntityExpression (Expression projectionExpression)
+    {
+      // A projection expression might be wrapped in unary expressions like convert to change the resulting type.
+      // We unwrap those as they have no effect on the selected SQL columns.
+      while (projectionExpression is UnaryExpression { NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked } unaryExpression)
+        projectionExpression = unaryExpression.Operand;
+
+      if (projectionExpression is SqlEntityExpression sqlEntityExpression)
+        return sqlEntityExpression;
+
+      return null;
     }
 
     private ClassDefinition GetClassDefinition (Type type)

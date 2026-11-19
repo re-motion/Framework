@@ -20,7 +20,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
+using Moq;
 using NUnit.Framework;
+using Remotion.Web.ContentSecurityPolicy;
+using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.Utilities
@@ -28,6 +33,44 @@ namespace Remotion.Web.UnitTests.Core.Utilities
   [TestFixture]
   public class RenderUtilityTest
   {
+    [Test]
+    public void CloneWithTextWriter_WithHtmlTextWriter_CreatesNewInstance ()
+    {
+      var htmlTextWriter = new HtmlTextWriter(new StringWriter());
+
+      var stringWriter = new StringWriter();
+      var clonedWriter = RenderUtility.CloneWithTextWriter(htmlTextWriter, stringWriter);
+
+      htmlTextWriter.Write("original");
+      clonedWriter.Write("cloned");
+
+      Assert.That(clonedWriter, Is.TypeOf<HtmlTextWriter>());
+      Assert.That(clonedWriter, Is.Not.SameAs(htmlTextWriter));
+      Assert.That(stringWriter.ToString(), Is.EqualTo("cloned"));
+    }
+
+    [Test]
+    public void CloneWithTextWriter_WithCspEnabledHtmlTextWriter_CreatesNewInstance ()
+    {
+      var htmlTextWriter = new CspEnabledHtmlTextWriter(
+          Mock.Of<ISmartPage>(),
+          new StringWriter(),
+          Mock.Of<INonceGenerator>(),
+          "nonce",
+          Mock.Of<IRenderingFeatures>(),
+          Mock.Of<IFallbackNavigationUrlProvider>());
+
+      var stringWriter = new StringWriter();
+      var clonedWriter = RenderUtility.CloneWithTextWriter(htmlTextWriter, stringWriter);
+
+      htmlTextWriter.Write("original");
+      clonedWriter.Write("cloned");
+
+      Assert.That(clonedWriter, Is.TypeOf<CspEnabledHtmlTextWriter>());
+      Assert.That(clonedWriter, Is.Not.SameAs(htmlTextWriter));
+      Assert.That(stringWriter.ToString(), Is.EqualTo("cloned"));
+    }
+
     [Test]
     public void JoinLinesWithEncoding_WithEmptySequence_ReturnsEmptyString ()
     {

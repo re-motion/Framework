@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Web.Test
 
       var serviceLocator = DefaultServiceLocator.Create();
 
-      var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer("Integrated Security=SSPI;Initial Catalog=RpaTest;Data Source=localhost");
+      var storageSettingsFactory = StorageSettingsFactory.CreateForSqlServer("Integrated Security=SSPI;Initial Catalog=RpaTest;Data Source=localhost;TrustServerCertificate=true;");
       serviceLocator.RegisterSingle(() => storageSettingsFactory);
 
       serviceLocator.RegisterSingle<ISecurityProvider>(() => new StubSecurityProvider());

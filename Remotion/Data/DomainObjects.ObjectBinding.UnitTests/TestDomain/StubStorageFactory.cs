@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
@@ -28,7 +29,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2017;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Linq.SqlBackend.SqlPreparation;
@@ -61,9 +62,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
       var typeConversionProvider = SafeServiceLocator.Current.GetInstance<ITypeConversionProvider>();
       var dataContainerValidator = SafeServiceLocator.Current.GetInstance<IDataContainerValidator>();
+      var domainModelConstraintProvider = SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>();
       var storageSettings = SafeServiceLocator.Current.GetInstance<IStorageSettings>();
 
-      var storageObjectFactory = new SqlStorageObjectFactory(storageSettings, typeConversionProvider, dataContainerValidator);
+      var storageObjectFactory = new SqlStorageObjectFactory(storageSettings, typeConversionProvider, dataContainerValidator, domainModelConstraintProvider);
       return storageObjectFactory.CreatePersistenceModelLoader(storageProviderDefinition);
     }
 
@@ -87,6 +89,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     }
 
     public ISingleScalarStructuredTypeDefinitionProvider CreateSingleScalarStructuredTypeDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition)
+    {
+      throw new NotImplementedException();
+    }
+
+    public ITableManipulationRecordDefinitionProvider CreateTableManipulationRecordDefinitionProvider (RdbmsProviderDefinition storageProviderDefinition)
     {
       throw new NotImplementedException();
     }

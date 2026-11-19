@@ -59,7 +59,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       /// <summary> The validation error message displayed when entered text exceeds the maximum length. </summary>
       MaxLengthValidationMessage,
       /// <summary> The validation error message displayed when the text contains invalid characters. </summary>
-      InvalidCharactersErrorMessage
+      InvalidCharactersErrorMessage,
+      /// <summary> The validation error message displayed when the pasted text exceeds the maximum length. </summary>
+      TextOverflowOnPasteValidationMessage
     }
 
     // static members

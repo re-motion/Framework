@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.SortingOptimization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
@@ -30,6 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private Mock<IStorageSettings> _storageSettingsStub;
     private PersistenceModelLoader _persistenceModelLoader;
     private ClassDefinition _classDefinition;
+    private IPersistenceModelSortingProvider _persistenceModelSortingProviderMock;
 
     [SetUp]
     public void SetUp ()
@@ -37,6 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       _storageSettingsStub = new Mock<IStorageSettings>();
       _persistenceModelLoader = new PersistenceModelLoader(_storageSettingsStub.Object);
       _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
+      _persistenceModelSortingProviderMock = Mock.Of<IPersistenceModelSortingProvider>();
     }
 
     [Test]
@@ -51,7 +54,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           .Setup(stub => stub.GetStorageProviderDefinition(_classDefinition))
           .Returns(new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"));
 
-      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(_classDefinition);
+      _persistenceModelLoader.ApplyPersistenceModelToHierarchy(_classDefinition, _persistenceModelSortingProviderMock);
 
       Assert.That(_classDefinition.HasStorageEntityDefinitionBeenSet, Is.True);
       Assert.That(_classDefinition.StorageEntityDefinition, Is.Not.Null);

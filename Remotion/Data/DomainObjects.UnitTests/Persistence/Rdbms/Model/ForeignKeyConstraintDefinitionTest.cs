@@ -17,6 +17,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.NUnit.UnitTesting;
@@ -41,7 +42,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       _referencedTableName = "TableName";
       _constraint = new ForeignKeyConstraintDefinition(
-          "Test", new EntityNameDefinition(null, _referencedTableName), new[] { _referencingColumn }, new[] { _referencedColumn });
+          "Test", new EntityNameDefinition(null, _referencedTableName), new[] { _referencingColumn }, new[] { _referencedColumn }, ForeignKeyCycleBreakHint.Automatic);
     }
 
     [Test]
@@ -59,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     {
       Assert.That(
           () => new ForeignKeyConstraintDefinition(
-          "Test", new EntityNameDefinition(null, _referencedTableName), new[] { _referencingColumn }, new ColumnDefinition[0]),
+          "Test", new EntityNameDefinition(null, _referencedTableName), new[] { _referencingColumn }, new ColumnDefinition[0], ForeignKeyCycleBreakHint.Automatic),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The referencing and referenced column sets must have the same number of items.", "referencingColumns"));

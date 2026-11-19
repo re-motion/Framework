@@ -30,6 +30,130 @@ DROP TYPE IF EXISTS [dbo].[TVP_Date]
 DROP TYPE IF EXISTS [dbo].[TVP_Date_Distinct]
 DROP TYPE IF EXISTS [dbo].[TVP_Guid]
 DROP TYPE IF EXISTS [dbo].[TVP_Guid_Distinct]
+DROP TYPE IF EXISTS [dbo].[TVP_AllTables_Delete]
+DROP TYPE IF EXISTS [dbo].[TVP_AllTables_Lock]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithPropertiesHavingStorageClassAttribute_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithPropertiesHavingStorageClassAttribute_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_EagerFetching_BaseClass_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_EagerFetching_BaseClass_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_EagerFetching_RelationTarget_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_EagerFetching_RelationTarget_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_NestedDomainObject_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_NestedDomainObject_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ConcreteInheritanceFirstDerivedClass_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ConcreteInheritanceFirstDerivedClass_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ConcreteInheritanceObjectWithRelations_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ConcreteInheritanceObjectWithRelations_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ConcreteInheritanceSecondDerivedClass_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ConcreteInheritanceSecondDerivedClass_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_Target_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_Target_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_HookedTargetClass_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_HookedTargetClass_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_InheritanceRootInheritingPersistentMixin_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_InheritanceRootInheritingPersistentMixin_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_RelationTarget_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_RelationTarget_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_SingleInheritanceBaseClass_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_SingleInheritanceBaseClass_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_SingleInheritanceObjectWithRelations_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_SingleInheritanceObjectWithRelations_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TargetClassForBehavioralMixin_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TargetClassForBehavioralMixin_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TargetClassForMixinWithState_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TargetClassForMixinWithState_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_TargetClassWithSameInterfaceAsPersistentMixin_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_TargetClassWithSameInterfaceAsPersistentMixin_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_TargetWithTwoUnidirectionalMixins_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_TargetWithTwoUnidirectionalMixins_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_TargetWithUnidirectionalMixin1_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_TargetWithUnidirectionalMixin1_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_TargetWithUnidirectionalMixin2_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_MixedDomains_TargetWithUnidirectionalMixin2_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_Ceo_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_Ceo_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassNotInMapping_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassNotInMapping_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithAllDataTypes_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithAllDataTypes_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithEnumNotDefiningZero_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithEnumNotDefiningZero_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithGuidKey_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithGuidKey_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithHighScaleDecimal_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithHighScaleDecimal_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithNonPublicProperties_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithNonPublicProperties_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithOptionalOneToOneRelationAndOppositeDerivedClass_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithOptionalOneToOneRelationAndOppositeDerivedClass_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithoutProperties_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithoutProperties_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithPropertyTypeImplementingIStructuralEquatable_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithPropertyTypeImplementingIStructuralEquatable_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithRelatedClassIDColumnAndNoInheritance_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithRelatedClassIDColumnAndNoInheritance_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithValidRelations_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableWithValidRelations_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_Client_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_Client_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_Computer_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_Computer_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_Company_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_Company_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_Employee_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_Employee_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_FileSystemItem_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_FileSystemItem_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_IndustrialSector_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_IndustrialSector_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_StorageGroupClass_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_StorageGroupClass_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_Location_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_Location_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_Order_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_Order_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_OrderItem_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_OrderItem_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_OrderTicket_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_OrderTicket_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_Person_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_Person_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_Product_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_Product_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ProductReview_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ProductReview_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassIDForClassHavingClassIDAttribute_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassIDForClassHavingClassIDAttribute_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttributeTable_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassHavingClassIDAttributeAndStorageSpecificIdentifierAttributeTable_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassHavingStorageSpecificIdentifierAttributeTable_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassHavingStorageSpecificIdentifierAttributeTable_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithBinaryProperties_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithBinaryProperties_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithBothEndPointsOnSameClass_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithBothEndPointsOnSameClass_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithExtensibleEnumProperties_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithExtensibleEnumProperties_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithManySideRelationProperties_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithManySideRelationProperties_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithOneSideRelationProperties_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithOneSideRelationProperties_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClosedGenericClass_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClosedGenericClass_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClosedGenericClassWithManySideRelationProperties_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClosedGenericClassWithManySideRelationProperties_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClosedGenericClassWithOneSideRelationProperties_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClosedGenericClassWithOneSideRelationProperties_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithDifferentProperties_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_ClassWithDifferentProperties_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_DerivedClassWithStorageSpecificIdentifierAttribute_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_DerivedClassWithStorageSpecificIdentifierAttribute_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Motorcycle_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Motorcycle_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Car_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Car_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Truck_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_UnionInheritance_Truck_Update]
 -- Drop all synonyms
 -- Drop all indexes
 -- Drop all views
@@ -97,6 +221,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithE
   DROP VIEW [dbo].[ClassWithEnumNotDefiningZeroView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithGuidKeyView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClassWithGuidKeyView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithHighScaleDecimalView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[ClassWithHighScaleDecimalView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithNonPublicPropertiesView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[ClassWithNonPublicPropertiesView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClassWithOptionalOneToOneRelationAndOppositeDerivedClassView' AND TABLE_SCHEMA = 'dbo')
@@ -181,6 +307,20 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SpecialCus
   DROP VIEW [dbo].[SpecialCustomerView]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SupplierView' AND TABLE_SCHEMA = 'dbo')
   DROP VIEW [dbo].[SupplierView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'VehicleView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[VehicleView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'MotorcycleView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[MotorcycleView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ChopperView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[ChopperView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SportBikeView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[SportBikeView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'CarView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[CarView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'SportsCarView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[SportsCarView]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'TruckView' AND TABLE_SCHEMA = 'dbo')
+  DROP VIEW [dbo].[TruckView]
 -- Drop foreign keys of all tables
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_EagerFetching_BaseClass_ScalarProperty2RealSideID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'EagerFetching_BaseClass')
   ALTER TABLE [dbo].[EagerFetching_BaseClass] DROP CONSTRAINT FK_EagerFetching_BaseClass_ScalarProperty2RealSideID
@@ -248,8 +388,6 @@ IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_ob
   ALTER TABLE [dbo].[Location] DROP CONSTRAINT FK_Location_ClientID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Order_CustomerID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Order')
   ALTER TABLE [dbo].[Order] DROP CONSTRAINT FK_Order_CustomerID
-IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_OrderItem_OrderID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'OrderItem')
-  ALTER TABLE [dbo].[OrderItem] DROP CONSTRAINT FK_OrderItem_OrderID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_OrderTicket_OrderID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'OrderTicket')
   ALTER TABLE [dbo].[OrderTicket] DROP CONSTRAINT FK_OrderTicket_OrderID
 IF EXISTS (SELECT * FROM sys.objects fk INNER JOIN sys.objects t ON fk.parent_object_id = t.object_id WHERE fk.type = 'F' AND fk.name = 'FK_Person_AssociatedCustomerCompanyID' AND schema_name (t.schema_id) = 'dbo' AND t.name = 'Person')
@@ -343,6 +481,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWith
   DROP TABLE [dbo].[ClassWithEnumNotDefiningZero]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithGuidKey' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[TableWithGuidKey]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithHighScaleDecimal' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[TableWithHighScaleDecimal]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWithNonPublicProperties' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[ClassWithNonPublicProperties]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithOptionalOneToOneRelationAndOppositeDerivedClass' AND TABLE_SCHEMA = 'dbo')
@@ -409,3 +549,9 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'ClassWith
   DROP TABLE [dbo].[ClassWithDifferentProperties]
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'DerivedClassWithStorageSpecificIdentifierAttribute' AND TABLE_SCHEMA = 'dbo')
   DROP TABLE [dbo].[DerivedClassWithStorageSpecificIdentifierAttribute]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'UnionInheritance_Motorcycle' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[UnionInheritance_Motorcycle]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'UnionInheritance_Car' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[UnionInheritance_Car]
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'UnionInheritance_Truck' AND TABLE_SCHEMA = 'dbo')
+  DROP TABLE [dbo].[UnionInheritance_Truck]

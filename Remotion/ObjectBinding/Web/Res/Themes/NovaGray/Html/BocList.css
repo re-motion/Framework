@@ -452,7 +452,8 @@ label.bocListContent
   padding: 2px;
 }
 
-div.bocListContent > div[onclick]
+div.bocListContent > div[onclick],
+div.bocListContent > div[data-csp-replaced-onclick]
 {
   display: inline;
 }

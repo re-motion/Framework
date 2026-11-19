@@ -29,10 +29,10 @@ public class CspDefaultsProvider : ICspDefaultsProvider
   }
 
   public static readonly CspHeader DefaultCspHeader = CspHeader.Empty
-      .SetDirective(CspDirectives.DefaultSrc, "'self'")
-      .SetDirective(CspDirectives.ScriptSrc, "'self'") // Explicit script-src is necessary to ensure that we can add nonces without restricting the CSP
-      .SetDirective(CspDirectives.StyleSrc, "'self' 'unsafe-inline'")
-      .SetDirective(CspDirectives.FrameAncestors, "'self'");
+      .SetDirective(CspDirective.DefaultSrc, "'self'")
+      .SetDirective(CspDirective.ScriptSrc, "'self'") // Explicit script-src is necessary to ensure that we can add nonces without restricting the CSP
+      .SetDirective(CspDirective.StyleSrc, "'self' 'unsafe-inline'")
+      .SetDirective(CspDirective.FrameAncestors, "'self'");
 
   private readonly bool _isCspEnabledDefault;
   private readonly CspHeader _cspHeaderDefault;

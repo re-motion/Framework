@@ -16,10 +16,11 @@
 // 
 using System;
 using JetBrains.Annotations;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2016;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2017;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Linq.SqlBackend.MappingResolution;
 using Remotion.Utilities;
@@ -31,8 +32,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     public CustomDataTypeStorageObjectFactory (
         [NotNull] IStorageSettings storageSettings,
         [NotNull] ITypeConversionProvider typeConversionProvider,
-        [NotNull] IDataContainerValidator dataContainerValidator)
-        : base(storageSettings, typeConversionProvider, dataContainerValidator)
+        [NotNull] IDataContainerValidator dataContainerValidator,
+        [NotNull] IDomainModelConstraintProvider domainModelConstraintProvider)
+        : base(storageSettings, typeConversionProvider, dataContainerValidator, domainModelConstraintProvider)
     {
     }
 

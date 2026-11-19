@@ -639,6 +639,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       get { return CreateObjectID("Official", 2); }
     }
 
+    public ObjectID Official3
+    {
+      get { return CreateObjectID("Official", new Guid("86D83CB8-B5E5-42BF-A1B3-F7C470F3DDD3")); }
+    }
+
     #endregion
 
     #region Client
@@ -881,6 +886,45 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     public ObjectID OrderViewModel2
     {
       get { return CreateObjectID("OrderViewModel", new Guid("{CD740A52-2A63-4AAA-86DE-5789AB7DF58C}")); }
+    }
+
+    #endregion
+
+    #region Vehicle
+
+    public ObjectID Car1
+    {
+      get { return CreateObjectID("Car", new Guid("{A1000001-0000-4000-8000-000000000001}")); }
+    }
+
+    public ObjectID SportsCar1
+    {
+      get { return CreateObjectID("SportsCar", new Guid("{A1000002-0000-4000-8000-000000000002}")); }
+    }
+
+    public ObjectID Truck1
+    {
+      get { return CreateObjectID("Truck", new Guid("{A2000001-0000-4000-8000-000000000001}")); }
+    }
+
+    public ObjectID Truck2
+    {
+      get { return CreateObjectID("Truck", new Guid("{A2000002-0000-4000-8000-000000000002}")); }
+    }
+
+    public ObjectID Motorcycle1
+    {
+      get { return CreateObjectID("Motorcycle", new Guid("{A3000001-0000-4000-8000-000000000001}")); }
+    }
+
+    public ObjectID Chopper1
+    {
+      get { return CreateObjectID("Chopper", new Guid("{A3000002-0000-4000-8000-000000000002}")); }
+    }
+
+    public ObjectID SportBike1
+    {
+      get { return CreateObjectID("SportBike", new Guid("{A3000003-0000-4000-8000-000000000003}")); }
     }
 
     #endregion

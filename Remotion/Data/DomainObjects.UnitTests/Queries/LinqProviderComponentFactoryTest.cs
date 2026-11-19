@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
@@ -35,6 +36,7 @@ using Remotion.Linq.Parsing.Structure.NodeTypeProviders;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.SqlBackend.SqlPreparation.MethodCallTransformers;
 using Remotion.Linq.SqlBackend.SqlPreparation.ResultOperatorHandlers;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -76,6 +78,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       var processingSteps = ((CompoundExpressionTreeProcessor)queryParser.Processor).InnerProcessors;
       Assert.That(processingSteps.Count,
           Is.EqualTo(ExpressionTreeParser.CreateDefaultProcessor(ExpressionTransformerRegistry.CreateDefault()).InnerProcessors.Count));
+    }
+
+    [Test]
+    public void CreateQueryParser_RegistersByRefLikeAwareEvaluatableExpressionFilter ()
+    {
+      var queryParser = (QueryParser)_factory.CreateQueryParser();
+      var processingSteps = ((CompoundExpressionTreeProcessor)queryParser.Processor).InnerProcessors;
+
+      var partialEvaluatingProcessor = processingSteps.OfType<PartialEvaluatingExpressionTreeProcessor>().Single();
+
+      Assert.That(partialEvaluatingProcessor.Filter, Is.TypeOf<ByRefLikeAwareEvaluatableExpressionFilter>());
+    }
+
+    [Test]
+    public void CreateQueryParser_RegistersSpanContainsExpressionTransformer ()
+    {
+      var queryParser = (QueryParser)_factory.CreateQueryParser();
+      var processingSteps = ((CompoundExpressionTreeProcessor)queryParser.Processor).InnerProcessors;
+
+      var transformingProcessor = processingSteps.OfType<TransformingExpressionTreeProcessor>().Single();
+
+      var callExpression = CreateMemoryExtensionsContainsCallExpression();
+      var transformedExpressions = transformingProcessor.Provider.GetTransformations(callExpression)
+          .Select(transformation => transformation.Invoke(callExpression));
+
+      Assert.That(
+          transformedExpressions,
+          Has.Some.Matches<Expression>(
+              e => e is MethodCallExpression transformedCall
+                   && transformedCall.Method.DeclaringType == typeof(Enumerable)
+                   && transformedCall.Method.Name == nameof(Enumerable.Contains)));
+    }
+
+    private static MethodCallExpression CreateMemoryExtensionsContainsCallExpression ()
+    {
+      var t0 = Type.MakeGenericMethodParameter(0);
+      var containsMethod = Assertion.IsNotNull(
+          typeof(MemoryExtensions).GetMethod(
+              nameof(MemoryExtensions.Contains),
+              [typeof(ReadOnlySpan<>).MakeGenericType(t0), t0]))
+          .MakeGenericMethod(typeof(int));
+
+      return Expression.Call(
+          containsMethod,
+          Expression.Call(
+              Assertion.IsNotNull(
+                  typeof(ReadOnlySpan<>)
+                      .MakeGenericType(typeof(int))
+                      .GetMethod("op_Implicit", [typeof(int).MakeArrayType()])
+              ),
+              Expression.Constant((int[])[1, 2, 3])),
+          Expression.Constant(2));
     }
 
     [Test]

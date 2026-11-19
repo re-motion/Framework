@@ -23,9 +23,15 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
-  [TestFixture]
+  [TestFixture(CreateSaveCommandFactoryBehaviour.CreateBatchedSaveCommandFactory)]
+  [TestFixture(CreateSaveCommandFactoryBehaviour.CreateIndividualSaveCommandFactory)]
   public class SqlProviderSaveNewTest : SqlProviderBaseTest
   {
+    public SqlProviderSaveNewTest (CreateSaveCommandFactoryBehaviour createSaveCommandFactoryBehaviour)
+        : base(createSaveCommandFactoryBehaviour)
+    {
+    }
+
     [Test]
     public void NewDataContainer ()
     {
@@ -137,6 +143,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringWithNullValueProperty"), Is.Null);
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "ExtensibleEnumWithNullValueProperty"), Is.Null);
       Assert.That(GetPropertyValue(reloadedClassWithAllDataTypes, typeof(ClassWithAllDataTypes), "NullableBinaryProperty"), Is.Null);
+    }
+
+    [Test]
+    public void HighScaleDecimal_IsStoredWithCorrectScale ()
+    {
+      DataContainer classWithHighScaleDecimal = CreateNewDataContainer(typeof(ClassWithHighScaleDecimal));
+      ObjectID newID = classWithHighScaleDecimal.ID;
+
+      SetPropertyValue(classWithHighScaleDecimal, typeof(ClassWithHighScaleDecimal), "HighScaleDecimalProperty", 3.00000019m);
+      SetPropertyValue(classWithHighScaleDecimal, typeof(ClassWithHighScaleDecimal), "NaHighScaleDecimalProperty", 3.00000019m);
+
+      Provider.Save(new[] { classWithHighScaleDecimal });
+
+      var reloadedClassWithHighScaleDecimal = ReloadDataContainer(newID);
+
+      Assert.That(GetPropertyValue(reloadedClassWithHighScaleDecimal, typeof(ClassWithHighScaleDecimal), "HighScaleDecimalProperty"), Is.EqualTo(3.0000002m));
+      Assert.That(GetPropertyValue(reloadedClassWithHighScaleDecimal, typeof(ClassWithHighScaleDecimal), "NaHighScaleDecimalProperty"), Is.EqualTo(3.0000002m));
     }
 
     [Test]

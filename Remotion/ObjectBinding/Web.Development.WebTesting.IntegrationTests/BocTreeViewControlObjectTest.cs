@@ -769,6 +769,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    [Category("LongRunning")]
     [IgnoreBrowserLogMessage(ExpectedBrowserLogMessages.LoadResourceCausedInternalServerErrorTemplate, [@"BocTreeViewWebService\.asmx/GetMenuItemStatusForTreeNode"])]
     public void TestContextMenuControlObject_OpenDropDownMenuWithError_FailsWithException ()
     {

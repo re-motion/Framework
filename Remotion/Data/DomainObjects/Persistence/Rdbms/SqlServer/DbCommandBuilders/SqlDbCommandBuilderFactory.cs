@@ -20,6 +20,7 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Parameters;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Parameters;
@@ -36,16 +37,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
   {
     private readonly ISingleScalarStructuredTypeDefinitionProvider _tableTypeDefinitionProvider;
     private readonly ISqlDialect _sqlDialect;
+    private readonly IStorageNameProvider _storageNameProvider;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SqlDbCommandBuilderFactory"/> class.
     /// </summary>
-    public SqlDbCommandBuilderFactory (ISingleScalarStructuredTypeDefinitionProvider tableTypeDefinitionProvider, ISqlDialect sqlDialect)
+    public SqlDbCommandBuilderFactory (ISingleScalarStructuredTypeDefinitionProvider tableTypeDefinitionProvider, ISqlDialect sqlDialect, IStorageNameProvider storageNameProvider)
     {
       ArgumentNullException.ThrowIfNull(tableTypeDefinitionProvider);
       ArgumentNullException.ThrowIfNull(sqlDialect);
+      ArgumentNullException.ThrowIfNull(storageNameProvider);
+
       _tableTypeDefinitionProvider = tableTypeDefinitionProvider;
       _sqlDialect = sqlDialect;
+      _storageNameProvider = storageNameProvider;
     }
 
     public IDbCommandBuilder CreateForSelect (
@@ -163,6 +168,38 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuild
       ArgumentNullException.ThrowIfNull(comparedColumnValues);
 
       return new DeleteDbCommandBuilder(tableDefinition, new ComparedColumnsSpecification(comparedColumnValues), _sqlDialect);
+    }
+
+    /// <inheritdoc/>
+    public IDbCommandBuilder CreateForBatchedLock (IReadOnlyList<IBatchedCommandSpecification> commandSpecifications)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(commandSpecifications), commandSpecifications);
+
+      return new BatchedLockDbCommandBuilder(_sqlDialect, commandSpecifications);
+    }
+
+    /// <inheritdoc/>
+    public IDbCommandBuilder CreateForBatchedInsert (IReadOnlyList<IBatchedCommandSpecification> commandSpecifications)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(commandSpecifications), commandSpecifications);
+
+      return new BatchedInsertDbCommandBuilder(_sqlDialect, commandSpecifications);
+    }
+
+    /// <inheritdoc/>
+    public IDbCommandBuilder CreateForBatchedUpdate (IReadOnlyList<IBatchedCommandSpecification> commandSpecifications)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(commandSpecifications), commandSpecifications);
+
+      return new BatchedUpdateDbCommandBuilder(_sqlDialect, commandSpecifications, _storageNameProvider);
+    }
+
+    /// <inheritdoc/>
+    public IDbCommandBuilder CreateForBatchedDelete (IReadOnlyList<IBatchedCommandSpecification> commandSpecifications)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull(nameof(commandSpecifications), commandSpecifications);
+
+      return new BatchedDeleteDbCommandBuilder(_sqlDialect, commandSpecifications, _storageNameProvider);
     }
 
     private Tuple<ColumnDefinition, IEnumerable<object?>> GetValuesForSingleColumnDefinition (ColumnValueTable comparedColumnValueTable)

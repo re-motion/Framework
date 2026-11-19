@@ -5,6 +5,28 @@
 
 USE DBPrefix_TestDomain
 -- Drop all structured types
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_DerivedClassWithEntityWithHierarchy_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_DerivedClassWithEntityWithHierarchy_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Address_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Address_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_TableWithUnidirectionalRelation_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_TableWithUnidirectionalRelation_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Client_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Client_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Person_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Person_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_File_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_File_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_HistoryEntry_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_HistoryEntry_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Order_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Order_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_OrganizationalUnit_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_OrganizationalUnit_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Region_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Region_Update]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Folder_Insert]
+DROP TYPE IF EXISTS [dbo].[TVP_TableInheritance_Folder_Update]
 -- Drop all synonyms
 -- Drop all indexes
 -- Drop all views

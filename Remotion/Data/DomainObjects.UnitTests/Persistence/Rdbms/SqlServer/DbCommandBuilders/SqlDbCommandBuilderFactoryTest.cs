@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Queries;
@@ -61,8 +62,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.DbCo
       _orderColumn1 = new OrderedColumn(_column1, SortOrder.Ascending);
       _orderColumn2 = new OrderedColumn(_column2, SortOrder.Descending);
 
+      var storageNameProvider = new Mock<IStorageNameProvider>();
+      storageNameProvider.Setup(stub => stub.GetIDColumnName()).Returns("ID");
+      storageNameProvider.Setup(stub => stub.GetClassIDColumnName()).Returns("ClassID");
+
       _singleScalarStructuredTypeDefinitionProviderStub = new Mock<ISingleScalarStructuredTypeDefinitionProvider>();
-      _factory = new SqlDbCommandBuilderFactory(_singleScalarStructuredTypeDefinitionProviderStub.Object, _sqlDialectStub.Object);
+      _factory = new SqlDbCommandBuilderFactory(_singleScalarStructuredTypeDefinitionProviderStub.Object, _sqlDialectStub.Object, storageNameProvider.Object);
     }
 
     [Test]

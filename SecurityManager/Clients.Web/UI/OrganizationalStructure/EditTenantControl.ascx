@@ -45,7 +45,7 @@
     <td>
       <remotion:BocAutoCompleteReferenceValue ID="ParentField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Parent" EnableOptionalValidators="true">
       </remotion:BocAutoCompleteReferenceValue>
-      <asp:CustomValidator ID="ParentValidator" runat="server" OnServerValidate="ParentValidator_ServerValidate" ControlToValidate="ParentField" Text="###" />
+      <asp:CustomValidator ID="ParentValidator" runat="server" OnServerValidate="ParentValidator_ServerValidate" ControlToValidate="ParentField" Text="###" EnableClientScript="false" />
     </td>
   </tr>
   <tr>
