@@ -204,8 +204,7 @@
             "type": "string",
             "enum": [
               "Docker_Win_NET10_0",
-              "Docker_Win_NET8_0",
-              "EnforcedLocalMachine(Docker_Win_NET8_0)",
+              "EnforcedLocalMachine(Docker_Win_NET10_0)",
               "LocalMachine"
             ]
           }
@@ -230,7 +229,6 @@
             "type": "string",
             "enum": [
               "NoDB",
-              "SqlServer2016",
               "SqlServer2017",
               "SqlServer2019",
               "SqlServer2022",
@@ -244,8 +242,7 @@
           "items": {
             "type": "string",
             "enum": [
-              "NET10_0",
-              "NET8_0"
+              "NET10_0"
             ]
           }
         },
