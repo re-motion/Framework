@@ -131,6 +131,17 @@ public class WebTestingTestSetup : ITestExecutionWrapper, IRequiresTestParameter
     appConfig.SetAppSetting("EdgeVersionArchive", edgeVersionArchive);
     appConfig.SetAppSetting("FirefoxVersionArchive", firefoxVersionArchive);
 
+    // Web applications are built into a target framework specific bin folder (e.g. 'bin\net11.0').
+    // The app config references a fixed target framework for local test execution, so we point it to the target framework of the current test row.
+    var processPath = appConfig.GetAttribute("/configuration/rwt:remotion.webTesting/rwt:testSiteLayout", "processPath");
+    if (!string.IsNullOrEmpty(processPath))
+    {
+      var processFileName = processPath.Split('\\', '/').Last();
+      var targetFrameworkProcessPath = $@"bin\{targetFramework}\{processFileName}";
+      Log.Information($" - Test site process path: '{targetFrameworkProcessPath}'");
+      appConfig.SetOrAddAttribute("/configuration/rwt:remotion.webTesting/rwt:testSiteLayout", "processPath", targetFrameworkProcessPath);
+    }
+
     var dockerNetworkResource = context.TestResources
         .OfType<DockerNetworkResource>()
         .SingleOrDefault();

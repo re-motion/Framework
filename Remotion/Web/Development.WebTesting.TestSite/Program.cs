@@ -11,7 +11,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     {
       LegacyAspNetInitialization.License = "I hereby confirm that I use CoreForms only for trial purposes and have read and accept the CoreForms Trial License.";
 
-      var legacyAspNetInitializationOptions = new LegacyAspNetInitializationOptions("/", Environment.CurrentDirectory);
+      var legacyAspNetInitializationOptions = new LegacyAspNetInitializationOptions("/", Environment.CurrentDirectory)
+          {
+            // The binaries are located in a target framework specific sub folder of the bin folder (e.g. bin\net11.0)
+            CustomBinDirectory = AppContext.BaseDirectory
+          };
       LegacyAspNetInitialization.Initialize(legacyAspNetInitializationOptions);
 
       CreateHostBuilder(args).Build().Run();

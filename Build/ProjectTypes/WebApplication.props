@@ -4,9 +4,9 @@
 
   <PropertyGroup>
     <UseWebForms>true</UseWebForms>
-    <TargetFrameworks>net10.0</TargetFrameworks>
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
     <OutputPath>bin</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
     <IsPackable>false</IsPackable>
     <Nullable>disable</Nullable>
   </PropertyGroup>
