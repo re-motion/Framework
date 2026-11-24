@@ -17,7 +17,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using Nuke.Common;
+using Fallout.Common;
 using Remotion.BuildScript;
 using Remotion.BuildScript.Test;
 using Remotion.BuildScript.Test.Dimensions;

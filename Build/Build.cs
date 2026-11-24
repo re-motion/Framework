@@ -21,9 +21,10 @@ using System.Linq;
 using Customizations;
 using JetBrains.Annotations;
 using NuGet.Versioning;
-using Nuke.Common;
-using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
+using Fallout.Common;
+using Fallout.Common.IO;
+using Solution = Fallout.Common.ProjectModel.Solution;
+using Fallout.Solutions;
 using Remotion.BuildScript;
 using Remotion.BuildScript.Components;
 using Remotion.BuildScript.GenerateSbom;
@@ -79,10 +80,9 @@ class Build : RemotionBuild, IDependDB, ITest
         // We need to copy the global.json file to the TEMP directory to ensure the correct SDK is used.
         var globalJsonFile = ((IBaseBuild)this).Solution.Directory / "global.json";
 
-        FileSystemTasks.CopyFile(
-            globalJsonFile,
-            TemporaryDirectory / "global.json",
-            FileExistsPolicy.Overwrite);
+        globalJsonFile.Copy(
+                TemporaryDirectory / "global.json",
+                ExistsPolicy.FileOverwrite);
       });
 
   [UsedImplicitly]
@@ -100,8 +100,8 @@ class Build : RemotionBuild, IDependDB, ITest
       _sbomSolutionPath = newSolutionPath;
 
       var sbomSolution = solution.Path.ReadSolution();
-      sbomSolution.RemoveProject(sbomSolution.AllProjects.Single(e => e.Name == "Build"));
-      sbomSolution.SaveAs(newSolutionPath);
+      sbomSolution.GetModel().RemoveProject(sbomSolution.AllProjects.Single(e => e.Name == "Build").GetModel());
+      sbomSolution.Save(newSolutionPath);
 
       var version = ((IBuildMetadata)this).GetBaseVersion();
 
@@ -126,7 +126,7 @@ class Build : RemotionBuild, IDependDB, ITest
       var outputSbomPath = outputFolderPath / "re-motion.sbom.json";
 
       // We do not require github auth because we do not do enough requests for licenses and package infos
-      var builder = new SolutionSbomGeneratorBuilder(sbomSolution, semanticVersion.ToString(), TemporaryDirectory / "sbomGeneration", outputSbomPath, "", "")
+      var builder = new SolutionSbomGeneratorBuilder(new Solution(sbomSolution.GetModel()), semanticVersion.ToString(), TemporaryDirectory / "sbomGeneration", outputSbomPath, "", "")
               .WithProjectsBlackListed(blacklistedProjects)
               .WithPackageJsonFile(packageJsonWithVersion)
               .WithSbomCleaner(null);

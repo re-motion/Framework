@@ -1,10 +1,129 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "$ref": "#/definitions/build",
-  "title": "Build Schema",
   "definitions": {
-    "build": {
-      "type": "object",
+    "Host": {
+      "type": "string",
+      "enum": [
+        "AppVeyor",
+        "AzurePipelines",
+        "Bamboo",
+        "Bitbucket",
+        "Bitrise",
+        "GitHubActions",
+        "GitLab",
+        "Jenkins",
+        "Rider",
+        "SpaceAutomation",
+        "TeamCity",
+        "Terminal",
+        "TestHost",
+        "TravisCI",
+        "VisualStudio",
+        "VSCode"
+      ]
+    },
+    "ExecutableTarget": {
+      "type": "string",
+      "enum": [
+        "AddRemotionPackagingArtefacts",
+        "Build",
+        "CIBuild",
+        "Clean",
+        "CreateTestMatrix",
+        "CreateTestPlan",
+        "DetermineBuildMetadata",
+        "DetermineProjectMetadata",
+        "DetermineTestResources",
+        "FullBuild",
+        "GenerateDependDBOutput",
+        "GenerateSbom",
+        "NightlyBuild",
+        "Pack",
+        "PrepareDotnetSdkInTempDirectory",
+        "RemoveSbomSolution",
+        "Restore",
+        "Test",
+        "VerifyTestParameters"
+      ]
+    },
+    "Verbosity": {
+      "type": "string",
+      "description": "",
+      "enum": [
+        "Verbose",
+        "Normal",
+        "Minimal",
+        "Quiet",
+        "Information"
+      ]
+    },
+    "FalloutBuild": {
+      "properties": {
+        "Continue": {
+          "type": "boolean",
+          "description": "Indicates to continue a previously failed build attempt"
+        },
+        "Help": {
+          "type": "boolean",
+          "description": "Shows the help text for this build assembly"
+        },
+        "Host": {
+          "description": "Host for execution. Default is 'automatic'",
+          "$ref": "#/definitions/Host"
+        },
+        "NoLogo": {
+          "type": "boolean",
+          "description": "Disables displaying the Fallout logo"
+        },
+        "Partition": {
+          "type": "string",
+          "description": "Partition to use on CI"
+        },
+        "Plan": {
+          "type": "boolean",
+          "description": "Shows the execution plan (HTML)"
+        },
+        "Profile": {
+          "type": "array",
+          "description": "Defines the profiles to load",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Root": {
+          "type": "string",
+          "description": "Root directory during build execution"
+        },
+        "Skip": {
+          "type": "array",
+          "description": "List of targets to be skipped. Empty list skips all dependencies",
+          "items": {
+            "$ref": "#/definitions/ExecutableTarget"
+          }
+        },
+        "Target": {
+          "type": "array",
+          "description": "List of targets to be invoked. Default is '{default_target}'",
+          "items": {
+            "$ref": "#/definitions/ExecutableTarget"
+          }
+        },
+        "Verbosity": {
+          "description": "Logging verbosity during build execution. Default is 'Normal'",
+          "$ref": "#/definitions/Verbosity"
+        },
+        "BuildProjectFile": {
+          "type": [
+            "null",
+            "string"
+          ],
+          "description": "Path to the build project (.csproj) relative to the repository root. Defaults to 'build/_build.csproj' when unset. Read by the Fallout global tool's in-tool runner."
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
       "properties": {
         "AdditionalBuildMetadata": {
           "type": "string",
@@ -20,10 +139,6 @@
           "items": {
             "type": "string"
           }
-        },
-        "Continue": {
-          "type": "boolean",
-          "description": "Indicates to continue a previously failed build attempt"
         },
         "DependDBNugetConfig": {
           "type": "string"
@@ -55,122 +170,17 @@
         "DependDBTrackedReferences": {
           "type": "string"
         },
-        "Help": {
-          "type": "boolean",
-          "description": "Shows the help text for this build assembly"
-        },
-        "Host": {
-          "type": "string",
-          "description": "Host for execution. Default is 'automatic'",
-          "enum": [
-            "AppVeyor",
-            "AzurePipelines",
-            "Bamboo",
-            "Bitbucket",
-            "Bitrise",
-            "GitHubActions",
-            "GitLab",
-            "Jenkins",
-            "Rider",
-            "SpaceAutomation",
-            "TeamCity",
-            "Terminal",
-            "TestHost",
-            "TravisCI",
-            "VisualStudio",
-            "VSCode"
-          ]
-        },
         "LogFolder": {
           "type": "string",
           "description": "Path to the log folder where log files are put"
-        },
-        "NoLogo": {
-          "type": "boolean",
-          "description": "Disables displaying the NUKE logo"
         },
         "OutputFolder": {
           "type": "string",
           "description": "Path to the output folder where build artifacts are put"
         },
-        "Partition": {
-          "type": "string",
-          "description": "Partition to use on CI"
-        },
-        "Plan": {
-          "type": "boolean",
-          "description": "Shows the execution plan (HTML)"
-        },
-        "Profile": {
-          "type": "array",
-          "description": "Defines the profiles to load",
-          "items": {
-            "type": "string"
-          }
-        },
-        "Root": {
-          "type": "string",
-          "description": "Root directory during build execution"
-        },
-        "Skip": {
-          "type": "array",
-          "description": "List of targets to be skipped. Empty list skips all dependencies",
-          "items": {
-            "type": "string",
-            "enum": [
-              "AddRemotionPackagingArtefacts",
-              "Build",
-              "CIBuild",
-              "Clean",
-              "CreateTestMatrix",
-              "CreateTestPlan",
-              "DetermineBuildMetadata",
-              "DetermineProjectMetadata",
-              "DetermineTestResources",
-              "FullBuild",
-              "GenerateDependDBOutput",
-              "GenerateSbom",
-              "NightlyBuild",
-              "Pack",
-              "PrepareDotnetSdkInTempDirectory",
-              "RemoveSbomSolution",
-              "Restore",
-              "Test",
-              "VerifyTestParameters"
-            ]
-          }
-        },
         "Solution": {
           "type": "string",
           "description": "Path to a solution file that is automatically loaded"
-        },
-        "Target": {
-          "type": "array",
-          "description": "List of targets to be invoked. Default is '{default_target}'",
-          "items": {
-            "type": "string",
-            "enum": [
-              "AddRemotionPackagingArtefacts",
-              "Build",
-              "CIBuild",
-              "Clean",
-              "CreateTestMatrix",
-              "CreateTestPlan",
-              "DetermineBuildMetadata",
-              "DetermineProjectMetadata",
-              "DetermineTestResources",
-              "FullBuild",
-              "GenerateDependDBOutput",
-              "GenerateSbom",
-              "NightlyBuild",
-              "Pack",
-              "PrepareDotnetSdkInTempDirectory",
-              "RemoveSbomSolution",
-              "Restore",
-              "Test",
-              "VerifyTestParameters"
-            ]
-          }
         },
         "TempFolder": {
           "type": "string",
@@ -252,18 +262,11 @@
         },
         "VcsUrlTemplate": {
           "type": "string"
-        },
-        "Verbosity": {
-          "type": "string",
-          "description": "Logging verbosity during build execution. Default is 'Normal'",
-          "enum": [
-            "Minimal",
-            "Normal",
-            "Quiet",
-            "Verbose"
-          ]
         }
       }
+    },
+    {
+      "$ref": "#/definitions/FalloutBuild"
     }
-  }
+  ]
 }
