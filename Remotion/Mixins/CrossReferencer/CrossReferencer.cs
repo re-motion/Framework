@@ -80,8 +80,8 @@ namespace Remotion.Mixins.CrossReferencer
         ErrorAggregator<ValidationException> validationErrors)
     {
       return generateFullReport
-          ? new ErrorReportGenerator(configurationErrors, validationErrors)
-          : new FullReportGenerator(involvedTypes, configurationErrors, validationErrors, new OutputFormatter());
+          ? new FullReportGenerator(involvedTypes, configurationErrors, validationErrors, new OutputFormatter())
+          : new ErrorReportGenerator(configurationErrors, validationErrors);
     }
   }
 }
