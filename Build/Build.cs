@@ -355,7 +355,7 @@ class Build : RemotionBuild, IDependDB, ITest
         "DatabaseTestMatrix",
         new TestDimension[,]
         {
-            { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, SqlServer2017, Debug, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, SqlServer2017, Debug, x64 },
             { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, SqlServer2017, Release, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2017, Debug, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, SqlServer2017, Release, x64 },
@@ -380,7 +380,7 @@ class Build : RemotionBuild, IDependDB, ITest
         "NormalTestMatrix",
         new TestDimension[,]
         {
-            { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, NoDB, Debug, x64 },
+            { AnyOs, Docker_Win_NET10_0, NET10_0, NoBrowser, NoDB, Debug, x64 },
             { AnyOs, Docker_Win_NET11_0, NET10_0, NoBrowser, NoDB, Release, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, NoDB, Debug, x64 },
             { AnyOs, Docker_Win_NET11_0, NET11_0, NoBrowser, NoDB, Release, x64 },

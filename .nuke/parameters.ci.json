@@ -4,7 +4,7 @@
   "TestConfigurations": [ "Debug" ],
   "TestExecutionRuntimes": [ "Docker_Win_NET11_0", "EnforcedLocalMachine" ],
   "TestPlatforms": [ "x64" ],
-  "TestTargetRuntimes": [ "NET11_0" ],
+  "TestTargetRuntimes": [ "NET10_0", "NET11_0" ],
   "TestBrowsers": [ "NoBrowser", "Chrome" ],
   "TestSqlServers": [ "NoDB", "SqlServer2017" ],
   "TestFilter": "TestCategory!=LongRunning&TestCategory!=ControlSelectorTest"
