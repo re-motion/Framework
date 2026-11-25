@@ -142,7 +142,7 @@ namespace Remotion.UnitTests.ServiceLocation.BootstrapServiceConfigurationTests
         var firstInMemoryAssembly = CompileTestAssemblyInMemory(
             "AssemblyWithDefaultLogger",
             typeof(BootstrapServiceConfiguration).Module.Name,
-            typeof(NullLoggerFactory).Module.Name);
+            typeof(NullLoggerFactory).Assembly.Location);
 
         Test(firstInMemoryAssembly);
       }
